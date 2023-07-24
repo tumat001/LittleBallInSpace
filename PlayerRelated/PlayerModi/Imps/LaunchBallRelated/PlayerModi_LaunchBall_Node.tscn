@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://PlayerRelated/PlayerModi/Imps/LaunchBallRelated/PlayerModi_LaunchBall_Node.gd" type="Script" id=1]
+
+[node name="PlayerModi_LaunchBall_Node" type="Node2D"]
+script = ExtResource( 1 )

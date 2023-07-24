@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_PlusSign_DisplayHUD.png" type="Texture" id=1]
+[ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_DisplayHud.png" type="Texture" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_SingleBall_DisplayHUD.png" type="Texture" id=3]
+
+[node name="AbilityPanel" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="LaunchBallAbilityPanel" type="MarginContainer" parent="."]
+margin_right = 155.0
+margin_bottom = 80.0
+
+[node name="Background" type="TextureRect" parent="LaunchBallAbilityPanel"]
+margin_right = 155.0
+margin_bottom = 80.0
+texture = ExtResource( 2 )
+
+[node name="FreeFormControl" type="Control" parent="LaunchBallAbilityPanel"]
+margin_right = 155.0
+margin_bottom = 80.0
+
+[node name="Label" type="Label" parent="LaunchBallAbilityPanel/FreeFormControl"]
+margin_left = 83.0
+margin_top = 45.0
+margin_right = 123.0
+margin_bottom = 76.0
+text = "Balls:
+x"
+align = 1
+
+[node name="Ball03" type="TextureRect" parent="LaunchBallAbilityPanel/FreeFormControl"]
+margin_left = 134.0
+margin_top = 50.0
+margin_right = 150.0
+margin_bottom = 66.0
+texture = ExtResource( 3 )
+
+[node name="Ball02" type="TextureRect" parent="LaunchBallAbilityPanel/FreeFormControl"]
+margin_left = 134.0
+margin_top = 55.0
+margin_right = 150.0
+margin_bottom = 71.0
+texture = ExtResource( 3 )
+
+[node name="Ball01" type="TextureRect" parent="LaunchBallAbilityPanel/FreeFormControl"]
+margin_left = 134.0
+margin_top = 60.0
+margin_right = 150.0
+margin_bottom = 76.0
+texture = ExtResource( 3 )
+
+[node name="PlusSign" type="TextureRect" parent="LaunchBallAbilityPanel/FreeFormControl"]
+margin_left = 138.0
+margin_top = 45.0
+margin_right = 146.0
+margin_bottom = 53.0
+texture = ExtResource( 1 )
