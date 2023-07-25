@@ -65,7 +65,7 @@ func rotate_cam_to_rad(arg_rotation : float):
 ##
 
 func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
-	print("rad: %s, old_rot: %s" % [arg_rad, old_rotation])
+	#print("rad: %s, old_rot: %s" % [arg_rad, old_rotation])
 	
 	var added_rad = arg_rad + arg_rad
 	var added_old_rot = arg_rad + old_rotation
@@ -83,9 +83,8 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 	arg_rad = fmod(arg_rad, (2*PI))
 	
 	var tweener = create_tween()
-	tweener.set_ease(Tween.EASE_IN_OUT)
-	tweener.tween_property(camera, "rotation", arg_rad, CAM_ANGLE_TURN_DURATION)
 	
+	tweener.tween_property(camera, "rotation", arg_rad, CAM_ANGLE_TURN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 
 
 

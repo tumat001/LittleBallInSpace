@@ -54,5 +54,8 @@ func calculate_momentum():
 	return linear_velocity * last_calculated_object_mass
 
 
+####
 
-
+func _on_BaseObject_body_entered(body):
+	pass
+	

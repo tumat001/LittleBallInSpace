@@ -5,6 +5,7 @@
 
 [node name="BaseTileSet" type="KinematicBody2D"]
 collision_layer = 4
+collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
 [node name="TileMap" type="TileMap" parent="."]

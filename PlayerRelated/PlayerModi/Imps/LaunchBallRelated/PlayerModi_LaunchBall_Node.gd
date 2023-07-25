@@ -36,6 +36,10 @@ var _is_charging_launch : bool setget set_is_charging_launch
 
 #
 
+var launch_ability setget set_launch_ability
+
+#
+
 func _ready():
 	set_process(false)
 
@@ -45,6 +49,9 @@ func set_is_charging_launch(arg_val):
 	_is_charging_launch = arg_val
 	
 	set_process(_is_charging_launch)
+
+func is_charging_launch():
+	return _is_charging_launch
 
 #
 
@@ -91,6 +98,12 @@ func _process(delta):
 	#
 	
 	update()
+	
+	###########
+	
+	if launch_ability != null:
+		launch_ability.time_decreased(delta)
+	
 
 #
 
@@ -161,4 +174,12 @@ func _get_color_to_use_based_on_current_launch_force() -> Color:
 	else:
 		return CHARGING_01_LAUNCH_FORCE__LINE_COLOR
 	
+
+
+################
+
+func set_launch_ability(arg_ability):
+	launch_ability = arg_ability
 	
+
+

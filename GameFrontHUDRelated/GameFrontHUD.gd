@@ -3,7 +3,8 @@ extends CanvasLayer
 
 onready var other_hosters = $OtherHosters
 
-
+onready var ability_panel = $ControlContainer/AbilityPanel
+onready var energy_panel = $ControlContainer/EnergyPanel
 
 ###
 

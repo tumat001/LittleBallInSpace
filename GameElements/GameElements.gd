@@ -20,7 +20,7 @@ var _current_player : Player
 #
 
 var _is_game_quitting : bool
-
+var is_game_after_init : bool
 
 #
 
@@ -39,6 +39,7 @@ func _enter_tree():
 
 
 func _ready():
+	
 	_initialize_game_front_hud()
 	
 	#
@@ -61,9 +62,15 @@ func _ready():
 	####
 	
 	
-	emit_signal("after_game_start_init")
-	
+	#emit_signal("after_game_start_init")
+	#call_deferred("emit_signal", "after_game_start_init")
+	call_deferred("_deferred__after_init")
 
+func _deferred__after_init():
+	is_game_after_init = true
+	emit_signal("after_game_start_init")
+
+#
 
 func _set_player__and_register_signals(arg_player : Player):
 	_current_player = arg_player
@@ -80,7 +87,6 @@ func _set_player__and_register_signals(arg_player : Player):
 func _on_current_player_request_rotate(arg_rot_data : RotationRequestData):
 	var angle = arg_rot_data.angle
 	
-	print("cam rotate to angle from request: %s" % rad2deg(angle))
 	CameraManager.rotate_cam_to_rad(angle)
 
 

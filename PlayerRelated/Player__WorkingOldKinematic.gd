@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends KinematicBody2D
 
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
@@ -17,8 +17,8 @@ signal request_rotate(arg_data)
 
 
 
-signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
-signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
+signal body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
+signal body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
 
 #
 
@@ -35,15 +35,6 @@ var _is_on_ground__with_energy : bool
 var _on_ground_any_identif_list : Array
 var _on_ground_any_identif_list__with_energy : Array
 
-
-var _on_directly_below_ground_any_identif_list__rotating_area_2d : Array
-var _is_directly_below_ground : bool
-var _apply_ground_repelling_force : bool
-var _cancel_next_apply_ground_repelling_force : bool
-
-var _cam_angle_to_ground_attracting_velocity_map : Dictionary
-
-#
 
 var _is_moving_left : bool
 var _is_moving_right : bool
@@ -90,7 +81,6 @@ const MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED = 200
 const ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC = 200
 const PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED : float = 1.5
 var _current_player_left_right_move_speed : float
-var _current_player_left_right_move_speed__from_last_integrate_forces : float
 
 ##
 
@@ -149,8 +139,6 @@ onready var sprite_layer = $SpriteLayer
 
 onready var floor_area_2d = $FloorArea2D
 onready var floor_area_2d_coll_shape = $FloorArea2D/CollisionShape2D
-
-onready var rotating_for_floor_area_2d = $RotatingForFloorArea2D
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
@@ -213,7 +201,6 @@ func _update_last_calculated_object_mass():
 		total += mass
 	
 	last_calculated_object_mass = total
-	mass = last_calculated_object_mass
 	emit_signal("last_calculated_object_mass_changed", last_calculated_object_mass)
 
 
@@ -233,7 +220,7 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 			
 	
 	
-	emit_signal("player_body_shape_entered", body_rid, body, body_shape_index, local_shape_index)
+	emit_signal("body_shape_entered", body_rid, body, body_shape_index, local_shape_index)
 
 
 
@@ -280,16 +267,15 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		_attempt_remove_on_ground_count__with_any_identif(coordinate)
 		_request_rotate(perpend_angle_with_lowest_distance, coordinate, is_tileset_energized)
 		_current_player_left_right_move_speed = 0
-		_current_player_left_right_move_speed__from_last_integrate_forces = 0
 		
 		clear_all_inside_induced_forces()
 		clear_all_outside_induced_forces()
-		_cancel_next_apply_ground_repelling_force = false
+		
 	else:
 		_attempt_add_on_ground_count__with_any_indentif(coordinate, is_tileset_energized)
 		clear_all_outside_induced_forces()
 		clear_all_inside_induced_forces()
-		_cancel_next_apply_ground_repelling_force = false
+		
 
 func _calculate_and_store_midpoints_of_points(arg_points : PoolVector2Array):
 	if !_shape_points_to_data_map.has(arg_points):
@@ -340,7 +326,7 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 		body.set_collision_mask_bit(0, true)
 		remove_objects_to_add_mask_layer_collision_after_exit(body)
 	
-	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
+	emit_signal("body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
 
 
@@ -459,72 +445,51 @@ func _physics_process(delta):
 		#apply_central_impulse(final_mov)
 	
 	
+	var final_mov = Vector2(_current_player_left_right_move_speed, 0)
+	final_mov = final_mov.rotated(CameraManager.current_cam_rotation)
+	
+	for vec2 in _all_inside_induced_forces_list:
+		final_mov += vec2
+	for vec2 in _all_outside_induced_forces_list:
+		final_mov += vec2
+	
+	var mov_as_vec_occurred = move_and_slide(final_mov, Vector2(0, 0))
+	# todo clean this up. Make the curr left right speed equal to mov vec occurred "x" magnitude
+	if mov_as_vec_occurred == Vector2.ZERO:
+		_current_player_left_right_move_speed = 0
+		
+		clear_all_inside_induced_forces()
+		clear_all_outside_induced_forces()
+	
+	#
 	
 	var prev_pos_change_from_last_frame = _player_pos_change_from_last_frame
 	_player_pos_change_from_last_frame = global_position - _player_prev_global_position
 	_player_linear_velocity = _player_pos_change_from_last_frame / delta
 	_player_prev_global_position = global_position
-
-
-
-func _integrate_forces(state):
-	var mov_speed = _current_player_left_right_move_speed - _current_player_left_right_move_speed__from_last_integrate_forces
-	_current_player_left_right_move_speed__from_last_integrate_forces = _current_player_left_right_move_speed
 	
-	#
-	
-	var final_mov = Vector2(mov_speed, 0)
-	final_mov = final_mov.rotated(CameraManager.current_cam_rotation)
-	
-	for vec2 in _all_inside_induced_forces_list:
-		final_mov += vec2
-	clear_all_inside_induced_forces()
-	for vec2 in _all_outside_induced_forces_list:
-		final_mov += vec2
-	clear_all_outside_induced_forces()
-	
-	
-	#
-	
-	var make_x_zero : bool = false
-	var make_y_zero : bool = false
-	
-	if _is_directly_below_ground:
-		final_mov += _cam_angle_to_ground_attracting_velocity_map[CameraManager.current_cam_rotation] 
-	
-	if _apply_ground_repelling_force:
-		#final_mov -= _cam_angle_to_ground_attracting_velocity_map[CameraManager.current_cam_rotation]
-		
-		#var pos_modi = _cam_angle_to_ground_attracting_velocity_map[CameraManager.current_cam_rotation] / 2
-		#state.transform.origin -= pos_modi
-		
-		#_apply_ground_repelling_force = false
-		
-		var vel = _cam_angle_to_ground_attracting_velocity_map[CameraManager.current_cam_rotation]
-		if vel.x != 0:
-			make_x_zero = true
-		elif vel.y != 0:
-			make_y_zero = true
-		
-		_apply_ground_repelling_force = false
-	
-	#
-	
-	state.linear_velocity += final_mov
-	if make_x_zero:
-		state.linear_velocity.x = 0
-	elif make_y_zero:
-		state.linear_velocity.y = 0
-	
-	#
 	
 	if _player_pos_change_from_last_frame == Vector2.ZERO:
 		_current_player_left_right_move_speed = 0
-		_current_player_left_right_move_speed__from_last_integrate_forces = 0
 		
 		clear_all_inside_induced_forces()
 		clear_all_outside_induced_forces()
 	
+	#if _requesting_rotate_at_next_physics_step:
+	#	if _player_pos_change_from_last_frame != _pos_change_at_request_for_rotate_at_next_physics_step:
+	#		_request_rotate(_player_pos_change_from_last_frame, prev_pos_change_from_last_frame)
+
+#func _remove_all_non_ground_parallel_impulses():
+#	#todo make it depend on angle
+#	var non_ground_forces = Vector2(0, linear_velocity.y)
+#	apply_central_impulse(-non_ground_forces)
+#
+#
+#func _remove_all_non_ground_parallel_velocity():
+#	#todo make it depend on angle
+#	linear_velocity.y = 0
+#
+
 
 func _process(delta):
 	if is_player_modi_energy_set:
@@ -538,15 +503,12 @@ func _process(delta):
 #############
 
 func _ready():
-	_calculate_and_store_ground_attracting_velocity_at_cam_angle(CameraManager.current_cam_rotation)
-	
-	#
-	
 	_player_prev_global_position = global_position
 	
 	_make_node_rotate_with_cam(sprite_layer)
 	
-	mode = RigidBody2D.MODE_CHARACTER
+	#
+	
 
 func _make_node_rotate_with_cam(arg_node):
 	_all_nodes_to_rotate_with_cam.append(arg_node)
@@ -557,27 +519,17 @@ func _make_node_rotate_with_cam(arg_node):
 
 
 func _request_rotate(arg_angle, arg_ground_identif, arg_is_energized):
+	
 	var data = RotationRequestData.new()
 	data.angle = arg_angle
 	data.ground_identif_on_rotate = arg_ground_identif
 	
-	if !_cam_angle_to_ground_attracting_velocity_map.has(arg_angle):
-		_calculate_and_store_ground_attracting_velocity_at_cam_angle(arg_angle)
 	
 	_current_player_left_right_move_speed = 0
-	_current_player_left_right_move_speed__from_last_integrate_forces = 0
-	
 	_attempt_add_on_ground_count__with_any_indentif(arg_ground_identif, arg_is_energized)
-	
-	rotating_for_floor_area_2d.rotation = data.angle
 	
 	emit_signal("request_rotate", data)
 
-
-func _calculate_and_store_ground_attracting_velocity_at_cam_angle(arg_angle):
-	var velocity = Vector2(0, 0.8).rotated(arg_angle)
-	var cleaned_velocity = Vector2(stepify(velocity.x, 0.01), stepify(velocity.y, 0.01)) 
-	_cam_angle_to_ground_attracting_velocity_map[arg_angle] = cleaned_velocity
 
 #
 
@@ -626,7 +578,6 @@ func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 func apply_inside_induced_force(arg_vector : Vector2):
 	_all_inside_induced_forces_list.append(arg_vector)
 	
-	_cancel_next_apply_ground_repelling_force = true
 
 func clear_all_inside_induced_forces():
 	_all_inside_induced_forces_list.clear()
@@ -638,8 +589,7 @@ func clear_all_outside_induced_forces():
 func apply_outside_induced_force(arg_vector : Vector2):
 	if !last_calc_ignore_outside_induced_forces:
 		_all_outside_induced_forces_list.append(arg_vector)
-		
-		_cancel_next_apply_ground_repelling_force = true
+	
 
 
 
@@ -674,27 +624,4 @@ func set_player_modi_energy__from_modi_manager(arg_modi : PlayerModi_Energy):
 	is_player_modi_energy_set = true
 	
 	SingletonsAndConsts.current_game_front_hud.energy_panel.set_player_modi__energy(arg_modi)
-
-
-
-##
-
-func _on_RotatingForFloorArea2D_body_entered(body):
-	if !_on_directly_below_ground_any_identif_list__rotating_area_2d.has(body):
-		_on_directly_below_ground_any_identif_list__rotating_area_2d.append(body)
-		_is_directly_below_ground = true
-
-
-func _on_RotatingForFloorArea2D_body_exited(body):
-	if _on_directly_below_ground_any_identif_list__rotating_area_2d.has(body):
-		_on_directly_below_ground_any_identif_list__rotating_area_2d.erase(body)
-		
-		_is_directly_below_ground = _on_directly_below_ground_any_identif_list__rotating_area_2d.size() != 0
-		if !_is_directly_below_ground:
-			if !_cancel_next_apply_ground_repelling_force:
-				_apply_ground_repelling_force = true
-			else:
-				_cancel_next_apply_ground_repelling_force = false
-
-
 

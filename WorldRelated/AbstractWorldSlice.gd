@@ -28,7 +28,10 @@ onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
 func set_game_elements(arg_elements):
 	game_elements = arg_elements
 	
-	game_elements.connect("after_game_start_init", self, "_on_after_game_start_init")
+	if !game_elements.is_game_after_init:
+		game_elements.connect("after_game_start_init", self, "_on_after_game_start_init")
+	else:
+		_on_after_game_start_init()
 
 #
 

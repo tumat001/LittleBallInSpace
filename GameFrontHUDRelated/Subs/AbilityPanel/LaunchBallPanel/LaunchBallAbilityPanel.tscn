@@ -19,13 +19,20 @@ texture = ExtResource( 2 )
 margin_right = 155.0
 margin_bottom = 80.0
 
-[node name="Label" type="Label" parent="FreeFormControl"]
+[node name="HeaderLabel" type="Label" parent="FreeFormControl"]
 margin_left = 83.0
 margin_top = 45.0
 margin_right = 123.0
-margin_bottom = 76.0
-text = "Balls:
-x"
+margin_bottom = 59.0
+text = "Balls:"
+align = 1
+
+[node name="BallCountLabel" type="Label" parent="FreeFormControl"]
+margin_left = 83.0
+margin_top = 61.0
+margin_right = 123.0
+margin_bottom = 75.0
+text = "x"
 align = 1
 
 [node name="Ball03" type="TextureRect" parent="FreeFormControl"]

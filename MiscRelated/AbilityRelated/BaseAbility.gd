@@ -68,14 +68,13 @@ var should_be_displaying : bool setget, _get_should_be_displaying
 
 func _init():
 	activation_conditional_clauses = ConditionalClauses.new()
-	activation_conditional_clauses.blacklisted_clauses.append(ActivationClauses.ROUND_ONGOING_STATE)
 	activation_conditional_clauses.connect("clause_inserted", self, "emit_updated_is_ready_for_activation", [], CONNECT_PERSIST)
 	activation_conditional_clauses.connect("clause_removed", self, "emit_updated_is_ready_for_activation", [], CONNECT_PERSIST)
 	
 	#
 	
 	counter_decrease_clauses = ConditionalClauses.new()
-	counter_decrease_clauses.blacklisted_clauses.append(CounterDecreaseClauses.ROUND_ONGOING_STATE)
+	#counter_decrease_clauses.blacklisted_clauses.append(CounterDecreaseClauses.ROUND_ONGOING_STATE)
 	
 	#
 	
