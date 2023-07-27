@@ -34,7 +34,7 @@ func _on_modi_forecasted_or_current_energy_changed(arg_curr, arg_forcasted):
 
 func _update_display__for_current_and_forecasted():
 	texture_progress_current.value = player_modi__energy.get_current_energy()
-	texture_progress_forcasted.value = player_modi__energy.get_forcasted_energy()
+	texture_progress_forcasted.value = player_modi__energy.get_forecasted_energy()
 	
 	_update_label()
 

@@ -9,6 +9,9 @@ var _composite_clauses : Array = []
 
 var is_passed : bool
 
+
+#######
+
 func _init():
 	is_passed = true
 
@@ -140,6 +143,51 @@ func copy_clauses_of_condtional_clause(other_conditional_clause):
 	_clauses = other_conditional_clause._clauses.duplicate(true)
 	blacklisted_clauses = other_conditional_clause.blacklisted_clauses.duplicate(true)
 	_composite_clauses = other_conditional_clause._composite_clauses.duplicate(true)
+	
+	_update_is_passed()
+
+
+
+###################### 
+# REWIND RELATED
+#####################
+
+export(bool) var is_rewindable : bool = true
+
+var _rewinded_clauses : Array
+var _rewinded_blacklisted_clauses
+var _rewinded_composite_clauses : Array
+
+
+func get_rewind_save_state():
+	return {
+		"clauses" : _clauses.duplicate(true),
+		"blacklisted_clauses" : blacklisted_clauses.duplicate(true),
+		"composite_clauses" : _composite_clauses.duplicate(true),
+		
+	}
+	
+
+func load_into_rewind_save_state(arg_state):
+	_rewinded_clauses = arg_state["clauses"]
+	_rewinded_blacklisted_clauses = arg_state["blacklisted_clauses"]
+	_rewinded_composite_clauses = arg_state["composite_clauses"]
+	
+
+func destroy_from_rewind_save_state():
+	pass
+	
+
+func stared_rewind():
+	pass
+
+func ended_rewind():
+	_clauses.clear()
+	_clauses.append_array(_rewinded_clauses)
+	blacklisted_clauses.clear()
+	blacklisted_clauses.append_array(_rewinded_blacklisted_clauses)
+	_composite_clauses.clear()
+	_composite_clauses.append_array(_rewinded_composite_clauses)
 	
 	_update_is_passed()
 

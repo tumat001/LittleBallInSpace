@@ -6,16 +6,21 @@ const CAM_ANGLE_TURN_DURATION : float = 0.5
 
 signal current_cam_rotation_changed(arg_val)
 
+signal cam_visual_rotation_changed(arg_val)
+
 #
 
 var camera : Camera2D
 
 var current_cam_rotation : float
 
+var is_camera_rotating : bool
+
 ##########
 
 func _ready():
-	pass
+	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	
 
 #func get_current_camera_2D():
 #	var viewport = get_viewport()
@@ -33,7 +38,7 @@ func _ready():
 
 func generate_camera():
 	if !is_instance_valid(camera):
-		camera = Camera2D.new()
+		camera = ShakeCamera2D.new() #Camera2D.new()
 		camera.rotating = true
 		camera.smoothing_enabled = true
 		
@@ -53,19 +58,22 @@ func set_camera_to_follow_node_2d(arg_node_2d : Node2D):
 
 ###
 
-func rotate_cam_to_rad(arg_rotation : float):
+func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true):
 	var old_rotation = current_cam_rotation
 	
 	current_cam_rotation = arg_rotation
 	emit_signal("current_cam_rotation_changed", current_cam_rotation)
 	
-	_start_rotate_cam_visually_to_rad(arg_rotation, old_rotation)
+	if rotate_visually:
+		_start_rotate_cam_visually_to_rad(arg_rotation, old_rotation)
 
 
 ##
 
 func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 	#print("rad: %s, old_rot: %s" % [arg_rad, old_rotation])
+	
+	is_camera_rotating = true
 	
 	var added_rad = arg_rad + arg_rad
 	var added_old_rot = arg_rad + old_rotation
@@ -82,19 +90,62 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 	
 	arg_rad = fmod(arg_rad, (2*PI))
 	
+	
 	var tweener = create_tween()
+	tweener.tween_method(self, "_set_actual_rotation_of_cam", camera.rotation, arg_rad, CAM_ANGLE_TURN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
-	tweener.tween_property(camera, "rotation", arg_rad, CAM_ANGLE_TURN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+
+#
+
+func _set_actual_rotation_of_cam(arg_rotation):
+	camera.rotation = arg_rotation
+	
+	if is_equal_approx(arg_rotation, current_cam_rotation):
+		is_camera_rotating = false
+	
+	emit_signal("cam_visual_rotation_changed", arg_rotation)
+
+
+#################
 
 
 
-################
+###################### 
+# REWIND RELATED
+#####################
 
-func make_nodes_rotate_with_camera(arg_nodes : Array):
+export(bool) var is_rewindable : bool = true
+
+var _rewinded_current_cam_rotation
+
+func get_rewind_save_state():
+	return {
+		"camera.rotation" : camera.rotation,
+		"current_cam_rotation" : current_cam_rotation,
+		"is_camera_rotating" : is_camera_rotating,
+	}
+	
+
+func load_into_rewind_save_state(arg_state):
+	_set_actual_rotation_of_cam(arg_state["camera.rotation"])
+	
+	_rewinded_current_cam_rotation = arg_state["current_cam_rotation"]
+	rotate_cam_to_rad(_rewinded_current_cam_rotation, false)
+	
+	is_camera_rotating = arg_state["is_camera_rotating"]
+
+func destroy_from_rewind_save_state():
 	pass
 	
 
-func make_node_rotate_with_camera(arg_node : Node2D):
+
+func stared_rewind():
 	pass
 	
+
+func ended_rewind():
+	if is_camera_rotating:
+		rotate_cam_to_rad(_rewinded_current_cam_rotation)
+	
+
 

@@ -6,6 +6,7 @@ var current_game_elements__other_node_hoster
 
 var current_game_front_hud
 
+var current_rewind_manager
 
 
 

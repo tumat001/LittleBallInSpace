@@ -5,7 +5,7 @@ signal current_energy_changed(arg_val)
 signal max_energy_changed(arg_val)
 
 # for use of energy HUD
-signal forecasted_or_current_energy_changed(arg_curr_energy, arg_forcasted_energy)
+signal forecasted_or_current_energy_changed(arg_curr_energy, arg_forecasted_energy)
 
 #
 
@@ -22,11 +22,12 @@ var _source_id_to_energy_amount_contributed : Dictionary
 
 
 enum ForecastConsumeId {
-	LAUNCH_BALL = 0
+	LAUNCH_BALL = 0,
+	INSTANT_GROUND = 1,
 }
 
 var _forecast_energy_consume_id_to_amount_map : Dictionary
-var _forcasted_energy : float
+var _forecasted_energy : float
 
 #
 
@@ -52,7 +53,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	if arg_source_id != -1:
 		_source_id_to_energy_amount_contributed[arg_source_id] += diff
 	
-	_update_and_calculate_forcasted_energy_consumption()
+	_update_and_calculate_forecasted_energy_consumption()
 	emit_signal("current_energy_changed", arg_val)
 
 func get_current_energy():
@@ -68,29 +69,29 @@ func clear_source_id_energy_modified(arg_id):
 
 #
 
-func set_forcasted_energy_consume(arg_id, arg_amount):
+func set_forecasted_energy_consume(arg_id, arg_amount):
 	_forecast_energy_consume_id_to_amount_map[arg_id] = arg_amount
-	_update_and_calculate_forcasted_energy_consumption()
+	_update_and_calculate_forecasted_energy_consumption()
 
-func remove_forcasted_energy_consume(arg_id):
+func remove_forecasted_energy_consume(arg_id):
 	_forecast_energy_consume_id_to_amount_map.erase(arg_id)
-	_update_and_calculate_forcasted_energy_consumption()
+	_update_and_calculate_forecasted_energy_consumption()
 
 
-func _update_and_calculate_forcasted_energy_consumption():
-	_forcasted_energy = _current_energy
+func _update_and_calculate_forecasted_energy_consumption():
+	_forecasted_energy = _current_energy
 	for amount in _forecast_energy_consume_id_to_amount_map.values():
-		_forcasted_energy -= amount
+		_forecasted_energy -= amount
 	
-	if _forcasted_energy < 0:
-		_forcasted_energy = 0
+	if _forecasted_energy < 0:
+		_forecasted_energy = 0
 	
-	emit_signal("forecasted_or_current_energy_changed", _forcasted_energy, _current_energy)
+	emit_signal("forecasted_or_current_energy_changed", _forecasted_energy, _current_energy)
 
 
 
-func get_forcasted_energy() -> float:
-	return _forcasted_energy
+func get_forecasted_energy() -> float:
+	return _forecasted_energy
 
 #
 
@@ -103,5 +104,51 @@ func set_max_energy(arg_val):
 func get_max_energy():
 	return _max_energy
 	
+
+#####
+
+
+
+###################### 
+# REWIND RELATED
+#####################
+
+#export(bool) var is_rewindable : bool = true
+
+func get_rewind_save_state():
+	return {
+		"max_energy" : _max_energy,
+		"current_energy" : _current_energy,
+		"source_id_to_energy_amount_contributed" : _source_id_to_energy_amount_contributed.duplicate(true),
+		"forecast_energy_consume_id_to_amount_map" : _forecast_energy_consume_id_to_amount_map.duplicate(true),
+	}
+	
+	
+
+func load_into_rewind_save_state(arg_state):
+	set_max_energy(arg_state["max_energy"])
+	set_current_energy(arg_state["current_energy"])
+	
+	_source_id_to_energy_amount_contributed = arg_state["source_id_to_energy_amount_contributed"]
+	_forecast_energy_consume_id_to_amount_map = arg_state["forecast_energy_consume_id_to_amount_map"]
+	_update_and_calculate_forecasted_energy_consumption()
+	
+
+func destroy_from_rewind_save_state():
+	pass
+	
+
+
+func stared_rewind():
+	pass
+	
+
+func ended_rewind():
+	pass
+	
+
+
+
+
 
 

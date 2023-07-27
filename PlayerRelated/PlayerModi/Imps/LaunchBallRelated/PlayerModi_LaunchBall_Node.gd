@@ -149,13 +149,17 @@ func _draw():
 		
 		##
 		
-		var line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH / _max_launch_force
+		var line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH * 0.66 / _max_launch_force
 		var line_end_pos = Vector2(line_length, 0)
 		
 		var angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
 		var towards_mouse_line_end_pos = line_end_pos.rotated(angle_of_node_to_mouse) + node_pos
 		
-		var player_line_end_pos = line_end_pos.rotated(angle_of_node_to_mouse + PI) + node_pos
+		
+		var player_line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH / _max_launch_force
+		var player_line_end_pos = Vector2(player_line_length, 0)
+		
+		player_line_end_pos = player_line_end_pos.rotated(angle_of_node_to_mouse + PI) + node_pos
 		
 		#
 		# BALL line

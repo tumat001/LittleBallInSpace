@@ -32,6 +32,8 @@ onready var player_modi_manager = $PlayerModiManager
 
 onready var other_node_hoster = $OtherNodeHoster
 
+onready var rewind_manager = $RewindManager
+
 #
 
 func _enter_tree():
@@ -39,7 +41,6 @@ func _enter_tree():
 
 
 func _ready():
-	
 	_initialize_game_front_hud()
 	
 	#
@@ -61,9 +62,6 @@ func _ready():
 	
 	####
 	
-	
-	#emit_signal("after_game_start_init")
-	#call_deferred("emit_signal", "after_game_start_init")
 	call_deferred("_deferred__after_init")
 
 func _deferred__after_init():
@@ -102,6 +100,16 @@ func _deferred_add_child__game_front_hud():
 	#get_tree().get_root().call_deferred("add_child", game_front_hud)
 	get_tree().get_root().add_child(game_front_hud)
 
+#
+
+func _unhandled_key_input(event):
+	if event.is_action_pressed("rewind"):
+		rewind_manager.start_rewind()
+		
+	elif event.is_action_released("rewind"):
+		rewind_manager.end_rewind()
+		
+	
 
 ###################################
 

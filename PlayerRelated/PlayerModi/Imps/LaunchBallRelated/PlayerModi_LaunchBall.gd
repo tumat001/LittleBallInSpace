@@ -10,6 +10,7 @@ const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.
 #
 
 signal current_ball_count_changed(arg_val)
+signal infinite_ball_count_status_changed(arg_val)
 
 ##
 
@@ -35,6 +36,7 @@ var _game_elements
 
 var _current_ball_count : int setget set_current_ball_count
 
+var is_infinite_ball_count : bool = false setget set_is_infinite_ball_count
 #
 
 var launch_ability : BaseAbility
@@ -77,6 +79,8 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	#
 	
+	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	
 	#_configure_to_player__with_energy_modi()
 	call_deferred("_configure_to_player__with_energy_modi")
 
@@ -84,14 +88,13 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 
 func _configure_to_player__with_energy_modi():
 	if !_player.is_player_modi_energy_set:
-		
-		_game_elements.player_modi_manager.connect("modi_added_to_player,", self, "_on_modi_added_to_player")
+		_game_elements.player_modi_manager.connect("modi_added_to_player", self, "_on_modi_added_to_player")
 	else:
 		_configure_with_energy_modi(_player.player_modi__energy)
 
 func _on_modi_added_to_player(arg_modi):
 	if arg_modi.modi_id == StoreOfPlayerModi.PlayerModiIds.ENERGY:
-		_game_elements.player_modi_manager.disconnect("modi_added_to_player,", self, "_on_modi_added_to_player")
+		_game_elements.player_modi_manager.disconnect("modi_added_to_player", self, "_on_modi_added_to_player")
 		_configure_with_energy_modi(_player.player_modi__energy)
 		
 
@@ -109,6 +112,7 @@ func _update_self_based_on_current_energy_of_modi():
 		
 		if player_modi_launch_ball_node.is_charging_launch():
 			player_modi_launch_ball_node.end_launch_charge()
+			_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
 		
 	else:
 		launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__NOT_ENOUGH_ENERGY)
@@ -157,7 +161,7 @@ func _begin_charge_ball():
 	player_modi_launch_ball_node.begin_launch_charge(starting_launch_strength, launch_strength_per_sec, max_launch_strength, launch_strength_initial_delay, launch_peak_wait_before_alternate)
 	
 	if _player.is_player_modi_energy_set:
-		_player.player_modi__energy.set_forcasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
+		_player.player_modi__energy.set_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
 		
 
 
@@ -172,12 +176,13 @@ func _attempt_launch_ball():
 	#
 	
 	_create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
-	set_current_ball_count(_current_ball_count - 1)
+	if !is_infinite_ball_count:
+		set_current_ball_count(_current_ball_count - 1)
 	
 	#
 	
 	if _player.is_player_modi_energy_set:
-		_player.player_modi__energy.remove_forcasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
 		_player.player_modi__energy.dec_current_energy(energy_consume_on_launch)
 
 
@@ -248,8 +253,54 @@ func get_current_ball_count():
 
 #
 
+func set_is_infinite_ball_count(arg_val):
+	is_infinite_ball_count = arg_val
+	
+	emit_signal("infinite_ball_count_status_changed", arg_val)
+
+#
+
 func _add_self_to_ability_panel__front_hud():
 	SingletonsAndConsts.current_game_front_hud.ability_panel.player_modi_launch_ball = self
 	
+
+###################### 
+# REWIND RELATED
+#####################
+
+export(bool) var is_rewindable : bool = true
+
+func get_rewind_save_state():
+	return {
+		"current_ball_count" : _current_ball_count,
+		"is_infinite_ball_count" : is_infinite_ball_count,
+		
+		"launch_ability_save_state" : launch_ability.get_rewind_save_state(),
+	}
+
+
+func load_into_rewind_save_state(arg_state):
+	set_current_ball_count(arg_state["current_ball_count"])
+	set_is_infinite_ball_count(arg_state["is_infinite_ball_count"])
+	launch_ability.load_into_rewind_save_state(arg_state["launch_ability_save_state"])
+	
+
+func destroy_from_rewind_save_state():
+	pass
+	
+
+
+func stared_rewind():
+	if player_modi_launch_ball_node.is_charging_launch():
+		player_modi_launch_ball_node.end_launch_charge()
+		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+	
+	
+
+func ended_rewind():
+	_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+	
+	
+
 
 
