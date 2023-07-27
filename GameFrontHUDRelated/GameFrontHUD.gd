@@ -5,6 +5,7 @@ onready var other_hosters = $OtherHosters
 
 onready var ability_panel = $ControlContainer/AbilityPanel
 onready var energy_panel = $ControlContainer/EnergyPanel
+onready var rewind_panel = $ControlContainer/RewindPanel
 
 ###
 

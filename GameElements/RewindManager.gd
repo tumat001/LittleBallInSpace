@@ -19,6 +19,7 @@ signal obj_removed_from_rewindables(arg_obj)
 
 signal done_ending_rewind()
 
+signal rewindable_datas_pop_back(arg_data_count_left)
 
 #
 
@@ -44,8 +45,24 @@ var last_calculated_can_store_rewind_data : bool
 
 #
 
-#var _rewindable_node_to_save_state_map : Dictionary
+
+enum RewindMarkerData {
+	NONE = 0,
+	LAUNCH_BALL = 1,
+	
+}
 var _rewindable_datas : Array
+var _rewindable_marker_datas : Array
+
+
+var _rewindable_marker_data_at_next_frame : int
+
+
+const rewind_marker_data_to_img = {
+	RewindMarkerData.LAUNCH_BALL : preload("res://GameFrontHUDRelated/Subs/RewindPanel/Assets/RewindPanel_Marker_LaunchBall.png")
+}
+
+#
 
 var _rewindable_objs_in_prev_load_step : Array
 
@@ -147,6 +164,7 @@ func _physics_process(delta):
 		
 		if rewind_duration * Engine.iterations_per_second == _rewindable_datas.size():
 			_rewindable_datas.pop_front()
+			_rewindable_marker_datas.pop_front()
 		
 		var rewindable_obj_to_save_state_map = {}
 		for obj in _all_registered_rewindables:
@@ -154,6 +172,10 @@ func _physics_process(delta):
 		
 		_rewindable_datas.append(rewindable_obj_to_save_state_map)
 		
+		#
+		
+		_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
+		_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
 		
 	else:
 		
@@ -172,25 +194,33 @@ func _physics_process(delta):
 		
 		#
 		
+		_rewindable_marker_datas.pop_back()
+		
+		emit_signal("rewindable_datas_pop_back", _rewindable_marker_datas.size())
+		
 		if _rewindable_datas.size() == 0:
 			_end_rewind_with_state_map(rewindable_obj_to_save_state_map)
 		
 		
-		
-	
 
 #
 
 func start_rewind():
-	var rewindable_obj_to_save_state_map = _rewindable_datas.back()
-	for obj in rewindable_obj_to_save_state_map:
-		obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)
-	
-	is_rewinding = true
+	if !is_rewinding:
+		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
+		for obj in rewindable_obj_to_save_state_map:
+			obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)
+		
+		is_rewinding = true
+		
+		SingletonsAndConsts.current_game_front_hud.rewind_panel.start_show(_rewindable_marker_datas)
+
 
 func end_rewind():
 	if is_rewinding:
 		_end_rewind_with_state_map(_rewindable_datas.back())
+
+
 
 func _end_rewind_with_state_map(arg_state_map):
 	var rewindable_obj_to_save_state_map = arg_state_map
@@ -203,6 +233,7 @@ func _end_rewind_with_state_map(arg_state_map):
 	emit_signal("done_ending_rewind")
 	is_rewinding = false
 	
+	SingletonsAndConsts.current_game_front_hud.rewind_panel.end_show()
 	#_current_rewind_load_step_wait = 0
 	#_current_rewind_save_step_wait = 0
 	
@@ -217,5 +248,20 @@ func _remove_obj_from_all_registered_rewindables(arg_obj):
 
 func is_obj_registered_in_rewindables(arg_obj):
 	return _all_registered_rewindables.has(arg_obj)
+
+##
+
+func attempt_set_rewindable_marker_data_at_next_frame(arg_marker_id):
+	if _rewindable_marker_data_at_next_frame == RewindMarkerData.NONE:
+		_rewindable_marker_data_at_next_frame = arg_marker_id
+
+func force_set_rewindable_marker_data_at_next_frame(arg_marker_id):
+	_rewindable_marker_data_at_next_frame = arg_marker_id
+
+func is_mark_type_not_none(arg_marker_id):
+	return arg_marker_id != RewindMarkerData.NONE
+
+func get_texture_for_mark_type(arg_marker_id):
+	return rewind_marker_data_to_img[arg_marker_id]
 
 

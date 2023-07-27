@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/Subs/RewindPanel/RewindPanel.gd" type="Script" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/RewindPanel/Assets/RewindPanel_MainBackground.png" type="Texture" id=3]
+[ext_resource path="res://GameFrontHUDRelated/Subs/RewindPanel/Assets/RewindPanel_ArrowPointer.png" type="Texture" id=4]
+
+[node name="RewindPanel" type="MarginContainer"]
+margin_right = 316.0
+margin_bottom = 36.0
+mouse_filter = 2
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 332.0
+margin_bottom = 36.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 332.0
+margin_bottom = 36.0
+mouse_filter = 2
+
+[node name="StripContainer" type="Control" parent="Control"]
+margin_right = 277.0
+margin_bottom = 36.0
+
+[node name="MarkerContainer" type="Control" parent="Control"]
+margin_right = 10.0
+margin_bottom = 10.0
+mouse_filter = 2
+
+[node name="MarkerPointer" type="TextureRect" parent="Control"]
+margin_left = 311.0
+margin_top = 23.0
+margin_right = 320.0
+margin_bottom = 32.0
+rect_rotation = 0.580563
+mouse_filter = 2
+texture = ExtResource( 4 )

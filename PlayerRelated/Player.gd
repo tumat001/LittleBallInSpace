@@ -25,7 +25,8 @@ signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_i
 #
 
 enum BlockPlayerMoveLeftAndRightClauseIds {
-	NOT_ON_GROUND = 0
+	NOT_ON_GROUND = 0,
+	NO_ENERGY = 1,
 }
 
 var block_player_move_left_and_right_cond_clauses : ConditionalClauses
@@ -493,10 +494,10 @@ func _physics_process(delta):
 					_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
 					
 					var mov_of_left_right = _get_cleaned_vector(Vector2(_current_player_left_right_move_speed, 0).rotated(CameraManager.current_cam_rotation))
-					#todo
+					
 					var scalar_quo = _get_scalar_quotient_of_vector_using_vec_divisior__max_one(linear_velocity, mov_of_left_right)
 					var is_curr_mov_left_right_fit_in_linear_vel = scalar_quo >= 1
-					print("scalar quo: %s. mov_left_right: %s" % [scalar_quo, mov_of_left_right])
+					#print("scalar quo: %s. mov_left_right: %s" % [scalar_quo, mov_of_left_right])
 					if !is_curr_mov_left_right_fit_in_linear_vel:
 						var diff = linear_velocity - mov_of_left_right
 						
@@ -508,8 +509,8 @@ func _physics_process(delta):
 						else:
 							excess_scale = max(-1, quo_of_excess)
 						
-						print("diff: %s, mov_of_excess: %s " % [diff, mov_of_excess])
-						print("excess scale: %s, quo of excess: %s" % [excess_scale, quo_of_excess])
+						#print("diff: %s, mov_of_excess: %s " % [diff, mov_of_excess])
+						#print("excess scale: %s, quo of excess: %s" % [excess_scale, quo_of_excess])
 						
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = -mov_of_excess * excess_scale
 						
@@ -613,8 +614,7 @@ func _get_scalar_quotient_of_vector_using_vec_divisior__max_one(arg_vec_dividend
 		return min(0, min_quotient)
 
 func _integrate_forces(state):
-	#todo
-	print("lin_vel: %s, extra_counter force: %s" % [linear_velocity, _current_excess_player_left_right_move_speed_to_fight_counter_speed])
+	#print("lin_vel: %s, extra_counter force: %s" % [linear_velocity, _current_excess_player_left_right_move_speed_to_fight_counter_speed])
 	
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
@@ -727,21 +727,19 @@ func _process(delta):
 			else:
 				player_modi__energy.dec_current_energy(OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__FLAT * delta)
 				player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
+			
+			
+			if is_equal_approx(player_modi__energy.get_current_energy(), 0):
+				block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
 				
+			else:
+				block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+				
+
 
 #############
 
 func _ready():
-	
-	#TODO
-	var vec_4_2 = Vector2(4, 0)
-	var test_vec_01 = Vector2(-1, 0)
-	
-	print(_get_scalar_quotient_of_vector_using_vec_divisior__max_one(vec_4_2, test_vec_01))
-	
-	
-	#
-	
 	_calculate_and_store_ground_attracting_velocity_at_cam_angle(CameraManager.current_cam_rotation)
 	
 	#

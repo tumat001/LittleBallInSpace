@@ -1,8 +1,5 @@
 extends RigidBody2D
 
-const PhysicsHelperClass = preload("res://MiscRelated/HelperClasses/PhysicsHelperClass.gd")
-
-#
 
 signal last_calculated_object_mass_changed(arg_val)
 

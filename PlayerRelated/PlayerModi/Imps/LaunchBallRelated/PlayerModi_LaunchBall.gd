@@ -184,7 +184,10 @@ func _attempt_launch_ball():
 	if _player.is_player_modi_energy_set:
 		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
 		_player.player_modi__energy.dec_current_energy(energy_consume_on_launch)
-
+	
+	#
+	
+	SingletonsAndConsts.current_rewind_manager.attempt_set_rewindable_marker_data_at_next_frame(SingletonsAndConsts.current_rewind_manager.RewindMarkerData.LAUNCH_BALL)
 
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 	var mouse_pos : Vector2 = _player.get_global_mouse_position()
