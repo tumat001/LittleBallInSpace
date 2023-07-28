@@ -18,6 +18,11 @@ signal unhandled_key_input_received(event)
 signal request_rotate(arg_data)
 
 
+signal current_health_changed(arg_val)
+signal all_health_lost()
+signal health_restored_from_zero()
+signal health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoint)
+
 
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
@@ -155,7 +160,31 @@ const IN_ENERGY__ENERGY_CHARGE_PER_SEC__PERCENT = 0.3
 const OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__FLAT = 1.0
 const OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__PERCENT__FROM_INSTANT_GROUND = 1.0
 
-#
+var _no_energy_consecutive_duration : float
+
+###
+
+const health_breakpoints = [
+	66.6,
+	33.3,
+]
+
+const above_highest_health_breakpoint_texture_file_path = "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type01.png"
+const health_breakpoint_to_bar_texture_file_path_map : Dictionary = {
+	66.6 : "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type02.png",
+	33.3 : "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type03.png",
+}
+
+var _max_health : float = 100.0    # not meant to be changed, but if it is, then update HealthPanel's separator positioning
+var _current_health : float
+var _is_dead : bool
+
+
+const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 2.0
+const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
+const NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC : float = 10.0
+
+###
 
 const FACE_ANIMATION_NAME__NORMAL = "normal"
 const FACE_ANIMATION_NAME__NORMAL_TO_OUCH = "normal_to_ouch"
@@ -175,6 +204,7 @@ onready var rotating_for_floor_area_2d_coll_shape = $RotatingForFloorArea2D/Coll
 
 onready var face_screen = $SpriteLayer/FaceScreen
 onready var anim_on_screen = $SpriteLayer/AnimOnScreen
+onready var main_body_sprite = $SpriteLayer/MainBodySprite
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
@@ -373,7 +403,6 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 
 
 #func _on_FloorArea2D_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
-#	#TODO check if body is breakable. if it is, attempt break. if not broken, attempt do rotation
 #	pass
 ##	var body_shape_owner_id = area.shape_find_owner(area_shape_index)
 ##	var body_shape_owner = area.shape_owner_get_owner(body_shape_owner_id)
@@ -472,9 +501,9 @@ func _unhandled_key_input(event):
 			
 		
 	
-	
-	if !is_consumed:
-		emit_signal("unhandled_key_input_received", event)
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if !is_consumed:
+			emit_signal("unhandled_key_input_received", event)
 
 
 # note after phy, it is followed by integ, never by another phy.
@@ -557,7 +586,6 @@ func _physics_process(delta):
 			#apply_central_impulse(final_mov)
 			
 		
-		#todo
 		# check linear velocity.x or y, depending on rotation
 		# if linear velocity.x or y is less than _current_player_left_right_move_speed even if _current_player_left_right_move_speed is max, then store excess speed generated this frame in a var
 		# then use that var to add onto the linear velocity in _integrate_forces
@@ -729,12 +757,19 @@ func _process(delta):
 				player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
 			
 			
-			if is_equal_approx(player_modi__energy.get_current_energy(), 0):
-				block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+			if player_modi__energy.is_no_energy():
+				_no_energy_consecutive_duration += delta
+				
+				var loss = NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC + (NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC * _no_energy_consecutive_duration)
+				if loss > NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC:
+					loss = NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC
+				loss *= delta
+				
+				set_current_health(_current_health - loss)
 				
 			else:
-				block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
-				
+				_no_energy_consecutive_duration = 0
+
 
 
 #############
@@ -766,6 +801,17 @@ func _make_node_rotate_with_cam(arg_node):
 	_all_nodes_to_rotate_with_cam.append(arg_node)
 	
 
+#
+
+func initialize_health_panel_relateds():
+	var param = SingletonsAndConsts.current_game_front_hud.health_panel.DisplayParams.new()
+	param.player = self
+	param.max_health = _max_health
+	param.current_health = _current_health
+	param.is_dead = _is_dead
+	param.health_breakpoints = health_breakpoints
+	
+	SingletonsAndConsts.current_game_front_hud.health_panel.configure_update_to_param(param)
 
 #
 
@@ -791,7 +837,7 @@ func _on_cam_manager_rotation_changed(arg_angle):
 		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 	
 	rotating_for_floor_area_2d.rotation = arg_angle
-	
+
 
 
 func _calculate_and_store_ground_attracting_velocity_at_cam_angle(arg_angle):
@@ -894,6 +940,33 @@ func set_player_modi_energy__from_modi_manager(arg_modi : PlayerModi_Energy):
 	is_player_modi_energy_set = true
 	
 	SingletonsAndConsts.current_game_front_hud.energy_panel.set_player_modi__energy(arg_modi)
+	
+	player_modi__energy.connect("discarged_to_zero_energy", self, "_update_self_based_on_has_energy")
+	player_modi__energy.connect("recharged_from_no_energy", self, "_update_self_based_on_has_energy")
+	_update_self_based_on_has_energy()
+
+func _update_self_based_on_has_energy():
+	var has_no_energy = player_modi__energy.is_no_energy()
+	
+	if has_no_energy:
+		_update_self_based_on_has_energy__no_energy()
+	else:
+		_update_self_based_on_has_energy__has_energy()
+
+
+func _update_self_based_on_has_energy__no_energy():
+	block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+	
+	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
+	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
+	anim_on_screen.visible = false
+
+func _update_self_based_on_has_energy__has_energy():
+	block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+	
+	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
+	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
+	anim_on_screen.visible = true
 
 
 
@@ -984,6 +1057,57 @@ func _play_ouch_to_normal(arg_duration : float):
 	
 	anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__OUCH_TO_NORMAL, fps)
 	anim_on_screen.play(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
+
+#
+
+func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
+	var old_val = _current_health
+	_current_health = arg_val
+	
+	if _current_health < 0:
+		_current_health = 0
+	if _current_health > _max_health:
+		_current_health = _max_health
+	
+	if is_equal_approx(_current_health, 0):
+		if !_is_dead:
+			_is_dead = true
+			emit_signal("all_health_lost")
+		
+	else:
+		if _is_dead:
+			_is_dead = false
+			emit_signal("health_restored_from_zero")
+	
+	if emit_health_breakpoint_signals:
+		if old_val > _current_health:
+			var percent = _current_health * 100 / _max_health
+			for hp_breakpoint in health_breakpoints:
+				if percent <= hp_breakpoint:
+					emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
+					break
+			
+		elif old_val < _current_health:
+			var percent = _current_health * 100 / _max_health
+			for hp_breakpoint in health_breakpoints:
+				if percent >= hp_breakpoint:
+					emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
+					break
+				
+			
+	
+	
+	emit_signal("current_health_changed", _current_health)
+
+func get_current_health():
+	return _current_health
+
+func get_max_health():
+	return _max_health
+
+
+func is_no_health():
+	return _is_dead
 
 
 ###################### 
@@ -1119,7 +1243,7 @@ func ended_rewind():
 	
 	_current_player_left_right_move_speed = _most_recent_rewind_state["current_player_left_right_move_speed"]
 	_current_player_left_right_move_speed__from_last_integrate_forces = _most_recent_rewind_state["current_player_left_right_move_speed__from_last_integrate_forces"]
-	_current_excess_player_left_right_move_speed_to_fight_counter_speed = _most_recent_rewind_state["current_excess_player_left_right_move_speed_to_fight_counter_speed"]
+	#_current_excess_player_left_right_move_speed_to_fight_counter_speed = _most_recent_rewind_state["current_excess_player_left_right_move_speed_to_fight_counter_speed"]
 	
 	_apply_ground_repelling_force = _most_recent_rewind_state["apply_ground_repelling_force"]
 	_cancel_next_apply_ground_repelling_force = _most_recent_rewind_state["cancel_next_apply_ground_repelling_force"]

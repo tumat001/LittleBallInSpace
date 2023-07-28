@@ -17,6 +17,8 @@ const MARKER_X_ENDING_POS = 7
 
 const MARKER_PERCENT_MARGIN_FOR_REGISTER : float = 2.0
 
+const TIME_LABEL_TEXT_FORMAT = "%4.2f"
+
 #
 
 var marker_img_texture_rect_compo_pool : TextureRectComponentPool
@@ -32,10 +34,12 @@ var _datas_size : float
 
 #
 
-onready var marker_container = $Control/MarkerContainer
-onready var strip_container = $Control/StripContainer
+onready var marker_container = $VBoxContainer/MarginContainer/Control/MarkerContainer
+onready var strip_container = $VBoxContainer/MarginContainer/Control/StripContainer
 
-onready var marker_pointer = $Control/MarkerPointer
+onready var marker_pointer = $VBoxContainer/MarginContainer/Control/MarkerPointer
+
+onready var time_label = $VBoxContainer/MarginContainer2/MarginContainer/TimeLabel
 
 #######
 
@@ -140,5 +144,6 @@ func _convert_percent_using_num_range(arg_percent, arg_min, arg_max):
 func _on_rewindable_datas_pop_back(arg_count):
 	var pos_x = _convert_percent_using_num_range(arg_count / _datas_size * 100, POINTER_X_ENDING_POS, POINTER_X_STARTING_POS)
 	marker_pointer.rect_position.x = pos_x
-
+	
+	time_label.text = TIME_LABEL_TEXT_FORMAT % _rewind_manager.get_current_rewindable_duration_length()
 

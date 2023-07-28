@@ -37,6 +37,7 @@ StoreOfPlayerModi="*res://PlayerRelated/PlayerModi/StoreOfPlayerModi.gd"
 StoreOfObjects="*res://ObjectsRelated/Objects/StoreOfObjects.gd"
 SingletonsAndConsts="*res://SingletonsAndConsts/SingletonsAndConsts.gd"
 StoreOfRng="*res://SingletonsAndConsts/StoreOfRNG.gd"
+GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
 
 [debug]
 

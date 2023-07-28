@@ -20,7 +20,7 @@ energy_mode = 2
 tile_data = PoolIntArray( 393240, 0, 4, 458776, 0, 4, 524302, 0, 4, 524303, 0, 4, 524304, 0, 4, 524305, 0, 4, 524306, 0, 4, 524307, 0, 4, 524312, 0, 4 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 390, 403 )
+position = Vector2( 490, 232 )
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BaseTileSet2"]

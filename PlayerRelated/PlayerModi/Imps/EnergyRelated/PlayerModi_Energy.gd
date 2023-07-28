@@ -1,6 +1,10 @@
 extends "res://PlayerRelated/PlayerModi/AbstractPlayerModi.gd"
 
 
+
+signal discarged_to_zero_energy()
+signal recharged_from_no_energy()
+
 signal current_energy_changed(arg_val)
 signal max_energy_changed(arg_val)
 
@@ -31,6 +35,10 @@ var _forecasted_energy : float
 
 #
 
+var _has_no_energy : bool
+
+#
+
 func inc_current_energy(arg_amount, arg_source_id = -1):
 	set_current_energy(_current_energy + arg_amount, arg_source_id)
 	
@@ -48,12 +56,27 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	if _current_energy > _max_energy:
 		_current_energy = _max_energy
 	
+	#
+	
+	var old_has_no_energy_val = _has_no_energy
+	_has_no_energy = _current_energy == 0
+	if old_has_no_energy_val != _has_no_energy:
+		if _has_no_energy:
+			emit_signal("discarged_to_zero_energy")
+			
+		else:
+			emit_signal("recharged_from_no_energy")
+			
+	
+	#
+	
 	var diff = _current_energy - old_val
 	
 	if arg_source_id != -1:
 		_source_id_to_energy_amount_contributed[arg_source_id] += diff
 	
 	_update_and_calculate_forecasted_energy_consumption()
+	
 	emit_signal("current_energy_changed", arg_val)
 
 func get_current_energy():
@@ -107,6 +130,9 @@ func get_max_energy():
 
 #####
 
+
+func is_no_energy():
+	return _has_no_energy
 
 
 ###################### 

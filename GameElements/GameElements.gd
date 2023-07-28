@@ -55,6 +55,8 @@ func _ready():
 		var player = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE().spawn_player_at_spawn_coords_index()
 		_set_player__and_register_signals(player)
 		
+		GameSaveManager.set_player(player)
+	
 	
 	player_modi_manager.game_elements = self
 	player_modi_manager.set_current_player(_current_player)
@@ -99,6 +101,8 @@ func _initialize_game_front_hud():
 func _deferred_add_child__game_front_hud():
 	#get_tree().get_root().call_deferred("add_child", game_front_hud)
 	get_tree().get_root().add_child(game_front_hud)
+	
+	_current_player.initialize_health_panel_relateds()
 
 #
 

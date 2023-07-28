@@ -27,7 +27,7 @@ var _all_registered_rewindables : Array
 
 #
 
-var rewind_duration : float = 8.0
+var rewind_duration : float = 20.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -43,7 +43,7 @@ enum CanStoreRewindDataClauseIds {
 var can_store_rewind_data_cond_clause : ConditionalClauses
 var last_calculated_can_store_rewind_data : bool
 
-#
+##
 
 
 enum RewindMarkerData {
@@ -54,6 +54,9 @@ enum RewindMarkerData {
 var _rewindable_datas : Array
 var _rewindable_marker_datas : Array
 
+var _current_rewindable_duration_length : float
+
+#
 
 var _rewindable_marker_data_at_next_frame : int
 
@@ -62,7 +65,7 @@ const rewind_marker_data_to_img = {
 	RewindMarkerData.LAUNCH_BALL : preload("res://GameFrontHUDRelated/Subs/RewindPanel/Assets/RewindPanel_Marker_LaunchBall.png")
 }
 
-#
+##
 
 var _rewindable_objs_in_prev_load_step : Array
 
@@ -161,8 +164,8 @@ func add_to_rewindables(arg_obj):
 func _physics_process(delta):
 	if !is_rewinding:
 		
-		
-		if rewind_duration * Engine.iterations_per_second == _rewindable_datas.size():
+		_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
+		if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
 			_rewindable_datas.pop_front()
 			_rewindable_marker_datas.pop_front()
 		
@@ -195,6 +198,7 @@ func _physics_process(delta):
 		#
 		
 		_rewindable_marker_datas.pop_back()
+		_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
 		
 		emit_signal("rewindable_datas_pop_back", _rewindable_marker_datas.size())
 		
@@ -265,3 +269,6 @@ func get_texture_for_mark_type(arg_marker_id):
 	return rewind_marker_data_to_img[arg_marker_id]
 
 
+
+func get_current_rewindable_duration_length():
+	return _current_rewindable_duration_length
