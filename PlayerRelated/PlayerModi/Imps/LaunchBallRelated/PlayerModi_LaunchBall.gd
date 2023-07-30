@@ -28,7 +28,7 @@ var energy_consume_on_launch : float = 10.0
 #
 
 var starting_ball_count : int
-var ball_mass : float = 20.0
+var ball_mass : float = 40.0
 
 
 var _player

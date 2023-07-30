@@ -52,8 +52,8 @@ var velocity = Vector2(0, 0)
 #
 
 
-var _save_tiles_data_next_frame__for_rewind_save : bool
-var _saved_cell_data
+var _save_tiles_data_next_frame__for_rewind_save__count : int
+var _saved_cell_data_queue : Array
 
 # structure: cell_pos -> [cell id, cell auto-coord, other datas<dict>]
 var _cell_metadatas = {}
@@ -116,8 +116,8 @@ func _update_properties_based_on_is_breakable():
 		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 		
 		_update_cells_save_data()
-		_save_tiles_data_next_frame__for_rewind_save = true
-
+		#_save_tiles_data_next_frame__for_rewind_save = true
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
 
 func is_breakable() -> bool:
 	return _is_breakable
@@ -248,17 +248,19 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 		TileConstants.generate_atlas_textures_for_tile_sheet(id, texture_in_region, tilemap.cell_size.x)
 	var tile_texture = TileConstants.get_atlas_texture_from_tile_sheet_id(id, auto_coords)
 	
-	_create_fragments(tile_local_pos_top_left, tile_global_pos, tile_texture, id, auto_coords)
+	#_create_fragments(tile_local_pos_top_left, tile_global_pos, tile_texture, id, auto_coords)
+	call_deferred("_create_fragments", tile_local_pos_top_left, tile_global_pos, tile_texture, id, auto_coords)
 	
 	####################
 	
 	#tilemap.set_cellv(arg_tile_coord, -1)
+	_player.remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_tile_coord)
 	_set_tile_at_coords(arg_tile_coord, -1, Vector2(0, 0), true)
 	
 	call_deferred("_attempt_induce_speed_slowdown_on_player", arg_player)
 
 func _create_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, arg_tile_id, arg_auto_coords):
-	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, 16, arg_tile_id, arg_auto_coords)
+	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, 9, arg_tile_id, arg_auto_coords)
 	for fragment in fragments:
 		SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 
@@ -294,8 +296,10 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 	
 	
 	if arg_save_tiles_data_next_frame__for_rewind_save:
-		_save_tiles_data_next_frame__for_rewind_save = true
-		_saved_cell_data = _generate_cells_save_data()
+		#_save_tiles_data_next_frame__for_rewind_save = true
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
+		#_saved_cell_data = _generate_cells_save_data()
+		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
 	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
 	
@@ -347,9 +351,11 @@ func get_rewind_save_state():
 		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
 	}
 	
-	if _save_tiles_data_next_frame__for_rewind_save:
-		_save_tiles_data_next_frame__for_rewind_save = false
-		save_state["cell_save_data"] = _saved_cell_data
+	#if _save_tiles_data_next_frame__for_rewind_save:
+	if _save_tiles_data_next_frame__for_rewind_save__count > 0:
+		#_save_tiles_data_next_frame__for_rewind_save = false
+		_save_tiles_data_next_frame__for_rewind_save__count -= 1
+		save_state["cell_save_data"] = _saved_cell_data_queue.pop_front()#_saved_cell_data
 		#print(save_state["cell_save_data"])
 	
 	return save_state

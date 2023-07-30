@@ -136,13 +136,14 @@ func _initialize_rewind_cooldown_timer():
 
 func add_to_rewindables(arg_obj):
 	if arg_obj.get("is_rewindable"):
-		if !arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND):
-			print("RewindManager: ERR: obj %s does not have all required methods" % arg_obj)
-			print("%s, %s, %s, %s, %s" % [!arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND), !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND)])
-			print("--")
-		
-		#arg_obj.add_to_group(REWINDABLE_GROUP_NAME)
-		_all_registered_rewindables.append(arg_obj)
+		if !_all_registered_rewindables.has(arg_obj):
+			if !arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND):
+				print("RewindManager: ERR: obj %s does not have all required methods" % arg_obj)
+				print("%s, %s, %s, %s, %s" % [!arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND), !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND)])
+				print("--")
+			
+			#arg_obj.add_to_group(REWINDABLE_GROUP_NAME)
+			_all_registered_rewindables.append(arg_obj)
 
 
 

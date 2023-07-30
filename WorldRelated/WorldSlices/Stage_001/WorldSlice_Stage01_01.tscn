@@ -23,7 +23,7 @@ tile_data = PoolIntArray( 393240, 0, 4, 458776, 0, 4, 524302, 0, 4, 524303, 0, 4
 momentum_breaking_point = 25000.0
 
 [node name="TileMap" parent="TileContainer/BaseTileSet3" index="0"]
-tile_data = PoolIntArray( 65564, 2, 0, 65569, 2, 0, 131100, 2, 0, 131105, 2, 0, 196636, 2, 0, 196641, 2, 0 )
+tile_data = PoolIntArray( 36, 2, 0, 37, 2, 0, 38, 2, 0, 39, 2, 0, 40, 2, 0, 41, 2, 0 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 739, 48 )

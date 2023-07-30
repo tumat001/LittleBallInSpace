@@ -413,6 +413,10 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 	
 	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
+func remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_coordinate):
+	_attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
+	
+
 
 
 #func _on_FloorArea2D_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
