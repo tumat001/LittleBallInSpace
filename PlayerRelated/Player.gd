@@ -98,8 +98,8 @@ class RotationRequestData:
 
 #
 
-const MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED = 200
-const ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC = 200
+const MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED = 200.0
+const ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC = 200.0
 const PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED : float = 1.5
 
 var _current_player_left_right_move_speed : float
@@ -574,7 +574,6 @@ func _physics_process(delta):
 				
 				if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
 					var excess = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED - _current_player_left_right_move_speed
-					
 					_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
 					
 					var mov_of_left_right = _get_cleaned_vector(Vector2(_current_player_left_right_move_speed, 0).rotated(CameraManager.current_cam_rotation))

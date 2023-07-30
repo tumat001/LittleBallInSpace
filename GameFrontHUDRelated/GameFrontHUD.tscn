@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GameFrontHUDRelated/Subs/EnergyPanel/EnergyPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GameFrontHUDRelated/Subs/RewindPanel/RewindPanel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/HealthPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/SpeedPanel.tscn" type="PackedScene" id=6]
 
 [node name="GameFrontHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -45,3 +46,9 @@ margin_left = 366.0
 margin_top = 79.0
 margin_right = 596.0
 margin_bottom = 108.0
+
+[node name="SpeedPanel" parent="ControlContainer" instance=ExtResource( 6 )]
+margin_left = 835.0
+margin_top = 438.0
+margin_right = 875.0
+margin_bottom = 478.0

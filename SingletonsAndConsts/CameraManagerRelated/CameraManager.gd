@@ -16,6 +16,10 @@ var current_cam_rotation : float
 
 var is_camera_rotating : bool
 
+#
+
+var _nodes_to_follow_camera : Array = []
+
 ##########
 
 func _ready():
@@ -106,8 +110,20 @@ func _set_actual_rotation_of_cam(arg_rotation):
 	emit_signal("cam_visual_rotation_changed", arg_rotation)
 
 
-#################
+###
 
+func set_non_gui_screen_shader_sprite(arg_sprite : Sprite):
+	_make_node_follow_camera(arg_sprite)
+
+func _make_node_follow_camera(arg_node_2d : Node2D):
+	if !_nodes_to_follow_camera.has(arg_node_2d):
+		_nodes_to_follow_camera.append(arg_node_2d)
+	
+
+
+func _process(delta):
+	for node in _nodes_to_follow_camera:
+		node.global_position = camera.global_position
 
 
 ###################### 

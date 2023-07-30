@@ -36,6 +36,8 @@ onready var other_node_hoster = $OtherNodeHoster
 
 onready var rewind_manager = $RewindManager
 
+onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
+
 #
 
 func get_current_player():
@@ -49,6 +51,12 @@ func _enter_tree():
 
 func _ready():
 	_initialize_game_front_hud()
+	
+	hide_non_screen_gui_shader_sprite()
+	
+	#
+	
+	CameraManager.set_non_gui_screen_shader_sprite(non_gui_screen_sprite)
 	
 	#
 	
@@ -111,6 +119,7 @@ func _deferred_add_child__game_front_hud():
 	get_tree().get_root().add_child(game_front_hud)
 	
 	_current_player.initialize_health_panel_relateds()
+	SingletonsAndConsts.current_game_front_hud.speed_panel.set_player(_current_player)
 
 #
 
@@ -121,7 +130,15 @@ func _unhandled_key_input(event):
 	elif event.is_action_released("rewind"):
 		rewind_manager.end_rewind()
 		
-	
+
+
+#######
+
+func show_non_screen_gui_shader_sprite():
+	non_gui_screen_sprite.visible = true
+
+func hide_non_screen_gui_shader_sprite():
+	non_gui_screen_sprite.visible = false
 
 ###################################
 

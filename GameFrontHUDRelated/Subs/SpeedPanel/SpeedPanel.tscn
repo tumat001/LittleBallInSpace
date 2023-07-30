@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/Assets/SpeedPanel_SpeedGaugeBackground.png" type="Texture" id=1]
+[ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/Assets/SpeedPanel_SpeedPointer.png" type="Texture" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/Assets/SpeedPanel_SpeedLabel.png" type="Texture" id=3]
+[ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/SpeedPanel.gd" type="Script" id=4]
+
+[node name="SpeedPanel" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource( 1 )
+
+[node name="SpeedArrow" type="TextureRect" parent="."]
+margin_left = 16.0
+margin_top = 49.0
+margin_right = 98.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( 41, 8 )
+mouse_filter = 2
+texture = ExtResource( 2 )
+
+[node name="LabelContainer" type="MarginContainer" parent="."]
+margin_left = 23.0
+margin_top = 70.0
+margin_right = 91.0
+margin_bottom = 90.0
+mouse_filter = 2
+
+[node name="LabelBackground" type="TextureRect" parent="LabelContainer"]
+margin_right = 68.0
+margin_bottom = 20.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="LabelContainer"]
+margin_right = 68.0
+margin_bottom = 20.0
+mouse_filter = 2
+custom_constants/margin_top = 2
+
+[node name="SpeedLabel" type="Label" parent="LabelContainer/MarginContainer"]
+margin_top = 4.0
+margin_right = 68.0
+margin_bottom = 18.0
+text = "200"
+align = 1

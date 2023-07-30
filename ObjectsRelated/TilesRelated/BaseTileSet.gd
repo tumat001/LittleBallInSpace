@@ -369,7 +369,8 @@ func load_into_rewind_save_state(arg_state):
 	
 	if arg_state.has("cell_save_data"):
 		var saved_cell_data = arg_state["cell_save_data"]
-		_update_cells_based_on_saved_difference_from_current(saved_cell_data)
+		if saved_cell_data != null:
+			_update_cells_based_on_saved_difference_from_current(saved_cell_data)
 	
 
 func destroy_from_rewind_save_state():

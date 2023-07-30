@@ -2,6 +2,8 @@ extends Node
 
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
+const Shader_GlitchEffect = preload("res://MiscRelated/ShadersRelated/Shader_GlitchEffect.tres")
+
 #
 
 const REWINDABLE_PROPERTY_NAME__CAN_BE_REWINDABLE = "is_rewindable"
@@ -261,13 +263,13 @@ func attempt_start_rewind():
 		is_rewinding = true
 		
 		SingletonsAndConsts.current_game_front_hud.rewind_panel.start_show(_rewindable_marker_datas)
-
+		
+		SingletonsAndConsts.current_game_elements.show_non_screen_gui_shader_sprite()
 
 func end_rewind():
 	if is_rewinding:
 		_end_rewind_with_state_map(_rewindable_datas.back())
-
-
+		#NOTE: dont put code here unless you want player input end rewind specific codes
 
 func _end_rewind_with_state_map(arg_state_map):
 	var rewindable_obj_to_save_state_map = arg_state_map
@@ -291,6 +293,8 @@ func _end_rewind_with_state_map(arg_state_map):
 	
 	can_cast_rewind_cond_clause.remove_clause(CanCastRewindClauseIds.IS_REWINDING)
 	
+	SingletonsAndConsts.current_game_elements.hide_non_screen_gui_shader_sprite()
+
 
 
 ######

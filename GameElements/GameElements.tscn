@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://GameElements/GameElements.gd" type="Script" id=1]
 [ext_resource path="res://GameElements/WorldManager.gd" type="Script" id=2]
@@ -6,6 +6,15 @@
 [ext_resource path="res://GameElements/ObjectManager.gd" type="Script" id=4]
 [ext_resource path="res://GameElements/OtherNodeHoster.gd" type="Script" id=5]
 [ext_resource path="res://GameElements/RewindManager.gd" type="Script" id=6]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_GlitchEffect.tres" type="Shader" id=7]
+[ext_resource path="res://GameElements/ScreenShaderSprite/ScreenShaderSprite.png" type="Texture" id=8]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 7 )
+shader_param/shake_power = 0.002
+shader_param/shake_speed = 500.0
+shader_param/shake_block_size = 10.5
+shader_param/shake_color_rate = 0.01
 
 [node name="GameElements" type="Node"]
 script = ExtResource( 1 )
@@ -24,3 +33,12 @@ script = ExtResource( 5 )
 
 [node name="RewindManager" type="Node" parent="."]
 script = ExtResource( 6 )
+
+[node name="NonGUIScreenShaderSprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+position = Vector2( 479.75, 269.75 )
+scale = Vector2( 1000.5, 580.5 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
