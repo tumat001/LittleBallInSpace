@@ -22,7 +22,7 @@ signal current_health_changed(arg_val)
 signal all_health_lost()
 signal health_restored_from_zero()
 signal health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoint)
-
+signal health_fully_restored()
 
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
@@ -165,17 +165,19 @@ var _no_energy_consecutive_duration : float
 ###
 
 const health_breakpoints = [
-	66.6,
 	33.3,
+	66.6,
 ]
 
 const above_highest_health_breakpoint_texture_file_path = "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type01.png"
 const health_breakpoint_to_bar_texture_file_path_map : Dictionary = {
-	66.6 : "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type02.png",
 	33.3 : "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type03.png",
+	66.6 : "res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type02.png",
 }
 
-var _max_health : float = 100.0    # not meant to be changed, but if it is, then update HealthPanel's separator positioning
+var _health_breakpoints_emitted : Array = []
+
+var _max_health : float    # not meant to be changed, but if it is, then update HealthPanel's separator positioning
 var _current_health : float
 var _is_dead : bool
 
@@ -292,62 +294,71 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 
 
 func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_index):
-	var tileset_energy_mode = body.energy_mode
 	
-	
-	var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
-	var tilemap : TileMap = body.tilemap
-	
-	var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
-	var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
-	var tile_global_pos = tilemap.to_global(tile_local_pos)
-	var tile_global_pos_top_left = tilemap.to_global(tile_local_pos_top_left)
-	
-	var body_shape_owner_id = body.shape_find_owner(body_shape_index)
-	var body_shape_owner = body.shape_owner_get_owner(body_shape_owner_id)
-	var body_shape_2d = body.shape_owner_get_shape(body_shape_owner_id, 0)
-	var body_global_transform : Transform2D = body_shape_owner.global_transform
-	
-	
-	var body_shape_points = body_shape_2d.points
-	_calculate_and_store_midpoints_of_points(body_shape_points)
-	
-	var current_lowest_distance : float = 100000
-	var midpoint_with_lowest_distance : Vector2
-	var perpend_angle_with_lowest_distance : float
-	var shape_data : ShapePointsData = _shape_points_to_data_map[body_shape_points]
-	for seg_and_midpoint_and_perpend_angle in shape_data.list_of__segments_and_midpoint_and_perpend_angle:
-		var midpoint = seg_and_midpoint_and_perpend_angle[2]
-		var global_midpoint = midpoint + tile_global_pos_top_left
+	if body.break_on_player_contact:
+		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 		
-		var dist = global_position.distance_to(global_midpoint)
-		if current_lowest_distance > dist:
-			current_lowest_distance = dist
-			midpoint_with_lowest_distance = midpoint
-			perpend_angle_with_lowest_distance = seg_and_midpoint_and_perpend_angle[3]
-	
-	
-	var is_same_angle_as_perpend_angle : bool = CameraManager.current_cam_rotation == perpend_angle_with_lowest_distance
-	
-	if !is_same_angle_as_perpend_angle:
-		_attempt_remove_on_ground_count__with_any_identif(coordinate)
-		_request_rotate(perpend_angle_with_lowest_distance, coordinate, tileset_energy_mode)
-		if _ignore_next_current_player_left_right_move_reset:
-			_ignore_next_current_player_left_right_move_reset = false
-		else:
-			_current_player_left_right_move_speed = 0
-			_current_player_left_right_move_speed__from_last_integrate_forces = 0
-			_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+		body.break_tile_coord__using_player(coordinate, self)
 		
-		clear_all_inside_induced_forces()
-		clear_all_outside_induced_forces()
-		_cancel_next_apply_ground_repelling_force = false
+		
 	else:
-		_attempt_add_on_ground_count__with_any_indentif(coordinate, tileset_energy_mode)
-		clear_all_outside_induced_forces()
-		clear_all_inside_induced_forces()
-		_cancel_next_apply_ground_repelling_force = false
-	
+		var tileset_energy_mode = body.energy_mode
+		
+		
+		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+		var tilemap : TileMap = body.tilemap
+		
+		var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
+		var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
+		var tile_global_pos = tilemap.to_global(tile_local_pos)
+		var tile_global_pos_top_left = tilemap.to_global(tile_local_pos_top_left)
+		
+		var body_shape_owner_id = body.shape_find_owner(body_shape_index)
+		var body_shape_owner = body.shape_owner_get_owner(body_shape_owner_id)
+		var body_shape_2d = body.shape_owner_get_shape(body_shape_owner_id, 0)
+		var body_global_transform : Transform2D = body_shape_owner.global_transform
+		
+		
+		var body_shape_points = body_shape_2d.points
+		_calculate_and_store_midpoints_of_points(body_shape_points)
+		
+		var current_lowest_distance : float = 100000
+		var midpoint_with_lowest_distance : Vector2
+		var perpend_angle_with_lowest_distance : float
+		var shape_data : ShapePointsData = _shape_points_to_data_map[body_shape_points]
+		for seg_and_midpoint_and_perpend_angle in shape_data.list_of__segments_and_midpoint_and_perpend_angle:
+			var midpoint = seg_and_midpoint_and_perpend_angle[2]
+			var global_midpoint = midpoint + tile_global_pos_top_left
+			
+			var dist = global_position.distance_to(global_midpoint)
+			if current_lowest_distance > dist:
+				current_lowest_distance = dist
+				midpoint_with_lowest_distance = midpoint
+				perpend_angle_with_lowest_distance = seg_and_midpoint_and_perpend_angle[3]
+		
+		
+		var is_same_angle_as_perpend_angle : bool = CameraManager.current_cam_rotation == perpend_angle_with_lowest_distance
+		
+		if !is_same_angle_as_perpend_angle:
+			if body.can_induce_rotation_change__due_to_cell_v_changes():
+				_attempt_remove_on_ground_count__with_any_identif(coordinate)
+				_request_rotate(perpend_angle_with_lowest_distance, coordinate, tileset_energy_mode)
+				if _ignore_next_current_player_left_right_move_reset:
+					_ignore_next_current_player_left_right_move_reset = false
+				else:
+					_current_player_left_right_move_speed = 0
+					_current_player_left_right_move_speed__from_last_integrate_forces = 0
+					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+				
+				clear_all_inside_induced_forces()
+				clear_all_outside_induced_forces()
+				_cancel_next_apply_ground_repelling_force = false
+		else:
+			_attempt_add_on_ground_count__with_any_indentif(coordinate, tileset_energy_mode)
+			clear_all_outside_induced_forces()
+			clear_all_inside_induced_forces()
+			_cancel_next_apply_ground_repelling_force = false
+
 
 func _calculate_and_store_midpoints_of_points(arg_points : PoolVector2Array):
 	if !_shape_points_to_data_map.has(arg_points):
@@ -385,18 +396,20 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
-		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+		if !body.break_on_player_contact:
+			var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+			
+			_attempt_remove_on_ground_count__with_any_identif(coordinate)
+	
+	
+	if body is BaseObject:
+		if _objects_to_collide_with_after_exit.has(body):
+			remove_objects_to_not_collide_with(body)
+			remove_objects_to_collide_with_after_exit(body)
 		
-		_attempt_remove_on_ground_count__with_any_identif(coordinate)
-	
-	
-	if _objects_to_collide_with_after_exit.has(body):
-		remove_objects_to_not_collide_with(body)
-		remove_objects_to_collide_with_after_exit(body)
-	
-	if _objects_to_add_mask_layer_collision_after_exit.has(body):
-		body.set_collision_mask_bit(0, true)
-		remove_objects_to_add_mask_layer_collision_after_exit(body)
+		if _objects_to_add_mask_layer_collision_after_exit.has(body):
+			#body.set_collision_mask_bit(0, true)
+			remove_objects_to_add_mask_layer_collision_after_exit(body)
 	
 	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
@@ -463,6 +476,7 @@ func _update_is_on_ground__and_update_others():
 		block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NOT_ON_GROUND)
 		
 		_is_on_ground = false
+		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 	
 	
 	######
@@ -795,7 +809,7 @@ func _ready():
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	CameraManager.connect("current_cam_rotation_changed", self, "_on_cam_manager_rotation_changed", [], CONNECT_PERSIST)
 	_ready__include_relevant_objs_for_rewind()
-
+	
 
 func _make_node_rotate_with_cam(arg_node):
 	_all_nodes_to_rotate_with_cam.append(arg_node)
@@ -882,10 +896,15 @@ func remove_objects_to_collide_with_after_exit(arg_obj):
 func add_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 	if !_objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
 		_objects_to_add_mask_layer_collision_after_exit.append(arg_obj)
+		
+		arg_obj.block_can_collide_with_player_cond_clauses.attempt_insert_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
 
 func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 	if _objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
 		_objects_to_add_mask_layer_collision_after_exit.erase(arg_obj)
+		
+		arg_obj.block_can_collide_with_player_cond_clauses.remove_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+		
 
 ###################
 
@@ -1066,8 +1085,11 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 	
 	if _current_health < 0:
 		_current_health = 0
-	if _current_health > _max_health:
+	if _current_health >= _max_health:
 		_current_health = _max_health
+		
+		emit_signal("health_fully_restored")
+	
 	
 	if is_equal_approx(_current_health, 0):
 		if !_is_dead:
@@ -1078,29 +1100,34 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 		if _is_dead:
 			_is_dead = false
 			emit_signal("health_restored_from_zero")
-	
-	if emit_health_breakpoint_signals:
-		if old_val > _current_health:
+		
+		if emit_health_breakpoint_signals:
 			var percent = _current_health * 100 / _max_health
 			for hp_breakpoint in health_breakpoints:
-				if percent <= hp_breakpoint:
-					emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
-					break
-			
-		elif old_val < _current_health:
-			var percent = _current_health * 100 / _max_health
-			for hp_breakpoint in health_breakpoints:
-				if percent >= hp_breakpoint:
-					emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
-					break
-				
-			
-	
+				if old_val > _current_health:
+					if percent <= hp_breakpoint:
+						if !_health_breakpoints_emitted.has(hp_breakpoint):
+							_health_breakpoints_emitted.append(hp_breakpoint)
+							emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
+							break
+					
+				elif old_val < _current_health:
+					if percent > hp_breakpoint:
+						if _health_breakpoints_emitted.has(hp_breakpoint):
+							_health_breakpoints_emitted.erase(hp_breakpoint)
+							emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
+							break
 	
 	emit_signal("current_health_changed", _current_health)
 
 func get_current_health():
 	return _current_health
+
+
+
+func set_max_health(arg_val):
+	_max_health = arg_val
+	
 
 func get_max_health():
 	return _max_health
@@ -1109,6 +1136,14 @@ func get_max_health():
 func is_no_health():
 	return _is_dead
 
+
+#
+
+func get_momentum__using_linear_velocity() -> Vector2:
+	return linear_velocity * last_calculated_object_mass
+
+func get_momentum_mag__using_linear_velocity() -> float:
+	return (linear_velocity * last_calculated_object_mass).length()
 
 ###################### 
 # REWIND RELATED
@@ -1177,6 +1212,11 @@ func get_rewind_save_state():
 		"is_player_modi_energy_set" : is_player_modi_energy_set,
 		"player_modi__energy_save_state" : null,
 		
+		"no_energy_consecutive_duration" : _no_energy_consecutive_duration,
+		
+		"max_health" : _max_health,
+		"current_health" : _current_health,
+		#"is_dead" : _i
 		
 		"rotating_for_floor_area_2d.rotation" : rotating_for_floor_area_2d.rotation
 	}
@@ -1204,6 +1244,10 @@ func load_into_rewind_save_state(arg_state):
 		var modi_energy_load_state = arg_state["player_modi__energy_save_state"]
 		player_modi__energy.load_into_rewind_save_state(modi_energy_load_state)
 	
+	_no_energy_consecutive_duration = arg_state["no_energy_consecutive_duration"]
+	set_current_health(arg_state["current_health"])
+	_max_health = arg_state["max_health"]
+
 
 
 func destroy_from_rewind_save_state():

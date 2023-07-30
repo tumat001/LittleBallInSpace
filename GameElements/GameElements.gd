@@ -13,6 +13,8 @@ const GameFrontHUD_Scene = preload("res://GameFrontHUDRelated/GameFrontHUD.tscn"
 signal after_game_start_init()
 signal before_game_quit()
 
+signal player_spawned(arg_player)
+
 #
 
 var _current_player : Player
@@ -36,6 +38,11 @@ onready var rewind_manager = $RewindManager
 
 #
 
+func get_current_player():
+	return _current_player
+
+#
+
 func _enter_tree():
 	SingletonsAndConsts.current_game_elements = self
 
@@ -56,6 +63,7 @@ func _ready():
 		_set_player__and_register_signals(player)
 		
 		GameSaveManager.set_player(player)
+		emit_signal("player_spawned", player)
 	
 	
 	player_modi_manager.game_elements = self
@@ -108,7 +116,7 @@ func _deferred_add_child__game_front_hud():
 
 func _unhandled_key_input(event):
 	if event.is_action_pressed("rewind"):
-		rewind_manager.start_rewind()
+		rewind_manager.attempt_start_rewind()
 		
 	elif event.is_action_released("rewind"):
 		rewind_manager.end_rewind()

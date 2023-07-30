@@ -43,8 +43,19 @@ enum CanStoreRewindDataClauseIds {
 var can_store_rewind_data_cond_clause : ConditionalClauses
 var last_calculated_can_store_rewind_data : bool
 
-##
+#
 
+const REWIND_COOLDOWN_AFTER_USE = 0.0#0.5
+enum CanCastRewindClauseIds {
+	IS_REWINDING = 0,
+	IN_COOLDOWN = 1
+}
+var can_cast_rewind_cond_clause : ConditionalClauses
+var last_calculated_can_cast_rewind : bool
+
+var rewind_cooldown_timer : Timer
+
+#
 
 enum RewindMarkerData {
 	NONE = 0,
@@ -69,7 +80,7 @@ const rewind_marker_data_to_img = {
 
 var _rewindable_objs_in_prev_load_step : Array
 
-#
+##
 
 func _enter_tree():
 	SingletonsAndConsts.current_rewind_manager = self
@@ -77,13 +88,21 @@ func _enter_tree():
 func _exit_tree():
 	SingletonsAndConsts.current_rewind_manager = null
 
-#
+##
 
 func _init():
 	can_store_rewind_data_cond_clause = ConditionalClauses.new()
 	can_store_rewind_data_cond_clause.connect("clause_inserted", self, "_on_can_store_rewind_data_cond_clause_updated", [], CONNECT_PERSIST)
 	can_store_rewind_data_cond_clause.connect("clause_removed", self, "_on_can_store_rewind_data_cond_clause_updated", [], CONNECT_PERSIST)
 	_update_last_calculated_can_store_rewind_data()
+	
+	can_cast_rewind_cond_clause = ConditionalClauses.new()
+	can_cast_rewind_cond_clause.connect("clause_inserted", self, "_on_can_cast_rewind_cond_clause_updated", [], CONNECT_PERSIST)
+	can_cast_rewind_cond_clause.connect("clause_removed", self, "_on_can_cast_rewind_cond_clause_updated", [], CONNECT_PERSIST)
+	_update_last_calculated_can_cast_rewind()
+	
+
+#
 
 func _on_can_store_rewind_data_cond_clause_updated(arg_clause_id):
 	_update_last_calculated_can_store_rewind_data()
@@ -93,6 +112,27 @@ func _update_last_calculated_can_store_rewind_data():
 	last_calculated_can_store_rewind_data = can_store_rewind_data_cond_clause.is_passed
 
 #
+
+func _on_can_cast_rewind_cond_clause_updated(arg_clause_id):
+	_update_last_calculated_can_cast_rewind()
+	
+
+func _update_last_calculated_can_cast_rewind():
+	last_calculated_can_cast_rewind = can_cast_rewind_cond_clause.is_passed
+
+#
+
+func _ready():
+	_initialize_rewind_cooldown_timer()
+
+func _initialize_rewind_cooldown_timer():
+	rewind_cooldown_timer = Timer.new()
+	rewind_cooldown_timer.one_shot = true
+	rewind_cooldown_timer.connect("timeout", self, "_on_rewind_cooldown_timer_timeout")
+	add_child(rewind_cooldown_timer)
+	
+
+##
 
 func add_to_rewindables(arg_obj):
 	if arg_obj.get("is_rewindable"):
@@ -164,21 +204,22 @@ func add_to_rewindables(arg_obj):
 func _physics_process(delta):
 	if !is_rewinding:
 		
-		_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
-		if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
-			_rewindable_datas.pop_front()
-			_rewindable_marker_datas.pop_front()
-		
-		var rewindable_obj_to_save_state_map = {}
-		for obj in _all_registered_rewindables:
-			rewindable_obj_to_save_state_map[obj] = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
-		
-		_rewindable_datas.append(rewindable_obj_to_save_state_map)
-		
-		#
-		
-		_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
-		_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
+		if last_calculated_can_store_rewind_data:
+			_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
+			if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
+				_rewindable_datas.pop_front()
+				_rewindable_marker_datas.pop_front()
+			
+			var rewindable_obj_to_save_state_map = {}
+			for obj in _all_registered_rewindables:
+				rewindable_obj_to_save_state_map[obj] = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
+			
+			_rewindable_datas.append(rewindable_obj_to_save_state_map)
+			
+			#
+			
+			_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
+			_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
 		
 	else:
 		
@@ -209,12 +250,13 @@ func _physics_process(delta):
 
 #
 
-func start_rewind():
-	if !is_rewinding:
+func attempt_start_rewind():
+	if last_calculated_can_cast_rewind:
 		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
 		for obj in rewindable_obj_to_save_state_map:
 			obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)
 		
+		can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.IS_REWINDING)
 		is_rewinding = true
 		
 		SingletonsAndConsts.current_game_front_hud.rewind_panel.start_show(_rewindable_marker_datas)
@@ -240,6 +282,13 @@ func _end_rewind_with_state_map(arg_state_map):
 	SingletonsAndConsts.current_game_front_hud.rewind_panel.end_show()
 	#_current_rewind_load_step_wait = 0
 	#_current_rewind_save_step_wait = 0
+	
+	if REWIND_COOLDOWN_AFTER_USE != 0:
+		can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.IN_COOLDOWN)
+		rewind_cooldown_timer.start(REWIND_COOLDOWN_AFTER_USE)
+	
+	
+	can_cast_rewind_cond_clause.remove_clause(CanCastRewindClauseIds.IS_REWINDING)
 	
 
 

@@ -1,6 +1,10 @@
 extends RigidBody2D
 
 
+const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
+
+#
+
 signal last_calculated_object_mass_changed(arg_val)
 
 #
@@ -8,6 +12,14 @@ signal last_calculated_object_mass_changed(arg_val)
 var base_object_mass : float = 20.0 setget set_base_object_mass
 var _flat_mass_id_to_amount_map : Dictionary
 var last_calculated_object_mass : float
+
+
+enum BlockCollisionWithPlayerClauseIds {
+	BLOCK_UNTIL_EXIT_PLAYER = 1
+	TILE_FRAGMENT__DURATION_DELAY = 2
+}
+var block_can_collide_with_player_cond_clauses : ConditionalClauses
+var last_calculated_can_collide_with_player : bool
 
 #
 
@@ -19,12 +31,33 @@ onready var collision_shape = $CollisionShape2D
 
 func _init():
 	_update_last_calculated_object_mass()
+	_init_block_can_collide_with_player_cond_clauses()
+
+func _init_block_can_collide_with_player_cond_clauses():
+	block_can_collide_with_player_cond_clauses = ConditionalClauses.new()
+	block_can_collide_with_player_cond_clauses.connect("clause_inserted", self, "_on_block_can_collide_with_player_cond_clauses_updated")
+	block_can_collide_with_player_cond_clauses.connect("clause_removed", self, "_on_block_can_collide_with_player_cond_clauses_updated")
+	_update_last_calculated_can_collide_with_player()
+
+
+func _on_block_can_collide_with_player_cond_clauses_updated(arg_clause):
+	_update_last_calculated_can_collide_with_player()
+
+func _update_last_calculated_can_collide_with_player():
+	last_calculated_can_collide_with_player = block_can_collide_with_player_cond_clauses.is_passed
 	
+	if last_calculated_can_collide_with_player:
+		set_collision_mask_bit(0, true)
+	else:
+		set_collision_mask_bit(0, false)
+
+
 
 #
 
 func _ready():
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+
 
 #
 
@@ -41,17 +74,26 @@ func _update_last_calculated_object_mass():
 	last_calculated_object_mass = total
 	mass = last_calculated_object_mass
 	emit_signal("last_calculated_object_mass_changed", last_calculated_object_mass)
-	
 
 #
 
-func add_player_coll_mask():
-	set_collision_mask_bit(0, true)
+func set_texture_in_anim_sprite__first_time(arg_texture : Texture, arg_create_shape : bool):
+	anim_sprite.frames = SpriteFrames.new()
+	anim_sprite.frames.add_frame("default", arg_texture)
 	
+	var shape = RectangleShape2D.new()
+	shape.extents = arg_texture.get_size() / 2
+	collision_shape.set_deferred("shape", shape)
 
-func remove_player_coll_mask():
-	set_collision_mask_bit(0, false)
-	
+#
+
+#func add_player_coll_mask():
+#	set_collision_mask_bit(0, true)
+#
+#
+#func remove_player_coll_mask():
+#	set_collision_mask_bit(0, false)
+#
 
 
 ####
@@ -79,6 +121,7 @@ var _rewinded__angular_velocity
 var _rewinded__linear_velocity
 var _rewinded__sleeping
 var _rewinded__transform : Transform2D
+var _rewinded__block_can_collide_with_player_cond_clauses_save_state
 
 #
 
@@ -105,8 +148,9 @@ func get_rewind_save_state():
 		"angular_velocity" : state.angular_velocity,
 		"linear_velocity" : state.linear_velocity,
 		"sleeping" : state.sleeping,
-		"transform" : state.transform
+		"transform" : state.transform,
 		
+		"block_can_collide_with_player_cond_clauses_save_state" : block_can_collide_with_player_cond_clauses.get_rewind_save_state()
 	}
 	
 
@@ -115,7 +159,7 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded__linear_velocity = arg_state["linear_velocity"]
 	_rewinded__sleeping = arg_state["sleeping"]
 	_rewinded__transform = arg_state["transform"]
-	
+	_rewinded__block_can_collide_with_player_cond_clauses_save_state = arg_state["block_can_collide_with_player_cond_clauses_save_state"]
 	
 	#
 	global_position = _rewinded__transform.origin
@@ -133,6 +177,9 @@ func stared_rewind():
 
 func ended_rewind():
 	mode = RigidBody2D.MODE_RIGID
+	
+	block_can_collide_with_player_cond_clauses.load_into_rewind_save_state(_rewinded__block_can_collide_with_player_cond_clauses_save_state)
+	
 	collision_shape.set_deferred("disabled", false)
 	
 	_use_integ_forces_new_vals = true

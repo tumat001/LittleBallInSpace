@@ -27,6 +27,8 @@ _global_script_class_icons={
 [application]
 
 config/name="LittleBallInSpace"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="littleballinspace"
 config/icon="res://icon.png"
 
 [autoload]
@@ -38,6 +40,7 @@ StoreOfObjects="*res://ObjectsRelated/Objects/StoreOfObjects.gd"
 SingletonsAndConsts="*res://SingletonsAndConsts/SingletonsAndConsts.gd"
 StoreOfRng="*res://SingletonsAndConsts/StoreOfRNG.gd"
 GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
+TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
 
 [debug]
 
@@ -84,11 +87,12 @@ rewind={
 
 2d_physics/layer_1="Player"
 2d_physics/layer_2="ObjectCollidables"
-2d_physics/layer_3="Tiles"
+2d_physics/layer_3="TilesForPlayer"
+2d_physics/layer_4="TilesForObjAndSensor"
 
 [physics]
 
-common/physics_fps=240
+common/physics_fps=180
 common/enable_pause_aware_picking=true
 2d/default_gravity=0
 2d/default_linear_damp=0.0

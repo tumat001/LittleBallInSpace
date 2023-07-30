@@ -55,7 +55,7 @@ radius = 17.0
 extents = Vector2( 0.5, 1.25 )
 
 [node name="Player" type="RigidBody2D"]
-collision_mask = 4
+collision_mask = 0
 physics_material_override = SubResource( 4 )
 script = ExtResource( 2 )
 
