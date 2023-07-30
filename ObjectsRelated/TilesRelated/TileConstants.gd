@@ -23,6 +23,14 @@ var _tile_id_to_region_to_img_map : Dictionary = {}
 
 #
 
+static func is_tile_id_glowing(arg_id):
+	match arg_id:
+		BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01, BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
+			return true
+	
+	return false
+
+#
 
 static func convert_non_glowing_breakable_tile_id__to_glowing(arg_id):
 	if arg_id == BREAKABLE_GLASS_TILE_ID__ATLAS_01:

@@ -52,7 +52,11 @@ var velocity = Vector2(0, 0)
 #
 
 
-var _modified_tiles_at_this_frame__for_rewind_save : bool
+var _save_tiles_data_next_frame__for_rewind_save : bool
+var _saved_cell_data
+
+# structure: cell_pos -> [cell id, cell auto-coord, other datas<dict>]
+var _cell_metadatas = {}
 
 #
 
@@ -111,6 +115,9 @@ func _update_properties_based_on_is_breakable():
 		is_rewindable = true
 		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 		
+		_update_cells_save_data()
+		_save_tiles_data_next_frame__for_rewind_save = true
+
 
 func is_breakable() -> bool:
 	return _is_breakable
@@ -142,17 +149,17 @@ func _on_induce_speed_slowdown_on_break_cooldown_timer_timeout():
 #
 
 func _process(delta):
-	if _is_breakable:
-		var momentum_mag = _player.get_momentum_mag__using_linear_velocity()
-		if momentum_mag >= momentum_breaking_point:
-			# glow purple, disable layer (to prevent player collision), then detect for player (using mask)
-			_apply_visual_changes__breakable()
-			_make_self_breakable_on_player_contact()
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if _is_breakable:
+			var momentum_mag = _player.get_momentum_mag__using_linear_velocity()
+			if momentum_mag >= momentum_breaking_point:
+				_apply_visual_changes__breakable()
+				_make_self_breakable_on_player_contact()
+				
+			else:
+				_unapply_visual_changes__breakable()
+				_make_self_not_breakable_on_player_contact()
 			
-		else:
-			_unapply_visual_changes__breakable()
-			_make_self_not_breakable_on_player_contact()
-		
 
 func _apply_visual_changes__breakable():
 	if !_applied_changes_for_breakable:
@@ -163,7 +170,10 @@ func _apply_visual_changes__breakable():
 			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
 			var breakable_glowing_cell_id_equi = TileConstants.convert_non_glowing_breakable_tile_id__to_glowing(cell_id)
 			
-			tilemap.set_cellv(cell_pos, breakable_glowing_cell_id_equi, false, false, false, cell_autocord)
+			if breakable_glowing_cell_id_equi != null:
+				_set_tile_at_coords(cell_pos, breakable_glowing_cell_id_equi, cell_autocord, false, false)
+			else:
+				print("BASE TILE SET: setting from unbreakable to breakable: texture id error")
 		
 		tilemap.update_dirty_quadrants()
 		
@@ -180,7 +190,10 @@ func _unapply_visual_changes__breakable():
 			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
 			var breakable_non_glowing_cell_id_equi = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(cell_id)
 			
-			tilemap.set_cellv(cell_pos, breakable_non_glowing_cell_id_equi, false, false, false, cell_autocord)
+			if breakable_non_glowing_cell_id_equi != null:
+				_set_tile_at_coords(cell_pos, breakable_non_glowing_cell_id_equi, cell_autocord, false, false)
+			else:
+				print("BASE TILE SET: setting from breakable to unbreakable: texture id error")
 		
 		tilemap.update_dirty_quadrants()
 		
@@ -220,7 +233,9 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	var tile_global_pos = tilemap.to_global(tile_local_pos)
 
 	var id = tilemap.get_cellv(arg_tile_coord)
-	id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(id)
+	var breakable_id_tentative = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(id)
+	if breakable_id_tentative != null:
+		id = breakable_id_tentative
 	var auto_coords = tilemap.get_cell_autotile_coord(arg_tile_coord.x, arg_tile_coord.y)
 	var texture_of_tile_sheet = tilemap.tile_set.tile_get_texture(id)
 	var texture_region = tilemap.tile_set.tile_get_region(id)
@@ -237,7 +252,8 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	
 	####################
 	
-	tilemap.set_cellv(arg_tile_coord, -1)
+	#tilemap.set_cellv(arg_tile_coord, -1)
+	_set_tile_at_coords(arg_tile_coord, -1, Vector2(0, 0), true)
 	
 	call_deferred("_attempt_induce_speed_slowdown_on_player", arg_player)
 
@@ -270,12 +286,26 @@ func get_tilemap():
 #
 
 
-func _set_tile_at_coords(arg_coords : Vector2, arg_tile : int,
-		arg_set_modified_tiles_at_this_frame__for_rewind_save : bool = true):
-		
+func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_coords = Vector2(0, 0),
+		arg_update_dirty_quadrants : bool = false,
+		arg_save_tiles_data_next_frame__for_rewind_save : bool = true,
+		arg_flip_x : bool = false, arg_flip_y : bool = false,
+		arg_transpose : bool = false):
 	
-	if arg_set_modified_tiles_at_this_frame__for_rewind_save:
-		_modified_tiles_at_this_frame__for_rewind_save = true
+	
+	if arg_save_tiles_data_next_frame__for_rewind_save:
+		_save_tiles_data_next_frame__for_rewind_save = true
+		_saved_cell_data = _generate_cells_save_data()
+	
+	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
+	
+	if arg_update_dirty_quadrants:
+		#tilemap.update_dirty_quadrants()
+		tilemap.call_deferred("update_dirty_quadrants")
+	
+	if arg_save_tiles_data_next_frame__for_rewind_save:
+		_update_cells_save_data()
+		
 
 
 ###################### 
@@ -307,21 +337,34 @@ func _on_obj_removed_from_rewindables(arg_obj):
 
 func get_rewind_save_state():
 	#var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
-	return {
+	var save_state = {
 		"velocity" : velocity,
 		"rotation" : rotation,
 		"transform" : transform,
 		
-		"energy_mode" : energy_mode
+		"energy_mode" : energy_mode,
+		
+		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
 	}
 	
+	if _save_tiles_data_next_frame__for_rewind_save:
+		_save_tiles_data_next_frame__for_rewind_save = false
+		save_state["cell_save_data"] = _saved_cell_data
+		#print(save_state["cell_save_data"])
+	
+	return save_state
 
 func load_into_rewind_save_state(arg_state):
 	_rewinded__velocity = arg_state["velocity"]
 	rotation = arg_state["rotation"]
 	transform = arg_state["transform"]
 	set_energy_mode(arg_state["energy_mode"])
-
+	#_applied_changes_for_breakable = arg_state["applied_changes_for_breakable"]
+	
+	if arg_state.has("cell_save_data"):
+		var saved_cell_data = arg_state["cell_save_data"]
+		_update_cells_based_on_saved_difference_from_current(saved_cell_data)
+	
 
 func destroy_from_rewind_save_state():
 	.queue_free()
@@ -330,12 +373,14 @@ func destroy_from_rewind_save_state():
 
 func stared_rewind():
 	pass
+	#_save_tiles_data_next_frame__for_rewind_save = true
 	#mode = RigidBody2D.MODE_STATIC
 	#collision_shape.set_deferred("disabled", true)
 	
 
 func ended_rewind():
 	velocity = _rewinded__velocity
+	_applied_changes_for_breakable = false
 	#mode = RigidBody2D.MODE_RIGID
 	#collision_shape.set_deferred("disabled", false)
 	
@@ -344,20 +389,80 @@ func ended_rewind():
 
 
 
-func _get_cells_metadata__and_identifier():
+func _has_cell_metadatas():
+	return _cell_metadatas.size() != 0
 
-	#todo maybe make a variable that becomes true for 1 frame if a cell is modified. then store that var in arg_state. then if that var is true, put cell_metadata in save_state
-	var metadatas = []
+func _update_cells_save_data():
+	_cell_metadatas = _generate_cells_save_data()
+
+func _generate_cells_save_data():
+	var metadatas = {}
 	for cell_coords in tilemap.get_used_cells():
 		var cell_id = tilemap.get_cellv(cell_coords)
 		var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
 		
-		metadatas.append(cell_id)
-		metadatas.append(auto_coords)
+		var data = []
+		data.append(cell_id)
+		data.append(auto_coords)
 		
+		metadatas[cell_coords] = data
 	
 	
 	return metadatas
 
+
+func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_data):
+	for cell_coord in arg_saved_cell_save_data.keys():
+		var saved_data = arg_saved_cell_save_data[cell_coord]
+		var saved_cell_id = saved_data[0]
+		var saved_auto_coords = saved_data[1]
+		
+		if TileConstants.is_tile_id_glowing(saved_cell_id):
+			saved_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(saved_cell_id)
+		
+		if _cell_metadatas.has(cell_coord):
+			var curr_data = _cell_metadatas[cell_coord]
+			var curr_cell_id = curr_data[0]
+			var curr_auto_coords = curr_data[1]
+			
+			if TileConstants.is_tile_id_glowing(curr_cell_id):
+				curr_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(curr_cell_id)
+			
+			
+			if saved_cell_id != curr_cell_id or saved_auto_coords != curr_auto_coords:
+				_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
+			
+		else:
+			_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
+			
+		
+	
+	for cell_coord in _cell_metadatas:
+		if !arg_saved_cell_save_data.has(cell_coord):
+			_set_tile_at_coords(cell_coord, -1, Vector2(0, 0), false, false)
+			
+		else:
+			var curr_data = _cell_metadatas[cell_coord]
+			var curr_cell_id = curr_data[0]
+			var curr_auto_coords = curr_data[1]
+			
+			var saved_data = arg_saved_cell_save_data[cell_coord]
+			var saved_cell_id = saved_data[0]
+			var saved_auto_coords = saved_data[1]
+			
+			if TileConstants.is_tile_id_glowing(saved_cell_id):
+				saved_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(saved_cell_id)
+			if TileConstants.is_tile_id_glowing(curr_cell_id):
+				curr_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(curr_cell_id)
+			
+			
+			if saved_cell_id != curr_cell_id or saved_auto_coords != curr_auto_coords:
+				_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
+	
+	#
+	
+	tilemap.update_dirty_quadrants()
+	
+	_cell_metadatas = arg_saved_cell_save_data
 
 

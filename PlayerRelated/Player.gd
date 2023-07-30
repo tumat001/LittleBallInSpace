@@ -1118,7 +1118,8 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 							emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
 							break
 	
-	emit_signal("current_health_changed", _current_health)
+	if _current_health != old_val:
+		emit_signal("current_health_changed", _current_health)
 
 func get_current_health():
 	return _current_health
