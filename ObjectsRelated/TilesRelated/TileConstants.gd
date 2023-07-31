@@ -4,11 +4,21 @@ extends Node
 
 const BREAKABLE_GLASS_TILE__MASS = 30
 
+
+# THESE are not custom defined. THESE are defined by tileset resource
 const BREAKABLE_GLASS_TILE_ID__ATLAS_01 = 2
 const BREAKABLE_GLASS_TILE_ID__ATLAS_02 = 3
 
 const BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01 = 4
 const BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02 = 5
+
+
+const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01 = 6
+const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02 = 7
+
+const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_01 = 8
+const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02 = 9
+
 
 #
 
@@ -23,6 +33,29 @@ var _tile_id_to_region_to_img_map : Dictionary = {}
 
 #
 
+static func is_tile_id_filled(arg_id):
+	match arg_id:
+		TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01, TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02:
+			return true
+	
+	return false
+
+static func convert_unfilled_tile_id__to_filled(arg_id):
+	if arg_id == TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_01:
+		return TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01
+	elif arg_id == TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02:
+		return TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02
+
+
+static func convert_filled_tile_id__to_unfilled(arg_id):
+	if arg_id == TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01:
+		return TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_01
+	elif arg_id == TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02:
+		return TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02
+
+
+#
+
 static func is_tile_id_glowing(arg_id):
 	match arg_id:
 		BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01, BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
@@ -30,7 +63,6 @@ static func is_tile_id_glowing(arg_id):
 	
 	return false
 
-#
 
 static func convert_non_glowing_breakable_tile_id__to_glowing(arg_id):
 	if arg_id == BREAKABLE_GLASS_TILE_ID__ATLAS_01:
@@ -45,6 +77,9 @@ static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 	elif arg_id == BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
 		return BREAKABLE_GLASS_TILE_ID__ATLAS_02
 		
+
+
+##################
 
 static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 	match arg_id:

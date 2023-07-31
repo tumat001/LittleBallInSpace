@@ -396,11 +396,13 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
-		if !body.break_on_player_contact:
+		if !body.break_on_player_contact and !body.changing_colls__from_any_purpose:
 			var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 			
 			_attempt_remove_on_ground_count__with_any_identif(coordinate)
-	
+		
+		if !body.changing_colls__from_any_purpose:
+			body.changing_colls__from_any_purpose = false
 	
 	if body is BaseObject:
 		if _objects_to_collide_with_after_exit.has(body):
@@ -417,7 +419,9 @@ func remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(a
 	_attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
 	
 
-
+func remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coordinate):
+	_attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
+	
 
 #func _on_FloorArea2D_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 #	pass

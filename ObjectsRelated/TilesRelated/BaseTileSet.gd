@@ -51,12 +51,24 @@ var velocity = Vector2(0, 0)
 
 #
 
+enum TilemapModulateIds {
+	ENERGY_MODE = 0
+	BUTTON_ASSOCIATED = 1
+}
+var _modulates_of_tilemap : Dictionary
+
+#
+
 
 var _save_tiles_data_next_frame__for_rewind_save__count : int
 var _saved_cell_data_queue : Array
 
 # structure: cell_pos -> [cell id, cell auto-coord, other datas<dict>]
 var _cell_metadatas = {}
+
+#
+
+var changing_colls__from_any_purpose = false
 
 #
 
@@ -86,11 +98,37 @@ func _ready():
 
 func _update_display_based_on_energy_mode():
 	if energy_mode == EnergyMode.ENERGIZED:
-		tilemap.modulate = ENERGIZED_MODULATE
+		#tilemap.modulate = ENERGIZED_MODULATE
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, ENERGIZED_MODULATE)
 	elif energy_mode == EnergyMode.NORMAL:
-		tilemap.modulate = NORMAL_MODULATE
+		#tilemap.modulate = NORMAL_MODULATE
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, NORMAL_MODULATE)
 	elif energy_mode == EnergyMode.INSTANT_GROUND:
-		tilemap.modulate = INSTANT_GROUND_MODULATE
+		#tilemap.modulate = INSTANT_GROUND_MODULATE
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, INSTANT_GROUND_MODULATE)
+		
+
+#
+
+func set_modulate_for_tilemap(arg_id, arg_modulate):
+	_modulates_of_tilemap[arg_id] = arg_modulate
+	_update_tilemap_modulate()
+	
+
+func remove_modulate_from_tilemap(arg_id):
+	_modulates_of_tilemap.erase(arg_id)
+	_update_tilemap_modulate()
+
+func _update_tilemap_modulate():
+	if _modulates_of_tilemap.size() > 0:
+		var color_total : Color = Color(0, 0, 0, 0)
+		for id in _modulates_of_tilemap.keys():
+			color_total += _modulates_of_tilemap[id]
+		
+		tilemap.modulate = color_total / _modulates_of_tilemap.size()
+		
+	else:
+		tilemap.modulate = Color(1, 1, 1, 1)
 
 #
 
@@ -112,12 +150,16 @@ func _update_properties_based_on_is_breakable():
 		_is_breakable = true
 		set_process(true)
 		
-		is_rewindable = true
-		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 		
-		_update_cells_save_data()
-		#_save_tiles_data_next_frame__for_rewind_save = true
-		_save_tiles_data_next_frame__for_rewind_save__count += 1
+
+func make_tileset_rewindable():
+	is_rewindable = true
+	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	
+	_update_cells_save_data()
+	#_save_tiles_data_next_frame__for_rewind_save = true
+	_save_tiles_data_next_frame__for_rewind_save__count += 1
+
 
 func is_breakable() -> bool:
 	return _is_breakable
@@ -301,6 +343,10 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 		#_saved_cell_data = _generate_cells_save_data()
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
+	_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
+	changing_colls__from_any_purpose = true
+	#set_deferred("changing_colls__from_any_purpose", false)
+	
 	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
 	
 	if arg_update_dirty_quadrants:
@@ -310,6 +356,68 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 	if arg_save_tiles_data_next_frame__for_rewind_save:
 		_update_cells_save_data()
 		
+
+#
+
+func convert_all_filled_tiles_to_unfilled():
+	var at_least_one_changed : bool = false
+	var cell_coords_id_and_auto_coords : Array = []
+	for cell_coords in tilemap.get_used_cells():
+		var id = tilemap.get_cellv(cell_coords)
+		var old_id = id
+		var unfilled_id_tentative = TileConstants.convert_filled_tile_id__to_unfilled(id)
+		if unfilled_id_tentative != null:
+			id = unfilled_id_tentative
+		var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
+		
+		if id != old_id:
+			at_least_one_changed = true
+			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
+	
+	if at_least_one_changed:
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
+		_saved_cell_data_queue.append(_generate_cells_save_data())
+		#print("saved cell data: %s" % _generate_cells_save_data())
+		
+		for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
+			_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		
+		tilemap.call_deferred("update_dirty_quadrants")
+		
+		_update_cells_save_data()
+		#print("updated cell data: %s" % _cell_metadatas)
+		#print("--------")
+		
+		
+
+func convert_all_unfilled_tiles_to_filled():
+	var at_least_one_changed : bool = false
+	var cell_coords_id_and_auto_coords : Array = []
+	for cell_coords in tilemap.get_used_cells():
+		var id = tilemap.get_cellv(cell_coords)
+		var old_id = id
+		var filled_id_tentative = TileConstants.convert_unfilled_tile_id__to_filled(id)
+		if filled_id_tentative != null:
+			id = filled_id_tentative
+		var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
+		
+		if id != old_id:
+			at_least_one_changed = true
+			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
+	
+	if at_least_one_changed:
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
+		_saved_cell_data_queue.append(_generate_cells_save_data())
+		
+		for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
+			_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		
+		tilemap.call_deferred("update_dirty_quadrants")
+		
+		_update_cells_save_data()
+		
+		
+
 
 
 ###################### 
@@ -371,7 +479,7 @@ func load_into_rewind_save_state(arg_state):
 		var saved_cell_data = arg_state["cell_save_data"]
 		if saved_cell_data != null:
 			_update_cells_based_on_saved_difference_from_current(saved_cell_data)
-	
+
 
 func destroy_from_rewind_save_state():
 	.queue_free()
@@ -427,6 +535,7 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 		if TileConstants.is_tile_id_glowing(saved_cell_id):
 			saved_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(saved_cell_id)
 		
+		# if saved cell coord exists in current
 		if _cell_metadatas.has(cell_coord):
 			var curr_data = _cell_metadatas[cell_coord]
 			var curr_cell_id = curr_data[0]
@@ -435,11 +544,12 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 			if TileConstants.is_tile_id_glowing(curr_cell_id):
 				curr_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(curr_cell_id)
 			
-			
 			if saved_cell_id != curr_cell_id or saved_auto_coords != curr_auto_coords:
 				_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
 			
-		else:
+			
+		else: # if saved cell coord does not exist in current
+			
 			_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
 			
 		
@@ -449,22 +559,24 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 			_set_tile_at_coords(cell_coord, -1, Vector2(0, 0), false, false)
 			
 		else:
-			var curr_data = _cell_metadatas[cell_coord]
-			var curr_cell_id = curr_data[0]
-			var curr_auto_coords = curr_data[1]
+			pass
 			
-			var saved_data = arg_saved_cell_save_data[cell_coord]
-			var saved_cell_id = saved_data[0]
-			var saved_auto_coords = saved_data[1]
-			
-			if TileConstants.is_tile_id_glowing(saved_cell_id):
-				saved_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(saved_cell_id)
-			if TileConstants.is_tile_id_glowing(curr_cell_id):
-				curr_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(curr_cell_id)
-			
-			
-			if saved_cell_id != curr_cell_id or saved_auto_coords != curr_auto_coords:
-				_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
+#			var curr_data = _cell_metadatas[cell_coord]
+#			var curr_cell_id = curr_data[0]
+#			var curr_auto_coords = curr_data[1]
+#
+#			var saved_data = arg_saved_cell_save_data[cell_coord]
+#			var saved_cell_id = saved_data[0]
+#			var saved_auto_coords = saved_data[1]
+#
+#			if TileConstants.is_tile_id_glowing(saved_cell_id):
+#				saved_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(saved_cell_id)
+#			if TileConstants.is_tile_id_glowing(curr_cell_id):
+#				curr_cell_id = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(curr_cell_id)
+#
+#
+#			if saved_cell_id != curr_cell_id or saved_auto_coords != curr_auto_coords:
+#				_set_tile_at_coords(cell_coord, saved_cell_id, saved_auto_coords, false, false)
 	
 	#
 	

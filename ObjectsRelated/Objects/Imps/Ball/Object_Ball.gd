@@ -24,8 +24,6 @@ const all_colors = [
 ##
 
 func _ready():
-	mode = RigidBody2D.MODE_CHARACTER
-	
 	randomize_color()
 	
 	emit_signal("after_ready")

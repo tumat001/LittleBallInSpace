@@ -23,11 +23,31 @@ var last_calculated_can_collide_with_player : bool
 
 #
 
+enum BodyMode {
+	RIGID = RigidBody2D.MODE_RIGID,
+	STATIC = RigidBody2D.MODE_STATIC,
+	CHARACTER = RigidBody2D.MODE_CHARACTER,
+	KINEMATIC = RigidBody2D.MODE_KINEMATIC,
+}
+export(BodyMode) var body_mode_to_use : int = RigidBody2D.MODE_RIGID setget set_body_mode_to_use 
+
+#
+
 onready var anim_sprite = $AnimatedSprite
 
 onready var collision_shape = $CollisionShape2D
 
 ##
+
+func set_body_mode_to_use(arg_mode):
+	body_mode_to_use = arg_mode
+	
+	if is_inside_tree():
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			mode = body_mode_to_use
+
+
+#
 
 func _init():
 	_update_last_calculated_object_mass()
@@ -57,7 +77,8 @@ func _update_last_calculated_can_collide_with_player():
 
 func _ready():
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
-
+	
+	set_body_mode_to_use(body_mode_to_use)
 
 #
 
@@ -176,7 +197,7 @@ func stared_rewind():
 	
 
 func ended_rewind():
-	mode = RigidBody2D.MODE_RIGID
+	mode = body_mode_to_use
 	
 	block_can_collide_with_player_cond_clauses.load_into_rewind_save_state(_rewinded__block_can_collide_with_player_cond_clauses_save_state)
 	
