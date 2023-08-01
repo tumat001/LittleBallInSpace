@@ -30,18 +30,20 @@ mouse_filter = 2
 texture = ExtResource( 2 )
 
 [node name="HeaderLabel" type="Label" parent="FreeFormControl"]
-margin_left = 83.0
+margin_left = 82.0
 margin_top = 45.0
-margin_right = 123.0
-margin_bottom = 59.0
+margin_right = 128.0
+margin_bottom = 63.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Balls:"
 align = 1
 
 [node name="BallCountLabel" type="Label" parent="FreeFormControl"]
-margin_left = 83.0
+margin_left = 84.0
 margin_top = 61.0
-margin_right = 123.0
-margin_bottom = 75.0
+margin_right = 124.0
+margin_bottom = 79.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "x"
 align = 1
 

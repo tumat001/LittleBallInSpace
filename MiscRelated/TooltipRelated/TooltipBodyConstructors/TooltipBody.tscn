@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipBody.gd" type="Script" id=1]
+
+[node name="TooltipBody" type="MarginContainer"]
+margin_right = 40.0
+mouse_filter = 2
+script = ExtResource( 1 )
+
+[node name="RowContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+mouse_filter = 2
+size_flags_vertical = 2
+custom_constants/separation = 5
