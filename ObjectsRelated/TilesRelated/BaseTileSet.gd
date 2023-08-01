@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
 
-#const TileConstants = preload("res://ObjectsRelated/TilesRelated/TileConstants.gd")
+const ObjectDetailsPanel = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.gd")
+const ObjectDetailsPanel_Scene = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.tscn")
 
+##
 
 const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
 const NORMAL_MODULATE := Color(1, 1, 1)
@@ -29,7 +31,7 @@ const SPEED_SLOWDOWN_RATIO__GLASS = 0.2
 export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
 
 
-var _player setget set_player
+var _player setget set_player, get_player
 
 
 var _applied_changes_for_breakable : bool
@@ -68,7 +70,12 @@ var _cell_metadatas = {}
 
 #
 
-var changing_colls__from_any_purpose = false
+var changing_colls__from_fill_and_unfilled = false
+#var changing_colls__rid_changed_colls : Array 
+
+#
+
+var _object_details_panel_tooltip
 
 #
 
@@ -78,6 +85,9 @@ onready var tilemap = $TileMap
 
 func set_player(arg_player):
 	_player = arg_player
+
+func get_player():
+	return _player
 
 #
 
@@ -150,7 +160,7 @@ func _update_properties_based_on_is_breakable():
 		_is_breakable = true
 		set_process(true)
 		
-		
+		make_tileset_rewindable()
 
 func make_tileset_rewindable():
 	is_rewindable = true
@@ -344,18 +354,27 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
 	_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
-	changing_colls__from_any_purpose = true
-	#set_deferred("changing_colls__from_any_purpose", false)
+	#changing_colls__rid_changed_colls.append(arg_coords)
+	
+	#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+	#	changing_colls__from_fill_and_unfilled = true
+	#set_deferred("changing_colls__from_fill_and_unfilled", false)
 	
 	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
 	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()
 		tilemap.call_deferred("update_dirty_quadrants")
+		#call_deferred("_tilemap_update_dirty_quadrants")
 	
 	if arg_save_tiles_data_next_frame__for_rewind_save:
 		_update_cells_save_data()
 		
+
+
+#func _tilemap_update_dirty_quadrants():
+#	tilemap.update_dirty_quadrants()
+#	changing_colls__from_fill_and_unfilled = false
 
 #
 
@@ -375,6 +394,8 @@ func convert_all_filled_tiles_to_unfilled():
 			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
 	
 	if at_least_one_changed:
+		changing_colls__from_fill_and_unfilled = true
+		
 		_save_tiles_data_next_frame__for_rewind_save__count += 1
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 		#print("saved cell data: %s" % _generate_cells_save_data())
@@ -406,6 +427,8 @@ func convert_all_unfilled_tiles_to_filled():
 			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
 	
 	if at_least_one_changed:
+		changing_colls__from_fill_and_unfilled = true
+		
 		_save_tiles_data_next_frame__for_rewind_save__count += 1
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 		
@@ -583,5 +606,24 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 	tilemap.update_dirty_quadrants()
 	
 	_cell_metadatas = arg_saved_cell_save_data
+
+
+######
+
+
+func _on_BaseTileSet_mouse_entered():
+	var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
+	if desc.size() != 0:
+		_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
+		
+		SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
+		
+		_object_details_panel_tooltip.show_descs(desc)
+
+
+func _on_BaseTileSet_mouse_exited():
+	if is_instance_valid(_object_details_panel_tooltip):
+		_object_details_panel_tooltip.queue_free()
+	
 
 

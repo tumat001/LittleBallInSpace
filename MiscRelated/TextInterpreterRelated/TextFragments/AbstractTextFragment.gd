@@ -13,9 +13,10 @@ enum DESCRIPTION_TYPE {
 	ENERGY = 100,
 	LAUNCH_BALL = 101,
 	
-	BREAKABLE_TILES = 200,
-	ENERGIZED_TILES = 201,
-	INSTANT_GROUNDED_TILES = 202,
+	NORMAL_TILES = 200,
+	BREAKABLE_TILES = 201,
+	ENERGIZED_TILES = 202,
+	INSTANT_GROUNDED_TILES = 203,
 	
 }
 
@@ -32,6 +33,7 @@ const type_to_for_light_color_map : Dictionary = {
 	DESCRIPTION_TYPE.ENERGY: "#A67100",
 	DESCRIPTION_TYPE.LAUNCH_BALL: "#AA4000",
 	
+	DESCRIPTION_TYPE.NORMAL_TILES : "#4F4F4F",
 	DESCRIPTION_TYPE.BREAKABLE_TILES: "#507997",
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "#A67100",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "#9C2400",
@@ -50,6 +52,7 @@ const type_to_for_dark_color_map : Dictionary = {
 	DESCRIPTION_TYPE.ENERGY: "#EAB513",
 	DESCRIPTION_TYPE.LAUNCH_BALL: "#FFA222",
 	
+	DESCRIPTION_TYPE.NORMAL_TILES : "#B8B8B8",
 	DESCRIPTION_TYPE.BREAKABLE_TILES: "#93BCCB",
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "#EAB513",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "#CE6624",
@@ -67,15 +70,36 @@ const type_to_name_map : Dictionary = {
 	DESCRIPTION_TYPE.ENERGY: "Energy",
 	DESCRIPTION_TYPE.LAUNCH_BALL: "Launch Ball",
 	
+	DESCRIPTION_TYPE.NORMAL_TILES: "Normal Tiles",
 	DESCRIPTION_TYPE.BREAKABLE_TILES: "Breakable Tiles",
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "Energized Tiles",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "Grounded Tiles",
 	
 }
 
-const type_to_img_map : Dictionary = {
+const type_to_img_map__for_dark : Dictionary = {
 	
-	DESCRIPTION_TYPE.LAUNCH_BALL : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBall.png"
+	DESCRIPTION_TYPE.SPEED : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Speed_Right_ForDark.png",
+	
+	DESCRIPTION_TYPE.LAUNCH_BALL : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBall.png",
+	
+	DESCRIPTION_TYPE.NORMAL_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_NormalTiles_ForDark.png",
+	DESCRIPTION_TYPE.BREAKABLE_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_BreakableTiles_ForDark.png",
+	DESCRIPTION_TYPE.ENERGIZED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_EnergizedTiles_ForDark.png",
+	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_GroundTiles_ForDark.png",
+	
+}
+
+const type_to_img_map__for_light : Dictionary  = {
+	
+	DESCRIPTION_TYPE.SPEED : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Speed_Right_ForLight.png",
+	
+	DESCRIPTION_TYPE.LAUNCH_BALL : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBall.png",
+	
+	DESCRIPTION_TYPE.NORMAL_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_NormalTiles_ForLight.png",
+	DESCRIPTION_TYPE.BREAKABLE_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_BreakableTiles_ForLight.png",
+	DESCRIPTION_TYPE.ENERGIZED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_EnergizedTiles_ForLight.png",
+	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_GroundTiles_ForLight.png",
 	
 }
 
@@ -128,10 +152,18 @@ func _get_type_color_map_to_use(arg_stat_type) -> Dictionary:
 
 
 func _get_img_path_for_type(arg_type) -> String:
-	if type_to_img_map.has(arg_type):
-		return type_to_img_map[arg_type]
+	if color_mode == ColorMode.FOR_DARK_BACKGROUND:
+		if type_to_img_map__for_dark.has(arg_type):
+			return type_to_img_map__for_dark[arg_type]
+		else:
+			return "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Placeholder.png"
+		
 	else:
-		return "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Placeholder.png"
+		if type_to_img_map__for_light.has(arg_type):
+			return type_to_img_map__for_light[arg_type]
+		else:
+			return "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Placeholder.png"
+		
 
 #
 

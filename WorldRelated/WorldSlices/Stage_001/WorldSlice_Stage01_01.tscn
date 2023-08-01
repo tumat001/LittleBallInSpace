@@ -37,7 +37,7 @@ body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet4")
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 249, 212 )
+position = Vector2( 793, 48 )
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BaseTileSet2"]

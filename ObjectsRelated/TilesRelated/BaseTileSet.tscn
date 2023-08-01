@@ -6,6 +6,7 @@
 [node name="BaseTileSet" type="KinematicBody2D"]
 collision_layer = 12
 collision_mask = 3
+input_pickable = true
 collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
@@ -18,3 +19,6 @@ collision_friction = 0.0
 collision_layer = 4
 collision_mask = 0
 format = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_BaseTileSet_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_BaseTileSet_mouse_exited"]

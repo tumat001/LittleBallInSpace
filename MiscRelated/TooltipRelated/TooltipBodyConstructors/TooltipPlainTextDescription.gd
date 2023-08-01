@@ -3,6 +3,10 @@ extends MarginContainer
 const TextFragmentInterpreter = preload("res://MiscRelated/TextInterpreterRelated/TextFragmentInterpreter.gd")
 const AbstractTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/AbstractTextFragment.gd")
 
+const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
+
+
+#
 
 const font_name : String = "TooltipLabelFont"
 
@@ -28,8 +32,8 @@ func _init(arg_description : String = ""):
 	description = arg_description
 
 func _ready():
-	label.add_font_override("normal_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
-	label.add_font_override("bold_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA_BOLD, font_size))
+	#label.add_font_override("normal_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.ATARI_CLASSIC_SMOOTH, font_size))
+	#label.add_font_override("bold_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.ATARI_CLASSIC_SMOOTH, font_size))
 	#label.add_font_override("bold_italics_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
 	#label.add_font_override("italics_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
 	#label.add_font_override("mono_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))

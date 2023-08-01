@@ -1,11 +1,13 @@
 extends MarginContainer
 
 const TooltipPlainTextDescription = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipPlainTextDescription.gd")
-const TooltipPlainTextDescriptionScene = preload("res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipPlainTextDescription.tscn")
-const TooltipWithTextIndicatorDescription = preload("res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipWithTextIndicatorDescription.gd")
-const TooltipWithTextIndicatorDescriptionScene = preload("res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipWithTextIndicatorDescription.tscn")
-const TooltipWithImageIndicatorDescription = preload("res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipWithImageIndicatorDescription.gd")
-const TooltipWithImageIndicatorDescriptionScene = preload("res://GameHUDRelated/Tooltips/TooltipBodyConstructors/TooltipWithImageIndicatorDescription.tscn")
+const TooltipPlainTextDescriptionScene = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipPlainTextDescription.tscn")
+#const TooltipWithTextIndicatorDescription = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipWithTextIndicatorDescription.gd")
+#const TooltipWithTextIndicatorDescriptionScene = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipWithTextIndicatorDescription.tscn")
+#const TooltipWithImageIndicatorDescription = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipWithImageIndicatorDescription.gd")
+#const TooltipWithImageIndicatorDescriptionScene = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipWithImageIndicatorDescription.tscn")
+
+#
 
 var descriptions : Array = []
 
@@ -13,7 +15,7 @@ var specific_font_colors : Array = []
 export(Color) var default_font_color : Color
 export(bool)var override_color_of_descs : bool = true
 
-export(int) var default_font_size : int = 10
+export(int) var default_font_size : int = 20
 export(bool) var uses_bbcode : bool = true
 
 var use_custom_size_flags_for_descs : bool = false

@@ -396,13 +396,13 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
-		if !body.break_on_player_contact and !body.changing_colls__from_any_purpose:
+		if !body.break_on_player_contact and !body.changing_colls__from_fill_and_unfilled:
 			var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 			
 			_attempt_remove_on_ground_count__with_any_identif(coordinate)
 		
-		if !body.changing_colls__from_any_purpose:
-			body.changing_colls__from_any_purpose = false
+		if !body.changing_colls__from_fill_and_unfilled:
+			body.changing_colls__from_fill_and_unfilled = false
 	
 	if body is BaseObject:
 		if _objects_to_collide_with_after_exit.has(body):
