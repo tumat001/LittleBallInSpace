@@ -135,6 +135,7 @@ func _on_BaseObject_body_entered(body):
 #####################
 
 export(bool) var is_rewindable : bool = true
+var is_dead_but_reserved_for_rewind : bool
 
 var _use_integ_forces_new_vals : bool
 
@@ -148,10 +149,12 @@ var _rewinded__block_can_collide_with_player_cond_clauses_save_state
 
 func queue_free():
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
-		SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
+		if !SingletonsAndConsts.current_rewind_manager.is_connected("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables"):
+			SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
 		
 		collision_shape.set_deferred("disabled", true)
 		visible = false
+		is_dead_but_reserved_for_rewind = true
 		
 	else:
 		.queue_free()
@@ -190,6 +193,11 @@ func destroy_from_rewind_save_state():
 	.queue_free()
 	
 
+func restore_from_destroyed_from_rewind():
+	#collision_shape.set_deferred("disabled", false)
+	visible = true
+	is_dead_but_reserved_for_rewind = false
+
 
 func stared_rewind():
 	mode = RigidBody2D.MODE_STATIC
@@ -197,13 +205,14 @@ func stared_rewind():
 	
 
 func ended_rewind():
-	mode = body_mode_to_use
-	
-	block_can_collide_with_player_cond_clauses.load_into_rewind_save_state(_rewinded__block_can_collide_with_player_cond_clauses_save_state)
-	
-	collision_shape.set_deferred("disabled", false)
-	
-	_use_integ_forces_new_vals = true
+	if !is_dead_but_reserved_for_rewind:
+		mode = body_mode_to_use
+		
+		block_can_collide_with_player_cond_clauses.load_into_rewind_save_state(_rewinded__block_can_collide_with_player_cond_clauses_save_state)
+		
+		collision_shape.set_deferred("disabled", false)
+		
+		_use_integ_forces_new_vals = true
 	
 
 

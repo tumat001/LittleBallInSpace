@@ -6,14 +6,22 @@ const Shader_GlitchEffect = preload("res://MiscRelated/ShadersRelated/Shader_Gli
 
 #
 
-const REWINDABLE_PROPERTY_NAME__CAN_BE_REWINDABLE = "is_rewindable"
+const SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED = "REWINDMANAGER_is_dead_but_reserved_for_rewind"
+
+
+const REWINDABLE_PROPERTY_NAME__CAN_BE_REWINDABLE = "is_rewindable" # a bool
+
+# ALL below are needed
+const REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED = "is_dead_but_reserved_for_rewind" # a bool
 
 const REWINDABLE_METHOD_NAME__GET_SAVE_STATE = "get_rewind_save_state"
 const REWINDABLE_METHOD_NAME__LOAD_STATE = "load_into_rewind_save_state"
 const REWINDABLE_METHOD_NAME__DESTROY_STATE = "destroy_from_rewind_save_state"
+const REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE = "restore_from_destroyed_from_rewind"
 
 const REWINDABLE_METHOD_NAME__STARTED_REWIND = "stared_rewind"
 const REWINDABLE_METHOD_NAME__ENDED_REWIND = "ended_rewind"
+# End of ALL
 
 #
 
@@ -83,6 +91,7 @@ const rewind_marker_data_to_img = {
 ##
 
 var _rewindable_objs_in_prev_load_step : Array
+var _rewindable_objs_that_are_dead_but_reserved : Array
 
 ##
 
@@ -141,9 +150,9 @@ func _initialize_rewind_cooldown_timer():
 func add_to_rewindables(arg_obj):
 	if arg_obj.get("is_rewindable"):
 		if !_all_registered_rewindables.has(arg_obj):
-			if !arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND):
+			if !arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND) or !(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED in arg_obj) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE):
 				print("RewindManager: ERR: obj %s does not have all required methods" % arg_obj)
-				print("%s, %s, %s, %s, %s" % [!arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND), !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND)])
+				print("%s, %s, %s, %s, %s, %s, %s" % [!arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE), !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND), !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND), REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED in arg_obj, arg_obj.has_method(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE)])
 				print("--")
 			
 			#arg_obj.add_to_group(REWINDABLE_GROUP_NAME)
@@ -217,7 +226,10 @@ func _physics_process(delta):
 			
 			var rewindable_obj_to_save_state_map = {}
 			for obj in _all_registered_rewindables:
-				rewindable_obj_to_save_state_map[obj] = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
+				var save_state = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
+				save_state[SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED] = obj.get(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED)
+				rewindable_obj_to_save_state_map[obj] = save_state
+				
 			
 			_rewindable_datas.append(rewindable_obj_to_save_state_map)
 			
@@ -225,6 +237,7 @@ func _physics_process(delta):
 			
 			_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
 			_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
+			
 		
 	else:
 		
@@ -235,8 +248,20 @@ func _physics_process(delta):
 			obj.call(REWINDABLE_METHOD_NAME__LOAD_STATE, rewindable_obj_to_save_state_map[obj])
 			objs_for_traversal.erase(obj)
 			
+			var save_state = rewindable_obj_to_save_state_map[obj]
+			var is_dead_but_reseved_from_rewind = save_state[SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED]
+			if is_dead_but_reseved_from_rewind:
+				if !_rewindable_objs_that_are_dead_but_reserved.has(obj):
+					_rewindable_objs_that_are_dead_but_reserved.append(obj)
+				
+			else:
+				if _rewindable_objs_that_are_dead_but_reserved.has(obj):
+					obj.call(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE)
+					
+			
 		_rewindable_objs_in_prev_load_step = rewindable_obj_to_save_state_map.keys()
 		
+		# remove permanently since the timeline of spawn has been passed (backwards)
 		for non_existing_obj in objs_for_traversal:
 			non_existing_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
 			_remove_obj_from_all_registered_rewindables(non_existing_obj)
@@ -282,6 +307,7 @@ func _end_rewind_with_state_map(arg_state_map):
 	
 	
 	_rewindable_objs_in_prev_load_step.clear()
+	_rewindable_objs_that_are_dead_but_reserved.clear()
 	
 	emit_signal("done_ending_rewind")
 	is_rewinding = false

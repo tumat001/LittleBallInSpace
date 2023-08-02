@@ -173,12 +173,12 @@ func has_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments(arg
 
 
 func generate_rects_for_size(arg_size : Vector2, arg_segments : int) -> Array:
-	var root_segment_ceil = ceil(sqrt(arg_segments))
+	var root_segment_ceil = stepify(sqrt(arg_segments), 0.1)
 	
 	var full_length_per_segment = arg_size.x / root_segment_ceil
 	var lengths : Array = []
 	var remaining_length = arg_size.x
-	while (remaining_length > 0):
+	while (remaining_length >= full_length_per_segment):
 		remaining_length -= full_length_per_segment
 		if remaining_length < 0:
 			lengths.append(full_length_per_segment - remaining_length)

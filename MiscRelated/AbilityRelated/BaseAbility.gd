@@ -134,6 +134,7 @@ func emit_updated_is_ready_for_activation(clause):
 #####################
 
 export(bool) var is_rewindable : bool = true
+var is_dead_but_reserved_for_rewind : bool
 
 var _rewind_state
 
@@ -157,6 +158,10 @@ func load_into_rewind_save_state(arg_state):
 	
 
 func destroy_from_rewind_save_state():
+	pass
+	
+
+func restore_from_destroyed_from_rewind():
 	pass
 	
 

@@ -81,6 +81,7 @@ func _ready():
 	####
 	
 	call_deferred("_deferred__after_init")
+	
 
 func _deferred__after_init():
 	is_game_after_init = true

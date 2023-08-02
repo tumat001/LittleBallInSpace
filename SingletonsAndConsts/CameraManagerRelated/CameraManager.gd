@@ -131,6 +131,7 @@ func _process(delta):
 #####################
 
 export(bool) var is_rewindable : bool = true
+var is_dead_but_reserved_for_rewind
 
 var _rewinded_current_cam_rotation
 
@@ -154,6 +155,9 @@ func destroy_from_rewind_save_state():
 	pass
 	
 
+func restore_from_destroyed_from_rewind():
+	pass
+	
 
 func stared_rewind():
 	pass

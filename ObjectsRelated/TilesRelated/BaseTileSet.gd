@@ -444,89 +444,6 @@ func convert_all_unfilled_tiles_to_filled():
 
 
 
-###################### 
-# REWIND RELATED
-#####################
-
-export(bool) var is_rewindable : bool
-
-var _rewinded__velocity
-
-#
-
-func queue_free():
-	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
-		SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
-		
-		#collision_shape.set_deferred("disabled", true)
-		visible = false
-		
-	else:
-		.queue_free()
-		
-
-func _on_obj_removed_from_rewindables(arg_obj):
-	if arg_obj == self:
-		.queue_free()
-
-
-
-func get_rewind_save_state():
-	#var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
-	var save_state = {
-		"velocity" : velocity,
-		"rotation" : rotation,
-		"transform" : transform,
-		
-		"energy_mode" : energy_mode,
-		
-		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
-	}
-	
-	#if _save_tiles_data_next_frame__for_rewind_save:
-	if _save_tiles_data_next_frame__for_rewind_save__count > 0:
-		#_save_tiles_data_next_frame__for_rewind_save = false
-		_save_tiles_data_next_frame__for_rewind_save__count -= 1
-		save_state["cell_save_data"] = _saved_cell_data_queue.pop_front()#_saved_cell_data
-		#print(save_state["cell_save_data"])
-	
-	return save_state
-
-func load_into_rewind_save_state(arg_state):
-	_rewinded__velocity = arg_state["velocity"]
-	rotation = arg_state["rotation"]
-	transform = arg_state["transform"]
-	set_energy_mode(arg_state["energy_mode"])
-	#_applied_changes_for_breakable = arg_state["applied_changes_for_breakable"]
-	
-	if arg_state.has("cell_save_data"):
-		var saved_cell_data = arg_state["cell_save_data"]
-		if saved_cell_data != null:
-			_update_cells_based_on_saved_difference_from_current(saved_cell_data)
-
-
-func destroy_from_rewind_save_state():
-	.queue_free()
-	
-
-
-func stared_rewind():
-	pass
-	#_save_tiles_data_next_frame__for_rewind_save = true
-	#mode = RigidBody2D.MODE_STATIC
-	#collision_shape.set_deferred("disabled", true)
-	
-
-func ended_rewind():
-	velocity = _rewinded__velocity
-	_applied_changes_for_breakable = false
-	#mode = RigidBody2D.MODE_RIGID
-	#collision_shape.set_deferred("disabled", false)
-	
-	#_use_integ_forces_new_vals = true
-	
-
-
 
 func _has_cell_metadatas():
 	return _cell_metadatas.size() != 0
@@ -634,3 +551,91 @@ func _queue_free_object_details_tooltip():
 		_object_details_panel_tooltip.queue_free()
 	
 
+
+###################### 
+# REWIND RELATED
+#####################
+
+export(bool) var is_rewindable : bool
+var is_dead_but_reserved_for_rewind : bool
+
+var _rewinded__velocity
+
+#
+
+func queue_free():
+	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
+		SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
+		
+		#collision_shape.set_deferred("disabled", true)
+		visible = false
+		is_dead_but_reserved_for_rewind = true
+		
+	else:
+		.queue_free()
+		
+
+func _on_obj_removed_from_rewindables(arg_obj):
+	if arg_obj == self:
+		.queue_free()
+
+
+
+func get_rewind_save_state():
+	#var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
+	var save_state = {
+		"velocity" : velocity,
+		"rotation" : rotation,
+		"transform" : transform,
+		
+		"energy_mode" : energy_mode,
+		
+		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
+	}
+	
+	#if _save_tiles_data_next_frame__for_rewind_save:
+	if _save_tiles_data_next_frame__for_rewind_save__count > 0:
+		#_save_tiles_data_next_frame__for_rewind_save = false
+		_save_tiles_data_next_frame__for_rewind_save__count -= 1
+		save_state["cell_save_data"] = _saved_cell_data_queue.pop_front()#_saved_cell_data
+		#print(save_state["cell_save_data"])
+	
+	return save_state
+
+func load_into_rewind_save_state(arg_state):
+	_rewinded__velocity = arg_state["velocity"]
+	rotation = arg_state["rotation"]
+	transform = arg_state["transform"]
+	set_energy_mode(arg_state["energy_mode"])
+	#_applied_changes_for_breakable = arg_state["applied_changes_for_breakable"]
+	
+	if arg_state.has("cell_save_data"):
+		var saved_cell_data = arg_state["cell_save_data"]
+		if saved_cell_data != null:
+			_update_cells_based_on_saved_difference_from_current(saved_cell_data)
+
+
+func destroy_from_rewind_save_state():
+	.queue_free()
+	
+
+func restore_from_destroyed_from_rewind():
+	is_dead_but_reserved_for_rewind = false
+	
+
+func stared_rewind():
+	pass
+	#_save_tiles_data_next_frame__for_rewind_save = true
+	#mode = RigidBody2D.MODE_STATIC
+	#collision_shape.set_deferred("disabled", true)
+	
+
+func ended_rewind():
+	if !is_dead_but_reserved_for_rewind:
+		velocity = _rewinded__velocity
+		_applied_changes_for_breakable = false
+		#mode = RigidBody2D.MODE_RIGID
+		#collision_shape.set_deferred("disabled", false)
+		
+		#_use_integ_forces_new_vals = true
+	

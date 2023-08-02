@@ -41,6 +41,7 @@ SingletonsAndConsts="*res://SingletonsAndConsts/SingletonsAndConsts.gd"
 StoreOfRng="*res://SingletonsAndConsts/StoreOfRNG.gd"
 GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
 TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
+StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
 
 [debug]
 
@@ -89,6 +90,7 @@ rewind={
 2d_physics/layer_2="ObjectCollidables"
 2d_physics/layer_3="TilesForPlayer"
 2d_physics/layer_4="TilesForObjAndSensor"
+2d_physics/layer_5="PlayerPickupables"
 
 [physics]
 

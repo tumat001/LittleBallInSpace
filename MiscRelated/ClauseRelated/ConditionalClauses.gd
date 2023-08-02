@@ -153,6 +153,7 @@ func copy_clauses_of_condtional_clause(other_conditional_clause):
 #####################
 
 export(bool) var is_rewindable : bool = true
+var is_dead_but_reserved_for_rewind : bool
 
 var _rewinded_clauses : Array
 var _rewinded_blacklisted_clauses
@@ -177,6 +178,10 @@ func load_into_rewind_save_state(arg_state):
 func destroy_from_rewind_save_state():
 	pass
 	
+
+func restore_from_destroyed_from_rewind():
+	pass
+
 
 func stared_rewind():
 	pass

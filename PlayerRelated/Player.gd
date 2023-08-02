@@ -1189,6 +1189,7 @@ func get_momentum_mag__using_linear_velocity() -> float:
 #####################
 
 export(bool) var is_rewindable : bool = true
+var is_dead_but_reserved_for_rewind : bool
 
 var _use_integ_forces_new_vals : bool
 
@@ -1293,6 +1294,9 @@ func destroy_from_rewind_save_state():
 	print("PLAYER: destroy_from_rewind_save_state should never be reached...")
 	
 
+func restore_from_destroyed_from_rewind():
+	pass
+	
 
 func stared_rewind():
 	mode = RigidBody2D.MODE_STATIC
