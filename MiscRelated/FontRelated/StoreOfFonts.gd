@@ -4,11 +4,14 @@ enum FontTypes {
 	PIXEL_EMULATOR,
 	ATARI_CLASSIC,
 	ATARI_CLASSIC_SMOOTH,
+	CONSOLA,
 }
 
 const _pixel_emulator_font_size_to_font_map : Dictionary = {}
 const _atari_classic_font_size_to_font_map : Dictionary = {}
 const _atari_classic_smooth_font_size_to_font_map : Dictionary = {}
+const _consola_font_size_to_font_map : Dictionary = {}
+
 
 #
 
@@ -19,6 +22,8 @@ static func get_font_with_size(font_type : int, font_size : int) -> DynamicFont:
 		return get_atari_classic_font_with_size(font_size)
 	if font_type == FontTypes.ATARI_CLASSIC_SMOOTH:
 		return get_atari_classic_smooth_font_with_size(font_size)
+	if font_size == FontTypes.CONSOLA:
+		return get_consola_font_with_size(font_size)
 	
 	return null
 
@@ -80,3 +85,24 @@ static func _add_atari_classic_smooth_font_with_size_to_map(font_size : int) -> 
 	
 	_atari_classic_font_size_to_font_map[font_size] = font
 	return font
+
+
+#
+
+static func get_consola_font_with_size(font_size : int) -> DynamicFont:
+	if _consola_font_size_to_font_map.has(font_size):
+		return _consola_font_size_to_font_map[font_size]
+	else:
+		return _add_pixel_emulator_font_with_size_to_map(font_size)
+
+static func _add_consola_font_with_size_to_map(font_size : int) -> DynamicFont:
+	var font_data = DynamicFontData.new()
+	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/Consola/CONSOLA.ttf"
+	
+	var font = DynamicFont.new()
+	font.font_data = font_data
+	font.size = font_size
+	
+	_consola_font_size_to_font_map[font_size] = font
+	return font
+

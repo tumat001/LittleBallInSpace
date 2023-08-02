@@ -1,15 +1,129 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.gd" type="Script" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/Assets/ObjectDetailsPanel_BackgroundFill.png" type="Texture" id=3]
+[ext_resource path="res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/Assets/ObjectDetailsPanel_Border_Left.png" type="Texture" id=4]
+[ext_resource path="res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/Assets/ObjectDetailsPanel_CornerPiece.png" type="Texture" id=5]
+[ext_resource path="res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/Assets/ObjectDetailsPanel_Border_Top.png" type="Texture" id=6]
 
 [node name="ObjectDetailsPanel" type="MarginContainer"]
-margin_right = 160.0
+margin_right = 210.0
 margin_bottom = 40.0
 mouse_filter = 2
 script = ExtResource( 2 )
 
-[node name="TooltipBody" parent="." instance=ExtResource( 1 )]
-margin_right = 160.0
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+margin_right = 210.0
 margin_bottom = 40.0
+mouse_filter = 2
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Background" type="TextureRect" parent="MarginContainer2"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 206.0
+margin_bottom = 36.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+stretch_mode = 2
+
+[node name="BorderTop" type="TextureRect" parent="MarginContainer2"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 206.0
+margin_bottom = 10.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+texture = ExtResource( 6 )
+stretch_mode = 2
+
+[node name="BorderBottom" type="TextureRect" parent="MarginContainer2"]
+margin_left = 4.0
+margin_top = 30.0
+margin_right = 206.0
+margin_bottom = 36.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+texture = ExtResource( 6 )
+stretch_mode = 2
+flip_v = true
+
+[node name="BorderLeft" type="TextureRect" parent="MarginContainer2"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 10.0
+margin_bottom = 36.0
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+stretch_mode = 2
+
+[node name="BorderRight" type="TextureRect" parent="MarginContainer2"]
+margin_left = 200.0
+margin_top = 4.0
+margin_right = 206.0
+margin_bottom = 36.0
+mouse_filter = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+stretch_mode = 2
+flip_h = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 206.0
+margin_bottom = 36.0
+mouse_filter = 2
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 12
+
+[node name="TooltipBody" parent="MarginContainer2/MarginContainer" instance=ExtResource( 1 )]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 190.0
+margin_bottom = 20.0
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+default_font_size = 25
+
+[node name="Corner_NW" type="TextureRect" parent="."]
+margin_right = 210.0
+margin_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+
+[node name="Corner_NE" type="TextureRect" parent="."]
+margin_left = 200.0
+margin_right = 210.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 10
+texture = ExtResource( 5 )
+
+[node name="Corner_SE" type="TextureRect" parent="."]
+margin_left = 200.0
+margin_top = 30.0
+margin_right = 210.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 10
+size_flags_vertical = 10
+texture = ExtResource( 5 )
+
+[node name="Corner_SW" type="TextureRect" parent="."]
+margin_top = 30.0
+margin_right = 210.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_vertical = 10
+texture = ExtResource( 5 )

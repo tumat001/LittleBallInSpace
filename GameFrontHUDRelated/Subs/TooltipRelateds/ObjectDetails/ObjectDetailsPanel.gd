@@ -9,7 +9,7 @@ const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/Text
 var has_dark_background : bool = true
 
 
-onready var tooltip_body = $TooltipBody
+onready var tooltip_body = $MarginContainer2/MarginContainer/TooltipBody
 
 #
 
@@ -57,7 +57,9 @@ static func generate_descs__for_tileset(arg_base_tileset):
 	
 	##
 	if arg_base_tileset.is_breakable():
-		var mov_speed_to_break = ["Mov speed to |0|: |1|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.BREAKABLE_TILES, "break"), PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.SPEED, "%s" % (arg_base_tileset.momentum_breaking_point / arg_base_tileset.get_player().last_calculated_object_mass))]]
+		#var value = stepify(arg_base_tileset.momentum_breaking_point / arg_base_tileset.get_player().last_calculated_object_mass, 0.01)
+		var value = ceil(arg_base_tileset.momentum_breaking_point / arg_base_tileset.get_player().last_calculated_object_mass)
+		var mov_speed_to_break = ["Mov speed to |0|: |1|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.BREAKABLE_TILES, "break"), PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.SPEED, "%s" % (value))]]
 		
 		final_desc.append(mov_speed_to_break)
 	

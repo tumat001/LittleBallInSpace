@@ -105,6 +105,7 @@ func _ready():
 	_update_display_based_on_energy_mode()
 	_update_properties_based_on_is_breakable()
 	
+	SingletonsAndConsts.current_rewind_manager.connect("rewinding_started", self, "_on_rewinding_started")
 
 func _update_display_based_on_energy_mode():
 	if energy_mode == EnergyMode.ENERGIZED:
@@ -612,18 +613,24 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 
 
 func _on_BaseTileSet_mouse_entered():
-	var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
-	if desc.size() != 0:
-		_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
-		
-		SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
-		
-		_object_details_panel_tooltip.show_descs(desc)
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
+		if desc.size() != 0:
+			_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
+			
+			SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
+			
+			_object_details_panel_tooltip.show_descs(desc)
 
 
 func _on_BaseTileSet_mouse_exited():
+	_queue_free_object_details_tooltip()
+
+func _on_rewinding_started():
+	_queue_free_object_details_tooltip()
+
+func _queue_free_object_details_tooltip():
 	if is_instance_valid(_object_details_panel_tooltip):
 		_object_details_panel_tooltip.queue_free()
 	
-
 

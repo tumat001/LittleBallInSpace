@@ -23,6 +23,8 @@ signal done_ending_rewind()
 
 signal rewindable_datas_pop_back(arg_data_count_left)
 
+signal rewinding_started()
+
 #
 
 var _all_registered_rewindables : Array
@@ -265,6 +267,8 @@ func attempt_start_rewind():
 		SingletonsAndConsts.current_game_front_hud.rewind_panel.start_show(_rewindable_marker_datas)
 		
 		SingletonsAndConsts.current_game_elements.show_non_screen_gui_shader_sprite()
+		
+		emit_signal("rewinding_started")
 
 func end_rewind():
 	if is_rewinding:

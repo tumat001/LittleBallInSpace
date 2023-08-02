@@ -57,6 +57,7 @@ var _cam_angle_to_ground_attracting_velocity_map : Dictionary
 
 var _is_moving_left : bool
 var _is_moving_right : bool
+var _is_move_breaking : bool
 
 #
 
@@ -515,12 +516,18 @@ func _unhandled_key_input(event):
 	elif event.is_action_released("ui_right"):
 		_is_moving_right = false
 		
+	elif event.is_action_released("ui_down"):
+		pass
+		#_is_move_breaking = false
+		
 	else:
 		if event.is_action("ui_left"):
 			_is_moving_left = true
 		elif event.is_action("ui_right"):
 			_is_moving_right = true
-			
+		elif event.is_action("ui_down"):
+			pass
+			#_is_move_breaking = true
 		
 	
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
@@ -601,6 +608,30 @@ func _physics_process(delta):
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 					
 				
+				
+			elif _is_move_breaking:
+				
+				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
+				if _current_player_left_right_move_speed < 0:
+					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
+					_current_player_left_right_move_speed += speed_modi
+					
+					if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
+						_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+					elif _current_player_left_right_move_speed > 0:
+						_current_player_left_right_move_speed = 0
+					
+				elif _current_player_left_right_move_speed > 0:
+					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
+					_current_player_left_right_move_speed -= speed_modi
+					
+					if _current_player_left_right_move_speed < -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
+						_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+					elif _current_player_left_right_move_speed < 0:
+						_current_player_left_right_move_speed = 0
+					
 				
 			
 			#var final_mov = Vector2(_current_player_left_right_move_speed, 0)
