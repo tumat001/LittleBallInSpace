@@ -1,6 +1,8 @@
 extends Node
 
 
+signal is_player_health_on_start_zero_changed()
+
 signal first_time_play()
 
 #
@@ -21,6 +23,7 @@ const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 #
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
+var tentative_player_health_on_start
 
 var player_name : String
 
@@ -137,8 +140,10 @@ func set_player(arg_player):
 	arg_player.set_max_health(PLAYER_MAX_HEALTH)
 	if !is_equal_approx(player_health_on_start, 0):
 		arg_player.set_current_health(player_health_on_start, false)
+		tentative_player_health_on_start = player_health_on_start
 	else:
 		arg_player.set_current_health(0, false)
+		tentative_player_health_on_start = 0
 	
 	arg_player.connect("health_reached_breakpoint", self, "_on_player_health_reached_breakpoint", [], CONNECT_PERSIST)
 	arg_player.connect("all_health_lost", self, "_on_player_all_health_lost", [], CONNECT_PERSIST)
@@ -146,31 +151,41 @@ func set_player(arg_player):
 	arg_player.connect("health_fully_restored", self, "_on_player_health_fully_restored", [], CONNECT_PERSIST)
 
 func _on_player_health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoint):
-	player_health_on_start = arg_health_val_at_breakpoint
+	tentative_player_health_on_start = arg_health_val_at_breakpoint
 	
-	print("arg_health_val_at_breakpoint: %s" % arg_health_val_at_breakpoint)
 
 func _on_player_all_health_lost():
-	player_health_on_start = 0
+	tentative_player_health_on_start = 0
 	
-	print("no health")
+	emit_signal("is_player_health_on_start_zero_changed", true)
 
 
 func _on_player_health_restored_from_zero(arg_health_val_at_lowest_breakpoint):
-	player_health_on_start = arg_health_val_at_lowest_breakpoint
+	tentative_player_health_on_start = arg_health_val_at_lowest_breakpoint
+	
+	emit_signal("is_player_health_on_start_zero_changed", false)
+
 
 func _on_player_health_fully_restored():
-	player_health_on_start = PLAYER_MAX_HEALTH
+	tentative_player_health_on_start = PLAYER_MAX_HEALTH
+
+
+##
+
+func set_game_elements(arg_elements):
+	arg_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided", [arg_elements.game_result_manager])
+	
+
+
+func _on_game_result_decided(arg_result, arg_game_result_manager):
+	if arg_result == arg_game_result_manager.GameResult.WIN:
+		player_health_on_start = tentative_player_health_on_start
+	
 
 
 ##
 
 func _exit_tree():
 	_save_player_data()
-
-#func _notification(what):
-#	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-#		_save_player_data()
-#
 
 

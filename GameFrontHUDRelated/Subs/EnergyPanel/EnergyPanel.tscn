@@ -7,8 +7,8 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/EnergyPanel/EnergyPanel.gd" type="Script" id=5]
 
 [node name="EnergyPanel" type="Control"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 264.0
+margin_bottom = 60.0
 script = ExtResource( 5 )
 
 [node name="BarBackground" type="TextureRect" parent="."]

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Dead.png" type="Texture" id=1]
+[ext_resource path="res://GameFrontHUDRelated/Subs/TrophyPanel/TrophyPanel.gd" type="Script" id=2]
+
+[node name="TrophyPanel" type="MarginContainer"]
+margin_right = 16.0
+margin_bottom = 15.0
+mouse_filter = 2
+script = ExtResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 16.0
+margin_bottom = 15.0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 16.0
+margin_bottom = 15.0
+mouse_filter = 2
+
+[node name="PlayerDeadTextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+margin_right = 16.0
+margin_bottom = 15.0
+mouse_filter = 2
+texture = ExtResource( 1 )

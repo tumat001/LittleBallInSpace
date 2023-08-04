@@ -91,6 +91,8 @@ rewind={
 2d_physics/layer_3="TilesForPlayer"
 2d_physics/layer_4="TilesForObjAndSensor"
 2d_physics/layer_5="PlayerPickupables"
+2d_physics/layer_6="AreaRegionForPlayer"
+2d_physics/layer_7="AreaRegionForObjects"
 
 [physics]
 

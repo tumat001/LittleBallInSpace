@@ -36,6 +36,8 @@ onready var other_node_hoster = $OtherNodeHoster
 
 onready var rewind_manager = $RewindManager
 
+onready var game_result_manager = $GameResultManager
+
 onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
 #
@@ -71,12 +73,17 @@ func _ready():
 		_set_player__and_register_signals(player)
 		
 		GameSaveManager.set_player(player)
+		game_result_manager.set_player(player)
 		emit_signal("player_spawned", player)
 	
 	
 	player_modi_manager.game_elements = self
 	player_modi_manager.set_current_player(_current_player)
 	
+	rewind_manager.game_elements = self
+	
+	GameSaveManager.set_game_elements(self)
+	game_result_manager.set_game_elements(self)
 	
 	####
 	
@@ -121,6 +128,7 @@ func _deferred_add_child__game_front_hud():
 	
 	_current_player.initialize_health_panel_relateds()
 	SingletonsAndConsts.current_game_front_hud.speed_panel.set_player(_current_player)
+	SingletonsAndConsts.current_game_front_hud.robot_health_panel.set_player(_current_player)
 
 #
 

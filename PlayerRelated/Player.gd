@@ -24,6 +24,10 @@ signal health_restored_from_zero()
 signal health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoint)
 signal health_fully_restored()
 
+
+signal current_robot_health_changed(arg_val)
+signal max_robot_health_changed(arg_val)
+
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
 
@@ -157,6 +161,7 @@ var _objects_to_add_mask_layer_collision_after_exit : Array
 var player_modi__energy : PlayerModi_Energy
 var is_player_modi_energy_set : bool
 
+const IN_ENERGY_REGION__ENERGY_CHARGE_PER_SEC__PERCENT = 0.3
 const IN_ENERGY__ENERGY_CHARGE_PER_SEC__PERCENT = 0.3
 const OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__FLAT = 1.0
 const OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__PERCENT__FROM_INSTANT_GROUND = 1.0
@@ -182,6 +187,23 @@ var _max_health : float    # not meant to be changed, but if it is, then update 
 var _current_health : float
 var _is_dead : bool
 
+###
+
+const MAX_HEALTH_DEFAULT = 100.0
+
+var _max_robot_health : float = MAX_HEALTH_DEFAULT    # not meant to be changed,
+var _current_robot_health : float = MAX_HEALTH_DEFAULT
+var _is_robot_dead : bool
+
+###
+
+var _current_player_capture_area_region setget set_current_player_capture_area_region
+
+##
+
+var is_player : bool = true
+
+##
 
 const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 2.0
 const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
@@ -208,6 +230,8 @@ onready var rotating_for_floor_area_2d_coll_shape = $RotatingForFloorArea2D/Coll
 onready var face_screen = $SpriteLayer/FaceScreen
 onready var anim_on_screen = $SpriteLayer/AnimOnScreen
 onready var main_body_sprite = $SpriteLayer/MainBodySprite
+
+onready var pca_progress_drawer = $PCAProgressDrawer
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
@@ -277,8 +301,6 @@ func _update_last_calculated_object_mass():
 #######
 
 func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	#TODO check if body is breakable. if it is, attempt break. if not broken, attempt do rotation
-	
 	if !has_object_to_not_collide_with(body):
 		
 		
@@ -836,6 +858,7 @@ func _ready():
 	#_make_node_rotate_with_cam(sprite_layer)
 	_make_node_rotate_with_cam(face_screen)
 	_make_node_rotate_with_cam(anim_on_screen)
+	_make_node_rotate_with_cam(pca_progress_drawer)
 	
 	CameraManager.connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam", [], CONNECT_PERSIST)
 	
@@ -1118,6 +1141,10 @@ func _play_ouch_to_normal(arg_duration : float):
 #
 
 func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
+	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
+		return
+	
+	
 	var old_val = _current_health
 	_current_health = arg_val
 	
@@ -1175,14 +1202,142 @@ func get_max_health():
 func is_no_health():
 	return _is_dead
 
+##
 
-#
+func set_current_robot_health(arg_val):
+	var old_val = _current_robot_health
+	_current_robot_health = arg_val
+	
+	if _current_robot_health > _max_robot_health:
+		_current_robot_health = _max_robot_health
+	
+	if _current_robot_health <= 0:
+		_current_robot_health = 0
+		
+		_is_robot_dead = true
+	else:
+		_is_robot_dead = false
+	
+	if old_val != _current_robot_health:
+		emit_signal("current_robot_health_changed", _current_robot_health)
+
+func get_current_robot_health() -> float:
+	return _current_robot_health
+
+
+func set_max_robot_health(arg_val):
+	var old_val = _max_robot_health
+	_max_robot_health = arg_val
+	
+	if _current_robot_health > _max_robot_health:
+		set_current_robot_health(_max_robot_health)
+	
+	emit_signal("max_robot_health_changed", _max_robot_health)
+
+func get_max_robot_health() -> float:
+	return _max_robot_health
+
+##
 
 func get_momentum__using_linear_velocity() -> Vector2:
 	return linear_velocity * last_calculated_object_mass
 
 func get_momentum_mag__using_linear_velocity() -> float:
 	return (linear_velocity * last_calculated_object_mass).length()
+
+################
+
+func set_current_player_capture_area_region(arg_area_region):
+	if is_instance_valid(_current_player_capture_area_region):
+		_disconnect_curr_area_region_signals()
+	
+	#####
+	
+	_current_player_capture_area_region = arg_area_region
+	
+	if is_instance_valid(_current_player_capture_area_region):
+		if !arg_area_region.is_area_captured():
+			if !arg_area_region.is_instant_capture():
+				pca_progress_drawer.color_edge_to_use = arg_area_region.player_PCA_progress_drawer__outline_color
+				pca_progress_drawer.color_fill_to_use = arg_area_region.player_PCA_progress_drawer__fill_color
+				pca_progress_drawer.is_enabled = true
+				_update_PCA_values_and_display()
+				
+				_start_draw_pca_progress_drawer()
+				
+				#
+				
+				if !arg_area_region.is_connected("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed"):
+					arg_area_region.connect("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed")
+				
+				if !arg_area_region.is_connected("region_area_captured", self, "_on_PCA_region_area_captured"):
+					arg_area_region.connect("region_area_captured", self, "_on_PCA_region_area_captured")
+				
+				if !arg_area_region.is_connected("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area"):
+					arg_area_region.connect("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area")
+				
+			else:
+				_on_PCA_region_area_captured()
+				
+
+func _disconnect_curr_area_region_signals():
+	if _current_player_capture_area_region.is_connected("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed"):
+		_current_player_capture_area_region.disconnect("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed")
+	
+	if _current_player_capture_area_region.is_connected("region_area_captured", self, "_on_PCA_region_area_captured"):
+		_current_player_capture_area_region.disconnect("region_area_captured", self, "_on_PCA_region_area_captured")
+	
+	if _current_player_capture_area_region.is_connected("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area"):
+		_current_player_capture_area_region.disconnect("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area")
+	
+
+
+
+func _start_draw_pca_progress_drawer():
+	if !pca_progress_drawer.visible:
+		var baseline_duration = _current_player_capture_area_region.get_baseline_duration_for_capture()
+		var show_duration = 0.25
+		if show_duration > baseline_duration:
+			show_duration = baseline_duration
+		
+		pca_progress_drawer.modulate.a = 0
+		pca_progress_drawer.visible = true
+		
+		var tweener = create_tween()
+		tweener.tween_property(pca_progress_drawer, "modulate:a", 1.0, show_duration)
+		
+
+func _on_PCA_duration_for_capture_left_changed(arg_base_duration, arg_curr_val_left, delta, arg_is_from_rewind):
+	_update_PCA_values_and_display()
+	
+
+func _update_PCA_values_and_display():
+	var curr_val = _current_player_capture_area_region.get_current_duration_for_capture_left()
+	var max_val = _current_player_capture_area_region.get_baseline_duration_for_capture()
+	
+	var ratio = curr_val / max_val
+	
+	pca_progress_drawer.set_ratio_filled(ratio)
+
+func _on_PCA_region__body_exited_from_area(body):
+	if body == self:
+		_stop_pca_progress_drawer()
+
+func _stop_pca_progress_drawer():
+	pca_progress_drawer.visible = false
+	pca_progress_drawer.set_is_enabled(false)
+	
+	if is_instance_valid(_current_player_capture_area_region):
+		_disconnect_curr_area_region_signals()
+	
+	_current_player_capture_area_region = null
+
+
+func _on_PCA_region_area_captured():
+	_stop_pca_progress_drawer()
+	
+
+
 
 ###################### 
 # REWIND RELATED
@@ -1258,6 +1413,9 @@ func get_rewind_save_state():
 		"current_health" : _current_health,
 		#"is_dead" : _i
 		
+		"current_robot_health" : _current_robot_health,
+		#"max_robot_health" : _max_robot_health,
+		
 		"rotating_for_floor_area_2d.rotation" : rotating_for_floor_area_2d.rotation
 	}
 	
@@ -1287,7 +1445,8 @@ func load_into_rewind_save_state(arg_state):
 	_no_energy_consecutive_duration = arg_state["no_energy_consecutive_duration"]
 	set_current_health(arg_state["current_health"])
 	_max_health = arg_state["max_health"]
-
+	
+	set_current_robot_health(arg_state["current_robot_health"])
 
 
 func destroy_from_rewind_save_state():

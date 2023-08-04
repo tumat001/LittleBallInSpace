@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://AreaRegionRelated/BaseAreaRegion.tscn" type="PackedScene" id=1]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.gd" type="Script" id=2]
+
+[node name="PlayerCaptureAreaRegion" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+duration_for_capture = 0.75
+ratio_duration_reduction_on_no_occupancy_per_sec = 0.5
+capture_type = 0

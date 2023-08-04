@@ -37,6 +37,7 @@ var _game_elements
 var _current_ball_count : int setget set_current_ball_count
 
 var is_infinite_ball_count : bool = false setget set_is_infinite_ball_count
+
 #
 
 var launch_ability : BaseAbility

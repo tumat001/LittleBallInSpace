@@ -8,6 +8,8 @@ var current_game_front_hud
 
 var current_rewind_manager
 
+var current_game_result_manager
+
 
 
 func add_child_to_game_elements__other_node_hoster(arg_node):

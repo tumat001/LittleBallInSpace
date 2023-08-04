@@ -4,10 +4,12 @@ extends CanvasLayer
 onready var other_hosters = $OtherHosters
 
 onready var ability_panel = $ControlContainer/AbilityPanel
-onready var energy_panel = $ControlContainer/EnergyPanel
+onready var energy_panel = $ControlContainer/VBoxContainer/MarginContainer/EnergyPanel
 onready var rewind_panel = $ControlContainer/RewindPanel
-onready var health_panel = $ControlContainer/HealthPanel
+onready var health_panel = $ControlContainer/VBoxContainer/HealthPanel
 onready var speed_panel = $ControlContainer/SpeedPanel
+onready var trophy_panel = $ControlContainer/TrophyPanel
+onready var robot_health_panel = $ControlContainer/VBoxContainer/RobotHealthPanel
 
 onready var tooltip_container = $TooltipContainer
 

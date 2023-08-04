@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ObjectsRelated/Pickupables/BasePickupables.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.gd" type="Script" id=2]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_PickupableOutline.tres" type="Shader" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Assets/Pickupables_LaunchBall_Ball01.png" type="Texture" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/Smooth = true
+shader_param/width = 4.0
+shader_param/outline_color = Color( 0.4, 0.85, 0, 1 )
+shader_param/pixel_size = 1
+shader_param/width_speed = 8.0
+
+[node name="Pickupable_LaunchBall" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+launch_ball_type = 0
+
+[node name="Sprite" parent="." index="0"]
+material = SubResource( 1 )
+texture = ExtResource( 4 )

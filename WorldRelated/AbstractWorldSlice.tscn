@@ -7,6 +7,8 @@ script = ExtResource( 1 )
 
 [node name="TileContainer" type="Node2D" parent="."]
 
+[node name="AreaRegionContainer" type="Node2D" parent="."]
+
 [node name="ObjectContainer" type="Node2D" parent="."]
 
 [node name="PlayerSpawnCoordsContainer" type="Node2D" parent="."]

@@ -61,6 +61,7 @@ const REWIND_COOLDOWN_AFTER_USE = 0.0#0.5
 enum CanCastRewindClauseIds {
 	IS_REWINDING = 0,
 	IN_COOLDOWN = 1
+	IS_GAME_RESULT_DECIDED = 2,
 }
 var can_cast_rewind_cond_clause : ConditionalClauses
 var last_calculated_can_cast_rewind : bool
@@ -87,6 +88,10 @@ var _rewindable_marker_data_at_next_frame : int
 const rewind_marker_data_to_img = {
 	RewindMarkerData.LAUNCH_BALL : preload("res://GameFrontHUDRelated/Subs/RewindPanel/Assets/RewindPanel_Marker_LaunchBall.png")
 }
+
+#
+
+var game_elements setget set_game_elements
 
 ##
 
@@ -133,7 +138,7 @@ func _on_can_cast_rewind_cond_clause_updated(arg_clause_id):
 func _update_last_calculated_can_cast_rewind():
 	last_calculated_can_cast_rewind = can_cast_rewind_cond_clause.is_passed
 
-#
+############################
 
 func _ready():
 	_initialize_rewind_cooldown_timer()
@@ -145,7 +150,20 @@ func _initialize_rewind_cooldown_timer():
 	add_child(rewind_cooldown_timer)
 	
 
-##
+#
+
+func set_game_elements(arg_ele):
+	game_elements = arg_ele
+	
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
+
+
+func _on_game_result_decided(arg_state):
+	can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.IS_GAME_RESULT_DECIDED)
+
+
+
+##########################
 
 func add_to_rewindables(arg_obj):
 	if arg_obj.get("is_rewindable"):

@@ -3,10 +3,16 @@ extends Node
 const AbstractWorldSlice = preload("res://WorldRelated/AbstractWorldSlice.gd")
 
 
+signal all_PCAs_of_all_world_slices_captured()
+signal all_PCAs_of_all_world_slices_uncaptured()
+
 
 var game_elements
 var _all_world_slices : Array
 
+var _world_slice_to_is_captured_all_PCA_map : Dictionary
+
+var _is_all_world_slice_PCAs_captured : bool = false
 
 ######
 
@@ -23,6 +29,14 @@ func _register_world_slice(arg_world_slice : AbstractWorldSlice):
 	_all_world_slices.append(arg_world_slice)
 	
 	arg_world_slice.connect("player_spawned", self, "_on_player_spawned", [], CONNECT_PERSIST)
+	arg_world_slice.connect("all_PCA_region_areas_captured", self, "_on_world_slice_all_PCA_region_areas_captured", [arg_world_slice])
+	arg_world_slice.connect("all_PCA_region_areas_uncaptured", self, "_on_world_slice_all_PCA_region_areas_uncaptured", [arg_world_slice])
+	
+	if arg_world_slice.is_all_PCA_regions_captured():
+		_world_slice_to_is_captured_all_PCA_map[arg_world_slice] = true
+	else:
+		_world_slice_to_is_captured_all_PCA_map[arg_world_slice] = false
+	_update_is_all_world_slice_PCAs_captured(false)
 
 func get_world_slice_with_id(arg_world_id) -> AbstractWorldSlice:
 	for world_slice in _all_world_slices:
@@ -42,4 +56,45 @@ func get_world_slice__can_spawn_player_when_no_current_player_in_GE() -> Abstrac
 
 func _on_player_spawned(arg_player):
 	add_child(arg_player)
+
+############
+
+
+func _on_world_slice_all_PCA_region_areas_captured(arg_world_slice):
+	_world_slice_to_is_captured_all_PCA_map[arg_world_slice] = true
+	_update_is_all_world_slice_PCAs_captured(true)
+	
+
+func _on_world_slice_all_PCA_region_areas_uncaptured(arg_world_slice):
+	_world_slice_to_is_captured_all_PCA_map[arg_world_slice] = false
+	_update_is_all_world_slice_PCAs_captured(true)
+	
+
+
+func _update_is_all_world_slice_PCAs_captured(arg_emit_signal : bool):
+	var old_val = _is_all_world_slice_PCAs_captured
+	_is_all_world_slice_PCAs_captured = _is_all_PCAs_captured__internal_calcs()
+	
+	if arg_emit_signal:
+		if old_val != _is_all_world_slice_PCAs_captured:
+			if _is_all_world_slice_PCAs_captured:
+				#print("WORLD_MANAGER: all pcas captured")
+				emit_signal("all_PCAs_of_all_world_slices_captured")
+				
+			else:
+				emit_signal("all_PCAs_of_all_world_slices_uncaptured")
+				
+				
+	
+
+func _is_all_PCAs_captured__internal_calcs():
+	for is_captured in _world_slice_to_is_captured_all_PCA_map.values():
+		if !is_captured:
+			return false
+	
+	return true
+
+
+func is_all_world_slice_PCAs_captured() -> bool:
+	return _is_all_world_slice_PCAs_captured
 

@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/Assets/RobotHealthIcon_Alive.png" type="Texture" id=1]
+[ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/Assets/RobotHealthPanel_Background.png" type="Texture" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/Assets/RobotHealthPanel_Fill.png" type="Texture" id=3]
+[ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/RobotHealthPanel.gd" type="Script" id=4]
+
+[node name="RobotHealthPanel" type="MarginContainer"]
+margin_right = 204.0
+margin_bottom = 29.0
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 204.0
+margin_bottom = 29.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 204.0
+margin_bottom = 29.0
+mouse_filter = 2
+
+[node name="RobotHealthTextureProgress" type="TextureProgress" parent="Control"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 202.0
+margin_bottom = 27.0
+mouse_filter = 2
+step = 0.1
+value = 50.0
+texture_progress = ExtResource( 3 )
+
+[node name="RobotHealthIcon" type="TextureRect" parent="Control"]
+margin_left = 181.0
+margin_top = 7.0
+margin_right = 196.0
+margin_bottom = 22.0
+mouse_filter = 2
+texture = ExtResource( 1 )

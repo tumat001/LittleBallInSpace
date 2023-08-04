@@ -33,3 +33,20 @@ func add_modi_to_player(arg_modi : AbstractPlayerModi):
 	
 	emit_signal("modi_added_to_player", arg_modi)
 
+
+func has_modi(arg_modi_id):
+	for modi in _all_modis:
+		if modi.modi_id == arg_modi_id:
+			return true
+	
+	return false
+
+func get_modi_or_null(arg_modi_id):
+	for modi in _all_modis:
+		if modi.modi_id == arg_modi_id:
+			return modi
+	
+	return null
+
+
+

@@ -7,6 +7,10 @@ const Player_Scene = preload("res://PlayerRelated/Player.tscn")
 
 signal player_spawned(arg_player)
 
+
+signal all_PCA_region_areas_captured()
+signal all_PCA_region_areas_uncaptured()
+
 ########
 
 var _player_global_spawn_coords : Array
@@ -19,9 +23,18 @@ var game_elements setget set_game_elements
 
 #
 
+var _all_win_type_player_capture_area_region_to_is_captured_map : Dictionary
+
+#
+
+var _is_all_pca_regions_captured : bool = false
+
+#
+
 onready var tile_container = $TileContainer
 onready var object_container = $ObjectContainer
 onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
+onready var area_region_container = $AreaRegionContainer
 
 ####
 
@@ -33,16 +46,19 @@ func set_game_elements(arg_elements):
 	else:
 		_on_after_game_start_init()
 
+
 #
 
 func _ready():
 	_initialize_spawn_coords()
+
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
 		_player_global_spawn_coords.append(child.global_position)
 
 
+#
 
 func spawn_player_at_spawn_coords_index(arg_i = 0):
 	var player = Player_Scene.instance()
@@ -58,8 +74,62 @@ func spawn_player_at_spawn_coords_index(arg_i = 0):
 
 func _on_after_game_start_init():
 	_attempt_set_player__to_all_base_tiles()
+	_initialize_area_regions()
 	
+	if _is_all_PCAs_are_captured():
+		_on_all_PCAs_captured()
 
+func _initialize_area_regions():
+	for child in area_region_container.get_children():
+		#child.set_game_elements(game_elements)
+		_add_and_register_area_region(child)
+
+func _add_and_register_area_region(arg_region):
+	if !area_region_container.get_children().has(arg_region):
+		area_region_container.add_child(arg_region)
+	
+	arg_region.set_game_elements(game_elements)
+	
+	if arg_region.get("is_player_capture_area_region"):
+		if arg_region.is_capture_type_win:
+			_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = false
+			
+			arg_region.connect("region_area_captured", self, "_on_PCA_region_area_captured", [arg_region])
+			arg_region.connect("region_area_uncaptured", self, "_on_PCA_region_area_uncaptured", [arg_region])
+
+
+func _on_PCA_region_area_captured(arg_region):
+	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = true
+	if _is_all_PCAs_are_captured():
+		_on_all_PCAs_captured()
+
+func _on_PCA_region_area_uncaptured(arg_region):
+	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = false
+	
+	var old_val = _is_all_pca_regions_captured
+	_is_all_pca_regions_captured = false
+	if old_val != _is_all_pca_regions_captured:
+		emit_signal("all_PCA_region_areas_uncaptured")
+
+
+func _is_all_PCAs_are_captured():
+	for PCA_region in _all_win_type_player_capture_area_region_to_is_captured_map.keys():
+		if !PCA_region.is_area_captured():
+			return false
+	
+	return true
+
+func _on_all_PCAs_captured():
+	_is_all_pca_regions_captured = true
+	
+	#print("ABSTRACT_WORLD_SLICE: all pcas captured")
+	emit_signal("all_PCA_region_areas_captured")
+
+
+func is_all_PCA_regions_captured():
+	return _is_all_pca_regions_captured
+
+#########
 
 func _attempt_set_player__to_all_base_tiles():
 	var player = game_elements.get_current_player()
