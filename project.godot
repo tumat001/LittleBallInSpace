@@ -42,6 +42,7 @@ StoreOfRng="*res://SingletonsAndConsts/StoreOfRNG.gd"
 GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
 TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
 StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
+StoreOfLevels="*res://LevelRelated/StoreOfLevels.gd"
 
 [debug]
 

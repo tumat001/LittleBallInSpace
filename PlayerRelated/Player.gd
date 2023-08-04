@@ -1205,6 +1205,10 @@ func is_no_health():
 ##
 
 func set_current_robot_health(arg_val):
+	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
+		return
+	
+	
 	var old_val = _current_robot_health
 	_current_robot_health = arg_val
 	

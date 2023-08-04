@@ -1,20 +1,20 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/AbstractVicDefAnim.tscn" type="PackedScene" id=1]
-[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/SharedAssets/VicDefAnim_HorizBanner_1x100.png" type="Texture" id=2]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/Mechanical/MechanicalCondensed-ZeDx.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/SharedAssets/VicDefAnim_VerticalBanner_80x1.png" type="Texture" id=3]
-[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/Imps/VicAnim_ActionStyle_01/VicAnim_ActionStyle_01.gd" type="Script" id=4]
-[ext_resource path="res://MiscRelated/FontRelated/Fonts/Mechanical/MechanicalCondensed-ZeDx.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/SharedAssets/VicDefAnim_HorizBanner_1x100.png" type="Texture" id=4]
+[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/Imps/DefAnim_ActionStyle_01/DefAnim_ActionStyle_01.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 55
-font_data = ExtResource( 5 )
+font_data = ExtResource( 2 )
 
-[node name="VicAnim_ActionStyle_01" instance=ExtResource( 1 )]
-script = ExtResource( 4 )
+[node name="DefAnim_ActionStyle_01" instance=ExtResource( 1 )]
+script = ExtResource( 5 )
 
 [node name="VerticalBandLeft" type="TextureRect" parent="." index="0"]
-modulate = Color( 0.0784314, 1, 0, 1 )
+modulate = Color( 1, 0.0470588, 0, 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -240.0
@@ -25,7 +25,7 @@ texture = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="VerticalBandRight" type="TextureRect" parent="." index="1"]
-modulate = Color( 0.0784314, 1, 0, 1 )
+modulate = Color( 1, 0.0470588, 0, 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = 160.0
@@ -45,7 +45,7 @@ margin_top = 160.0
 margin_bottom = 260.0
 rect_rotation = 180.0
 rect_scale = Vector2( 960, 1 )
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 stretch_mode = 2
 
 [node name="Label" type="Label" parent="." index="3"]
@@ -59,6 +59,6 @@ margin_right = 320.0
 margin_bottom = 142.5
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "Congratulations"
+text = "Defeat"
 align = 1
 valign = 1

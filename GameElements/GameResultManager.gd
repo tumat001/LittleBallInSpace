@@ -1,8 +1,13 @@
 extends Node
 
+const StoreOfVicDefAnim = preload("res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/StoreOfVicDefAnim.gd")
+
+#
 
 signal game_result_decided(arg_game_result)
 
+
+#
 
 enum GameResult {
 	NONE = 0,
@@ -33,7 +38,6 @@ func _exit_tree():
 func set_player(arg_player):
 	player = arg_player
 	
-	
 
 func set_game_elements(arg_elements):
 	game_elements = arg_elements
@@ -56,6 +60,40 @@ func _attempt_set_current_game_result(arg_result):
 		is_game_result_decided = true
 		#print("GRM: result decided: %s" % [_current_game_result])
 		emit_signal("game_result_decided", _current_game_result)
+		
+		_play_game_result_showing_anim()
+
+
+func _play_game_result_showing_anim():
+	if _current_game_result == GameResult.WIN:
+		_play_game_result_showing_anim__win()
+		
+	elif _current_game_result == GameResult.LOSE:
+		_play_game_result_showing_anim__lose()
+		
+
+
+func _play_game_result_showing_anim__win():
+	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_victory()
+	_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
+	
+
+func _play_game_result_showing_anim__lose():
+	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_defeat()
+	_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
+	
+
+func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
+	arg_scene.win_message_type = SingletonsAndConsts.current_base_level.win_message_type
+	arg_scene.lose_message_type = SingletonsAndConsts.current_base_level.lose_messege_type
+	
+	arg_scene.connect("end_of_anim", self, "_on_end_of_anim")
+	SingletonsAndConsts.current_game_front_hud.add_vic_def_anim(arg_scene)
+	
+
+
+func _on_end_of_anim():
+	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements()
 
 
 

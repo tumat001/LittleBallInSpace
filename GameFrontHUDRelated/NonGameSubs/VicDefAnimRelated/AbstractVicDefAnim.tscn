@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/VicDefAnimRelated/AbstractVicDefAnim.gd" type="Script" id=1]
+
+[node name="AbstractVicDefAnim" type="Control"]
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 1 )

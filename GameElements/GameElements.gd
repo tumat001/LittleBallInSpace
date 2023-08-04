@@ -7,6 +7,7 @@ const RotationRequestData = Player.RotationRequestData
 const GameFrontHUD = preload("res://GameFrontHUDRelated/GameFrontHUD.gd")
 const GameFrontHUD_Scene = preload("res://GameFrontHUDRelated/GameFrontHUD.tscn")
 
+const BaseLevel = preload("res://LevelRelated/Classes/BaseLevel.gd")
 
 #
 
@@ -14,6 +15,10 @@ signal after_game_start_init()
 signal before_game_quit()
 
 signal player_spawned(arg_player)
+
+#
+
+var current_base_level : BaseLevel
 
 #
 
@@ -26,8 +31,9 @@ var is_game_after_init : bool
 
 #
 
-
 var game_front_hud : GameFrontHUD
+
+#
 
 onready var world_manager = $WorldManager
 onready var player_modi_manager = $PlayerModiManager
@@ -63,9 +69,10 @@ func _ready():
 	#
 	
 	world_manager.game_elements = self
-	#todo temp for testing
-	world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_01_01, Vector2(0, 0))
-	# end of todo
+	
+	SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
+	current_base_level = SingletonsAndConsts.current_base_level
+	current_base_level.apply_modification_to_game_elements(self)
 	
 	
 	if !is_instance_valid(_current_player):
@@ -93,6 +100,7 @@ func _ready():
 func _deferred__after_init():
 	is_game_after_init = true
 	emit_signal("after_game_start_init")
+	current_base_level.after_game_init()
 
 #
 

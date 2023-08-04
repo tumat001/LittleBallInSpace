@@ -15,7 +15,10 @@ func _init():
 		rng.randomize()
 		
 		rng_singleton_map[rng_id] = rng
-
+	
+	#
+	
+	non_essential_rng = rng_singleton_map[RNGSource.NON_ESSENTIAL]
 
 func get_rng(arg_id) -> RandomNumberGenerator:
 	return rng_singleton_map[arg_id]

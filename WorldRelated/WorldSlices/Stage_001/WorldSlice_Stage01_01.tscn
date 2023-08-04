@@ -64,14 +64,6 @@ duration_for_capture = 3.0
 position = Vector2( 52.75, -78.25 )
 shape = SubResource( 3 )
 
-[node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="2" instance=ExtResource( 9 )]
-position = Vector2( 1122, 339 )
-duration_for_capture = 3.0
-
-[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
-position = Vector2( 59, -37 )
-shape = SubResource( 3 )
-
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 323, 162 )
 body_mode_to_use = 1
@@ -93,4 +85,3 @@ position = Vector2( 1037, 192 )
 [editable path="TileContainer/BaseTileSet4"]
 [editable path="AreaRegionContainer/EnergyAreaRegion"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
-[editable path="AreaRegionContainer/PlayerCaptureAreaRegion2"]
