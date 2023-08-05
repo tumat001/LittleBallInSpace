@@ -1,0 +1,54 @@
+extends "res://_NonMainGameRelateds/_Master/TransitionsRelated/AbstractTransitionSprite.gd"
+
+
+var screen_size = Vector2(960, 540)
+var circle_center : Vector2 = screen_size / 2
+
+
+var initial_ratio : float
+var target_ratio : float
+
+var duration : float = 0.35
+
+var wait_at_end : float
+
+
+####
+
+func start_transition():
+	.start_transition()
+	
+	_configure_properties_for_shader()
+	
+
+
+func _configure_properties_for_shader():
+	var dist_vec = _get_distance_vec_of_screen_center_from_circle_center()
+	var total_vec = dist_vec + screen_size
+	
+	scale = total_vec
+	material.set_shader_param("screen_width", total_vec.x)
+	material.set_shader_param("screen_height", total_vec.y)
+	material.set_shader_param("circle_size", initial_ratio)
+	
+	var tweener = create_tween()
+	tweener.set_parallel(false)
+	tweener.tween_method(self, "_tween_circle_size_of_shader", initial_ratio, target_ratio, duration)
+	tweener.tween_callback(self, "_finished_tween").set_delay(wait_at_end)
+
+func _get_distance_vec_of_screen_center_from_circle_center():
+	var dist_vec = (screen_size / 2) - circle_center
+	return Vector2(abs(dist_vec.x), abs(dist_vec.y))
+	
+
+
+func _tween_circle_size_of_shader(arg_ratio):
+	material.set_shader_param("circle_size", arg_ratio)
+	
+
+func _finished_tween():
+	_on_end_of_transition()
+	
+
+
+

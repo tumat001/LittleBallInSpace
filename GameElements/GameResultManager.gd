@@ -93,7 +93,9 @@ func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
 
 
 func _on_end_of_anim():
-	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements()
-
+	if _current_game_result == GameResult.WIN:
+		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+	else:
+		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
 
 

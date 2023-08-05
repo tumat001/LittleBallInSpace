@@ -32,8 +32,8 @@ static func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	level_details.level_id = arg_id
 	
 	if arg_id == LevelIds.TEST:
-		level_details.level_name_as_desc = "TestName Desc"
-		level_details.level_name_as_string = "TestName String"
+		level_details.level_name = ["TestName Desc", []]
+		level_details.level_desc = ["Testing Desc Lorem ipsum", []]
 	
 	
 	_level_id_to_level_details_map[arg_id] = level_details

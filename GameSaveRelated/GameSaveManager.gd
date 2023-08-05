@@ -1,6 +1,10 @@
 extends Node
 
 
+const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.gd")
+
+#
+
 signal is_player_health_on_start_zero_changed()
 
 signal first_time_play()
@@ -9,18 +13,15 @@ signal first_time_play()
 
 const player_data_file_path = "user://player_data.save"
 
-#
 
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
 
-#
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
-#
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
@@ -30,7 +31,20 @@ var player_name : String
 var first_time_opening_game : bool
 
 
+############################################
+
+const level_data_file_path = "user://level_layout_data.save"
+
+const LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER = "last_opened_level_layout_id"
+const LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER = "last_hovered_over_level_layout_element_id"
+
+var last_opened_level_layout_id
+var last_hovered_over_level_layout_element_id
+
+
+##############################
 #### base methods
+#############################
 
 func _save_using_dict(arg_dict, arg_file_path, arg_print_err_msg):
 	var save_dict = arg_dict
@@ -61,18 +75,21 @@ func _save_using_arr(arg_arr, arg_file_path, arg_print_err_msg):
 	
 	save_file.close()
 
-#
+################################
 
 func _ready():
 	_attempt_load_existing_player_related_data()
-	
+	_attempt_load_existing_level_related_data()
 	
 	
 	if first_time_opening_game:
 		emit_signal("first_time_play")
 
-#
 
+
+####################################
+## PLAYER RELATED
+####################################
 
 func _attempt_load_existing_player_related_data():
 	var load_file = File.new()
@@ -183,7 +200,62 @@ func _on_game_result_decided(arg_result, arg_game_result_manager):
 	
 
 
+#####################################
+## LEVEL RELATED
+####################################
+
+func _attempt_load_existing_level_related_data():
+	var load_file = File.new()
+	
+	if load_file.file_exists(level_data_file_path):
+		var err_stat = load_file.open(level_data_file_path, File.READ)
+		
+		if err_stat != OK:
+			print("Loading error! -- Level data")
+			return false
+		
+		_load_level_related_data(load_file)
+		
+		load_file.close()
+		return true
+		
+	else:
+		_load_level_related_data(null)
+		return false
+	
+	
+
+
+func _load_level_related_data(arg_file : File):
+	var data : Dictionary
+	if arg_file != null:
+		data = parse_json(arg_file.get_line())
+	
+	if data == null:
+		data = {}
+	
+	##
+	
+	if data.has(LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER):
+		last_opened_level_layout_id = int(data[LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER])
+	else:
+		last_opened_level_layout_id = StoreOfLevelLayouts.FIRST_LEVEl_LAYOUT
+	
+	
+	if data.has(LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER):
+		last_hovered_over_level_layout_element_id = int(data[LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER])
+	else:
+		last_hovered_over_level_layout_element_id = GUI_AbstractLevelLayout.UNINITIALIZED_CURSOR
+	
+	
+
+# todo make save for last opened lvl layout id and relateds
+
+
+
+#############################################
 ##
+#############################################
 
 func _exit_tree():
 	_save_player_data()

@@ -1,5 +1,11 @@
 extends Node
 
+#
+
+signal current_rewind_manager_changed(arg_manager)
+signal current_game_elements_changed(arg_elements)
+
+#
 
 var current_base_level
 var current_base_level_id
@@ -7,13 +13,25 @@ var current_level_details
 
 #
 
-var current_root_of_game_elements
-var current_game_elements
+var current_master
+
+var current_game_elements setget set_current_game_elements
 var current_game_elements__other_node_hoster
 var current_game_front_hud
-var current_rewind_manager
+var current_rewind_manager setget set_current_rewind_manager
 var current_game_result_manager
 
+#
+
+func set_current_game_elements(arg_elements):
+	current_game_elements = arg_elements
+	
+	emit_signal("current_game_elements_changed", arg_elements)
+
+func set_current_rewind_manager(arg_manager):
+	current_rewind_manager = arg_manager
+	
+	emit_signal("current_rewind_manager_changed", arg_manager)
 
 #
 
@@ -39,9 +57,9 @@ func deferred_add_child_to_game_elements__other_node_hoster(arg_node):
 ##################################
 
 
-func switch_to_level_selection_scene__from_game_elements():
-	#todo
-	print("Yayy end")
-	
+func switch_to_level_selection_scene__from_game_elements__as_win():
+	current_master.switch_to_level_selection_scene__from_game_elements__as_win()
 
+func switch_to_level_selection_scene__from_game_elements__as_lose():
+	current_master.switch_to_level_selection_scene__from_game_elements__as_lose()
 

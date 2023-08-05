@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://_NonMainGameRelateds/_Master/TransitionsRelated/AbstractTransitionSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/StandardCircle/Transition_StandardCircle.gd" type="Script" id=2]
+[ext_resource path="res://_NonMainGameRelateds/_Master/TransitionsRelated/Assets/Transition_WhiteFill.png" type="Texture" id=3]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_CircleTransition.tres" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/circle_size = 0.0
+shader_param/screen_width = null
+shader_param/screen_height = null
+
+[node name="Transition_StandardCircle" instance=ExtResource( 1 )]
+material = SubResource( 1 )
+texture = ExtResource( 3 )
+script = ExtResource( 2 )

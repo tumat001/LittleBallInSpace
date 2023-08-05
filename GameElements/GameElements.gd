@@ -35,16 +35,28 @@ var game_front_hud : GameFrontHUD
 
 #
 
-onready var world_manager = $WorldManager
-onready var player_modi_manager = $PlayerModiManager
+onready var world_manager = $GameContainer/WorldManager
+onready var player_modi_manager = $GameContainer/PlayerModiManager
 
-onready var other_node_hoster = $OtherNodeHoster
+onready var other_node_hoster = $GameContainer/OtherNodeHoster
 
-onready var rewind_manager = $RewindManager
+onready var rewind_manager = $GameContainer/RewindManager
 
-onready var game_result_manager = $GameResultManager
+onready var game_result_manager = $GameContainer/GameResultManager
 
-onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
+onready var non_gui_screen_sprite = $GameContainer/NonGUIScreenShaderSprite
+
+
+#onready var world_manager = $WorldManager
+#onready var player_modi_manager = $PlayerModiManager
+#
+#onready var other_node_hoster = $OtherNodeHoster
+#
+#onready var rewind_manager = $RewindManager
+#
+#onready var game_result_manager = $GameResultManager
+#
+#onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
 #
 
@@ -132,7 +144,7 @@ func _initialize_game_front_hud():
 
 func _deferred_add_child__game_front_hud():
 	#get_tree().get_root().call_deferred("add_child", game_front_hud)
-	get_tree().get_root().add_child(game_front_hud)
+	add_child(game_front_hud)
 	
 	_current_player.initialize_health_panel_relateds()
 	SingletonsAndConsts.current_game_front_hud.speed_panel.set_player(_current_player)

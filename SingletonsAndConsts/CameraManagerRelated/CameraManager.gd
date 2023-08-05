@@ -23,8 +23,40 @@ var _nodes_to_follow_camera : Array = []
 ##########
 
 func _ready():
-	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
-	
+	_attempt_connect_self_to_rewind_manager()
+	_attempt_connect_self_to_game_elements()
+
+#
+
+func _on_current_rewind_manager_changed(arg_manager):
+	_attempt_connect_self_to_rewind_manager()
+
+func _attempt_connect_self_to_rewind_manager():
+	if is_instance_valid(SingletonsAndConsts.current_rewind_manager):
+		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	else:
+		if !SingletonsAndConsts.is_connected("current_rewind_manager_changed", self, "_on_current_rewind_manager_changed"):
+			SingletonsAndConsts.connect("current_rewind_manager_changed", self, "_on_current_rewind_manager_changed")
+
+
+
+func _on_current_game_elements_changed(arg_ele):
+	_attempt_connect_self_to_game_elements()
+
+func _attempt_connect_self_to_game_elements():
+	if is_instance_valid(SingletonsAndConsts.current_game_elements):
+		SingletonsAndConsts.current_game_elements.connect("before_game_quit", self, "_on_before_game_quit__game_elements")
+	else:
+		if !SingletonsAndConsts.is_connected("current_game_elements_changed", self, "_on_current_game_elements_changed"):
+			SingletonsAndConsts.connect("current_game_elements_changed", self, "_on_current_game_elements_changed")
+
+
+func _on_before_game_quit__game_elements():
+	if is_instance_valid(camera) and !camera.is_queued_for_deletion():
+		camera.queue_free()
+
+
+#
 
 #func get_current_camera_2D():
 #	var viewport = get_viewport()
@@ -116,9 +148,16 @@ func set_non_gui_screen_shader_sprite(arg_sprite : Sprite):
 	_make_node_follow_camera(arg_sprite)
 
 func _make_node_follow_camera(arg_node_2d : Node2D):
+	
+	if !arg_node_2d.is_connected("tree_exiting", self, "_on_node_following_camera_tree_exiting"):
+		arg_node_2d.connect("tree_exiting", self, "_on_node_following_camera_tree_exiting")
+	
 	if !_nodes_to_follow_camera.has(arg_node_2d):
 		_nodes_to_follow_camera.append(arg_node_2d)
 	
+
+func _on_node_following_camera_tree_exiting(arg_node_2d : Node2D):
+	_nodes_to_follow_camera.erase(arg_node_2d)
 
 
 func _process(delta):

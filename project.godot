@@ -27,6 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="LittleBallInSpace"
+run/main_scene="res://_NonMainGameRelateds/_Master/Master.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="littleballinspace"
 config/icon="res://icon.png"
@@ -43,6 +44,7 @@ GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
 TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
 StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
 StoreOfLevels="*res://LevelRelated/StoreOfLevels.gd"
+StoreOfLevelLayouts="*res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/StoreOfLevelLayouts.gd"
 
 [debug]
 
