@@ -8,13 +8,13 @@ onready var energy_panel = $ControlContainer/VBoxContainer/MarginContainer/Energ
 onready var rewind_panel = $ControlContainer/RewindPanel
 onready var health_panel = $ControlContainer/VBoxContainer/HealthPanel
 onready var speed_panel = $ControlContainer/SpeedPanel
-onready var trophy_panel = $ControlContainer/TrophyPanel
+onready var trophy_panel = $ControlContainer/TopRightPanel/VBox/TrophyPanel
 onready var robot_health_panel = $ControlContainer/VBoxContainer/RobotHealthPanel
 
 onready var tooltip_container = $TooltipContainer
 
 onready var vic_def_anim_container = $VicDefAnimContainer
-
+onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
 
 
 ###
@@ -43,4 +43,11 @@ func add_vic_def_anim(arg_anim):
 
 func _on_vic_def_anim_ready_finished(arg_anim):
 	arg_anim.start_show()
+
+#
+
+func _ready():
+	coins_panel.configure_self_to_monitor_coin_status_for_level(SingletonsAndConsts.current_base_level_id)
+	
+
 

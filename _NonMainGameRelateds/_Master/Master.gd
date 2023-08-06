@@ -27,6 +27,15 @@ func _enter_tree():
 #
 
 func _ready():
+	#TODO Temp for quick testing of lvls
+	if (false):
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01
+		
+		var game_elements = GameElements_Scene.instance()
+		game_elements_container.add_child(game_elements)
+		return
+	#
+	
 	if GameSaveManager.first_time_opening_game:
 		_do_appropriate_action__for_first_time()
 		
@@ -54,6 +63,7 @@ func load_and_show_layout_selection_whole_screen():
 
 func _on_selection_screen__prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id):
 	var level_details = arg_currently_hovered_tile.level_details
+	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	#var transition = play_transition__using_id(level_details.transition_id__entering_level__out)
 	var transition = construct_transition__using_id(level_details.transition_id__entering_level__out)
 	transition.circle_center = arg_currently_hovered_tile.get_center_position()
@@ -65,6 +75,7 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 		gui__level_selection_whole_screen.visible = false
 		gui__level_selection_whole_screen.queue_free()
 	
+	#TODO make use of asyncloader eventually
 	var game_elements = GameElements_Scene.instance()
 	game_elements_container.add_child(game_elements)
 	

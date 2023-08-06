@@ -10,23 +10,33 @@ enum LevelIds {
 	TEST = -10,
 	
 	LEVEL_01 = 1
+	LEVEL_02 = 1
+	
 }
 
-const _level_id_to_level_details_map : Dictionary = {}
+var _level_id_to_level_details_map : Dictionary = {}
 
+var _level_id_to_coin_amount_map : Dictionary
+var _total_coin_count : int
 
 # should never happen normally...
 const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
 
+
+#################
+
+func _ready():
+	_initialize_coin_details__check_for_game_save_manager()
+
 #
 
-static func is_level_id_exists(arg_id):
+func is_level_id_exists(arg_id):
 	return LevelIds.values().has(arg_id)
 
 
 #
 
-static func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
+func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	if _level_id_to_level_details_map.has(arg_id):
 		return _level_id_to_level_details_map[arg_id]
 	
@@ -58,34 +68,82 @@ static func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["Beginnings", []]
 		]
 		level_details.level_desc = [
-			["A step in a thousand mile journey... Well, you can't really make a step here but you know what I mean..."]
+			["A step in a thousand mile journey... Well, you can't really make a step here but you know what I mean...", []]
 		]
 		
 		
+		_set_details__to_usual_circle_types(level_details)
+		
+	elif arg_id == LevelIds.LEVEL_02:
+		level_details.level_name = [
+			["Move", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__to_usual_circle_types(level_details)
+	
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
 	return level_details
 
 
+#####
+
+func generate_base_level_imp_new(arg_id):
+	if arg_id == LevelIds.TEST:
+		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
+	elif arg_id == LevelIds.LEVEL_01:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
+		
+	
+
+###### COINS
+
+func _initialize_coin_details__check_for_game_save_manager():
+	if GameSaveManager.is_manager_initialized():
+		_initialize_coin_details()
+	else:
+		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
+		
+	
+
+func _on_save_manager_initialized():
+	_initialize_coin_details()
+	
+
+func _initialize_coin_details():
+	_level_id_to_coin_amount_map = {
+		LevelIds.TEST : 0,
+		
+		LevelIds.LEVEL_01 : 3,
+		LevelIds.LEVEL_02 : 3,
+	}
+	
+	_calculate_total_coin_count()
+
+func _calculate_total_coin_count():
+	for amount in _level_id_to_coin_amount_map.values():
+		_total_coin_count += amount
+
+
+func get_coin_count_for_level(arg_id):
+	return _level_id_to_coin_amount_map[arg_id]
+
+func get_total_coin_count() -> int:
+	return _total_coin_count
+
+###########################
+### HELPERS
+############################
 
 # All black
-static func _set_details__to_usual_circle_types(arg_details : LevelDetails):
+func _set_details__to_usual_circle_types(arg_details : LevelDetails):
 	arg_details.transition_id__entering_level__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__entering_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
-
-
-#####
-
-static func generate_base_level_imp_new(arg_id):
-	if arg_id == LevelIds.TEST:
-		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
-	elif arg_id == LevelIds.LEVEL_01:
-		#todo
-		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
-		
-	
-
 

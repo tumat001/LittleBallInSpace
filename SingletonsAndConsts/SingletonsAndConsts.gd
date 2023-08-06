@@ -38,6 +38,7 @@ func set_current_rewind_manager(arg_manager):
 func initialize_current_level_configs_based_on_current_id():
 	if !StoreOfLevels.is_level_id_exists(current_base_level_id):
 		current_base_level_id = StoreOfLevels.DEFAULT_LEVEL_ID_FOR_EMPTY
+		
 	
 	current_base_level = StoreOfLevels.generate_base_level_imp_new(current_base_level_id)
 	current_base_level.level_id = current_base_level_id

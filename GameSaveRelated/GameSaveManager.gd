@@ -5,9 +5,14 @@ const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelect
 
 #
 
+signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id)
+
+
 signal is_player_health_on_start_zero_changed()
 
 signal first_time_play()
+
+signal save_manager_initialized()
 
 #
 
@@ -17,11 +22,16 @@ const player_data_file_path = "user://player_data.save"
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
-
+const PLAYER_COIN__DIC_IDENTIFIER = "PLAYER_COIN_LEVEL_MAP__DIC_IDENTIFIER"
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
+##########
+
+var _is_manager_initialized : bool = false
+
+#
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
@@ -30,6 +40,9 @@ var player_name : String
 
 var first_time_opening_game : bool
 
+
+var _level_id_to_coin_ids_collected_map : Dictionary
+var _total_coin_collected_count : int
 
 ############################################
 
@@ -82,10 +95,16 @@ func _ready():
 	_attempt_load_existing_level_related_data()
 	
 	
+	
+	_is_manager_initialized = true
+	emit_signal("save_manager_initialized")
+	
 	if first_time_opening_game:
 		emit_signal("first_time_play")
 
 
+func is_manager_initialized() -> bool:
+	return _is_manager_initialized
 
 ####################################
 ## PLAYER RELATED
@@ -140,13 +159,67 @@ func _load_player_related_data(arg_file : File):
 		first_time_opening_game = data[FIRST_TIME_OPENING__DIC_IDENTIFIER]
 	else:
 		first_time_opening_game = true
+	
+	##
+	
+	if data.has(PLAYER_COIN__DIC_IDENTIFIER):
+		_level_id_to_coin_ids_collected_map = data[PLAYER_COIN__DIC_IDENTIFIER]
+		_correct_and_fill_level_id_to_coins_collected_map()
+	else:
+		_initialize_level_id_to_coins_collected_count_map()
 
+func _initialize_level_id_to_coins_collected_count_map():
+	_level_id_to_coin_ids_collected_map = {}
+	_correct_and_fill_level_id_to_coins_collected_map()
+
+func _correct_and_fill_level_id_to_coins_collected_map():
+	for level_id in StoreOfLevels.LevelIds.values():
+		if !_level_id_to_coin_ids_collected_map.has(level_id):
+			_level_id_to_coin_ids_collected_map[level_id] = []
+	
+
+
+func is_coin_id_collected_in_level(arg_coin_id, arg_level_id):
+	return _level_id_to_coin_ids_collected_map[arg_level_id].has(arg_coin_id)
+
+func set_coin_id_in_level_as_collected(arg_coin_id, arg_level_id, arg_is_collected : bool):
+	var coins_collected : Array = _level_id_to_coin_ids_collected_map[arg_level_id]
+	if arg_is_collected:
+		if !coins_collected.has(arg_coin_id):
+			coins_collected.append(arg_coin_id)
+	else:
+		if coins_collected.has(arg_coin_id):
+			coins_collected.erase(arg_coin_id)
+		
+	
+	_total_coin_collected_count = _calculate_coin_count_collected_in_whole_game()
+	emit_signal("coin_collected_for_level_changed", coins_collected, arg_coin_id, arg_level_id)
+
+func _calculate_coin_count_collected_in_whole_game():
+	var total = 0
+	for coin_ids_collected in _level_id_to_coin_ids_collected_map.values():
+		total += coin_ids_collected.size()
+	
+	return total
+
+
+
+func get_coin_ids_collected_in_level(arg_level_id):
+	return _level_id_to_coin_ids_collected_map[arg_level_id]
+
+
+func get_total_coin_collected_count() -> int:
+	return _total_coin_collected_count
+
+
+#
 
 func _save_player_data():
 	var save_dict = {
 		PLAYER_HEALTH__DIC_IDENTIFIER : player_health_on_start,
 		PLAYER_NAME__DIC_IDENTIFIER : player_name,
-		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game
+		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
+		PLAYER_COIN__DIC_IDENTIFIER : _level_id_to_coin_ids_collected_map, 
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -198,6 +271,9 @@ func _on_game_result_decided(arg_result, arg_game_result_manager):
 	if arg_result == arg_game_result_manager.GameResult.WIN:
 		player_health_on_start = tentative_player_health_on_start
 	
+
+#
+
 
 
 #####################################

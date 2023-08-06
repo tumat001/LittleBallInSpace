@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/SpeedPanel/SpeedPanel.tscn" type="PackedScene" id=6]
 [ext_resource path="res://GameFrontHUDRelated/Subs/TrophyPanel/TrophyPanel.tscn" type="PackedScene" id=7]
 [ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/RobotHealthPanel.tscn" type="PackedScene" id=8]
+[ext_resource path="res://GameFrontHUDRelated/Subs/CoinsPanel/CoinsPanel.tscn" type="PackedScene" id=9]
 
 [node name="GameFrontHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -75,11 +76,27 @@ margin_top = 438.0
 margin_right = 875.0
 margin_bottom = 478.0
 
-[node name="TrophyPanel" parent="ControlContainer" instance=ExtResource( 7 )]
-margin_left = 925.0
-margin_top = 18.0
-margin_right = 941.0
-margin_bottom = 33.0
+[node name="TopRightPanel" type="MarginContainer" parent="ControlContainer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -103.0
+margin_top = 30.0
+margin_right = -23.0
+margin_bottom = 73.0
+
+[node name="VBox" type="VBoxContainer" parent="ControlContainer/TopRightPanel"]
+margin_right = 80.0
+margin_bottom = 43.0
+
+[node name="TrophyPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 7 )]
+margin_left = 64.0
+margin_right = 80.0
+size_flags_horizontal = 10
+
+[node name="CoinsPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 9 )]
+margin_top = 19.0
+margin_right = 80.0
+margin_bottom = 43.0
 
 [node name="TooltipContainer" type="Control" parent="."]
 margin_right = 40.0
