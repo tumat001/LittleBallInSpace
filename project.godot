@@ -45,6 +45,7 @@ TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
 StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
 StoreOfLevels="*res://LevelRelated/StoreOfLevels.gd"
 StoreOfLevelLayouts="*res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/StoreOfLevelLayouts.gd"
+AsyncLoader="*res://SingletonsAndConsts/AsyncLoader.gd"
 
 [debug]
 

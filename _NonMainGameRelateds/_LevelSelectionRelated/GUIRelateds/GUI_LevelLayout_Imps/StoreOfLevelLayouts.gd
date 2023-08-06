@@ -25,8 +25,7 @@ func generate_instance_of_layout(arg_id):
 	var scene_ref
 	
 	if arg_id == LevelLayoutIds.LAYOUT_01:
-		#scene_ref = preload()
-		pass
+		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.tscn")
 	
 	
 	return scene_ref.instance()

@@ -27,22 +27,24 @@ var modulate_of_level_tile : Color
 var texture_of_level_tile__locked : Texture
 var modulate_of_level_tile__locked : Color
 
-
+# setted by gamesavemanager
 var is_level_locked setget set_is_level_locked
 
 
 var transition_id__entering_level__out  # from selection to blank
 var transition_id__entering_level__in   # from blank to game
 
+# for win
 var transition_id__exiting_level__out  # from game to blank
 var transition_id__exiting_level__in  # from blank to selection
 
-
-var transition_id__exiting_level__out__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK  # from game to blank
-var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK  # from blank to selection
-
+# for lose
 var transition_id__exiting_level__out__for_lose = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK  # from game to blank
 var transition_id__exiting_level__in__for_lose = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK  # from blank to selection
+
+# for quit
+var transition_id__exiting_level__out__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK  # from game to blank
+var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK  # from blank to selection
 
 
 ##########

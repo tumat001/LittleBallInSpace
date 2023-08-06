@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.tscn" type="PackedScene" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.gd" type="Script" id=2]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_White_32x32.png" type="Texture" id=4]
+
+[node name="GUI_LevelLayout_01" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+default_node_to_summon_cursor_on__for_first_time__path = NodePath("LayoutElesContainer/GUI_LevelLayoutEle_Tile_01")
+
+[node name="LayoutElesContainer" parent="." index="1"]
+margin_right = 960.0
+margin_bottom = 540.0
+
+[node name="GUI_LevelLayoutEle_Tile_01" parent="LayoutElesContainer" index="0" instance=ExtResource( 3 )]
+margin_left = 185.0
+margin_top = 280.0
+margin_right = 231.0
+margin_bottom = 326.0
+layout_element_tile__right__path = NodePath("../GUI_LevelLayoutEle_Path_01")
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 3 )]
+margin_left = 224.0
+margin_top = 280.0
+margin_right = 256.0
+margin_bottom = 312.0
+layout_element_tile__left__path = NodePath("../GUI_LevelLayoutEle_Tile_01")
+layout_element_tile__right__path = NodePath("../GUI_LevelLayoutEle_Path_02")
+is_path = true
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="2" instance=ExtResource( 3 )]
+margin_left = 272.0
+margin_top = 280.0
+margin_right = 304.0
+margin_bottom = 312.0
+layout_element_tile__left__path = NodePath("../GUI_LevelLayoutEle_Path_01")
+is_path = true
+default_texture_of_tile = ExtResource( 4 )

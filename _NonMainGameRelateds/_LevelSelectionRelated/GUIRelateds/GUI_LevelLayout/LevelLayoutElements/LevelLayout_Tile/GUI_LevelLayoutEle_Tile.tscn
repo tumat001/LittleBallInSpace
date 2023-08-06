@@ -1,15 +1,32 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd" type="Script" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_TilePath_White_All_46x46.png" type="Texture" id=2]
 
 [node name="GUI_LevelLayoutEle_Tile" type="MarginContainer"]
 margin_right = 40.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 46, 46 )
 mouse_filter = 2
 script = ExtResource( 1 )
 default_texture_of_tile = null
 
 [node name="TileTextureRect" type="TextureRect" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 23.0
+margin_top = 23.0
+margin_right = 23.0
+margin_bottom = 23.0
 mouse_filter = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="PathTextureContainer" type="Control" parent="."]
+margin_right = 46.0
+margin_bottom = 46.0
+mouse_filter = 2
+
+[node name="PathTextureRect__Editor" type="TextureRect" parent="."]
+margin_right = 46.0
+margin_bottom = 46.0
+mouse_filter = 2
+texture = ExtResource( 2 )

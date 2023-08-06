@@ -41,6 +41,19 @@ var _currently_hovered_tile : GUI_LevelLayoutEle_Tile
 
 #
 
+const INPUT_DELAY_AFTER_GLIDE = 0.2
+var _input_delay = 0
+
+const INPUT_TYPE__NONE = 0
+const INPUT_TYPE__LEFT = 1
+const INPUT_TYPE__RIGHT = 2
+const INPUT_TYPE__UP = 3
+const INPUT_TYPE__DOWN = 4
+
+var _last_input_type : int = INPUT_TYPE__NONE
+
+#
+
 onready var player_cursor = $MiscContainer/Cursor
 
 onready var background_container = $BackgroundContainer
@@ -59,7 +72,8 @@ func _ready():
 	_init_id_to_layout_ele_map()
 	_summon_cursor_at_appropriate_loc()
 	set_is_layout_enabled(is_layout_enabled)
-	
+
+#
 
 func _init_id_to_layout_ele_map():
 	for child in layout_elements_container.get_children():
@@ -119,13 +133,31 @@ func _summon_cursor_at_appropriate_loc():
 
 
 func _instant_place_cursor_at_layout_ele_id(arg_id):
-	var ele = _id_to_layout_ele_map[arg_id]
-	_instant_place_cursor_at_layout_ele(ele)
+	var ele
+	if arg_id == UNINITIALIZED_CURSOR:
+		ele = get_node(default_node_to_summon_cursor_on__for_first_time__path)
+	elif arg_id == NO_CURSOR:
+		pass
+	else:
+		 ele = _id_to_layout_ele_map[arg_id]
+	
+	if ele != null:
+		_instant_place_cursor_at_layout_ele(ele)
 
 func _instant_place_cursor_at_layout_ele(arg_ele : Control):
-	player_cursor.rect_global_position = arg_ele.global_position
+	#player_cursor.rect_global_position = arg_ele.rect_global_position
+	player_cursor.rect_global_position = _get_adjusted_cursor_pos__based_on_pos(arg_ele)
 	
 	_assign_layout_ele_as_current_hovered(arg_ele)
+
+func _get_adjusted_cursor_pos__based_on_pos(arg_ele : Control):
+	var arg_ele_size : Vector2 = arg_ele.rect_size
+	var arg_ele_pos : Vector2 = arg_ele.rect_global_position
+	
+	var cursor_size = player_cursor.rect_size
+	var diff = (cursor_size - arg_ele_size) / 2
+	
+	return arg_ele_pos - diff
 
 
 func _assign_layout_ele_as_current_hovered(arg_ele):
@@ -138,12 +170,15 @@ func _assign_layout_ele_as_current_hovered(arg_ele):
 
 
 func _glide_place_cursor_at_layout_ele(arg_ele : Control):
+	if _is_player_cursor_gliding:
+		player_cursor.rect_global_position = _get_adjusted_cursor_pos__based_on_pos(_currently_hovered_tile)
+	
 	_is_player_cursor_gliding = true
 	
 	var glide_duration : float = 0.2
 	
 	var tweener = create_tween()
-	tweener.tween_property(player_cursor, "rect_global_position", arg_ele.rect_global_position, glide_duration).set_ease(Tween.EASE_IN_OUT)
+	tweener.tween_property(player_cursor, "rect_global_position", _get_adjusted_cursor_pos__based_on_pos(arg_ele), glide_duration).set_ease(Tween.EASE_IN_OUT)
 	tweener.tween_callback(self, "_on_player_cursor_done_gliding").set_delay(glide_duration)
 	
 	_assign_layout_ele_as_current_hovered(arg_ele)
@@ -155,46 +190,126 @@ func _on_player_cursor_done_gliding():
 ##
 
 func set_is_layout_enabled(arg_val):
-	var old_val = arg_val
+	var old_val = is_layout_enabled
 	is_layout_enabled = arg_val
 	
 	if old_val != arg_val:
 		if is_layout_enabled:
-			if !is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
-				connect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
-			
+			#if !is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
+			#	connect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+			pass
 		else:
-			if is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
-				disconnect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
-			
+			#if is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
+			#	disconnect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+			pass
 
 ##
 
-func _on_GUI_AbstractLevelLayout_gui_input(event):
+func _unhandled_key_input(event):
 	if event is InputEventKey:
-		if _is_player_cursor_active:
+		if _is_player_cursor_active and is_layout_enabled:
 			
-			if !_is_player_cursor_gliding:
-				if event.is_action("ui_up"):
-					_attempt_glide_cursor_from_current__to_up()
-					
-				elif event.is_action("ui_down"):
-					_attempt_glide_cursor_from_current__to_down()
-					
-				elif event.is_action("ui_left"):
-					_attempt_glide_cursor_from_current__to_left()
-					
-				elif event.is_action("ui_right"):
-					_attempt_glide_cursor_from_current__to_right()
-					
+			#if !_is_player_cursor_gliding:
+#			if event.is_action("ui_up") and !event.is_action_released("ui_up"):
+#				_attempt_glide_cursor_from_current__to_up()
+#
+#			elif event.is_action("ui_down") and !event.is_action_released("ui_down"):
+#				_attempt_glide_cursor_from_current__to_down()
+#
+#			elif event.is_action("ui_left") and !event.is_action_released("ui_left"):
+#				_attempt_glide_cursor_from_current__to_left()
+#
+#			elif event.is_action("ui_right") and !event.is_action_released("ui_right"):
+#				_attempt_glide_cursor_from_current__to_right()
+#
+			
+			
+			if event.is_action_pressed("ui_up"):
+				_last_input_type = INPUT_TYPE__UP
+				
+			elif event.is_action_pressed("ui_down"):
+				_last_input_type = INPUT_TYPE__DOWN
+				
+			elif event.is_action_pressed("ui_left"):
+				_last_input_type = INPUT_TYPE__LEFT
+				
+			elif event.is_action_pressed("ui_right"):
+				_last_input_type = INPUT_TYPE__RIGHT
 				
 			
+			if event.is_action_released("ui_up"):
+				if _last_input_type == INPUT_TYPE__UP:
+					_last_input_type = INPUT_TYPE__NONE
 			
+			if event.is_action_released("ui_down"):
+				if _last_input_type == INPUT_TYPE__DOWN:
+					_last_input_type = INPUT_TYPE__NONE
+			
+			if event.is_action_released("ui_left"):
+				if _last_input_type == INPUT_TYPE__LEFT:
+					_last_input_type = INPUT_TYPE__NONE
+			
+			if event.is_action_released("ui_right"):
+				if _last_input_type == INPUT_TYPE__RIGHT:
+					_last_input_type = INPUT_TYPE__NONE
+			
+			
+			##
 			if event.is_action_released("ui_accept"):
 				_attempt_enter_inside_current_tile()
+
+
+func _process(delta):
+	if _input_delay > 0:
+		_input_delay -= delta
+	
+	if _input_delay <= 0:
+		if _is_player_cursor_active and is_layout_enabled:
+			
+			if _last_input_type == INPUT_TYPE__LEFT:
+				_attempt_glide_cursor_from_current__to_left()
+				_input_delay += INPUT_DELAY_AFTER_GLIDE
+				
+			elif _last_input_type == INPUT_TYPE__RIGHT:
+				_attempt_glide_cursor_from_current__to_right()
+				_input_delay += INPUT_DELAY_AFTER_GLIDE
+				
+			elif _last_input_type == INPUT_TYPE__UP:
+				_attempt_glide_cursor_from_current__to_up()
+				_input_delay += INPUT_DELAY_AFTER_GLIDE
+				
+			elif _last_input_type == INPUT_TYPE__DOWN:
+				_attempt_glide_cursor_from_current__to_down()
+				_input_delay += INPUT_DELAY_AFTER_GLIDE
 				
 			
 			
+
+
+#
+#func _on_GUI_AbstractLevelLayout_gui_input(event):
+#	if event is InputEventKey:
+#		if _is_player_cursor_active:
+#
+#			if !_is_player_cursor_gliding:
+#				if event.is_action("ui_up"):
+#					_attempt_glide_cursor_from_current__to_up()
+#
+#				elif event.is_action("ui_down"):
+#					_attempt_glide_cursor_from_current__to_down()
+#
+#				elif event.is_action("ui_left"):
+#					_attempt_glide_cursor_from_current__to_left()
+#
+#				elif event.is_action("ui_right"):
+#					_attempt_glide_cursor_from_current__to_right()
+#
+#
+#			if event.is_action_released("ui_accept"):
+#				_attempt_enter_inside_current_tile()
+#
+#
+#
 
 func _attempt_glide_cursor_from_current__to_up():
 	var tile = _currently_hovered_tile.layout_element_tile__up
@@ -233,7 +348,7 @@ func _attempt_enter_inside_current_tile():
 	if _currently_hovered_tile.level_details != null:
 		emit_signal("prompt_entered_into_level", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 		
-	elif _currently_hovered_tile.is_link_to_another_layout:
+	elif _currently_hovered_tile.is_link_to_another_layout():
 		emit_signal("prompt_entered_into_link_to_other_layout", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 		
 	

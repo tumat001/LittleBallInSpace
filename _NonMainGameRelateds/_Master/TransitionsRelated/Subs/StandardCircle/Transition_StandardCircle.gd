@@ -24,9 +24,11 @@ func start_transition():
 
 func _configure_properties_for_shader():
 	var dist_vec = _get_distance_vec_of_screen_center_from_circle_center()
-	var total_vec = dist_vec + screen_size
+	var total_vec = screen_size + dist_vec + dist_vec
 	
 	scale = total_vec
+	position = circle_center
+	
 	material.set_shader_param("screen_width", total_vec.x)
 	material.set_shader_param("screen_height", total_vec.y)
 	material.set_shader_param("circle_size", initial_ratio)
@@ -37,7 +39,7 @@ func _configure_properties_for_shader():
 	tweener.tween_callback(self, "_finished_tween").set_delay(wait_at_end)
 
 func _get_distance_vec_of_screen_center_from_circle_center():
-	var dist_vec = (screen_size / 2) - circle_center
+	var dist_vec = circle_center - (screen_size / 2)
 	return Vector2(abs(dist_vec.x), abs(dist_vec.y))
 	
 

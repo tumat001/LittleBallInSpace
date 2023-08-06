@@ -9,6 +9,7 @@ const Tile_White = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GU
 
 #
 
+var _can_update_path_texture_status : bool = false
 
 export(NodePath) var layout_element_tile__left__path : NodePath setget set_layout_element_tile__left__path
 var layout_element_tile__left
@@ -50,9 +51,23 @@ var _all_paths : Array
 
 onready var tile_texture_rect = $TileTextureRect
 
+onready var path_texture_container = $PathTextureContainer
+
+onready var path_texture_rect__editor = $PathTextureRect__Editor
+
 ########
 
 func _ready():
+	if !Engine.editor_hint:
+		path_texture_rect__editor.visible = false
+	
+	_can_update_path_texture_status = false
+	set_layout_element_tile__left__path(layout_element_tile__left__path)
+	set_layout_element_tile__right__path(layout_element_tile__right__path)
+	set_layout_element_tile__up__path(layout_element_tile__up__path)
+	set_layout_element_tile__down__path(layout_element_tile__down__path)
+	_can_update_path_texture_status = true
+	
 	set_is_path(is_path)
 	_update_tile_texture_rect__texture()
 
@@ -72,7 +87,8 @@ func _is_level_locked_changed(arg_val):
 func set_default_texture_of_tile(arg_texture):
 	default_texture_of_tile = arg_texture
 	
-	_update_tile_texture_rect__texture()
+	if is_inside_tree():
+		_update_tile_texture_rect__texture()
 
 
 func _update_tile_texture_rect__texture():
@@ -103,41 +119,50 @@ func set_is_path(arg_val):
 	var old_val = is_path
 	is_path = arg_val
 	
-	if old_val != is_path:
-		if is_path:
-			tile_texture_rect.visible = false
-			_update_display__as_path()
-			
-		else:
-			tile_texture_rect.visible = true
-			for path in _all_paths:
-				path.visible = false
-			
-			
+	if is_inside_tree() or Engine.editor_hint:
+		#if old_val != is_path:
+			if is_path:
+				tile_texture_rect.visible = false
+				_update_display__as_path()
+				
+			else:
+				tile_texture_rect.visible = true
+				for path in _all_paths:
+					path.visible = false
+				
+				path_texture_rect__editor.visible = false
 
 
 func _update_display__as_path():
 	for path in _all_paths:
 		path.visible = false
 	
-	if layout_element_tile__up != null or (Engine.editor_hint and layout_element_tile__up__path != null):
+	if Engine.editor_hint:
+		path_texture_rect__editor.texture = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_TilePath_White_All_46x46.png")
+		path_texture_rect__editor.visible = true
+		return
+	
+	if layout_element_tile__up != null:
 		if !is_instance_valid(_path__to_north):
 			_path__to_north = _create_path_texture_rect()
 		_path__to_north.visible = true
 		
-	elif layout_element_tile__down != null or (Engine.editor_hint and layout_element_tile__down__path != null):
+	
+	if layout_element_tile__down != null:
 		if !is_instance_valid(_path__to_south):
 			_path__to_south = _create_path_texture_rect()
 			_path__to_south.flip_v = true
 		_path__to_south.visible = true
 		
-	elif layout_element_tile__left != null or (Engine.editor_hint and layout_element_tile__left__path != null):
+	
+	if layout_element_tile__left != null:
 		if !is_instance_valid(_path__to_west):
 			_path__to_west = _create_path_texture_rect()
 			_path__to_west.rect_rotation = 270
 		_path__to_west.visible = true
 		
-	elif layout_element_tile__right != null or (Engine.editor_hint and layout_element_tile__right__path != null):
+	
+	if layout_element_tile__right != null:
 		if !is_instance_valid(_path__to_east):
 			_path__to_east = _create_path_texture_rect()
 			_path__to_east.rect_rotation = 90
@@ -148,7 +173,7 @@ func _update_display__as_path():
 func _create_path_texture_rect():
 	var path = TextureRect.new()
 	path.texture = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_TilePath_White_Standard_46x46.png")
-	add_child(path.texture)
+	path_texture_container.add_child(path)
 	path.rect_pivot_offset = path.texture.get_size() / 2
 	path.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -196,7 +221,7 @@ func set_layout_element_tile__down__path(arg_path):
 		layout_element_tile__down = get_node_or_null(layout_element_tile__down__path)
 		
 	
-	if is_path:
+	if is_path and _can_update_path_texture_status:
 		_update_display__as_path()
 
 
@@ -226,4 +251,9 @@ func is_link_to_another_layout():
 	return layout_id_to_link_to != StoreOfLevelLayouts.LevelLayoutIds.NONE
 	
 
+
+#########
+
+func get_center_position() -> Vector2:
+	return rect_global_position + (rect_size / 2)
 

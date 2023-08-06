@@ -76,7 +76,7 @@ func _set_level_layout_as_current_and_active(layout_scene : GUI_AbstractLevelLay
 
 func _update_level_desc_tooltip_body(arg_level_details):
 	if arg_level_details != null:
-		level_title_tooltip_body.descriptions = arg_level_details.level_level_name
+		level_title_tooltip_body.descriptions = arg_level_details.level_name
 		level_desc_tooltip_body.descriptions = arg_level_details.level_desc
 		
 		level_title_tooltip_body.update_display()
@@ -104,16 +104,18 @@ func _on_layout_prompt_entered_into_level(arg_currently_hovered_tile, arg_curren
 func _on_layout_prompt_entered_into_link_to_other_layout(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id):
 	var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(arg_currently_hovered_tile.layout_id_to_link_to)
 	
-	var transition = SingletonsAndConsts.current_master.play_transition__using_id(level_layout_details.transition_id__entering_layout__out)
+	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(level_layout_details.transition_id__entering_layout__out)
+	transition.circle_center = arg_currently_hovered_tile.get_center_position()
 	transition.connect("transition_finished", self, "_on_transition_in__from_old_layout_finished", [arg_currently_hovered_tile, level_layout_details, transition])
-
+	SingletonsAndConsts.current_master.play_transition(transition)
 
 func _on_transition_in__from_old_layout_finished(arg_hovered_tile, arg_level_layout_details, arg_old_transition):
 	show_level_layout(arg_hovered_tile.layout_id_to_link_to, arg_hovered_tile.layout_ele_id_to_put_cursor_to)
 	arg_old_transition.queue_free()
 	
-	var transition = SingletonsAndConsts.current_master.play_transition__using_id(arg_level_layout_details.transition_id__entering_layout__in)
-
-
+	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(arg_level_layout_details.transition_id__entering_layout__in)
+	transition.queue_free_on_end_of_transition = true
+	transition.circle_center = arg_hovered_tile.get_center_position()
+	SingletonsAndConsts.current_master.play_transition(transition)
 
 

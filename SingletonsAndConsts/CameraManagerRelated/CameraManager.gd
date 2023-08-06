@@ -134,7 +134,8 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 #
 
 func _set_actual_rotation_of_cam(arg_rotation):
-	camera.rotation = arg_rotation
+	if is_instance_valid(camera):
+		camera.rotation = arg_rotation
 	
 	if is_equal_approx(arg_rotation, current_cam_rotation):
 		is_camera_rotating = false
@@ -150,7 +151,7 @@ func set_non_gui_screen_shader_sprite(arg_sprite : Sprite):
 func _make_node_follow_camera(arg_node_2d : Node2D):
 	
 	if !arg_node_2d.is_connected("tree_exiting", self, "_on_node_following_camera_tree_exiting"):
-		arg_node_2d.connect("tree_exiting", self, "_on_node_following_camera_tree_exiting")
+		arg_node_2d.connect("tree_exiting", self, "_on_node_following_camera_tree_exiting", [arg_node_2d])
 	
 	if !_nodes_to_follow_camera.has(arg_node_2d):
 		_nodes_to_follow_camera.append(arg_node_2d)
