@@ -15,6 +15,8 @@ onready var PDAR_cancel_dialog_remote = $MiscContainer/PDAreaRegion_CancelDialog
 onready var launch_ball_ins_label = $MiscContainer/LaunchBallInsLabel
 onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
 
+onready var PDAR_fakeout_disable_rewind = $MiscContainer/PDAreaRegion_Fakeout_DisableRewind
+
 #
 
 func _init():
@@ -29,6 +31,8 @@ func _on_after_game_start_init():
 	CDSU_pickupable_remote.set_collidable_with_player(false)
 	
 	_configure_labels()
+	
+	PDAR_fakeout_disable_rewind.connect("player_entered_in_area", self, "_on_player_entered_PDAR_fakeout_disable_rewind", [], CONNECT_ONESHOT)
 
 
 func _configure_labels():
@@ -119,6 +123,42 @@ func _on_PDAR_cancel_dialog_remote_player_entered_area():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
 	
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
+
+
+
+
+
+func _on_player_entered_PDAR_fakeout_disable_rewind():
+	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+	game_elements.game_result_manager.attempt_set_current_game_result(game_elements.game_result_manager.GameResult.WIN)
+	
+	var tweener = create_tween()
+	tweener.tween_callback(self, "_on_player_entered_PDAR_fakeout_disable_rewind__after_delay").set_delay(2.5)
+
+
+func _on_player_entered_PDAR_fakeout_disable_rewind__after_delay():
+	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	
+	CameraManager.set_current_default_zoom_normal_vec(Vector2(2, 2), true, 2.0)
+	
+	var tweener = create_tween()
+	tweener.tween_callback(self, "_on_fakeout_zoom_out_complete").set_delay(2.5)
+
+func _on_fakeout_zoom_out_complete():
+	_start_show_game_logo()
+	
+	
+
+
+func _start_show_game_logo():
+	pass
+	
+
+
+
+
+
+
 
 
 

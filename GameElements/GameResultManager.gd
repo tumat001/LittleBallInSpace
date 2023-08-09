@@ -48,12 +48,13 @@ func set_game_elements(arg_elements):
 #
 
 func _on_all_PCAs_of_all_world_slices_captured():
-	_attempt_set_current_game_result(GameResult.WIN)
+	attempt_set_current_game_result(GameResult.WIN)
 	
 
 
+##
 
-func _attempt_set_current_game_result(arg_result):
+func attempt_set_current_game_result(arg_result):
 	if _current_game_result == GameResult.NONE:
 		_current_game_result = arg_result
 		
@@ -75,12 +76,14 @@ func _play_game_result_showing_anim():
 
 func _play_game_result_showing_anim__win():
 	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_victory()
-	_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
+	if anim_scene != null:
+		_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
 	
 
 func _play_game_result_showing_anim__lose():
 	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_defeat()
-	_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
+	if anim_scene != null:
+		_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
 	
 
 func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
@@ -94,8 +97,18 @@ func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
 
 func _on_end_of_anim():
 	if _current_game_result == GameResult.WIN:
-		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+		end_game__as_win()
 	else:
-		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
+		end_win__as_lose()
+
+
+func end_game__as_win():
+	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+	
+
+func end_win__as_lose():
+	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
+	
+
 
 

@@ -1031,6 +1031,11 @@ func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 
 ###################
 
+func is_on_ground():
+	return _is_on_ground
+
+
+
 func apply_inside_induced_force(arg_vector : Vector2):
 	_all_inside_induced_forces_list.append(arg_vector)
 	

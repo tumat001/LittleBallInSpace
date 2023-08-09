@@ -172,7 +172,8 @@ func _attempt_launch_ball():
 	
 	var ball_and_player_force = _calculate_launch_force_of_ball_and_player(player_modi_launch_ball_node.current_launch_force)
 	
-	_player.apply_inside_induced_force(ball_and_player_force[1])
+	if !_player.is_on_ground():
+		_player.apply_inside_induced_force(ball_and_player_force[1])
 	
 	#
 	

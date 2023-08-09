@@ -174,8 +174,8 @@ func configure_game_state_for_cutscene_occurance(arg_stop_player_movement : bool
 	if !_is_in_cutscene:
 		_is_in_cutscene = true
 		
-		rewind_manager.can_store_rewind_data_cond_clause.attempt_insert_clause(rewind_manager.CanStoreRewindDataClauseIds.IN_CUTSCENE)
-		rewind_manager.can_cast_rewind_cond_clause.attempt_insert_clause(rewind_manager.CanCastRewindClauseIds.IN_CUTSCENE)
+		
+		ban_rewind_manager_to_store_and_cast_rewind()
 		
 		if is_instance_valid(_current_player):
 			_current_player.stop_all_persisting_actions()
@@ -198,6 +198,13 @@ func configure_game_state_for_end_of_cutscene_occurance(arg_reenable_store_and_c
 		
 		if is_instance_valid(_current_player):
 			_current_player.block_all_inputs_cond_clauses.remove_clause(_current_player.BlockAllInputsClauseIds.IN_CUTSCENE)
+
+
+
+func ban_rewind_manager_to_store_and_cast_rewind():
+	rewind_manager.can_store_rewind_data_cond_clause.attempt_insert_clause(rewind_manager.CanStoreRewindDataClauseIds.IN_CUTSCENE)
+	rewind_manager.can_cast_rewind_cond_clause.attempt_insert_clause(rewind_manager.CanCastRewindClauseIds.IN_CUTSCENE)
+	
 
 func allow_rewind_manager_to_store_and_cast_rewind():
 	rewind_manager.can_store_rewind_data_cond_clause.remove_clause(rewind_manager.CanStoreRewindDataClauseIds.IN_CUTSCENE)
