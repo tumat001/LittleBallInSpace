@@ -9,7 +9,6 @@ margin_bottom = 40.0
 rect_min_size = Vector2( 46, 46 )
 mouse_filter = 2
 script = ExtResource( 1 )
-default_texture_of_tile = null
 
 [node name="TileTextureRect" type="TextureRect" parent="."]
 margin_left = 23.0

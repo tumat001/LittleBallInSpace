@@ -39,7 +39,7 @@ var _all_registered_rewindables : Array
 
 #
 
-var rewind_duration : float = 20.0
+var rewind_duration : float = 30.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -50,7 +50,7 @@ var is_rewinding : bool
 
 #
 enum CanStoreRewindDataClauseIds {
-	CAM_ROTATING = 0
+	IN_CUTSCENE = 0
 }
 var can_store_rewind_data_cond_clause : ConditionalClauses
 var last_calculated_can_store_rewind_data : bool
@@ -62,6 +62,7 @@ enum CanCastRewindClauseIds {
 	IS_REWINDING = 0,
 	IN_COOLDOWN = 1
 	IS_GAME_RESULT_DECIDED = 2,
+	IN_CUTSCENE = 3,
 }
 var can_cast_rewind_cond_clause : ConditionalClauses
 var last_calculated_can_cast_rewind : bool
@@ -137,6 +138,10 @@ func _on_can_cast_rewind_cond_clause_updated(arg_clause_id):
 
 func _update_last_calculated_can_cast_rewind():
 	last_calculated_can_cast_rewind = can_cast_rewind_cond_clause.is_passed
+
+#
+
+
 
 ############################
 
@@ -300,6 +305,8 @@ func _physics_process(delta):
 
 func attempt_start_rewind():
 	if last_calculated_can_cast_rewind:
+		CameraManager.reset_camera_zoom_level()
+		
 		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
 		for obj in rewindable_obj_to_save_state_map:
 			obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)

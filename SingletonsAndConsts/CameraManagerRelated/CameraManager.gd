@@ -10,6 +10,14 @@ signal cam_visual_rotation_changed(arg_val)
 
 #
 
+const ZOOM_OUT__DEFAULT__ZOOM_LEVEL = Vector2(2.0, 2.0)
+const ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION = 1.0
+
+const DEFAULT_ZOOM_LEVEL = Vector2(1.0, 1.0)
+const ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION = 0.5
+
+#
+
 var camera : Camera2D
 
 var current_cam_rotation : float
@@ -18,13 +26,29 @@ var is_camera_rotating : bool
 
 #
 
+var _screen_size_half : Vector2
 var _nodes_to_follow_camera : Array = []
+
+var _nodes_to_rotate_on_camera_rotate : Array = []
+
+#
+
+var _current_default_zoom_out_vec
+var _current_default_zoom_normal_vec
+
+var _is_at_default_zoom : bool
+
 
 ##########
 
 func _ready():
+	var screen_size_rect : Rect2 = get_viewport().get_visible_rect()
+	_screen_size_half = Vector2(screen_size_rect.size.x / 2, screen_size_rect.size.y / 2)
+	
 	_attempt_connect_self_to_rewind_manager()
 	_attempt_connect_self_to_game_elements()
+	connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam")
+	
 
 #
 
@@ -107,7 +131,31 @@ func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true):
 ##
 
 func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
-	#print("rad: %s, old_rot: %s" % [arg_rad, old_rotation])
+	#print("rad: %s, old_rot: %s, actual_cam_rotation: %s" % [arg_rad, old_rotation, camera.rotation])
+	
+	#arg_rad = fmod(arg_rad, (2*PI))
+	#old_rotation = fmod(old_rotation, (2*PI))
+	
+	if abs(arg_rad) + abs(old_rotation) > PI:
+		if arg_rad > 0 and old_rotation < 0:
+			arg_rad = -arg_rad
+		elif arg_rad < 0 and old_rotation > 0:
+			old_rotation = -old_rotation
+	
+	
+	camera.rotation = fmod(camera.rotation, (2*PI))
+	camera.rotation = fmod(camera.rotation, -(2*PI))
+	
+	if is_equal_approx(camera.rotation, -PI) and is_equal_approx(old_rotation, PI):
+		camera.rotation = PI
+	elif is_equal_approx(camera.rotation, PI) and is_equal_approx(old_rotation, -PI) and arg_rad < 0:
+		camera.rotation = -PI
+	
+	
+	#print("rad: %s, old_rot: %s, actual_cam_rotation: %s" % [arg_rad, old_rotation, camera.rotation])
+	#print("-----------")
+	
+	#####
 	
 	is_camera_rotating = true
 	
@@ -119,17 +167,18 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 		else:
 			arg_rad = arg_rad - 2*PI
 	
-#	if arg_rad > 2*PI:
-#		arg_rad -= 2*PI
-#	if -arg_rad > 2*PI:
-#		arg_rad += 2*PI
-	
 	arg_rad = fmod(arg_rad, (2*PI))
 	
+	#
 	
 	var tweener = create_tween()
 	tweener.tween_method(self, "_set_actual_rotation_of_cam", camera.rotation, arg_rad, CAM_ANGLE_TURN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
+
+func short_angle_dist(from, to):
+	var max_angle = PI * 2
+	var difference = fmod(to - from, max_angle)
+	return fmod(2 * difference, max_angle) - difference
 
 #
 
@@ -147,15 +196,14 @@ func _set_actual_rotation_of_cam(arg_rotation):
 
 func set_non_gui_screen_shader_sprite(arg_sprite : Sprite):
 	_make_node_follow_camera(arg_sprite)
+	#make_node_rotate_with_camera(arg_sprite)
 
 func _make_node_follow_camera(arg_node_2d : Node2D):
-	
 	if !arg_node_2d.is_connected("tree_exiting", self, "_on_node_following_camera_tree_exiting"):
 		arg_node_2d.connect("tree_exiting", self, "_on_node_following_camera_tree_exiting", [arg_node_2d])
 	
 	if !_nodes_to_follow_camera.has(arg_node_2d):
 		_nodes_to_follow_camera.append(arg_node_2d)
-	
 
 func _on_node_following_camera_tree_exiting(arg_node_2d : Node2D):
 	_nodes_to_follow_camera.erase(arg_node_2d)
@@ -163,7 +211,60 @@ func _on_node_following_camera_tree_exiting(arg_node_2d : Node2D):
 
 func _process(delta):
 	for node in _nodes_to_follow_camera:
-		node.global_position = camera.global_position
+		node.global_position = (camera.global_position + _screen_size_half)
+
+#
+
+func make_node_rotate_with_camera(arg_node_2d):
+	if !arg_node_2d.is_connected("tree_exiting", self, "_on_node_rotating_with_camera_tree_exiting"):
+		arg_node_2d.connect("tree_exiting", self, "_on_node_rotating_with_camera_tree_exiting", [arg_node_2d])
+	
+	if !_nodes_to_rotate_on_camera_rotate.has(arg_node_2d):
+		_nodes_to_rotate_on_camera_rotate.append(arg_node_2d)
+
+func _on_node_rotating_with_camera_tree_exiting(arg_node_2d):
+	_nodes_to_rotate_on_camera_rotate.erase(arg_node_2d)
+
+
+func _rotate_nodes_to_rotate_with_cam(arg_angle):
+	for node in _nodes_to_rotate_on_camera_rotate:
+		node.rotation = camera.rotation
+
+######################
+
+func set_current_default_zoom_normal_vec(arg_zoom,
+		arg_use_ease_for_change : bool, arg_duration_for_ease_of_change = ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION):
+	
+	_current_default_zoom_normal_vec = arg_zoom
+	
+	if arg_use_ease_for_change:
+		start_camera_zoom_change(_current_default_zoom_normal_vec, arg_duration_for_ease_of_change)
+	else:
+		camera.zoom = arg_zoom
+	
+	_is_at_default_zoom = true
+
+func set_current_default_zoom_out_vec(arg_zoom):
+	_current_default_zoom_out_vec = arg_zoom
+	
+
+#
+
+func start_camera_zoom_change__with_default_player_initialized_vals():
+	start_camera_zoom_change(_current_default_zoom_out_vec, ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+	
+
+func start_camera_zoom_change(arg_val, arg_duration):
+	var tweener = create_tween()
+	tweener.tween_property(camera, "zoom", arg_val, arg_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	
+	_is_at_default_zoom = false
+
+func reset_camera_zoom_level():
+	start_camera_zoom_change(_current_default_zoom_normal_vec, ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+	
+	_is_at_default_zoom = true
+
 
 
 ###################### 

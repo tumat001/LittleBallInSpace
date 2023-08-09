@@ -59,7 +59,7 @@ func set_game_elements(arg_elements):
 
 func _ready():
 	_initialize_spawn_coords()
-
+	_initialize_coins()
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
@@ -77,8 +77,9 @@ func _initialize_coins():
 	if coin_count != StoreOfLevels.get_coin_count_for_level(curr_level_id):
 		print("level with id %s not having the correct coin amount." % [curr_level_id])
 
+
 func _configure_coin(arg_coin):
-	arg_coin.coin_id = _next_available_coin_id
+	arg_coin.coin_id = str(_next_available_coin_id)
 	_next_available_coin_id += 1
 	
 	if GameSaveManager.is_coin_id_collected_in_level(arg_coin.coin_id, SingletonsAndConsts.current_base_level_id):

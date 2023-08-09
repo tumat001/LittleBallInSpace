@@ -10,12 +10,14 @@ onready var health_panel = $ControlContainer/VBoxContainer/HealthPanel
 onready var speed_panel = $ControlContainer/SpeedPanel
 onready var trophy_panel = $ControlContainer/TopRightPanel/VBox/TrophyPanel
 onready var robot_health_panel = $ControlContainer/VBoxContainer/RobotHealthPanel
+onready var game_dialog_panel = $ControlContainer/GameDialogPanel
 
 onready var tooltip_container = $TooltipContainer
 
 onready var vic_def_anim_container = $VicDefAnimContainer
 onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
 
+onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
 ###
 

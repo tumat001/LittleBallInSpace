@@ -10,7 +10,9 @@ enum LevelIds {
 	TEST = -10,
 	
 	LEVEL_01 = 1
-	LEVEL_02 = 1
+	LEVEL_02 = 2
+	LEVEL_03 = 3
+	LEVEL_04 = 4
 	
 }
 
@@ -76,7 +78,31 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_02:
 		level_details.level_name = [
-			["Move", []]
+			["Labyrinth", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__to_usual_circle_types(level_details)
+		
+		
+	elif arg_id == LevelIds.LEVEL_03:
+		level_details.level_name = [
+			["Energy", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__to_usual_circle_types(level_details)
+		
+		
+	elif arg_id == LevelIds.LEVEL_04:
+		level_details.level_name = [
+			["Remnants", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -98,6 +124,12 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
 	elif arg_id == LevelIds.LEVEL_01:
 		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
+	elif arg_id == LevelIds.LEVEL_02:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_02.gd").new()
+	elif arg_id == LevelIds.LEVEL_03:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
+	elif arg_id == LevelIds.LEVEL_04:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
 		
 	
 
@@ -121,6 +153,9 @@ func _initialize_coin_details():
 		
 		LevelIds.LEVEL_01 : 3,
 		LevelIds.LEVEL_02 : 3,
+		LevelIds.LEVEL_03 : 4,
+		LevelIds.LEVEL_04 : 3,
+		
 	}
 	
 	_calculate_total_coin_count()

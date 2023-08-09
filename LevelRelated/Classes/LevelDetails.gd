@@ -47,6 +47,11 @@ var transition_id__exiting_level__out__for_quit = StoreOfTransitionSprites.Trans
 var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK  # from blank to selection
 
 
+##
+
+var zoom_normal_vec = CameraManager.DEFAULT_ZOOM_LEVEL
+var zoom_out_vec = CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL
+
 ##########
 
 func set_is_level_locked(arg_val):

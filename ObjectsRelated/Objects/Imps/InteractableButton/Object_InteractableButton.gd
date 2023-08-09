@@ -37,7 +37,7 @@ onready var tileset_02_to_register_in_toggle = get_node_or_null(tileset_02_to_re
 export(bool) var is_pressed : bool = false setget set_is_pressed
 var _is_in_press_transition : bool = false
 
-export(bool) var can_be_triggered_by_players : bool = true
+export(bool) var can_be_triggered_by_players : bool = true setget set_can_be_triggered_by_players
 
 enum ButtonColor {
 	RED,
@@ -63,6 +63,7 @@ onready var button_container = $ButtonContainer
 
 onready var collision_shape_2d_02 = $CollisionShape2D2
 onready var button_collision_shape_2d = $ButtonContainer/ButtonArea2D/ButtonCollisionShape2D
+onready var button_area_2d = $ButtonContainer/ButtonArea2D
 
 ######
 
@@ -180,6 +181,7 @@ func _ready():
 	if is_instance_valid(tileset_02_to_register_in_toggle):
 		add_tileset_to_toggle_to_is_reverse_map(tileset_02_to_register_in_toggle, tileset_02_to_register_in_toggle__is_reversed)
 	
+	set_can_be_triggered_by_players(can_be_triggered_by_players)
 
 #
 # meant to be used at the start, and not changed
@@ -215,8 +217,18 @@ func _press_on_tileset(arg_tileset, arg_is_reversed):
 		
 	
 
+#
 
-
+func set_can_be_triggered_by_players(arg_val):
+	can_be_triggered_by_players = arg_val
+	
+	if is_inside_tree():
+		if can_be_triggered_by_players:
+			button_area_2d.set_collision_mask_bit(0, true)
+			
+		else:
+			button_area_2d.set_collision_mask_bit(0, false)
+	
 
 ########
 

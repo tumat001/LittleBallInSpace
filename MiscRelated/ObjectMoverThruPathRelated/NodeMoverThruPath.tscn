@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MiscRelated/ObjectMoverThruPathRelated/NodeMoverThruPath.gd" type="Script" id=1]
+
+[node name="NodeMoverThruPath" type="PathFollow2D"]
+script = ExtResource( 1 )

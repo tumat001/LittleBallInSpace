@@ -182,3 +182,16 @@ func get_total_character_count():
 		count += ch.get_total_char_count()
 	
 	return count
+
+#####################
+
+func start_tween_display_of_text(arg_duration_to_finish : bool):
+	set_visible_character_count(0)
+	
+	var tween = create_tween()
+	var method_tweener = tween.tween_method(self, "set_visible_character_count", 0, get_total_character_count(), arg_duration_to_finish)
+	
+	return [tween, method_tweener]
+
+
+

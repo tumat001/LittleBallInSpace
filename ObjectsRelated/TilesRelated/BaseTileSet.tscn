@@ -3,11 +3,10 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/MainTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.gd" type="Script" id=2]
 
-[node name="BaseTileSet" type="KinematicBody2D"]
+[node name="BaseTileSet" type="StaticBody2D"]
 collision_layer = 12
 collision_mask = 3
 input_pickable = true
-collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
 [node name="TileMap" type="TileMap" parent="."]

@@ -23,7 +23,7 @@ var launch_peak_wait_before_alternate : float = 2.0
 
 #
 
-var energy_consume_on_launch : float = 10.0
+var energy_consume_on_launch : float = 4.0
 
 #
 

@@ -174,15 +174,18 @@ func _initialize_level_id_to_coins_collected_count_map():
 
 func _correct_and_fill_level_id_to_coins_collected_map():
 	for level_id in StoreOfLevels.LevelIds.values():
+		level_id = str(level_id)
 		if !_level_id_to_coin_ids_collected_map.has(level_id):
 			_level_id_to_coin_ids_collected_map[level_id] = []
 	
 
 
 func is_coin_id_collected_in_level(arg_coin_id, arg_level_id):
+	arg_level_id = str(arg_level_id)
 	return _level_id_to_coin_ids_collected_map[arg_level_id].has(arg_coin_id)
 
 func set_coin_id_in_level_as_collected(arg_coin_id, arg_level_id, arg_is_collected : bool):
+	arg_level_id = str(arg_level_id)
 	var coins_collected : Array = _level_id_to_coin_ids_collected_map[arg_level_id]
 	if arg_is_collected:
 		if !coins_collected.has(arg_coin_id):
@@ -205,6 +208,7 @@ func _calculate_coin_count_collected_in_whole_game():
 
 
 func get_coin_ids_collected_in_level(arg_level_id):
+	arg_level_id = str(arg_level_id)
 	return _level_id_to_coin_ids_collected_map[arg_level_id]
 
 

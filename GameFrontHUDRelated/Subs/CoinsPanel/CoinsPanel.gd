@@ -42,7 +42,7 @@ func configure_self_to_monitor_coin_status_for_level(arg_level_id):
 	var coins_collected_in_level = GameSaveManager.get_coin_ids_collected_in_level(arg_level_id)
 	var total_coins_in_level = StoreOfLevels.get_coin_count_for_level(arg_level_id)
 	
-	set_curr_coin_count(coins_collected_in_level)
+	set_curr_coin_count(coins_collected_in_level.size())
 	set_max_coin_count(total_coins_in_level)
 	
 	GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed")

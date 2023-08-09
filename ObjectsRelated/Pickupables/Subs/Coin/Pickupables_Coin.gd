@@ -3,7 +3,7 @@ extends "res://ObjectsRelated/Pickupables/BasePickupables.gd"
 
 
 
-var coin_id : int
+var coin_id : String
 
 
 func _on_player_entered_self(arg_player):
@@ -11,6 +11,8 @@ func _on_player_entered_self(arg_player):
 	
 	#GameSaveManager.set_player_coin_count(GameSaveManager.player_coin_count + 1)
 	GameSaveManager.set_coin_id_in_level_as_collected(coin_id, SingletonsAndConsts.current_base_level_id, true)
+	
+	_destroy_self__on_consume_by_player()
 
 func restore_from_destroyed_from_rewind():
 	.restore_from_destroyed_from_rewind()

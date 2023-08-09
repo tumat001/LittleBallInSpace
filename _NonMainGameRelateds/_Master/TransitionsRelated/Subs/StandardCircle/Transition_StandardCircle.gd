@@ -26,8 +26,11 @@ func _configure_properties_for_shader():
 	var dist_vec = _get_distance_vec_of_screen_center_from_circle_center()
 	var total_vec = screen_size + dist_vec + dist_vec
 	
+	var dist_vec_with_dir = _get_distance_vec_of_screen_center_from_circle_center__with_dir()
+	var total_vec_with_dir = screen_size + dist_vec_with_dir + dist_vec_with_dir
+	
 	scale = total_vec
-	position = circle_center
+	position = circle_center + (total_vec / 2)
 	
 	material.set_shader_param("screen_width", total_vec.x)
 	material.set_shader_param("screen_height", total_vec.y)
@@ -42,6 +45,10 @@ func _get_distance_vec_of_screen_center_from_circle_center():
 	var dist_vec = circle_center - (screen_size / 2)
 	return Vector2(abs(dist_vec.x), abs(dist_vec.y))
 	
+
+func _get_distance_vec_of_screen_center_from_circle_center__with_dir():
+	return circle_center - (screen_size / 2)
+
 
 
 func _tween_circle_size_of_shader(arg_ratio):

@@ -12,16 +12,16 @@ const Tile_White = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GU
 var _can_update_path_texture_status : bool = false
 
 export(NodePath) var layout_element_tile__left__path : NodePath setget set_layout_element_tile__left__path
-var layout_element_tile__left
+var layout_element_tile__left setget set_layout_element_tile__left
 
 export(NodePath) var layout_element_tile__right__path : NodePath setget set_layout_element_tile__right__path
-var layout_element_tile__right
+var layout_element_tile__right setget set_layout_element_tile__right
 
 export(NodePath) var layout_element_tile__up__path : NodePath setget set_layout_element_tile__up__path
-var layout_element_tile__up
+var layout_element_tile__up setget set_layout_element_tile__up
 
 export(NodePath) var layout_element_tile__down__path : NodePath setget set_layout_element_tile__down__path
-var layout_element_tile__down
+var layout_element_tile__down setget set_layout_element_tile__down
 
 
 export(bool) var is_path : bool setget set_is_path
@@ -142,6 +142,7 @@ func _update_display__as_path():
 		path_texture_rect__editor.visible = true
 		return
 	
+	
 	if layout_element_tile__up != null:
 		if !is_instance_valid(_path__to_north):
 			_path__to_north = _create_path_texture_rect()
@@ -188,41 +189,56 @@ func set_layout_element_tile__left__path(arg_path):
 	layout_element_tile__left__path = arg_path
 	
 	if is_inside_tree():
-		layout_element_tile__left = get_node_or_null(layout_element_tile__left__path)
-		
+		set_layout_element_tile__left(get_node_or_null(layout_element_tile__left__path))
 	
-	if is_path:
-		_update_display__as_path()
 
 func set_layout_element_tile__right__path(arg_path):
 	layout_element_tile__right__path = arg_path
 	
 	if is_inside_tree():
-		layout_element_tile__right = get_node_or_null(layout_element_tile__right__path)
-		
+		set_layout_element_tile__right(get_node_or_null(layout_element_tile__right__path))
 	
-	if is_path:
-		_update_display__as_path()
 
 func set_layout_element_tile__up__path(arg_path):
 	layout_element_tile__up__path = arg_path
 	
 	if is_inside_tree():
-		layout_element_tile__up = get_node_or_null(layout_element_tile__up__path)
+		set_layout_element_tile__up(get_node_or_null(layout_element_tile__up__path))
 		
-	
-	if is_path:
-		_update_display__as_path()
 
 func set_layout_element_tile__down__path(arg_path):
 	layout_element_tile__down__path = arg_path
 	
 	if is_inside_tree():
-		layout_element_tile__down = get_node_or_null(layout_element_tile__down__path)
-		
+		set_layout_element_tile__down(get_node_or_null(layout_element_tile__down__path))
 	
-	if is_path and _can_update_path_texture_status:
+
+
+
+func set_layout_element_tile__left(arg_node):
+	layout_element_tile__left = arg_node
+	
+	if is_path:
 		_update_display__as_path()
+
+func set_layout_element_tile__right(arg_node):
+	layout_element_tile__right = arg_node
+	
+	if is_path:
+		_update_display__as_path()
+
+func set_layout_element_tile__up(arg_node):
+	layout_element_tile__up = arg_node
+	
+	if is_path:
+		_update_display__as_path()
+
+func set_layout_element_tile__down(arg_node):
+	layout_element_tile__down = arg_node
+	
+	if is_path:
+		_update_display__as_path()
+
 
 
 ###

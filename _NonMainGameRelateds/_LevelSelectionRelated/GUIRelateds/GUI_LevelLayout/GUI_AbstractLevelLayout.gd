@@ -4,6 +4,10 @@ const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelect
 
 #
 
+const TILE_WIDTH : int = 46
+
+#
+
 signal prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id)
 signal prompt_entered_into_link_to_other_layout(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id)
 
@@ -41,6 +45,10 @@ var _currently_hovered_tile : GUI_LevelLayoutEle_Tile
 
 #
 
+var _rect_position_to_layout_ele_map : Dictionary
+
+#
+
 const INPUT_DELAY_AFTER_GLIDE = 0.2
 var _input_delay = 0
 
@@ -51,6 +59,14 @@ const INPUT_TYPE__UP = 3
 const INPUT_TYPE__DOWN = 4
 
 var _last_input_type : int = INPUT_TYPE__NONE
+
+#
+
+const ELE_TILE_DIR__LEFT = 1
+const ELE_TILE_DIR__RIGHT = 2
+const ELE_TILE_DIR__UP = 3
+const ELE_TILE_DIR__DOWN = 4
+
 
 #
 
@@ -72,6 +88,9 @@ func _ready():
 	_init_id_to_layout_ele_map()
 	_summon_cursor_at_appropriate_loc()
 	set_is_layout_enabled(is_layout_enabled)
+	
+	_initialize_layout_ele_adjacencies()
+	#call_deferred("_initialize_layout_ele_adjacencies")
 
 #
 
@@ -352,6 +371,62 @@ func _attempt_enter_inside_current_tile():
 		emit_signal("prompt_entered_into_link_to_other_layout", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 		
 	
+
+
+################################
+##
+################################
+
+func _initialize_layout_ele_adjacencies():
+	for child in layout_elements_container.get_children():
+		_rect_position_to_layout_ele_map[child.rect_global_position] = child
+		
+	
+	for child in layout_elements_container.get_children():
+		_configure_ele_tile_neighbors(child)
+		
+
+func _configure_ele_tile_neighbors(arg_ele_tile : GUI_LevelLayoutEle_Tile):
+	var neighoring_poses = _get_four_neighboring_poses_from_center(arg_ele_tile.rect_global_position)
+	for pos in neighoring_poses.keys():
+		if _rect_position_to_layout_ele_map.has(pos):
+			var direction_identif : int = neighoring_poses[pos]
+			var layout_ele_at_direction : GUI_LevelLayoutEle_Tile = _rect_position_to_layout_ele_map[pos]
+			
+			if direction_identif == ELE_TILE_DIR__LEFT:
+				arg_ele_tile.layout_element_tile__left = layout_ele_at_direction
+				
+			elif direction_identif == ELE_TILE_DIR__RIGHT:
+				arg_ele_tile.layout_element_tile__right = layout_ele_at_direction
+				
+			elif direction_identif == ELE_TILE_DIR__UP:
+				arg_ele_tile.layout_element_tile__up = layout_ele_at_direction
+				
+			elif direction_identif == ELE_TILE_DIR__DOWN:
+				arg_ele_tile.layout_element_tile__down = layout_ele_at_direction
+				
+			
+			
+
+
+# 1 = left, 2 = right, 3 = up, 4 = down
+func _get_four_neighboring_poses_from_center(arg_pos : Vector2):
+	var map = {}
+	
+	map[Vector2(arg_pos.x - TILE_WIDTH, arg_pos.y)] = ELE_TILE_DIR__LEFT
+	map[Vector2(arg_pos.x + TILE_WIDTH, arg_pos.y)] = ELE_TILE_DIR__RIGHT
+	map[Vector2(arg_pos.x, arg_pos.y - TILE_WIDTH)] = ELE_TILE_DIR__UP
+	map[Vector2(arg_pos.x, arg_pos.y + TILE_WIDTH)] = ELE_TILE_DIR__DOWN
+	
+	return map
+	#var bucket = []
+	#bucket.append(Vector2(arg_pos.x + TILE_WIDTH, arg_pos.y))
+	#bucket.append(Vector2(arg_pos.x - TILE_WIDTH, arg_pos.y))
+	#bucket.append(Vector2(arg_pos.x, arg_pos.y + TILE_WIDTH))
+	#bucket.append(Vector2(arg_pos.x, arg_pos.y - TILE_WIDTH))
+	#return bucket
+
+
 
 
 

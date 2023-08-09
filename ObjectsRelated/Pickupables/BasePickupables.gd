@@ -53,6 +53,13 @@ func _destroy_self__on_consume_by_player():
 	queue_free()
 	
 
+#
+
+func set_collidable_with_player(arg_val):
+	set_collision_mask_bit(0, arg_val)
+	
+
+
 ###################### 
 # REWIND RELATED
 #####################

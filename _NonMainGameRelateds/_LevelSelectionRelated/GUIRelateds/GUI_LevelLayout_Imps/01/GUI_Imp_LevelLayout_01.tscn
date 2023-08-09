@@ -22,20 +22,46 @@ layout_element_tile__right__path = NodePath("../GUI_LevelLayoutEle_Path_01")
 default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 3 )]
-margin_left = 224.0
+margin_left = 231.0
 margin_top = 280.0
-margin_right = 256.0
-margin_bottom = 312.0
-layout_element_tile__left__path = NodePath("../GUI_LevelLayoutEle_Tile_01")
-layout_element_tile__right__path = NodePath("../GUI_LevelLayoutEle_Path_02")
+margin_right = 277.0
+margin_bottom = 326.0
 is_path = true
 default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="2" instance=ExtResource( 3 )]
-margin_left = 272.0
+margin_left = 277.0
 margin_top = 280.0
-margin_right = 304.0
-margin_bottom = 312.0
-layout_element_tile__left__path = NodePath("../GUI_LevelLayoutEle_Path_01")
+margin_right = 323.0
+margin_bottom = 326.0
 is_path = true
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Tile_02" parent="LayoutElesContainer" index="3" instance=ExtResource( 3 )]
+margin_left = 323.0
+margin_top = 280.0
+margin_right = 369.0
+margin_bottom = 326.0
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_03" parent="LayoutElesContainer" index="4" instance=ExtResource( 3 )]
+margin_left = 323.0
+margin_top = 234.0
+margin_right = 369.0
+margin_bottom = 280.0
+is_path = true
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Tile_03" parent="LayoutElesContainer" index="5" instance=ExtResource( 3 )]
+margin_left = 323.0
+margin_top = 188.0
+margin_right = 369.0
+margin_bottom = 234.0
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Tile_04" parent="LayoutElesContainer" index="6" instance=ExtResource( 3 )]
+margin_left = 323.0
+margin_top = 142.0
+margin_right = 369.0
+margin_bottom = 188.0
 default_texture_of_tile = ExtResource( 4 )

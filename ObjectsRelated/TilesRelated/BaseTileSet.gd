@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends StaticBody2D
 
 
 const ObjectDetailsPanel = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.gd")
@@ -76,6 +76,14 @@ var changing_colls__from_fill_and_unfilled = false
 #
 
 var _object_details_panel_tooltip
+
+#
+
+var is_class_type_base_tileset : bool = true
+
+#
+
+var is_responsible_for_own_movement__for_rewind : bool = true setget set_is_responsible_for_own_movement__for_rewind
 
 #
 
@@ -551,6 +559,12 @@ func _queue_free_object_details_tooltip():
 		_object_details_panel_tooltip.queue_free()
 	
 
+#
+
+func set_is_responsible_for_own_movement__for_rewind(arg_val):
+	is_responsible_for_own_movement__for_rewind = arg_val
+	
+
 
 ###################### 
 # REWIND RELATED
@@ -584,14 +598,17 @@ func _on_obj_removed_from_rewindables(arg_obj):
 func get_rewind_save_state():
 	#var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
 	var save_state = {
-		"velocity" : velocity,
-		"rotation" : rotation,
-		"transform" : transform,
+		"is_responsible_for_own_movement__for_rewind" : is_responsible_for_own_movement__for_rewind,
 		
 		"energy_mode" : energy_mode,
-		
 		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
 	}
+	
+	if is_responsible_for_own_movement__for_rewind:
+		save_state["velocity"] = velocity
+		save_state["rotation"] = rotation
+		save_state["transform"] = transform
+		
 	
 	#if _save_tiles_data_next_frame__for_rewind_save:
 	if _save_tiles_data_next_frame__for_rewind_save__count > 0:
@@ -603,9 +620,12 @@ func get_rewind_save_state():
 	return save_state
 
 func load_into_rewind_save_state(arg_state):
-	_rewinded__velocity = arg_state["velocity"]
-	rotation = arg_state["rotation"]
-	transform = arg_state["transform"]
+	var _is_responsible = arg_state["is_responsible_for_own_movement__for_rewind"]
+	if _is_responsible:
+		_rewinded__velocity = arg_state["velocity"]
+		rotation = arg_state["rotation"]
+		transform = arg_state["transform"]
+	
 	set_energy_mode(arg_state["energy_mode"])
 	#_applied_changes_for_breakable = arg_state["applied_changes_for_breakable"]
 	

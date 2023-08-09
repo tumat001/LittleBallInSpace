@@ -35,6 +35,10 @@ var game_front_hud : GameFrontHUD
 
 #
 
+var _is_in_cutscene : bool
+
+#
+
 onready var world_manager = $GameContainer/WorldManager
 onready var player_modi_manager = $GameContainer/PlayerModiManager
 
@@ -44,21 +48,10 @@ onready var rewind_manager = $GameContainer/RewindManager
 
 onready var game_result_manager = $GameContainer/GameResultManager
 
-onready var non_gui_screen_sprite = $GameContainer/NonGUIScreenShaderSprite
+var non_gui_screen_sprite
 
+#####
 
-#onready var world_manager = $WorldManager
-#onready var player_modi_manager = $PlayerModiManager
-#
-#onready var other_node_hoster = $OtherNodeHoster
-#
-#onready var rewind_manager = $RewindManager
-#
-#onready var game_result_manager = $GameResultManager
-#
-#onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
-
-#
 
 func get_current_player():
 	return _current_player
@@ -71,12 +64,6 @@ func _enter_tree():
 
 func _ready():
 	_initialize_game_front_hud()
-	
-	hide_non_screen_gui_shader_sprite()
-	
-	#
-	
-	CameraManager.set_non_gui_screen_shader_sprite(non_gui_screen_sprite)
 	
 	#
 	
@@ -94,6 +81,10 @@ func _ready():
 		GameSaveManager.set_player(player)
 		game_result_manager.set_player(player)
 		emit_signal("player_spawned", player)
+	
+	
+	CameraManager.set_current_default_zoom_normal_vec(SingletonsAndConsts.current_level_details.zoom_normal_vec, false)
+	CameraManager.set_current_default_zoom_out_vec(SingletonsAndConsts.current_level_details.zoom_out_vec)
 	
 	
 	player_modi_manager.game_elements = self
@@ -149,6 +140,11 @@ func _deferred_add_child__game_front_hud():
 	_current_player.initialize_health_panel_relateds()
 	SingletonsAndConsts.current_game_front_hud.speed_panel.set_player(_current_player)
 	SingletonsAndConsts.current_game_front_hud.robot_health_panel.set_player(_current_player)
+	
+	non_gui_screen_sprite = SingletonsAndConsts.current_game_front_hud.non_gui_screen_sprite
+	#CameraManager.set_non_gui_screen_shader_sprite(non_gui_screen_sprite)
+	hide_non_screen_gui_shader_sprite()
+	
 
 #
 
@@ -168,6 +164,45 @@ func show_non_screen_gui_shader_sprite():
 
 func hide_non_screen_gui_shader_sprite():
 	non_gui_screen_sprite.visible = false
+
+####
+
+
+func configure_game_state_for_cutscene_occurance(arg_stop_player_movement : bool,
+		arg_reset_cam_zoom_to_default : bool):
+	
+	if !_is_in_cutscene:
+		_is_in_cutscene = true
+		
+		rewind_manager.can_store_rewind_data_cond_clause.attempt_insert_clause(rewind_manager.CanStoreRewindDataClauseIds.IN_CUTSCENE)
+		rewind_manager.can_cast_rewind_cond_clause.attempt_insert_clause(rewind_manager.CanCastRewindClauseIds.IN_CUTSCENE)
+		
+		if is_instance_valid(_current_player):
+			_current_player.stop_all_persisting_actions()
+			_current_player.block_all_inputs_cond_clauses.attempt_insert_clause(_current_player.BlockAllInputsClauseIds.IN_CUTSCENE)
+			
+			if arg_stop_player_movement:
+				_current_player.stop_player_movement()
+			
+		
+		if arg_reset_cam_zoom_to_default:
+			CameraManager.reset_camera_zoom_level()
+		
+
+func configure_game_state_for_end_of_cutscene_occurance(arg_reenable_store_and_cast_rewind : bool):
+	if _is_in_cutscene:
+		_is_in_cutscene = false
+		
+		if arg_reenable_store_and_cast_rewind:
+			allow_rewind_manager_to_store_and_cast_rewind()
+		
+		if is_instance_valid(_current_player):
+			_current_player.block_all_inputs_cond_clauses.remove_clause(_current_player.BlockAllInputsClauseIds.IN_CUTSCENE)
+
+func allow_rewind_manager_to_store_and_cast_rewind():
+	rewind_manager.can_store_rewind_data_cond_clause.remove_clause(rewind_manager.CanStoreRewindDataClauseIds.IN_CUTSCENE)
+	rewind_manager.can_cast_rewind_cond_clause.remove_clause(rewind_manager.CanCastRewindClauseIds.IN_CUTSCENE)
+	
 
 ###################################
 

@@ -148,12 +148,23 @@ const CIRCLE_PARTITION = (2*PI/8) #North, NW, W, ...
 
 var _shape_points_to_data_map : Dictionary
 
+#
+
+enum BlockAllInputsClauseIds {
+	IN_CUTSCENE = 0
+}
+var block_all_inputs_cond_clauses : ConditionalClauses
+var last_calc_block_all_inputs : bool
 
 #
 
 var _objects_to_not_collide_with : Array
 var _objects_to_collide_with_after_exit : Array
 var _objects_to_add_mask_layer_collision_after_exit : Array
+
+#
+
+var _is_stop_player_movement_at_next_frame : bool
 
 #
 
@@ -255,6 +266,12 @@ func _init():
 	ignore_outside_induced_forces_cond_clauses.connect("clause_removed", self, "_on_ignore_outside_induced_forces_cond_clauses_updated", [], CONNECT_PERSIST)
 	_update_last_calc_ignore_outside_induced_forces()
 	
+	block_all_inputs_cond_clauses = ConditionalClauses.new()
+	block_all_inputs_cond_clauses.connect("clause_inserted", self, "_on_block_all_inputs_cond_clauses_updated", [], CONNECT_PERSIST)
+	block_all_inputs_cond_clauses.connect("clause_removed", self, "_on_block_all_inputs_cond_clauses_updated", [], CONNECT_PERSIST)
+	_update_last_calc_block_all_inputs()
+	
+	#
 	
 	_update_last_calculated_object_mass()
 
@@ -285,6 +302,14 @@ func _on_ignore_outside_induced_forces_cond_clauses_updated(arg_clause_id):
 func _update_last_calc_ignore_outside_induced_forces():
 	last_calc_ignore_outside_induced_forces = !ignore_outside_induced_forces_cond_clauses.is_passed
 	
+
+#
+
+func _on_block_all_inputs_cond_clauses_updated():
+	_update_last_calc_block_all_inputs()
+
+func _update_last_calc_block_all_inputs():
+	last_calc_block_all_inputs = !block_all_inputs_cond_clauses.is_passed
 
 #
 
@@ -528,36 +553,67 @@ func _update_is_on_ground__and_update_others():
 ##
 
 func _unhandled_key_input(event):
+	# NOTE:
+	# IF making a persisting action (ex: moving left while holding),
+	# update method: stop_all_persisting_actions to include reversal of those actions
 	
-	#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-	var is_consumed = false
 	
-	if event.is_action_released("ui_left"):
-		_is_moving_left = false
+	if !last_calc_block_all_inputs:
+		#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		var is_consumed = false
 		
-	elif event.is_action_released("ui_right"):
-		_is_moving_right = false
-		
-	elif event.is_action_released("ui_down"):
-		pass
-		#_is_move_breaking = false
-		
-	else:
-		if event.is_action("ui_left"):
-			_is_moving_left = true
-		elif event.is_action("ui_right"):
-			_is_moving_right = true
-		elif event.is_action("ui_down"):
+		if event.is_action_released("ui_left"):
+			_is_moving_left = false
+			
+		elif event.is_action_released("ui_right"):
+			_is_moving_right = false
+			
+		elif event.is_action_released("ui_down"):
 			pass
-			#_is_move_breaking = true
+			#_is_move_breaking = false
+			
+		else:
+			if event.is_action("ui_left"):
+				_is_moving_left = true
+			elif event.is_action("ui_right"):
+				_is_moving_right = true
+			elif event.is_action("ui_down"):
+				pass
+				#_is_move_breaking = true
+			
 		
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			if event.is_action_pressed("game_zoom_out"):
+				CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+				is_consumed = true
+				
+			elif event.is_action_released("game_zoom_out"):
+				CameraManager.reset_camera_zoom_level()
+				is_consumed = true
+				
+			
+			
+			if !is_consumed:
+				emit_signal("unhandled_key_input_received", event)
+
+
+func stop_all_persisting_actions():
+	if _is_moving_left:
+		_is_moving_left = false
 	
-	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		if !is_consumed:
-			emit_signal("unhandled_key_input_received", event)
+	if _is_moving_right:
+		_is_moving_right = false
+	
+	if _is_move_breaking:
+		_is_move_breaking = false
 
 
-# note after phy, it is followed by integ, never by another phy.
+func stop_player_movement():
+	_is_stop_player_movement_at_next_frame = true
+
+##########################################
+
+# note: after phy, it is followed by integ, never by another phy.
 func _physics_process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
@@ -577,6 +633,7 @@ func _physics_process(delta):
 					
 					var scalar_quo = _get_scalar_quotient_of_vector_using_vec_divisior__max_one(linear_velocity, mov_of_left_right)
 					var is_curr_mov_left_right_fit_in_linear_vel = scalar_quo >= 1
+					
 					#print("scalar quo: %s. mov_left_right: %s" % [scalar_quo, mov_of_left_right])
 					if !is_curr_mov_left_right_fit_in_linear_vel:
 						var diff = linear_velocity - mov_of_left_right
@@ -785,6 +842,11 @@ func _integrate_forces(state):
 		_body_state_linear_velocity__without_modifications = state.linear_velocity - undeltad_mov
 		
 		#
+		
+		if _is_stop_player_movement_at_next_frame:
+			_is_stop_player_movement_at_next_frame = false
+			make_x_zero = true
+			make_y_zero = true
 		
 		state.linear_velocity += final_mov
 		if make_x_zero:

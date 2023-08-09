@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
@@ -9,9 +9,28 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/TrophyPanel/TrophyPanel.tscn" type="PackedScene" id=7]
 [ext_resource path="res://GameFrontHUDRelated/Subs/RobotHealthPanel/RobotHealthPanel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://GameFrontHUDRelated/Subs/CoinsPanel/CoinsPanel.tscn" type="PackedScene" id=9]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_GlitchEffect.tres" type="Shader" id=10]
+[ext_resource path="res://GameElements/ScreenShaderSprite/ScreenShaderSprite.png" type="Texture" id=11]
+[ext_resource path="res://GameFrontHUDRelated/Subs/GameDialogPanel/GameDialogPanel.tscn" type="PackedScene" id=12]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 10 )
+shader_param/shake_power = 0.002
+shader_param/shake_speed = 500.0
+shader_param/shake_block_size = 10.5
+shader_param/shake_color_rate = 0.01
 
 [node name="GameFrontHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
+
+[node name="NonGUIScreenShaderSprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+position = Vector2( 960, 540 )
+scale = Vector2( 1000, 1000 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="OtherHosters" type="Node" parent="."]
 
@@ -19,6 +38,16 @@ script = ExtResource( 1 )
 margin_right = 960.0
 margin_bottom = 540.0
 mouse_filter = 2
+
+[node name="GameDialogPanel" parent="ControlContainer" instance=ExtResource( 12 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -250.0
+margin_top = -150.0
+margin_right = 250.0
+margin_bottom = 0.0
 
 [node name="AbilityPanel" parent="ControlContainer" instance=ExtResource( 2 )]
 margin_left = 18.0
