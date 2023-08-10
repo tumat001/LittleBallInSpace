@@ -2,7 +2,9 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 const Shader_Rainbow = preload("res://MiscRelated/ShadersRelated/Shader_PickupableOutline_Rainbow.tres")
 
+const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260.png")
 
+#
 
 onready var CDSU_pickupable_launcher = $ObjectContainer/CDSUPickupable_Launcher
 onready var CDSU_pickupable_remote = $ObjectContainer/CDSUPickupable_Remote
@@ -85,10 +87,11 @@ func _start_remote_dialog__01():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
-func _on_display_of_desc_finished__01():
+
+func _on_display_of_desc_finished__01(arg_metadata):
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
 	
 	CDSU_pickupable_remote__sprite.material.shader = Shader_Rainbow
@@ -110,10 +113,10 @@ func _start_remote_dialog__02():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
 
 
-func _on_display_of_desc_finished__02():
+func _on_display_of_desc_finished__02(arg_metadata):
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
 	
 	PDAR_cancel_dialog_remote.connect("player_entered_in_area", self, "_on_PDAR_cancel_dialog_remote_player_entered_area")
@@ -137,23 +140,37 @@ func _on_player_entered_PDAR_fakeout_disable_rewind():
 
 
 func _on_player_entered_PDAR_fakeout_disable_rewind__after_delay():
-	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	game_elements.configure_game_state_for_cutscene_occurance(false, true)
 	
 	CameraManager.set_current_default_zoom_normal_vec(Vector2(2, 2), true, 2.0)
 	
 	var tweener = create_tween()
 	tweener.tween_callback(self, "_on_fakeout_zoom_out_complete").set_delay(2.5)
 
+
 func _on_fakeout_zoom_out_complete():
 	_start_show_game_logo()
 	
-	
+	var tweener = create_tween()
+	tweener.tween_callback(self, "_on_delay_for_game_end_complete").set_delay(4.5)
+
 
 
 func _start_show_game_logo():
-	pass
+	var logo_tex_rect = TextureRect.new()
+	logo_tex_rect.texture = GameLogo_BannerSized
+	logo_tex_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	logo_tex_rect.modulate.a = 0
 	
+	SingletonsAndConsts.current_game_front_hud.misc_center_container.add_child(logo_tex_rect)
+	
+	var mod_a_tweener = create_tween()
+	mod_a_tweener.tween_property(logo_tex_rect, "modulate:a", 1.0, 1.5)
 
+
+func _on_delay_for_game_end_complete():
+	game_elements.game_result_manager.end_game__as_win()
+	
 
 
 

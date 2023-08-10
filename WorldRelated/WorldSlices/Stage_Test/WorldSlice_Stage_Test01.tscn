@@ -47,7 +47,7 @@ tile_data = PoolIntArray( 36, 2, 0, 37, 2, 0, 38, 2, 0, 39, 2, 0, 40, 2, 0, 41, 
 [node name="BaseTileSet4" parent="TileContainer" index="3" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet4" index="0"]
-tile_data = PoolIntArray( 65541, 7, 65536, 131077, 7, 65536, 196613, 7, 65536, 262149, 7, 65536 )
+tile_data = PoolIntArray( 65539, 9, 0, 65541, 7, 65536, 131075, 9, 65536, 131077, 7, 65536, 196611, 9, 65536, 196613, 7, 65536, 262147, 9, 131072, 262149, 7, 65536 )
 
 [node name="EnergyAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 656, 239 )
@@ -68,16 +68,17 @@ shape = SubResource( 3 )
 position = Vector2( 323, 162 )
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet4")
+pressable_count = 2
 
 [node name="Pickupable_Battery" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
 material = SubResource( 1 )
 position = Vector2( 366, 60 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
-position = Vector2( 450, 110 )
+position = Vector2( 403, 58 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 1037, 192 )
+position = Vector2( 434, 61 )
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BaseTileSet2"]

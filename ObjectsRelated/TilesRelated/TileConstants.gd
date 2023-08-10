@@ -33,6 +33,16 @@ var _tile_id_to_region_to_img_map : Dictionary = {}
 
 #
 
+static func is_tile_id_fillable_or_unfillable(arg_id):
+	match arg_id:
+		TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01, TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02:
+			return true
+		TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_01, TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02:
+			return true
+	
+	return false
+
+
 static func is_tile_id_filled(arg_id):
 	match arg_id:
 		TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01, TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02:

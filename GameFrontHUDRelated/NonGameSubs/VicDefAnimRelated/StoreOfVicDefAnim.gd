@@ -2,6 +2,7 @@ extends Reference
 
 
 enum AnimTypes {
+	NONE = -1
 	ACTION = 0,
 	CALM = 1,
 	SUPER_ACTION = 2,  # foreground becomes white instead of black
@@ -10,6 +11,8 @@ enum AnimTypes {
 #
 
 enum VicDefAnimIds {
+	NONE = -1
+	
 	Vic_ActionStyle_Normal_01 = 0
 	Def_ActionStyle_Normal_01 = 1
 }
@@ -48,6 +51,10 @@ const all_anim__def__super_action_style__ids = [
 ####
 
 static func get_instance_of_anim_id(arg_id):
+	if arg_id == VicDefAnimIds.NONE or arg_id == null:
+		return null
+	
+	
 	var anim_class_file
 	
 	if arg_id == VicDefAnimIds.Vic_ActionStyle_Normal_01:
@@ -59,6 +66,10 @@ static func get_instance_of_anim_id(arg_id):
 
 
 static func get_random_anim_id(arg_is_vic, arg_type : int):
+	if arg_type == AnimTypes.NONE:
+		return null
+	
+	
 	var rng = StoreOfRng.get_rng(StoreOfRng.RNGSource.NON_ESSENTIAL)
 	
 	if arg_is_vic:

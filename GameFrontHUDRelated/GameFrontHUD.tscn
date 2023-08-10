@@ -135,3 +135,8 @@ margin_bottom = 40.0
 margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
+
+[node name="MiscCenterContainer" type="CenterContainer" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2

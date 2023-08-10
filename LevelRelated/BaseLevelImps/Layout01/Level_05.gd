@@ -3,12 +3,13 @@ extends "res://LevelRelated/Classes/BaseLevel.gd"
 
 
 func _init():
-	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
+	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.NONE
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
 	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
 	lose_messege_type = AbstractVicDefAnim.LoseMessageType.DEFEAT
-
+	
+	
 
 #
 
@@ -25,6 +26,17 @@ func after_game_init():
 	.after_game_init()
 	
 	_add_energy_modi()
+	
+	#_add_launch_ball_modi()
+
+#func _add_launch_ball_modi():
+#	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+#	modi.starting_ball_count = 80
+#	#modi.is_infinite_ball_count = true
+#
+#	game_elements.player_modi_manager.add_modi_to_player(modi)
+
+
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)

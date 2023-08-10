@@ -13,6 +13,7 @@ enum LevelIds {
 	LEVEL_02 = 2
 	LEVEL_03 = 3
 	LEVEL_04 = 4
+	LEVEL_05 = 5
 	
 }
 
@@ -110,6 +111,19 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		_set_details__to_usual_circle_types(level_details)
+		
+		
+	elif arg_id == LevelIds.LEVEL_05:
+		level_details.level_name = [
+			["Escape", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__to_usual_circle_types(level_details)
+		
 	
 	
 	_level_id_to_level_details_map[arg_id] = level_details
@@ -130,6 +144,8 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
 	elif arg_id == LevelIds.LEVEL_04:
 		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
+	elif arg_id == LevelIds.LEVEL_05:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
 		
 	
 
@@ -155,6 +171,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_02 : 3,
 		LevelIds.LEVEL_03 : 4,
 		LevelIds.LEVEL_04 : 3,
+		LevelIds.LEVEL_05 : 0,
 		
 	}
 	

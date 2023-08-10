@@ -185,13 +185,16 @@ func get_total_character_count():
 
 #####################
 
-func start_tween_display_of_text(arg_duration_to_finish : bool):
+func start_tween_display_of_text(arg_duration_to_finish : bool, arg_func_source, arg_func_name, arg_func_params):
 	set_visible_character_count(0)
 	
+	call_deferred("_deferred_start_vis_character_tween_tween", arg_duration_to_finish, arg_func_source, arg_func_name, arg_func_params)
+
+func _deferred_start_vis_character_tween_tween(arg_duration_to_finish, arg_func_source, arg_func_name, arg_func_params):
 	var tween = create_tween()
 	var method_tweener = tween.tween_method(self, "set_visible_character_count", 0, get_total_character_count(), arg_duration_to_finish)
 	
-	return [tween, method_tweener]
+	arg_func_source.call(arg_func_name, [tween, method_tweener], arg_func_params)
 
 
 

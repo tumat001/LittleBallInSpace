@@ -29,7 +29,7 @@ func _enter_tree():
 func _ready():
 	#TODO Temp for quick testing of lvls
 	if (false):
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_02
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
 		
 		var game_elements = GameElements_Scene.instance()
 		game_elements_container.add_child(game_elements)

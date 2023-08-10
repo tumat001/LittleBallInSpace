@@ -33,6 +33,10 @@ export(BodyMode) var body_mode_to_use : int = RigidBody2D.MODE_RIGID setget set_
 
 #
 
+var is_class_type_base_object : bool = true
+
+#
+
 onready var anim_sprite = $AnimatedSprite
 
 onready var collision_shape = $CollisionShape2D

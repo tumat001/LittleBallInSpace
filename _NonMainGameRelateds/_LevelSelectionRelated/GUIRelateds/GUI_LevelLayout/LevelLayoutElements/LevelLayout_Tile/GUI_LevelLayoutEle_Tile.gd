@@ -127,8 +127,9 @@ func set_is_path(arg_val):
 				
 			else:
 				tile_texture_rect.visible = true
-				for path in _all_paths:
-					path.visible = false
+				#for path in _all_paths:
+				#	path.visible = false
+				_update_display__as_path()
 				
 				path_texture_rect__editor.visible = false
 

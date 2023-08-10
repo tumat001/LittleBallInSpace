@@ -61,6 +61,7 @@ tileset_02_to_register_in_toggle__is_reversed = false
 is_pressed = false
 can_be_triggered_by_players = true
 button_color = 2
+pressable_count = 1
 
 [node name="ButtonContainer" type="Node2D" parent="." index="0"]
 position = Vector2( 0, -16 )
@@ -86,5 +87,18 @@ shape = SubResource( 3 )
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="." index="3"]
 position = Vector2( 0, -12.5 )
 shape = SubResource( 4 )
+
+[node name="UseCountLabel" type="Label" parent="." index="4"]
+margin_left = -16.0
+margin_top = -6.0
+margin_right = 16.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+text = "1"
+align = 1
+valign = 1
 
 [connection signal="body_shape_entered" from="ButtonContainer/ButtonArea2D" to="." method="_on_ButtonArea2D_body_shape_entered"]

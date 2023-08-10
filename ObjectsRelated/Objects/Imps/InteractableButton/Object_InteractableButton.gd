@@ -46,6 +46,9 @@ enum ButtonColor {
 }
 export(ButtonColor) var button_color : int = ButtonColor.BLUE setget set_button_color
 
+
+export(int) var pressable_count : int = 1 setget set_pressable_count
+
 ##
 
 const ANIM_NAME__BASE__BLUE_OFF = "blue_off"
@@ -64,6 +67,8 @@ onready var button_container = $ButtonContainer
 onready var collision_shape_2d_02 = $CollisionShape2D2
 onready var button_collision_shape_2d = $ButtonContainer/ButtonArea2D/ButtonCollisionShape2D
 onready var button_area_2d = $ButtonContainer/ButtonArea2D
+
+onready var use_count_label = $UseCountLabel
 
 ######
 
@@ -167,7 +172,16 @@ func _update_button_display():
 				
 			
 	
+
+#
+
+func set_pressable_count(arg_val):
+	pressable_count = arg_val
 	
+	if is_inside_tree():
+		use_count_label.text = str(arg_val)
+	
+
 
 #
 
@@ -175,6 +189,7 @@ func _ready():
 	coll_shape_button_blocker_y_pos_diff_from_button = button_container.position.y - collision_shape_2d_02.position.y
 	set_is_pressed(is_pressed)
 	set_button_color(button_color)
+	set_pressable_count(pressable_count)
 	
 	if is_instance_valid(tileset_01_to_register_in_toggle):
 		add_tileset_to_toggle_to_is_reverse_map(tileset_01_to_register_in_toggle, tileset_01_to_register_in_toggle__is_reversed)
@@ -199,22 +214,26 @@ func add_tileset_to_toggle_to_is_reverse_map(arg_tileset, arg_is_reversed):
 	
 	arg_tileset.make_tileset_rewindable()
 	
-	_press_on_tileset(arg_tileset, arg_is_reversed)
+	#_press_on_tileset(arg_tileset, arg_is_reversed)
 
 
 func _press_on_tileset(arg_tileset, arg_is_reversed):
-	if is_pressed:
-		if arg_is_reversed:
-			arg_tileset.convert_all_unfilled_tiles_to_filled()
-		else:
-			arg_tileset.convert_all_filled_tiles_to_unfilled()
-		
-	else:
-		if arg_is_reversed:
-			arg_tileset.convert_all_filled_tiles_to_unfilled()
-		else:
-			arg_tileset.convert_all_unfilled_tiles_to_filled()
-		
+	if pressable_count > 0:
+		arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+		set_pressable_count(pressable_count - 1)
+	
+#	if is_pressed:
+#		if arg_is_reversed:
+#			arg_tileset.convert_all_unfilled_tiles_to_filled()
+#		else:
+#			arg_tileset.convert_all_filled_tiles_to_unfilled()
+#
+#	else:
+#		if arg_is_reversed:
+#			arg_tileset.convert_all_filled_tiles_to_unfilled()
+#		else:
+#			arg_tileset.convert_all_unfilled_tiles_to_filled()
+#
 	
 
 #

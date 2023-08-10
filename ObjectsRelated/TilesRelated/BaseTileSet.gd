@@ -70,7 +70,7 @@ var _cell_metadatas = {}
 
 #
 
-var changing_colls__from_fill_and_unfilled = false
+#var changing_colls__from_fill_and_unfilled = false
 #var changing_colls__rid_changed_colls : Array 
 
 #
@@ -348,7 +348,59 @@ func get_tilemap():
 
 #
 
+func _create_default_arr_data_for_setting_tiles__separated_arrs(arg_coords : Array, arg_tile_ids : Array, arg_autotile_coords : Array):
+	var arr = []
+	
+	for i in arg_coords.size():
+		arr.append([arg_coords[i], arg_tile_ids[i], arg_autotile_coords[i], false, false, false])
+	
+	return arr
 
+func _create_default_arr_data_for_setting_tiles__in_one_arr(arg_coords_ids_and_auto_coords):
+	var arr = []
+	for data in arg_coords_ids_and_auto_coords:
+		arr.append([data[0], data[1], data[2], false, false, false])
+	
+	return arr
+
+
+
+func _set_tiles_at_coords(arg_arr_data, 
+		arg_update_dirty_quadrants : bool, arg_save_tiles_data_next_frame__for_rewind_save : bool = true):
+	
+	if arg_save_tiles_data_next_frame__for_rewind_save:
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
+		_saved_cell_data_queue.append(_generate_cells_save_data())
+	
+	tilemap.set_collision_mask_bit(0, false)
+	
+	for data in arg_arr_data:
+		var arg_coords = data[0]
+		var arg_tile_id = data[1]
+		var arg_autotile_coords = data[2]
+		var arg_flip_x = data[3]
+		var arg_flip_y = data[4]
+		var arg_transpose = data[5]
+		
+		if is_instance_valid(_player):
+			_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
+		
+		tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
+		
+	
+	tilemap.set_collision_mask_bit(0, true)
+	
+	if arg_update_dirty_quadrants:
+		#tilemap.update_dirty_quadrants()
+		tilemap.call_deferred("update_dirty_quadrants")
+		#call_deferred("_tilemap_update_dirty_quadrants")
+	
+	if arg_save_tiles_data_next_frame__for_rewind_save:
+		_update_cells_save_data()
+		
+	
+
+# make arr version of this
 func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_coords = Vector2(0, 0),
 		arg_update_dirty_quadrants : bool = false,
 		arg_save_tiles_data_next_frame__for_rewind_save : bool = true,
@@ -362,14 +414,17 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 		#_saved_cell_data = _generate_cells_save_data()
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
-	_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
+	if is_instance_valid(_player):
+		_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
 	#changing_colls__rid_changed_colls.append(arg_coords)
 	
 	#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 	#	changing_colls__from_fill_and_unfilled = true
 	#set_deferred("changing_colls__from_fill_and_unfilled", false)
 	
+	tilemap.set_collision_mask_bit(0, false)
 	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
+	tilemap.set_collision_mask_bit(0, true)
 	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()
@@ -390,31 +445,38 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 func convert_all_filled_tiles_to_unfilled():
 	var at_least_one_changed : bool = false
 	var cell_coords_id_and_auto_coords : Array = []
-	for cell_coords in tilemap.get_used_cells():
-		var id = tilemap.get_cellv(cell_coords)
+	
+	for cell_coord in tilemap.get_used_cells():
+		var id = tilemap.get_cellv(cell_coord)
 		var old_id = id
 		var unfilled_id_tentative = TileConstants.convert_filled_tile_id__to_unfilled(id)
 		if unfilled_id_tentative != null:
 			id = unfilled_id_tentative
-		var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
+		var auto_coord = tilemap.get_cell_autotile_coord(cell_coord.x, cell_coord.y)
 		
 		if id != old_id:
 			at_least_one_changed = true
-			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
+			cell_coords_id_and_auto_coords.append([cell_coord, id, auto_coord])
+			
 	
 	if at_least_one_changed:
-		changing_colls__from_fill_and_unfilled = true
+		#changing_colls__from_fill_and_unfilled = true
 		
 		_save_tiles_data_next_frame__for_rewind_save__count += 1
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 		#print("saved cell data: %s" % _generate_cells_save_data())
 		
-		for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
-			_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		#for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
+		#	#coords, id, and auto coord
+		#	_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		#	
 		
-		tilemap.call_deferred("update_dirty_quadrants")
+		var completed_data__cell_coords_id_auto_coords : Array = _create_default_arr_data_for_setting_tiles__in_one_arr(cell_coords_id_and_auto_coords)
+		_set_tiles_at_coords(completed_data__cell_coords_id_auto_coords, true, true)
 		
-		_update_cells_save_data()
+		#tilemap.call_deferred("update_dirty_quadrants")
+		
+		#_update_cells_save_data()
 		#print("updated cell data: %s" % _cell_metadatas)
 		#print("--------")
 		
@@ -436,20 +498,76 @@ func convert_all_unfilled_tiles_to_filled():
 			cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
 	
 	if at_least_one_changed:
-		changing_colls__from_fill_and_unfilled = true
+		#changing_colls__from_fill_and_unfilled = true
 		
 		_save_tiles_data_next_frame__for_rewind_save__count += 1
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 		
-		for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
-			_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
 		
-		tilemap.call_deferred("update_dirty_quadrants")
+		var completed_data__cell_coords_id_auto_coords : Array = _create_default_arr_data_for_setting_tiles__in_one_arr(cell_coords_id_and_auto_coords)
+		_set_tiles_at_coords(completed_data__cell_coords_id_auto_coords, true, true)
 		
-		_update_cells_save_data()
+		
+		#for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
+		#	_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		
+		#tilemap.call_deferred("update_dirty_quadrants")
+		
+		#_update_cells_save_data()
 		
 		
 
+func toggle_fill_to_unfilled_and_vise_versa():
+	var at_least_one_changed : bool = false
+	var cell_coords_id_and_auto_coords : Array = []
+	for cell_coords in tilemap.get_used_cells():
+		var id = tilemap.get_cellv(cell_coords)
+		var old_id = id
+		
+		if TileConstants.is_tile_id_fillable_or_unfillable(id):
+			if TileConstants.is_tile_id_filled(id):
+				var unfilled_id_tentative = TileConstants.convert_filled_tile_id__to_unfilled(id)
+				if unfilled_id_tentative != null:
+					id = unfilled_id_tentative
+				
+				#print("unfiled")
+				
+			else:
+				var filled_id_tentative = TileConstants.convert_unfilled_tile_id__to_filled(id)
+				if filled_id_tentative != null:
+					id = filled_id_tentative
+				
+				#print("filled")
+				
+			
+			#print("id: %s, old: %s" % [id, old_id])
+			#print("---------")
+			
+			var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
+			
+			if id != old_id:
+				at_least_one_changed = true
+				cell_coords_id_and_auto_coords.append([cell_coords, id, auto_coords])
+	
+	if at_least_one_changed:
+		#changing_colls__from_fill_and_unfilled = true
+		
+		_save_tiles_data_next_frame__for_rewind_save__count += 1
+		_saved_cell_data_queue.append(_generate_cells_save_data())
+		
+		
+		var completed_data__cell_coords_id_auto_coords : Array = _create_default_arr_data_for_setting_tiles__in_one_arr(cell_coords_id_and_auto_coords)
+		_set_tiles_at_coords(completed_data__cell_coords_id_auto_coords, true, true)
+		
+		#for cell_coords_id_and_auto_coord in cell_coords_id_and_auto_coords:
+		#	_set_tile_at_coords(cell_coords_id_and_auto_coord[0], cell_coords_id_and_auto_coord[1], cell_coords_id_and_auto_coord[2], false, false)
+		
+		#tilemap.call_deferred("update_dirty_quadrants")
+		
+		#_update_cells_save_data()
+		
+	
+	
 
 
 

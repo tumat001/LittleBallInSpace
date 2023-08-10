@@ -65,3 +65,34 @@ margin_top = 142.0
 margin_right = 369.0
 margin_bottom = 188.0
 default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Tile_05" parent="LayoutElesContainer" index="7" instance=ExtResource( 3 )]
+margin_left = 507.0
+margin_top = 142.0
+margin_right = 553.0
+margin_bottom = 188.0
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_04" parent="LayoutElesContainer" index="8" instance=ExtResource( 3 )]
+margin_left = 369.0
+margin_top = 142.0
+margin_right = 415.0
+margin_bottom = 188.0
+is_path = true
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_05" parent="LayoutElesContainer" index="9" instance=ExtResource( 3 )]
+margin_left = 415.0
+margin_top = 142.0
+margin_right = 461.0
+margin_bottom = 188.0
+is_path = true
+default_texture_of_tile = ExtResource( 4 )
+
+[node name="GUI_LevelLayoutEle_Path_06" parent="LayoutElesContainer" index="10" instance=ExtResource( 3 )]
+margin_left = 461.0
+margin_top = 142.0
+margin_right = 507.0
+margin_bottom = 188.0
+is_path = true
+default_texture_of_tile = ExtResource( 4 )

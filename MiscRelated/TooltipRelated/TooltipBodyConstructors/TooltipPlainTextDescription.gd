@@ -8,7 +8,7 @@ const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
 
 #
 
-const font_name : String = "TooltipLabelFont"
+#const font_name : String = "TooltipLabelFont"
 
 var description : String
 var color : Color = Color(0, 0, 0, 1)

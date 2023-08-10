@@ -19,6 +19,9 @@ onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
 
 onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
+
+onready var misc_center_container = $MiscCenterContainer
+
 ###
 
 func add_node_to_other_hosters(arg_node : Node):

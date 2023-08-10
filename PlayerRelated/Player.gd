@@ -305,7 +305,7 @@ func _update_last_calc_ignore_outside_induced_forces():
 
 #
 
-func _on_block_all_inputs_cond_clauses_updated():
+func _on_block_all_inputs_cond_clauses_updated(arg_clause_id):
 	_update_last_calc_block_all_inputs()
 
 func _update_last_calc_block_all_inputs():
@@ -444,13 +444,13 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
-		if !body.break_on_player_contact and !body.changing_colls__from_fill_and_unfilled:
+		if !body.break_on_player_contact: #and !body.changing_colls__from_fill_and_unfilled:
 			var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 			
 			_attempt_remove_on_ground_count__with_any_identif(coordinate)
 		
-		if !body.changing_colls__from_fill_and_unfilled:
-			body.changing_colls__from_fill_and_unfilled = false
+		#if !body.changing_colls__from_fill_and_unfilled:
+		#	body.changing_colls__from_fill_and_unfilled = false
 	
 	if body is BaseObject:
 		if _objects_to_collide_with_after_exit.has(body):

@@ -24,9 +24,9 @@ var _entities_in_area_to_delta_map : Dictionary
 
 #
 
-var color_of_region_to_use : Color
-var color_outline_of_region_to_use : Color
-var outine_width_of_region_to_use : int
+export(Color) var color_of_region_to_use : Color = Color(0, 0, 0, 0)
+export(Color) var color_outline_of_region_to_use : Color = Color(0, 0, 0, 0)
+export(int) var outine_width_of_region_to_use : int = 0
 
 var monitor_entities_remaining_in_area : bool = false setget set_monitor_entities_remaining_in_area
 

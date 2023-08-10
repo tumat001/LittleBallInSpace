@@ -53,7 +53,7 @@ static func get_atari_classic_font_with_size(font_size : int) -> DynamicFont:
 	if _atari_classic_font_size_to_font_map.has(font_size):
 		return _atari_classic_font_size_to_font_map[font_size]
 	else:
-		return _add_pixel_emulator_font_with_size_to_map(font_size)
+		return _add_atari_classic_font_with_size_to_map(font_size)
 
 static func _add_atari_classic_font_with_size_to_map(font_size : int) -> DynamicFont:
 	var font_data = DynamicFontData.new()
@@ -73,7 +73,7 @@ static func get_atari_classic_smooth_font_with_size(font_size : int) -> DynamicF
 	if _atari_classic_font_size_to_font_map.has(font_size):
 		return _atari_classic_font_size_to_font_map[font_size]
 	else:
-		return _add_pixel_emulator_font_with_size_to_map(font_size)
+		return _add_atari_classic_smooth_font_with_size_to_map(font_size)
 
 static func _add_atari_classic_smooth_font_with_size_to_map(font_size : int) -> DynamicFont:
 	var font_data = DynamicFontData.new()
@@ -93,7 +93,7 @@ static func get_consola_font_with_size(font_size : int) -> DynamicFont:
 	if _consola_font_size_to_font_map.has(font_size):
 		return _consola_font_size_to_font_map[font_size]
 	else:
-		return _add_pixel_emulator_font_with_size_to_map(font_size)
+		return _add_consola_font_with_size_to_map(font_size)
 
 static func _add_consola_font_with_size_to_map(font_size : int) -> DynamicFont:
 	var font_data = DynamicFontData.new()
