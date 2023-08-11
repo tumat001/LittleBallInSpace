@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/AttackSpriteRelated/AttackSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd" type="Script" id=2]
+
+[node name="CenterBasedAttackSprite" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+initial_speed_towards_center = 0.0
+speed_accel_towards_center = 0.0
+min_speed_towards_center = -9999.0
+max_speed_towards_center = 9999.0
+min_starting_distance_from_center = 1.0
+max_starting_distance_from_center = 1.0
+min_starting_angle = 0.0
+max_starting_angle = 359.0
+is_enabled_mov_toward_center = true

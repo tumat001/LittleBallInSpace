@@ -4,6 +4,7 @@ extends MarginContainer
 #
 
 const LevelDetails = preload("res://LevelRelated/Classes/LevelDetails.gd")
+const LevelLayoutDetails = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/LevelLayoutDetails.gd")
 
 const Tile_White = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_TilePath_White_Standard_46x46.png")
 
@@ -32,7 +33,7 @@ export(Texture) var default_texture_of_tile : Texture = Tile_White setget set_de
 
 #
 
-var layout_id_to_link_to = StoreOfLevelLayouts.LevelLayoutIds.NONE setget set_layout_id_to_link_to
+var level_layout_details : LevelLayoutDetails setget set_level_layout_details
 var layout_ele_id_to_put_cursor_to : int
 
 #
@@ -49,11 +50,17 @@ var _all_paths : Array
 
 #
 
+# managed by abstratlevellayout
+#var _all_non_path_tiles_connected : Array = []
+
+#
+
 onready var tile_texture_rect = $TileTextureRect
 
 onready var path_texture_container = $PathTextureContainer
 
 onready var path_texture_rect__editor = $PathTextureRect__Editor
+
 
 ########
 
@@ -91,6 +98,19 @@ func set_default_texture_of_tile(arg_texture):
 		_update_tile_texture_rect__texture()
 
 
+func set_level_layout_details(arg_level_layout_det):
+	level_layout_details = arg_level_layout_det
+	
+	level_layout_details.connect("is_level_layout_locked_changed", self, "_is_level_layout_locked_changed")
+	
+	_update_tile_texture_rect__texture()
+
+func _is_level_layout_locked_changed(arg_val):
+	_update_tile_texture_rect__texture()
+	
+
+
+
 func _update_tile_texture_rect__texture():
 	if level_details != null:
 		var texture_and_mod_to_use = level_details.get_texture_and_modulate_to_use__based_on_properties()
@@ -102,6 +122,19 @@ func _update_tile_texture_rect__texture():
 			tile_texture_rect.texture = texture_to_use
 			tile_texture_rect.modulate = mod_to_use
 			return
+	
+	
+	if level_layout_details != null:
+		var texture_and_mod_to_use = level_layout_details.get_texture_and_modulate_to_use__based_on_properties()
+		var texture_to_use = texture_and_mod_to_use[0]
+		
+		if texture_to_use != null:
+			var mod_to_use = texture_and_mod_to_use[1]
+			
+			tile_texture_rect.texture = texture_to_use
+			tile_texture_rect.modulate = mod_to_use
+			return
+	
 	
 	
 	if default_texture_of_tile != null:
@@ -124,6 +157,7 @@ func set_is_path(arg_val):
 			if is_path:
 				tile_texture_rect.visible = false
 				_update_display__as_path()
+				
 				
 			else:
 				tile_texture_rect.visible = true
@@ -170,7 +204,7 @@ func _update_display__as_path():
 			_path__to_east.rect_rotation = 90
 		_path__to_east.visible = true
 		
-	
+
 
 func _create_path_texture_rect():
 	var path = TextureRect.new()
@@ -219,26 +253,22 @@ func set_layout_element_tile__down__path(arg_path):
 func set_layout_element_tile__left(arg_node):
 	layout_element_tile__left = arg_node
 	
-	if is_path:
-		_update_display__as_path()
+	_update_display__as_path()
 
 func set_layout_element_tile__right(arg_node):
 	layout_element_tile__right = arg_node
 	
-	if is_path:
-		_update_display__as_path()
+	_update_display__as_path()
 
 func set_layout_element_tile__up(arg_node):
 	layout_element_tile__up = arg_node
 	
-	if is_path:
-		_update_display__as_path()
+	_update_display__as_path()
 
 func set_layout_element_tile__down(arg_node):
 	layout_element_tile__down = arg_node
 	
-	if is_path:
-		_update_display__as_path()
+	_update_display__as_path()
 
 
 
@@ -252,7 +282,7 @@ func is_hoverable_by_player_cursor() -> bool:
 		if !level_details.is_level_locked:
 			return true
 	
-	if is_link_to_another_layout():
+	if is_link_to_layout():
 		return true
 	
 	return false
@@ -260,16 +290,33 @@ func is_hoverable_by_player_cursor() -> bool:
 
 #
 
-func set_layout_id_to_link_to(arg_val):
-	layout_id_to_link_to = arg_val
-	
+#func set_layout_id_to_link_to(arg_val):
+#	layout_id_to_link_to = arg_val
+#
 
-func is_link_to_another_layout():
-	return layout_id_to_link_to != StoreOfLevelLayouts.LevelLayoutIds.NONE
-	
+func is_link_to_layout():
+	if level_layout_details != null:
+		#return level_layout_details.level_layout_id != StoreOfLevelLayouts.LevelLayoutIds.NONE
+		return true
+	else:
+		return false
+
+func is_link_to_level():
+	if level_details != null:
+		return true
+	else:
+		return false
 
 
 #########
+
+#func add_non_path_tiles_as_connected(arg_tile):
+#	_all_non_path_tiles_connected.append(arg_tile)
+#
+#
+
+
+#
 
 func get_center_position() -> Vector2:
 	return rect_global_position + (rect_size / 2)

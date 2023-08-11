@@ -1,8 +1,30 @@
+# IMPORTANT:
+# WHEN BUILDING A layout, make sure that the paths are ordered sequencially (1, 2, 3 ,4 ,5) and not (3, 5, 4, 1, 2)
+#
+#
 extends Control
 
 const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd")
 
-#
+const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
+const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
+
+const LevelUnlock_BeforeBurst_Stream_0000 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0000.png")
+const LevelUnlock_BeforeBurst_Stream_0001 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0001.png")
+const LevelUnlock_BeforeBurst_Stream_0002 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0002.png")
+const LevelUnlock_BeforeBurst_Stream_0003 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0003.png")
+const LevelUnlock_BeforeBurst_Stream_0004 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0004.png")
+const LevelUnlock_BeforeBurst_Stream_0005 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0005.png")
+const all_particles__level_unlock_before_burst_stream = [
+	LevelUnlock_BeforeBurst_Stream_0000,
+	LevelUnlock_BeforeBurst_Stream_0001,
+	LevelUnlock_BeforeBurst_Stream_0002,
+	LevelUnlock_BeforeBurst_Stream_0003,
+	LevelUnlock_BeforeBurst_Stream_0004,
+	LevelUnlock_BeforeBurst_Stream_0005,
+]
+
+##
 
 const TILE_WIDTH : int = 46
 
@@ -12,6 +34,9 @@ signal prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hover
 signal prompt_entered_into_link_to_other_layout(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id)
 
 signal currently_hovered_layout_ele_changed(arg_id, arg_currently_hovered_tile)
+
+
+signal triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
 
 ##
 
@@ -47,6 +72,9 @@ var _currently_hovered_tile : GUI_LevelLayoutEle_Tile
 
 var _rect_position_to_layout_ele_map : Dictionary
 
+# tile ele with level only, not path nor layout
+var _all_level_only_tile_ele__level_id_to_ele__map : Dictionary
+
 #
 
 const INPUT_DELAY_AFTER_GLIDE = 0.2
@@ -67,6 +95,22 @@ const ELE_TILE_DIR__RIGHT = 2
 const ELE_TILE_DIR__UP = 3
 const ELE_TILE_DIR__DOWN = 4
 
+#
+
+var gui_level_selection_whole_screen
+var particles_container
+
+
+const BEFORE_BURST_PARTICLE__COUNT = 15
+const BEFORE_BURST_PARTICLE__DELAY_PER_PARTICLE = 0.08
+const BEFORE_BURST_PARTICLE__COUNT_FOR_TRIGGER_NEXT_PHASE = 15
+
+var _before_burst_particle_counter_timer : Timer
+
+var _tile_ele_for_playing_victory_animation_for : GUI_LevelLayoutEle_Tile
+
+
+var _current_burst_particle_summoned_count : int
 
 #
 
@@ -89,8 +133,16 @@ func _ready():
 	_summon_cursor_at_appropriate_loc()
 	set_is_layout_enabled(is_layout_enabled)
 	
-	_initialize_layout_ele_adjacencies()
-	#call_deferred("_initialize_layout_ele_adjacencies")
+	call_deferred("_initialize_layout_ele_dependent_vars")
+	call_deferred("_initialize_particles_related")
+
+#
+
+func _initialize_particles_related():
+	_before_burst_particle_counter_timer = Timer.new()
+	_before_burst_particle_counter_timer.one_shot = false
+	_before_burst_particle_counter_timer.connect("timeout", self, "_on_before_burst_particle_counter_timer_timeout")
+	add_child(_before_burst_particle_counter_timer)
 
 #
 
@@ -367,24 +419,93 @@ func _attempt_enter_inside_current_tile():
 	if _currently_hovered_tile.level_details != null:
 		emit_signal("prompt_entered_into_level", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 		
-	elif _currently_hovered_tile.is_link_to_another_layout():
+	elif _currently_hovered_tile.is_link_to_layout():
 		emit_signal("prompt_entered_into_link_to_other_layout", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 		
 	
+
+
+#
+
+func play_victory_animation_on_level_id(arg_id) -> bool:
+	if _all_level_only_tile_ele__level_id_to_ele__map.has(arg_id):
+		_start_show_stream_of_particles_from_center_of_ele(_all_level_only_tile_ele__level_id_to_ele__map[arg_id])
+		return true
+	else:
+		return false
+
+
+func _start_show_stream_of_particles_from_center_of_ele(arg_ele : GUI_LevelLayoutEle_Tile):
+	_tile_ele_for_playing_victory_animation_for = arg_ele
+	
+	_current_burst_particle_summoned_count = 0
+	
+	var is_last = _show_before_burst_particle__and_other_actions()
+	if !is_last:
+		_before_burst_particle_counter_timer.start(BEFORE_BURST_PARTICLE__DELAY_PER_PARTICLE)
+
+
+func _on_before_burst_particle_counter_timer_timeout():
+	_show_before_burst_particle__and_other_actions()
+
+func _show_before_burst_particle__and_other_actions() -> bool:
+	var center_pos_of_ele = _tile_ele_for_playing_victory_animation_for.get_center_position()
+	_create_before_burst_stream_particle(center_pos_of_ele)
+	_create_before_burst_stream_particle(center_pos_of_ele)
+	
+	_current_burst_particle_summoned_count += 1
+	if _current_burst_particle_summoned_count == BEFORE_BURST_PARTICLE__COUNT_FOR_TRIGGER_NEXT_PHASE:
+		_trigger_circular_burst_on_curr_ele_for_victory()
+	
+	if _current_burst_particle_summoned_count >= BEFORE_BURST_PARTICLE__COUNT:
+		_before_burst_particle_counter_timer.stop()
+		return true
+	else:
+		return false
+
+func _create_before_burst_stream_particle(arg_pos : Vector2):
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	particle.center_pos_of_basis = arg_pos
+	particle.initial_speed_towards_center = -120
+	particle.speed_accel_towards_center = -50
+	particle.min_starting_distance_from_center = 15
+	particle.max_starting_distance_from_center = 23
+	particle.texture_to_use = StoreOfRNG.randomly_select_one_element(all_particles__level_unlock_before_burst_stream, StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL))
+	particle.queue_free_at_end_of_lifetime = true
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.visible = true
+	particle.lifetime = 0.4
+	
+	
+	particles_container.add_child(particle)
+
+
+
+func _trigger_circular_burst_on_curr_ele_for_victory():
+	_create_circular_burst_effect(_tile_ele_for_playing_victory_animation_for.get_center_position())
+	
+	emit_signal("triggered_circular_burst_on_curr_ele_for_victory", _tile_ele_for_playing_victory_animation_for, _tile_ele_for_playing_victory_animation_for.level_details)
+
+
+func _create_circular_burst_effect(arg_pos : Vector2):
+	gui_level_selection_whole_screen.play_circular_draw_node__circle_burst__for_victory(arg_pos)
 
 
 ################################
 ##
 ################################
 
-func _initialize_layout_ele_adjacencies():
+func _initialize_layout_ele_dependent_vars():
 	for child in layout_elements_container.get_children():
 		_rect_position_to_layout_ele_map[child.rect_global_position] = child
 		
 	
 	for child in layout_elements_container.get_children():
 		_configure_ele_tile_neighbors(child)
-		
+		_attempt_add_tile_ele_as_level_only_ele(child)
+
 
 func _configure_ele_tile_neighbors(arg_ele_tile : GUI_LevelLayoutEle_Tile):
 	var neighoring_poses = _get_four_neighboring_poses_from_center(arg_ele_tile.rect_global_position)
@@ -406,7 +527,6 @@ func _configure_ele_tile_neighbors(arg_ele_tile : GUI_LevelLayoutEle_Tile):
 				arg_ele_tile.layout_element_tile__down = layout_ele_at_direction
 				
 			
-			
 
 
 # 1 = left, 2 = right, 3 = up, 4 = down
@@ -426,6 +546,11 @@ func _get_four_neighboring_poses_from_center(arg_pos : Vector2):
 	#bucket.append(Vector2(arg_pos.x, arg_pos.y - TILE_WIDTH))
 	#return bucket
 
+
+
+func _attempt_add_tile_ele_as_level_only_ele(arg_ele : GUI_LevelLayoutEle_Tile):
+	if arg_ele.is_link_to_level():
+		_all_level_only_tile_ele__level_id_to_ele__map[arg_ele.level_details.level_id] = arg_ele
 
 
 

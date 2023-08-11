@@ -7,10 +7,17 @@ const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/Tra
 const GameElements = preload("res://GameElements/GameElements.gd")
 const GameElements_Scene = preload("res://GameElements/GameElements.tscn")
 
+#
+
+const screen_size = Vector2(960, 540)
 
 #
 
 var gui__level_selection_whole_screen : GUI_LevelSelectionWholeScreen
+
+
+
+var _level_id_to_unlock_and_display_win_vic_on
 
 #
 
@@ -63,10 +70,13 @@ func load_and_show_layout_selection_whole_screen():
 
 func _on_selection_screen__prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id):
 	var level_details = arg_currently_hovered_tile.level_details
+	start_game_elements__with_level_details(level_details, arg_currently_hovered_tile.get_center_position())
+
+func start_game_elements__with_level_details(level_details, arg_circle_pos):
 	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	#var transition = play_transition__using_id(level_details.transition_id__entering_level__out)
 	var transition = construct_transition__using_id(level_details.transition_id__entering_level__out)
-	transition.circle_center = arg_currently_hovered_tile.get_center_position()
+	transition.circle_center = arg_circle_pos #arg_currently_hovered_tile.get_center_position()
 	transition.connect("transition_finished", self, "_on_transition_out__to_level_finished", [level_details, transition, transition.circle_center])
 	play_transition(transition)
 
@@ -86,31 +96,43 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 	transition.queue_free_on_end_of_transition = true
 	play_transition(transition)
 
-##
+
+###
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
+	_level_id_to_unlock_and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
 	var transition = play_transition__using_id(transition_id)
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition])
+	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
 	var transition = play_transition__using_id(transition_id)
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_lose
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition])
+	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
 	var transition = play_transition__using_id(transition_id)
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition])
+	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
+
+func switch_to_game_elements__from_game_elements__from_restart():
+	_on_transition_out__from_GE__finished__for_restart()
+#	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
+#	var transition = play_transition__using_id(transition_id)
+#
+#	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
+#	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
 
 
-func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition):
+
+func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
 	SingletonsAndConsts.current_game_elements.queue_free()
 	
 	load_and_show_layout_selection_whole_screen()
@@ -118,6 +140,42 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 	arg_curr_transition.queue_free()
 	var transition = play_transition__using_id(arg_next_transition_id)
 	transition.queue_free_on_end_of_transition = true
+	
+	if arg_is_win:
+		call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
+
+func _attempt_unlock_and_play_anim_on_victory__on_level_id():
+	if _level_id_to_unlock_and_display_win_vic_on != -1:
+		call_deferred("_unlock_and_play_anim_on_victory__on_level_id")
+		
+
+func _unlock_and_play_anim_on_victory__on_level_id():
+	var is_playing_anim = gui__level_selection_whole_screen.play_victory_animation_on_level_id(_level_id_to_unlock_and_display_win_vic_on)
+	
+	if is_playing_anim:
+		gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory", [], CONNECT_ONESHOT)
+	else:
+		_make_level_id_mark_as_finished(_level_id_to_unlock_and_display_win_vic_on)
+	
+	_level_id_to_unlock_and_display_win_vic_on = -1
+
+
+func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
+	_make_level_id_mark_as_finished(arg_level_details.level_id)
+	
+
+func _make_level_id_mark_as_finished(arg_level_id):
+	GameSaveManager.set_level_id_status_completion(arg_level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+	
+
+
+
+func _on_transition_out__from_GE__finished__for_restart():
+	if is_instance_valid(SingletonsAndConsts.current_game_elements):
+		SingletonsAndConsts.current_game_elements.attempt_quit_game__by_queue_freeing()
+	
+	start_game_elements__with_level_details(SingletonsAndConsts.current_level_details, screen_size / 2)
+	
 
 
 ###########

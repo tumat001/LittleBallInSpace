@@ -3,6 +3,8 @@ extends "res://MiscRelated/TooltipRelated/BaseTooltip.gd"
 
 const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
 
+const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
+
 
 ##
 
@@ -14,6 +16,7 @@ onready var tooltip_body = $MarginContainer2/MarginContainer/TooltipBody
 #
 
 func _ready():
+	tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.CONSOLA
 	tooltip_body.use_color_for_dark_background = has_dark_background
 	
 	#tooltip_body.
@@ -42,10 +45,10 @@ static func generate_descs__for_tileset(arg_base_tileset):
 	
 	var energy_mode_desc_line
 	
-	if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.NORMAL:
-		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.NORMAL_TILES, "None")]]
-		
-	elif arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.ENERGIZED:
+	#if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.NORMAL:
+	#	energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.NORMAL_TILES, "None")]]
+	#	
+	if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.ENERGIZED:
 		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "Energized")]]
 		
 	elif arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.INSTANT_GROUND:

@@ -11,7 +11,7 @@ signal is_level_locked_changed(arg_val)
 #
 
 const DEFAULT_LEVEL_TILE_LOCKED_TEXTURE = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_Dark_32x32.png")
-const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.5, 0.5, 0.5, 0.8)
+const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.5, 0.5, 0.5, 1.0)
 
 #
 
@@ -27,7 +27,7 @@ var modulate_of_level_tile : Color
 var texture_of_level_tile__locked : Texture
 var modulate_of_level_tile__locked : Color
 
-# setted by gamesavemanager
+# managed by gamesavemanager and storeoflevels
 var is_level_locked setget set_is_level_locked
 
 
@@ -86,6 +86,5 @@ func get_texture_and_modulate_to_use__based_on_properties() -> Array:
 		bucket.append(modulate_of_level_tile)
 	
 	return bucket
-
 
 

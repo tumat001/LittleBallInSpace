@@ -83,7 +83,7 @@ func _make_god_rays_sprite_invisible():
 func _start_remote_dialog__01():
 	var dialog_desc = [
 		["Is anyone there? Did you take the ball launcher?", []],
-		["Anyways, pick up the remote control so you can hear me properly.", []]
+		["Anyways, pick up the remote control so we can talk.", []]
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
@@ -108,8 +108,9 @@ func _on_player_entered_self__custom_defined__remote():
 
 func _start_remote_dialog__02():
 	var dialog_desc = [
-		["Is this %s?" % GameSaveManager.player_name, []],
-		["Ok. There's an escape pod in ship. Its near the snacks area. The snacks.", []]
+		[".....", []],
+		["Oh, is this %s?" % GameSaveManager.player_name, []],
+		["Ok. There's an escape pod in ship. It's near the snacks area.", []]
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)

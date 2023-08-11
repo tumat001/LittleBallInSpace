@@ -31,8 +31,8 @@ func _ready():
 ##
 
 func randomize_color():
-	var rng = StoreOfRng.get_rng(StoreOfRng.RNGSource.NON_ESSENTIAL)
-	var rand_color = StoreOfRng.randomly_select_one_element(all_colors, rng)
+	var rng = StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL)
+	var rand_color = StoreOfRNG.randomly_select_one_element(all_colors, rng)
 	
 	modulate = rand_color
 

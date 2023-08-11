@@ -11,7 +11,8 @@ var shake : float = 0.0
 
 var _camera_rotation_reset : Vector3 = Vector3()
 
-# TODO: Add in some sort of rotation reset.
+
+
 func _process(_delta):
 	if stress == 0.0:
 		_camera_rotation_reset = rotation_degrees

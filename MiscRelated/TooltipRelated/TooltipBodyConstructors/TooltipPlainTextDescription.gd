@@ -12,8 +12,9 @@ const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
 
 var description : String
 var color : Color = Color(0, 0, 0, 1)
-var font_size : int = 8
+var font_size : int = 8 setget set_font_size
 var uses_bbcode : bool
+var font_id_to_use : int = StoreOfFonts.FontTypes.PIXEL_EMULATOR
 
 onready var label = $Label
 
@@ -28,16 +29,24 @@ var _use_color_for_dark_background : bool
 
 #
 
+func set_font_size(arg_size):
+	font_size = arg_size
+	
+	if is_inside_tree():
+		label.add_font_override("normal_font", StoreOfFonts.get_font_with_size(font_id_to_use, font_size))
+		label.add_font_override("bold_font", StoreOfFonts.get_font_with_size(font_id_to_use, font_size))
+	
+
+#
+
 func _init(arg_description : String = ""):
 	description = arg_description
 
 func _ready():
-	label.add_font_override("normal_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
-	label.add_font_override("bold_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
 	#label.add_font_override("bold_italics_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
 	#label.add_font_override("italics_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
 	#label.add_font_override("mono_font", StoreOfFonts.get_font_with_size(StoreOfFonts.FontTypes.CONSOLA, font_size))
-	
+	set_font_size(font_size)
 	
 	label.bbcode_enabled = uses_bbcode
 	

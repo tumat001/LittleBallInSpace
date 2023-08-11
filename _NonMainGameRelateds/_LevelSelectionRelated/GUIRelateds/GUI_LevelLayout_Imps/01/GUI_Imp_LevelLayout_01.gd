@@ -8,6 +8,10 @@ onready var level_03__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_03
 onready var level_04__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_04
 onready var level_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_05
 
+
+func _init():
+	level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01
+
 func _ready():
 	level_01__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
 	level_02__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_02)

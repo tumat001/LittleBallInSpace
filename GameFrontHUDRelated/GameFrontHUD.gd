@@ -22,6 +22,8 @@ onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
 onready var misc_center_container = $MiscCenterContainer
 
+onready var in_game_pause_panel_tree = $InGamePausePanelTree
+
 ###
 
 func add_node_to_other_hosters(arg_node : Node):
@@ -54,5 +56,10 @@ func _on_vic_def_anim_ready_finished(arg_anim):
 func _ready():
 	coins_panel.configure_self_to_monitor_coin_status_for_level(SingletonsAndConsts.current_base_level_id)
 	
+
+##################
+
+func show_in_game_pause_control_tree():
+	in_game_pause_panel_tree.show_in_game_pause_main_page()
 
 

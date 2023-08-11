@@ -46,10 +46,6 @@ const SPEED_SLOWDOWN_COOLDOWN : float = 0.1
 var _induce_speed_slowdown_on_break_cooldown_timer : Timer
 var _can_induce_speed_slowdown : bool = true
 
-#
-
-# TODO: use these when making moving tilesets
-var velocity = Vector2(0, 0)
 
 #
 
@@ -691,7 +687,6 @@ func set_is_responsible_for_own_movement__for_rewind(arg_val):
 export(bool) var is_rewindable : bool
 var is_dead_but_reserved_for_rewind : bool
 
-var _rewinded__velocity
 
 #
 
@@ -723,7 +718,6 @@ func get_rewind_save_state():
 	}
 	
 	if is_responsible_for_own_movement__for_rewind:
-		save_state["velocity"] = velocity
 		save_state["rotation"] = rotation
 		save_state["transform"] = transform
 		
@@ -740,7 +734,6 @@ func get_rewind_save_state():
 func load_into_rewind_save_state(arg_state):
 	var _is_responsible = arg_state["is_responsible_for_own_movement__for_rewind"]
 	if _is_responsible:
-		_rewinded__velocity = arg_state["velocity"]
 		rotation = arg_state["rotation"]
 		transform = arg_state["transform"]
 	
@@ -770,7 +763,6 @@ func stared_rewind():
 
 func ended_rewind():
 	if !is_dead_but_reserved_for_rewind:
-		velocity = _rewinded__velocity
 		_applied_changes_for_breakable = false
 		#mode = RigidBody2D.MODE_RIGID
 		#collision_shape.set_deferred("disabled", false)

@@ -22,6 +22,16 @@ var _level_id_to_level_details_map : Dictionary = {}
 var _level_id_to_coin_amount_map : Dictionary
 var _total_coin_count : int
 
+
+var level_ids_unlocked_by_default = [
+	LevelIds.LEVEL_01
+]
+
+
+
+
+var _level_id_to_level_ids_required_for_unlock : Dictionary
+
 # should never happen normally...
 const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
 
@@ -29,7 +39,9 @@ const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
 #################
 
 func _ready():
-	_initialize_coin_details__check_for_game_save_manager()
+	_initialize_level_id_unlock_requirmenets()
+	
+	_initialize_for__and_check_for_game_save_manager()
 
 #
 
@@ -40,6 +52,12 @@ func is_level_id_exists(arg_id):
 #
 
 func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
+	if !GameSaveManager.is_manager_initialized():
+		print("StoreOfLevels: generating level details but save manager not initialized")
+		return null
+	
+	#
+	
 	if _level_id_to_level_details_map.has(arg_id):
 		return _level_id_to_level_details_map[arg_id]
 	
@@ -128,6 +146,12 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
+	#
+	
+	_set_level_details_configs_and_params_based_on_GSM(level_details)
+	
+	#
+	
 	return level_details
 
 
@@ -151,9 +175,11 @@ func generate_base_level_imp_new(arg_id):
 
 ###### COINS
 
-func _initialize_coin_details__check_for_game_save_manager():
+func _initialize_for__and_check_for_game_save_manager():
 	if GameSaveManager.is_manager_initialized():
 		_initialize_coin_details()
+		_initialize_monitor_of_level_status_changes()
+		
 	else:
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
 		
@@ -161,6 +187,7 @@ func _initialize_coin_details__check_for_game_save_manager():
 
 func _on_save_manager_initialized():
 	_initialize_coin_details()
+	_initialize_monitor_of_level_status_changes()
 	
 
 func _initialize_coin_details():
@@ -187,6 +214,61 @@ func get_coin_count_for_level(arg_id):
 
 func get_total_coin_count() -> int:
 	return _total_coin_count
+
+
+
+##
+
+func _initialize_monitor_of_level_status_changes():
+	GameSaveManager.connect("level_id_completion_status_changed", self, "_on_GSM_level_id_completion_status_changed")
+	
+
+func _on_GSM_level_id_completion_status_changed(arg_id, arg_status):
+	if _level_id_to_level_details_map.has(arg_id):
+		var details = _level_id_to_level_details_map[arg_id]
+		_set_level_details_configs_and_params_based_on_GSM(details)
+	
+	_attempt_unlock_levels_based_on_level_status_changed(arg_id, arg_status)
+
+func _set_level_details_configs_and_params_based_on_GSM(arg_details : LevelDetails):
+	arg_details.is_level_locked = !GameSaveManager.is_level_id_playable(arg_details.level_id)
+	
+
+
+###
+# UNLOCK REQUIRMENETS
+##
+
+func _initialize_level_id_unlock_requirmenets():
+	_level_id_to_level_ids_required_for_unlock = {
+		LevelIds.LEVEL_01 : [],
+		LevelIds.LEVEL_02 : [LevelIds.LEVEL_01],
+		LevelIds.LEVEL_03 : [LevelIds.LEVEL_02],
+		LevelIds.LEVEL_04 : [LevelIds.LEVEL_03],
+		LevelIds.LEVEL_05 : [LevelIds.LEVEL_04],
+		
+	}
+
+func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_status):
+	if arg_status == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED:
+		for candi_level_id_to_unlock in _level_id_to_level_ids_required_for_unlock.keys():
+			
+			var unlock : bool = true
+			for level_id_needed in _level_id_to_level_ids_required_for_unlock[candi_level_id_to_unlock]:
+				#print("testing level id needed: %s" % level_id_needed)
+				if !GameSaveManager.is_level_id_finished(level_id_needed):
+					unlock = false
+					
+					#print("level id needed not fulfilled: %s, for %s" % [level_id_needed, candi_level_id_to_unlock])
+					break
+					
+			
+			if unlock:
+				if !GameSaveManager.is_level_id_playable(candi_level_id_to_unlock):
+					#print("unlocked id: %s" % candi_level_id_to_unlock)
+					GameSaveManager.set_level_id_status_completion(candi_level_id_to_unlock, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+
+
 
 ###########################
 ### HELPERS

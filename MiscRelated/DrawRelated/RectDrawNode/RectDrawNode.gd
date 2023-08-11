@@ -82,8 +82,6 @@ func add_draw_param(arg_draw_param : DrawParams):
 func remove_draw_param(arg_draw_param : DrawParams):
 	_all_draw_params.erase(arg_draw_param)
 	
-	arg_draw_param.unconfigure_self_from_all()
-	
 	if _all_draw_params.size() == 0:
 		set_process(false)
 

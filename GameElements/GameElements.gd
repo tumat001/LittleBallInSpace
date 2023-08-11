@@ -155,6 +155,12 @@ func _unhandled_key_input(event):
 	elif event.is_action_released("rewind"):
 		rewind_manager.end_rewind()
 		
+		
+	if event.is_action_pressed("ui_cancel"):
+		if is_instance_valid(game_front_hud):
+			game_front_hud.show_in_game_pause_control_tree()
+	
+	
 
 
 #######
@@ -211,7 +217,7 @@ func allow_rewind_manager_to_store_and_cast_rewind():
 	rewind_manager.can_cast_rewind_cond_clause.remove_clause(rewind_manager.CanCastRewindClauseIds.IN_CUTSCENE)
 	
 
-###################################
+####################################
 
 func _exit_tree():
 	if !_is_game_quitting:
@@ -224,4 +230,8 @@ func _exit_tree():
 		if is_instance_valid(game_front_hud):
 			game_front_hud.queue_free()
 		SingletonsAndConsts.current_game_front_hud = null
+	
+
+func attempt_quit_game__by_queue_freeing():
+	queue_free()
 

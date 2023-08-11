@@ -5,6 +5,8 @@ const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelect
 
 #
 
+signal level_layout_id_completion_status_changed(arg_id, arg_status)
+signal level_id_completion_status_changed(arg_id, arg_status)
 signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id)
 
 
@@ -22,7 +24,7 @@ const player_data_file_path = "user://player_data.save"
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
-const PLAYER_COIN__DIC_IDENTIFIER = "PLAYER_COIN_LEVEL_MAP__DIC_IDENTIFIER"
+
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
@@ -41,15 +43,35 @@ var player_name : String
 var first_time_opening_game : bool
 
 
-var _level_id_to_coin_ids_collected_map : Dictionary
-var _total_coin_collected_count : int
+###
 
-############################################
+#
 
 const level_data_file_path = "user://level_layout_data.save"
 
+
 const LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER = "last_opened_level_layout_id"
 const LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER = "last_hovered_over_level_layout_element_id"
+
+const LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER = "LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER"
+const LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER = "level_id_to_completion_status"
+const LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER = "level_layout_id_to_completion_status"
+
+
+
+const LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED = -1
+const LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED = 0
+const LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED = 1
+const LEVEL_OR_LAYOUT_COMPLETION_STATUS__HALF_FINISHED = 2
+
+
+
+var _level_id_to_coin_ids_collected_map : Dictionary
+var _total_coin_collected_count : int
+
+var _level_id_to_completion_status : Dictionary
+var _level_layout_id_to_completion_status : Dictionary
+
 
 var last_opened_level_layout_id
 var last_hovered_over_level_layout_element_id
@@ -162,11 +184,8 @@ func _load_player_related_data(arg_file : File):
 	
 	##
 	
-	if data.has(PLAYER_COIN__DIC_IDENTIFIER):
-		_level_id_to_coin_ids_collected_map = data[PLAYER_COIN__DIC_IDENTIFIER]
-		_correct_and_fill_level_id_to_coins_collected_map()
-	else:
-		_initialize_level_id_to_coins_collected_count_map()
+
+#
 
 func _initialize_level_id_to_coins_collected_count_map():
 	_level_id_to_coin_ids_collected_map = {}
@@ -195,15 +214,15 @@ func set_coin_id_in_level_as_collected(arg_coin_id, arg_level_id, arg_is_collect
 			coins_collected.erase(arg_coin_id)
 		
 	
-	_total_coin_collected_count = _calculate_coin_count_collected_in_whole_game()
+	_update_coin_count_collected_in_whole_game()
 	emit_signal("coin_collected_for_level_changed", coins_collected, arg_coin_id, arg_level_id)
 
-func _calculate_coin_count_collected_in_whole_game():
+func _update_coin_count_collected_in_whole_game():
 	var total = 0
 	for coin_ids_collected in _level_id_to_coin_ids_collected_map.values():
 		total += coin_ids_collected.size()
 	
-	return total
+	_total_coin_collected_count = total
 
 
 
@@ -218,12 +237,95 @@ func get_total_coin_collected_count() -> int:
 
 #
 
+func _correct_level_id_to_completion_status_map(arg_map_from_save_dict : Dictionary):
+	for level_id in StoreOfLevels.LevelIds.values():
+		var level_id_as_str = str(level_id)
+		
+		if arg_map_from_save_dict.has(level_id_as_str):
+			#_level_id_to_completion_status[level_id] = arg_map_from_save_dict[level_id_as_str]
+			_set_level_id_status_completion__internal(level_id, arg_map_from_save_dict[level_id_as_str])
+			
+		else:
+			#_level_id_to_completion_status[level_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+			_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
+			
+		
+	
+	#print(_level_id_to_completion_status)
+
+func _initialize_level_id_to_completion_status_map():
+	for level_id in StoreOfLevels.LevelIds.values():
+		#_level_id_to_completion_status[level_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+		_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
+	
+	for id in StoreOfLevels.level_ids_unlocked_by_default:
+		#_level_id_to_completion_status[id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED
+		_set_level_id_status_completion__internal(id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+
+func is_level_id_playable(arg_id):
+	var status = _level_id_to_completion_status[arg_id]
+	
+	return status != LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+
+func is_level_id_finished(arg_id):
+	var status = _level_id_to_completion_status[arg_id]
+	
+	return status == LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED
+
+
+
+func set_level_id_status_completion(arg_id, arg_status):
+	var old_val = _level_id_to_completion_status[arg_id]
+	_set_level_id_status_completion__internal(arg_id, arg_status)
+	
+	if old_val != arg_status:
+		emit_signal("level_id_completion_status_changed", arg_id, arg_status)
+
+func _set_level_id_status_completion__internal(arg_id, arg_status):
+	_level_id_to_completion_status[arg_id] = arg_status
+
+
+
+#
+
+func _correct_level_layout_id_to_completion_status_map(arg_map_from_save_dict : Dictionary):
+	for level_layout_id in StoreOfLevelLayouts.LevelLayoutIds.values():
+		var level_layout_id_as_str = str(level_layout_id)
+		if arg_map_from_save_dict.has(level_layout_id_as_str):
+			_level_layout_id_to_completion_status[level_layout_id] = arg_map_from_save_dict[level_layout_id_as_str]
+		else:
+			_level_layout_id_to_completion_status[level_layout_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+
+
+func _initialize_level_layout_id_to_completion_status_map():
+	for level_layout_id in StoreOfLevelLayouts.LevelLayoutIds.values():
+		_level_layout_id_to_completion_status[level_layout_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+
+	for id in StoreOfLevelLayouts.level_layout_ids_unlocked_by_default:
+		_level_layout_id_to_completion_status[id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED
+
+
+
+func is_level_layout_id_playable(arg_id):
+	var status = _level_layout_id_to_completion_status[arg_id]
+	
+	return status != LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
+
+func set_level_layout_id_status_completion(arg_id, arg_status):
+	var old_val = _level_layout_id_to_completion_status[arg_id]
+	_level_layout_id_to_completion_status[arg_id] = arg_status
+	
+	if old_val != arg_status:
+		emit_signal("level_layout_id_completion_status_changed", arg_id, arg_status)
+
+
+#
+
 func _save_player_data():
 	var save_dict = {
 		PLAYER_HEALTH__DIC_IDENTIFIER : player_health_on_start,
 		PLAYER_NAME__DIC_IDENTIFIER : player_name,
 		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
-		PLAYER_COIN__DIC_IDENTIFIER : _level_id_to_coin_ids_collected_map, 
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -276,9 +378,6 @@ func _on_game_result_decided(arg_result, arg_game_result_manager):
 		player_health_on_start = tentative_player_health_on_start
 	
 
-#
-
-
 
 #####################################
 ## LEVEL RELATED
@@ -328,8 +427,45 @@ func _load_level_related_data(arg_file : File):
 		last_hovered_over_level_layout_element_id = GUI_AbstractLevelLayout.UNINITIALIZED_CURSOR
 	
 	
+	
+	if data.has(LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER):
+		_level_id_to_coin_ids_collected_map = data[LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER]
+		_correct_and_fill_level_id_to_coins_collected_map()
+	else:
+		_initialize_level_id_to_coins_collected_count_map()
+	
+	_update_coin_count_collected_in_whole_game()
+	
+	##
+	
+	if data.has(LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER):
+		_correct_level_id_to_completion_status_map(data[LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER])
+	else:
+		_initialize_level_id_to_completion_status_map()
+	
+	#
+	
+	if data.has(LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER):
+		_correct_level_layout_id_to_completion_status_map(data[LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER])
+	else:
+		_initialize_level_layout_id_to_completion_status_map()
+	
+	
+	
 
-# todo make save for last opened lvl layout id and relateds
+
+func _save_level_and_layout_related_data():
+	var save_dict = {
+		LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER : last_opened_level_layout_id,
+		LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER : last_hovered_over_level_layout_element_id,
+		
+		LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER : _level_id_to_coin_ids_collected_map,
+		LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER : _level_id_to_completion_status,
+		LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER : _level_layout_id_to_completion_status,
+		
+	}
+	
+	_save_using_dict(save_dict, level_data_file_path, "SAVE ERROR: LevelAndLayoutData")
 
 
 
@@ -339,5 +475,5 @@ func _load_level_related_data(arg_file : File):
 
 func _exit_tree():
 	_save_player_data()
-
-
+	_save_level_and_layout_related_data()
+	

@@ -21,6 +21,10 @@ export(bool) var uses_bbcode : bool = true
 var use_custom_size_flags_for_descs : bool = false
 var custom_horizontal_size_flags_for_descs : int = SIZE_FILL
 
+
+var font_id_to_use : int = -1
+
+
 #
 
 enum BBCodeAlignMode {
@@ -103,6 +107,9 @@ func update_display():
 		
 		if desc_instance.get("font_size"):
 			desc_instance.font_size = default_font_size
+		
+		if font_id_to_use != -1:
+			desc_instance.font_id_to_use = font_id_to_use
 		
 		if use_custom_size_flags_for_descs:
 			desc_instance.size_flags_horizontal = custom_horizontal_size_flags_for_descs

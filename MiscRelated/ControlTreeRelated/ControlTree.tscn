@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/ControlTreeRelated/ControlTree.gd" type="Script" id=1]
+[ext_resource path="res://MiscRelated/ControlTreeRelated/Assets/ControlTree_BlackBackground.png" type="Texture" id=2]
+
+[node name="ControlTree" type="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.705882 )
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 0
+texture = ExtResource( 2 )
+stretch_mode = 2
+
+[node name="ControlContainer" type="MarginContainer" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+
+[connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]

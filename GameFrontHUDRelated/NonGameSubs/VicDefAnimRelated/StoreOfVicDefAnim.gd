@@ -70,11 +70,11 @@ static func get_random_anim_id(arg_is_vic, arg_type : int):
 		return null
 	
 	
-	var rng = StoreOfRng.get_rng(StoreOfRng.RNGSource.NON_ESSENTIAL)
+	var rng = StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL)
 	
 	if arg_is_vic:
 		if arg_type == AnimTypes.ACTION:
-			return StoreOfRng.randomly_select_one_element(all_anim__vic__action_style__ids, rng)
+			return StoreOfRNG.randomly_select_one_element(all_anim__vic__action_style__ids, rng)
 			
 		elif arg_type == AnimTypes.CALM:
 			pass
@@ -85,7 +85,7 @@ static func get_random_anim_id(arg_is_vic, arg_type : int):
 		
 	else:
 		if arg_type == AnimTypes.ACTION:
-			return StoreOfRng.randomly_select_one_element(all_anim__def__action_style__ids, rng)
+			return StoreOfRNG.randomly_select_one_element(all_anim__def__action_style__ids, rng)
 			
 		elif arg_type == AnimTypes.CALM:
 			pass

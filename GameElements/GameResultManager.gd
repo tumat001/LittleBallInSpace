@@ -99,14 +99,14 @@ func _on_end_of_anim():
 	if _current_game_result == GameResult.WIN:
 		end_game__as_win()
 	else:
-		end_win__as_lose()
+		end_game__as_lose()
 
 
 func end_game__as_win():
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
 	
 
-func end_win__as_lose():
+func end_game__as_lose():
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
 	
 

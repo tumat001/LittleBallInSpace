@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.tscn" type="PackedScene" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.gd" type="Script" id=2]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.tscn" type="PackedScene" id=3]
-[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_White_32x32.png" type="Texture" id=4]
 
 [node name="GUI_LevelLayout_01" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -18,8 +17,6 @@ margin_left = 185.0
 margin_top = 280.0
 margin_right = 231.0
 margin_bottom = 326.0
-layout_element_tile__right__path = NodePath("../GUI_LevelLayoutEle_Path_01")
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 3 )]
 margin_left = 231.0
@@ -27,7 +24,6 @@ margin_top = 280.0
 margin_right = 277.0
 margin_bottom = 326.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="2" instance=ExtResource( 3 )]
 margin_left = 277.0
@@ -35,14 +31,12 @@ margin_top = 280.0
 margin_right = 323.0
 margin_bottom = 326.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Tile_02" parent="LayoutElesContainer" index="3" instance=ExtResource( 3 )]
 margin_left = 323.0
 margin_top = 280.0
 margin_right = 369.0
 margin_bottom = 326.0
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_03" parent="LayoutElesContainer" index="4" instance=ExtResource( 3 )]
 margin_left = 323.0
@@ -50,28 +44,24 @@ margin_top = 234.0
 margin_right = 369.0
 margin_bottom = 280.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Tile_03" parent="LayoutElesContainer" index="5" instance=ExtResource( 3 )]
 margin_left = 323.0
 margin_top = 188.0
 margin_right = 369.0
 margin_bottom = 234.0
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Tile_04" parent="LayoutElesContainer" index="6" instance=ExtResource( 3 )]
 margin_left = 323.0
 margin_top = 142.0
 margin_right = 369.0
 margin_bottom = 188.0
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Tile_05" parent="LayoutElesContainer" index="7" instance=ExtResource( 3 )]
 margin_left = 507.0
 margin_top = 142.0
 margin_right = 553.0
 margin_bottom = 188.0
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_04" parent="LayoutElesContainer" index="8" instance=ExtResource( 3 )]
 margin_left = 369.0
@@ -79,7 +69,6 @@ margin_top = 142.0
 margin_right = 415.0
 margin_bottom = 188.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_05" parent="LayoutElesContainer" index="9" instance=ExtResource( 3 )]
 margin_left = 415.0
@@ -87,7 +76,6 @@ margin_top = 142.0
 margin_right = 461.0
 margin_bottom = 188.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )
 
 [node name="GUI_LevelLayoutEle_Path_06" parent="LayoutElesContainer" index="10" instance=ExtResource( 3 )]
 margin_left = 461.0
@@ -95,4 +83,3 @@ margin_top = 142.0
 margin_right = 507.0
 margin_bottom = 188.0
 is_path = true
-default_texture_of_tile = ExtResource( 4 )

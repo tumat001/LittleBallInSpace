@@ -39,7 +39,7 @@ CameraManager="*res://SingletonsAndConsts/CameraManagerRelated/CameraManager.gd"
 StoreOfPlayerModi="*res://PlayerRelated/PlayerModi/StoreOfPlayerModi.gd"
 StoreOfObjects="*res://ObjectsRelated/Objects/StoreOfObjects.gd"
 SingletonsAndConsts="*res://SingletonsAndConsts/SingletonsAndConsts.gd"
-StoreOfRng="*res://SingletonsAndConsts/StoreOfRNG.gd"
+StoreOfRNG="*res://SingletonsAndConsts/StoreOfRNG.gd"
 GameSaveManager="*res://GameSaveRelated/GameSaveManager.gd"
 TileConstants="*res://ObjectsRelated/TilesRelated/TileConstants.gd"
 StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
@@ -56,6 +56,10 @@ gdscript/warnings/enable=false
 window/size/width=960
 window/size/height=540
 window/size/resizable=false
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )
 
 [gui]
 
