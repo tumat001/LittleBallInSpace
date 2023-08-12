@@ -8,7 +8,3 @@
 script = ExtResource( 2 )
 
 [node name="InGamePause_MainPage" parent="ControlContainer" index="0" instance=ExtResource( 3 )]
-margin_left = 340.0
-margin_top = 85.0
-margin_right = 620.0
-margin_bottom = 455.0

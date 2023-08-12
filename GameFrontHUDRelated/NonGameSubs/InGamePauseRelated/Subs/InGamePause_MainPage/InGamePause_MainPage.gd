@@ -1,9 +1,9 @@
 extends MarginContainer
 
 
-onready var button_resume = $FreeFormControl/VBoxContainer/Button_Resume
-onready var button_restart = $FreeFormControl/VBoxContainer/Button_Restart
-onready var button_main_menu = $FreeFormControl/VBoxContainer/Button_MainMenu
+onready var button_resume = $MainContainer/FreeFormControl/VBoxContainer/Button_Resume
+onready var button_restart = $MainContainer/FreeFormControl/VBoxContainer/Button_Restart
+onready var button_main_menu = $MainContainer/FreeFormControl/VBoxContainer/Button_MainMenu
 
 var all_buttons : Array
 

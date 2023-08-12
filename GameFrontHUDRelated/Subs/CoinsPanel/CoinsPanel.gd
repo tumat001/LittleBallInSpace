@@ -38,14 +38,15 @@ func _update_label_display():
 
 #######
 
-func configure_self_to_monitor_coin_status_for_level(arg_level_id):
+func configure_self_to_monitor_coin_status_for_level(arg_level_id, arg_connect_with_signals : bool = true):
 	var coins_collected_in_level = GameSaveManager.get_coin_ids_collected_in_level(arg_level_id)
 	var total_coins_in_level = StoreOfLevels.get_coin_count_for_level(arg_level_id)
 	
 	set_curr_coin_count(coins_collected_in_level.size())
 	set_max_coin_count(total_coins_in_level)
 	
-	GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed")
+	if !GameSaveManager.is_connected("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed"):
+		GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed")
 
 func _on_coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id):
 	set_curr_coin_count(arg_coin_ids_collected_for_level.size())
@@ -60,7 +61,8 @@ func configure_self_to_monitor_coin_status_for_whole_game():
 	set_curr_coin_count(curr_coin_total)
 	set_max_coin_count(total_coins)
 	
-	GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed__total")
+	if !GameSaveManager.is_connected("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed__total"):
+		GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed__total")
 
 func _on_coin_collected_for_level_changed__total(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id):
 	set_curr_coin_count(GameSaveManager.get_total_coin_collected_count())

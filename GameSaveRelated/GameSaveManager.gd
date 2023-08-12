@@ -59,6 +59,7 @@ const LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER = "level_layout_id_to_co
 
 
 
+# If adding more, look at GUI_LevelDetailsPanel for appropriate changes
 const LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED = -1
 const LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED = 0
 const LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED = 1
@@ -66,7 +67,7 @@ const LEVEL_OR_LAYOUT_COMPLETION_STATUS__HALF_FINISHED = 2
 
 
 
-var _level_id_to_coin_ids_collected_map : Dictionary
+var _level_id_as_str_to_coin_ids_collected_map : Dictionary
 var _total_coin_collected_count : int
 
 var _tentative_coin_ids_collected_in_curr_level_id : Array = []
@@ -80,6 +81,10 @@ var _level_layout_id_to_completion_status : Dictionary
 var last_opened_level_layout_id
 var last_hovered_over_level_layout_element_id
 
+
+####
+
+const audio_settings_file_path = "user://audio_settings.save"
 
 ##############################
 #### base methods
@@ -120,7 +125,7 @@ func _ready():
 	_attempt_load_existing_player_related_data()
 	_attempt_load_existing_level_related_data()
 	
-	
+	_load_stats__of_audio_manager()
 	
 	_is_manager_initialized = true
 	emit_signal("save_manager_initialized")
@@ -192,24 +197,24 @@ func _load_player_related_data(arg_file : File):
 #
 
 func _initialize_level_id_to_coins_collected_count_map():
-	_level_id_to_coin_ids_collected_map = {}
+	_level_id_as_str_to_coin_ids_collected_map = {}
 	_correct_and_fill_level_id_to_coins_collected_map()
 
 func _correct_and_fill_level_id_to_coins_collected_map():
 	for level_id in StoreOfLevels.LevelIds.values():
 		level_id = str(level_id)
-		if !_level_id_to_coin_ids_collected_map.has(level_id):
-			_level_id_to_coin_ids_collected_map[level_id] = []
+		if !_level_id_as_str_to_coin_ids_collected_map.has(level_id):
+			_level_id_as_str_to_coin_ids_collected_map[level_id] = []
 	
 
 
 func is_coin_id_collected_in_level(arg_coin_id, arg_level_id):
 	arg_level_id = str(arg_level_id)
-	return _level_id_to_coin_ids_collected_map[arg_level_id].has(arg_coin_id)
+	return _level_id_as_str_to_coin_ids_collected_map[arg_level_id].has(arg_coin_id)
 
 func set_coin_id_in_level_as_collected(arg_coin_id, arg_level_id, arg_is_collected : bool):
 	arg_level_id = str(arg_level_id)
-	var coins_collected : Array = _level_id_to_coin_ids_collected_map[arg_level_id]
+	var coins_collected : Array = _level_id_as_str_to_coin_ids_collected_map[arg_level_id]
 	if arg_is_collected:
 		if !coins_collected.has(arg_coin_id):
 			coins_collected.append(arg_coin_id)
@@ -223,7 +228,7 @@ func set_coin_id_in_level_as_collected(arg_coin_id, arg_level_id, arg_is_collect
 
 func _update_coin_count_collected_in_whole_game():
 	var total = 0
-	for coin_ids_collected in _level_id_to_coin_ids_collected_map.values():
+	for coin_ids_collected in _level_id_as_str_to_coin_ids_collected_map.values():
 		total += coin_ids_collected.size()
 	
 	_total_coin_collected_count = total
@@ -243,7 +248,7 @@ func set_tentative_coin_id_collected_in_curr_level(arg_id, arg_is_collected):
 
 func get_coin_ids_collected_in_level(arg_level_id):
 	arg_level_id = str(arg_level_id)
-	return _level_id_to_coin_ids_collected_map[arg_level_id]
+	return _level_id_as_str_to_coin_ids_collected_map[arg_level_id]
 
 
 func get_total_coin_collected_count() -> int:
@@ -252,9 +257,17 @@ func get_total_coin_collected_count() -> int:
 #
 
 func remove_official_coin_ids_collected_from_tentative():
-	var coin_ids = _level_id_to_coin_ids_collected_map[SingletonsAndConsts.current_level_details.level_id]
+	var coin_ids = _level_id_as_str_to_coin_ids_collected_map[str(SingletonsAndConsts.current_level_details.level_id)]
+	var erased_at_least_one : bool = false
+	
 	for id in _tentative_coin_ids_collected_in_curr_level_id:
-		coin_ids.erase(id)
+		var id_as_str = str(id)
+		if coin_ids.has(id_as_str):
+			erased_at_least_one = true
+			coin_ids.erase(id_as_str)
+	
+	if erased_at_least_one:
+		_update_coin_count_collected_in_whole_game()
 	
 	clear_coin_ids_in_tentative()
 
@@ -302,6 +315,8 @@ func is_level_id_finished(arg_id):
 	return status == LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED
 
 
+func get_level_id_status_completion(arg_id):
+	return _level_id_to_completion_status[arg_id]
 
 func set_level_id_status_completion(arg_id, arg_status):
 	var old_val = _level_id_to_completion_status[arg_id]
@@ -325,8 +340,6 @@ func _update_total_levels_finished():
 			if completion_status == LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED:
 				total += 1
 	
-	#todo
-	print("updated total levels finished: %s" % total)
 	_total_levels_finished = total
 
 func get_total_levels_finished():
@@ -475,7 +488,7 @@ func _load_level_related_data(arg_file : File):
 	
 	
 	if data.has(LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER):
-		_level_id_to_coin_ids_collected_map = data[LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER]
+		_level_id_as_str_to_coin_ids_collected_map = data[LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER]
 		_correct_and_fill_level_id_to_coins_collected_map()
 	else:
 		_initialize_level_id_to_coins_collected_count_map()
@@ -505,13 +518,44 @@ func _save_level_and_layout_related_data():
 		LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER : last_opened_level_layout_id,
 		LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER : last_hovered_over_level_layout_element_id,
 		
-		LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER : _level_id_to_coin_ids_collected_map,
+		LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER : _level_id_as_str_to_coin_ids_collected_map,
 		LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER : _level_id_to_completion_status,
 		LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER : _level_layout_id_to_completion_status,
 		
 	}
 	
 	_save_using_dict(save_dict, level_data_file_path, "SAVE ERROR: LevelAndLayoutData")
+
+
+
+## AUDIO RELATED --------------------------
+
+func save_settings__of_audio_manager():
+	var save_dict = AudioManager._get_save_dict_for_data()
+	var err_msg = "Saving error! -- AudioManager"
+	_save_using_dict(save_dict, audio_settings_file_path, err_msg)
+	
+	
+
+func _load_stats__of_audio_manager():
+	var load_file = File.new()
+	
+	if load_file.file_exists(audio_settings_file_path):
+		var err_stat = load_file.open(audio_settings_file_path, File.READ)
+		
+		if err_stat != OK:
+			print("Loading error! -- AudioManager")
+			return false
+		
+		AudioManager._load_save_data(load_file)
+		
+		load_file.close()
+		return true
+		
+	else:
+		
+		AudioManager._initialize_save_data_from_scratch()
+		return false
 
 
 

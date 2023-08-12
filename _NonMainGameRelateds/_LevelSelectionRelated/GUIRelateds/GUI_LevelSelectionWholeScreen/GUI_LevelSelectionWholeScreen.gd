@@ -23,6 +23,8 @@ onready var dialog_panel = $HUDContainer/DialogPanel
 onready var level_title_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody
 onready var level_desc_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelDescTooltipBody
 
+onready var level_details_panel = $HUDContainer/LevelDetailsPanel
+
 onready var coins_panel = $HUDContainer/VBoxContainer/CoinsPanel
 onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel/
 
@@ -167,7 +169,20 @@ func play_victory_animation_on_level_id(arg_level_id) -> bool:
 
 func _on_layout_currently_hovered_layout_ele_changed(arg_id, arg_currently_hovered_tile):
 	_update_level_desc_tooltip_body(arg_currently_hovered_tile.level_details)
+	_update_level_details_panel(arg_currently_hovered_tile.level_details)
 	
+
+func _update_level_details_panel(arg_level_details):
+	if arg_level_details != null:
+		level_details_panel.set_level_id(arg_level_details.level_id)
+		
+	else:
+		level_details_panel.hide_contents()
+		
+	
+
+
+#
 
 func _on_layout_prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id):
 	emit_signal("prompt_entered_into_level", arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id)

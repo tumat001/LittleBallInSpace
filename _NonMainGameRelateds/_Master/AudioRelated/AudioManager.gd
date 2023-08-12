@@ -553,7 +553,7 @@ func _initialize_stats_with_save_dict(arg_save_dict : Dictionary):
 
 func _initialize_background_music_relateds(arg_save_dict : Dictionary):
 	if arg_save_dict.has(data_name__background_music_volume_name):
-		var volume = int(arg_save_dict[data_name__background_music_volume_name])
+		var volume = floor(arg_save_dict[data_name__background_music_volume_name])
 		set_bus__background_music_volume(volume)
 		
 	else:
@@ -568,7 +568,7 @@ func _initialize_background_music_relateds(arg_save_dict : Dictionary):
 
 func _initialize_sound_fx_relateds(arg_save_dict : Dictionary):
 	if arg_save_dict.has(data_name__sound_fx_volume_name):
-		var volume = int(arg_save_dict[data_name__sound_fx_volume_name])
+		var volume = floor(arg_save_dict[data_name__sound_fx_volume_name])
 		set_bus__sound_fx_volume(volume)
 		
 	else:
@@ -581,15 +581,10 @@ func _initialize_sound_fx_relateds(arg_save_dict : Dictionary):
 		pass
 
 
-
-func _on_singleton_initialize():
-	GameSaveManager.load_stats__of_audio_manager()
-
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		#GameSaveManager.save_settings__of_audio_manager()
-		pass
-		# todo do saving for audio
+		GameSaveManager.save_settings__of_audio_manager()
+		
 		#get_tree().quit() # default behavior
 
 
