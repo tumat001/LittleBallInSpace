@@ -23,8 +23,8 @@ onready var dialog_panel = $HUDContainer/DialogPanel
 onready var level_title_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody
 onready var level_desc_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelDescTooltipBody
 
-onready var coins_panel = $HUDContainer/CoinsPanel
-
+onready var coins_panel = $HUDContainer/VBoxContainer/CoinsPanel
+onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel/
 
 onready var particles_container = $ParticlesContainer
 onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
@@ -38,32 +38,42 @@ func _ready():
 	
 	if GameSaveManager.is_manager_initialized():
 		_initialize_coins_panel()
+		_initialize_level_count_panel()
+		
 	else:
 		coins_panel.visible = false
+		level_count_panel.visible = false
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
 
 
 func _on_save_manager_initialized():
 	_initialize_coins_panel()
+	_initialize_level_count_panel()
+	
 
 #
 
 func _initialize_coins_panel():
 	coins_panel.visible = true
-	
-	var curr_coin_count = GameSaveManager.get_total_coin_collected_count()
-	var total_coin_count = StoreOfLevels.get_total_coin_count()
-	
-	coins_panel.set_max_coin_count(total_coin_count)
-	coins_panel.set_curr_coin_count(curr_coin_count)
-	
-	GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed")
+	coins_panel.configure_self_to_monitor_coin_status_for_whole_game()
+#
+#	var curr_coin_count = GameSaveManager.get_total_coin_collected_count()
+#	var total_coin_count = StoreOfLevels.get_total_coin_count()
+#
+#	coins_panel.set_max_coin_count(total_coin_count)
+#	coins_panel.set_curr_coin_count(curr_coin_count)
+#
+#	GameSaveManager.connect("coin_collected_for_level_changed", self, "_on_coin_collected_for_level_changed")
+#
+#func _on_coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id):
+#	var curr_coin_count = GameSaveManager.get_total_coin_collected_count()
+#	coins_panel.set_curr_coin_count(curr_coin_count)
+#
 
-func _on_coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id):
-	var curr_coin_count = GameSaveManager.get_total_coin_collected_count()
-	coins_panel.set_curr_coin_count(curr_coin_count)
-	
 
+func _initialize_level_count_panel():
+	level_count_panel.visible = true
+	level_count_panel.configure_self_to_monitor_level_count_status()
 
 #
 

@@ -47,6 +47,10 @@ var transition_id__exiting_level__out__for_quit = StoreOfTransitionSprites.Trans
 var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK  # from blank to selection
 
 
+
+var BGM_playlist_id_to_use__on_level_start : int = StoreOfAudio.BGMPlaylistId.CALM_01
+
+
 ##
 
 var zoom_normal_vec = CameraManager.DEFAULT_ZOOM_LEVEL

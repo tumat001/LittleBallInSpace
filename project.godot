@@ -46,6 +46,8 @@ StoreOfPickupables="*res://ObjectsRelated/Pickupables/StoreOfPickupables.gd"
 StoreOfLevels="*res://LevelRelated/StoreOfLevels.gd"
 StoreOfLevelLayouts="*res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/StoreOfLevelLayouts.gd"
 AsyncLoader="*res://SingletonsAndConsts/AsyncLoader.gd"
+StoreOfAudio="*res://_NonMainGameRelateds/_Master/AudioRelated/StoreOfAudio.gd"
+AudioManager="*res://_NonMainGameRelateds/_Master/AudioRelated/AudioManager.gd"
 
 [debug]
 

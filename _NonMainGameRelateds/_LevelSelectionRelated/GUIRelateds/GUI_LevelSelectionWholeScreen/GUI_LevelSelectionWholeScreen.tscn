@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_DialogPanel.png" type="Texture" id=2]
 [ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GameFrontHUDRelated/Subs/CoinsPanel/CoinsPanel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd" type="Script" id=5]
+[ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/LevelsCompletedPanel.tscn" type="PackedScene" id=6]
 
 [node name="GUI_LevelSelectionLayout" type="Control"]
 margin_right = 960.0
@@ -62,13 +63,21 @@ size_flags_stretch_ratio = 2.0
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 default_font_size = 16
 
-[node name="CoinsPanel" parent="HUDContainer" instance=ExtResource( 4 )]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUDContainer"]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -103.0
 margin_top = 30.0
 margin_right = -23.0
-margin_bottom = 55.0
+margin_bottom = 70.0
+
+[node name="CoinsPanel" parent="HUDContainer/VBoxContainer" instance=ExtResource( 4 )]
+margin_right = 80.0
+margin_bottom = 24.0
+
+[node name="LevelsCompletedPanel" parent="HUDContainer/VBoxContainer" instance=ExtResource( 6 )]
+margin_top = 28.0
+margin_bottom = 52.0
 
 [node name="ParticlesContainer" type="Control" parent="."]
 margin_right = 960.0

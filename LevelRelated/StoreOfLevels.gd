@@ -3,6 +3,9 @@ extends Node
 const LevelDetails = preload("res://LevelRelated/Classes/LevelDetails.gd")
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 
+#
+
+signal hidden_levels_state_changed()
 
 #####
 
@@ -16,6 +19,15 @@ enum LevelIds {
 	LEVEL_05 = 5
 	
 }
+# dont change this (useless). 
+# This determines which levels are hidden at the very start, before any save states. i.e. hidden by default
+const level_ids_hidden : Array = [
+	LevelIds.TEST,
+]
+
+var _all_non_hidden_level_ids : Array
+
+#
 
 var _level_id_to_level_details_map : Dictionary = {}
 
@@ -38,6 +50,11 @@ const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
 
 #################
 
+func _init():
+	_initialize__all_non_hidden_level_ids()
+	
+
+
 func _ready():
 	_initialize_level_id_unlock_requirmenets()
 	
@@ -45,9 +62,42 @@ func _ready():
 
 #
 
+func _initialize__all_non_hidden_level_ids():
+	for id in LevelIds.values():
+		if !level_ids_hidden.has(id):
+			_all_non_hidden_level_ids.append(id)
+
+
+func get_all_non_hidden_level_ids():
+	return _all_non_hidden_level_ids
+
+
+func add_level_id_as_non_hidden(arg_id):
+	_add_level_id_as_non_hidden__internal(arg_id, true)
+	
+
+func add_level_ids_as_non_hidden(arg_ids : Array):
+	for id in arg_ids:
+		_add_level_id_as_non_hidden__internal(id, false)
+	
+	emit_signal("hidden_levels_state_changed")
+
+func _add_level_id_as_non_hidden__internal(arg_id, arg_emit_signal : bool):
+	if !_all_non_hidden_level_ids.has(arg_id):
+		_all_non_hidden_level_ids.append(arg_id)
+	
+	emit_signal("hidden_levels_state_changed")
+
+
+
+func get_total_non_hidden_level_count():
+	return _all_non_hidden_level_ids.size()
+	
+
+#
+
 func is_level_id_exists(arg_id):
 	return LevelIds.values().has(arg_id)
-
 
 #
 

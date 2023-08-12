@@ -54,6 +54,21 @@ func _set_has_focus(arg_val):
 		
 
 
+#
+
+func set_focus_neighbour_top(arg_control : Control):
+	texture_button.focus_neighbour_top = arg_control.get_path()
+	
+
+func set_focus_neighbour_bottom(arg_control : Control):
+	texture_button.focus_neighbour_bottom = arg_control.get_path()
+	
+
+
+
+func get_texture_button():
+	return texture_button
+
 ###
 
 func _on_TextureButton_pressed():

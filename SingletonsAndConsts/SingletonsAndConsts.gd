@@ -37,6 +37,7 @@ func set_current_rewind_manager(arg_manager):
 
 #
 
+# called from GE
 func initialize_current_level_configs_based_on_current_id():
 	if !StoreOfLevels.is_level_id_exists(current_base_level_id):
 		current_base_level_id = StoreOfLevels.DEFAULT_LEVEL_ID_FOR_EMPTY
@@ -45,7 +46,6 @@ func initialize_current_level_configs_based_on_current_id():
 	current_base_level = StoreOfLevels.generate_base_level_imp_new(current_base_level_id)
 	current_base_level.level_id = current_base_level_id
 	current_level_details = StoreOfLevels.generate_or_get_level_details_of_id(current_base_level_id)
-	
 
 
 ########
@@ -70,8 +70,6 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	current_master.switch_to_level_selection_scene__from_game_elements__from_quit()
 
 func switch_to_game_elements__from_game_elements__from_restart():
-	#if is_instance_valid(current_game_elements):
-	#	current_game_elements.attempt_quit_game()
 	current_master.switch_to_game_elements__from_game_elements__from_restart()
 
 

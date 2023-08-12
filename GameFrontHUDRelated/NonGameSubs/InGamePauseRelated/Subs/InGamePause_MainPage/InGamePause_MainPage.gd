@@ -13,6 +13,19 @@ func _ready():
 	all_buttons.append(button_resume)
 	all_buttons.append(button_restart)
 	all_buttons.append(button_main_menu)
+	
+	var i = 0
+	for button in all_buttons:
+		var index_before = i - 1
+		var index_after = i + 1
+		
+		if index_after >= all_buttons.size():
+			index_after = 0
+		
+		button.set_focus_neighbour_top(all_buttons[index_before].get_texture_button())
+		button.set_focus_neighbour_bottom(all_buttons[index_after].get_texture_button())
+		
+		i += 1
 
 ##############
 

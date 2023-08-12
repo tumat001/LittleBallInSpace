@@ -79,6 +79,12 @@ func start_game_elements__with_level_details(level_details, arg_circle_pos):
 	transition.circle_center = arg_circle_pos #arg_currently_hovered_tile.get_center_position()
 	transition.connect("transition_finished", self, "_on_transition_out__to_level_finished", [level_details, transition, transition.circle_center])
 	play_transition(transition)
+	
+	## playlist/audio related
+	var BGM_playlist_id_to_play = level_details.BGM_playlist_id_to_use__on_level_start
+	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
+		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
+
 
 func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition, arg_center_pos):
 	if is_instance_valid(gui__level_selection_whole_screen):
@@ -101,6 +107,7 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
 	_level_id_to_unlock_and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
 	var transition = play_transition__using_id(transition_id)
@@ -108,7 +115,10 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
 
+
 func switch_to_level_selection_scene__from_game_elements__as_lose():
+	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
 	var transition = play_transition__using_id(transition_id)
 	
@@ -116,6 +126,8 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
+	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
 	var transition = play_transition__using_id(transition_id)
 	
@@ -123,6 +135,8 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_game_elements__from_game_elements__from_restart():
+	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	
 	_on_transition_out__from_GE__finished__for_restart()
 #	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
 #	var transition = play_transition__using_id(transition_id)
@@ -141,7 +155,7 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 	var transition = play_transition__using_id(arg_next_transition_id)
 	transition.queue_free_on_end_of_transition = true
 	
-	if arg_is_win:
+	if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
 		call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
 
 func _attempt_unlock_and_play_anim_on_victory__on_level_id():

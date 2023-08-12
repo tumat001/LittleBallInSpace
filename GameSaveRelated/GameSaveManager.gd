@@ -69,7 +69,11 @@ const LEVEL_OR_LAYOUT_COMPLETION_STATUS__HALF_FINISHED = 2
 var _level_id_to_coin_ids_collected_map : Dictionary
 var _total_coin_collected_count : int
 
+var _tentative_coin_ids_collected_in_curr_level_id : Array = []
+
+
 var _level_id_to_completion_status : Dictionary
+var _total_levels_finished : int
 var _level_layout_id_to_completion_status : Dictionary
 
 
@@ -226,6 +230,17 @@ func _update_coin_count_collected_in_whole_game():
 
 
 
+func set_tentative_coin_id_collected_in_curr_level(arg_id, arg_is_collected):
+	if arg_is_collected:
+		if !_tentative_coin_ids_collected_in_curr_level_id.has(arg_id):
+			_tentative_coin_ids_collected_in_curr_level_id.append(arg_id)
+		
+	else:
+		if _tentative_coin_ids_collected_in_curr_level_id.has(arg_id):
+			_tentative_coin_ids_collected_in_curr_level_id.erase(arg_id)
+		
+
+
 func get_coin_ids_collected_in_level(arg_level_id):
 	arg_level_id = str(arg_level_id)
 	return _level_id_to_coin_ids_collected_map[arg_level_id]
@@ -234,6 +249,17 @@ func get_coin_ids_collected_in_level(arg_level_id):
 func get_total_coin_collected_count() -> int:
 	return _total_coin_collected_count
 
+#
+
+func remove_official_coin_ids_collected_from_tentative():
+	var coin_ids = _level_id_to_coin_ids_collected_map[SingletonsAndConsts.current_level_details.level_id]
+	for id in _tentative_coin_ids_collected_in_curr_level_id:
+		coin_ids.erase(id)
+	
+	clear_coin_ids_in_tentative()
+
+func clear_coin_ids_in_tentative():
+	_tentative_coin_ids_collected_in_curr_level_id.clear()
 
 #
 
@@ -243,24 +269,27 @@ func _correct_level_id_to_completion_status_map(arg_map_from_save_dict : Diction
 		
 		if arg_map_from_save_dict.has(level_id_as_str):
 			#_level_id_to_completion_status[level_id] = arg_map_from_save_dict[level_id_as_str]
-			_set_level_id_status_completion__internal(level_id, arg_map_from_save_dict[level_id_as_str])
+			_set_level_id_status_completion__internal(level_id, arg_map_from_save_dict[level_id_as_str], false)
 			
 		else:
 			#_level_id_to_completion_status[level_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
-			_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
+			_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED, false)
 			
 		
 	
+	_update_total_levels_finished()
 	#print(_level_id_to_completion_status)
 
 func _initialize_level_id_to_completion_status_map():
 	for level_id in StoreOfLevels.LevelIds.values():
 		#_level_id_to_completion_status[level_id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
-		_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
+		_set_level_id_status_completion__internal(level_id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED, false)
 	
 	for id in StoreOfLevels.level_ids_unlocked_by_default:
 		#_level_id_to_completion_status[id] = LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED
-		_set_level_id_status_completion__internal(id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+		_set_level_id_status_completion__internal(id, LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED, false)
+	
+	_update_total_levels_finished()
 
 func is_level_id_playable(arg_id):
 	var status = _level_id_to_completion_status[arg_id]
@@ -276,15 +305,32 @@ func is_level_id_finished(arg_id):
 
 func set_level_id_status_completion(arg_id, arg_status):
 	var old_val = _level_id_to_completion_status[arg_id]
-	_set_level_id_status_completion__internal(arg_id, arg_status)
+	_set_level_id_status_completion__internal(arg_id, arg_status, true)
 	
 	if old_val != arg_status:
 		emit_signal("level_id_completion_status_changed", arg_id, arg_status)
 
-func _set_level_id_status_completion__internal(arg_id, arg_status):
+func _set_level_id_status_completion__internal(arg_id, arg_status, arg_update_total : bool):
 	_level_id_to_completion_status[arg_id] = arg_status
+	
+	if arg_update_total:
+		_update_total_levels_finished()
 
+func _update_total_levels_finished():
+	var total = 0
+	var all_non_hidden_level_ids = StoreOfLevels.get_all_non_hidden_level_ids()
+	for level_id in _level_id_to_completion_status.keys():
+		if all_non_hidden_level_ids.has(level_id):
+			var completion_status = _level_id_to_completion_status[level_id]
+			if completion_status == LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED:
+				total += 1
+	
+	#todo
+	print("updated total levels finished: %s" % total)
+	_total_levels_finished = total
 
+func get_total_levels_finished():
+	return _total_levels_finished
 
 #
 
