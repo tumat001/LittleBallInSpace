@@ -12,7 +12,12 @@ const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.5, 0.5, 0.5, 1.0)
 
 var level_layout_id
 
+var level_layout_label_on_tile : String
+var level_label_text_color : Color = Color("#dddddd")
+var level_label_outline_color : Color = Color("#222222")
+var has_outline_color : bool = false
 
+#
 
 var texture_of_level_tile : Texture
 var modulate_of_level_tile : Color

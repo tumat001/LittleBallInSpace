@@ -61,6 +61,7 @@ onready var path_texture_container = $PathTextureContainer
 
 onready var path_texture_rect__editor = $PathTextureRect__Editor
 
+onready var label = $Control/Label
 
 ########
 
@@ -87,6 +88,7 @@ func set_level_details(arg_level):
 	level_details.connect("is_level_locked_changed", self, "_is_level_locked_changed")
 	
 	_update_tile_texture_rect__texture()
+	_update_label_text()
 
 func _is_level_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
@@ -104,6 +106,7 @@ func set_level_layout_details(arg_level_layout_det):
 	level_layout_details.connect("is_level_layout_locked_changed", self, "_is_level_layout_locked_changed")
 	
 	_update_tile_texture_rect__texture()
+	_update_label_text()
 
 func _is_level_layout_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
@@ -121,6 +124,8 @@ func _update_tile_texture_rect__texture():
 			
 			tile_texture_rect.texture = texture_to_use
 			tile_texture_rect.modulate = mod_to_use
+			
+			label.modulate = mod_to_use
 			return
 	
 	
@@ -133,6 +138,8 @@ func _update_tile_texture_rect__texture():
 			
 			tile_texture_rect.texture = texture_to_use
 			tile_texture_rect.modulate = mod_to_use
+			
+			label.modulate = mod_to_use
 			return
 	
 	
@@ -140,11 +147,42 @@ func _update_tile_texture_rect__texture():
 	if default_texture_of_tile != null:
 		tile_texture_rect.texture = default_texture_of_tile
 		tile_texture_rect.modulate = Color(1, 1, 1, 1)
+		
+		label.modulate = Color(1, 1, 1, 1)
 		return
 	
 	#
 	
 	tile_texture_rect.texture = null
+
+func _update_label_text():
+	if is_path:
+		label.visible = false
+		return
+	else:
+		label.visible = true
+	
+	if level_details != null:
+		label.text = level_details.level_label_on_tile
+		label.add_color_override("font_color", level_details.level_label_text_color)
+		if level_details.has_outline_color:
+			label.add_color_override("font_outline_modulate", level_details.level_label_outline_color)
+		else:
+			label.remove_color_override("font_outline_modulate")
+		
+	elif level_layout_details != null:
+		label.text = level_layout_details.level_layout_label_on_tile
+		label.add_color_override("font_color", level_layout_details.level_label_text_color)
+		if level_layout_details.has_outline_color:
+			label.add_color_override("font_outline_modulate", level_layout_details.level_label_outline_color)
+		else:
+			label.remove_color_override("font_outline_modulate")
+		
+	else:
+		label.text = ""
+		label.add_color_override("font_color", Color("#dddddd"))
+		label.remove_color_override("font_outline_modulate")
+	
 
 #
 
@@ -166,7 +204,8 @@ func set_is_path(arg_val):
 				_update_display__as_path()
 				
 				path_texture_rect__editor.visible = false
-
+			
+			_update_label_text()
 
 func _update_display__as_path():
 	for path in _all_paths:

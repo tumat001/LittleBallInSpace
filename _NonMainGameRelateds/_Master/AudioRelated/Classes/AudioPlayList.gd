@@ -33,6 +33,9 @@ var _initial_play_delay_min : float
 var _initial_play_delay_max : float
 var _initial_play_delay_timer : Timer
 
+var autoplay_to_same_audio_id : bool = false
+var _audio_id_to_repeat
+
 
 var rng_to_use : RandomNumberGenerator
 
@@ -265,7 +268,10 @@ func attempt_reset_audios_played_history__except_for(arg_id):
 func _on_autoplay_delay_timer_timeout(arg_player, arg_path_name, arg_id):
 	if autoplay and !_is_stopped:
 		#print("play next random audio from playlist")
-		start_play_next_random_audio_in_playlist()
+		if autoplay_to_same_audio_id:
+			_play_sound(_audio_id_to_repeat)
+		else:
+			start_play_next_random_audio_in_playlist()
 	else:
 		_set_current_audio_id_playing__and_current_player(NO_AUDIO_PLAYING_ID, null)
 
@@ -323,10 +329,14 @@ func _play_sound(arg_id):
 	
 	#print("playing sound: %s" % arg_id)
 	
-	_audio_ids_played.append(arg_id)
+	if !_audio_ids_played.has(arg_id):
+		_audio_ids_played.append(arg_id)
 	
 	_set_is_playing(true)
 	_is_stopped = false
+	
+	if autoplay_to_same_audio_id:
+		_audio_id_to_repeat = arg_id
 	
 	#
 	

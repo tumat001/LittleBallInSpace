@@ -11,9 +11,25 @@ signal is_level_locked_changed(arg_val)
 #
 
 const DEFAULT_LEVEL_TILE_LOCKED_TEXTURE = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_Dark_32x32.png")
-const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.5, 0.5, 0.5, 1.0)
+const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.3, 0.3, 0.3, 1.0)
 
 #
+
+enum LevelTypeId {
+	CAMPAIGN = 0,
+	FOR_FUN = 1,
+	CHALLENGE = 2,
+}
+var level_type : int = LevelTypeId.CAMPAIGN
+
+
+var level_label_on_tile : String
+
+var level_label_text_color : Color = Color("#dddddd")
+var level_label_outline_color : Color = Color("#222222")
+var has_outline_color : bool = false
+
+##
 
 var level_name
 var level_desc

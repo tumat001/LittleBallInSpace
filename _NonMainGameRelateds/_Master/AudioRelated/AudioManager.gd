@@ -271,7 +271,8 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 	
 	
 	var file = load(arg_path_name)
-	file.loop = false
+	if file.get("loop"):
+		file.loop = false
 	
 	player.stream = file
 	player.volume_db = StoreOfAudio.get_audio_id_custom_standard_db(arg_audio_id)
@@ -587,4 +588,31 @@ func _notification(what):
 		
 		#get_tree().quit() # default behavior
 
+
+
+#############################
+# HELPER
+##############################
+
+
+func helper__play_sound_effect__2d__major(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
+	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.TWO_D, arg_adv_param)
+	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, PAUSE_MODE_INHERIT)
+	sound_player.global_position = arg_pos
+	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	return play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+
+
+func helper__play_sound_effect__plain__major(arg_id, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
+	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.PLAIN, arg_adv_param)
+	var sound_player : AudioStreamPlayer = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.PLAIN, PAUSE_MODE_INHERIT)
+	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	return play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+
+
+
+func _convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
+	var diff = arg_max - arg_min
+	
+	return arg_min + (diff * arg_ratio)
 

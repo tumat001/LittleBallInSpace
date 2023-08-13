@@ -19,6 +19,8 @@ onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
 
 onready var PDAR_fakeout_disable_rewind = $MiscContainer/PDAreaRegion_Fakeout_DisableRewind
 
+onready var PDAR_near_fakeout = $MiscContainer/PDAreaRegion_NearFakeout
+
 #
 
 func _init():
@@ -35,6 +37,8 @@ func _on_after_game_start_init():
 	_configure_labels()
 	
 	PDAR_fakeout_disable_rewind.connect("player_entered_in_area", self, "_on_player_entered_PDAR_fakeout_disable_rewind", [], CONNECT_ONESHOT)
+	
+	PDAR_near_fakeout.connect("player_entered_in_area", self, "_on_player_entered_in_area__PDAR_near_fakeout", [], CONNECT_ONESHOT)
 
 
 func _configure_labels():
@@ -128,9 +132,32 @@ func _on_PDAR_cancel_dialog_remote_player_entered_area():
 	
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
 
+#######
+
+func _on_player_entered_in_area__PDAR_near_fakeout():
+	var dialog_desc = [
+		["You're near the escape pod!", []],
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__03", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	
+	#
+	
+	StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(StoreOfAudio.BGMPlaylistId.SPECIALS_01, StoreOfAudio.AudioIds.BGM_Special01_FakeoutSuspense)
+	
 
 
+func _on_display_of_desc_finished__03(arg_metadata):
+	var timer_tweener = create_tween()
+	timer_tweener.tween_callback(self, "_on_delay_after_displaying_desc_03").set_delay(2.0)
 
+func _on_delay_after_displaying_desc_03():
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+
+
+#######
 
 func _on_player_entered_PDAR_fakeout_disable_rewind():
 	game_elements.ban_rewind_manager_to_store_and_cast_rewind()

@@ -19,11 +19,16 @@ var gui__level_selection_whole_screen : GUI_LevelSelectionWholeScreen
 
 var _level_id_to_unlock_and_display_win_vic_on
 
+
+var _is_transitioning : bool
+
 #
 
 onready var game_elements_container = $GameElementsContainer
 onready var layout_selection_container = $LayoutSelectionContainer
 onready var transition_container = $TransitionContainer
+
+onready var master_menu_control_tree = $MasterMenuControlTree
 
 #
 
@@ -203,9 +208,22 @@ func construct_transition__using_id(arg_id):
 	return StoreOfTransitionSprites.construct_transition_sprite(arg_id)
 
 func play_transition(arg_transition):
+	_is_transitioning = true
 	transition_container.add_child(arg_transition)
 	arg_transition.start_transition()
+	arg_transition.connect("transition_finished", self, "_on_transition_finished__for_state_tracking")
 	
 	return arg_transition
 
+func _on_transition_finished__for_state_tracking():
+	_is_transitioning = false
+
+##########
+
+func _unhandled_key_input(event):
+	if !_is_transitioning:
+		if !is_instance_valid(SingletonsAndConsts.current_game_elements):
+			if event.is_action_pressed("ui_cancel"):
+				master_menu_control_tree.show_main_page()
+				get_viewport().set_input_as_handled()
 

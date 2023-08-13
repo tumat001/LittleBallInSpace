@@ -31,6 +31,17 @@ var _tile_id_to_auto_coord_to_img_map : Dictionary = {}
 # structure: tile id -> region -> atlas img
 var _tile_id_to_region_to_img_map : Dictionary = {}
 
+
+####################
+
+const ANY_AUTO_COORD = Vector2(-1, -1)
+var _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud : Dictionary
+
+#
+
+func _ready():
+	_initialize_tile_id_and_auto_coord_to_sound_id_map()
+
 #
 
 static func is_tile_id_fillable_or_unfillable(arg_id):
@@ -304,4 +315,66 @@ func has_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region) -> bool:
 
 func get_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region) -> AtlasTexture:
 	return _tile_id_to_region_to_img_map[arg_tile_id][arg_region]
+
+
+
+##################
+# SOUND related
+#################
+
+func _initialize_tile_id_and_auto_coord_to_sound_id_map():
+	var _standard_tile_metal_hit__ping = {
+		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
+	}
+	var _standard_tile_glass_hit = {
+		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass, StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass]
+	}
+	var _standard_tile_metal_hit__tin = {
+		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
+	}
+	var _standard_tile_metal_hit__hollow = {
+		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftHollow, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
+	}
+	
+	_tile_id_to_auto_coord_to_sound_id_map__normal_and_loud = {
+		0 : _standard_tile_metal_hit__ping,
+		1 : _standard_tile_metal_hit__ping,
+		2 : _standard_tile_glass_hit,
+		3 : _standard_tile_glass_hit,
+		4 : _standard_tile_glass_hit,
+		5 : _standard_tile_glass_hit,
+		6 : _standard_tile_metal_hit__tin,
+		7 : _standard_tile_metal_hit__tin,
+		#8
+		#9
+		10 : _standard_tile_metal_hit__ping,
+		11 : _standard_tile_metal_hit__ping,
+		12 : _standard_tile_metal_hit__ping,
+		#13
+		
+	}
+	
+
+
+func get_sound_id_to_play_for_tile_hit(arg_tile_id, arg_auto_coords, arg_is_loud : bool):
+	if _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud.has(arg_tile_id):
+		var auto_coord_to_id_map = _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud[arg_tile_id]
+		if auto_coord_to_id_map.has(arg_auto_coords):
+			var ids_of_normal_or_loud = auto_coord_to_id_map[arg_auto_coords]
+			if arg_is_loud:
+				return ids_of_normal_or_loud[1]
+			else:
+				return ids_of_normal_or_loud[0]
+			
+		elif auto_coord_to_id_map.has(ANY_AUTO_COORD):
+			var ids_of_normal_or_loud = auto_coord_to_id_map[ANY_AUTO_COORD]
+			if arg_is_loud:
+				return ids_of_normal_or_loud[1]
+			else:
+				return ids_of_normal_or_loud[0]
+			
+	
+	
+	return -1
+
 

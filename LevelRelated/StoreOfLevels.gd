@@ -124,13 +124,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["Testing Desc Lorem ipsum", []]
 		]
 		
-		#level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile = Color(1, 1, 0, 1)
-		
-		#level_details.texture_of_level_tile__locked
-		level_details.modulate_of_level_tile__locked = Color(1, 0, 0, 1)
-		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
 		
 		
 		
@@ -143,7 +137,20 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		
 		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "01"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
 		
 	elif arg_id == LevelIds.LEVEL_02:
 		level_details.level_name = [
@@ -154,7 +161,18 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		
 		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "02"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
 		
 		
 	elif arg_id == LevelIds.LEVEL_03:
@@ -166,7 +184,18 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		
 		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "03"
+		level_details.level_label_text_color = Color("#444444")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
 		
 		
 	elif arg_id == LevelIds.LEVEL_04:
@@ -178,7 +207,18 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		
 		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "04"
+		level_details.level_label_text_color = Color("#444444")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
 		
 		
 	elif arg_id == LevelIds.LEVEL_05:
@@ -190,7 +230,20 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		
 		
-		_set_details__to_usual_circle_types(level_details)
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "05"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
 		
 	
 	
@@ -325,7 +378,7 @@ func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_stat
 ############################
 
 # All black
-func _set_details__to_usual_circle_types(arg_details : LevelDetails):
+func _set_details__transitions_to_usual_circle_types(arg_details : LevelDetails):
 	arg_details.transition_id__entering_level__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__entering_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK

@@ -264,6 +264,7 @@ func get_rewind_save_state():
 	var save_state = .get_rewind_save_state()
 	
 	save_state["is_pressed"] = is_pressed
+	save_state["pressable_count"] = pressable_count
 	
 	return save_state
 
@@ -271,7 +272,7 @@ func load_into_rewind_save_state(arg_state):
 	.load_into_rewind_save_state(arg_state)
 	
 	set_is_pressed(arg_state["is_pressed"])
-	
+	set_pressable_count(arg_state["pressable_count"])
 
 
 

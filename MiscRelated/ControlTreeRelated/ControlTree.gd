@@ -104,6 +104,7 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 		tweener.tween_callback(self, "_on_control_fully_visible_from_tweener", [arg_control])
 		
 	else:
+		arg_control.modulate.a = 1
 		_is_transitioning = false
 		arg_control.call(CONTROL_METHOD_NAME__FULLY_VISIBLE)
 	
@@ -205,6 +206,8 @@ func _input(event):
 					get_viewport().set_input_as_handled()
 					hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
 					
+	
+	
 
 func _on_TextureRect_gui_input(event):
 	if event is InputEventMouseButton:

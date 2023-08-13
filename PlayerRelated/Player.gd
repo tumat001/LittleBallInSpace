@@ -72,6 +72,18 @@ var _player_prev_global_position__for_rewind : Vector2
 var _player_pos_change_from_last_frame : Vector2
 var _player_linear_velocity : Vector2
 
+
+
+var _tilesets_entered_to_cell_coords_entered_count_map : Dictionary = {}
+
+var _last_cell_id
+var _last_cell_autocoord
+var _last_cell_global_pos
+var _pos_change_caused_by_tile : bool
+
+var _is_pos_change_potentially_from_tileset : bool
+var _pos_change_potentially_from_tileset__diff
+
 #
 
 enum BlockRotateClauseIds {
@@ -330,6 +342,12 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 		
 		
 		if body is BaseTileSet:
+			if !_tilesets_entered_to_cell_coords_entered_count_map.has(body):
+				_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
+			
+			if _tilesets_entered_to_cell_coords_entered_count_map[body] < 0:
+				_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
+			_tilesets_entered_to_cell_coords_entered_count_map[body] += 1
 			_on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_index)
 			
 		elif body is BaseObject:
@@ -384,13 +402,13 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				midpoint_with_lowest_distance = midpoint
 				perpend_angle_with_lowest_distance = seg_and_midpoint_and_perpend_angle[3]
 		
-		
 		var is_same_angle_as_perpend_angle : bool = CameraManager.current_cam_rotation == perpend_angle_with_lowest_distance
 		
 		if !is_same_angle_as_perpend_angle:
 			if body.can_induce_rotation_change__due_to_cell_v_changes():
 				_attempt_remove_on_ground_count__with_any_identif(coordinate)
 				_request_rotate(perpend_angle_with_lowest_distance, coordinate, tileset_energy_mode)
+				
 				if _ignore_next_current_player_left_right_move_reset:
 					_ignore_next_current_player_left_right_move_reset = false
 				else:
@@ -401,12 +419,28 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				clear_all_inside_induced_forces()
 				clear_all_outside_induced_forces()
 				_cancel_next_apply_ground_repelling_force = false
+				
+				_pos_change_caused_by_tile = true
+			
 		else:
 			_attempt_add_on_ground_count__with_any_indentif(coordinate, tileset_energy_mode)
 			clear_all_outside_induced_forces()
 			clear_all_inside_induced_forces()
 			_cancel_next_apply_ground_repelling_force = false
-
+		
+		###############
+		
+		
+		###
+		
+		var cell_id = tilemap.get_cellv(coordinate)
+		var cell_autocoord = tilemap.get_cell_autotile_coord(coordinate.x, coordinate.y)
+		_last_cell_id = cell_id
+		_last_cell_autocoord = cell_autocoord
+		_last_cell_global_pos = tile_global_pos
+		
+		if _is_pos_change_potentially_from_tileset:
+			_play_tile_hit_sound(_pos_change_potentially_from_tileset__diff)
 
 func _calculate_and_store_midpoints_of_points(arg_points : PoolVector2Array):
 	if !_shape_points_to_data_map.has(arg_points):
@@ -444,10 +478,18 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
-		if !body.break_on_player_contact: #and !body.changing_colls__from_fill_and_unfilled:
-			var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+		if _tilesets_entered_to_cell_coords_entered_count_map.has(body):
+			var count = _tilesets_entered_to_cell_coords_entered_count_map[body]
+			_tilesets_entered_to_cell_coords_entered_count_map[body] -= 1
 			
-			_attempt_remove_on_ground_count__with_any_identif(coordinate)
+			#print("count on exit: %s" % count)
+			
+			if count > 0:
+				if !body.break_on_player_contact: #and !body.changing_colls__from_fill_and_unfilled:
+					var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+					
+					_attempt_remove_on_ground_count__with_any_identif(coordinate)
+			
 		
 		#if !body.changing_colls__from_fill_and_unfilled:
 		#	body.changing_colls__from_fill_and_unfilled = false
@@ -458,18 +500,24 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 			remove_objects_to_collide_with_after_exit(body)
 		
 		if _objects_to_add_mask_layer_collision_after_exit.has(body):
-			#body.set_collision_mask_bit(0, true)
 			remove_objects_to_add_mask_layer_collision_after_exit(body)
 	
 	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
-func remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_coordinate):
-	_attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
+func remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_coordinate, arg_tilemap):
+	
+	var result = _attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
+	if result:
+		if _tilesets_entered_to_cell_coords_entered_count_map.has(arg_tilemap):
+			_tilesets_entered_to_cell_coords_entered_count_map[arg_tilemap] -= 1
 	
 
-func remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coordinate):
-	_attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
-	
+func remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coordinate, arg_tilemap):
+	var result = _attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
+	if result:
+		if _tilesets_entered_to_cell_coords_entered_count_map.has(arg_tilemap):
+			_tilesets_entered_to_cell_coords_entered_count_map[arg_tilemap] -= 1
+		
 
 #func _on_FloorArea2D_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 #	pass
@@ -519,6 +567,10 @@ func _attempt_remove_on_ground_count__with_any_identif(arg_identif):
 			_on_ground_any_identif_to_energy_mode_map.erase(arg_identif)
 		
 		_update_is_on_ground__and_update_others()
+		
+		return true
+	
+	return false
 
 
 
@@ -726,7 +778,7 @@ func _physics_process(delta):
 		
 		if _use_prev_glob_pos_for_rewind:
 			_player_prev_global_position = _player_prev_global_position__for_rewind
-			
+			_use_prev_glob_pos_for_rewind = false
 		
 		var prev_pos_change_from_last_frame = _player_pos_change_from_last_frame
 		_player_pos_change_from_last_frame = global_position - _player_prev_global_position
@@ -1164,10 +1216,23 @@ func _rotate_nodes_to_rotate_with_cam(arg_angle):
 func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vector2, arg_player_pos_change_from_last_frame : Vector2, delta):
 	var prev_pos_mag = arg_prev_pos_change_from_last_frame.length()
 	var curr_pos_mag = arg_player_pos_change_from_last_frame.length()
-	 
+	
+	if _is_pos_change_potentially_from_tileset:
+		set_deferred("_is_pos_change_potentially_from_tileset", false)
+	
 	if prev_pos_mag > curr_pos_mag:  # from fast to slow
 		var diff = (prev_pos_mag - curr_pos_mag) / delta
 		
+		#print("_pos_change_caused_by_tile: %s" % _pos_change_caused_by_tile)
+		
+		# for tiles
+		if _pos_change_caused_by_tile:
+			_play_tile_hit_sound(diff)
+		else:
+			_is_pos_change_potentially_from_tileset = true
+			_pos_change_potentially_from_tileset__diff = diff
+		
+		# for camera
 		if diff > 220:
 			var stress = diff / 220
 			CameraManager.camera.add_stress(stress)
@@ -1189,7 +1254,14 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 			
 		
 		#print("diff: %s, prev_mag: %s, curr_mag: %s. |||||||| for_rewind: %s, prev_pos: %s, prev_change: %s, glob_pos: %s, pos_change: %s, use: %s" % [diff, prev_pos_mag, curr_pos_mag, _player_prev_global_position__for_rewind, _player_prev_global_position, arg_player_pos_change_from_last_frame, global_position, _player_pos_change_from_last_frame, _use_prev_glob_pos_for_rewind])
-		_use_prev_glob_pos_for_rewind = false
+		#_use_prev_glob_pos_for_rewind = false
+
+func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
+	var diff = arg_max - arg_min
+	
+	return max((arg_num - arg_min) / diff, arg_minimum_ratio)
+
+
 
 func _play_normal_to_ouch(arg_duration : float):
 	var frame_count = anim_on_screen.frames.get_frame_count(FACE_ANIMATION_NAME__NORMAL_TO_OUCH)
@@ -1204,6 +1276,29 @@ func _play_ouch_to_normal(arg_duration : float):
 	
 	anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__OUCH_TO_NORMAL, fps)
 	anim_on_screen.play(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
+
+
+#
+
+func _play_tile_hit_sound(diff):
+	_pos_change_caused_by_tile = false
+	_is_pos_change_potentially_from_tileset = false
+	
+	var cell_hit_sound_id = -1
+	var volume_ratio : float
+	if diff >= 100 and diff < 320:
+		cell_hit_sound_id = TileConstants.get_sound_id_to_play_for_tile_hit(_last_cell_id, _last_cell_autocoord, false)
+		volume_ratio = _convert_num_to_ratio_using_num_range(diff, 100, 320, 0.50)
+		
+	elif diff >= 320:
+		cell_hit_sound_id = TileConstants.get_sound_id_to_play_for_tile_hit(_last_cell_id, _last_cell_autocoord, true)
+		volume_ratio = 1
+	
+	
+	#print("cell id: %s. sound_id: %s. vol_ratio: %s, diff: %s" % [_last_cell_id, cell_hit_sound_id, volume_ratio, diff])
+	if cell_hit_sound_id != -1 and volume_ratio != 0:
+		AudioManager.helper__play_sound_effect__2d__major(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
+
 
 #
 

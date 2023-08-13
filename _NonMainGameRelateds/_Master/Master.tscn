@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_Master/Master.gd" type="Script" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/MasterMenuControlTree.tscn" type="PackedScene" id=2]
 
 [node name="Master" type="Node"]
 script = ExtResource( 1 )
@@ -13,3 +14,5 @@ script = ExtResource( 1 )
 mouse_filter = 2
 
 [node name="TransitionContainer" type="CanvasLayer" parent="."]
+
+[node name="MasterMenuControlTree" parent="." instance=ExtResource( 2 )]

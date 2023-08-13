@@ -311,7 +311,7 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	####################
 	
 	#tilemap.set_cellv(arg_tile_coord, -1)
-	_player.remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_tile_coord)
+	_player.remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_tile_coord, self)
 	_set_tile_at_coords(arg_tile_coord, -1, Vector2(0, 0), true)
 	
 	call_deferred("_attempt_induce_speed_slowdown_on_player", arg_player)
@@ -368,7 +368,7 @@ func _set_tiles_at_coords(arg_arr_data,
 		_save_tiles_data_next_frame__for_rewind_save__count += 1
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
-	tilemap.set_collision_mask_bit(0, false)
+	#tilemap.set_collision_mask_bit(0, false)
 	
 	for data in arg_arr_data:
 		var arg_coords = data[0]
@@ -379,12 +379,12 @@ func _set_tiles_at_coords(arg_arr_data,
 		var arg_transpose = data[5]
 		
 		if is_instance_valid(_player):
-			_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
+			_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords, self)
 		
 		tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
 		
 	
-	tilemap.set_collision_mask_bit(0, true)
+	#tilemap.set_collision_mask_bit(0, true)
 	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()
@@ -394,7 +394,8 @@ func _set_tiles_at_coords(arg_arr_data,
 	if arg_save_tiles_data_next_frame__for_rewind_save:
 		_update_cells_save_data()
 		
-	
+
+
 
 # make arr version of this
 func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_coords = Vector2(0, 0),
@@ -411,16 +412,17 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 		_saved_cell_data_queue.append(_generate_cells_save_data())
 	
 	if is_instance_valid(_player):
-		_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords)
+		_player.remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__before_change(arg_coords, self)
 	#changing_colls__rid_changed_colls.append(arg_coords)
 	
 	#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 	#	changing_colls__from_fill_and_unfilled = true
 	#set_deferred("changing_colls__from_fill_and_unfilled", false)
 	
-	tilemap.set_collision_mask_bit(0, false)
+	#tilemap.set_collision_mask_bit(0, false)
 	tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
-	tilemap.set_collision_mask_bit(0, true)
+	#tilemap.set_collision_mask_bit(0, true)
+	#tilemap.call_deferred("set_collision_mask_bit", 0, true)
 	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()

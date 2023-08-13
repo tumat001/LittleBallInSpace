@@ -27,8 +27,8 @@ func after_game_init():
 	
 	_add_energy_modi()
 	
-	#_add_launch_ball_modi()
-
+#	_add_launch_ball_modi()
+#
 #func _add_launch_ball_modi():
 #	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
 #	modi.starting_ball_count = 80

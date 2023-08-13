@@ -14,6 +14,9 @@ func _ready():
 	all_buttons.append(button_restart)
 	all_buttons.append(button_main_menu)
 	
+	_assign_button_neighbors()
+
+func _assign_button_neighbors():
 	var i = 0
 	for button in all_buttons:
 		var index_before = i - 1
@@ -30,15 +33,17 @@ func _ready():
 ##############
 
 func _on_Button_Resume_button_pressed():
-	control_tree.hide_control__and_traverse_thru_hierarchy__if_control(self, true)
-
+	control_tree.hide_control__and_traverse_thru_hierarchy__if_control(self, false)
+	#control_tree.hide_current_control__and_traverse_thru_hierarchy(false)
 
 func _on_Button_Restart_button_pressed():
-	SingletonsAndConsts.switch_to_game_elements__from_game_elements__from_restart()
+	if !SingletonsAndConsts.current_game_elements.game_result_manager.is_game_result_decided:
+		SingletonsAndConsts.switch_to_game_elements__from_game_elements__from_restart()
 
 
 func _on_Button_MainMenu_button_pressed():
-	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
+	if !SingletonsAndConsts.current_game_elements.game_result_manager.is_game_result_decided:
+		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
 
 
 
