@@ -26,6 +26,10 @@ var is_camera_rotating : bool
 
 #
 
+var _current_cam_zoom_tweener : SceneTreeTween
+
+#
+
 var _screen_size_half : Vector2
 var _nodes_to_follow_camera : Array = []
 
@@ -42,6 +46,8 @@ var _is_at_default_zoom : bool
 ##########
 
 func _ready():
+	#print("cam rot: %s" % fmod((-3*PI/2), (2*PI)))
+	
 	var screen_size_rect : Rect2 = get_viewport().get_visible_rect()
 	_screen_size_half = Vector2(screen_size_rect.size.x / 2, screen_size_rect.size.y / 2)
 	
@@ -136,6 +142,7 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 	#arg_rad = fmod(arg_rad, (2*PI))
 	#old_rotation = fmod(old_rotation, (2*PI))
 	
+	
 	if abs(arg_rad) + abs(old_rotation) > PI:
 		if arg_rad > 0 and old_rotation < 0:
 			arg_rad = -arg_rad
@@ -143,8 +150,22 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 			old_rotation = -old_rotation
 	
 	
+#	if camera.rotation > 0:
+#		camera.rotation = fmod(camera.rotation, (2*PI))
+#		print("corr pos: %s" % fmod(camera.rotation, (2*PI)))
+#
+#	elif camera.rotation < 0:
+#		camera.rotation = -fmod(-camera.rotation, (2*PI))
+#		print("corr neg: %s" % -fmod(-camera.rotation, (2*PI)))
+	
 	camera.rotation = fmod(camera.rotation, (2*PI))
 	camera.rotation = fmod(camera.rotation, -(2*PI))
+	
+	if is_equal_approx(camera.rotation, -3*PI/2):
+		camera.rotation = PI/2
+	elif is_equal_approx(camera.rotation, 3*PI/2):
+		camera.rotation = -PI/2
+	
 	
 	if is_equal_approx(camera.rotation, -PI) and is_equal_approx(old_rotation, PI):
 		camera.rotation = PI
@@ -255,8 +276,11 @@ func start_camera_zoom_change__with_default_player_initialized_vals():
 	
 
 func start_camera_zoom_change(arg_val, arg_duration):
-	var tweener = create_tween()
-	tweener.tween_property(camera, "zoom", arg_val, arg_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	if _current_cam_zoom_tweener != null and _current_cam_zoom_tweener.is_running():
+		_current_cam_zoom_tweener.kill()
+	
+	_current_cam_zoom_tweener = create_tween()
+	_current_cam_zoom_tweener.tween_property(camera, "zoom", arg_val, arg_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	
 	_is_at_default_zoom = false
 
@@ -265,6 +289,9 @@ func reset_camera_zoom_level():
 	
 	_is_at_default_zoom = true
 
+
+func is_at_default_zoom():
+	return _is_at_default_zoom
 
 
 ###################### 

@@ -73,7 +73,6 @@ var _player_pos_change_from_last_frame : Vector2
 var _player_linear_velocity : Vector2
 
 
-
 var _tilesets_entered_to_cell_coords_entered_count_map : Dictionary = {}
 
 var _last_cell_id
@@ -123,6 +122,8 @@ var _current_player_left_right_move_speed : float
 var _current_player_left_right_move_speed__from_last_integrate_forces : float
 var _ignore_next_current_player_left_right_move_reset : bool
 var _current_excess_player_left_right_move_speed_to_fight_counter_speed : Vector2
+
+#var _swapped_speed__by_rotating_by_PI : bool
 
 var _body_state_linear_velocity__without_modifications : Vector2
 
@@ -225,6 +226,10 @@ var _current_player_capture_area_region setget set_current_player_capture_area_r
 ##
 
 var is_player : bool = true
+
+##
+
+var _audio_player__capturing_point : AudioStreamPlayer
 
 ##
 
@@ -364,6 +369,21 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 	if body.break_on_player_contact:
 		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 		
+		#
+		var tilemap : TileMap = body.tilemap
+		var cell_id = tilemap.get_cellv(coordinate)
+		var cell_autocoord = tilemap.get_cell_autotile_coord(coordinate.x, coordinate.y)
+		
+		var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
+		var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
+		var tile_global_pos = tilemap.to_global(tile_local_pos)
+		
+		var sound_id_of_break = TileConstants.get_sound_id_to_play_for_tile_break(cell_id, cell_autocoord)
+		if sound_id_of_break != -1:
+			AudioManager.helper__play_sound_effect__2d__major(sound_id_of_break, tile_global_pos, 1.0, null)
+		
+		#
+		
 		body.break_tile_coord__using_player(coordinate, self)
 		
 		
@@ -406,21 +426,44 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		
 		if !is_same_angle_as_perpend_angle:
 			if body.can_induce_rotation_change__due_to_cell_v_changes():
+				var old_cam_rotation = CameraManager.current_cam_rotation
+				
 				_attempt_remove_on_ground_count__with_any_identif(coordinate)
 				_request_rotate(perpend_angle_with_lowest_distance, coordinate, tileset_energy_mode)
 				
 				if _ignore_next_current_player_left_right_move_reset:
 					_ignore_next_current_player_left_right_move_reset = false
 				else:
+					
 					_current_player_left_right_move_speed = 0
 					_current_player_left_right_move_speed__from_last_integrate_forces = 0
 					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+					
+					
+#					if (is_equal_approx(abs(perpend_angle_with_lowest_distance - old_cam_rotation), PI)):
+#						_current_player_left_right_move_speed = _current_player_left_right_move_speed
+#						print("swapped speed")
+#						_current_player_left_right_move_speed__from_last_integrate_forces = 0
+#						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+#
+#						_swapped_speed__by_rotating_by_PI = true
+#					else:
+#						print("removed speed")
+#						_current_player_left_right_move_speed = 0
+#						_current_player_left_right_move_speed__from_last_integrate_forces = 0
+#						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+#
+#						_swapped_speed__by_rotating_by_PI = false
 				
 				clear_all_inside_induced_forces()
 				clear_all_outside_induced_forces()
 				_cancel_next_apply_ground_repelling_force = false
 				
 				_pos_change_caused_by_tile = true
+				
+				
+				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
+				
 			
 		else:
 			_attempt_add_on_ground_count__with_any_indentif(coordinate, tileset_energy_mode)
@@ -636,13 +679,17 @@ func _unhandled_key_input(event):
 		
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 			if event.is_action_pressed("game_zoom_out"):
-				CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+				if CameraManager.is_at_default_zoom():
+					CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+				else:
+					CameraManager.reset_camera_zoom_level()
+				
 				is_consumed = true
 				
-			elif event.is_action_released("game_zoom_out"):
-				CameraManager.reset_camera_zoom_level()
-				is_consumed = true
-				
+#			elif event.is_action_released("game_zoom_out"):
+#				CameraManager.reset_camera_zoom_level()
+#				is_consumed = true
+#
 			
 			
 			if !is_consumed:
@@ -671,6 +718,8 @@ func _physics_process(delta):
 		
 		if last_calc_can_player_move_left_and_right:
 			if _is_moving_left:
+				#print("moving left: %s" % _current_player_left_right_move_speed)
+				
 				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
 				if _current_player_left_right_move_speed > 0:
 					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -708,6 +757,8 @@ func _physics_process(delta):
 					
 				
 			elif _is_moving_right:
+				#print("moving right: %s" % _current_player_left_right_move_speed)
+				
 				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
 				if _current_player_left_right_move_speed < 0:
 					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -773,18 +824,17 @@ func _physics_process(delta):
 		# if linear velocity.x or y is less than _current_player_left_right_move_speed even if _current_player_left_right_move_speed is max, then store excess speed generated this frame in a var
 		# then use that var to add onto the linear velocity in _integrate_forces
 		
-		
 		_player_prev_global_position__for_rewind = global_position - _player_pos_change_from_last_frame
 		
 		if _use_prev_glob_pos_for_rewind:
 			_player_prev_global_position = _player_prev_global_position__for_rewind
 			_use_prev_glob_pos_for_rewind = false
 		
+		
 		var prev_pos_change_from_last_frame = _player_pos_change_from_last_frame
 		_player_pos_change_from_last_frame = global_position - _player_prev_global_position
 		_player_linear_velocity = _player_pos_change_from_last_frame / delta
 		_player_prev_global_position = global_position
-		
 		
 		_do_effects_based_on_pos_changes(prev_pos_change_from_last_frame, _player_pos_change_from_last_frame, delta)
 		
@@ -1021,6 +1071,11 @@ func _request_rotate(arg_angle, arg_ground_identif, arg_tileset_energy_mode):
 
 func _on_cam_manager_rotation_changed(arg_angle):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		#if !_swapped_speed__by_rotating_by_PI:
+		#	_current_player_left_right_move_speed = 0
+		#else:
+		#	_swapped_speed__by_rotating_by_PI = false
+		
 		_current_player_left_right_move_speed = 0
 		_current_player_left_right_move_speed__from_last_integrate_forces = 0
 		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -1220,6 +1275,8 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 	if _is_pos_change_potentially_from_tileset:
 		set_deferred("_is_pos_change_potentially_from_tileset", false)
 	
+	#print("diff: %s" % [(prev_pos_mag - curr_pos_mag) / delta])
+	
 	if prev_pos_mag > curr_pos_mag:  # from fast to slow
 		var diff = (prev_pos_mag - curr_pos_mag) / delta
 		
@@ -1254,6 +1311,7 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 			
 		
 		#print("diff: %s, prev_mag: %s, curr_mag: %s. |||||||| for_rewind: %s, prev_pos: %s, prev_change: %s, glob_pos: %s, pos_change: %s, use: %s" % [diff, prev_pos_mag, curr_pos_mag, _player_prev_global_position__for_rewind, _player_prev_global_position, arg_player_pos_change_from_last_frame, global_position, _player_pos_change_from_last_frame, _use_prev_glob_pos_for_rewind])
+		
 		#_use_prev_glob_pos_for_rewind = false
 
 func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
@@ -1442,9 +1500,16 @@ func set_current_player_capture_area_region(arg_area_region):
 				if !arg_area_region.is_connected("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area"):
 					arg_area_region.connect("region__body_exited_from_area", self, "_on_PCA_region__body_exited_from_area")
 				
+				
+				_start_audio_player__capturing_point()
+				
 			else:
 				_on_PCA_region_area_captured()
 				
+		
+	else:
+		_attempt_end_audio_player__capturing_point()
+	
 
 func _disconnect_curr_area_region_signals():
 	if _current_player_capture_area_region.is_connected("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed"):
@@ -1488,21 +1553,40 @@ func _update_PCA_values_and_display():
 func _on_PCA_region__body_exited_from_area(body):
 	if body == self:
 		_stop_pca_progress_drawer()
+		_attempt_end_audio_player__capturing_point()
 
 func _stop_pca_progress_drawer():
 	pca_progress_drawer.visible = false
 	pca_progress_drawer.set_is_enabled(false)
-	
-	if is_instance_valid(_current_player_capture_area_region):
-		_disconnect_curr_area_region_signals()
-	
-	_current_player_capture_area_region = null
+#
+#	if is_instance_valid(_current_player_capture_area_region):
+#		_disconnect_curr_area_region_signals()
+#
+#	_current_player_capture_area_region = null
 
 
 func _on_PCA_region_area_captured():
 	_stop_pca_progress_drawer()
+	set_current_player_capture_area_region(null)
+	
+	#
+	
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
 	
 
+##
+
+func _start_audio_player__capturing_point():
+	var play_adv_param = AudioManager.construct_play_adv_params()
+	play_adv_param.is_audio_looping = true
+	
+	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
+	
+
+func _attempt_end_audio_player__capturing_point():
+	if _audio_player__capturing_point != null and _audio_player__capturing_point.playing:
+		AudioManager.stop_stream_player_and_mark_as_inactive(_audio_player__capturing_point)
+		_audio_player__capturing_point = null
 
 
 ###################### 

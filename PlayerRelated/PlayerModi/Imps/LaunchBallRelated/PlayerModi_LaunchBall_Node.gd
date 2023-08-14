@@ -28,6 +28,10 @@ var _has_reached_max_at_least_once : bool
 
 #
 
+var _current_color_to_use_for_draw : Color
+
+#
+
 var _node_to_follow : Node2D
 
 var current_launch_force : float
@@ -37,6 +41,10 @@ var _is_charging_launch : bool setget set_is_charging_launch
 #
 
 var launch_ability setget set_launch_ability
+
+#
+
+var show_player_trajectory_line : bool
 
 #
 
@@ -147,6 +155,8 @@ func _draw():
 		var mouse_pos = get_global_mouse_position()
 		var node_pos = _node_to_follow.global_position
 		
+		_current_color_to_use_for_draw = color_to_use
+		
 		##
 		
 		var line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH * 0.66 / _max_launch_force
@@ -162,9 +172,11 @@ func _draw():
 		player_line_end_pos = player_line_end_pos.rotated(angle_of_node_to_mouse + PI) + node_pos
 		
 		#
+		if show_player_trajectory_line:
+			# PLAYER line
+			draw_line(node_pos, towards_mouse_line_end_pos, color_to_use, LINE_WIDTH__FOR_PLAYER)
+		
 		# BALL line
-		draw_line(node_pos, towards_mouse_line_end_pos, color_to_use, LINE_WIDTH__FOR_PLAYER)
-		# PLAYER line
 		draw_line(node_pos, player_line_end_pos, color_to_use, LINE_WIDTH__FOR_BALL)
 
 
@@ -178,6 +190,14 @@ func _get_color_to_use_based_on_current_launch_force() -> Color:
 	else:
 		return CHARGING_01_LAUNCH_FORCE__LINE_COLOR
 	
+
+func get_launch_force_as_range_from_0_to_2():
+	if _current_color_to_use_for_draw == MAX_LAUNCH_FORCE__LINE_COLOR:
+		return 2
+	elif _current_color_to_use_for_draw == CHARGING_01_LAUNCH_FORCE__LINE_COLOR:
+		return 1
+	else:
+		return 0
 
 
 ################

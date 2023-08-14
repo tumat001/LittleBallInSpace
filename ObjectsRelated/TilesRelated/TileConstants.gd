@@ -36,11 +36,12 @@ var _tile_id_to_region_to_img_map : Dictionary = {}
 
 const ANY_AUTO_COORD = Vector2(-1, -1)
 var _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud : Dictionary
+var _breakable_tile_id_to_auto_coord_to_sound_id_map : Dictionary
 
 #
 
 func _ready():
-	_initialize_tile_id_and_auto_coord_to_sound_id_map()
+	_initialize_all_tile_to_sound_id_map()
 
 #
 
@@ -322,7 +323,7 @@ func get_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region) -> AtlasText
 # SOUND related
 #################
 
-func _initialize_tile_id_and_auto_coord_to_sound_id_map():
+func _initialize_all_tile_to_sound_id_map():
 	var _standard_tile_metal_hit__ping = {
 		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
 	}
@@ -351,6 +352,18 @@ func _initialize_tile_id_and_auto_coord_to_sound_id_map():
 		11 : _standard_tile_metal_hit__ping,
 		12 : _standard_tile_metal_hit__ping,
 		#13
+		14 : _standard_tile_metal_hit__ping,
+		
+	}
+	
+	###########
+	var _standard_tile_glass_break = {
+		ANY_AUTO_COORD : StoreOfAudio.AudioIds.SFX_Misc_GlassBreak_Hard
+	}
+	
+	_breakable_tile_id_to_auto_coord_to_sound_id_map = {
+		4 : _standard_tile_glass_break,
+		5 : _standard_tile_glass_break,
 		
 	}
 	
@@ -377,4 +390,16 @@ func get_sound_id_to_play_for_tile_hit(arg_tile_id, arg_auto_coords, arg_is_loud
 	
 	return -1
 
+func get_sound_id_to_play_for_tile_break(arg_tile_id, arg_auto_coords):
+	if _breakable_tile_id_to_auto_coord_to_sound_id_map.has(arg_tile_id):
+		var auto_coord_to_id_map = _breakable_tile_id_to_auto_coord_to_sound_id_map[arg_tile_id]
+		if auto_coord_to_id_map.has(arg_auto_coords):
+			return auto_coord_to_id_map[arg_auto_coords]
+			
+		elif auto_coord_to_id_map.has(ANY_AUTO_COORD):
+			return auto_coord_to_id_map[ANY_AUTO_COORD]
+			
+	
+	
+	return -1
 

@@ -1,0 +1,107 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level01/WorldSlice_Stage02_01.gd" type="Script" id=2]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=8]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=9]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=10]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 57.5, 25.5 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 107, 19 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 157.5, 14.5 )
+
+[node name="WorldSlice_Stage02_01" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="BaseTileSet" parent="TileContainer" index="0" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet" index="0"]
+tile_data = PoolIntArray( 786427, 14, 196608, 851963, 14, 262144, 917499, 14, 262144, 983035, 14, 327680, 1245171, 14, 262146, 1245172, 14, 262147, 1245173, 14, 262147, 1245174, 14, 262147, 1245175, 14, 262147, 1245176, 14, 262148, 1245178, 14, 65538, 1245179, 14, 65539, 1245180, 14, 65539, 1245181, 14, 65539, 1245182, 14, 65539, 1245183, 14, 65540, 1310714, 14, 65538, 1310715, 14, 65539, 1310716, 14, 65539, 1310717, 14, 65539, 1310718, 14, 65539, 1310719, 14, 65540, 1376250, 14, 65538, 1376251, 14, 65539, 1376252, 14, 65539, 1376253, 14, 65539, 1376254, 14, 65539, 1376255, 14, 65540, 1441783, 14, 196608, 1441786, 14, 131074, 1441787, 14, 131075, 1441788, 14, 131075, 1441789, 14, 131075, 1441790, 14, 131075, 1441791, 14, 131076, 1507319, 14, 262144, 1572855, 14, 327680, 1507334, 14, 2, 1507335, 14, 3, 1507336, 14, 4, 1572870, 14, 65538, 1572871, 14, 65539, 1572872, 14, 65540, 1638404, 14, 2, 1638405, 14, 3, 1638406, 14, 0, 1638407, 14, 65539, 1638408, 14, 65540, 1703940, 14, 65538, 1703941, 14, 65539, 1703942, 14, 65539, 1703943, 14, 65539, 1703944, 14, 65540, 1769476, 14, 131074, 1769477, 14, 131075, 1769478, 14, 131075, 1769479, 14, 131075, 1769480, 14, 131076, 2555890, 14, 262146, 2555891, 14, 262147, 2555892, 14, 262147, 2555893, 14, 262147, 2555894, 14, 262148 )
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.984314, 0.0196078, 1 )
+tile_data = PoolIntArray( 196627, 14, 2, 196628, 14, 4, 262163, 14, 65538, 262164, 14, 65540, 393215, 14, 262146, 327680, 14, 262147, 327681, 14, 262147, 327682, 14, 262147, 327683, 14, 262147, 327684, 14, 262147, 327685, 14, 262147, 327686, 14, 262147, 327687, 14, 262147, 327688, 14, 262147, 327689, 14, 262147, 327690, 14, 262147, 327691, 14, 262147, 327692, 14, 262147, 327693, 14, 262147, 327694, 14, 262147, 327695, 14, 262147, 327696, 14, 262148, 327699, 14, 65538, 327700, 14, 65540, 458747, 14, 196608, 393235, 14, 65538, 393236, 14, 65540, 524283, 14, 262144, 458771, 14, 65538, 458772, 14, 65540, 589819, 14, 327680, 524290, 14, 196608, 524307, 14, 131074, 524308, 14, 131076, 589826, 14, 262144, 655362, 14, 262144, 720898, 14, 262144, 786434, 14, 262144, 851970, 14, 262144, 917506, 14, 262144, 983042, 14, 262144, 1048578, 14, 262144, 1114114, 14, 262144, 1179650, 14, 262144, 1310706, 14, 196608, 1245186, 14, 262144, 1376242, 14, 262144, 1310722, 14, 262144, 1441778, 14, 262144, 1376258, 14, 262144, 1507314, 14, 327680, 1441794, 14, 327680, 1703930, 14, 2, 1703931, 14, 3, 1703932, 14, 3, 1703933, 14, 3, 1703934, 14, 3, 1703935, 14, 3, 1638400, 14, 3, 1638401, 14, 3, 1638402, 14, 3, 1638403, 14, 4, 1769466, 14, 65538, 1769467, 14, 65539, 1769468, 14, 65539, 1769469, 14, 65539, 1769470, 14, 65539, 1769471, 14, 65539, 1703936, 14, 65539, 1703937, 14, 65539, 1703938, 14, 65539, 1703939, 14, 65540, 1835002, 14, 131074, 1835003, 14, 131075, 1835004, 14, 131075, 1835005, 14, 131075, 1835006, 14, 131075, 1835007, 14, 131075, 1769472, 14, 131075, 1769473, 14, 131075, 1769474, 14, 131075, 1769475, 14, 131076, 1966066, 14, 196608, 2031602, 14, 262144, 2097138, 14, 262144, 2162674, 14, 262144, 2228210, 14, 327680 )
+
+[node name="BaseTileSet_Ground" parent="TileContainer" index="2" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Ground" index="0"]
+modulate = Color( 0.709804, 0.360784, 0.0235294, 1 )
+tile_data = PoolIntArray( 720909, 14, 2, 720910, 14, 262147, 720911, 14, 262148, 720916, 14, 262146, 720917, 14, 262147, 720918, 14, 4, 786445, 14, 262144, 786454, 14, 262144, 851981, 14, 262144, 851990, 14, 262144, 917517, 14, 131074, 917518, 14, 262147, 917519, 14, 262147, 917520, 14, 262147, 917521, 14, 262147, 917522, 14, 262147, 917523, 14, 262147, 917524, 14, 262147, 917525, 14, 262147, 917526, 14, 131076, 1179642, 14, 2, 1179643, 14, 3, 1179644, 14, 3, 1179645, 14, 3, 1179646, 14, 3, 1179647, 14, 4 )
+
+[node name="BaseTileSet_Blue" parent="TileContainer" index="3" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
+tile_data = PoolIntArray( 1507322, 7, 0, 1572858, 7, 65536, 1638394, 7, 131072 )
+
+[node name="BaseTileSet_GroundUncollidables" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_GroundUncollidables" index="0"]
+modulate = Color( 0.709804, 0.360784, 0.0235294, 1 )
+tile_set = ExtResource( 8 )
+tile_data = PoolIntArray( 720909, 11, 131073, 720918, 11, 131072, 917517, 11, 131074, 917526, 11, 131075 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 10 )]
+position = Vector2( -370, 1184 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 3.5, 5.5 )
+shape = SubResource( 3 )
+
+[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
+position = Vector2( 579, 136 )
+
+[node name="Object_InteractableButton" parent="ObjectContainer" index="1" instance=ExtResource( 9 )]
+position = Vector2( 184, 771 )
+rotation = 4.71239
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+is_pressed = true
+pressable_count = 2
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 354, 217 )
+
+[node name="SpawnPosition2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 145, -2 )
+
+[node name="MiscContainer" type="Node2D" parent="." index="5"]
+
+[node name="TargetPos2D" type="Position2D" parent="MiscContainer" index="0"]
+position = Vector2( 145, 155 )
+
+[node name="PDAR_InitialConvo" parent="MiscContainer" index="1" instance=ExtResource( 6 )]
+position = Vector2( 36, 120 )
+
+[node name="CollisionShape2D" parent="MiscContainer/PDAR_InitialConvo" index="0"]
+position = Vector2( 117, 22 )
+shape = SubResource( 1 )
+
+[node name="ObjectDestroyingAreaRegion" parent="MiscContainer" index="2" instance=ExtResource( 5 )]
+position = Vector2( 418, 333 )
+
+[node name="CollisionShape2D" parent="MiscContainer/ObjectDestroyingAreaRegion" index="0"]
+position = Vector2( 157.5, 4.5 )
+shape = SubResource( 2 )
+
+[editable path="TileContainer/BaseTileSet"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Ground"]
+[editable path="TileContainer/BaseTileSet_Blue"]
+[editable path="TileContainer/BaseTileSet_GroundUncollidables"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="MiscContainer/PDAR_InitialConvo"]
+[editable path="MiscContainer/ObjectDestroyingAreaRegion"]

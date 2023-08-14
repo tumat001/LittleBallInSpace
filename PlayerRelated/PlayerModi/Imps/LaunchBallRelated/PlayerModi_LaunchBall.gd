@@ -52,6 +52,10 @@ var player_modi_launch_ball_node : PlayerModi_LaunchBall_Node
 
 #
 
+var show_player_trajectory_line : bool setget set_show_player_trajectory_line
+
+#
+
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
 	pass
 
@@ -144,6 +148,7 @@ func _initialize_player_modi_launch_ball_node():
 	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(player_modi_launch_ball_node)
 	#SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(player_modi_launch_ball_node)
 	
+	player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
 
 
 ######
@@ -190,6 +195,22 @@ func _attempt_launch_ball():
 	#
 	
 	SingletonsAndConsts.current_rewind_manager.attempt_set_rewindable_marker_data_at_next_frame(SingletonsAndConsts.current_rewind_manager.RewindMarkerData.LAUNCH_BALL)
+	
+	#
+	
+	var strength_factor_from_0_to_2 = player_modi_launch_ball_node.get_launch_force_as_range_from_0_to_2()
+	var volume_ratio
+	if strength_factor_from_0_to_2 == 0:
+		volume_ratio = 0.33
+	elif strength_factor_from_0_to_2 == 1:
+		volume_ratio = 0.66
+	else:
+		volume_ratio = 1
+	
+	var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
+	AudioManager.helper__play_sound_effect__2d__major(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
+	
+
 
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 	var mouse_pos : Vector2 = _player.get_global_mouse_position()
@@ -268,6 +289,15 @@ func set_is_infinite_ball_count(arg_val):
 func _add_self_to_ability_panel__front_hud():
 	SingletonsAndConsts.current_game_front_hud.ability_panel.player_modi_launch_ball = self
 	
+
+
+#
+
+func set_show_player_trajectory_line(arg_val):
+	show_player_trajectory_line = arg_val
+	
+	if is_instance_valid(player_modi_launch_ball_node):
+		player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
 
 ###################### 
 # REWIND RELATED

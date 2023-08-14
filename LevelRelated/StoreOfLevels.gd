@@ -18,6 +18,9 @@ enum LevelIds {
 	LEVEL_04 = 4
 	LEVEL_05 = 5
 	
+	LEVEL_01__STAGE_2 = 10
+	
+	
 }
 # dont change this (useless). 
 # This determines which levels are hidden at the very start, before any save states. i.e. hidden by default
@@ -245,7 +248,34 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
-	
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
+		level_details.level_full_name = [
+			["2-1 Direction", []]
+		]
+		level_details.level_name = [
+			["Direction", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "01"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
@@ -274,6 +304,10 @@ func generate_base_level_imp_new(arg_id):
 	elif arg_id == LevelIds.LEVEL_05:
 		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
 		
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
+		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_01__L2.gd").new()
+	
 	
 
 ###### COINS
@@ -302,6 +336,8 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_03 : 4,
 		LevelIds.LEVEL_04 : 3,
 		LevelIds.LEVEL_05 : 0,
+		
+		LevelIds.LEVEL_01__STAGE_2 : 3,
 		
 	}
 	
@@ -349,6 +385,8 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_03 : [LevelIds.LEVEL_02],
 		LevelIds.LEVEL_04 : [LevelIds.LEVEL_03],
 		LevelIds.LEVEL_05 : [LevelIds.LEVEL_04],
+		
+		LevelIds.LEVEL_01__STAGE_2 : [LevelIds.LEVEL_05],
 		
 	}
 

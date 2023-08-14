@@ -101,6 +101,13 @@ var _rewindable_objs_that_are_dead_but_reserved : Array
 
 ##
 
+var _rewind_audio_player__start : AudioStreamPlayer
+var _rewind_audio_player__mid_fill_loop : AudioStreamPlayer
+var _rewind_audio_player__end : AudioStreamPlayer
+
+
+############
+
 func _enter_tree():
 	SingletonsAndConsts.current_rewind_manager = self
 
@@ -318,6 +325,8 @@ func attempt_start_rewind():
 		
 		SingletonsAndConsts.current_game_elements.show_non_screen_gui_shader_sprite()
 		
+		_start_rewind_audio_play_sequence()
+		
 		emit_signal("rewinding_started")
 
 func end_rewind():
@@ -334,7 +343,9 @@ func _end_rewind_with_state_map(arg_state_map):
 	_rewindable_objs_in_prev_load_step.clear()
 	_rewindable_objs_that_are_dead_but_reserved.clear()
 	
-	emit_signal("done_ending_rewind")
+	_end_rewind_audio_play_sequence()
+	
+	#emit_signal("done_ending_rewind")
 	is_rewinding = false
 	
 	SingletonsAndConsts.current_game_front_hud.rewind_panel.end_show()
@@ -349,7 +360,9 @@ func _end_rewind_with_state_map(arg_state_map):
 	can_cast_rewind_cond_clause.remove_clause(CanCastRewindClauseIds.IS_REWINDING)
 	
 	SingletonsAndConsts.current_game_elements.hide_non_screen_gui_shader_sprite()
-
+	
+	
+	emit_signal("done_ending_rewind")
 
 
 ######
@@ -381,3 +394,41 @@ func get_texture_for_mark_type(arg_marker_id):
 
 func get_current_rewindable_duration_length():
 	return _current_rewindable_duration_length
+
+
+###############################
+
+func _start_rewind_audio_play_sequence():
+	_rewind_audio_player__start = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Beginning, 1.0, null)
+	_rewind_audio_player__start.connect("finished", self, "_on_rewind_audio_player__start_finished")
+
+func _on_rewind_audio_player__start_finished():
+	if _rewind_audio_player__start.is_connected("finished", self, "_on_rewind_audio_player__start_finished"):
+		_rewind_audio_player__start.disconnect("finished", self, "_on_rewind_audio_player__start_finished")
+	
+	_rewind_audio_player__start = null
+	
+	_play_rewind_audio__mid_section()
+
+func _play_rewind_audio__mid_section():
+	var play_adv_param = AudioManager.construct_play_adv_params()
+	play_adv_param.is_audio_looping = true
+	_rewind_audio_player__mid_fill_loop = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Middle, 1.0, play_adv_param)
+	
+
+
+
+func _end_rewind_audio_play_sequence():
+	if _rewind_audio_player__start != null:
+		if _rewind_audio_player__start.is_connected("finished", self, "_on_rewind_audio_player__start_finished"):
+			_rewind_audio_player__start.disconnect("finished", self, "_on_rewind_audio_player__start_finished")
+		
+		AudioManager.stop_stream_player_and_mark_as_inactive(_rewind_audio_player__start)
+		_rewind_audio_player__start = null
+	
+	if _rewind_audio_player__mid_fill_loop != null:
+		AudioManager.stop_stream_player_and_mark_as_inactive(_rewind_audio_player__mid_fill_loop)
+		_rewind_audio_player__mid_fill_loop = null
+	
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Ending, 1.0, null)
+

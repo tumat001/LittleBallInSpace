@@ -1,9 +1,15 @@
 extends MarginContainer
 
+const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
+
+
 
 onready var button_resume = $MainContainer/FreeFormControl/VBoxContainer/Button_Resume
 onready var button_restart = $MainContainer/FreeFormControl/VBoxContainer/Button_Restart
 onready var button_main_menu = $MainContainer/FreeFormControl/VBoxContainer/Button_MainMenu
+
+onready var level_name_tooltip_body = $FreeFormControl/LevelNameTooltipBody
+
 
 var all_buttons : Array
 
@@ -15,6 +21,17 @@ func _ready():
 	all_buttons.append(button_main_menu)
 	
 	_assign_button_neighbors()
+	
+	##
+	
+	level_name_tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.PIXEL_EMULATOR
+	level_name_tooltip_body.bbcode_align_mode = level_name_tooltip_body.BBCodeAlignMode.CENTER
+	
+	level_name_tooltip_body.descriptions = SingletonsAndConsts.current_level_details.level_full_name
+	level_name_tooltip_body.update_display()
+
+
+#
 
 func _assign_button_neighbors():
 	var i = 0

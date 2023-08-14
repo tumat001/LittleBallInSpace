@@ -19,6 +19,17 @@ func _init().(StoreOfPlayerModi.PlayerModiIds.ENERGY):
 
 #
 
+const ENERGY_RATIO_FOR_WARNING_TRIGGER = 0.25
+
+#
+
+var _player
+
+var _energy_down__sound_player : AudioStreamPlayer2D
+var _energy_restored__sound_player : AudioStreamPlayer2D
+
+#
+
 var _max_energy : float
 var _current_energy : float
 
@@ -36,6 +47,13 @@ var _forecasted_energy : float
 #
 
 var _has_no_energy : bool
+
+#
+
+func apply_modification_to_player_and_game_elements(arg_player, arg_game_elements):
+	.apply_modification_to_player_and_game_elements(arg_player, arg_game_elements)
+	
+	_player = arg_player
 
 #
 
@@ -62,11 +80,29 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	_has_no_energy = _current_energy == 0
 	if old_has_no_energy_val != _has_no_energy:
 		if _has_no_energy:
+			
+			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.60, null)
+				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
+					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
+			
 			emit_signal("discarged_to_zero_energy")
 			
 		else:
+			
+			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+				_energy_restored__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerUp_01, _player.global_position, 1.25, null)
+				if _energy_down__sound_player != null and _energy_down__sound_player.playing:
+					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_down__sound_player)
+			
 			emit_signal("recharged_from_no_energy")
 			
+	
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if old_val > _current_energy:
+			if (old_val / _max_energy) > ENERGY_RATIO_FOR_WARNING_TRIGGER and (_current_energy / _max_energy) <= ENERGY_RATIO_FOR_WARNING_TRIGGER:
+				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_LowBatteryWarning, _player.global_position, 0.9, null)
+				
 	
 	#
 	
@@ -78,6 +114,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	_update_and_calculate_forecasted_energy_consumption()
 	
 	emit_signal("current_energy_changed", arg_val)
+
 
 func get_current_energy():
 	return _current_energy

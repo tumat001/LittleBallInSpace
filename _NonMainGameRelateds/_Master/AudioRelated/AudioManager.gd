@@ -129,6 +129,8 @@ class PlayAdvParams:
 	var play_sound_type : int
 	var node_pause_mode : int = Node.PAUSE_MODE_INHERIT 
 	
+	var is_audio_looping : bool = false
+	
 	#
 	
 	func set_node_source(arg_node):
@@ -251,7 +253,9 @@ func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player,
 
 
 # to be used by outside sources, and the node be fed to "play_sound__using_path_name"
-func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_construction_type : int, arg_pause_mode : int):
+func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_construction_type : int, arg_pause_mode : int, 
+		arg_play_adv_param : PlayAdvParams = null):
+	
 	var player
 	
 	var arg_path_name = StoreOfAudio.get_audio_file_path_of_id(arg_audio_id)
@@ -271,8 +275,16 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 	
 	
 	var file = load(arg_path_name)
+	
+	#
+	var loop_val = false
+	if arg_play_adv_param != null:
+		loop_val = arg_play_adv_param.is_audio_looping
+	
 	if file.get("loop"):
-		file.loop = false
+		file.loop = loop_val
+	
+	#
 	
 	player.stream = file
 	player.volume_db = StoreOfAudio.get_audio_id_custom_standard_db(arg_audio_id)
@@ -594,21 +606,55 @@ func _notification(what):
 # HELPER
 ##############################
 
+func helper__linearly_set_player_db_to_audiable(player, audio_id, time_to_reach_target_db):
+	var params = AudioManager.LinearSetAudioParams.new()
+	params.pause_at_target_db = false
+	params.stop_at_target_db = false
+	#params.target_db =
+	params.set_target_db_to_custom_standard_of_audio_id(audio_id)
+	
+	params.time_to_reach_target_db = time_to_reach_target_db
+	
+	linear_set_audio_player_volume_using_params(player, params)
+
+func helper__linearly_set_current_player_db_to_inaudiable(player, time_to_reach_target_db):
+	var params = AudioManager.LinearSetAudioParams.new()
+	params.pause_at_target_db = false
+	params.stop_at_target_db = true
+	params.target_db = AudioManager.DECIBEL_VAL__INAUDIABLE
+	
+	params.time_to_reach_target_db = time_to_reach_target_db
+	
+	linear_set_audio_player_volume_using_params(player, params)
+
+
+#########
 
 func helper__play_sound_effect__2d__major(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
 	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.TWO_D, arg_adv_param)
-	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, PAUSE_MODE_INHERIT)
+	var pause_mode_of_player = PAUSE_MODE_INHERIT
+	if arg_adv_param != null:
+		pause_mode_of_player = arg_adv_param.node_pause_mode
+	
+	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, pause_mode_of_player, arg_adv_param)
 	sound_player.global_position = arg_pos
 	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
-	return play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
-
+	play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+	
+	return sound_player
 
 func helper__play_sound_effect__plain__major(arg_id, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
 	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.PLAIN, arg_adv_param)
-	var sound_player : AudioStreamPlayer = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.PLAIN, PAUSE_MODE_INHERIT)
+	var pause_mode_of_player = PAUSE_MODE_INHERIT
+	if arg_adv_param != null:
+		pause_mode_of_player = arg_adv_param.node_pause_mode
+	
+	
+	var sound_player : AudioStreamPlayer = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.PLAIN, pause_mode_of_player, arg_adv_param)
 	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
-	return play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
-
+	play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+	
+	return sound_player
 
 
 func _convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
@@ -616,3 +662,5 @@ func _convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
 	
 	return arg_min + (diff * arg_ratio)
 
+
+#

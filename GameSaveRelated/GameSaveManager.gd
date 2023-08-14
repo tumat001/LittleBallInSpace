@@ -58,6 +58,9 @@ const LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER = "level_id_to_completion_st
 const LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER = "level_layout_id_to_completion_status"
 
 
+const LEVEL_ID_TO_METADATA__DIC_IDENTIFIER = "LEVEL_ID_TO_METADATA__DIC_IDENTIFIER"
+
+
 
 # If adding more, look at GUI_LevelDetailsPanel for appropriate changes
 const LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED = -1
@@ -81,6 +84,8 @@ var _level_layout_id_to_completion_status : Dictionary
 var last_opened_level_layout_id
 var last_hovered_over_level_layout_element_id
 
+
+var _level_id_to_metadata_map : Dictionary
 
 ####
 
@@ -509,9 +514,31 @@ func _load_level_related_data(arg_file : File):
 	else:
 		_initialize_level_layout_id_to_completion_status_map()
 	
+	#
 	
+	if data.has(LEVEL_ID_TO_METADATA__DIC_IDENTIFIER):
+		_correct_level_id_to_metadata_map(data[LEVEL_ID_TO_METADATA__DIC_IDENTIFIER])
+	else:
+		pass
 	
 
+
+func _correct_level_id_to_metadata_map(arg_map_from_save_dict : Dictionary):
+	for id_as_str in arg_map_from_save_dict.keys():
+		var id = int(id_as_str)
+		_level_id_to_metadata_map[id] = arg_map_from_save_dict[id_as_str]
+	
+
+func set_metadata_of_level_id(arg_id, arg_metadata):
+	_level_id_to_metadata_map[arg_id] = arg_metadata
+
+func get_metadata_of_level_id(arg_id):
+	if _level_id_to_metadata_map.has(arg_id):
+		return _level_id_to_metadata_map[arg_id]
+	
+	return null
+
+#
 
 func _save_level_and_layout_related_data():
 	var save_dict = {
@@ -522,6 +549,7 @@ func _save_level_and_layout_related_data():
 		LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER : _level_id_to_completion_status,
 		LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER : _level_layout_id_to_completion_status,
 		
+		LEVEL_ID_TO_METADATA__DIC_IDENTIFIER : _level_id_to_metadata_map
 	}
 	
 	_save_using_dict(save_dict, level_data_file_path, "SAVE ERROR: LevelAndLayoutData")

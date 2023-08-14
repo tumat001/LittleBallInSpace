@@ -71,6 +71,7 @@ func _on_end_of_animations_for_acquiring_launcher():
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
 	modi.starting_ball_count = 0
+	modi.show_player_trajectory_line = false
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 func _start_hide_god_rays():
@@ -174,7 +175,8 @@ func _on_player_entered_PDAR_fakeout_disable_rewind__after_delay():
 	
 	var tweener = create_tween()
 	tweener.tween_callback(self, "_on_fakeout_zoom_out_complete").set_delay(2.5)
-
+	
+	GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_2, [game_elements.get_current_player().linear_velocity, true])
 
 func _on_fakeout_zoom_out_complete():
 	_start_show_game_logo()

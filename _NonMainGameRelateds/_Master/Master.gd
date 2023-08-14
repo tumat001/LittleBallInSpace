@@ -21,6 +21,7 @@ var _level_id_to_unlock_and_display_win_vic_on
 
 
 var _is_transitioning : bool
+var _is_in_game_or_loading_to_game : bool
 
 #
 
@@ -41,7 +42,7 @@ func _enter_tree():
 func _ready():
 	#TODO Temp for quick testing of lvls
 	if (false):
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
 		
 		var game_elements = GameElements_Scene.instance()
 		game_elements_container.add_child(game_elements)
@@ -74,10 +75,16 @@ func load_and_show_layout_selection_whole_screen():
 ###
 
 func _on_selection_screen__prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id):
-	var level_details = arg_currently_hovered_tile.level_details
-	start_game_elements__with_level_details(level_details, arg_currently_hovered_tile.get_center_position())
+	if !_is_in_game_or_loading_to_game:
+		var level_details = arg_currently_hovered_tile.level_details
+		start_game_elements__with_level_details(level_details, arg_currently_hovered_tile.get_center_position())
+		
+		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelSelected_01, 1.0, null)
+		
 
 func start_game_elements__with_level_details(level_details, arg_circle_pos):
+	_is_in_game_or_loading_to_game = true
+	
 	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	#var transition = play_transition__using_id(level_details.transition_id__entering_level__out)
 	var transition = construct_transition__using_id(level_details.transition_id__entering_level__out)
@@ -111,6 +118,7 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 ###
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
+	_is_in_game_or_loading_to_game = false
 	_level_id_to_unlock_and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
 	GameSaveManager.clear_coin_ids_in_tentative()
 	
@@ -122,6 +130,7 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
+	_is_in_game_or_loading_to_game = false
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
@@ -131,6 +140,7 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
+	_is_in_game_or_loading_to_game = false
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
@@ -185,6 +195,8 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playi
 
 func _make_level_id_mark_as_finished(arg_level_id):
 	GameSaveManager.set_level_id_status_completion(arg_level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+	
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 	
 
 

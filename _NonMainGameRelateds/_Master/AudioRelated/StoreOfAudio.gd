@@ -53,8 +53,54 @@ enum AudioIds {
 	
 	SFX_TileHit_MetalHitGlass = 5005
 	
+	
+	
+	# ROTATE
+	SFX_Rotate_Standard_01 = 5100
+	
+	# LAUNCH
+	SFX_LaunchBall_01 = 5110
+	SFX_LaunchBall_02 = 5111
+	SFX_LaunchBall_03 = 5112
+	
+	# SWITCH
+	SFX_SwitchToggle_01 = 5120
+	
+	# ENERGY
+	SFX_EnergyModi_LowBatteryWarning = 5130
+	SFX_EnergyModi_PowerDown_01 = 5131
+	SFX_EnergyModi_PowerUp_01 = 5132
+	
+	# CAPTURE RELATED
+	SFX_CapturePoint_Captured_02 = 5141
+	SFX_CapturePoint_Capturing = 5142
+	
+	# LEVEL SELECTION UI
+	SFX_LevelSelected_01 = 5150
+	SFX_LevelUnlock_Burst_01 = 5151
+	
+	# REWIND
+	SFX_Rewind_Beginning = 5160
+	SFX_Rewind_Middle = 5161
+	SFX_Rewind_Ending = 5162
+	
+	
+	
+	# TILE BREAK
+	SFX_Misc_GlassBreak_Hard = 5200
+	
+	
 }
 
+const _all_audio_ids_sfx_launch_ball_variations = [
+	AudioIds.SFX_LaunchBall_01,
+	AudioIds.SFX_LaunchBall_02,
+	AudioIds.SFX_LaunchBall_03,
+	
+]
+
+
+#
 
 var _audio_id_to_file_path_map := {
 	#NOTE: BGMs accounted for
@@ -64,7 +110,7 @@ var _file_path_to_audio_id_map := {}
 
 # If not defined, then default 0.0 is used.
 var _audio_id_to_custom_standard_db_map := {
-	AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull : -5,
+	AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull : -2,
 	
 	AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : 10,
 	AudioIds.SFX_TileHit_MetalBang_SoftHollow : 18,
@@ -233,6 +279,9 @@ func is_BGM_playlist_id_playing(arg_playlist_id):
 
 
 #
+
+func get_randomized_sfx_id__launch_ball():
+	return StoreOfRNG.randomly_select_one_element(_all_audio_ids_sfx_launch_ball_variations, StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL))
 
 
 

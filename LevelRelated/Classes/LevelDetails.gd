@@ -23,6 +23,8 @@ enum LevelTypeId {
 var level_type : int = LevelTypeId.CAMPAIGN
 
 
+#
+
 var level_label_on_tile : String
 
 var level_label_text_color : Color = Color("#dddddd")
@@ -31,7 +33,8 @@ var has_outline_color : bool = false
 
 ##
 
-var level_name
+var level_full_name : Array
+var level_name : Array setget set_level_name
 var level_desc
 
 var level_id : int
@@ -73,6 +76,14 @@ var zoom_normal_vec = CameraManager.DEFAULT_ZOOM_LEVEL
 var zoom_out_vec = CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL
 
 ##########
+
+func set_level_name(arg_val):
+	level_name = arg_val
+	
+	if level_full_name.size() == 0:
+		level_full_name = level_name
+
+#
 
 func set_is_level_locked(arg_val):
 	var old_val = is_level_locked
