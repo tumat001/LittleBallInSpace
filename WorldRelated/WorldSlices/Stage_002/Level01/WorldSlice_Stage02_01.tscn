@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level01/WorldSlice_Stage02_01.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=9]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=10]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=11]
+[ext_resource path="res://MiscRelated/VisualsRelated/KeyPressVisual/Visual_KeyPress.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 57.5, 25.5 )
@@ -41,6 +42,7 @@ tile_data = PoolIntArray( 196627, 14, 2, 196628, 14, 4, 262163, 14, 65538, 26216
 
 [node name="BaseTileSet_Ground" parent="TileContainer" index="2" instance=ExtResource( 3 )]
 energy_mode = 2
+has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Ground" index="0"]
 modulate = Color( 0.709804, 0.360784, 0.0235294, 1 )
@@ -53,10 +55,11 @@ tile_set = ExtResource( 8 )
 tile_data = PoolIntArray( 1179649, 12, 0, 1179651, 12, 0, 1179652, 12, 0, 1310707, 12, 0, 1310708, 12, 0, 1310709, 12, 0, 1310710, 12, 0, 1310711, 12, 0, 1310712, 12, 0, 1245184, 12, 0, 1245185, 12, 0, 1245187, 12, 0, 1245188, 12, 0, 1245189, 12, 0, 1376243, 12, 0, 1376244, 12, 0, 1376245, 12, 0, 1376246, 12, 0, 1376253, 12, 0, 1376254, 12, 0, 1376255, 12, 0, 1310720, 12, 0, 1310721, 12, 0, 1310723, 12, 0, 1310724, 12, 0, 1310725, 12, 0, 1310726, 12, 0, 1441779, 12, 0, 1441780, 12, 0, 1441781, 12, 0, 1441787, 12, 0, 1441788, 12, 0, 1441789, 12, 0, 1441790, 12, 0, 1441791, 12, 0, 1376256, 12, 0, 1376257, 12, 0, 1376259, 12, 0, 1376260, 12, 0, 1376261, 12, 0, 1376262, 12, 0, 1376263, 12, 0, 1507315, 12, 0, 1507316, 12, 0, 1507322, 12, 0, 1507323, 12, 0, 1507324, 12, 0, 1507325, 12, 0, 1507326, 12, 0, 1507327, 12, 0, 1441792, 12, 0, 1441793, 12, 0, 1441795, 12, 0, 1441796, 12, 0, 1441797, 12, 0, 1441798, 12, 0, 1441799, 12, 0, 1572851, 12, 0, 1572858, 12, 0, 1572859, 12, 0, 1572860, 12, 0, 1572861, 12, 0, 1572862, 12, 0, 1572863, 12, 0, 1507328, 12, 0, 1507329, 12, 0, 1507330, 12, 0, 1507331, 12, 0, 1507332, 12, 0, 1507333, 12, 0, 1638394, 12, 0, 1638395, 12, 0, 1638396, 12, 0, 1638397, 12, 0, 1638398, 12, 0, 1638399, 12, 0, 1572864, 12, 0, 1572865, 12, 0, 1572866, 12, 0, 1572867, 12, 0, 1572868, 12, 0, 1572869, 12, 0 )
 
 [node name="BaseTileSet_Uncollidables_Light" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncollidables_Light" index="0"]
 tile_set = ExtResource( 8 )
-tile_data = PoolIntArray( 1507326, 14, 0 )
+tile_data = PoolIntArray( 1376244, 14, 0, 1507326, 14, 0 )
 
 [node name="BaseTileSet_UncolsAboveMost" parent="TileContainer" index="5" instance=ExtResource( 3 )]
 
@@ -116,7 +119,7 @@ position = Vector2( 145, -2 )
 [node name="MiscContainer" type="Node2D" parent="." index="5"]
 
 [node name="TargetPos2D" type="Position2D" parent="MiscContainer" index="0"]
-position = Vector2( 145, 155 )
+position = Vector2( 145, 143 )
 
 [node name="PDAR_InitialConvo" parent="MiscContainer" index="1" instance=ExtResource( 6 )]
 position = Vector2( 36, 120 )
@@ -131,6 +134,38 @@ position = Vector2( 418, 333 )
 [node name="CollisionShape2D" parent="MiscContainer/ObjectDestroyingAreaRegion" index="0"]
 position = Vector2( 157.5, 4.5 )
 shape = SubResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MiscContainer" index="3"]
+margin_left = 682.0
+margin_top = 284.0
+margin_right = 869.0
+margin_bottom = 374.0
+rect_rotation = 270.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="MiscContainer/VBoxContainer" index="0"]
+margin_left = 78.0
+margin_right = 108.0
+margin_bottom = 14.0
+size_flags_horizontal = 6
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Hold"
+
+[node name="VKP_LaunchBall" parent="MiscContainer/VBoxContainer" index="1" instance=ExtResource( 12 )]
+margin_left = 72.0
+margin_top = 18.0
+margin_right = 114.0
+margin_bottom = 55.0
+size_flags_horizontal = 6
+
+[node name="Label2" type="Label" parent="MiscContainer/VBoxContainer" index="2"]
+margin_top = 59.0
+margin_right = 187.0
+margin_bottom = 90.0
+size_flags_horizontal = 6
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "To increase the launch speed
+of both the ball and yourself."
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BaseTileSet_Energized"]

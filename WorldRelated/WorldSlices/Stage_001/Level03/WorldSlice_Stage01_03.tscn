@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_001/Level03/WorldSlice_Stage01_03.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=6]
+[ext_resource path="res://MiscRelated/VisualsRelated/KeyPressVisual/Visual_KeyPress.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 38.5, 48 )
@@ -87,28 +88,50 @@ you can't perform actions"
 align = 1
 valign = 1
 
-[node name="Label3Rewind" type="Label" parent="MessegesContainer" index="2"]
-margin_left = -244.0
-margin_top = 394.0
-margin_right = -53.0
-margin_bottom = 425.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MessegesContainer" index="2"]
+margin_left = -97.0
+margin_top = 493.0
+margin_right = 103.0
+margin_bottom = 554.0
+custom_constants/separation = 10
+
+[node name="Label3Rewind" type="Label" parent="MessegesContainer/VBoxContainer" index="0"]
+margin_right = 200.0
+margin_bottom = 14.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "You can rewind time by holding
-[%s]"
+text = "You can rewind time by holding"
 align = 1
 valign = 1
 
-[node name="Label4Zoomout" type="Label" parent="MessegesContainer" index="3"]
-margin_left = 875.0
-margin_top = -172.0
-margin_right = 1126.0
-margin_bottom = -141.0
+[node name="VKP_Rewind" parent="MessegesContainer/VBoxContainer" index="1" instance=ExtResource( 7 )]
+margin_left = 79.0
+margin_top = 24.0
+margin_right = 121.0
+margin_bottom = 61.0
+size_flags_horizontal = 6
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MessegesContainer" index="3"]
+margin_left = 855.0
+margin_top = -264.0
+margin_right = 1106.0
+margin_bottom = -192.0
 rect_rotation = 180.0
+custom_constants/separation = 10
+
+[node name="Label4Zoomout" type="Label" parent="MessegesContainer/VBoxContainer2" index="0"]
+margin_right = 251.0
+margin_bottom = 14.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "You can toggle zoom levels by pressing
-[%s]"
+text = "You can toggle zoom levels by pressing"
 align = 1
 valign = 1
+
+[node name="VKP_ZoomOut" parent="MessegesContainer/VBoxContainer2" index="1" instance=ExtResource( 7 )]
+margin_left = 104.0
+margin_top = 24.0
+margin_right = 146.0
+margin_bottom = 61.0
+size_flags_horizontal = 6
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]

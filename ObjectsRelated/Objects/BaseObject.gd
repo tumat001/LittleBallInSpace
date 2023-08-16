@@ -5,6 +5,8 @@ const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalC
 
 #
 
+signal destroyed_self_caused_by_destroying_area_region(arg_area_region)
+
 signal last_calculated_object_mass_changed(arg_val)
 
 #
@@ -133,6 +135,12 @@ func _on_BaseObject_body_entered(body):
 	pass
 	
 
+####
+
+func destroy_self_caused_by_destroying_area_region(arg_region):
+	emit_signal("destroyed_self_caused_by_destroying_area_region", arg_region)
+	
+	queue_free()
 
 ###################### 
 # REWIND RELATED

@@ -6,6 +6,10 @@ const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALB
 
 #
 
+onready var vkp_launch_ball = $MiscContainer/VBoxContainer/VKP_LaunchBall
+onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
+
+
 onready var CDSU_pickupable_launcher = $ObjectContainer/CDSUPickupable_Launcher
 onready var CDSU_pickupable_remote = $ObjectContainer/CDSUPickupable_Remote
 onready var CDSU_pickupable_remote__sprite = $ObjectContainer/CDSUPickupable_Remote/Sprite
@@ -14,8 +18,8 @@ onready var god_rays_sprite = $MiscContainer/GodRays
 
 onready var PDAR_cancel_dialog_remote = $AreaRegionContainer/PDAreaRegion_CancelDialog02
 
-onready var launch_ball_ins_label = $MiscContainer/LaunchBallInsLabel
-onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
+#onready var launch_ball_ins_label = $MiscContainer/LaunchBallInsLabel
+#onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
 
 onready var PDAR_fakeout_disable_rewind = $AreaRegionContainer/PDAreaRegion_Fakeout_DisableRewind
 
@@ -42,12 +46,19 @@ func _on_after_game_start_init():
 
 
 func _configure_labels():
-	var orig_text__launch_ball = launch_ball_ins_label.text
-	var launch_ball_keypress_text = InputMap.get_action_list("game_launch_ball")[0].as_text()
-	launch_ball_ins_label.text = orig_text__launch_ball % [launch_ball_keypress_text, launch_ball_keypress_text]
+	#var orig_text__launch_ball = launch_ball_ins_label.text
+	#var launch_ball_keypress_text = InputMap.get_action_list("game_launch_ball")[0].as_text()
+	#launch_ball_ins_label.text = orig_text__launch_ball % [launch_ball_keypress_text, launch_ball_keypress_text]
 	
-	var orig_text__reminder_label = rewind_reminder_label.text
-	rewind_reminder_label.text = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
+	#var orig_text__reminder_label = rewind_reminder_label.text
+	#rewind_reminder_label.text = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
+	
+	var orig_text__launch_ball = vkp_launch_ball.text_for_keypress
+	vkp_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
+	
+	var orig_text__reminder_label = vkp_rewind.text_for_keypress
+	vkp_rewind.text_for_keypress = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
+	
 
 ############
 
@@ -115,8 +126,10 @@ func _on_player_entered_self__custom_defined__remote():
 func _start_remote_dialog__02():
 	var dialog_desc = [
 		[".....", []],
-		["Oh, is this %s?" % GameSaveManager.player_name, []],
-		["Ok. There's an escape pod in ship. It's near the snacks area.", []]
+		#["Oh, is this %s?" % GameSaveManager.player_name, []],
+		["Oh, could this be?", []],
+		["Ok. There's an escape pod in ship. It's near the snacks area.", []],
+		
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)

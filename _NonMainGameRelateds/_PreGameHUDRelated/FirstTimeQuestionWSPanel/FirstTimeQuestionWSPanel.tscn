@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.gd" type="Script" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Assets/BlackBackground_1x1.png" type="Texture" id=2]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene03/FTQ_Scene03.tscn" type="PackedScene" id=3]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene02/FTQ_Scene02.tscn" type="PackedScene" id=4]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene01/FTQ_Scene01.tscn" type="PackedScene" id=5]
+
+[node name="FirstTimeQuestionWSPanel" type="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 1 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+texture = ExtResource( 2 )
+stretch_mode = 2
+
+[node name="FreeFormControl" type="Control" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+
+[node name="FTQ_Scene01" parent="FreeFormControl" instance=ExtResource( 5 )]
+
+[node name="FTQ_Scene02" parent="FreeFormControl" instance=ExtResource( 4 )]
+
+[node name="FTQ_Scene03" parent="FreeFormControl" instance=ExtResource( 3 )]

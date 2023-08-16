@@ -101,12 +101,14 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		if old_val > _current_energy:
 			if (old_val / _max_energy) > ENERGY_RATIO_FOR_WARNING_TRIGGER and (_current_energy / _max_energy) <= ENERGY_RATIO_FOR_WARNING_TRIGGER:
-				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_LowBatteryWarning, _player.global_position, 0.9, null)
+				if is_instance_valid(_player):
+					AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_LowBatteryWarning, _player.global_position, 0.9, null)
 				
 			
 		else:
 			if (old_val / _max_energy) < ENERGY_RATIO_FOR_WARNING_TRIGGER and (_current_energy / _max_energy) >= ENERGY_RATIO_FOR_WARNING_TRIGGER:
-				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_RechargeAtLow, _player.global_position, 0.9, null)
+				if is_instance_valid(_player):
+					AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_RechargeAtLow, _player.global_position, 0.9, null)
 				
 	
 	#

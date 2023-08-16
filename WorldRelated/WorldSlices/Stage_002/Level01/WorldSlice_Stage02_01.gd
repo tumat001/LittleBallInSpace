@@ -14,6 +14,8 @@ onready var target_position_2d = $MiscContainer/TargetPos2D
 
 onready var PDAR_initial_convo_trigger = $MiscContainer/PDAR_InitialConvo
 
+onready var VKP_launch_ball = $MiscContainer/VBoxContainer/VKP_LaunchBall
+
 ##
 
 func _init():
@@ -29,6 +31,14 @@ func _on_after_game_start_init():
 	PDAR_initial_convo_trigger.connect("player_entered_in_area", self, "_on_player_entered_in_area__PDAR_initial_convo", [], CONNECT_ONESHOT)
 	
 	call_deferred("_connect_signals_with_energy_modi")
+	
+	#
+	
+	var orig_text__launch_ball = VKP_launch_ball.text_for_keypress
+	VKP_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
+
+
+
 
 func _connect_signals_with_energy_modi():
 	var energy_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -58,7 +68,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 func _calculate_initial_linear_velocity_and_spawn_loc_pos():
 	var linear_velocity_saved__and_first_time = GameSaveManager.get_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_2)
 	
-	if linear_velocity_saved__and_first_time[2]:
+	if linear_velocity_saved__and_first_time != null and linear_velocity_saved__and_first_time[2]:
 		var x = linear_velocity_saved__and_first_time[0]
 		var y = linear_velocity_saved__and_first_time[1]
 		_linear_velocity_to_use = Vector2(x, y).rotated(PI/2)

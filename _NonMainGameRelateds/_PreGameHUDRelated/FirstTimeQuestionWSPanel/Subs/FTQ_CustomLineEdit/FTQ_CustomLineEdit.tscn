@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_CustomLineEdit/FTQ_CustomLineEdit.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="FTQ_CustomLine" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_right = 132.0
+margin_bottom = 40.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 2 )
+custom_styles/read_only = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+
+[connection signal="text_entered" from="LineEdit" to="." method="_on_LineEdit_text_entered"]

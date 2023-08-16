@@ -126,6 +126,11 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : 10,
 	AudioIds.SFX_TileHit_MetalBang_SoftHollow : 18,
 	AudioIds.SFX_TileHit_MetalHitGlass : 10,
+	
+	AudioIds.SFX_Pickupable_Coin_01 : -12,
+	
+	AudioIds.SFX_Pickupable_LaunchBallModi : -10,
+	
 }
 
 

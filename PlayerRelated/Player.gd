@@ -3,11 +3,13 @@ extends RigidBody2D
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
 const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
-
 const BaseObject = preload("res://ObjectsRelated/Objects/BaseObject.gd")
 
 const PlayerModi_Energy = preload("res://PlayerRelated/PlayerModi/Imps/EnergyRelated/PlayerModi_Energy.gd")
 
+const AnimSpriteComponentPool = preload("res://MiscRelated/PoolRelated/Imps/AnimSpriteComponentPool.gd")
+
+const PlayerParticle_HitTile_Scene = preload("res://PlayerRelated/PlayerParticles/HitTile/PlayerParticle_HitTile.tscn")
 
 #
 
@@ -30,6 +32,10 @@ signal max_robot_health_changed(arg_val)
 
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
+
+#
+
+var _base_player_size
 
 #
 
@@ -241,6 +247,10 @@ var _audio_player__capturing_point : AudioStreamPlayer
 
 ##
 
+var player_hit_tile_particle_compo_pool : AnimSpriteComponentPool
+
+##
+
 const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 0.5
 const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
 const NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC : float = 10.5
@@ -302,6 +312,12 @@ func _init():
 	_update_last_calculated_is_block_health_change()
 	
 	#
+	
+	player_hit_tile_particle_compo_pool = AnimSpriteComponentPool.new()
+	player_hit_tile_particle_compo_pool.node_to_listen_for_queue_free = self
+	player_hit_tile_particle_compo_pool.node_to_parent = SingletonsAndConsts.current_game_elements__other_node_hoster
+	player_hit_tile_particle_compo_pool.func_name_for_create_resource = "_create_player_hit_tile_particle__for_pool"
+	player_hit_tile_particle_compo_pool.source_of_create_resource = self
 	
 	_update_last_calculated_object_mass()
 
@@ -504,7 +520,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		_last_cell_global_pos = tile_global_pos
 		
 		if _is_pos_change_potentially_from_tileset:
-			_play_tile_hit_sound(_pos_change_potentially_from_tileset__diff)
+			_play_tile_hit_sound__and_show_particles(_pos_change_potentially_from_tileset__diff)
 
 func _calculate_and_store_midpoints_of_points(arg_points : PoolVector2Array):
 	if !_shape_points_to_data_map.has(arg_points):
@@ -528,15 +544,18 @@ func _convert_arr_of_clockwise_points_to_segments_and_midpoint_and_perpend(arg_p
 		var mid_point = (a + b) / 2
 		var perpend_angle = b.angle_to_point(a) #a.angle_to_point(b) + PI/2
 		
-		var translated = perpend_angle / CIRCLE_PARTITION
-		var perfected_translated = round(translated)
-		var perfected_angle = perfected_translated * CIRCLE_PARTITION
+		var perfected_angle = _clean_up_angle__perfect_translated_for_circle_partition(perpend_angle)
 		
 		segments_and_midpoint.append([a, b, mid_point, perfected_angle])
 		
 	
 	return segments_and_midpoint
 
+func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
+	var translated = arg_angle / CIRCLE_PARTITION
+	var perfected_translated = round(translated)
+	return perfected_translated * CIRCLE_PARTITION
+	
 
 ##
 
@@ -1033,6 +1052,11 @@ func _process(delta):
 #############
 
 func _ready():
+	
+	_base_player_size = main_body_sprite.texture.get_size()
+	
+	#
+	
 	_calculate_and_store_ground_attracting_velocity_at_cam_angle(CameraManager.current_cam_rotation)
 	
 	#
@@ -1315,7 +1339,7 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 		
 		# for tiles
 		if _pos_change_caused_by_tile:
-			_play_tile_hit_sound(diff)
+			_play_tile_hit_sound__and_show_particles(diff)
 		else:
 			_is_pos_change_potentially_from_tileset = true
 			_pos_change_potentially_from_tileset__diff = diff
@@ -1369,7 +1393,7 @@ func _play_ouch_to_normal(arg_duration : float):
 
 #
 
-func _play_tile_hit_sound(diff):
+func _play_tile_hit_sound__and_show_particles(diff):
 	_pos_change_caused_by_tile = false
 	_is_pos_change_potentially_from_tileset = false
 	
@@ -1387,7 +1411,41 @@ func _play_tile_hit_sound(diff):
 	#print("cell id: %s. sound_id: %s. vol_ratio: %s, diff: %s" % [_last_cell_id, cell_hit_sound_id, volume_ratio, diff])
 	if cell_hit_sound_id != -1 and volume_ratio != 0:
 		AudioManager.helper__play_sound_effect__2d__major(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
+	
+	##################
+	
+	_attempt_play_player_hit_particle(diff)
 
+func _attempt_play_player_hit_particle(diff):
+	if diff >= 100:
+		var particle = player_hit_tile_particle_compo_pool.get_or_create_resource_from_pool()
+		_configure_particle_position(particle)
+
+
+func _configure_particle_position(arg_particle : AnimatedSprite):
+	var curr_pos = global_position
+	var tile_pos = _last_cell_global_pos
+	
+	var dist_to_edge = _base_player_size.x / 2  #or y, does not matter
+	var particle_half_size = arg_particle.frames.get_frame("medium", 0).get_size()
+	
+	var pos_modification = Vector2(0, (dist_to_edge - particle_half_size.y))
+	
+	
+	var cleaned_up_angle = _clean_up_angle__perfect_translated_for_circle_partition(curr_pos.angle_to_point(tile_pos)) + (PI/2)
+	pos_modification = pos_modification.rotated(cleaned_up_angle)
+	
+	arg_particle.global_position = global_position + pos_modification
+	arg_particle.rotation = cleaned_up_angle
+	
+
+# Particles related
+
+func _create_player_hit_tile_particle__for_pool():
+	var particle = PlayerParticle_HitTile_Scene.instance()
+	particle.modulate.a = 0.8
+	
+	return particle
 
 #
 

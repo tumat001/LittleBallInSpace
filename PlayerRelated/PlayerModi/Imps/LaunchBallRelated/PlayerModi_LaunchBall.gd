@@ -7,6 +7,11 @@ const PlayerModi_LaunchBall_Node_Scene = preload("res://PlayerRelated/PlayerModi
 
 const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.gd")
 
+
+const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
+const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
+const AttackSpritePoolComponent = preload("res://MiscRelated/AttackSpriteRelated/GenerateRelated/AttackSpritePoolComponent.gd")
+
 #
 
 signal current_ball_count_changed(arg_val)
@@ -56,6 +61,11 @@ var show_player_trajectory_line : bool setget set_show_player_trajectory_line
 
 #
 
+var destroyed_ball_particles_pool_component : AttackSpritePoolComponent
+
+
+#
+
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
 	pass
 
@@ -85,6 +95,10 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	#
 	
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	
+	#
+	
+	_initialize_destroyed_ball_particles_pool_component()
 	
 	#_configure_to_player__with_energy_modi()
 	call_deferred("_configure_to_player__with_energy_modi")
@@ -228,6 +242,7 @@ func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
 	ball.base_object_mass = ball_mass
 	ball.global_position = _player.global_position
 	ball.connect("after_ready", self, "_on_ball_after_ready", [ball, arg_vec])
+	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
 	
 	_player.add_object_to_not_collide_with(ball)
 	_player.add_objects_to_collide_with_after_exit(ball)
@@ -304,6 +319,49 @@ func set_show_player_trajectory_line(arg_val):
 	
 	if is_instance_valid(player_modi_launch_ball_node):
 		player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
+
+#
+
+func _initialize_destroyed_ball_particles_pool_component():
+	destroyed_ball_particles_pool_component = AttackSpritePoolComponent.new()
+	destroyed_ball_particles_pool_component.source_for_funcs_for_attk_sprite = self
+	destroyed_ball_particles_pool_component.func_name_for_creating_attack_sprite = "_create_before_burst_stream_particle"
+	destroyed_ball_particles_pool_component.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
+	destroyed_ball_particles_pool_component.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
+
+func _create_before_burst_stream_particle():
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	#particle.center_pos_of_basis = arg_pos
+	particle.initial_speed_towards_center = -40
+	particle.speed_accel_towards_center = -20
+	particle.min_starting_distance_from_center = 0
+	particle.max_starting_distance_from_center = 2
+	particle.texture_to_use = preload("res://PlayerRelated/PlayerModi/Imps/LaunchBallRelated/LaunchBall_DestroyedBallParticles_White.png")
+	particle.queue_free_at_end_of_lifetime = false
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.lifetime = 0.4
+	particle.lifetime_to_start_transparency = 0.2
+	particle.transparency_per_sec = 1 / (particle.lifetime - particle.lifetime_to_start_transparency)
+	#particle.visible = true
+	#particle.lifetime = 0.4
+	
+	return particle
+
+func _on_ball_destroyed_self_caused_by_destroying_area_region(arg_area_region, arg_ball):
+	_play_particles_on_pos(arg_ball.global_position, arg_ball.modulate)
+
+func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
+	for i in 6:
+		var particle : CenterBasedAttackSprite = destroyed_ball_particles_pool_component.get_or_create_attack_sprite_from_pool()
+		particle.center_pos_of_basis = arg_pos
+		particle.modulate = arg_modulate_to_use
+		
+		particle.reset_for_another_use()
+		
+		particle.lifetime = 0.4
+		particle.visible = true
 
 ###################### 
 # REWIND RELATED

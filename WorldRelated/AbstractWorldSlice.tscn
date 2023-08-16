@@ -14,3 +14,5 @@ script = ExtResource( 1 )
 [node name="CoinsContainer" type="Node2D" parent="."]
 
 [node name="PlayerSpawnCoordsContainer" type="Node2D" parent="."]
+
+[node name="LightsContainer" type="Node2D" parent="."]

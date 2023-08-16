@@ -8,6 +8,10 @@ const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightT
 
 ##
 
+signal light_2d_glowables_node_2d_container_setted()
+
+##
+
 const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
 const NORMAL_MODULATE := Color(1, 1, 1)
 const INSTANT_GROUND_MODULATE := Color(172/255.0, 68/255.0, 2/255.0)
@@ -35,7 +39,7 @@ export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__G
 
 
 export(bool) var has_glowables : bool = false
-var _light_2d_glowables_node_2d_container : Node2D
+var _light_2d_glowables_node_2d_container : Node2D setget set_light_2d_glowables_node_2d_container
 
 
 var _player setget set_player, get_player
@@ -692,12 +696,23 @@ func set_is_responsible_for_own_movement__for_rewind(arg_val):
 
 #
 
+
+func set_light_2d_glowables_node_2d_container(arg_node : Node2D):
+	_light_2d_glowables_node_2d_container = arg_node
+	
+	emit_signal("light_2d_glowables_node_2d_container_setted", _light_2d_glowables_node_2d_container)
+
+#
+
 func _update_display_based_on_has_glowables():
 	if has_glowables:
-		_light_2d_glowables_node_2d_container = Node2D.new()
-		add_child(_light_2d_glowables_node_2d_container)
-		
-		call_deferred("_deferred__create_light_2ds_based_on_curr_tiles")
+		if is_instance_valid(_light_2d_glowables_node_2d_container):
+			call_deferred("_deferred__create_light_2ds_based_on_curr_tiles")
+		else:
+			connect("light_2d_glowables_node_2d_container_setted", self, "_on_light_2d_glowables_node_2d_container_setted__for_light_2d_creation", [], CONNECT_ONESHOT)
+
+func _on_light_2d_glowables_node_2d_container_setted__for_light_2d_creation(arg_node_container):
+	call_deferred("_deferred__create_light_2ds_based_on_curr_tiles")
 
 
 func _deferred__create_light_2ds_based_on_curr_tiles():
@@ -721,6 +736,7 @@ func _deferred__create_light_2ds_based_on_curr_tiles():
 func _create_light_2d_on_light_container() -> Light2D:
 	var light2d = Light2D.new()
 	_light_2d_glowables_node_2d_container.add_child(light2d)
+	#SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(light2d)
 	
 	return light2d
 

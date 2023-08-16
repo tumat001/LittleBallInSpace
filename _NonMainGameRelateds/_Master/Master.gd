@@ -7,6 +7,11 @@ const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/Tra
 const GameElements = preload("res://GameElements/GameElements.gd")
 const GameElements_Scene = preload("res://GameElements/GameElements.tscn")
 
+
+const FirstTimeQuestionWSPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.gd")
+const FirstTimeQuestionWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.tscn")
+
+
 #
 
 const screen_size = Vector2(960, 540)
@@ -22,6 +27,10 @@ var _level_id_to_mark_as_finish__and_display_win_vic_on
 
 var _is_transitioning : bool
 var _is_in_game_or_loading_to_game : bool
+
+#
+
+var first_time_question_ws_panel : FirstTimeQuestionWSPanel
 
 #
 
@@ -42,7 +51,7 @@ func _enter_tree():
 func _ready():
 	#TODO Temp for quick testing of lvls
 	if (false):
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
 		
 		var game_elements = GameElements_Scene.instance()
 		game_elements_container.add_child(game_elements)
@@ -59,11 +68,12 @@ func _ready():
 
 # go straight to very first stage
 func _do_appropriate_action__for_first_time():
-	#load_and_show_layout_selection_whole_screen()
-	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
-	instant_start_game_elements__with_level_details(first_stage_details)
+	#var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
+	#instant_start_game_elements__with_level_details(first_stage_details)
+	#GameSaveManager.first_time_opening_game = false
 	
-	GameSaveManager.first_time_opening_game = false
+	
+	_show_first_time_question_ws_panel()
 
 
 func load_and_show_layout_selection_whole_screen():
@@ -287,4 +297,22 @@ func _unhandled_key_input(event):
 			if event.is_action_pressed("ui_cancel"):
 				master_menu_control_tree.show_main_page()
 				get_viewport().set_input_as_handled()
+
+
+################################################
+
+func _show_first_time_question_ws_panel():
+	first_time_question_ws_panel = FirstTimeQuestionWSPanel_Scene.instance()
+	add_child(first_time_question_ws_panel)
+	move_child(first_time_question_ws_panel, 0)
+	
+	first_time_question_ws_panel.connect("question_panel_finished", self, "_on_question_panel_finished")
+
+func _on_question_panel_finished():
+	first_time_question_ws_panel.queue_free()
+	
+	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
+	instant_start_game_elements__with_level_details(first_stage_details)
+	GameSaveManager.first_time_opening_game = false
+	
 

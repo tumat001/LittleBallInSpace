@@ -436,15 +436,18 @@ func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
 
 func _construct_light_details__for_14__dark_metal_lamp__vert():
 	var light_details = LightDetails.new()
-	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(80, 160))
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(120, 240))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
+	
+	return light_details
 
 func _construct_light_details__for_14__dark_metal_lamp__horiz():
 	var light_details = LightDetails.new()
-	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(80, 160))
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(120, 240))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
 	light_details.rotation = 90
 	
+	return light_details
 
 
 func get_light_details_of_tile_id(arg_tile_id, arg_auto_coords) -> LightDetails:

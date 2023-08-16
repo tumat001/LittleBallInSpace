@@ -5,12 +5,14 @@ enum FontTypes {
 	ATARI_CLASSIC,
 	ATARI_CLASSIC_SMOOTH,
 	CONSOLA,
+	CAROLYN_HANDWRITTEN,
 }
 
 const _pixel_emulator_font_size_to_font_map : Dictionary = {}
 const _atari_classic_font_size_to_font_map : Dictionary = {}
 const _atari_classic_smooth_font_size_to_font_map : Dictionary = {}
 const _consola_font_size_to_font_map : Dictionary = {}
+const _carolyn_handwritten_font_size_to_font_map : Dictionary = {}
 
 
 #
@@ -24,6 +26,8 @@ static func get_font_with_size(font_type : int, font_size : int) -> DynamicFont:
 		return get_atari_classic_smooth_font_with_size(font_size)
 	if font_size == FontTypes.CONSOLA:
 		return get_consola_font_with_size(font_size)
+	if font_size == FontTypes.CAROLYN_HANDWRITTEN:
+		return get_carolyn_handwritten_font_with_size(font_size)
 	
 	return null
 
@@ -105,4 +109,24 @@ static func _add_consola_font_with_size_to_map(font_size : int) -> DynamicFont:
 	
 	_consola_font_size_to_font_map[font_size] = font
 	return font
+
+#
+
+static func get_carolyn_handwritten_font_with_size(font_size : int) -> DynamicFont:
+	if _carolyn_handwritten_font_size_to_font_map.has(font_size):
+		return _carolyn_handwritten_font_size_to_font_map[font_size]
+	else:
+		return _add_carolyn_handwritten_font_with_size_to_map(font_size)
+
+static func _add_carolyn_handwritten_font_with_size_to_map(font_size : int) -> DynamicFont:
+	var font_data = DynamicFontData.new()
+	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.otf"
+	
+	var font = DynamicFont.new()
+	font.font_data = font_data
+	font.size = font_size
+	
+	_carolyn_handwritten_font_size_to_font_map[font_size] = font
+	return font
+
 

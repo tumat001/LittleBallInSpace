@@ -43,6 +43,7 @@ onready var object_container = $ObjectContainer
 onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
 onready var area_region_container = $AreaRegionContainer
 onready var coins_container = $CoinsContainer
+onready var lights_container = $LightsContainer
 
 ####
 
@@ -60,6 +61,7 @@ func set_game_elements(arg_elements):
 func _ready():
 	_initialize_spawn_coords()
 	_initialize_coins()
+	_initialize_base_tilesets()
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
@@ -184,4 +186,12 @@ func _attempt_set_player__to_all_base_tiles():
 
 func _on_GE_player_spawned(arg_player):
 	_attempt_set_player__to_all_base_tiles()
+
+
+##
+
+func _initialize_base_tilesets():
+	for child in tile_container.get_children():
+		child.set_light_2d_glowables_node_2d_container(lights_container)
+
 

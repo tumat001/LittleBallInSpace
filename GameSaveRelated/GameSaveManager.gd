@@ -18,22 +18,23 @@ signal save_manager_initialized()
 
 #
 
+
+var _is_manager_initialized : bool = false
+
+
+#
+
 const player_data_file_path = "user://player_data.save"
 
 
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
-
+const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
-##########
-
-var _is_manager_initialized : bool = false
-
-#
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
@@ -42,6 +43,11 @@ var player_name : String
 
 var first_time_opening_game : bool
 
+enum AnimalChoiceId {
+	DOG = 0,
+	CAT = 1,
+}
+var animal_choice_id : int
 
 ###
 
@@ -202,6 +208,12 @@ func _load_player_related_data(arg_file : File):
 		first_time_opening_game = true
 	
 	##
+	
+	if data.has(ANIMAL_CHOICE__DIC_IDENTIFIER):
+		animal_choice_id = data[ANIMAL_CHOICE__DIC_IDENTIFIER]
+	else:
+		animal_choice_id = AnimalChoiceId.DOG
+	
 	
 
 #
@@ -403,6 +415,7 @@ func _save_player_data():
 		PLAYER_HEALTH__DIC_IDENTIFIER : player_health_on_start,
 		PLAYER_NAME__DIC_IDENTIFIER : player_name,
 		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
+		ANIMAL_CHOICE__DIC_IDENTIFIER : animal_choice_id
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")

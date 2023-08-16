@@ -15,7 +15,7 @@ static func construct_or_get_rect_gradient_texture(arg_size : Vector2) -> Gradie
 	
 	texture.fill = GradientTexture2D.FILL_RADIAL
 	texture.fill_from = Vector2(0.5, 0.5)
-	texture.fill_to = Vector2(1.2, 1.2)
+	texture.fill_to = Vector2(0.9, 0.9)
 	
 	texture.flags = GradientTexture2D.FLAG_MIPMAPS | GradientTexture2D.FLAG_FILTER
 	
