@@ -4,6 +4,8 @@ extends StaticBody2D
 const ObjectDetailsPanel = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.gd")
 const ObjectDetailsPanel_Scene = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.tscn")
 
+const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
+
 ##
 
 const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
@@ -29,6 +31,11 @@ var _is_breakable : bool
 # if this is changable beyond ready, make rewind system take it to account
 const SPEED_SLOWDOWN_RATIO__GLASS = 0.2
 export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
+
+
+
+export(bool) var has_glowables : bool = false
+var _light_2d_glowables_node_2d_container : Node2D
 
 
 var _player setget set_player, get_player
@@ -110,6 +117,8 @@ func _ready():
 	_update_properties_based_on_is_breakable()
 	
 	SingletonsAndConsts.current_rewind_manager.connect("rewinding_started", self, "_on_rewinding_started")
+	
+	_update_display_based_on_has_glowables()
 
 func _update_display_based_on_energy_mode():
 	if energy_mode == EnergyMode.ENERGIZED:
@@ -681,6 +690,39 @@ func set_is_responsible_for_own_movement__for_rewind(arg_val):
 	is_responsible_for_own_movement__for_rewind = arg_val
 	
 
+#
+
+func _update_display_based_on_has_glowables():
+	if has_glowables:
+		_light_2d_glowables_node_2d_container = Node2D.new()
+		add_child(_light_2d_glowables_node_2d_container)
+		
+		call_deferred("_deferred__create_light_2ds_based_on_curr_tiles")
+
+
+func _deferred__create_light_2ds_based_on_curr_tiles():
+	for cell_coords in tilemap.get_used_cells():
+		var cell_id = tilemap.get_cellv(cell_coords)
+		var auto_coords = tilemap.get_cell_autotile_coord(cell_coords.x, cell_coords.y)
+		
+		
+		var light_details = TileConstants.get_light_details_of_tile_id(cell_id, auto_coords)
+		if light_details != null:
+			var tile_local_pos_top_left = tilemap.map_to_world(cell_coords)
+			var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
+			
+			var light_2d = _create_light_2d_on_light_container()
+			light_2d.position = tile_local_pos
+			light_2d.texture = light_details.light_texture
+			light_2d.rotation = light_details.rotation
+			light_2d.offset = light_details.offset
+			
+
+func _create_light_2d_on_light_container() -> Light2D:
+	var light2d = Light2D.new()
+	_light_2d_glowables_node_2d_container.add_child(light2d)
+	
+	return light2d
 
 ###################### 
 # REWIND RELATED

@@ -38,6 +38,8 @@ export(bool) var is_pressed : bool = false setget set_is_pressed
 var _is_in_press_transition : bool = false
 
 export(bool) var can_be_triggered_by_players : bool = true setget set_can_be_triggered_by_players
+export(bool) var can_be_triggered_by_tiles : bool = false setget set_can_be_triggered_by_tiles
+
 
 enum ButtonColor {
 	RED,
@@ -213,6 +215,7 @@ func _ready():
 		add_tileset_to_toggle_to_is_reverse_map(tileset_02_to_register_in_toggle, tileset_02_to_register_in_toggle__is_reversed)
 	
 	set_can_be_triggered_by_players(can_be_triggered_by_players)
+	set_can_be_triggered_by_tiles(can_be_triggered_by_tiles)
 	
 	_is_in_ready = false
 
@@ -265,7 +268,17 @@ func set_can_be_triggered_by_players(arg_val):
 			
 		else:
 			button_area_2d.set_collision_mask_bit(0, false)
+
+func set_can_be_triggered_by_tiles(arg_val):
+	can_be_triggered_by_tiles = arg_val
 	
+	if is_inside_tree():
+		if can_be_triggered_by_tiles:
+			button_area_2d.set_collision_mask_bit(3, true)
+			
+		else:
+			button_area_2d.set_collision_mask_bit(3, false)
+			
 
 ########
 

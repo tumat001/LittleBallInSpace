@@ -1,6 +1,9 @@
 extends Node
 
 
+const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
+
+
 
 const BREAKABLE_GLASS_TILE__MASS = 30
 
@@ -38,10 +41,22 @@ const ANY_AUTO_COORD = Vector2(-1, -1)
 var _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud : Dictionary
 var _breakable_tile_id_to_auto_coord_to_sound_id_map : Dictionary
 
+
+var _uncollidable_tile_id_to_auto_coord_to_light_details_to_use_map : Dictionary
+
+class LightDetails:
+	var light_texture : GradientTexture2D
+	var rotation : float = 0.0
+	var offset : Vector2 = Vector2.ZERO setget ,get_offset
+	
+	func get_offset():
+		return offset.rotated(rotation)
+
 #
 
 func _ready():
 	_initialize_all_tile_to_sound_id_map()
+	_initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map()
 
 #
 
@@ -403,3 +418,45 @@ func get_sound_id_to_play_for_tile_break(arg_tile_id, arg_auto_coords):
 	
 	return -1
 
+
+############################
+## LIGHT RELATED
+#############################
+
+
+func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
+	_uncollidable_tile_id_to_auto_coord_to_light_details_to_use_map = {
+		14 : {
+			Vector2(0, 0) : _construct_light_details__for_14__dark_metal_lamp__vert(),
+			Vector2(1, 0) : _construct_light_details__for_14__dark_metal_lamp__horiz(),
+			
+		}
+	}
+	
+
+func _construct_light_details__for_14__dark_metal_lamp__vert():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(80, 160))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
+
+func _construct_light_details__for_14__dark_metal_lamp__horiz():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(80, 160))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
+	light_details.rotation = 90
+	
+
+
+func get_light_details_of_tile_id(arg_tile_id, arg_auto_coords) -> LightDetails:
+	if _uncollidable_tile_id_to_auto_coord_to_light_details_to_use_map.has(arg_tile_id):
+		var map = _uncollidable_tile_id_to_auto_coord_to_light_details_to_use_map[arg_tile_id]
+		
+		if map.has(arg_auto_coords):
+			return map[arg_auto_coords]
+			
+		elif map.has(ANY_AUTO_COORD):
+			return map[ANY_AUTO_COORD]
+			
+	
+	
+	return null

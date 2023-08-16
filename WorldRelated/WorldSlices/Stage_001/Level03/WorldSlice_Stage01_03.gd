@@ -14,7 +14,7 @@ func _on_after_game_start_init():
 	
 	var orig_text_rewind = label_rewind.text
 	label_rewind.text = orig_text_rewind % InputMap.get_action_list("rewind")[0].as_text()
-	
+	 
 	
 	var orig_text_zoomout = label_zoomout.text
 	label_zoomout.text = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()

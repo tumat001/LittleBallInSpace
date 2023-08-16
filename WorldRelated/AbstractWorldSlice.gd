@@ -96,9 +96,15 @@ func spawn_player_at_spawn_coords_index(arg_i = 0):
 	var spawn_pos = _player_global_spawn_coords[arg_i]
 	player.global_position = global_position + spawn_pos
 	
+	_before_player_spawned_signal_emitted__chance_for_changes(player)
+	
 	emit_signal("player_spawned", player)
 	
 	return player
+
+func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
+	pass
+
 
 ####
 

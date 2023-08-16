@@ -66,4 +66,6 @@ func _on_player_entered_self(arg_player):
 		if is_make_ammo_infinite:
 			modi.is_infinite_ball_count = is_make_ammo_infinite
 		
+		AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		
 		_destroy_self__on_consume_by_player()

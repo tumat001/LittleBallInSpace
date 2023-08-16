@@ -54,8 +54,10 @@ func _on_player_entered_self(arg_player):
 		var player_modi__energy = arg_player.player_modi__energy
 		player_modi__energy.inc_current_energy(player_modi__energy.get_max_energy() * energy_replenish_ratio)
 		
+		AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_Pickupable_Battery_01, global_position, 1.0, null)
+		
 		_destroy_self__on_consume_by_player()
-
+		
 
 
 

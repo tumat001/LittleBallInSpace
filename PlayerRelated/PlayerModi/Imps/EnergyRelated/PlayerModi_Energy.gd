@@ -81,8 +81,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	if old_has_no_energy_val != _has_no_energy:
 		if _has_no_energy:
 			
-			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.60, null)
+			if !SingletonsAndConsts.current_rewind_manager.is_rewinding and is_instance_valid(_player):
+				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.38, null)
 				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
 			
@@ -90,8 +90,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 			
 		else:
 			
-			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-				_energy_restored__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerUp_01, _player.global_position, 1.25, null)
+			if !SingletonsAndConsts.current_rewind_manager.is_rewinding and is_instance_valid(_player):
+				_energy_restored__sound_player = AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerUp_01, _player.global_position, 1.0, null)
 				if _energy_down__sound_player != null and _energy_down__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_down__sound_player)
 			
@@ -102,6 +102,11 @@ func set_current_energy(arg_val, arg_source_id = -1):
 		if old_val > _current_energy:
 			if (old_val / _max_energy) > ENERGY_RATIO_FOR_WARNING_TRIGGER and (_current_energy / _max_energy) <= ENERGY_RATIO_FOR_WARNING_TRIGGER:
 				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_LowBatteryWarning, _player.global_position, 0.9, null)
+				
+			
+		else:
+			if (old_val / _max_energy) < ENERGY_RATIO_FOR_WARNING_TRIGGER and (_current_energy / _max_energy) >= ENERGY_RATIO_FOR_WARNING_TRIGGER:
+				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_EnergyModi_RechargeAtLow, _player.global_position, 0.9, null)
 				
 	
 	#

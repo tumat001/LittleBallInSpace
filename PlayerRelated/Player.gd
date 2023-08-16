@@ -194,6 +194,14 @@ var _no_energy_consecutive_duration : float
 
 ###
 
+enum BlockHealthChangeClauseIds {
+	IS_GAME_RESULT_DECIDED = 0,
+	IN_CUTSCENE = 1,
+}
+var block_health_change_cond_clauses : ConditionalClauses
+var last_calculated_is_block_health_change : bool
+
+
 const health_breakpoints = [
 	33.3,
 	66.6,
@@ -233,9 +241,9 @@ var _audio_player__capturing_point : AudioStreamPlayer
 
 ##
 
-const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 2.0
+const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 0.5
 const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
-const NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC : float = 10.0
+const NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC : float = 10.5
 
 ###
 
@@ -288,6 +296,11 @@ func _init():
 	block_all_inputs_cond_clauses.connect("clause_removed", self, "_on_block_all_inputs_cond_clauses_updated", [], CONNECT_PERSIST)
 	_update_last_calc_block_all_inputs()
 	
+	block_health_change_cond_clauses = ConditionalClauses.new()
+	block_health_change_cond_clauses.connect("clause_inserted", self, "_on_block_health_change_cond_clauses_updated", [], CONNECT_PERSIST)
+	block_health_change_cond_clauses.connect("clause_removed", self, "_on_block_health_change_cond_clauses_updated", [], CONNECT_PERSIST)
+	_update_last_calculated_is_block_health_change()
+	
 	#
 	
 	_update_last_calculated_object_mass()
@@ -327,6 +340,14 @@ func _on_block_all_inputs_cond_clauses_updated(arg_clause_id):
 
 func _update_last_calc_block_all_inputs():
 	last_calc_block_all_inputs = !block_all_inputs_cond_clauses.is_passed
+
+#
+
+func _on_block_health_change_cond_clauses_updated(arg_clause_id):
+	_update_last_calculated_is_block_health_change()
+
+func _update_last_calculated_is_block_health_change():
+	last_calculated_is_block_health_change = !block_health_change_cond_clauses.is_passed
 
 #
 
@@ -876,7 +897,6 @@ func _get_scalar_quotient_of_vector_using_vec_divisior__max_one(arg_vec_dividend
 
 func _integrate_forces(state):
 	#print("lin_vel: %s, extra_counter force: %s" % [linear_velocity, _current_excess_player_left_right_move_speed_to_fight_counter_speed])
-	
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
 		if _use_integ_forces_new_vals:
@@ -1035,10 +1055,21 @@ func _ready():
 	CameraManager.connect("current_cam_rotation_changed", self, "_on_cam_manager_rotation_changed", [], CONNECT_PERSIST)
 	_ready__include_relevant_objs_for_rewind()
 	
+	##
+	
+	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
+	
+
+#
 
 func _make_node_rotate_with_cam(arg_node):
 	_all_nodes_to_rotate_with_cam.append(arg_node)
 	
+
+#
+
+func _on_game_result_decided(arg_result):
+	block_health_change_cond_clauses.attempt_insert_clause(BlockHealthChangeClauseIds.IS_GAME_RESULT_DECIDED)
 
 #
 
@@ -1361,9 +1392,11 @@ func _play_tile_hit_sound(diff):
 #
 
 func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
-	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
-		return
+	#if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
+	#	return
 	
+	if last_calculated_is_block_health_change:
+		return
 	
 	var old_val = _current_health
 	_current_health = arg_val

@@ -16,7 +16,7 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_02_01, Vector2(0, 0))
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_02_02, Vector2(0, 0))
 
 
 
@@ -42,7 +42,7 @@ func _add_launch_ball_modi():
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
 	modi.set_max_energy(15)
-	modi.set_current_energy(0)
+	modi.set_current_energy(15)
 	
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 

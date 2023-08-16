@@ -11,6 +11,7 @@ enum WorldSliceIds {
 	STAGE_01_05 = 5
 	
 	STAGE_02_01 = 10
+	STAGE_02_02 = 11
 	
 }
 
@@ -36,6 +37,8 @@ func load_world_slice_from_id(arg_id):
 		
 	elif arg_id == WorldSliceIds.STAGE_02_01:
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_002/Level01/WorldSlice_Stage02_01.tscn")
+	elif arg_id == WorldSliceIds.STAGE_02_02:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_002/Level02/WorldSlice_Stage02_02.tscn")
 	
 	
 	####

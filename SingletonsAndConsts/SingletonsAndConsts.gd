@@ -23,6 +23,12 @@ var current_game_front_hud
 var current_rewind_manager setget set_current_rewind_manager
 var current_game_result_manager
 
+
+#
+
+var interrupt_return_to_screen_layout_panel__go_directly_to_level : bool = false
+var level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel
+
 #
 
 func set_current_game_elements(arg_elements):

@@ -59,6 +59,8 @@ const LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER = "level_layout_id_to_co
 
 
 const LEVEL_ID_TO_METADATA__DIC_IDENTIFIER = "LEVEL_ID_TO_METADATA__DIC_IDENTIFIER"
+#const LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER = "level_id_to_override_is_hidden_val_map"
+const ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER = "ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER"
 
 
 
@@ -86,6 +88,9 @@ var last_hovered_over_level_layout_element_id
 
 
 var _level_id_to_metadata_map : Dictionary
+
+
+#var _level_id_to_override_is_hidden_val_map : Dictionary
 
 ####
 
@@ -297,6 +302,9 @@ func _correct_level_id_to_completion_status_map(arg_map_from_save_dict : Diction
 	
 	_update_total_levels_finished()
 	#print(_level_id_to_completion_status)
+	
+	StoreOfLevels.connect("hidden_levels_state_changed", self, "_on_hidden_levels_state_changed")
+	
 
 func _initialize_level_id_to_completion_status_map():
 	for level_id in StoreOfLevels.LevelIds.values():
@@ -349,6 +357,11 @@ func _update_total_levels_finished():
 
 func get_total_levels_finished():
 	return _total_levels_finished
+
+
+
+func _on_hidden_levels_state_changed():
+	_update_total_levels_finished()
 
 #
 
@@ -521,6 +534,13 @@ func _load_level_related_data(arg_file : File):
 	else:
 		pass
 	
+	#
+	
+	if data.has(ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER):
+		#_correct_level_id_to_is_hidden_map__do_unhide_based_on_data(data[LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER])
+		_configure_level_hidden_states_based_on_save_state(data[ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER])
+	else:
+		pass
 
 
 func _correct_level_id_to_metadata_map(arg_map_from_save_dict : Dictionary):
@@ -540,6 +560,23 @@ func get_metadata_of_level_id(arg_id):
 
 #
 
+#func _correct_level_id_to_is_hidden_map__do_unhide_based_on_data(arg_map_from_save_dict : Dictionary):
+#	var non_hidden_level_ids = []
+#
+#	for level_id_as_str in arg_map_from_save_dict.keys():
+#		var is_hidden = arg_map_from_save_dict[level_id_as_str]
+#
+#		if !is_hidden:
+#			non_hidden_level_ids.append(int(level_id_as_str))
+#
+#
+#	StoreOfLevels.add_level_ids_as_non_hidden(non_hidden_level_ids)
+
+func _configure_level_hidden_states_based_on_save_state(arg_state : int):
+	StoreOfLevels.set_current_level_hidden_state(arg_state)
+
+#
+
 func _save_level_and_layout_related_data():
 	var save_dict = {
 		LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER : last_opened_level_layout_id,
@@ -549,7 +586,10 @@ func _save_level_and_layout_related_data():
 		LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER : _level_id_to_completion_status,
 		LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER : _level_layout_id_to_completion_status,
 		
-		LEVEL_ID_TO_METADATA__DIC_IDENTIFIER : _level_id_to_metadata_map
+		LEVEL_ID_TO_METADATA__DIC_IDENTIFIER : _level_id_to_metadata_map,
+		#LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER : StoreOfLevels.get_all_level_id_to_is_hidden_map()
+		ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER : StoreOfLevels.get_current_levels_hidden_state()
+		
 	}
 	
 	_save_using_dict(save_dict, level_data_file_path, "SAVE ERROR: LevelAndLayoutData")

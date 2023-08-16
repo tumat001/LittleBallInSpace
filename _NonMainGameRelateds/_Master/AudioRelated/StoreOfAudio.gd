@@ -70,6 +70,7 @@ enum AudioIds {
 	SFX_EnergyModi_LowBatteryWarning = 5130
 	SFX_EnergyModi_PowerDown_01 = 5131
 	SFX_EnergyModi_PowerUp_01 = 5132
+	SFX_EnergyModi_RechargeAtLow = 5133
 	
 	# CAPTURE RELATED
 	SFX_CapturePoint_Captured_02 = 5141
@@ -84,6 +85,16 @@ enum AudioIds {
 	SFX_Rewind_Middle = 5161
 	SFX_Rewind_Ending = 5162
 	
+	# REGION RELATED
+	SFX_AreaRegion_ObjectDestroyed = 5170
+	SFX_AreaRegion_ClearPlayer = 5171
+	
+	# PICKUPABLE RELATED
+	SFX_Pickupable_Coin_01 = 5180
+	SFX_Pickupable_LaunchBallModi = 5181
+	SFX_Pickupable_LaunchBallAmmo = 5182
+	SFX_Pickupable_Battery_01 = 5183
+	SFX_Pickupable_RemoteControl = 5184
 	
 	
 	# TILE BREAK

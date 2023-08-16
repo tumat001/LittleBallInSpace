@@ -19,13 +19,22 @@ enum LevelIds {
 	LEVEL_05 = 5
 	
 	LEVEL_01__STAGE_2 = 10
+	LEVEL_02__STAGE_2 = 11
+	LEVEL_03__STAGE_2 = 12
 	
 	
 }
-# dont change this (useless). 
-# This determines which levels are hidden at the very start, before any save states. i.e. hidden by default
-const level_ids_hidden : Array = [
-	LevelIds.TEST,
+# dont change this in runtime(useless). 
+# This determines which levels are not hidden at the very start, before any save states. i.e. not hidden by default
+const level_ids_not_hidden : Array = [
+	#LevelIds.TEST,
+	
+	LevelIds.LEVEL_01,
+	LevelIds.LEVEL_02,
+	LevelIds.LEVEL_03,
+	LevelIds.LEVEL_04,
+	LevelIds.LEVEL_05,
+	
 ]
 
 var _all_non_hidden_level_ids : Array
@@ -36,6 +45,7 @@ var _level_id_to_level_details_map : Dictionary = {}
 
 var _level_id_to_coin_amount_map : Dictionary
 var _total_coin_count : int
+var _total_coin_count__unhidden : int
 
 
 var level_ids_unlocked_by_default = [
@@ -43,9 +53,15 @@ var level_ids_unlocked_by_default = [
 ]
 
 
-
-
 var _level_id_to_level_ids_required_for_unlock : Dictionary
+
+
+
+enum AllLevelsHiddenState {
+	FIRST_STAGE_ONLY = 0,
+	ALL_EXCEPT_FOR_TEST = 1,
+}
+var current_level_hidden_state : int setget set_current_level_hidden_state, get_current_levels_hidden_state
 
 # should never happen normally...
 const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
@@ -62,47 +78,97 @@ func _ready():
 	_initialize_level_id_unlock_requirmenets()
 	
 	_initialize_for__and_check_for_game_save_manager()
+	
+	connect("hidden_levels_state_changed", self, "_on_hidden_levels_state_changed")
 
 #
 
 func _initialize__all_non_hidden_level_ids():
 	for id in LevelIds.values():
-		if !level_ids_hidden.has(id):
+		if level_ids_not_hidden.has(id):
 			_all_non_hidden_level_ids.append(id)
 
 
 func get_all_non_hidden_level_ids():
 	return _all_non_hidden_level_ids
 
+#func get_all_level_id_to_is_hidden_map():
+#	var map = {}
+#	for level_id in LevelIds.values():
+#		var is_hidden : bool = true
+#		if _all_non_hidden_level_ids.has(level_id):
+#			is_hidden = false
+#
+#		map[level_id] = is_hidden
+#
+#	return map
 
-func add_level_id_as_non_hidden(arg_id):
+
+func _add_level_id_as_non_hidden(arg_id):
 	_add_level_id_as_non_hidden__internal(arg_id, true)
 	
 
-func add_level_ids_as_non_hidden(arg_ids : Array):
-	for id in arg_ids:
-		_add_level_id_as_non_hidden__internal(id, false)
+func _add_level_ids_as_non_hidden(arg_ids : Array):
+	var at_least_one_changed : bool = false
 	
-	emit_signal("hidden_levels_state_changed")
+	for id in arg_ids:
+		var changed = _add_level_id_as_non_hidden__internal(id, false)
+		if changed:
+			at_least_one_changed = true
+	
+	if at_least_one_changed:
+		emit_signal("hidden_levels_state_changed")
 
 func _add_level_id_as_non_hidden__internal(arg_id, arg_emit_signal : bool):
 	if !_all_non_hidden_level_ids.has(arg_id):
 		_all_non_hidden_level_ids.append(arg_id)
+		
+		emit_signal("hidden_levels_state_changed")
+		
+		return true
 	
-	emit_signal("hidden_levels_state_changed")
-
-
+	return false
 
 func get_total_non_hidden_level_count():
 	return _all_non_hidden_level_ids.size()
 	
 
-#
 
 func is_level_id_exists(arg_id):
 	return LevelIds.values().has(arg_id)
 
-#
+
+func get_all_level_ids__not_including_tests() -> Array:
+	var bucket = []
+	
+	for level_id_key in LevelIds.keys():
+		var find_index = level_id_key.findn("TEST")
+		if find_index == -1:
+			bucket.append(LevelIds[level_id_key])
+	
+	return bucket
+
+
+
+
+func get_current_levels_hidden_state():
+	return current_level_hidden_state
+
+func set_current_level_hidden_state(arg_val):
+	current_level_hidden_state = arg_val
+	
+	if current_level_hidden_state == AllLevelsHiddenState.FIRST_STAGE_ONLY:
+		pass
+		
+	elif current_level_hidden_state == AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST:
+		_add_level_ids_as_non_hidden(get_all_level_ids__not_including_tests())
+		
+	
+	
+
+
+
+###############
 
 func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	if !GameSaveManager.is_manager_initialized():
@@ -276,6 +342,33 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
+	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
+		level_details.level_full_name = [
+			["2-2 Bounce", []]
+		]
+		level_details.level_name = [
+			["Bounce", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "02"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
@@ -307,6 +400,8 @@ func generate_base_level_imp_new(arg_id):
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
 		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_01__L2.gd").new()
+	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
+		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2.gd").new()
 	
 	
 
@@ -335,17 +430,25 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_02 : 3,
 		LevelIds.LEVEL_03 : 4,
 		LevelIds.LEVEL_04 : 3,
-		LevelIds.LEVEL_05 : 0,
+		LevelIds.LEVEL_05 : 3,
 		
-		LevelIds.LEVEL_01__STAGE_2 : 3,
+		LevelIds.LEVEL_01__STAGE_2 : 2,
+		LevelIds.LEVEL_02__STAGE_2 : 2,
 		
 	}
 	
 	_calculate_total_coin_count()
 
 func _calculate_total_coin_count():
-	for amount in _level_id_to_coin_amount_map.values():
+	_total_coin_count = 0
+	_total_coin_count__unhidden = 0
+	
+	for level_id in _level_id_to_coin_amount_map.keys():
+		var amount = _level_id_to_coin_amount_map[level_id]
 		_total_coin_count += amount
+		
+		if _all_non_hidden_level_ids.has(level_id):
+			_total_coin_count__unhidden += amount
 
 
 func get_coin_count_for_level(arg_id):
@@ -355,6 +458,14 @@ func get_total_coin_count() -> int:
 	return _total_coin_count
 
 
+
+func get_total_coin_count__unhidden():
+	return _total_coin_count__unhidden
+
+#
+
+func _on_hidden_levels_state_changed():
+	_calculate_total_coin_count()
 
 ##
 
@@ -387,6 +498,7 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_05 : [LevelIds.LEVEL_04],
 		
 		LevelIds.LEVEL_01__STAGE_2 : [LevelIds.LEVEL_05],
+		LevelIds.LEVEL_02__STAGE_2 : [LevelIds.LEVEL_01__STAGE_2],
 		
 	}
 

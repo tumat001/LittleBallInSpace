@@ -12,14 +12,14 @@ onready var CDSU_pickupable_remote__sprite = $ObjectContainer/CDSUPickupable_Rem
 
 onready var god_rays_sprite = $MiscContainer/GodRays
 
-onready var PDAR_cancel_dialog_remote = $MiscContainer/PDAreaRegion_CancelDialog02
+onready var PDAR_cancel_dialog_remote = $AreaRegionContainer/PDAreaRegion_CancelDialog02
 
 onready var launch_ball_ins_label = $MiscContainer/LaunchBallInsLabel
 onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
 
-onready var PDAR_fakeout_disable_rewind = $MiscContainer/PDAreaRegion_Fakeout_DisableRewind
+onready var PDAR_fakeout_disable_rewind = $AreaRegionContainer/PDAreaRegion_Fakeout_DisableRewind
 
-onready var PDAR_near_fakeout = $MiscContainer/PDAreaRegion_NearFakeout
+onready var PDAR_near_fakeout = $AreaRegionContainer/PDAreaRegion_NearFakeout
 
 #
 
@@ -53,6 +53,7 @@ func _configure_labels():
 
 func _on_player_entered_self__custom_defined__launcher():
 	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
 	
 	_play_animations_for_acquiring_launcher()
 
@@ -107,9 +108,9 @@ func _on_display_of_desc_finished__01(arg_metadata):
 
 func _on_player_entered_self__custom_defined__remote():
 	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
 	
 	_start_remote_dialog__02()
-	
 
 func _start_remote_dialog__02():
 	var dialog_desc = [
@@ -176,7 +177,11 @@ func _on_player_entered_PDAR_fakeout_disable_rewind__after_delay():
 	var tweener = create_tween()
 	tweener.tween_callback(self, "_on_fakeout_zoom_out_complete").set_delay(2.5)
 	
-	GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_2, [game_elements.get_current_player().linear_velocity, true])
+	
+	######
+	_do_game_state_modifying_actions__setup_for_layout_02()
+	
+
 
 func _on_fakeout_zoom_out_complete():
 	_start_show_game_logo()
@@ -204,8 +209,20 @@ func _on_delay_for_game_end_complete():
 
 
 
+########
 
-
-
-
+func _do_game_state_modifying_actions__setup_for_layout_02():
+	var lin_vel : Vector2 = game_elements.get_current_player().linear_velocity
+	
+	GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_2, [lin_vel.x, lin_vel.y, true])
+	GameSaveManager.last_hovered_over_level_layout_element_id = 0 # the first one
+	GameSaveManager.last_opened_level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02
+	
+	#var all_levels__with_no_test = StoreOfLevels.get_all_level_ids__not_including_tests()
+	#StoreOfLevels.add_level_ids_as_non_hidden(all_levels__with_no_test)
+	StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST)
+	
+	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
+	SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_01__STAGE_2
+	
 

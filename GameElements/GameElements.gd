@@ -56,6 +56,9 @@ var non_gui_screen_sprite
 func get_current_player():
 	return _current_player
 
+func is_player_spawned():
+	return is_instance_valid(_current_player)
+
 #
 
 func _enter_tree():
@@ -186,6 +189,7 @@ func configure_game_state_for_cutscene_occurance(arg_stop_player_movement : bool
 		if is_instance_valid(_current_player):
 			_current_player.stop_all_persisting_actions()
 			_current_player.block_all_inputs_cond_clauses.attempt_insert_clause(_current_player.BlockAllInputsClauseIds.IN_CUTSCENE)
+			_current_player.block_health_change_cond_clauses.attempt_insert_clause(_current_player.BlockHealthChangeClauseIds.IN_CUTSCENE)
 			
 			if arg_stop_player_movement:
 				_current_player.stop_player_movement()
@@ -204,7 +208,7 @@ func configure_game_state_for_end_of_cutscene_occurance(arg_reenable_store_and_c
 		
 		if is_instance_valid(_current_player):
 			_current_player.block_all_inputs_cond_clauses.remove_clause(_current_player.BlockAllInputsClauseIds.IN_CUTSCENE)
-
+			_current_player.block_health_change_cond_clauses.remove_clause(_current_player.BlockHealthChangeClauseIds.IN_CUTSCENE)
 
 
 func ban_rewind_manager_to_store_and_cast_rewind():

@@ -14,6 +14,9 @@ onready var energy_label = $EnergyLabel
 onready var texture_progress_current = $TextureProgressCurrent
 onready var texture_progress_forcasted = $TextureProgressForcasted
 
+
+onready var rewind_reminder_label = $RewindReminder
+
 #
 
 func set_player_modi__energy(arg_modi):
@@ -21,6 +24,9 @@ func set_player_modi__energy(arg_modi):
 	
 	player_modi__energy.connect("forecasted_or_current_energy_changed", self, "_on_modi_forecasted_or_current_energy_changed")
 	player_modi__energy.connect("max_energy_changed", self, "_on_modi_max_energy_changed")
+	
+	player_modi__energy.connect("discarged_to_zero_energy", self, "_on_discarged_to_zero_energy")
+	player_modi__energy.connect("recharged_from_no_energy", self, "_on_recharged_from_no_energy")
 	
 	if is_inside_tree():
 		_update_display__for_max()
@@ -67,3 +73,23 @@ func _ready():
 		visible = true
 	else:
 		visible = false
+	
+	_initialize_rewind_reminder_label()
+
+func _initialize_rewind_reminder_label():
+	rewind_reminder_label.visible = false
+	var orig_text = rewind_reminder_label.text
+	var corrected_text = orig_text % InputMap.get_action_list("rewind")[0].as_text()
+	
+	rewind_reminder_label.text = corrected_text
+
+
+func _on_discarged_to_zero_energy():
+	rewind_reminder_label.visible = true
+	
+
+func _on_recharged_from_no_energy():
+	rewind_reminder_label.visible = false
+	
+
+

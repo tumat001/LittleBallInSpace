@@ -34,7 +34,7 @@ var ball_mass : float = 40.0
 var _player
 var _game_elements
 
-var _current_ball_count : int setget set_current_ball_count
+var _current_ball_count : int setget set_current_ball_count, get_current_ball_count
 
 var is_infinite_ball_count : bool = false setget set_is_infinite_ball_count
 
@@ -265,9 +265,15 @@ func set_current_ball_count(arg_count):
 	
 	if _current_ball_count < 0:
 		_current_ball_count = 0
+		
 	
 	if _current_ball_count == 0:
 		launch_ability.activation_conditional_clauses.attempt_insert_clause(ACTIVATION_BLOCK_CLAUSE_ID__NO_BALLS_LEFT)
+		
+		if player_modi_launch_ball_node.is_charging_launch():
+			player_modi_launch_ball_node.end_launch_charge()
+			_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+		
 	else:
 		launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__NO_BALLS_LEFT)
 	

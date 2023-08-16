@@ -60,6 +60,7 @@ tileset_02_to_register_in_toggle__path = NodePath("")
 tileset_02_to_register_in_toggle__is_reversed = false
 is_pressed = false
 can_be_triggered_by_players = true
+can_be_triggered_by_tiles = false
 button_color = 2
 pressable_count = 1
 

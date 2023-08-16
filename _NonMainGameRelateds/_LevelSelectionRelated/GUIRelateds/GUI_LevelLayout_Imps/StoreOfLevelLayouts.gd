@@ -11,6 +11,8 @@ enum LevelLayoutIds {
 	#NONE = -1
 	
 	LAYOUT_01 = 1
+	LAYOUT_02 = 2,
+	
 }
 
 const FIRST_LEVEl_LAYOUT = LevelLayoutIds.LAYOUT_01
@@ -37,6 +39,8 @@ func generate_instance_of_layout(arg_id):
 	
 	if arg_id == LevelLayoutIds.LAYOUT_01:
 		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.tscn")
+	if arg_id == LevelLayoutIds.LAYOUT_02:
+		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/02/GUI_Imp_LevelLayout_02.tscn")
 	
 	
 	return scene_ref.instance()

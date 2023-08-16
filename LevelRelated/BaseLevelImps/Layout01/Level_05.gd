@@ -27,14 +27,14 @@ func after_game_init():
 	
 	_add_energy_modi()
 	
-#	_add_launch_ball_modi()
-#
-#func _add_launch_ball_modi():
-#	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-#	modi.starting_ball_count = 80
-#	#modi.is_infinite_ball_count = true
-#
-#	game_elements.player_modi_manager.add_modi_to_player(modi)
+	_add_launch_ball_modi()
+
+func _add_launch_ball_modi():
+	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+	modi.starting_ball_count = 80
+	#modi.is_infinite_ball_count = true
+
+	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 
 

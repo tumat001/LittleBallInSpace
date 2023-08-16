@@ -17,7 +17,7 @@ var gui__level_selection_whole_screen : GUI_LevelSelectionWholeScreen
 
 
 
-var _level_id_to_unlock_and_display_win_vic_on
+var _level_id_to_mark_as_finish__and_display_win_vic_on
 
 
 var _is_transitioning : bool
@@ -59,9 +59,11 @@ func _ready():
 
 # go straight to very first stage
 func _do_appropriate_action__for_first_time():
-	#TODO change this eventually
-	load_and_show_layout_selection_whole_screen()
+	#load_and_show_layout_selection_whole_screen()
+	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
+	instant_start_game_elements__with_level_details(first_stage_details)
 	
+	GameSaveManager.first_time_opening_game = false
 
 
 func load_and_show_layout_selection_whole_screen():
@@ -85,20 +87,45 @@ func _on_selection_screen__prompt_entered_into_level(arg_currently_hovered_tile,
 func start_game_elements__with_level_details(level_details, arg_circle_pos):
 	_is_in_game_or_loading_to_game = true
 	
-	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	#var transition = play_transition__using_id(level_details.transition_id__entering_level__out)
 	var transition = construct_transition__using_id(level_details.transition_id__entering_level__out)
 	transition.circle_center = arg_circle_pos #arg_currently_hovered_tile.get_center_position()
 	transition.connect("transition_finished", self, "_on_transition_out__to_level_finished", [level_details, transition, transition.circle_center])
 	play_transition(transition)
 	
+
+func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition, arg_center_pos):
+	arg_old_transition.queue_free()
+	
+	instant_start_game_elements__with_level_details(arg_level_details, arg_center_pos)
+#	if is_instance_valid(gui__level_selection_whole_screen):
+#		gui__level_selection_whole_screen.visible = false
+#		gui__level_selection_whole_screen.queue_free()
+#
+#	var game_elements = GameElements_Scene.instance()
+#	game_elements_container.add_child(game_elements)
+#
+#	arg_old_transition.queue_free()
+#	#var transition = play_transition__using_id(arg_level_details.transition_id__entering_level__in)
+#	var transition = construct_transition__using_id(arg_level_details.transition_id__entering_level__in)
+#	transition.circle_center = arg_center_pos
+#	transition.queue_free_on_end_of_transition = true
+#	play_transition(transition)
+
+
+func instant_start_game_elements__with_level_details(level_details, arg_circle_pos = screen_size/2):
+	SingletonsAndConsts.current_base_level_id = level_details.level_id
+	_is_in_game_or_loading_to_game = true
+	
+	#
+	
 	## playlist/audio related
 	var BGM_playlist_id_to_play = level_details.BGM_playlist_id_to_use__on_level_start
 	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
 		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
-
-
-func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition, arg_center_pos):
+	
+	#
+	
 	if is_instance_valid(gui__level_selection_whole_screen):
 		gui__level_selection_whole_screen.visible = false
 		gui__level_selection_whole_screen.queue_free()
@@ -107,10 +134,8 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 	var game_elements = GameElements_Scene.instance()
 	game_elements_container.add_child(game_elements)
 	
-	arg_old_transition.queue_free()
-	#var transition = play_transition__using_id(arg_level_details.transition_id__entering_level__in)
-	var transition = construct_transition__using_id(arg_level_details.transition_id__entering_level__in)
-	transition.circle_center = arg_center_pos
+	var transition = construct_transition__using_id(level_details.transition_id__entering_level__in)
+	transition.circle_center = arg_circle_pos
 	transition.queue_free_on_end_of_transition = true
 	play_transition(transition)
 
@@ -119,7 +144,7 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
 	_is_in_game_or_loading_to_game = false
-	_level_id_to_unlock_and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+	_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
 	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
@@ -162,41 +187,65 @@ func switch_to_game_elements__from_game_elements__from_restart():
 
 
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
+	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
+		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited")
+	
 	SingletonsAndConsts.current_game_elements.queue_free()
 	
-	load_and_show_layout_selection_whole_screen()
+	if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
+		load_and_show_layout_selection_whole_screen()
+		
+		arg_curr_transition.queue_free()
+		var transition = play_transition__using_id(arg_next_transition_id)
+		transition.queue_free_on_end_of_transition = true
+		
+		if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+			call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
+		
+	else:
+		arg_curr_transition.queue_free()
+		
+		if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+			_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
+		
 	
-	arg_curr_transition.queue_free()
-	var transition = play_transition__using_id(arg_next_transition_id)
-	transition.queue_free_on_end_of_transition = true
+	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = false
 	
-	if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
-		call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
+
+func _on_curr_game_elements_tree_exited():
+	var level_details = StoreOfLevels.generate_or_get_level_details_of_id(SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel)
+	#instant_start_game_elements__with_level_details(level_details)
+	call_deferred("instant_start_game_elements__with_level_details", level_details)
+	
+	
+
+
 
 func _attempt_unlock_and_play_anim_on_victory__on_level_id():
-	if _level_id_to_unlock_and_display_win_vic_on != -1:
+	if _level_id_to_mark_as_finish__and_display_win_vic_on != -1:
 		call_deferred("_unlock_and_play_anim_on_victory__on_level_id")
 		
 
 func _unlock_and_play_anim_on_victory__on_level_id():
-	var is_playing_anim = gui__level_selection_whole_screen.play_victory_animation_on_level_id(_level_id_to_unlock_and_display_win_vic_on)
+	var is_playing_anim = gui__level_selection_whole_screen.play_victory_animation_on_level_id(_level_id_to_mark_as_finish__and_display_win_vic_on)
 	
 	if is_playing_anim:
 		gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory", [], CONNECT_ONESHOT)
 	else:
-		_make_level_id_mark_as_finished(_level_id_to_unlock_and_display_win_vic_on)
+		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+		_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
 	
-	_level_id_to_unlock_and_display_win_vic_on = -1
+	_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 
 
 func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 	_make_level_id_mark_as_finished(arg_level_details.level_id)
 	
 
 func _make_level_id_mark_as_finished(arg_level_id):
 	GameSaveManager.set_level_id_status_completion(arg_level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 	
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 	
 
 
