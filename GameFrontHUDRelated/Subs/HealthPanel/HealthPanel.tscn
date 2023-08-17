@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Alive.png" type="Texture" id=1]
-[ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground.png" type="Texture" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_FillForeground_Type01.png" type="Texture" id=2]
 [ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_MainBodyBackground.png" type="Texture" id=3]
 [ext_resource path="res://GameFrontHUDRelated/Subs/HealthPanel/HealthPanel.gd" type="Script" id=4]
 

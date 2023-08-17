@@ -752,8 +752,8 @@ func has_tile_by_body_shape_index(arg_idx : int):
 	for owner_id in get_shape_owners():
 		count += shape_owner_get_shape_count(owner_id)
 	
-	#print("count: %s, arg_idx: %s" % [count, arg_idx])
-	return count - 1 > arg_idx
+	#print("count: %s, arg_idx: %s, arg_res: %s" % [count, arg_idx, (count - 1 >= arg_idx)])
+	return count - 1 >= arg_idx
 	
 #	var count = shape_owner_get_shape_count(0)
 #	print("count: %s, arg_idx: %s" % [count, arg_idx])

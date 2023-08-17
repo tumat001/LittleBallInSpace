@@ -49,9 +49,8 @@ func _enter_tree():
 #
 
 func _ready():
-	#TODO Temp for quick testing of lvls
-	#TODO UNDO THIS
-	if (true):
+	#Temp for quick testing of lvls
+	if (false):
 		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
 		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		
