@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_ChoiceButton/FTQ_ChoiceButton.gd" type="Script" id=1]
-[ext_resource path="res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/AtariClassic/AtariClassicSmooth-XzW2.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 30
+size = 25
 font_data = ExtResource( 2 )
 
 [node name="FTQ_ChoiceButton" type="MarginContainer"]

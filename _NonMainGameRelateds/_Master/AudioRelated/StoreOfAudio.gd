@@ -97,6 +97,9 @@ enum AudioIds {
 	SFX_Pickupable_RemoteControl = 5184
 	
 	
+	# GAME RELATED
+	SFX_Restart_01 = 5190
+	
 	# TILE BREAK
 	SFX_Misc_GlassBreak_Hard = 5200
 	

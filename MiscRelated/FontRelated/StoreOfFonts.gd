@@ -120,7 +120,7 @@ static func get_carolyn_handwritten_font_with_size(font_size : int) -> DynamicFo
 
 static func _add_carolyn_handwritten_font_with_size_to_map(font_size : int) -> DynamicFont:
 	var font_data = DynamicFontData.new()
-	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.otf"
+	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.ttf"
 	
 	var font = DynamicFont.new()
 	font.font_data = font_data

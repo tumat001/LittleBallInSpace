@@ -12,6 +12,12 @@ var duration : float = 0.35
 
 var wait_at_end : float
 
+var wait_at_start : float = 0
+
+#
+
+var trans_type = Tween.TRANS_LINEAR
+var ease_type = Tween.EASE_IN
 
 ####
 
@@ -38,7 +44,7 @@ func _configure_properties_for_shader():
 	
 	var tweener = create_tween()
 	tweener.set_parallel(false)
-	tweener.tween_method(self, "_tween_circle_size_of_shader", initial_ratio, target_ratio, duration)
+	tweener.tween_method(self, "_tween_circle_size_of_shader", initial_ratio, target_ratio, duration).set_trans(trans_type).set_ease(ease_type).set_delay(wait_at_start)
 	tweener.tween_callback(self, "_finished_tween").set_delay(wait_at_end)
 
 func _get_distance_vec_of_screen_center_from_circle_center():

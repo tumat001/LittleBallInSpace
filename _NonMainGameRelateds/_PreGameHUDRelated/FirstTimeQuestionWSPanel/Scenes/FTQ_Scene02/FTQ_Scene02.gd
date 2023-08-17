@@ -5,16 +5,16 @@ var first_line = [
 ]
 
 var second_line = [
-	["Give the name of your beloved [color=#FEDB72]pet[/color]?", []]
+	["Give the name of your beloved [color=#FEDB72]pet[/color]", []]
 ]
 
 var third_line = [
-	["If you have no pet, then a name of your hypotheitcal pet,", []],
-	["or someone you care about.", []]
+	["If you have no pet, then a name of your hypothetical pet,", []],
+	["or someone or something you care about.", []]
 ]
 
 var fourth_line = [
-	["If you have many, then pick one <3", []]
+	["If you have many, then pick one.", []]
 ]
 
 var fifth_line = [
@@ -37,7 +37,7 @@ onready var ftq_custom_label_03 = $VBoxContainer/FTQ_CustomLabel_03
 onready var ftq_custom_label_04 = $VBoxContainer/FTQ_CustomLabel_04
 onready var ftq_custom_label_05 = $VBoxContainer/FTQ_CustomLabel_05
 
-onready var ftq_custom_line = $VBoxContainer/FTQ_CustomLine
+onready var ftq_custom_line = $VBoxContainer/MarginContainer/FTQ_CustomLine
 
 ##
 
@@ -60,6 +60,7 @@ func start_display():
 	
 	ftq_custom_label_01.start_display_of_descs__all_chars(0.5, 1.0, null)
 	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_01")
+	ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
 
 func _on_display_of_desc_finished__line_01(custom_char_count_to_show_upto, arg_metadata):
 	var pos_moving_tweener = create_tween()
@@ -70,13 +71,14 @@ func _on_display_of_desc_finished__line_01(custom_char_count_to_show_upto, arg_m
 func _on_done_moving_label_01():
 	#30
 	ftq_custom_label_02.start_display_of_descs(0.75, 0.5, null, 0, 30)
-	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_02_01")
-	
+	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_02_01", [], CONNECT_ONESHOT)
+	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 	
 
 func _on_display_of_desc_finished__line_02_01(custom_char_count_to_show_upto, arg_metadata):
-	ftq_custom_label_02.start_display_of_descs(0.3, 0.5, null, 30, ftq_custom_label_02.get_total_char_count_of_desc())
-	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_02_02")
+	ftq_custom_label_02.start_display_of_descs(0.2, 0.25, null, 30, ftq_custom_label_02.get_total_char_count_of_desc())
+	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_02_02", [], CONNECT_ONESHOT)
+	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 	
 
 func _on_display_of_desc_finished__line_02_02(custom_char_count_to_show_upto, arg_metadata):
@@ -92,15 +94,16 @@ func _delay__start_disp_of_third_line():
 	
 	ftq_custom_label_03.start_display_of_descs__all_chars(3.5, 1.5, null)
 	ftq_custom_label_03.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_03")
+	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
-func _on_display_of_desc_finished__line_03():
+func _on_display_of_desc_finished__line_03(custom_char_count_to_show_upto, arg_metadata):
 	ftq_custom_label_04.start_display_of_descs__all_chars(1.5, 5.0, null)
 	ftq_custom_label_04.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_04")
+	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
-
-func _on_display_of_desc_finished__line_04():
+func _on_display_of_desc_finished__line_04(custom_char_count_to_show_upto, arg_metadata):
 	ftq_custom_label_05.start_display_of_descs__all_chars(1.0, 0.0, null)
-
+	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
 
 ####################

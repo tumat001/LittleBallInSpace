@@ -13,9 +13,15 @@ onready var tooltip_body = $TooltipBody
 #
 
 func _ready():
+	grow_horizontal = GROW_DIRECTION_BOTH
+	grow_vertical = GROW_DIRECTION_BOTH
+	
 	tooltip_body.bbcode_align_mode = tooltip_body.BBCodeAlignMode.CENTER
 	tooltip_body.default_font_size = default_font_size
-	tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.CAROLYN_HANDWRITTEN
+	tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.ATARI_CLASSIC_SMOOTH
+	
+	tooltip_body.grow_horizontal = GROW_DIRECTION_BOTH
+	tooltip_body.grow_vertical = GROW_DIRECTION_BOTH
 	
 
 func set_default_font_size(arg_size):
@@ -31,6 +37,7 @@ func set_desc__and_hide_tooltip(arg_desc):
 	tooltip_body.update_display()
 	
 	tooltip_body.visible = false
+	visible = false
 
 func get_total_char_count_of_desc():
 	return tooltip_body.get_total_character_count()
@@ -46,8 +53,9 @@ func start_display_of_descs__all_chars(arg_duration, arg_additional_delay_for_fi
 func start_display_of_descs(arg_duration, arg_additional_delay_for_finish,
 		arg_metadata, initial_vis_char_count, custom_char_count_to_show_upto):
 	
-	tooltip_body.start_tween_display_of_text__custom_char_count(arg_duration, self, initial_vis_char_count, custom_char_count_to_show_upto, "_on_tooltip_body_started_displaying_text__tween", [arg_duration, arg_additional_delay_for_finish, custom_char_count_to_show_upto, arg_metadata])
+	tooltip_body.start_tween_display_of_text__custom_char_count(arg_duration, initial_vis_char_count, custom_char_count_to_show_upto, self, "_on_tooltip_body_started_displaying_text__tween", [arg_duration, arg_additional_delay_for_finish, custom_char_count_to_show_upto, arg_metadata])
 	tooltip_body.visible = true
+	visible = true
 
 
 func _on_tooltip_body_started_displaying_text__tween(details, arg_params):
@@ -57,7 +65,7 @@ func _on_tooltip_body_started_displaying_text__tween(details, arg_params):
 	var arg_metadata = arg_params[3]
 	
 	var tweener : SceneTreeTween = details[0]
-	tweener.tween_callback(self, "_on_tweener_finished_displaying_descs", [arg_metadata]).set_delay(arg_duration + arg_additional_delay_for_finish)
+	tweener.tween_callback(self, "_on_tweener_finished_displaying_descs", [custom_char_count_to_show_upto, arg_metadata]).set_delay(arg_duration + arg_additional_delay_for_finish)
 
 
 func _on_tweener_finished_displaying_descs(custom_char_count_to_show_upto, arg_metadata):

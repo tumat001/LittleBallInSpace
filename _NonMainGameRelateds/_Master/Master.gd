@@ -50,8 +50,10 @@ func _enter_tree():
 
 func _ready():
 	#TODO Temp for quick testing of lvls
-	if (false):
+	#TODO UNDO THIS
+	if (true):
 		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
+		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		
 		var game_elements = GameElements_Scene.instance()
 		game_elements_container.add_child(game_elements)
@@ -126,6 +128,12 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 func instant_start_game_elements__with_level_details(level_details, arg_circle_pos = screen_size/2):
 	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	_is_in_game_or_loading_to_game = true
+	SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
+	
+	#
+	
+	var curr_level = SingletonsAndConsts.current_base_level
+	curr_level.apply_modification__before_game_elements_added()
 	
 	#
 	
@@ -187,13 +195,18 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 func switch_to_game_elements__from_game_elements__from_restart():
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
-	_on_transition_out__from_GE__finished__for_restart()
-#	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
-#	var transition = play_transition__using_id(transition_id)
-#
-#	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
-#	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
-
+	#_on_transition_out__from_GE__finished__for_restart()
+	
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Restart_01, 1.0, null)
+	
+	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
+	var transition = play_transition__using_id(transition_id)
+	transition.queue_free_on_end_of_transition = true
+	
+	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
+	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
+	
+	
 
 
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
@@ -260,7 +273,7 @@ func _make_level_id_mark_as_finished(arg_level_id):
 
 
 
-func _on_transition_out__from_GE__finished__for_restart():
+func _on_transition_out__from_GE__finished__for_restart(arg_next_transition_id, arg_curr_transition):
 	if is_instance_valid(SingletonsAndConsts.current_game_elements):
 		SingletonsAndConsts.current_game_elements.attempt_quit_game__by_queue_freeing()
 	
@@ -289,6 +302,20 @@ func play_transition(arg_transition):
 func _on_transition_finished__for_state_tracking():
 	_is_transitioning = false
 
+#
+
+func play_transition__alter_no_states(arg_transition, arg_queue_free_at_end : bool = true):
+	arg_transition.queue_free_on_end_of_transition = arg_queue_free_at_end
+	
+	transition_container.add_child(arg_transition)
+	arg_transition.start_transition()
+	
+
+#
+
+
+
+
 ##########
 
 func _unhandled_key_input(event):
@@ -313,6 +340,6 @@ func _on_question_panel_finished():
 	
 	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
 	instant_start_game_elements__with_level_details(first_stage_details)
-	GameSaveManager.first_time_opening_game = false
+	#GameSaveManager.first_time_opening_game = false
 	
 

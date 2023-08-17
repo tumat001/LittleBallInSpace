@@ -11,6 +11,8 @@ const AnimSpriteComponentPool = preload("res://MiscRelated/PoolRelated/Imps/Anim
 
 const PlayerParticle_HitTile_Scene = preload("res://PlayerRelated/PlayerParticles/HitTile/PlayerParticle_HitTile.tscn")
 
+const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
+
 #
 
 signal last_calculated_object_mass_changed(arg_val)
@@ -264,6 +266,15 @@ const FACE_ANIMATION_NAME__OUCH_TO_NORMAL = "ouch_to_normal"
 
 #
 
+const DEFAULT_LIGHT_TEX_REC_SIZE = Vector2(320, 320)
+
+const DEFAULT_LIGHT_COLOR = Color("#feffa3")
+var _light_color : Color = DEFAULT_LIGHT_COLOR
+
+var _light_energy : float = 1.0
+
+#
+
 onready var sprite_layer = $SpriteLayer
 
 onready var collision_shape = $CollisionShape2D
@@ -278,6 +289,9 @@ onready var anim_on_screen = $SpriteLayer/AnimOnScreen
 onready var main_body_sprite = $SpriteLayer/MainBodySprite
 
 onready var pca_progress_drawer = $PCAProgressDrawer
+
+
+onready var light_2d = $Light2D
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
@@ -569,9 +583,11 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 			
 			if count > 0:
 				if !body.break_on_player_contact: #and !body.changing_colls__from_fill_and_unfilled:
-					var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
-					
-					_attempt_remove_on_ground_count__with_any_identif(coordinate)
+					if body.has_tile_by_body_shape_index(body_shape_index):
+						
+						var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+						
+						_attempt_remove_on_ground_count__with_any_identif(coordinate)
 			
 		
 		#if !body.changing_colls__from_fill_and_unfilled:
@@ -1083,6 +1099,7 @@ func _ready():
 	
 	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
 	
+	_initialize_player_light()
 
 #
 
@@ -1678,6 +1695,47 @@ func _attempt_end_audio_player__capturing_point():
 	if _audio_player__capturing_point != null and _audio_player__capturing_point.playing:
 		AudioManager.stop_stream_player_and_mark_as_inactive(_audio_player__capturing_point)
 		_audio_player__capturing_point = null
+
+
+#
+
+func set_light_color(arg_color):
+	_light_color = arg_color
+	if is_inside_tree():
+		light_2d.color = _light_color
+
+func _initialize_player_light():
+	#var light_gradient : Gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(1, 1, 1, 0.5), Color(1, 1, 1, 0.0), false)
+	
+	var color_light = Color(1, 1, 1, 0.32)
+	var color_light_dim = Color(1, 1, 1, 0.16)
+	var color_none = Color(0, 0, 0, 0)
+	var arr = [color_light, color_light, color_light_dim, color_none, color_none]
+	var light_gradient = LightTextureConstructor.construct_or_get_gradient_x_color__no_save(arr)
+	
+	var light_texture_rect : GradientTexture2D = LightTextureConstructor.construct_or_get_rect_gradient_texture(DEFAULT_LIGHT_TEX_REC_SIZE, false)
+	
+	light_texture_rect.gradient = light_gradient
+	light_2d.texture = light_texture_rect
+	
+	##
+	
+	set_light_color(_light_color)
+	set_light_energy(_light_energy)
+
+
+
+func set_light_energy(arg_val):
+	_light_energy = arg_val
+	
+	light_2d.energy = _light_energy
+
+func set_light_energy__tween(arg_val, arg_duration):
+	_light_energy = arg_val
+	
+	var tween = create_tween()
+	tween.tween_property(light_2d, "energy", _light_energy, arg_duration)
+
 
 
 ###################### 

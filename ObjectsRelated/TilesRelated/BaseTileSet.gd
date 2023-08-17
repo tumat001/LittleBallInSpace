@@ -397,6 +397,8 @@ func _set_tiles_at_coords(arg_arr_data,
 		tilemap.set_cellv(arg_coords, arg_tile_id, arg_flip_x, arg_flip_y, arg_transpose, arg_autotile_coords)
 		
 	
+	#tilemap.fix_invalid_tiles()
+	
 	#tilemap.set_collision_mask_bit(0, true)
 	
 	if arg_update_dirty_quadrants:
@@ -437,10 +439,12 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 	#tilemap.set_collision_mask_bit(0, true)
 	#tilemap.call_deferred("set_collision_mask_bit", 0, true)
 	
+	#tilemap.fix_invalid_tiles()
+	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()
-		tilemap.call_deferred("update_dirty_quadrants")
-		#call_deferred("_tilemap_update_dirty_quadrants")
+		#tilemap.call_deferred("update_dirty_quadrants")
+		call_deferred("_tilemap_update_dirty_quadrants")
 	
 	if arg_save_tiles_data_next_frame__for_rewind_save:
 		_update_cells_save_data()
@@ -739,6 +743,27 @@ func _create_light_2d_on_light_container() -> Light2D:
 	#SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(light2d)
 	
 	return light2d
+
+
+#
+
+func has_tile_by_body_shape_index(arg_idx : int):
+	var count = 0
+	for owner_id in get_shape_owners():
+		count += shape_owner_get_shape_count(owner_id)
+	
+	#print("count: %s, arg_idx: %s" % [count, arg_idx])
+	return count - 1 > arg_idx
+	
+#	var count = shape_owner_get_shape_count(0)
+#	print("count: %s, arg_idx: %s" % [count, arg_idx])
+#	return count - 1 > arg_idx
+	
+#	var tile_count = tilemap.get_used_cells().size()
+#	print("tile_count: %s, idx: %s" % [tile_count, arg_idx])
+#	return tile_count - 1 > arg_idx
+
+
 
 ###################### 
 # REWIND RELATED

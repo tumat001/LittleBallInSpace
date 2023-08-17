@@ -57,7 +57,7 @@ func _on_gain_focus__attempt_do_anims():
 	if old_val != _has_focus:
 		#do anims
 		var tweener = create_tween()
-		tweener.tween_property(label, "modulate", MODULATE_HIGHLIGHTED, 0.5)
+		tweener.tween_property(label, "modulate", MODULATE_HIGHLIGHTED, 0.2)
 
 
 func _on_lose_focus__attempt_do_anims():
@@ -66,7 +66,7 @@ func _on_lose_focus__attempt_do_anims():
 	
 	if old_val != _has_focus:
 		var tweener = create_tween()
-		tweener.tween_property(label, "modulate", MODULATE_NORMAL, 0.5)
+		tweener.tween_property(label, "modulate", MODULATE_NORMAL, 0.2)
 		
 
 
@@ -86,7 +86,7 @@ func get_texture_button():
 
 func set_focus_neighbour_top(arg_control : Control):
 	if arg_control is get_script():
-		texture_button.focus_neighbour_top = arg_control.get_texture_button()
+		texture_button.focus_neighbour_top = arg_control.get_texture_button().get_path()
 		
 	else:
 		texture_button.focus_neighbour_top = arg_control.get_path()
@@ -94,7 +94,7 @@ func set_focus_neighbour_top(arg_control : Control):
 
 func set_focus_neighbour_bottom(arg_control : Control):
 	if arg_control is get_script():
-		texture_button.focus_neighbour_bottom = arg_control.get_texture_button()
+		texture_button.focus_neighbour_bottom = arg_control.get_texture_button().get_path()
 		
 	else:
 		texture_button.focus_neighbour_bottom = arg_control.get_path()
@@ -102,7 +102,7 @@ func set_focus_neighbour_bottom(arg_control : Control):
 
 func set_focus_neighbour_left(arg_control : Control):
 	if arg_control is get_script():
-		texture_button.focus_neighbour_left = arg_control.get_texture_button()
+		texture_button.focus_neighbour_left = arg_control.get_texture_button().get_path()
 		
 	else:
 		texture_button.focus_neighbour_left = arg_control.get_path()
@@ -110,7 +110,7 @@ func set_focus_neighbour_left(arg_control : Control):
 
 func set_focus_neighbour_right(arg_control : Control):
 	if arg_control is get_script():
-		texture_button.focus_neighbour_right = arg_control.get_texture_button()
+		texture_button.focus_neighbour_right = arg_control.get_texture_button().get_path()
 		
 	else:
 		texture_button.focus_neighbour_right = arg_control.get_path()
@@ -119,3 +119,7 @@ func set_focus_neighbour_right(arg_control : Control):
 
 func _on_TextureButton_mouse_entered():
 	grab_focus()
+
+func grab_focus():
+	texture_button.grab_focus()
+

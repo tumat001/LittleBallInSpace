@@ -37,6 +37,9 @@ func add_choice_details(arg_detail : ChoiceDetails):
 	
 	var choice_button = FTQ_ChoiceButton_Scene.instance()
 	choice_button.connect("button_pressed", self, "_on_button_pressed", [arg_detail])
+	choice_button.set_choice_text(arg_detail.choice_as_text)
+	
+	choice_button.size_flags_horizontal = SIZE_EXPAND_FILL
 	
 	arg_detail._button_associated = choice_button
 	
@@ -75,6 +78,6 @@ func _on_button_pressed(arg_detail : ChoiceDetails):
 
 func grab_focus__onto_first_choice():
 	if _choice_details.size() != 0:
-		var first_button = _choice_details[0]
+		var first_button = _choice_details[0]._button_associated
 		first_button.grab_focus()
 

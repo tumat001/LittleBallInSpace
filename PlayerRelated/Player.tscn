@@ -93,6 +93,8 @@ shape = SubResource( 5 )
 [node name="PCAProgressDrawer" type="Node2D" parent="."]
 script = ExtResource( 18 )
 
+[node name="Light2D" type="Light2D" parent="."]
+
 [connection signal="body_shape_entered" from="FloorArea2D" to="." method="_on_FloorArea2D_body_shape_entered"]
 [connection signal="body_shape_exited" from="FloorArea2D" to="." method="_on_FloorArea2D_body_shape_exited"]
 [connection signal="body_entered" from="RotatingForFloorArea2D" to="." method="_on_RotatingForFloorArea2D_body_entered"]

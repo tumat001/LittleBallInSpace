@@ -72,7 +72,7 @@ func _ready():
 	
 	world_manager.game_elements = self
 	
-	SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
+	
 	current_base_level = SingletonsAndConsts.current_base_level
 	current_base_level.apply_modification_to_game_elements(self)
 	
@@ -101,7 +101,8 @@ func _ready():
 	####
 	
 	call_deferred("_deferred__after_init")
-	
+
+
 
 func _deferred__after_init():
 	is_game_after_init = true

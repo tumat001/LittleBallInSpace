@@ -240,9 +240,18 @@ func add_tileset_to_toggle_to_is_reverse_map(arg_tileset, arg_is_reversed):
 
 func _press_on_tileset(arg_tileset, arg_is_reversed):
 	if pressable_count > 0:
-		arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+		#arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+		_start_wait_tween__to_toggle(arg_tileset)
 		set_pressable_count(pressable_count - 1)
-	
+
+func _start_wait_tween__to_toggle(arg_tileset):
+	var tween = create_tween()
+	tween.tween_callback(self, "_on_wait_finished__to_toggle_tileset", [arg_tileset]).set_delay(0.1)
+
+func _on_wait_finished__to_toggle_tileset(arg_tileset):
+	if is_instance_valid(arg_tileset):
+		arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+
 #	if is_pressed:
 #		if arg_is_reversed:
 #			arg_tileset.convert_all_unfilled_tiles_to_filled()

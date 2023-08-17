@@ -212,11 +212,11 @@ func start_tween_display_of_text__custom_char_count(arg_duration_to_finish : boo
 	
 	set_visible_character_count(initial_vis_char_count)
 	
-	call_deferred("_deferred_start_vis_character_tween_tween__custom_char_count", arg_duration_to_finish, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params)
+	call_deferred("_deferred_start_vis_character_tween_tween__custom_char_count", arg_duration_to_finish, initial_vis_char_count, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params)
 
-func _deferred_start_vis_character_tween_tween__custom_char_count(arg_duration_to_finish, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params):
+func _deferred_start_vis_character_tween_tween__custom_char_count(arg_duration_to_finish, initial_vis_char_count, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params):
 	var tween = create_tween()
-	var method_tweener = tween.tween_method(self, "set_visible_character_count", 0, arg_char_count_to_show, arg_duration_to_finish)
+	var method_tweener = tween.tween_method(self, "set_visible_character_count", initial_vis_char_count, arg_char_count_to_show, arg_duration_to_finish)
 	
 	arg_func_source.call(arg_func_name, [tween, method_tweener], arg_func_params)
 

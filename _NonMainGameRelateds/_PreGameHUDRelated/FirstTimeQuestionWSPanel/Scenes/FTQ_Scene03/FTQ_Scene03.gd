@@ -8,7 +8,7 @@ var first_line = [
 ]
 
 var second_line = [
-	["What are you? [color=#9BB4FD]A dog person[/color], or a cat person?", []]
+	["What are you? [color=#9BB4FD]A dog person[/color], or a [color=#FF8000]cat person?[/color]", []]
 ]
 
 #
@@ -35,13 +35,13 @@ func _ready():
 	#
 	
 	var choice_details__dog = FTQ_ChoicesPanel.ChoiceDetails.new()
-	choice_details__dog.choice_as_text = "Dog Person"
+	choice_details__dog.choice_as_text = "Dog\nPerson"
 	choice_details__dog.func_source__on_click = self
 	choice_details__dog.func_name__on_click = "_on_choice_selected__dog_person"
 	choice_details__dog.func_param__on_click = null
 	
 	var choice_details__cat = FTQ_ChoicesPanel.ChoiceDetails.new()
-	choice_details__cat.choice_as_text = "Cat Person"
+	choice_details__cat.choice_as_text = "Cat\nPerson"
 	choice_details__cat.func_source__on_click = self
 	choice_details__cat.func_name__on_click = "_on_choice_selected__cat_person"
 	choice_details__cat.func_param__on_click = null
@@ -56,24 +56,38 @@ func _ready():
 func start_display():
 	.start_display()
 	
+	ftq_custom_label_01.start_display_of_descs__all_chars(0.75, 1.25, null)
+	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_01", [], CONNECT_ONESHOT)
+	
+
+func _on_display_of_desc_finished__line_01(custom_char_count_to_show_upto, arg_metadata):
+	var pos_moving_tweener = create_tween()
+	pos_moving_tweener.set_parallel(false)
+	pos_moving_tweener.tween_property(ftq_custom_label_01, "rect_position:y", ftq_custom_label_01.rect_position.y - 200, 1.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
+	pos_moving_tweener.tween_callback(self, "_on_done_moving_label_01")
+
+
+
+func _on_done_moving_label_01():
 	#14
-	ftq_custom_label_01.start_display_of_descs(0.75, 1.25, null, 0, 14)
-	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_01__01")
+	ftq_custom_label_02.start_display_of_descs(0.75, 1.0, null, 0, 14)
+	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_02__01", [], CONNECT_ONESHOT)
 
-func _on_display_of_desc_finished__seq_01__01(custom_char_count_to_show_upto, arg_metadata):
+
+func _on_display_of_desc_finished__seq_02__01(custom_char_count_to_show_upto, arg_metadata):
 	#28
-	ftq_custom_label_01.start_display_of_descs(0.75, 1.25, null, 14, 14+14)
-	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_01__02")
+	ftq_custom_label_02.start_display_of_descs(0.75, 0.75, null, 14, 14+14)
+	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_02__02", [], CONNECT_ONESHOT)
 	
 	
 
-func _on_display_of_desc_finished__seq_01__02(custom_char_count_to_show_upto, arg_metadata):
+func _on_display_of_desc_finished__seq_02__02(custom_char_count_to_show_upto, arg_metadata):
 	#28+16
-	ftq_custom_label_01.start_display_of_descs(0.75, 1.25, null, 28, 28+16)
-	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_01")
-	
+	ftq_custom_label_02.start_display_of_descs(0.75, 0.75, null, 28, 28+16)
+	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_02", [], CONNECT_ONESHOT)
 
-func _on_display_of_desc_finished__seq_01(custom_char_count_to_show_upto, arg_metadata):
+
+func _on_display_of_desc_finished__seq_02(custom_char_count_to_show_upto, arg_metadata):
 	ftq_choices_panel.modulate.a = 0
 	ftq_choices_panel.visible = true
 	var tweener = create_tween()

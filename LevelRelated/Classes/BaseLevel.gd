@@ -19,6 +19,10 @@ var level_id
 
 ####
 
+func apply_modification__before_game_elements_added():
+	pass
+
+
 func apply_modification_to_game_elements(arg_elements):
 	game_elements = arg_elements
 	
