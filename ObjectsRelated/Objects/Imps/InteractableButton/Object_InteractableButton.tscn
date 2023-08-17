@@ -71,7 +71,7 @@ position = Vector2( 0, -16 )
 texture = ExtResource( 4 )
 
 [node name="ButtonArea2D" type="Area2D" parent="ButtonContainer" index="1"]
-collision_layer = 2
+collision_layer = 0
 collision_mask = 2
 
 [node name="ButtonCollisionShape2D" type="CollisionShape2D" parent="ButtonContainer/ButtonArea2D" index="0"]

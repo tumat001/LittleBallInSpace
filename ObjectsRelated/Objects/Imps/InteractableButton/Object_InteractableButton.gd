@@ -55,6 +55,10 @@ export(int) var pressable_count : int = 1 setget set_pressable_count
 
 var _is_in_ready : bool
 
+
+var _button_pos_tweener
+var _coll_shape_tweener
+
 ##
 
 const ANIM_NAME__BASE__BLUE_OFF = "blue_off"
@@ -100,18 +104,30 @@ func set_is_pressed(arg_val):
 					
 					_is_in_press_transition = true
 					
-					var button_pos_tweener = create_tween()
-					var coll_shape_tweener = create_tween()
-					button_pos_tweener.set_parallel(false)
+					#
+					
+					if _button_pos_tweener != null:
+						_button_pos_tweener.kill()
+						_is_in_press_transition = false
+					if _coll_shape_tweener != null:
+						_coll_shape_tweener.kill()
+						_is_in_press_transition = false
+					
+					_button_pos_tweener = create_tween()
+					_coll_shape_tweener = create_tween()
+					_button_pos_tweener.set_parallel(false)
+					_coll_shape_tweener.set_parallel(false)
 					if is_pressed:
-						button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
-						coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+						_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+						_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
 						
 					else:
-						button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
-						coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+						_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+						_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
 					
-					button_pos_tweener.tween_callback(self, "_on_button_pos_change_finished")
+					_button_pos_tweener.tween_callback(self, "_on_button_pos_change_finished")
+					_coll_shape_tweener.tween_callback(self, "_on_button_pos_change_finished__coll_shape")
+					
 					
 					#
 					
@@ -119,6 +135,13 @@ func set_is_pressed(arg_val):
 					
 					
 				else:
+					if _button_pos_tweener != null:
+						_button_pos_tweener.kill()
+						_is_in_press_transition = false
+					if _coll_shape_tweener != null:
+						_coll_shape_tweener.kill()
+						_is_in_press_transition = false
+					
 					if is_pressed:
 						button_container.position.y = BUTTON_CONTAINER_Y_POS__PRESSED
 						collision_shape_2d_02.position.y = BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button
@@ -134,7 +157,11 @@ func set_is_pressed(arg_val):
 
 func _on_button_pos_change_finished():
 	_is_in_press_transition = false
+	_button_pos_tweener = null
 
+func _on_button_pos_change_finished__coll_shape():
+	_coll_shape_tweener = null
+	
 
 ##
 
@@ -241,16 +268,24 @@ func add_tileset_to_toggle_to_is_reverse_map(arg_tileset, arg_is_reversed):
 func _press_on_tileset(arg_tileset, arg_is_reversed):
 	if pressable_count > 0:
 		#arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
-		_start_wait_tween__to_toggle(arg_tileset)
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			_start_wait_tween__to_toggle(arg_tileset)
+		else:
+			arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+		
 		set_pressable_count(pressable_count - 1)
 
 func _start_wait_tween__to_toggle(arg_tileset):
 	var tween = create_tween()
 	tween.tween_callback(self, "_on_wait_finished__to_toggle_tileset", [arg_tileset]).set_delay(0.1)
+	
+	SingletonsAndConsts.current_rewind_manager.add_node_to_block_rewind_cast(self)
 
 func _on_wait_finished__to_toggle_tileset(arg_tileset):
 	if is_instance_valid(arg_tileset):
 		arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
+		
+		SingletonsAndConsts.current_rewind_manager.remove_node_from_block_rewind_cast(self)
 
 #	if is_pressed:
 #		if arg_is_reversed:
@@ -294,7 +329,7 @@ func set_can_be_triggered_by_tiles(arg_val):
 func _on_ButtonArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if !_is_in_press_transition:
 		set_is_pressed(!is_pressed)
-	
+		
 
 
 #############################################
@@ -321,7 +356,6 @@ func stared_rewind():
 	.stared_rewind()
 	
 	collision_shape_2d_02.set_deferred("disabled", true)
-	
 	button_collision_shape_2d.set_deferred("disabled", true)
 
 
@@ -329,6 +363,5 @@ func ended_rewind():
 	.ended_rewind()
 	
 	collision_shape_2d_02.set_deferred("disabled", false)
-	
 	button_collision_shape_2d.set_deferred("disabled", false)
 

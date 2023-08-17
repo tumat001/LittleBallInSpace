@@ -63,9 +63,13 @@ enum CanCastRewindClauseIds {
 	IN_COOLDOWN = 1
 	IS_GAME_RESULT_DECIDED = 2,
 	IN_CUTSCENE = 3,
+	HAS_NODES_TO_BLOCK_REWIND = 4,
 }
 var can_cast_rewind_cond_clause : ConditionalClauses
 var last_calculated_can_cast_rewind : bool
+
+var _nodes_to_block_rewind_cast : Array
+
 
 var rewind_cooldown_timer : Timer
 
@@ -146,8 +150,27 @@ func _on_can_cast_rewind_cond_clause_updated(arg_clause_id):
 func _update_last_calculated_can_cast_rewind():
 	last_calculated_can_cast_rewind = can_cast_rewind_cond_clause.is_passed
 
-#
 
+func add_node_to_block_rewind_cast(arg_node : Node):
+	if !_nodes_to_block_rewind_cast.has(arg_node):
+		_nodes_to_block_rewind_cast.append(arg_node)
+		
+		arg_node.connect("tree_exiting", self, "_on_node_to_block_rewind_cast__tree_exiting", [arg_node])
+		
+		can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.HAS_NODES_TO_BLOCK_REWIND)
+
+func _on_node_to_block_rewind_cast__tree_exiting(arg_node):
+	remove_node_from_block_rewind_cast(arg_node)
+
+func remove_node_from_block_rewind_cast(arg_node):
+	if _nodes_to_block_rewind_cast.has(arg_node):
+		_nodes_to_block_rewind_cast.erase(arg_node)
+		
+		if arg_node.is_connected("tree_exiting", self, "_on_node_to_block_rewind_cast__tree_exiting"):
+			arg_node.disconnect("tree_exiting", self, "_on_node_to_block_rewind_cast__tree_exiting")
+		
+		if _nodes_to_block_rewind_cast.size() == 0:
+			can_cast_rewind_cond_clause.remove_clause(CanCastRewindClauseIds.HAS_NODES_TO_BLOCK_REWIND)
 
 
 ############################
