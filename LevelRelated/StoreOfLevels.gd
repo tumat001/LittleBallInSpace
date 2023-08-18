@@ -369,6 +369,32 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
+	elif arg_id == LevelIds.LEVEL_03__STAGE_2:
+		level_details.level_full_name = [
+			["2-3 Infinity", []]
+		]
+		level_details.level_name = [
+			["Infinity", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "03"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
@@ -402,6 +428,8 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_01__L2.gd").new()
 	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
 		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2.gd").new()
+	elif arg_id == LevelIds.LEVEL_03__STAGE_2:
+		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_03__L2.gd").new()
 	
 	
 
@@ -434,6 +462,8 @@ func _initialize_coin_details():
 		
 		LevelIds.LEVEL_01__STAGE_2 : 2,
 		LevelIds.LEVEL_02__STAGE_2 : 2,
+		LevelIds.LEVEL_03__STAGE_2 : 2,
+		
 		
 	}
 	
@@ -499,6 +529,7 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		LevelIds.LEVEL_01__STAGE_2 : [LevelIds.LEVEL_05],
 		LevelIds.LEVEL_02__STAGE_2 : [LevelIds.LEVEL_01__STAGE_2],
+		LevelIds.LEVEL_02__STAGE_3 : [LevelIds.LEVEL_02__STAGE_2],
 		
 	}
 

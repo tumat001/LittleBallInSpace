@@ -26,3 +26,16 @@ margin_left = 792.0
 margin_top = 252.0
 margin_right = 838.0
 margin_bottom = 298.0
+
+[node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="3" instance=ExtResource( 3 )]
+margin_left = 746.0
+margin_top = 252.0
+margin_right = 792.0
+margin_bottom = 298.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Tile_03" parent="LayoutElesContainer" index="4" instance=ExtResource( 3 )]
+margin_left = 700.0
+margin_top = 252.0
+margin_right = 746.0
+margin_bottom = 298.0

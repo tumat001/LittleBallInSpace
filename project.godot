@@ -52,6 +52,7 @@ AudioManager="*res://_NonMainGameRelateds/_Master/AudioRelated/AudioManager.gd"
 
 [debug]
 
+gdscript/warnings/enable=false
 gdscript/warnings/unassigned_variable=false
 gdscript/warnings/unassigned_variable_op_assign=false
 gdscript/warnings/unused_variable=false

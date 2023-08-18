@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level04/WorldSlice_Stage02_04.gd" type="Script" id=3]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Battery/Pickupable_Battery.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 25, 26 )
+
+[node name="WorldSlice_Stage02_04" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 2 )]
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 2 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( 262141, 14, 262146, 262142, 14, 262147, 262143, 14, 262147, 196608, 14, 262147, 196609, 14, 262147, 196610, 14, 262147, 196611, 14, 262147, 196612, 14, 262147, 196613, 14, 262147, 196614, 14, 262147, 196615, 14, 262148, 196622, 14, 262146, 196623, 14, 262147, 196624, 14, 262147, 196625, 14, 262147, 196626, 14, 262147, 196627, 14, 262147, 196628, 14, 262148, 196636, 14, 262146, 196637, 14, 262147, 196638, 14, 262147, 196639, 14, 262147, 196640, 14, 262147, 196641, 14, 262147, 196642, 14, 262148, 196649, 14, 262146, 196650, 14, 262147, 196651, 14, 262147, 196652, 14, 262147, 196653, 14, 262147, 196654, 14, 262147, 196655, 14, 262147, 196656, 14, 262147, 196657, 14, 262148, 196664, 14, 262146, 196665, 14, 262147, 196666, 14, 262147, 196667, 14, 262147, 196668, 14, 262147, 196669, 14, 262147, 196670, 14, 262148, 524374, 14, 196608, 589910, 14, 262144, 655446, 14, 327680 )
+
+[node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 2 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
+modulate = Color( 0.427451, 0.231373, 0, 1 )
+tile_data = PoolIntArray( -524277, 14, 196608, -524218, 14, 196608, -524214, 14, 196608, -524211, 14, 196608, -458741, 14, 262144, -458714, 14, 196608, -458699, 14, 196608, -458682, 14, 262144, -458678, 14, 262144, -458675, 14, 262144, -458672, 14, 196608, -393205, 14, 262144, -393178, 14, 262144, -393163, 14, 262144, -393150, 14, 196608, -393146, 14, 262144, -393142, 14, 262144, -393139, 14, 262144, -393136, 14, 262144, -327669, 14, 327680, -327656, 14, 196608, -327642, 14, 262144, -327627, 14, 262144, -327614, 14, 262144, -327610, 14, 262144, -327606, 14, 262144, -327603, 14, 262144, -327600, 14, 262144, -262120, 14, 262144, -262106, 14, 262144, -262091, 14, 262144, -262078, 14, 262144, -262074, 14, 262144, -262070, 14, 262144, -262067, 14, 262144, -262064, 14, 262144, -196584, 14, 262144, -196570, 14, 262144, -196555, 14, 262144, -196542, 14, 262144, -196538, 14, 262144, -196534, 14, 262144, -196531, 14, 262144, -196528, 14, 262144, -131048, 14, 262144, -131034, 14, 327680, -131019, 14, 327680, -131006, 14, 262144, -131002, 14, 262144, -130998, 14, 262144, -130995, 14, 262144, -130992, 14, 262144, -65512, 14, 262144, -65470, 14, 262144, -65466, 14, 327680, -65462, 14, 262144, -65459, 14, 262144, -65456, 14, 262144, 11, 14, 196608, 24, 14, 262144, 66, 14, 262144, 74, 14, 262144, 77, 14, 262144, 80, 14, 262144, 65547, 14, 262144, 65560, 14, 262144, 65589, 14, 196608, 65602, 14, 262144, 65610, 14, 262144, 65613, 14, 262144, 65616, 14, 262144, 131083, 14, 262144, 131096, 14, 262144, 131110, 14, 196608, 131125, 14, 262144, 131138, 14, 262144, 131146, 14, 327680, 131149, 14, 262144, 131152, 14, 262144, 196619, 14, 262144, 196632, 14, 327680, 196646, 14, 262144, 196661, 14, 262144, 196674, 14, 262144, 196685, 14, 327680, 196688, 14, 262144, 262155, 14, 262144, 262182, 14, 262144, 262197, 14, 262144, 262210, 14, 327680, 262214, 14, 196608, 262224, 14, 327680, 327691, 14, 262144, 327718, 14, 262144, 327733, 14, 262144, 327750, 14, 262144, 393227, 14, 262144, 393254, 14, 262144, 393269, 14, 262144, 393286, 14, 262144, 393290, 14, 196608, 458763, 14, 262144, 458790, 14, 262144, 458805, 14, 262144, 458822, 14, 262144, 458826, 14, 262144, 458829, 14, 196608, 524299, 14, 327680, 524312, 14, 196608, 524326, 14, 262144, 524341, 14, 327680, 524354, 14, 196608, 524358, 14, 262144, 524362, 14, 262144, 524365, 14, 262144, 524368, 14, 196608, 589848, 14, 262144, 589862, 14, 262144, 589890, 14, 262144, 589894, 14, 262144, 589898, 14, 262144, 589901, 14, 262144, 589904, 14, 262144, 655384, 14, 262144, 655398, 14, 327680, 655426, 14, 262144, 655430, 14, 262144, 655434, 14, 262144, 655437, 14, 262144, 655440, 14, 262144, 720920, 14, 327680, 720962, 14, 262144, 720966, 14, 262144, 720970, 14, 262144, 720973, 14, 262144, 720976, 14, 262144, 786498, 14, 327680, 786502, 14, 262144, 786506, 14, 262144, 786509, 14, 262144, 786512, 14, 262144, 852038, 14, 262144, 852042, 14, 327680, 852045, 14, 262144, 852048, 14, 262144, 917574, 14, 262144, 917581, 14, 262144, 917584, 14, 262144, 983110, 14, 327680, 983117, 14, 327680, 983120, 14, 262144, 1048656, 14, 327680 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 2696, 279 )
+duration_for_capture = 2.0
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 31, 25 )
+shape = SubResource( 1 )
+
+[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
+position = Vector2( 185, 71 )
+launch_ball_type = 3
+
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
+position = Vector2( 147, 71 )
+
+[node name="Pickupable_Battery" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
+position = Vector2( 367, -50 )
+battery_type = 1
+
+[node name="Pickupable_Battery2" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
+position = Vector2( 784, 207 )
+battery_type = 1
+
+[node name="Pickupable_Battery3" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
+position = Vector2( 1230, 17 )
+battery_type = 1
+
+[node name="Pickupable_Battery4" parent="ObjectContainer" index="5" instance=ExtResource( 7 )]
+position = Vector2( 1711, 4 )
+battery_type = 2
+
+[node name="Pickupable_Battery5" parent="ObjectContainer" index="6" instance=ExtResource( 7 )]
+position = Vector2( 2128, 221 )
+battery_type = 2
+
+[node name="Pickupable_Battery6" parent="ObjectContainer" index="7" instance=ExtResource( 7 )]
+position = Vector2( 2257, 68 )
+battery_type = 2
+
+[node name="Pickupable_Battery7" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
+position = Vector2( 2199, 129 )
+battery_type = 1
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 6 )]
+position = Vector2( 181, 167 )
+
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 6 )]
+position = Vector2( 2808, 305 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( -32, 78 )
+
+[editable path="TileContainer/BaseTileSet_Normal"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
