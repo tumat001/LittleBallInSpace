@@ -31,6 +31,17 @@ export(NodePath) var tileset_02_to_register_in_toggle__path
 export(bool) var tileset_02_to_register_in_toggle__is_reversed : bool = false
 onready var tileset_02_to_register_in_toggle = get_node_or_null(tileset_02_to_register_in_toggle__path)
 
+########
+
+var _portals_to_toggle : Array
+
+# for convenience
+export(NodePath) var portal_01_to_register_in_toggle__path
+onready var portal_01_to_register_in_toggle = get_node_or_null(portal_01_to_register_in_toggle__path)
+# for convenience
+export(NodePath) var portal_02_to_register_in_toggle__path
+onready var portal_02_to_register_in_toggle = get_node_or_null(portal_02_to_register_in_toggle__path)
+
 
 ##
 
@@ -42,9 +53,9 @@ export(bool) var can_be_triggered_by_tiles : bool = false setget set_can_be_trig
 
 
 enum ButtonColor {
-	RED,
-	GREEN,
-	BLUE,
+	RED = 0,
+	GREEN = 1,
+	BLUE = 2,
 }
 export(ButtonColor) var button_color : int = ButtonColor.BLUE setget set_button_color
 
@@ -98,7 +109,10 @@ func set_is_pressed(arg_val):
 							var is_reverse = _tilesets_to_toggle_to_is_reverse_map[tileset]
 							
 							_press_on_tileset(tileset, is_reverse)
-						
+					
+					for portal in _portals_to_toggle:
+						if is_instance_valid(portal):
+							_press_on_portal(portal)
 					
 					#
 					
@@ -179,6 +193,9 @@ func set_button_color(arg_color):
 	for tileset in _tilesets_to_toggle_to_is_reverse_map.keys():
 		tileset.set_modulate_for_tilemap(tileset.TilemapModulateIds.BUTTON_ASSOCIATED, color)
 	
+	for portal in _portals_to_toggle:
+		portal.set_portal_color(color)
+	
 	#
 	
 	_update_button_display()
@@ -243,6 +260,11 @@ func _ready():
 	
 	set_can_be_triggered_by_players(can_be_triggered_by_players)
 	set_can_be_triggered_by_tiles(can_be_triggered_by_tiles)
+	
+	if is_instance_valid(portal_01_to_register_in_toggle):
+		add_portal_to_toggle_on_press(portal_01_to_register_in_toggle)
+	if is_instance_valid(portal_02_to_register_in_toggle):
+		add_portal_to_toggle_on_press(portal_02_to_register_in_toggle)
 	
 	_is_in_ready = false
 
@@ -330,6 +352,18 @@ func _on_ButtonArea2D_body_shape_entered(body_rid, body, body_shape_index, local
 	if !_is_in_press_transition:
 		set_is_pressed(!is_pressed)
 		
+
+
+#########
+
+func add_portal_to_toggle_on_press(arg_portal):
+	if !_portals_to_toggle.has(arg_portal):
+		_portals_to_toggle.append(arg_portal)
+	
+	arg_portal.set_portal_color(button_color)
+
+func _press_on_portal(arg_portal):
+	arg_portal.toggle_is_disabled()
 
 
 #############################################

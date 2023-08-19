@@ -10,6 +10,14 @@ const Tile_White = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GU
 
 #
 
+signal is_layout_element_invis_changed(arg_val)
+
+#
+
+var layout_ele_id : int
+
+#
+
 var _can_update_path_texture_status : bool = false
 
 export(NodePath) var layout_element_tile__left__path : NodePath setget set_layout_element_tile__left__path
@@ -50,6 +58,12 @@ var _all_paths : Array
 
 #
 
+export(bool) var is_layout_element_invis_by_default : bool = false
+# setted by level layout
+var is_layout_element_invis : bool = false setget set_is_layout_element_invis
+
+#
+
 # managed by abstratlevellayout
 #var _all_non_path_tiles_connected : Array = []
 
@@ -74,6 +88,7 @@ func _ready():
 	set_layout_element_tile__right__path(layout_element_tile__right__path)
 	set_layout_element_tile__up__path(layout_element_tile__up__path)
 	set_layout_element_tile__down__path(layout_element_tile__down__path)
+	set_is_layout_element_invis(is_layout_element_invis)
 	_can_update_path_texture_status = true
 	
 	set_is_path(is_path)
@@ -217,27 +232,27 @@ func _update_display__as_path():
 		return
 	
 	
-	if layout_element_tile__up != null:
+	if is_instance_valid(layout_element_tile__up) and !layout_element_tile__up.is_layout_element_invis:
 		if !is_instance_valid(_path__to_north):
 			_path__to_north = _create_path_texture_rect()
 		_path__to_north.visible = true
 		
 	
-	if layout_element_tile__down != null:
+	if is_instance_valid(layout_element_tile__down) and !layout_element_tile__down.is_layout_element_invis:
 		if !is_instance_valid(_path__to_south):
 			_path__to_south = _create_path_texture_rect()
 			_path__to_south.flip_v = true
 		_path__to_south.visible = true
 		
 	
-	if layout_element_tile__left != null:
+	if is_instance_valid(layout_element_tile__left) and !layout_element_tile__left.is_layout_element_invis:
 		if !is_instance_valid(_path__to_west):
 			_path__to_west = _create_path_texture_rect()
 			_path__to_west.rect_rotation = 270
 		_path__to_west.visible = true
 		
 	
-	if layout_element_tile__right != null:
+	if is_instance_valid(layout_element_tile__right) and !layout_element_tile__right.is_layout_element_invis:
 		if !is_instance_valid(_path__to_east):
 			_path__to_east = _create_path_texture_rect()
 			_path__to_east.rect_rotation = 90
@@ -292,28 +307,48 @@ func set_layout_element_tile__down__path(arg_path):
 func set_layout_element_tile__left(arg_node):
 	layout_element_tile__left = arg_node
 	
+	if is_instance_valid(layout_element_tile__left):
+		layout_element_tile__left.connect("is_layout_element_invis_changed", self, "_on_layout_element_is_invis_changed")
+	
 	_update_display__as_path()
 
 func set_layout_element_tile__right(arg_node):
 	layout_element_tile__right = arg_node
+	
+	if is_instance_valid(layout_element_tile__right):
+		layout_element_tile__right.connect("is_layout_element_invis_changed", self, "_on_layout_element_is_invis_changed")
 	
 	_update_display__as_path()
 
 func set_layout_element_tile__up(arg_node):
 	layout_element_tile__up = arg_node
 	
+	if is_instance_valid(layout_element_tile__up):
+		layout_element_tile__up.connect("is_layout_element_invis_changed", self, "_on_layout_element_is_invis_changed")
+	
 	_update_display__as_path()
 
 func set_layout_element_tile__down(arg_node):
 	layout_element_tile__down = arg_node
 	
+	if is_instance_valid(layout_element_tile__down):
+		layout_element_tile__down.connect("is_layout_element_invis_changed", self, "_on_layout_element_is_invis_changed")
+	
 	_update_display__as_path()
 
 
+#
+
+func _on_layout_element_is_invis_changed(arg_val):
+	_update_display__as_path()
+	
 
 ###
 
 func is_hoverable_by_player_cursor() -> bool:
+	if is_layout_element_invis:
+		return false
+	
 	if is_path:
 		return true
 	
@@ -354,6 +389,14 @@ func is_link_to_level():
 #
 #
 
+#
+
+func set_is_layout_element_invis(arg_val):
+	is_layout_element_invis = arg_val
+	
+	if is_inside_tree():
+		visible = !arg_val
+		emit_signal("is_layout_element_invis_changed", arg_val)
 
 #
 

@@ -42,6 +42,12 @@ var _current_default_zoom_normal_vec
 
 var _is_at_default_zoom : bool
 
+#
+
+#todo
+#var _special_cam_view_position
+#var _special_cam_view_zoom_level
+
 
 ##########
 
@@ -292,6 +298,11 @@ func reset_camera_zoom_level():
 
 func is_at_default_zoom():
 	return _is_at_default_zoom
+
+#
+
+func get_camera__global_position():
+	return camera.global_position
 
 
 ###################### 

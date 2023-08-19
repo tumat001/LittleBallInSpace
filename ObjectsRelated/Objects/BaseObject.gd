@@ -9,6 +9,8 @@ signal destroyed_self_caused_by_destroying_area_region(arg_area_region)
 
 signal last_calculated_object_mass_changed(arg_val)
 
+signal body_mode_changed__not_from_rewind(arg_new_mode)
+
 #
 
 var base_object_mass : float = 20.0 setget set_base_object_mass
@@ -51,7 +53,7 @@ func set_body_mode_to_use(arg_mode):
 	if is_inside_tree():
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 			mode = body_mode_to_use
-
+			emit_signal("body_mode_changed__not_from_rewind", mode)
 
 #
 

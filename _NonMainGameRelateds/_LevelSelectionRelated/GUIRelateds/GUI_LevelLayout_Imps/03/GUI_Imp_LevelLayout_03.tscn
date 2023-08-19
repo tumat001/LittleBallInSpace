@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.tscn" type="PackedScene" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.tscn" type="PackedScene" id=2]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/03/GUI_Imp_LevelLayout_03.gd" type="Script" id=3]
+
+[node name="GUI_Imp_LevelLayout_03" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+default_node_to_summon_cursor_on__for_first_time__path = NodePath("LayoutElesContainer/GUI_LevelLayoutEle_Tile_01")
+
+[node name="GUI_LevelLayoutEle_Tile_01" parent="LayoutElesContainer" index="0" instance=ExtResource( 2 )]
+margin_left = 648.0
+margin_top = 200.0
+margin_right = 694.0
+margin_bottom = 246.0
+
+[node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 2 )]
+margin_left = 696.0
+margin_top = 200.0
+margin_right = 742.0
+margin_bottom = 246.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="2" instance=ExtResource( 2 )]
+margin_left = 744.0
+margin_top = 200.0
+margin_right = 790.0
+margin_bottom = 246.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Layout_To02" parent="LayoutElesContainer" index="3" instance=ExtResource( 2 )]
+margin_left = 792.0
+margin_top = 200.0
+margin_right = 838.0
+margin_bottom = 246.0

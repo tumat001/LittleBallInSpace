@@ -116,10 +116,13 @@ func _set_player__and_register_signals(arg_player : Player):
 	
 	_current_player.connect("request_rotate", self, "_on_current_player_request_rotate", [], CONNECT_PERSIST)
 	
-	
 	CameraManager.generate_camera()
+	give_camera_focus_and_follow_to_player()
+#
+
+func give_camera_focus_and_follow_to_player():
 	CameraManager.set_camera_to_follow_node_2d(_current_player)
-	
+
 
 ###
 

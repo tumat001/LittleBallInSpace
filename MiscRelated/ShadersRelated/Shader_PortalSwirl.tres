@@ -12,11 +12,6 @@ float swirl(vec2 uv, float size, int arms)
 }
 
 
-float circle(vec2 position, float radius, float feather)
-{
-	return smoothstep(radius, radius + feather, dot(position, position) * 4.0);
-}
-
 
 void fragment()
 {

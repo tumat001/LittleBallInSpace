@@ -1,0 +1,97 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_003/Level01/WorldSlice_Stage03_01.gd" type="Script" id=2]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ObjectsRelated/Portals/Portal.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=6]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=9]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 59.5, 31 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 28.5, 64.5 )
+
+[node name="WorldSlice_Stage03_01" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Normal" index="0"]
+tile_data = PoolIntArray( -196600, 14, 2, -196599, 14, 262147, -196598, 14, 262147, -196597, 14, 262147, -196596, 14, 262147, -196595, 14, 262147, -196594, 14, 262147, -196593, 14, 262147, -131064, 14, 262144, -65528, 14, 262144, 8, 14, 262144, 65544, 14, 327680 )
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( -327664, 14, 2, -327663, 14, 262147, -327662, 14, 262147, -327661, 14, 262147, -327660, 14, 262147, -327659, 14, 262147, -327658, 14, 262147, -327657, 14, 262147, -327656, 14, 262147, -327655, 14, 262147, -327654, 14, 262147, -327653, 14, 262147, -327652, 14, 262147, -327651, 14, 262147, -327650, 14, 262147, -327649, 14, 4, -262128, 14, 262144, -262113, 14, 262144, -196592, 14, 262144, -196577, 14, 262144, -131056, 14, 262144, -131041, 14, 262144, -65520, 14, 262144, -65505, 14, 262144, 16, 14, 262144, 31, 14, 262144, 65552, 14, 262144, 65567, 14, 262144, 131088, 14, 262144, 131103, 14, 262144, 196624, 14, 262144, 196639, 14, 262144, 327678, 14, 262146, 327679, 14, 262147, 262144, 14, 262147, 262145, 14, 262147, 262146, 14, 262147, 262147, 14, 262147, 262148, 14, 262147, 262149, 14, 262147, 262150, 14, 262147, 262151, 14, 262147, 262152, 14, 262147, 262153, 14, 262147, 262154, 14, 262147, 262155, 14, 262147, 262156, 14, 262147, 262157, 14, 262147, 262158, 14, 262147, 262159, 14, 262147, 262160, 14, 131076, 262164, 14, 262147, 262165, 14, 262147, 262166, 14, 262147, 262167, 14, 262147, 262168, 14, 262147, 262169, 14, 262147, 262170, 14, 262147, 262171, 14, 262148, 262175, 14, 262144, 327693, 14, 262144, 327711, 14, 262144, 393229, 14, 262144, 393247, 14, 262144, 458765, 14, 131074, 458766, 14, 262147, 458767, 14, 262147, 458768, 14, 262147, 458769, 14, 262147, 458770, 14, 262147, 458771, 14, 262147, 458772, 14, 262147, 458773, 14, 262147, 458774, 14, 262147, 458775, 14, 262147, 458776, 14, 262147, 458777, 14, 262147, 458778, 14, 262147, 458779, 14, 262147, 458780, 14, 262147, 458781, 14, 262147, 458782, 14, 262147, 458783, 14, 131076 )
+
+[node name="BaseTileSet_Uncolls" parent="TileContainer" index="2" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls" index="0"]
+tile_set = ExtResource( 6 )
+
+[node name="BaseTileSet_Red" parent="TileContainer" index="3" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Red" index="0"]
+tile_data = PoolIntArray( 262161, 9, 65538, 262162, 9, 65539, 262163, 9, 65540 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 370, 80 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 82, 17 )
+shape = SubResource( 1 )
+
+[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 8 )]
+position = Vector2( 643, 36 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion" index="0"]
+position = Vector2( 28.5, 27.5 )
+shape = SubResource( 2 )
+
+[node name="Portal_DecorOnly" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
+modulate = Color( 0.5, 0.5, 0.5, 0.85 )
+position = Vector2( 69, 112 )
+is_disabled = true
+is_rewindable = false
+
+[node name="Portal_Green01" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
+position = Vector2( 274, 111 )
+portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green02")
+
+[node name="Portal_Green02" parent="ObjectContainer" index="2" instance=ExtResource( 5 )]
+position = Vector2( 616, 112 )
+portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green01")
+
+[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 9 )]
+position = Vector2( 863, 109 )
+
+[node name="Object_InteractableButton" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
+position = Vector2( 504, 20 )
+rotation = 4.71239
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
+button_color = 0
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 69, 111 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[editable path="TileContainer/BaseTileSet_Normal"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Uncolls"]
+[editable path="TileContainer/BaseTileSet_Red"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="AreaRegionContainer/PlayerClearAreaRegion"]

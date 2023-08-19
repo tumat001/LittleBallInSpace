@@ -50,8 +50,9 @@ func _enter_tree():
 
 func _ready():
 	#Temp for quick testing of lvls
-	if (false):
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05
+	#todo
+	if (true):
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_3
 		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		
 		var game_elements = GameElements_Scene.instance()
@@ -162,6 +163,7 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 func switch_to_level_selection_scene__from_game_elements__as_win():
 	_is_in_game_or_loading_to_game = false
 	_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
@@ -173,6 +175,7 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
 	_is_in_game_or_loading_to_game = false
+	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
@@ -183,6 +186,7 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
 	_is_in_game_or_loading_to_game = false
+	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit

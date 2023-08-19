@@ -23,6 +23,9 @@ var current_game_front_hud
 var current_rewind_manager setget set_current_rewind_manager
 var current_game_result_manager
 
+#
+
+var _level_id_to_restart_only_persisting_data : Dictionary
 
 #
 
@@ -78,5 +81,24 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 func switch_to_game_elements__from_game_elements__from_restart():
 	current_master.switch_to_game_elements__from_game_elements__from_restart()
 
+
+
+##########
+
+func set_restart_only_persisting_data_of_level_id(arg_id, arg_data):
+	_level_id_to_restart_only_persisting_data[arg_id] = arg_data
+	
+
+func attempt_remove_restart_only_persisting_data_of_level_id(arg_id):
+	if if_level_id_has_restart_only_persisting_data(arg_id):
+		_level_id_to_restart_only_persisting_data.erase(arg_id)
+
+func if_level_id_has_restart_only_persisting_data(arg_id):
+	return _level_id_to_restart_only_persisting_data.has(arg_id)
+	
+
+func get_restart_only_persisting_data_of_level_id(arg_id):
+	return _level_id_to_restart_only_persisting_data[arg_id]
+	
 
 

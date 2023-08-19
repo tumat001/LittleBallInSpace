@@ -155,6 +155,8 @@ func _assign_layout_ele_next_available_id(arg_ele):
 	_id_to_layout_ele_map[_next_available_id] = arg_ele
 	_layout_ele_to_id_map[arg_ele] = _next_available_id
 	
+	arg_ele.layout_ele_id = _next_available_id
+	
 	_next_available_id += 1
 
 #
@@ -478,6 +480,8 @@ func _create_before_burst_stream_particle(arg_pos : Vector2):
 	particle.visible = true
 	particle.lifetime = 0.4
 	
+	particle.lifetime_to_start_transparency = 0.2
+	particle.transparency_per_sec = 1.0 / (particle.lifetime - particle.lifetime_to_start_transparency)
 	
 	particles_container.add_child(particle)
 
@@ -500,12 +504,12 @@ func _create_circular_burst_effect(arg_pos : Vector2):
 func _initialize_layout_ele_dependent_vars():
 	for child in layout_elements_container.get_children():
 		_rect_position_to_layout_ele_map[child.rect_global_position] = child
-		
 	
 	for child in layout_elements_container.get_children():
 		_configure_ele_tile_neighbors(child)
 		_attempt_add_tile_ele_as_level_only_ele(child)
-
+		_check_for_if_invis_by_default__and_do_appropriate_action(child)
+	
 
 func _configure_ele_tile_neighbors(arg_ele_tile : GUI_LevelLayoutEle_Tile):
 	var neighoring_poses = _get_four_neighboring_poses_from_center(arg_ele_tile.rect_global_position)
@@ -553,5 +557,12 @@ func _attempt_add_tile_ele_as_level_only_ele(arg_ele : GUI_LevelLayoutEle_Tile):
 		_all_level_only_tile_ele__level_id_to_ele__map[arg_ele.level_details.level_id] = arg_ele
 
 
-
-
+func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_LevelLayoutEle_Tile):
+	if arg_ele.is_layout_element_invis_by_default:
+		if GameSaveManager.is_layout_element_id_invis_val_registered(arg_ele.layout_ele_id):
+			var is_invis = GameSaveManager.get_layout_element_id__is_invis(arg_ele.layout_ele_id)
+			arg_ele.is_layout_element_invis = is_invis
+		else:
+			arg_ele.is_layout_element_invis = arg_ele.is_layout_element_invis_by_default
+			GameSaveManager.set_layout_element_id__is_invis(arg_ele.layout_ele_id, arg_ele.is_layout_element_invis)
+	

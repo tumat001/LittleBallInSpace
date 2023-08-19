@@ -67,7 +67,8 @@ const LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER = "level_layout_id_to_co
 const LEVEL_ID_TO_METADATA__DIC_IDENTIFIER = "LEVEL_ID_TO_METADATA__DIC_IDENTIFIER"
 #const LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER = "level_id_to_override_is_hidden_val_map"
 const ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER = "ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER"
-
+#todo change this
+const REGISTERED_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER = "REGISTERED_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER"
 
 
 # If adding more, look at GUI_LevelDetailsPanel for appropriate changes
@@ -94,6 +95,9 @@ var last_hovered_over_level_layout_element_id
 
 
 var _level_id_to_metadata_map : Dictionary
+
+
+var _registered_layout_element_ids_to_is_invis_map : Dictionary
 
 
 #var _level_id_to_override_is_hidden_val_map : Dictionary
@@ -554,6 +558,14 @@ func _load_level_related_data(arg_file : File):
 		_configure_level_hidden_states_based_on_save_state(data[ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER])
 	else:
 		pass
+	
+	#
+	
+	if data.has(REGISTERED_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER):
+		_configure_registered_layout_element_ids_to_invis_map(data[REGISTERED_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER])
+	else:
+		pass
+
 
 
 func _correct_level_id_to_metadata_map(arg_map_from_save_dict : Dictionary):
@@ -570,6 +582,10 @@ func get_metadata_of_level_id(arg_id):
 		return _level_id_to_metadata_map[arg_id]
 	
 	return null
+
+func has_metadata_in_level_id(arg_id):
+	return _level_id_to_metadata_map.has(arg_id)
+
 
 #
 
@@ -590,6 +606,25 @@ func _configure_level_hidden_states_based_on_save_state(arg_state : int):
 
 #
 
+func _configure_registered_layout_element_ids_to_invis_map(arg_map_from_save_dict : Dictionary):
+	for id_as_str in arg_map_from_save_dict.keys():
+		var id = int(id_as_str)
+		_registered_layout_element_ids_to_is_invis_map[id] = arg_map_from_save_dict[id_as_str]
+	
+
+func set_layout_element_id__is_invis(arg_id, arg_is_invis : bool):
+	_registered_layout_element_ids_to_is_invis_map[arg_id] = arg_is_invis
+
+func is_layout_element_id_invis_val_registered(arg_id):
+	return _registered_layout_element_ids_to_is_invis_map.has(arg_id)
+
+func get_layout_element_id__is_invis(arg_id):
+	return _registered_layout_element_ids_to_is_invis_map[arg_id]
+
+
+
+#
+
 func _save_level_and_layout_related_data():
 	var save_dict = {
 		LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER : last_opened_level_layout_id,
@@ -601,7 +636,8 @@ func _save_level_and_layout_related_data():
 		
 		LEVEL_ID_TO_METADATA__DIC_IDENTIFIER : _level_id_to_metadata_map,
 		#LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER : StoreOfLevels.get_all_level_id_to_is_hidden_map()
-		ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER : StoreOfLevels.get_current_levels_hidden_state()
+		ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER : StoreOfLevels.get_current_levels_hidden_state(),
+		REGISTERED_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER = _registered_layout_element_ids_to_is_invis_map,
 		
 	}
 	

@@ -133,7 +133,7 @@ var _current_excess_player_left_right_move_speed_to_fight_counter_speed : Vector
 
 #var _swapped_speed__by_rotating_by_PI : bool
 
-var _body_state_linear_velocity__without_modifications : Vector2
+#var _body_state_linear_velocity__without_modifications : Vector2
 
 ##
 
@@ -145,6 +145,10 @@ var last_calc_ignore_outside_induced_forces : bool
 
 var _all_outside_induced_forces_list : Array
 var _all_inside_induced_forces_list : Array
+
+#
+
+var _static_base_objects_in_contact_with : Array
 
 ###
 
@@ -250,6 +254,10 @@ var _audio_player__capturing_point : AudioStreamPlayer
 ##
 
 var player_hit_tile_particle_compo_pool : AnimSpriteComponentPool
+
+##
+
+var ignore_effect_based_on_pos_change__next_frame : bool
 
 ##
 
@@ -594,12 +602,7 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 		#	body.changing_colls__from_fill_and_unfilled = false
 	
 	if body is BaseObject:
-		if _objects_to_collide_with_after_exit.has(body):
-			remove_objects_to_not_collide_with(body)
-			remove_objects_to_collide_with_after_exit(body)
-		
-		if _objects_to_add_mask_layer_collision_after_exit.has(body):
-			remove_objects_to_add_mask_layer_collision_after_exit(body)
+		_on_body_exited__base_object(body_rid, body, body_shape_index, local_shape_index)
 	
 	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
@@ -617,6 +620,18 @@ func remove_on_ground_count_with_identif__from_any_purpose__changing_tiles__befo
 		if _tilesets_entered_to_cell_coords_entered_count_map.has(arg_tilemap):
 			_tilesets_entered_to_cell_coords_entered_count_map[arg_tilemap] -= 1
 		
+
+
+
+func _on_body_exited__base_object(body_rid, body, body_shape_index, local_shape_index):
+	if _objects_to_collide_with_after_exit.has(body):
+		remove_objects_to_not_collide_with(body)
+		remove_objects_to_collide_with_after_exit(body)
+	
+	if _objects_to_add_mask_layer_collision_after_exit.has(body):
+		remove_objects_to_add_mask_layer_collision_after_exit(body)
+	
+	attempt_remove_static_base_objects_in_contact_with(body)
 
 #func _on_FloorArea2D_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 #	pass
@@ -720,8 +735,8 @@ func _unhandled_key_input(event):
 			_is_moving_right = false
 			
 		elif event.is_action_released("ui_down"):
-			pass
 			#_is_move_breaking = false
+			pass
 			
 		else:
 			if event.is_action("ui_left"):
@@ -729,8 +744,8 @@ func _unhandled_key_input(event):
 			elif event.is_action("ui_right"):
 				_is_moving_right = true
 			elif event.is_action("ui_down"):
-				pass
 				#_is_move_breaking = true
+				pass
 			
 		
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
@@ -806,7 +821,11 @@ func _physics_process(delta):
 						#print("diff: %s, mov_of_excess: %s " % [diff, mov_of_excess])
 						#print("excess scale: %s, quo of excess: %s" % [excess_scale, quo_of_excess])
 						
-						_current_excess_player_left_right_move_speed_to_fight_counter_speed = -mov_of_excess * excess_scale
+						var counter_mov = -mov_of_excess * excess_scale
+						if !_is_any_static_body_impeding_movement(counter_mov):
+							_current_excess_player_left_right_move_speed_to_fight_counter_speed = counter_mov
+						else:
+							_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 						
 					else:
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -840,7 +859,12 @@ func _physics_process(delta):
 						else:
 							excess_scale = max(-1, quo_of_excess)
 						
-						_current_excess_player_left_right_move_speed_to_fight_counter_speed = -mov_of_excess * excess_scale
+						var counter_mov = -mov_of_excess * excess_scale
+						if !_is_any_static_body_impeding_movement(counter_mov):
+							_current_excess_player_left_right_move_speed_to_fight_counter_speed = counter_mov
+						else:
+							_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+						
 						
 					else:
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -849,27 +873,28 @@ func _physics_process(delta):
 				
 			elif _is_move_breaking:
 				
-				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
-				if _current_player_left_right_move_speed < 0:
-					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
-					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
-					_current_player_left_right_move_speed += speed_modi
-					
-					if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-						_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+				if !is_zero_approx(linear_velocity.x) or !is_zero_approx(linear_velocity.y):
+					var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
+					if _current_player_left_right_move_speed < 0:
+						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+						speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
+						_current_player_left_right_move_speed += speed_modi
+						
+						if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
+							_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+						elif _current_player_left_right_move_speed > 0:
+							_current_player_left_right_move_speed = 0
+						
 					elif _current_player_left_right_move_speed > 0:
-						_current_player_left_right_move_speed = 0
-					
-				elif _current_player_left_right_move_speed > 0:
-					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
-					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
-					_current_player_left_right_move_speed -= speed_modi
-					
-					if _current_player_left_right_move_speed < -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-						_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
-					elif _current_player_left_right_move_speed < 0:
-						_current_player_left_right_move_speed = 0
-					
+						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+						speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
+						_current_player_left_right_move_speed -= speed_modi
+						
+						if _current_player_left_right_move_speed < -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
+							_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+						elif _current_player_left_right_move_speed < 0:
+							_current_player_left_right_move_speed = 0
+						
 				
 			
 			#var final_mov = Vector2(_current_player_left_right_move_speed, 0)
@@ -892,8 +917,10 @@ func _physics_process(delta):
 		_player_linear_velocity = _player_pos_change_from_last_frame / delta
 		_player_prev_global_position = global_position
 		
-		_do_effects_based_on_pos_changes(prev_pos_change_from_last_frame, _player_pos_change_from_last_frame, delta)
 		
+		if ignore_effect_based_on_pos_change__next_frame:
+			_do_effects_based_on_pos_changes(prev_pos_change_from_last_frame, _player_pos_change_from_last_frame, delta)
+			ignore_effect_based_on_pos_change__next_frame = false
 
 
 #func _get_scalar_diff_of_vector_using_vec_substraction__max_one(arg_vec_minuend : Vector2, arg_vec_subtrahend : Vector2):
@@ -996,7 +1023,21 @@ func _integrate_forces(state):
 		var undeltad_mov = Vector2(undeltad_mov_speed, 0)
 		undeltad_mov = undeltad_mov.rotated(CameraManager.current_cam_rotation)
 		
-		_body_state_linear_velocity__without_modifications = state.linear_velocity - undeltad_mov
+		#_body_state_linear_velocity__without_modifications = state.linear_velocity - undeltad_mov
+		
+		#
+		
+		if _is_move_breaking:
+			if !is_zero_approx(state.linear_velocity.x) or !is_zero_approx(state.linear_velocity.y):
+				var mov_length = state.linear_velocity.length()
+				if mov_length < 5.0:
+					make_x_zero = true
+					make_y_zero = true
+					
+					#_current_player_left_right_move_speed = 0
+					#_current_player_left_right_move_speed__from_last_integrate_forces = 0
+					#_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+					
 		
 		#
 		
@@ -1068,7 +1109,6 @@ func _process(delta):
 #############
 
 func _ready():
-	
 	_base_player_size = main_body_sprite.texture.get_size()
 	
 	#
@@ -1160,6 +1200,7 @@ func _calculate_and_store_ground_attracting_velocity_at_cam_angle(arg_angle):
 	var velocity = Vector2(0, 0.8).rotated(arg_angle)
 	var cleaned_velocity = Vector2(stepify(velocity.x, 0.01), stepify(velocity.y, 0.01)) 
 	_cam_angle_to_ground_attracting_velocity_map[arg_angle] = cleaned_velocity
+	
 
 #
 
@@ -1245,6 +1286,9 @@ func is_player__method_identifier__for_base_object():
 
 func _on_body_entered__base_object(body_rid, body, body_shape_index, local_shape_index):
 	var base_object : BaseObject = body
+	
+	if base_object.mode == MODE_STATIC:
+		add_static_base_object_in_contact_with(base_object)
 	
 #	#var object_momentum : Vector2 = base_object.calculate_momentum() / last_calculated_object_mass
 #	#var self_momentum = get_player_linear_velocity() * last_calculated_object_mass
@@ -1736,6 +1780,45 @@ func set_light_energy__tween(arg_val, arg_duration):
 	var tween = create_tween()
 	tween.tween_property(light_2d, "energy", _light_energy, arg_duration)
 
+
+#
+
+func add_static_base_object_in_contact_with(arg_obj):
+	if !_static_base_objects_in_contact_with.has(arg_obj):
+		#print("added static in contact with")
+		_static_base_objects_in_contact_with.append(arg_obj)
+		
+		if !arg_obj.is_connected("body_mode_changed__not_from_rewind", self, "_on_body_mode_changed__not_from_rewind"):
+			arg_obj.connect("body_mode_changed__not_from_rewind", self, "_on_body_mode_changed__not_from_rewind", [arg_obj])
+
+func _on_body_mode_changed__not_from_rewind(arg_mode, arg_body):
+	if arg_body.mode != MODE_RIGID:
+		attempt_remove_static_base_objects_in_contact_with(arg_body)
+
+
+func attempt_remove_static_base_objects_in_contact_with(arg_obj):
+	if _static_base_objects_in_contact_with.has(arg_obj):
+		#print("removed static in contact with")
+		
+		_static_base_objects_in_contact_with.erase(arg_obj)
+		
+		if arg_obj.is_connected("body_mode_changed__not_from_rewind", self, "_on_body_mode_changed__not_from_rewind"):
+			arg_obj.disconnect("body_mode_changed__not_from_rewind", self, "_on_body_mode_changed__not_from_rewind")
+
+
+func _is_any_static_body_impeding_movement(arg_counter_mov : Vector2):
+	if is_zero_approx(linear_velocity.length()):
+		var direction_of_counter_mov : Vector2 = arg_counter_mov.rotated(PI).normalized()
+		
+		for body in _static_base_objects_in_contact_with:
+			var angle_to_body : float = global_position.angle_to_point(body.global_position)
+			
+			#print("angle to body: %s" % rad2deg(abs(direction_of_counter_mov.angle() - angle_to_body)))
+			if abs(direction_of_counter_mov.angle() - angle_to_body) <= PI/8:
+				return true
+	
+	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
+	return false
 
 
 ###################### 

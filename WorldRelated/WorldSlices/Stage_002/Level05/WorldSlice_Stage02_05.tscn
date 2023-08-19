@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level05/WorldSlice_Stage02_05.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=7]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=8]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=9]
+[ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 26, 67.5 )
@@ -19,20 +20,23 @@ extents = Vector2( 31.5, 64 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 32, 32 )
 
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 32.5, 16.5 )
+
 [node name="WorldSlice_Stage02_05" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 5 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Normal" index="0"]
-tile_data = PoolIntArray( -393217, 14, 262146, -458752, 14, 262147, -458751, 14, 262147, -458750, 14, 262147, -458749, 14, 262147, -458748, 14, 262147, 524286, 14, 262146, 524287, 14, 262147, 458752, 14, 262147, 458753, 14, 262147, 458754, 14, 262147, 458755, 14, 262147, 458756, 14, 262147, 458757, 14, 262148, 458762, 14, 262146, 458763, 14, 262147, 458764, 14, 262147, 458765, 14, 262148, 1245168, 14, 196608, 1310704, 14, 262144, 1376240, 14, 131074, 1376241, 14, 262147, 1376242, 14, 262147, 1376243, 14, 262147, 1376244, 14, 262147, 1376245, 14, 262147, 1376246, 14, 262147, 1376247, 14, 262147, 1376248, 14, 262147 )
+tile_data = PoolIntArray( -393217, 14, 262146, -458752, 14, 262147, -458751, 14, 262147, -458750, 14, 262147, -458749, 14, 262147, -458748, 14, 262147, 524286, 14, 262146, 524287, 14, 262147, 458752, 14, 262147, 458753, 14, 262147, 458754, 14, 262147, 458756, 14, 262147, 458757, 14, 262148, 458762, 14, 262146, 458763, 14, 262147, 458764, 14, 262147, 458765, 14, 262148, 1245168, 14, 196608, 1310704, 14, 262144, 1376240, 14, 131074, 1376241, 14, 262147, 1376242, 14, 262147, 1376243, 14, 262147, 1376244, 14, 262147, 1376245, 14, 262147, 1376246, 14, 262147, 1376247, 14, 262147, 1376248, 14, 262147 )
 
 [node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 5 )]
 energy_mode = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
 modulate = Color( 1, 0.968627, 0.172549, 1 )
-tile_data = PoolIntArray( -458747, 14, 262147, -458746, 14, 262147, -458745, 14, 262147, -458744, 14, 262148, -196607, 14, 196608, -196594, 14, 196608, -65539, 14, 196608, -131071, 14, 262144, -131058, 14, 262144, -3, 14, 262144, -65535, 14, 262144, -65522, 14, 262144, 65533, 14, 262144, 1, 14, 327680, 14, 14, 262144, 131069, 14, 262144, 65550, 14, 262144, 196605, 14, 262144, 131086, 14, 262144, 262141, 14, 262144, 196622, 14, 262144, 327677, 14, 262144, 262145, 14, 196608, 262158, 14, 262144, 393213, 14, 262144, 327681, 14, 262144, 327694, 14, 262144, 458749, 14, 327680, 393217, 14, 327680, 393230, 14, 327680, 786419, 14, 196608, 786422, 14, 262146, 786423, 14, 262147, 786424, 14, 262147, 786425, 14, 262147, 786426, 14, 262147, 786427, 14, 262147, 786428, 14, 262147, 786429, 14, 262147, 786430, 14, 262147, 786431, 14, 262147, 720896, 14, 262148, 720900, 14, 262146, 720901, 14, 262147, 720902, 14, 262147, 720903, 14, 262147, 720904, 14, 262147, 720905, 14, 262147, 720906, 14, 262148, 851955, 14, 262144, 851966, 14, 262144, 917491, 14, 262144, 917502, 14, 262144, 851969, 14, 262144, 983027, 14, 262144, 983038, 14, 262144, 983039, 14, 262147, 917504, 14, 262147, 917505, 14, 262144, 1048563, 14, 262144, 1048574, 14, 262144, 983041, 14, 262144, 1114099, 14, 262144, 1114110, 14, 327680, 1048577, 14, 262144, 1179633, 14, 262146, 1179634, 14, 262147, 1179635, 14, 131076, 1114113, 14, 262144, 1179649, 14, 327680, 1376249, 14, 0, 1376250, 14, 262147, 1376251, 14, 262147, 1376252, 14, 262147, 1376253, 14, 262147, 1376254, 14, 262148, 1441785, 14, 262144, 1376257, 14, 196608, 1507321, 14, 262144, 1441793, 14, 262144, 1572857, 14, 131074, 1572858, 14, 262147, 1572859, 14, 262147, 1572860, 14, 262147, 1572861, 14, 262147, 1572862, 14, 262147, 1572863, 14, 262147, 1507328, 14, 262147, 1507329, 14, 131076 )
+tile_data = PoolIntArray( -458747, 14, 262147, -458746, 14, 262147, -458745, 14, 262147, -458744, 14, 262148, -196607, 14, 196608, -196594, 14, 196608, -65539, 14, 196608, -131071, 14, 262144, -131058, 14, 262144, -3, 14, 262144, -65535, 14, 262144, -65522, 14, 262144, 65533, 14, 262144, 1, 14, 327680, 14, 14, 262144, 131069, 14, 262144, 65550, 14, 262144, 196605, 14, 262144, 131086, 14, 262144, 262141, 14, 262144, 196622, 14, 262144, 327677, 14, 262144, 262145, 14, 196608, 262158, 14, 262144, 393213, 14, 262144, 327681, 14, 262144, 327694, 14, 262144, 458749, 14, 327680, 393217, 14, 327680, 393230, 14, 327680, 458755, 14, 262147, 786419, 14, 196608, 786422, 14, 262146, 786423, 14, 262147, 786424, 14, 262147, 786425, 14, 262147, 786426, 14, 262147, 786427, 14, 262147, 786428, 14, 262147, 786429, 14, 262147, 786430, 14, 262147, 786431, 14, 262147, 720896, 14, 262148, 720900, 14, 262146, 720901, 14, 262147, 720902, 14, 262147, 720903, 14, 262147, 720904, 14, 262147, 720905, 14, 262147, 720906, 14, 262148, 851955, 14, 262144, 851966, 14, 262144, 917491, 14, 262144, 917502, 14, 262144, 851969, 14, 262144, 983027, 14, 262144, 983038, 14, 262144, 983039, 14, 262147, 917504, 14, 262147, 917505, 14, 262144, 1048563, 14, 262144, 1048574, 14, 262144, 983041, 14, 262144, 1114099, 14, 262144, 1114110, 14, 327680, 1048577, 14, 262144, 1179633, 14, 262146, 1179634, 14, 262147, 1179635, 14, 131076, 1114113, 14, 262144, 1179649, 14, 327680, 1376249, 14, 0, 1376250, 14, 262147, 1376251, 14, 262147, 1376252, 14, 262147, 1376253, 14, 262147, 1376254, 14, 262148, 1441785, 14, 262144, 1376257, 14, 196608, 1507321, 14, 262144, 1441793, 14, 262144, 1572857, 14, 131074, 1572858, 14, 262147, 1572859, 14, 262147, 1572860, 14, 262147, 1572861, 14, 262147, 1572862, 14, 262147, 1572863, 14, 262147, 1507328, 14, 262147, 1507329, 14, 131076 )
 
 [node name="BaseTileSet_Ground" parent="TileContainer" index="2" instance=ExtResource( 5 )]
 energy_mode = 2
@@ -86,6 +90,13 @@ position = Vector2( -30, 828 )
 position = Vector2( -130, -124 )
 shape = SubResource( 3 )
 
+[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
+position = Vector2( -387, 353 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion" index="0"]
+position = Vector2( 34.5, 14.5 )
+shape = SubResource( 4 )
+
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 391, 199 )
 
@@ -99,14 +110,20 @@ position = Vector2( -356, 499 )
 [node name="Object_InteractableButton" parent="ObjectContainer" index="3" instance=ExtResource( 9 )]
 position = Vector2( -472, 612 )
 rotation = 1.5708
+body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 2
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 37, -172 )
 
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 6 )]
+position = Vector2( 235, 105 )
+
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 104, 205 )
+position = Vector2( 112, 208 )
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
@@ -118,3 +135,4 @@ position = Vector2( 104, 205 )
 [editable path="AreaRegionContainer/PlayerClearAreaRegion"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion2"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
