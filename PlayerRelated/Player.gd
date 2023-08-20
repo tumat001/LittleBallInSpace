@@ -735,7 +735,8 @@ func _unhandled_key_input(event):
 			_is_moving_right = false
 			
 		elif event.is_action_released("ui_down"):
-			#_is_move_breaking = false
+			_is_move_breaking = false
+			sleeping = false
 			pass
 			
 		else:
@@ -744,7 +745,7 @@ func _unhandled_key_input(event):
 			elif event.is_action("ui_right"):
 				_is_moving_right = true
 			elif event.is_action("ui_down"):
-				#_is_move_breaking = true
+				_is_move_breaking = true
 				pass
 			
 		
@@ -1033,7 +1034,7 @@ func _integrate_forces(state):
 				if mov_length < 5.0:
 					make_x_zero = true
 					make_y_zero = true
-					
+					sleeping = true
 					#_current_player_left_right_move_speed = 0
 					#_current_player_left_right_move_speed__from_last_integrate_forces = 0
 					#_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)

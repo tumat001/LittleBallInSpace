@@ -4,16 +4,18 @@ extends Node
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
 
-
+const INSTANT_BREAK_GLASS_TILE__MASS = 10
 const BREAKABLE_GLASS_TILE__MASS = 30
 
 
 # THESE are not custom defined. THESE are defined by tileset resource
 const BREAKABLE_GLASS_TILE_ID__ATLAS_01 = 2
 const BREAKABLE_GLASS_TILE_ID__ATLAS_02 = 3
-
 const BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01 = 4
 const BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02 = 5
+
+const INSTANT_BREAK_GLASS_TILE_ID = 16
+const INSTANT_BREAK_GLASS_GLOWING_TILE_ID = 15
 
 
 const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01 = 6
@@ -106,14 +108,16 @@ static func convert_non_glowing_breakable_tile_id__to_glowing(arg_id):
 		return BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01
 	elif arg_id == BREAKABLE_GLASS_TILE_ID__ATLAS_02:
 		return BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02
-		
+	elif arg_id == INSTANT_BREAK_GLASS_TILE_ID:
+		return INSTANT_BREAK_GLASS_GLOWING_TILE_ID
 
 static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 	if arg_id == BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01:
 		return BREAKABLE_GLASS_TILE_ID__ATLAS_01
 	elif arg_id == BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
 		return BREAKABLE_GLASS_TILE_ID__ATLAS_02
-		
+	elif arg_id == INSTANT_BREAK_GLASS_GLOWING_TILE_ID:
+		return INSTANT_BREAK_GLASS_TILE_ID
 
 
 ##################
@@ -129,6 +133,10 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 		BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
 			return BREAKABLE_GLASS_TILE__MASS
 			
+		INSTANT_BREAK_GLASS_TILE_ID:
+			return INSTANT_BREAK_GLASS_TILE__MASS
+		INSTANT_BREAK_GLASS_GLOWING_TILE_ID:
+			return INSTANT_BREAK_GLASS_TILE_ID
 
 
 
@@ -368,6 +376,8 @@ func _initialize_all_tile_to_sound_id_map():
 		12 : _standard_tile_metal_hit__ping,
 		#13
 		14 : _standard_tile_metal_hit__ping,
+		15 : _standard_tile_glass_hit,
+		16 : _standard_tile_glass_hit,
 		
 	}
 	
@@ -379,6 +389,9 @@ func _initialize_all_tile_to_sound_id_map():
 	_breakable_tile_id_to_auto_coord_to_sound_id_map = {
 		4 : _standard_tile_glass_break,
 		5 : _standard_tile_glass_break,
+		
+		15 : _standard_tile_glass_break,
+		16 : _standard_tile_glass_break,
 		
 	}
 	

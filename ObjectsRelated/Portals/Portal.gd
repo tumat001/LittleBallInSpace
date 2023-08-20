@@ -291,7 +291,7 @@ func remove_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidB
 	if _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(arg_node):
 		_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.erase(arg_node)
 		
-		print("removed body")
+		#print("removed body")
 		
 		if arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
 			arg_node.disconnect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker")
@@ -321,7 +321,7 @@ func _is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : V
 		
 		#if abs(arg_dir_01.angle() - arg_dir_02.angle()) > PI/2:
 		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > PI/2:
-			print("big diff. diff = %s" % [abs(arg_dir_01.angle() - arg_dir_02.angle())])
+			#print("big diff. diff = %s" % [abs(arg_dir_01.angle() - arg_dir_02.angle())])
 			return true
 		else:
 			return false
@@ -335,6 +335,7 @@ static func angle_to_angle(from, to):
 func _on_Area2D_body_entered(body):
 	if !is_disabled:
 		if is_scene_transition_type_portal:
+			AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
 			emit_signal("player_entered__as_scene_transition", body)
 			return
 		
@@ -349,10 +350,12 @@ func _on_Area2D_body_entered(body):
 				
 
 func _teleport_node_to_other_linked_portal(body):
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
+	
 	_portal_to_link_with.add_node_to_not_teleport_on_first_enter(body)
 	remove_node_inside_portal__to_return_on_velocity_reversed(body)
 	
-	print("body gp: %s, portal gp: %s" % [body.global_position, _portal_to_link_with.global_position])
+	#print("body gp: %s, portal gp: %s" % [body.global_position, _portal_to_link_with.global_position])
 	if body.get("is_player"):
 		body.ignore_effect_based_on_pos_change__next_frame = true
 	body.global_position = _portal_to_link_with.global_position
