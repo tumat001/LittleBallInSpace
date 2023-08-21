@@ -62,6 +62,7 @@ enum AudioIds {
 	SFX_LaunchBall_01 = 5110
 	SFX_LaunchBall_02 = 5111
 	SFX_LaunchBall_03 = 5112
+	SFX_LaunchBall_AimModeChanged = 5113
 	
 	# SWITCH
 	SFX_SwitchToggle_01 = 5120

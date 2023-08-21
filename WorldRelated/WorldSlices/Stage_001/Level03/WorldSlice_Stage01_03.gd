@@ -6,6 +6,7 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 onready var vkp_rewind = $MessegesContainer/VBoxContainer/VKP_Rewind
 onready var vkp_zoom_out = $MessegesContainer/VBoxContainer2/VKP_ZoomOut
+onready var vkp_slow_down = $MessegesContainer/VBoxContainer3/VKPSlowDown
 
 
 func _init():
@@ -27,6 +28,10 @@ func _on_after_game_start_init():
 	
 	var orig_text_zoomout = vkp_zoom_out.text_for_keypress
 	vkp_zoom_out.text_for_keypress = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()
+	
+	var orig_text_slowdown = vkp_slow_down.text_for_keypress
+	vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[2].as_text()
+	
 	
 
 

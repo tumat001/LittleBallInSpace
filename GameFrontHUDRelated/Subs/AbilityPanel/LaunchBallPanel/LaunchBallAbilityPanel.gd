@@ -27,6 +27,10 @@ var _rainbow_white_frame_tweener : SceneTreeTween
 
 #
 
+var _aim_mode_swap_button_highlight_tweener : SceneTreeTween
+
+#
+
 onready var ball_count_label = $FreeFormControl/BallCountLabel
 
 onready var ball_pic_03 = $FreeFormControl/Ball03
@@ -40,6 +44,7 @@ onready var aim_mode_icon = $FreeFormControl/ModeContainer/FreeFormControl/AimMo
 onready var aim_mode_label = $FreeFormControl/ModeContainer/FreeFormControl/AimModeLabel
 
 onready var aim_mode_container = $FreeFormControl/ModeContainer
+onready var aim_mode_swap_button = $FreeFormControl/ModeContainer/FreeFormControl/SwapButton
 
 #
 
@@ -191,4 +196,22 @@ func _update_display_based_on_aim_mode(arg_mode):
 		
 	
 
+#############
+
+func show_highlight_of_aim_mode_swap_button():
+	if _aim_mode_swap_button_highlight_tweener != null:
+		_aim_mode_swap_button_highlight_tweener.kill()
+	
+	var tweener = create_tween()
+	tweener.set_loops()
+	tweener.tween_property(aim_mode_swap_button, "modulate", Color(1.5, 1.5, 1.5, 1.0), 0.75).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tweener.tween_property(aim_mode_swap_button, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.75).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	_aim_mode_swap_button_highlight_tweener = tweener
+
+func end_highlight_of_aim_mode_swap_button():
+	if _aim_mode_swap_button_highlight_tweener != null:
+		_aim_mode_swap_button_highlight_tweener.kill()
+		_aim_mode_swap_button_highlight_tweener = null
+	
 

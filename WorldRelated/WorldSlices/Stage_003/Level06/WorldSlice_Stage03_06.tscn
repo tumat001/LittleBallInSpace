@@ -23,6 +23,12 @@ modulate = Color( 0.682353, 0.372549, 0, 1 )
 [node name="BaseTileSet_InstantBreakables" parent="TileContainer" index="3" instance=ExtResource( 2 )]
 momentum_breaking_point = 0.0
 
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 61, 112 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Grounded"]

@@ -919,10 +919,11 @@ func _physics_process(delta):
 		_player_prev_global_position = global_position
 		
 		
-		if ignore_effect_based_on_pos_change__next_frame:
+		if !ignore_effect_based_on_pos_change__next_frame:
 			_do_effects_based_on_pos_changes(prev_pos_change_from_last_frame, _player_pos_change_from_last_frame, delta)
-			ignore_effect_based_on_pos_change__next_frame = false
-
+		else:
+			#ignore_effect_based_on_pos_change__next_frame = false
+			set_deferred("ignore_effect_based_on_pos_change__next_frame", false)
 
 #func _get_scalar_diff_of_vector_using_vec_substraction__max_one(arg_vec_minuend : Vector2, arg_vec_subtrahend : Vector2):
 #	var x_diff = float(arg_vec_minuend.x) - arg_vec_subtrahend.x

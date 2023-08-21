@@ -133,6 +133,28 @@ margin_right = 146.0
 margin_bottom = 61.0
 size_flags_horizontal = 6
 
+[node name="VBoxContainer3" type="VBoxContainer" parent="MessegesContainer" index="4"]
+margin_left = 833.0
+margin_top = -279.0
+margin_right = 1079.0
+margin_bottom = -224.0
+rect_rotation = 180.0
+mouse_filter = 2
+
+[node name="Label5SlowDown" type="Label" parent="MessegesContainer/VBoxContainer3" index="0"]
+margin_right = 246.0
+margin_bottom = 14.0
+size_flags_horizontal = 6
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "You can slow down to a halt by holding"
+
+[node name="VKPSlowDown" parent="MessegesContainer/VBoxContainer3" index="1" instance=ExtResource( 7 )]
+margin_left = 102.0
+margin_top = 18.0
+margin_right = 144.0
+margin_bottom = 55.0
+size_flags_horizontal = 6
+
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet"]

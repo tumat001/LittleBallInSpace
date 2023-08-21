@@ -168,6 +168,8 @@ func _initialize_player_modi_launch_ball_node():
 	
 	player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
 	player_modi_launch_ball_node.connect("can_change_aim_mode_changed", self, "_on_can_change_aim_mode_changed")
+	
+	set_can_change_aim_mode(can_change_aim_mode)
 
 func _on_can_change_aim_mode_changed(arg_val):
 	emit_signal("can_change_aim_mode_changed", arg_val)
@@ -374,7 +376,10 @@ func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
 #######
 
 func set_can_change_aim_mode(arg_val):
-	player_modi_launch_ball_node.can_change_aim_mode = arg_val
+	can_change_aim_mode = arg_val
+	
+	if is_instance_valid(player_modi_launch_ball_node):
+		player_modi_launch_ball_node.can_change_aim_mode = arg_val
 	
 
 ###################### 

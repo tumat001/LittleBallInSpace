@@ -7,6 +7,12 @@ const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALB
 
 #
 
+var _launch_ball_modi
+
+var _is_displaying_switch_aim_mode : bool
+
+#
+
 onready var vkp_launch_ball = $MiscContainer/VBoxContainer/VKP_LaunchBall
 onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
 
@@ -86,6 +92,7 @@ func _add_launch_ball_modi():
 	modi.starting_ball_count = 0
 	modi.show_player_trajectory_line = false
 	modi.can_change_aim_mode = false
+	_launch_ball_modi = modi
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 func _start_hide_god_rays():
@@ -247,16 +254,41 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 ####
 
 func _on_PDAR_TeachAndEnableAimMode_player_entered_in_area():
+	#_launch_ball_modi.can_change_aim_mode = true
+	var launch_ball_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+	
 	var dialog_desc = [
 		["Look at the bottom left, and you'll see a glowing button. Click it to toggle between aim modes.", []]
 	]
 	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
-	
-	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.connect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim")
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 15.0, null)
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.connect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed")
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.show_highlight_of_aim_mode_swap_button()
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	_is_displaying_switch_aim_mode = true
 
 func _on_toggle_button_of_mode_change_pressed():
+	_end_show_of_change_aim_mode()
+
+func _on_display_of_desc_finished__teach_toggle_aim(arg_metadata):
+	_end_show_of_change_aim_mode()
+
+func _end_show_of_change_aim_mode():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.end_highlight_of_aim_mode_swap_button()
+	
+	if SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.is_connected("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed"):
+		SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.disconnect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed")
+	
+	if SingletonsAndConsts.current_game_front_hud.game_dialog_panel.is_connected("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim"):
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.disconnect("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim")
+	
+	_is_displaying_switch_aim_mode = false
 
 
 
+
+func _on_PDAR_EndTeachAimMode_player_entered_in_area():
+	if _is_displaying_switch_aim_mode:
+		_end_show_of_change_aim_mode()

@@ -180,7 +180,8 @@ func set_is_disabled(arg_val):
 				modulate = Color(0.5, 0.5, 0.5, 0.85)
 				portal_sprite.visible = false
 				
-				_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.clear()
+				#_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.clear()
+				clear_node_inside_portal__to_return_on_velocity_reversed()
 				clear_nodes_to_not_teleport_on_first_enter()
 				
 				#coll_shape_2d.set_deferred("disabled", true)
@@ -296,14 +297,16 @@ func add_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidBody
 	if is_instance_valid(arg_node):
 		if !_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(arg_node):
 			var dir = arg_node.linear_velocity.normalized()
-			_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[arg_node] = dir
+			_add_node_inside_portal__to_return_on_velocity_reversed__using_dir(arg_node, dir)
+			#_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[arg_node] = dir
 			
-			if !arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
-				arg_node.connect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker", [arg_node])
+			#if !arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
+			#	arg_node.connect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker", [arg_node])
+
+
 
 func _on_node_tree_exiting__remove_from_inside_portal_tracker(arg_node):
 	remove_node_inside_portal__to_return_on_velocity_reversed(arg_node)
-	
 
 func remove_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidBody2D):
 	if _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(arg_node):
@@ -313,6 +316,29 @@ func remove_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidB
 		
 		if arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
 			arg_node.disconnect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker")
+
+func clear_node_inside_portal__to_return_on_velocity_reversed():
+	for body in _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.keys():
+		if body.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
+			body.disconnect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker")
+
+func set_nodes_inside_portal__to_return_on_velocity_reversed(arg_data : Dictionary):
+	for node in arg_data:
+		if !_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(node):
+			#add_node_inside_portal__to_return_on_velocity_reversed(node)
+			_add_node_inside_portal__to_return_on_velocity_reversed__using_dir(node, arg_data[node])
+		else:
+			remove_node_inside_portal__to_return_on_velocity_reversed(node)
+		
+
+
+func _add_node_inside_portal__to_return_on_velocity_reversed__using_dir(arg_node, arg_dir : Vector2):
+	_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[arg_node] = arg_dir
+	
+	if !arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
+		arg_node.connect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker", [arg_node])
+
+
 
 #
 
@@ -423,7 +449,7 @@ var is_dead_but_reserved_for_rewind : bool
 #var _rewind_save__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed
 
 var _rewind_most_recent_load__nodes_to_not_teleport_on_first_enter
-
+var _rewind_most_recent_load__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed
 
 #
 
@@ -451,7 +477,7 @@ func get_rewind_save_state():
 	}
 	
 	save_dic["_nodes_to_not_teleport_on_first_enter"] = _nodes_to_not_teleport_on_first_enter.duplicate(true)
-	
+	save_dic["_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed"] = _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.duplicate(true)
 	#if portal_color == PortalColor.BLUE:
 	#	print("saved state: %s" % save_dic)
 	
@@ -469,6 +495,7 @@ func load_into_rewind_save_state(arg_state):
 	set_is_disabled(arg_state["is_disabled"])
 	
 	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_nodes_to_not_teleport_on_first_enter"]
+	_rewind_most_recent_load__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed = arg_state["_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed"]
 	#if arg_state.has("_rewind_save__nodes_to_not_teleport_on_first_enter"):
 	#	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_rewind_save__nodes_to_not_teleport_on_first_enter"]
 	#	print("loaded from most recent load: %s" % [_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter])
@@ -501,6 +528,7 @@ func ended_rewind():
 		#print(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
 		
 		#_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = null
+		set_nodes_inside_portal__to_return_on_velocity_reversed(_rewind_most_recent_load__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed)
 		set_nodes_to_not_teleport_on_first_enter(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
 		disabled_collision_cond_clauses.remove_clause(DisableCollisionClauseId.IN_REWIND)
 		
