@@ -17,6 +17,8 @@ const AttackSpritePoolComponent = preload("res://MiscRelated/AttackSpriteRelated
 signal current_ball_count_changed(arg_val)
 signal infinite_ball_count_status_changed(arg_val)
 
+signal can_change_aim_mode_changed(arg_val)
+
 ##
 
 var starting_launch_strength : float = 5000.0
@@ -54,6 +56,8 @@ const ACTIVATION_BLOCK_CLAUSE_ID__NOT_ENOUGH_ENERGY = -11
 #
 
 var player_modi_launch_ball_node : PlayerModi_LaunchBall_Node
+var can_change_aim_mode : bool = true setget set_can_change_aim_mode
+
 
 #
 
@@ -163,7 +167,10 @@ func _initialize_player_modi_launch_ball_node():
 	#SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(player_modi_launch_ball_node)
 	
 	player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
+	player_modi_launch_ball_node.connect("can_change_aim_mode_changed", self, "_on_can_change_aim_mode_changed")
 
+func _on_can_change_aim_mode_changed(arg_val):
+	emit_signal("can_change_aim_mode_changed", arg_val)
 
 ######
 
@@ -227,8 +234,9 @@ func _attempt_launch_ball():
 
 
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
-	var mouse_pos : Vector2 = _player.get_global_mouse_position()
-	var angle = _player.global_position.angle_to_point(mouse_pos)
+	#var mouse_pos : Vector2 = _player.get_global_mouse_position()
+	#var angle = _player.global_position.angle_to_point(mouse_pos)
+	var angle = player_modi_launch_ball_node.last_calc_angle_of_node_to_mouse
 	var launch_vector = Vector2(arg_launch_strength, 0).rotated(angle)
 	
 	var ball_launch_vector = -launch_vector / ball_mass
@@ -362,6 +370,12 @@ func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
 		
 		particle.lifetime = 0.4
 		particle.visible = true
+
+#######
+
+func set_can_change_aim_mode(arg_val):
+	player_modi_launch_ball_node.can_change_aim_mode = arg_val
+	
 
 ###################### 
 # REWIND RELATED

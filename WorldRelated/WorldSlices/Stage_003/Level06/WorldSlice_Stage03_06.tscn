@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
+
+[node name="WorldSlice_Stage03_06" instance=ExtResource( 1 )]
+
+[node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 2 )]
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 2 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( 327678, 14, 262146, 327679, 14, 262147, 262144, 14, 262147, 262145, 14, 262147, 262146, 14, 262147, 262147, 14, 262147, 262148, 14, 262147, 262149, 14, 262148 )
+
+[node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 2 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
+modulate = Color( 0.682353, 0.372549, 0, 1 )
+
+[node name="BaseTileSet_InstantBreakables" parent="TileContainer" index="3" instance=ExtResource( 2 )]
+momentum_breaking_point = 0.0
+
+[editable path="TileContainer/BaseTileSet_Normal"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="TileContainer/BaseTileSet_InstantBreakables"]

@@ -198,11 +198,11 @@ func _on_layout_prompt_entered_into_link_to_other_layout(arg_currently_hovered_t
 	SingletonsAndConsts.current_master.play_transition(transition)
 
 func _on_transition_in__from_old_layout_finished(arg_hovered_tile, arg_level_layout_details, arg_old_transition):
-	show_level_layout(arg_hovered_tile.layout_id_to_link_to, arg_hovered_tile.layout_ele_id_to_put_cursor_to)
+	show_level_layout(arg_hovered_tile.level_layout_details.level_layout_id, arg_hovered_tile.layout_ele_id_to_put_cursor_to)
 	arg_old_transition.queue_free()
 	
-	var level_layout_of_in__instance = StoreOfLevelLayouts.generate_instance_of_layout(arg_hovered_tile.layout_id_to_link_to)
-	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(level_layout_of_in__instance.level_layout_id.transition_id__entering_layout__in)
+	var level_layout_of_in__instance = StoreOfLevelLayouts.generate_instance_of_layout(arg_hovered_tile.level_layout_details.level_layout_id)
+	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(arg_hovered_tile.level_layout_details.transition_id__entering_layout__in)
 	transition.queue_free_on_end_of_transition = true
 	transition.circle_center = arg_hovered_tile.get_center_position()
 	SingletonsAndConsts.current_master.play_transition(transition)

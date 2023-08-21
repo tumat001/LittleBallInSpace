@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_003/Level05/WorldSlice_Stage03_05.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=7]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=8]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 49.5, 79.5 )
@@ -16,7 +17,10 @@ extents = Vector2( 49.5, 79.5 )
 extents = Vector2( 224, 10 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 176, 32 )
+extents = Vector2( 23.5, 32 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 67.5, 65 )
 
 [node name="WorldSlice_Stage03_05" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -24,15 +28,17 @@ script = ExtResource( 2 )
 [node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Normal" index="0"]
-tile_data = PoolIntArray( -262144, 14, 2, -262143, 14, 262147, -262142, 14, 262147, -196608, 14, 262144, -131072, 14, 262144, -5, 14, 2, -4, 14, 262147, -3, 14, 262147, -2, 14, 262147, -1, 14, 262147, -65536, 14, 131076, 65531, 14, 262144, 3, 14, 131074, 4, 14, 262147, 5, 14, 262147, 6, 14, 262147, 7, 14, 262147, 8, 14, 262147, 9, 14, 262147, 10, 14, 262147, 11, 14, 4, 131067, 14, 327680, 65545, 14, 262144, 65547, 14, 262144, 131081, 14, 327680, 131083, 14, 262144, 196619, 14, 262144, 262155, 14, 262144, 393204, 14, 2, 393205, 14, 262147, 393206, 14, 262147, 393207, 14, 262147, 393208, 14, 262147, 393209, 14, 262147, 327680, 14, 4, 327683, 14, 2, 327689, 14, 262147, 327690, 14, 262147, 327691, 14, 131076, 458740, 14, 262144, 393216, 14, 262144, 393219, 14, 262144, 524276, 14, 262144, 458752, 14, 262144, 458755, 14, 262144, 589812, 14, 131074, 589813, 14, 262147, 589814, 14, 262147, 589815, 14, 262147, 589816, 14, 262147, 589817, 14, 262147, 589818, 14, 262147, 589819, 14, 262147, 589820, 14, 262147, 589821, 14, 262147, 589822, 14, 262147, 589823, 14, 262147, 524288, 14, 262144, 524291, 14, 262144 )
+tile_data = PoolIntArray( -262144, 14, 2, -262143, 14, 262147, -262142, 14, 262147, -196608, 14, 262144, -131072, 14, 262144, -5, 14, 2, -4, 14, 262147, -1, 14, 262147, -65536, 14, 131076, 65531, 14, 262144, 3, 14, 131074, 4, 14, 262147, 5, 14, 262147, 6, 14, 262147, 7, 14, 262147, 8, 14, 262147, 9, 14, 262147, 10, 14, 262147, 11, 14, 4, 131067, 14, 327680, 65545, 14, 262144, 65547, 14, 262144, 131081, 14, 327680, 131083, 14, 262144, 196619, 14, 262144, 262155, 14, 262144, 393204, 14, 2, 393205, 14, 262147, 393206, 14, 262147, 393207, 14, 262147, 393208, 14, 262147, 393209, 14, 262147, 327680, 14, 4, 327683, 14, 2, 327689, 14, 262147, 327690, 14, 262147, 327691, 14, 131076, 458740, 14, 262144, 393216, 14, 262144, 393219, 14, 262144, 524276, 14, 262144, 458752, 14, 262144, 458755, 14, 262144, 589812, 14, 131074, 589813, 14, 262147, 589814, 14, 262147, 589815, 14, 262147, 589816, 14, 262147, 589817, 14, 262147, 589818, 14, 262147, 589819, 14, 262147, 589820, 14, 262147, 589821, 14, 262147, 589822, 14, 262147, 589823, 14, 262147, 524288, 14, 262144, 524291, 14, 262144 )
 
 [node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
+energy_mode = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
 modulate = Color( 1, 0.968627, 0.172549, 1 )
-tile_data = PoolIntArray( -262141, 14, 4, -196605, 14, 262144, -131069, 14, 262144, -65533, 14, 262144, 393211, 14, 262146, 393212, 14, 262147, 393213, 14, 262147, 393214, 14, 262147, 393215, 14, 262147, 327684, 14, 262147, 327685, 14, 262147, 327686, 14, 262147, 327687, 14, 262147, 327688, 14, 262147, 589824, 14, 262144, 589827, 14, 262144, 655360, 14, 262144, 655363, 14, 262144, 720896, 14, 262144, 720899, 14, 262144, 786432, 14, 262144, 786435, 14, 262144, 851968, 14, 262144, 851971, 14, 262144, 917504, 14, 262144, 917507, 14, 262144, 983040, 14, 262144, 983043, 14, 262144, 1048576, 14, 262144, 1048579, 14, 262144, 1114112, 14, 262144, 1114115, 14, 262144, 1179648, 14, 262144, 1179651, 14, 262144, 1245184, 14, 262144, 1245187, 14, 262144, 1310720, 14, 262144, 1310723, 14, 262144, 1376256, 14, 262144, 1376259, 14, 262144, 1441792, 14, 262144, 1441795, 14, 262144, 1507328, 14, 262144, 1507331, 14, 131074, 1507332, 14, 262147, 1507333, 14, 262147, 1507334, 14, 262147, 1507335, 14, 262147, 1507336, 14, 262147, 1507337, 14, 262147, 1507338, 14, 262147, 1507339, 14, 262147, 1507340, 14, 262147, 1507341, 14, 262147, 1507342, 14, 262147, 1507343, 14, 262147, 1507344, 14, 262147, 1507345, 14, 262147, 1507346, 14, 262147, 1572864, 14, 262144, 1638400, 14, 262144, 1703936, 14, 131074, 1703937, 14, 262147, 1703938, 14, 262147, 1703939, 14, 262147, 1703940, 14, 262147, 1703941, 14, 262147, 1703942, 14, 262147, 1703943, 14, 262147, 1703944, 14, 262147, 1703945, 14, 262147, 1703946, 14, 262147, 1703947, 14, 262147, 1703948, 14, 262147, 1703949, 14, 262147, 1703950, 14, 262147, 1703951, 14, 262147, 1703952, 14, 262147, 1703953, 14, 262147, 1703954, 14, 262147 )
+tile_data = PoolIntArray( -262141, 14, 4, -196605, 14, 262144, -131069, 14, 262144, -3, 14, 262147, -2, 14, 262147, -65533, 14, 262144, 393211, 14, 262146, 393212, 14, 262147, 393213, 14, 262147, 393214, 14, 262147, 393215, 14, 262147, 327684, 14, 262147, 327685, 14, 262147, 327686, 14, 262147, 327687, 14, 262147, 327688, 14, 262147, 589824, 14, 262144, 589827, 14, 262144, 655360, 14, 262144, 655363, 14, 262144, 720896, 14, 262144, 720899, 14, 262144, 786432, 14, 262144, 786435, 14, 262144, 851968, 14, 262144, 851971, 14, 262144, 917504, 14, 262144, 917507, 14, 262144, 983040, 14, 262144, 983043, 14, 262144, 1048576, 14, 262144, 1048579, 14, 262144, 1114112, 14, 262144, 1114115, 14, 262144, 1179648, 14, 262144, 1179651, 14, 262144, 1245184, 14, 262144, 1245187, 14, 262144, 1310720, 14, 262144, 1310723, 14, 262144, 1376256, 14, 262144, 1376259, 14, 262144, 1376275, 14, 2, 1376276, 14, 262147, 1376277, 14, 262147, 1376278, 14, 262147, 1376279, 14, 262147, 1376280, 14, 262147, 1376281, 14, 4, 1441792, 14, 262144, 1441795, 14, 262144, 1441811, 14, 262144, 1441817, 14, 262144, 1572862, 14, 2, 1572863, 14, 262147, 1507328, 14, 131076, 1507331, 14, 131074, 1507332, 14, 262147, 1507333, 14, 262147, 1507334, 14, 262147, 1507335, 14, 262147, 1507336, 14, 262147, 1507337, 14, 262147, 1507338, 14, 262147, 1507339, 14, 262147, 1507340, 14, 262147, 1507341, 14, 262147, 1507342, 14, 262147, 1507343, 14, 262147, 1507344, 14, 262147, 1507345, 14, 262147, 1507346, 14, 262147, 1507347, 14, 131076, 1507353, 14, 262144, 1638398, 14, 262144, 1572889, 14, 262144, 1703934, 14, 262144, 1638425, 14, 262144, 1769470, 14, 131074, 1769471, 14, 262147, 1703936, 14, 262147, 1703937, 14, 262147, 1703938, 14, 262147, 1703939, 14, 262147, 1703940, 14, 262147, 1703941, 14, 262147, 1703942, 14, 262147, 1703943, 14, 262147, 1703944, 14, 262147, 1703945, 14, 262147, 1703946, 14, 262147, 1703947, 14, 262147, 1703948, 14, 262147, 1703949, 14, 262147, 1703950, 14, 262147, 1703951, 14, 262147, 1703952, 14, 262147, 1703953, 14, 262147, 1703954, 14, 262147, 1703955, 14, 4, 1703961, 14, 262144, 1769491, 14, 262144, 1769497, 14, 262144, 1835027, 14, 131074, 1835028, 14, 262147, 1835029, 14, 262147, 1835030, 14, 262147, 1835031, 14, 262147, 1835032, 14, 262147, 1835033, 14, 131076 )
 
 [node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 3 )]
+energy_mode = 2
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
 modulate = Color( 0.682353, 0.372549, 0, 1 )
@@ -42,7 +48,7 @@ tile_data = PoolIntArray( 196602, 14, 196608, 262138, 14, 262144, 327674, 14, 26
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
 modulate = Color( 0.027451, 0.47451, 1, 1 )
-tile_data = PoolIntArray( 1, 7, 65538, 2, 7, 65540, 131072, 9, 0, 196608, 9, 65536, 262144, 9, 131072, 589825, 9, 65538, 589826, 9, 65540 )
+tile_data = PoolIntArray( 1, 7, 65538, 2, 7, 65540, 131072, 9, 0, 196608, 9, 65536, 262144, 9, 131072, 720897, 9, 65538, 720898, 9, 65540 )
 
 [node name="BaseTileSet_Green" parent="TileContainer" index="4" instance=ExtResource( 3 )]
 
@@ -54,7 +60,11 @@ tile_data = PoolIntArray( 458753, 7, 65538, 458754, 7, 65540 )
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Red" index="0"]
 modulate = Color( 1, 0.129412, 0.129412, 1 )
-tile_data = PoolIntArray( 327681, 7, 65538, 327682, 7, 65540 )
+tile_data = PoolIntArray( 327681, 7, 65538, 327682, 7, 65540, 458743, 9, 0, 524279, 9, 131072 )
+
+[node name="BaseTileSet_Breakables" parent="TileContainer" index="6" instance=ExtResource( 3 )]
+momentum_breaking_point = 0.0
+is_rewindable = true
 
 [node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 99, 34 )
@@ -74,13 +84,32 @@ shape = SubResource( 2 )
 position = Vector2( -118, 192 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion2" index="0"]
-position = Vector2( -58, 32 )
+position = Vector2( -109.5, 32 )
 shape = SubResource( 3 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 9 )]
+position = Vector2( 670, 744 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 63.5, 55 )
+shape = SubResource( 4 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 173, 144 )
 
-[node name="Object_InteractableButton_Blue" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
+position = Vector2( -100, 145 )
+launch_ball_type = 1
+
+[node name="Portal_Blue01" parent="ObjectContainer" index="2" instance=ExtResource( 5 )]
+position = Vector2( 272, 144 )
+portal_to_link_with__path = NodePath("../Portal_Blue02")
+
+[node name="Portal_Blue02" parent="ObjectContainer" index="3" instance=ExtResource( 5 )]
+position = Vector2( -228, 240 )
+portal_to_link_with__path = NodePath("../Portal_Blue01")
+
+[node name="Object_InteractableButton_Blue" parent="ObjectContainer" index="4" instance=ExtResource( 8 )]
 position = Vector2( -151, 143 )
 rotation = 1.5708
 body_mode_to_use = 1
@@ -88,18 +117,6 @@ tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileS
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
 pressable_count = 99
-
-[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
-position = Vector2( -100, 145 )
-launch_ball_type = 1
-
-[node name="Portal_Blue01" parent="ObjectContainer" index="3" instance=ExtResource( 5 )]
-position = Vector2( 272, 144 )
-portal_to_link_with__path = NodePath("../Portal_Blue02")
-
-[node name="Portal_Blue02" parent="ObjectContainer" index="4" instance=ExtResource( 5 )]
-position = Vector2( -228, 240 )
-portal_to_link_with__path = NodePath("../Portal_Blue01")
 
 [node name="Object_InteractableButton_Green" parent="ObjectContainer" index="5" instance=ExtResource( 8 )]
 position = Vector2( -344, 240 )
@@ -121,13 +138,6 @@ portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 pressable_count = 2
 
-[node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="7" instance=ExtResource( 7 )]
-position = Vector2( 239, 817 )
-
-[node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
-position = Vector2( 276, 815 )
-launch_ball_type = 3
-
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -26, 144 )
 __meta__ = {
@@ -140,6 +150,8 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet_Blue"]
 [editable path="TileContainer/BaseTileSet_Green"]
 [editable path="TileContainer/BaseTileSet_Red"]
+[editable path="TileContainer/BaseTileSet_Breakables"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion2"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

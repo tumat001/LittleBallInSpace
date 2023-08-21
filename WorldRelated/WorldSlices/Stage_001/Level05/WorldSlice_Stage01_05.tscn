@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_001/Level05/WorldSlice_Stage01_05.gd" type="Script" id=2]
@@ -46,6 +46,9 @@ extents = Vector2( 67, 23.75 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 44.5, 113 )
+
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 31, 64.5 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 10 )
@@ -218,6 +221,14 @@ triggerable_only_once = true
 position = Vector2( 34.5, 103 )
 shape = SubResource( 5 )
 
+[node name="PDAR_TeachAndEnableAimMode" parent="AreaRegionContainer" index="10" instance=ExtResource( 13 )]
+position = Vector2( 2545, -923 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_TeachAndEnableAimMode" index="0"]
+position = Vector2( 110, 28 )
+shape = SubResource( 17 )
+
 [node name="CDSUPickupable_Launcher" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 1147, -2 )
 
@@ -245,6 +256,8 @@ shape = SubResource( 11 )
 position = Vector2( 1920, -40 )
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_SwitchBlue")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 12 )]
 position = Vector2( 1799, -239 )
@@ -254,6 +267,8 @@ position = Vector2( 1864, -720 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_SwitchBlue02")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 2
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="5" instance=ExtResource( 12 )]
@@ -270,6 +285,8 @@ position = Vector2( 1488, -984 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green01")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Object_CustomDefined" parent="ObjectContainer" index="9" instance=ExtResource( 15 )]
@@ -287,6 +304,8 @@ position = Vector2( 2721, -1112 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red01")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="11" instance=ExtResource( 12 )]
@@ -297,6 +316,8 @@ position = Vector2( 2440, -3056 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_FakeoutRed01")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 18 )]
@@ -373,6 +394,8 @@ margin_right = 139.0
 margin_bottom = 55.0
 size_flags_horizontal = 6
 
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TeachAndEnableAimMode" to="." method="_on_PDAR_TeachAndEnableAimMode_player_entered_in_area"]
+
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Uncolls01"]
@@ -393,6 +416,7 @@ size_flags_horizontal = 6
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion6"]
 [editable path="AreaRegionContainer/PDAreaRegion_NearFakeout"]
 [editable path="AreaRegionContainer/PDAreaRegion_CancelDialog02"]
+[editable path="AreaRegionContainer/PDAR_TeachAndEnableAimMode"]
 [editable path="ObjectContainer/CDSUPickupable_Launcher"]
 [editable path="ObjectContainer/CDSUPickupable_Remote"]
 [editable path="ObjectContainer/Object_CustomDefined"]

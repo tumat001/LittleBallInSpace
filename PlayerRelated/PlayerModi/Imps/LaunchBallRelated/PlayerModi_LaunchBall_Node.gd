@@ -13,6 +13,11 @@ const LINE_WIDTH__FOR_BALL : int = 4
 
 #
 
+signal aim_mode_changed(arg_mode)
+signal can_change_aim_mode_changed(arg_val)
+
+#
+
 var _starting_launch_force
 var _launch_force_per_sec : float
 var _max_launch_force : float
@@ -35,6 +40,7 @@ var _current_color_to_use_for_draw : Color
 var _node_to_follow : Node2D
 
 var current_launch_force : float
+var last_calc_angle_of_node_to_mouse
 
 var _is_charging_launch : bool setget set_is_charging_launch
 
@@ -45,6 +51,47 @@ var launch_ability setget set_launch_ability
 #
 
 var show_player_trajectory_line : bool
+
+#
+
+const CIRCLE_PARTITION = PI/16.0
+
+enum AimMode {
+	OMNI = 0,
+	SNAP = 1,
+}
+var current_aim_mode : int = AimMode.OMNI setget set_current_aim_mode
+
+var can_change_aim_mode : bool = true setget set_can_change_aim_mode
+
+#
+
+func set_can_change_aim_mode(arg_val):
+	var old_val = can_change_aim_mode
+	can_change_aim_mode = arg_val
+	
+	if old_val != can_change_aim_mode:
+		emit_signal("can_change_aim_mode_changed", can_change_aim_mode)
+
+#
+
+func toggle_current_aim_mode():
+	var index = AimMode.values().find(current_aim_mode)
+	index += 1
+	var list_size = AimMode.values().size()
+	if list_size <= index:
+		index = 0
+	
+	set_current_aim_mode(AimMode.values()[index])
+
+func set_current_aim_mode(arg_mode):
+	var old_val = current_aim_mode
+	current_aim_mode = arg_mode
+	
+	if old_val != current_aim_mode:
+		emit_signal("aim_mode_changed", current_aim_mode)
+		
+
 
 #
 
@@ -162,16 +209,25 @@ func _draw():
 		var line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH * 0.66 / _max_launch_force
 		var line_end_pos = Vector2(line_length, 0)
 		
-		var angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
+		var angle_of_node_to_mouse
+		if current_aim_mode == AimMode.OMNI:
+			angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
+		elif current_aim_mode == AimMode.SNAP:
+			angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
+			angle_of_node_to_mouse = _clean_up_angle__perfect_translated_for_circle_partition(angle_of_node_to_mouse)
+		
+		last_calc_angle_of_node_to_mouse = angle_of_node_to_mouse
+		
 		var towards_mouse_line_end_pos = line_end_pos.rotated(angle_of_node_to_mouse) + node_pos
 		
+		##
 		
 		var player_line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH / _max_launch_force
 		var player_line_end_pos = Vector2(player_line_length, 0)
 		
 		player_line_end_pos = player_line_end_pos.rotated(angle_of_node_to_mouse + PI) + node_pos
 		
-		#
+		##
 		if show_player_trajectory_line:
 			# PLAYER line
 			draw_line(node_pos, towards_mouse_line_end_pos, color_to_use, LINE_WIDTH__FOR_PLAYER)
@@ -199,6 +255,13 @@ func get_launch_force_as_range_from_0_to_2():
 	else:
 		return 0
 
+
+
+func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
+	var translated = arg_angle / CIRCLE_PARTITION
+	var perfected_translated = round(translated)
+	return perfected_translated * CIRCLE_PARTITION
+	
 
 ################
 

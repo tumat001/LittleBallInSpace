@@ -181,7 +181,7 @@ func set_is_disabled(arg_val):
 				portal_sprite.visible = false
 				
 				_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.clear()
-				_nodes_to_not_teleport_on_first_enter.clear()
+				clear_nodes_to_not_teleport_on_first_enter()
 				
 				#coll_shape_2d.set_deferred("disabled", true)
 				disabled_collision_cond_clauses.attempt_insert_clause(DisableCollisionClauseId.IS_DISABLED)
@@ -272,6 +272,24 @@ func _end_show_ripple_effect():
 func add_node_to_not_teleport_on_first_enter(arg_node : Node):
 	if !_nodes_to_not_teleport_on_first_enter.has(arg_node):
 		_nodes_to_not_teleport_on_first_enter.append(arg_node)
+		#_rewind_save__nodes_to_not_teleport_on_first_enter = _nodes_to_not_teleport_on_first_enter.duplicate(true) 
+		#print("added: %s" % [_rewind_save__nodes_to_not_teleport_on_first_enter])
+
+func remove_node_to_not_teleport_on_first_enter(arg_node : Node):
+	if _nodes_to_not_teleport_on_first_enter.has(arg_node):
+		_nodes_to_not_teleport_on_first_enter.erase(arg_node)
+		#_rewind_save__nodes_to_not_teleport_on_first_enter = _nodes_to_not_teleport_on_first_enter.duplicate(true)
+		#print("removed: %s" % [_rewind_save__nodes_to_not_teleport_on_first_enter])
+
+func clear_nodes_to_not_teleport_on_first_enter():
+	_nodes_to_not_teleport_on_first_enter.clear()
+	#_rewind_save__nodes_to_not_teleport_on_first_enter = _nodes_to_not_teleport_on_first_enter.duplicate(true)
+
+func set_nodes_to_not_teleport_on_first_enter(arg_arr : Array):
+	_nodes_to_not_teleport_on_first_enter.clear()
+	_nodes_to_not_teleport_on_first_enter.append_array(arg_arr)
+	
+	#_rewind_save__nodes_to_not_teleport_on_first_enter = _nodes_to_not_teleport_on_first_enter.duplicate(true)
 
 
 func add_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidBody2D):
@@ -342,25 +360,42 @@ func _on_Area2D_body_entered(body):
 		
 		if is_instance_valid(_portal_to_link_with):
 			if !_nodes_to_not_teleport_on_first_enter.has(body):
+				#print(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
+				
 				_teleport_node_to_other_linked_portal(body)
 				
 			else:
-				_nodes_to_not_teleport_on_first_enter.erase(body)
+				#remove_node_to_not_teleport_on_first_enter(body)
 				add_node_inside_portal__to_return_on_velocity_reversed(body)
 				
 
 func _teleport_node_to_other_linked_portal(body):
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
-	
 	_portal_to_link_with.add_node_to_not_teleport_on_first_enter(body)
 	remove_node_inside_portal__to_return_on_velocity_reversed(body)
 	
-	#print("body gp: %s, portal gp: %s" % [body.global_position, _portal_to_link_with.global_position])
+	# FOR SOME REASON THIS PRINT MSG IS NEEDED???????????
+	#print("body gp: %s, portal gp: %s. this msg is needed to make it work btw." % [body.global_position, _portal_to_link_with.global_position])
+	# DO NOT REMOVE THESE. IT IS NEEDED TO MAKE IT WORK...
+	body.global_position
+	_portal_to_link_with.global_position
+	# END OF DO NOT REMOVE
+	
 	if body.get("is_player"):
+		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
 		body.ignore_effect_based_on_pos_change__next_frame = true
+		#CameraManager.disable_camera_smoothing()
+	
 	body.global_position = _portal_to_link_with.global_position
 	
 	if body.get("is_player"):
+		var dist = _portal_to_link_with.global_position.distance_to(global_position)
+		#print(dist)
+		if dist >= 300:
+			#CameraManager.set_camera_glob_pos(_portal_to_link_with.global_position)
+			CameraManager.make_camera_immediatelty_catch_up_to_node()
+			
+		#CameraManager.call_deferred("enable_camera_smoothing")
+		
 		emit_signal("player_entered", body)
 		
 	elif body.get("is_class_type_base_object"):
@@ -371,6 +406,7 @@ func _teleport_node_to_other_linked_portal(body):
 
 
 func _on_Area2D_body_exited(body):
+	remove_node_to_not_teleport_on_first_enter(body)
 	remove_node_inside_portal__to_return_on_velocity_reversed(body)
 	
 
@@ -382,6 +418,12 @@ func _on_Area2D_body_exited(body):
 
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
+
+#var _rewind_save__nodes_to_not_teleport_on_first_enter
+#var _rewind_save__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed
+
+var _rewind_most_recent_load__nodes_to_not_teleport_on_first_enter
+
 
 #
 
@@ -404,13 +446,35 @@ func _on_obj_removed_from_rewindables(arg_obj):
 
 
 func get_rewind_save_state():
-	return {
+	var save_dic = {
 		"is_disabled" : is_disabled
 	}
 	
+	save_dic["_nodes_to_not_teleport_on_first_enter"] = _nodes_to_not_teleport_on_first_enter.duplicate(true)
+	
+	#if portal_color == PortalColor.BLUE:
+	#	print("saved state: %s" % save_dic)
+	
+	
+	#if _rewind_save__nodes_to_not_teleport_on_first_enter != null:
+	#	save_dic["_rewind_save__nodes_to_not_teleport_on_first_enter"] = _rewind_save__nodes_to_not_teleport_on_first_enter.duplicate()
+	#	
+	#	print("saved state: %s" % save_dic)
+	#	
+	#	_rewind_save__nodes_to_not_teleport_on_first_enter = null
+	
+	return save_dic
 
 func load_into_rewind_save_state(arg_state):
 	set_is_disabled(arg_state["is_disabled"])
+	
+	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_nodes_to_not_teleport_on_first_enter"]
+	#if arg_state.has("_rewind_save__nodes_to_not_teleport_on_first_enter"):
+	#	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_rewind_save__nodes_to_not_teleport_on_first_enter"]
+	#	print("loaded from most recent load: %s" % [_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter])
+	
+	#if portal_color == PortalColor.BLUE:
+	#	print("loaded state: %s" % arg_state)
 	
 
 func destroy_from_rewind_save_state():
@@ -423,10 +487,21 @@ func restore_from_destroyed_from_rewind():
 
 
 func stared_rewind():
+	#print("started rewind")
+	#_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = _nodes_to_not_teleport_on_first_enter.duplicate(true)
+	
 	disabled_collision_cond_clauses.attempt_insert_clause(DisableCollisionClauseId.IN_REWIND)
+	
 
 func ended_rewind():
+	#print("ended rewind")
 	if !is_dead_but_reserved_for_rewind:
+		
+		#set_nodes_to_not_teleport_on_first_enter(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
+		#print(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
+		
+		#_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = null
+		set_nodes_to_not_teleport_on_first_enter(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
 		disabled_collision_cond_clauses.remove_clause(DisableCollisionClauseId.IN_REWIND)
 		
 

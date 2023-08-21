@@ -44,7 +44,6 @@ var _is_at_default_zoom : bool
 
 #
 
-#todo
 #var _special_cam_view_position
 #var _special_cam_view_zoom_level
 
@@ -303,6 +302,22 @@ func is_at_default_zoom():
 
 func get_camera__global_position():
 	return camera.global_position
+
+
+func disable_camera_smoothing():
+	camera.smoothing_enabled = false
+func enable_camera_smoothing():
+	camera.smoothing_enabled = true
+
+
+func make_camera_immediatelty_catch_up_to_node():
+	#camera.force_update_scroll()
+	camera.reset_smoothing()
+	
+	#camera.align()
+
+func set_camera_glob_pos(arg_pos):
+	camera.global_position = arg_pos
 
 
 ###################### 

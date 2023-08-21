@@ -33,7 +33,7 @@ export(float) var momentum_breaking_point : float = MOMENTUM_BREAKING_POINT__NEV
 var _is_breakable : bool
 
 # if this is changable beyond ready, make rewind system take it to account
-const SPEED_SLOWDOWN_RATIO__GLASS = 0.2
+const SPEED_SLOWDOWN_RATIO__GLASS = 0.0
 export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
 
 
@@ -443,8 +443,8 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 	
 	if arg_update_dirty_quadrants:
 		#tilemap.update_dirty_quadrants()
-		#tilemap.call_deferred("update_dirty_quadrants")
-		call_deferred("_tilemap_update_dirty_quadrants")
+		tilemap.call_deferred("update_dirty_quadrants")
+		#call_deferred("_tilemap_update_dirty_quadrants")
 	
 	if arg_save_tiles_data_next_frame__for_rewind_save:
 		_update_cells_save_data()

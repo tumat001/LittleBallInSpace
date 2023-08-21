@@ -28,7 +28,9 @@ enum LevelIds {
 	LEVEL_01__STAGE_3 = 20
 	LEVEL_02__STAGE_3 = 21
 	LEVEL_03__STAGE_3 = 22
-	LEVEL_04__STAGE_3 = 22
+	LEVEL_04__STAGE_3 = 23
+	LEVEL_05__STAGE_3 = 24
+	LEVEL_06__STAGE_3 = 25
 	
 }
 # dont change this in runtime(useless). 
@@ -618,6 +620,33 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
+	elif arg_id == LevelIds.LEVEL_06__STAGE_3:
+		level_details.level_full_name = [
+			["3-6 todo", []]
+		]
+		level_details.level_name = [
+			["todo", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "06"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
@@ -666,7 +695,11 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_02__L3.gd").new()
 	elif arg_id == LevelIds.LEVEL_03__STAGE_3:
 		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_03__L3.gd").new()
-		
+	elif arg_id == LevelIds.LEVEL_04__STAGE_3:
+		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_04__L3.gd").new()
+	elif arg_id == LevelIds.LEVEL_05__STAGE_3:
+		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_05__L3.gd").new()
+	
 	
 	
 
@@ -708,6 +741,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_02__STAGE_3 : 2,
 		LevelIds.LEVEL_03__STAGE_3 : 3,
 		LevelIds.LEVEL_04__STAGE_3 : 2,
+		LevelIds.LEVEL_05__STAGE_3 : 0,
 		
 	}
 	
@@ -780,6 +814,9 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		LevelIds.LEVEL_01__STAGE_3 : [LevelIds.LEVEL_06__STAGE_2],
 		LevelIds.LEVEL_02__STAGE_3 : [LevelIds.LEVEL_01__STAGE_3],
+		LevelIds.LEVEL_03__STAGE_3 : [LevelIds.LEVEL_02__STAGE_3],
+		LevelIds.LEVEL_04__STAGE_3 : [LevelIds.LEVEL_03__STAGE_3],
+		LevelIds.LEVEL_05__STAGE_3 : [LevelIds.LEVEL_04__STAGE_3],
 		
 		
 	}

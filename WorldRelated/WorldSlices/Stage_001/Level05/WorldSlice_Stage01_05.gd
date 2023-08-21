@@ -4,6 +4,7 @@ const Shader_Rainbow = preload("res://MiscRelated/ShadersRelated/Shader_Pickupab
 
 const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260.png")
 
+
 #
 
 onready var vkp_launch_ball = $MiscContainer/VBoxContainer/VKP_LaunchBall
@@ -84,6 +85,7 @@ func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
 	modi.starting_ball_count = 0
 	modi.show_player_trajectory_line = false
+	modi.can_change_aim_mode = false
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 func _start_hide_god_rays():
@@ -241,4 +243,20 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
 	SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_01__STAGE_2
 	
+
+####
+
+func _on_PDAR_TeachAndEnableAimMode_player_entered_in_area():
+	var dialog_desc = [
+		["Look at the bottom left, and you'll see a glowing button. Click it to toggle between aim modes.", []]
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+	
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.connect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed", [], CONNECT_ONESHOT)
+
+func _on_toggle_button_of_mode_change_pressed():
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+
+
 

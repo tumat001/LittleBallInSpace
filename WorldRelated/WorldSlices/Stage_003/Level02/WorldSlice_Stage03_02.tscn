@@ -79,10 +79,12 @@ button_color = 0
 [node name="Portal_Green01" parent="ObjectContainer" index="5" instance=ExtResource( 6 )]
 position = Vector2( -176, -176 )
 portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green02")
 
 [node name="Portal_Green02" parent="ObjectContainer" index="6" instance=ExtResource( 6 )]
 position = Vector2( 491, -192 )
 portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green01")
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 116, -144 )

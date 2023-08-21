@@ -1,9 +1,9 @@
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
-const TILESET_COLOR__BLUE = Color(98/255.0, 78/255.0, 253/255.0)
-const TILESET_COLOR__RED = Color(253/255.0, 77/255.0, 79/255.0)
-const TILESET_COLOR__GREEN = Color(77/255.0, 253/255.0, 120/255.0)
+const TILESET_COLOR__BLUE = Color(28/255.0, 18/255.0, 253/255.0)
+const TILESET_COLOR__RED = Color(253/255.0, 17/255.0, 19/255.0)
+const TILESET_COLOR__GREEN = Color(17/255.0, 253/255.0, 19/255.0)
 
 
 const BUTTON_CONTAINER_Y_CHANGE_DURATION : float = 0.5

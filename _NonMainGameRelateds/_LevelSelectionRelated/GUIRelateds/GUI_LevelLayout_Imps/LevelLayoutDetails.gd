@@ -30,10 +30,10 @@ var modulate_of_level_tile__locked : Color
 var is_level_layout_locked setget set_is_level_layout_locked
 
 
-#var transition_id__entering_layout__out  # from selection to blank
+var transition_id__entering_layout__out  # from selection to blank
 var transition_id__entering_layout__in   # from blank to (this) selection
 
-#var transition_id__exiting_layout__out  # from (this) selection to blank
+var transition_id__exiting_layout__out  # from (this) selection to blank
 var transition_id__exiting_layout__in  # from blank to selection
 
 #

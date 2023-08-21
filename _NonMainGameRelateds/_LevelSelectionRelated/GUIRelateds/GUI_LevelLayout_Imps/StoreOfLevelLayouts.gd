@@ -69,8 +69,10 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 	
 	if arg_id == LevelLayoutIds.LAYOUT_01:
 		_set_details_transition_types__to_usual_circle_types(details)
+		
 	elif arg_id == LevelLayoutIds.LAYOUT_02:
 		_set_details_transition_types__to_usual_circle_types(details)
+		
 	elif arg_id == LevelLayoutIds.LAYOUT_03:
 		_set_details_transition_types__to_usual_circle_types(details)
 		
@@ -123,8 +125,8 @@ func _set_layout_details_configs_and_params_based_on_GSM(arg_details : LevelLayo
 # All black
 func _set_details_transition_types__to_usual_circle_types(arg_details : LevelLayoutDetails):
 	arg_details.transition_id__entering_layout__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
-	#arg_details.transition_id__entering_layout__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
+	arg_details.transition_id__entering_layout__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_layout__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
-	#arg_details.transition_id__exiting_layout__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
+	arg_details.transition_id__exiting_layout__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 
 

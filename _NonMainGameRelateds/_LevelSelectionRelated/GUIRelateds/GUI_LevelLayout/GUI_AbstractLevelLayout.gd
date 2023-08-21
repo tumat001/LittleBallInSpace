@@ -270,10 +270,14 @@ func set_is_layout_enabled(arg_val):
 		if is_layout_enabled:
 			#if !is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
 			#	connect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+			
+			visible = true
 			pass
 		else:
 			#if is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
 			#	disconnect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+			
+			visible = false
 			pass
 
 ##
@@ -559,10 +563,12 @@ func _attempt_add_tile_ele_as_level_only_ele(arg_ele : GUI_LevelLayoutEle_Tile):
 
 func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_LevelLayoutEle_Tile):
 	if arg_ele.is_layout_element_invis_by_default:
-		if GameSaveManager.is_layout_element_id_invis_val_registered(arg_ele.layout_ele_id):
-			var is_invis = GameSaveManager.get_layout_element_id__is_invis(arg_ele.layout_ele_id)
+		if GameSaveManager.is_layout_id__layout_element_id_invis__val_registered(level_layout_id, arg_ele.layout_ele_id):
+			var is_invis = GameSaveManager.get_layout_id__layout_element_id__is_invis(level_layout_id, arg_ele.layout_ele_id)
 			arg_ele.is_layout_element_invis = is_invis
 		else:
 			arg_ele.is_layout_element_invis = arg_ele.is_layout_element_invis_by_default
-			GameSaveManager.set_layout_element_id__is_invis(arg_ele.layout_ele_id, arg_ele.is_layout_element_invis)
+			GameSaveManager.set_layout_id__layout_element_id__is_invis(level_layout_id, arg_ele.layout_ele_id, arg_ele.is_layout_element_invis)
 	
+
+

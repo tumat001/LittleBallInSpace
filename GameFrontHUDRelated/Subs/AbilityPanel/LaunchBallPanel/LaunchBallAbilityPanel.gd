@@ -15,6 +15,9 @@ const color_transition_duration : float = 0.65
 
 const COLOR__NORMAL := Color(1, 1, 1, 1)
 
+#
+
+signal toggle_button_of_mode_change_pressed()
 
 #
 
@@ -33,6 +36,11 @@ onready var plus_sign = $FreeFormControl/PlusSign
 
 onready var background__white_circles = $FreeFormControl/BackgroundWithCircles
 
+onready var aim_mode_icon = $FreeFormControl/ModeContainer/FreeFormControl/AimModeIcon
+onready var aim_mode_label = $FreeFormControl/ModeContainer/FreeFormControl/AimModeLabel
+
+onready var aim_mode_container = $FreeFormControl/ModeContainer
+
 #
 
 func set_player_modi_launch_ball(arg_modi):
@@ -40,6 +48,9 @@ func set_player_modi_launch_ball(arg_modi):
 	
 	player_modi_launch_ball.connect("current_ball_count_changed", self, "_on_modi_current_ball_count_changed", [], CONNECT_PERSIST)
 	player_modi_launch_ball.connect("infinite_ball_count_status_changed", self, "_on_modi_infinite_ball_count_status_changed", [], CONNECT_PERSIST)
+	player_modi_launch_ball.connect("can_change_aim_mode_changed", self, "_on_can_change_aim_mode_changed", [], CONNECT_PERSIST)
+	
+	player_modi_launch_ball.player_modi_launch_ball_node.connect("aim_mode_changed", self, "_on_aim_mode_changed", [], CONNECT_PERSIST)
 	
 	_update_display_based_on_ball_count(player_modi_launch_ball.get_current_ball_count())
 	_update_display_based_on_infinite_ball_count_status()
@@ -48,7 +59,9 @@ func set_player_modi_launch_ball(arg_modi):
 	var ability = player_modi_launch_ball.launch_ability
 	ability.connect("updated_is_ready_for_activation", self, "_on_updated_is_ready_for_activation", [], CONNECT_PERSIST)
 	_on_updated_is_ready_for_activation(ability.is_ready_for_activation())
-
+	
+	_update_display_based_on_aim_mode(player_modi_launch_ball.player_modi_launch_ball_node.current_aim_mode)
+	_update_display_based_on_can_change_aim_mode()
 
 func _on_updated_is_ready_for_activation(arg_val):
 	if arg_val:
@@ -142,4 +155,40 @@ func _end_rainbow_white_frame_tweener():
 		background__white_circles.modulate = COLOR__NORMAL
 		
 		_rainbow_white_frame_tweener = null
+
+#
+
+func _on_can_change_aim_mode_changed(arg_val):
+	_update_display_based_on_can_change_aim_mode()
+
+func _update_display_based_on_can_change_aim_mode():
+	if player_modi_launch_ball.can_change_aim_mode:
+		aim_mode_container.visible = true
+	else:
+		aim_mode_container.visible = false
+	
+
+###
+
+func _on_SwapButton_pressed():
+	player_modi_launch_ball.player_modi_launch_ball_node.toggle_current_aim_mode()
+	
+	emit_signal("toggle_button_of_mode_change_pressed")
+
+func _on_aim_mode_changed(arg_mode):
+	_update_display_based_on_aim_mode(arg_mode)
+	
+
+func _update_display_based_on_aim_mode(arg_mode):
+	if arg_mode == player_modi_launch_ball.player_modi_launch_ball_node.AimMode.OMNI:
+		aim_mode_icon.texture = preload("res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_AimMode_Omni.png")
+		aim_mode_label.text = "Omni"
+		
+	elif arg_mode == player_modi_launch_ball.player_modi_launch_ball_node.AimMode.SNAP:
+		aim_mode_icon.texture = preload("res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_AimMode_Snap.png")
+		aim_mode_label.text = "Snap"
+		
+		
+	
+
 

@@ -4,7 +4,7 @@ extends Node
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
 
-const INSTANT_BREAK_GLASS_TILE__MASS = 10
+const INSTANT_BREAK_GLASS_TILE__MASS = 5
 const BREAKABLE_GLASS_TILE__MASS = 30
 
 
@@ -99,6 +99,8 @@ static func is_tile_id_glowing(arg_id):
 	match arg_id:
 		BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01, BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02:
 			return true
+		INSTANT_BREAK_GLASS_GLOWING_TILE_ID:
+			return true
 	
 	return false
 
@@ -146,7 +148,7 @@ func generate_object_tile_fragments(arg_global_pos : Vector2, arg_top_left_local
 		arg_img : Texture, arg_segments : int,
 		arg_tile_id : int, arg_tile_coords : Vector2):
 	
-	var fragment_mass = get_mass_of_tile_id(arg_tile_id, arg_tile_coords) / arg_segments
+	var fragment_mass = get_mass_of_tile_id(arg_tile_id, arg_tile_coords) / float(arg_segments)
 	
 	var fragments : Array = []
 	
@@ -258,12 +260,16 @@ func get_atlas_texture_from_tile_sheet_id(arg_tile_id, arg_auto_coord):
 
 func generate_atlas_textures_for_tile_sheet(arg_tile_id, arg_tilesheet : Texture, arg_cell_length_and_width : float):
 	var tilesheet_size = arg_tilesheet.get_size()
-	var segment_count = (tilesheet_size.x / arg_cell_length_and_width)
-	segment_count *= segment_count
+	var x_segment_count = (tilesheet_size.x / arg_cell_length_and_width)
+	var y_segment_count = (tilesheet_size.y / arg_cell_length_and_width)
+	#print("x: %s, y: %s" % [x_segment_count, y_segment_count])
+	#var segment_count = (tilesheet_size.x / arg_cell_length_and_width) * (tilesheet_size.y / arg_cell_length_and_width)
+	#segment_count *= segment_count
 	
 	_tile_id_to_auto_coord_to_img_map[arg_tile_id] = {}
 	
-	var rects_and_autocoords = generate_rects_for_size__and_autocoords(tilesheet_size, segment_count)
+	#var rects_and_autocoords = generate_rects_for_size__and_autocoords(tilesheet_size, segment_count)
+	var rects_and_autocoords = generate_rects_for_size__and_autocoords(tilesheet_size, x_segment_count, y_segment_count)
 	for rect_and_autocoord in rects_and_autocoords:
 		var atlas_texture = AtlasTexture.new()
 		atlas_texture.atlas = arg_tilesheet
@@ -271,24 +277,40 @@ func generate_atlas_textures_for_tile_sheet(arg_tile_id, arg_tilesheet : Texture
 		
 		_tile_id_to_auto_coord_to_img_map[arg_tile_id][rect_and_autocoord[1]] = atlas_texture
 	
+	#print(_tile_id_to_auto_coord_to_img_map[arg_tile_id].size())
+	
 	return true
 
 func has_atlas_textures_for_tile_sheet(arg_tile_id):
 	return _tile_id_to_auto_coord_to_img_map.has(arg_tile_id)
 
 
-func generate_rects_for_size__and_autocoords(arg_size : Vector2, arg_segments : int) -> Array:
-	var root_segment_ceil = ceil(sqrt(arg_segments))
+func generate_rects_for_size__and_autocoords(arg_size : Vector2, arg_x_segments : int, arg_y_segments : int) -> Array:
+	#var root_segment_ceil = ceil(sqrt(arg_segments))
 	
-	var full_length_per_segment = arg_size.x / root_segment_ceil
-	var lengths : Array = []
-	var remaining_length = arg_size.x
-	while (remaining_length > 0):
-		remaining_length -= full_length_per_segment
-		if remaining_length < 0:
-			lengths.append(full_length_per_segment - remaining_length)
-		else:
-			lengths.append(full_length_per_segment)
+	var x_full_length = arg_size.x
+	var x_lengths : Array = []
+	var x_remaining_length = x_full_length
+	while (x_remaining_length > 0):
+		x_remaining_length -= arg_size.x / float(arg_x_segments)
+		x_lengths.append(arg_size.x / float(arg_x_segments))
+		#if x_remaining_length > 0:
+		#	x_lengths.append(x_full_length - x_remaining_length)
+		#else:
+		#	x_lengths.append(x_full_length)
+	
+	
+	var y_full_length = arg_size.y
+	var y_lengths : Array = []
+	var y_remaining_length = y_full_length
+	while (y_remaining_length > 0):
+		y_remaining_length -= arg_size.y / float(arg_y_segments)
+		y_lengths.append(arg_size.y / float(arg_y_segments))
+		#if y_remaining_length > 0:
+		#	y_lengths.append(y_full_length - y_remaining_length)
+		#else:
+		#	y_lengths.append(y_full_length)
+	
 	
 	##
 	
@@ -296,24 +318,30 @@ func generate_rects_for_size__and_autocoords(arg_size : Vector2, arg_segments : 
 	#var auto_coords : Array = []
 	
 	var i_x = 0
+	var i_y = 0
 	var total_x_traversed = 0
-	for length in lengths:
+	for x_length in x_lengths:
 		var old_x_total = total_x_traversed
-		total_x_traversed += length
+		total_x_traversed += x_length
 		
 		var total_y_traversed = 0
-		for i_y in lengths.size():
+		for y_length in y_lengths:
 			var old_y_total = total_y_traversed
-			total_y_traversed += length
+			total_y_traversed += y_length
 			
 			#rects.append(Rect2(old_x_total, old_y_total, length, length))
 			#auto_coords.append([i_x + 1, i_y + 1])
 			
-			var rect = Rect2(old_x_total, old_y_total, length, length)
+			var rect = Rect2(old_x_total, old_y_total, x_length, y_length)
 			var auto_coords = Vector2(i_x, i_y)
 			rects_and_auto_coords.append([rect, auto_coords])
+			
+			i_y += 1
 		
 		i_x += 1
+		i_y = 0
+	
+	
 	
 	return rects_and_auto_coords
 
