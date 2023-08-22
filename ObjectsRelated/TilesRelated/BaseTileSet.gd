@@ -28,9 +28,26 @@ var _is_energy_mode_set : bool = false
 export(EnergyMode) var energy_mode : int setget set_energy_mode
 
 # if this is changable beyond ready, make rewind system take it to account
-const MOMENTUM_BREAKING_POINT__NEVER_BREAK = -1
-export(float) var momentum_breaking_point : float = MOMENTUM_BREAKING_POINT__NEVER_BREAK setget set_momentum_breaking_point
+const MOMENTUM_FOR_BREAK__NEVER_BREAK = -1
+const MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE = 0
+const MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE = 21000  # 150 speed needed for break
+
+enum MomentumForBreakStandard {
+	NEVER_BREAK = 0,
+	INSTANT_BREAK = 1,
+	SIMPLE_BREAKABLE = 2,
+}
+const _momentum_break_standard_to_momentum_val_map = {
+	MomentumForBreakStandard.NEVER_BREAK : MOMENTUM_FOR_BREAK__NEVER_BREAK,
+	MomentumForBreakStandard.INSTANT_BREAK : MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE,
+	MomentumForBreakStandard.SIMPLE_BREAKABLE : MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE,
+}
+
+export(MomentumForBreakStandard) var momentum_breaking_point_standard : int = MomentumForBreakStandard.NEVER_BREAK setget set_momentum_breaking_point_standard
+#export(float) var momentum_breaking_point : float = MOMENTUM_BREAKING_POINT__NEVER_BREAK setget set_momentum_breaking_point
+var momentum_breaking_point #setget set_momentum_breaking_point
 var _is_breakable : bool
+
 
 # if this is changable beyond ready, make rewind system take it to account
 const SPEED_SLOWDOWN_RATIO__GLASS = 0.0
@@ -117,6 +134,8 @@ func set_energy_mode(arg_val):
 #
 
 func _ready():
+	set_momentum_breaking_point_standard(momentum_breaking_point_standard)
+	
 	_update_display_based_on_energy_mode()
 	_update_properties_based_on_is_breakable()
 	
@@ -160,14 +179,18 @@ func _update_tilemap_modulate():
 
 #
 
-func set_momentum_breaking_point(arg_val):
+func set_momentum_breaking_point_standard(arg_val):
+	momentum_breaking_point_standard = arg_val
+	_set_momentum_breaking_point(_momentum_break_standard_to_momentum_val_map[arg_val])
+
+func _set_momentum_breaking_point(arg_val):
 	momentum_breaking_point = arg_val
 	
 	if is_inside_tree():
 		_update_properties_based_on_is_breakable()
 
 func _update_properties_based_on_is_breakable():
-	if momentum_breaking_point == MOMENTUM_BREAKING_POINT__NEVER_BREAK:
+	if is_equal_approx(momentum_breaking_point, MOMENTUM_FOR_BREAK__NEVER_BREAK):
 		_is_breakable = false
 		set_process(false)
 		

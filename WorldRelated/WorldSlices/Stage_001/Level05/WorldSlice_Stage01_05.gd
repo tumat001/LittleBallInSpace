@@ -292,3 +292,10 @@ func _end_show_of_change_aim_mode():
 func _on_PDAR_EndTeachAimMode_player_entered_in_area():
 	if _is_displaying_switch_aim_mode:
 		_end_show_of_change_aim_mode()
+
+
+func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
+	GameSaveManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
+	
+
+

@@ -257,7 +257,7 @@ var player_hit_tile_particle_compo_pool : AnimSpriteComponentPool
 
 ##
 
-var ignore_effect_based_on_pos_change__next_frame : bool
+var ignore_effect_based_on_pos_change__next_frame_count : int
 
 ##
 
@@ -919,11 +919,12 @@ func _physics_process(delta):
 		_player_prev_global_position = global_position
 		
 		
-		if !ignore_effect_based_on_pos_change__next_frame:
+		if ignore_effect_based_on_pos_change__next_frame_count <= 0:
+			ignore_effect_based_on_pos_change__next_frame_count = 0
 			_do_effects_based_on_pos_changes(prev_pos_change_from_last_frame, _player_pos_change_from_last_frame, delta)
 		else:
 			#ignore_effect_based_on_pos_change__next_frame = false
-			set_deferred("ignore_effect_based_on_pos_change__next_frame", false)
+			ignore_effect_based_on_pos_change__next_frame_count -= 1
 
 #func _get_scalar_diff_of_vector_using_vec_substraction__max_one(arg_vec_minuend : Vector2, arg_vec_subtrahend : Vector2):
 #	var x_diff = float(arg_vec_minuend.x) - arg_vec_subtrahend.x
@@ -1822,6 +1823,14 @@ func _is_any_static_body_impeding_movement(arg_counter_mov : Vector2):
 	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
 	return false
 
+
+#
+
+func get_base_player_size():
+	return _base_player_size
+
+func get_player_radius():
+	return _base_player_size.x
 
 ###################### 
 # REWIND RELATED

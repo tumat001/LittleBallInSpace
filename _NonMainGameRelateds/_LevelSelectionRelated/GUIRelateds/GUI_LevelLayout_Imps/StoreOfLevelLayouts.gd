@@ -13,6 +13,7 @@ enum LevelLayoutIds {
 	LAYOUT_01 = 1
 	LAYOUT_02 = 2,
 	LAYOUT_03 = 3,
+	LAYOUT_04 = 4,
 	
 }
 
@@ -44,6 +45,8 @@ func generate_instance_of_layout(arg_id):
 		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/02/GUI_Imp_LevelLayout_02.tscn")
 	if arg_id == LevelLayoutIds.LAYOUT_03:
 		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/03/GUI_Imp_LevelLayout_03.tscn")
+	if arg_id == LevelLayoutIds.LAYOUT_04:
+		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/04/GUI_Imp_LevelLayout_04.tscn")
 	
 	
 	return scene_ref.instance()
@@ -76,7 +79,9 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 	elif arg_id == LevelLayoutIds.LAYOUT_03:
 		_set_details_transition_types__to_usual_circle_types(details)
 		
-	
+	elif arg_id == LevelLayoutIds.LAYOUT_04:
+		_set_details_transition_types__to_usual_circle_types(details)
+		
 	
 	_set_layout_details_configs_and_params_based_on_GSM(details)
 	

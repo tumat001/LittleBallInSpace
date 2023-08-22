@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/InGamePauseRelated/Subs/InGamePause_MainPage/Assets/InGamePause_MainPage_Background.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/InGamePauseRelated/Subs/InGamePause_MainPage/InGamePause_MainPage.gd" type="Script" id=4]
 [ext_resource path="res://_NonMainGameRelateds/_Master/AudioRelated/GUI/AudioSettingsPanel/AudioSettingsPanel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=6]
+[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/CurrentControlsPanel/CurrentControlsPanel.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 38
@@ -134,6 +135,12 @@ margin_top = 470.0
 margin_right = 620.0
 margin_bottom = 491.0
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+
+[node name="CurrentControlsPanel" parent="FreeFormControl" instance=ExtResource( 7 )]
+margin_left = 76.0
+margin_top = 88.0
+margin_right = 275.0
+margin_bottom = 456.0
 
 [connection signal="button_pressed" from="MainContainer/FreeFormControl/VBoxContainer/Button_Resume" to="." method="_on_Button_Resume_button_pressed"]
 [connection signal="button_pressed" from="MainContainer/FreeFormControl/VBoxContainer/Button_Restart" to="." method="_on_Button_Restart_button_pressed"]

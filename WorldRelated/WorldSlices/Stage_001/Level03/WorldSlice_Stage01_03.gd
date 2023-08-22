@@ -30,9 +30,19 @@ func _on_after_game_start_init():
 	vkp_zoom_out.text_for_keypress = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()
 	
 	var orig_text_slowdown = vkp_slow_down.text_for_keypress
-	vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[2].as_text()
+	vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
 	
 	
 
+##
 
+func _on_PDAR_RewindControlUnhide_player_entered_in_area():
+	GameSaveManager.set_game_control_name_string__is_hidden("rewind", false)
+	
+
+
+func _on_PDAR_ZoomAndSlow_player_entered_in_area():
+	GameSaveManager.set_game_control_name_string__is_hidden("game_zoom_out", false)
+	GameSaveManager.set_game_control_name_string__is_hidden("ui_down", false)
+	
 

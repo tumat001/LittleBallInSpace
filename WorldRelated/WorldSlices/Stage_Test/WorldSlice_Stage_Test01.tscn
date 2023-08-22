@@ -3,7 +3,7 @@
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
-[ext_resource path="res://WorldRelated/WorldSlices/Stage_001/Level01/WorldSlice_Stage01_01.gd" type="Script" id=4]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_Test/WorldSlice_Stage_Test01.gd" type="Script" id=4]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Battery/Pickupable_Battery.tscn" type="PackedScene" id=5]
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_PickupableOutline.tres" type="Shader" id=6]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=7]
@@ -30,7 +30,7 @@ script = ExtResource( 4 )
 [node name="BaseTileSet" parent="TileContainer" index="0" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet" index="0"]
-tile_data = PoolIntArray( -589805, 0, 262145, -589804, 0, 262145, -589803, 0, 262145, -589802, 0, 262145, -589801, 0, 262145, -589800, 0, 262145, -589799, 0, 262145, -589798, 0, 262145, -393195, 0, 196612, -327659, 0, 196612, -262123, 0, 196612, -196587, 0, 196612, -131049, 0, 196612, -65513, 0, 196612, 65531, 0, 1, 65532, 0, 1, 65533, 0, 1, 65534, 0, 1, 65535, 0, 1, 0, 0, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0, 1, 5, 0, 1, 6, 0, 1, 7, 0, 1, 8, 0, 1, 9, 0, 1, 10, 0, 1, 11, 0, 1, 12, 0, 1, 13, 0, 1, 14, 0, 1, 15, 0, 262145, 23, 0, 1, 24, 0, 1, 25, 0, 1, 26, 0, 1, 27, 0, 1, 28, 0, 1, 29, 0, 1, 30, 0, 1, 31, 0, 1, 32, 0, 1, 33, 0, 1, 34, 0, 1, 35, 0, 1, 131088, 0, 1, 131089, 0, 1, 131090, 0, 1, 131091, 0, 1, 131092, 0, 1, 262146, 0, 4, 262172, 0, 196612, 327685, 0, 196610, 327708, 0, 196612, 393218, 0, 4, 393221, 0, 196610, 393244, 0, 196612, 458757, 0, 196610, 458780, 0, 196612, 524290, 0, 4, 524293, 0, 196610, 524316, 0, 196612, 589829, 0, 196610, 655365, 0, 196610, 720902, 0, 0, 720903, 0, 1, 720904, 0, 1, 720905, 0, 1, 720906, 0, 1, 720907, 0, 1, 720908, 0, 1, 720909, 0, 1, 720910, 0, 1, 720911, 0, 1, 720912, 0, 1, 720913, 0, 1, 720914, 0, 1, 720915, 0, 1, 720916, 0, 1, 720917, 0, 1, 720918, 0, 1, 720919, 0, 1, 720920, 0, 1, 720921, 0, 1, 720928, 0, 1, 720929, 0, 1, 720930, 0, 1, 720931, 0, 1, 720932, 0, 1, 720933, 0, 1, 720934, 0, 1, 720935, 0, 1, 720936, 0, 1, 720937, 0, 1, 720938, 0, 1, 720939, 0, 1, 786460, 0, 196612, 851996, 0, 196612, 917532, 0, 196612, 983068, 0, 196612, 1048604, 0, 196612, 1114140, 0, 196612, 1179676, 0, 196612, 1245212, 0, 196612, 1310748, 0, 196612, 1376284, 0, 196612, 1441820, 0, 196612, 1507356, 0, 196612, 1572892, 0, 196612, 1638428, 0, 196612, 1703964, 0, 196612, 1769500, 0, 196612, 1835036, 0, 196612, 1900572, 0, 196612 )
+tile_data = PoolIntArray( -589805, 0, 262145, -589804, 0, 262145, -589803, 0, 262145, -589802, 0, 262145, -589801, 0, 262145, -589800, 0, 262145, -589799, 0, 262145, -589798, 0, 262145, -393195, 0, 196612, -327659, 0, 196612, -262123, 0, 196612, -196587, 0, 196612, -131049, 0, 196612, -65513, 0, 196612, 65531, 0, 1, 65532, 0, 1, 65533, 0, 1, 65534, 0, 1, 65535, 0, 1, 0, 0, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0, 1, 5, 0, 1, 6, 0, 1, 7, 0, 1, 8, 0, 1, 9, 0, 1, 10, 0, 1, 11, 0, 1, 12, 0, 1, 13, 0, 1, 14, 0, 1, 15, 0, 262145, 23, 0, 1, 24, 0, 1, 25, 0, 1, 26, 0, 1, 27, 0, 1, 28, 0, 1, 29, 0, 1, 30, 0, 1, 31, 0, 1, 32, 0, 1, 33, 0, 1, 34, 0, 1, 35, 0, 1, 131088, 0, 1, 131089, 0, 1, 131090, 0, 1, 131091, 0, 1, 131092, 0, 1, 262146, 0, 4, 262167, 0, 1, 262168, 0, 1, 262169, 0, 1, 262170, 0, 1, 262171, 0, 1, 262172, 0, 196612, 262173, 0, 1, 262174, 0, 1, 262175, 0, 1, 262176, 0, 1, 262178, 2, 0, 262179, 2, 0, 262180, 2, 0, 262181, 2, 0, 262182, 2, 0, 327685, 0, 196610, 327708, 0, 196612, 393218, 0, 4, 393221, 0, 196610, 393244, 0, 196612, 458757, 0, 196610, 458780, 0, 196612, 524290, 0, 4, 524293, 0, 196610, 524316, 0, 196612, 589829, 0, 196610, 655365, 0, 196610, 720902, 0, 0, 720903, 0, 1, 720904, 0, 1, 720905, 0, 1, 720906, 0, 1, 720907, 0, 1, 720908, 0, 1, 720909, 0, 1, 720910, 0, 1, 720911, 0, 1, 720912, 0, 1, 720913, 0, 1, 720914, 0, 1, 720915, 0, 1, 720916, 0, 1, 720917, 0, 1, 720918, 0, 1, 720919, 0, 1, 720920, 0, 1, 720921, 0, 1, 720928, 0, 1, 720929, 0, 1, 720930, 0, 1, 720931, 0, 1, 720932, 0, 1, 720933, 0, 1, 720934, 0, 1, 720935, 0, 1, 720936, 0, 1, 720937, 0, 1, 720938, 0, 1, 720939, 0, 1, 786460, 0, 196612, 851996, 0, 196612, 917532, 0, 196612, 983068, 0, 196612, 1048604, 0, 196612, 1114140, 0, 196612, 1179676, 0, 196612, 1245212, 0, 196612, 1310748, 0, 196612, 1376284, 0, 196612, 1441820, 0, 196612, 1507356, 0, 196612, 1572892, 0, 196612, 1638428, 0, 196612, 1703964, 0, 196612, 1769500, 0, 196612, 1835036, 0, 196612, 1900572, 0, 196612 )
 
 [node name="BaseTileSet2" parent="TileContainer" index="1" instance=ExtResource( 3 )]
 energy_mode = 2
@@ -39,7 +39,7 @@ energy_mode = 2
 tile_data = PoolIntArray( 393240, 0, 4, 458776, 0, 4, 524302, 0, 4, 524303, 0, 4, 524304, 0, 4, 524305, 0, 4, 524306, 0, 4, 524307, 0, 4, 524312, 0, 4 )
 
 [node name="BaseTileSet3" parent="TileContainer" index="2" instance=ExtResource( 3 )]
-momentum_breaking_point = 25000.0
+momentum_breaking_point_standard = 2
 
 [node name="TileMap" parent="TileContainer/BaseTileSet3" index="0"]
 tile_data = PoolIntArray( 36, 2, 0, 37, 2, 0, 38, 2, 0, 39, 2, 0, 40, 2, 0, 41, 2, 0, 65564, 2, 0, 65569, 2, 0, 131100, 2, 0, 131105, 2, 0, 196636, 2, 0, 196641, 2, 0, 262177, 2, 0, 327713, 2, 0, 393249, 2, 0 )
@@ -61,13 +61,15 @@ position = Vector2( 937, 163 )
 duration_for_capture = 3.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
-position = Vector2( 52.75, -78.25 )
+position = Vector2( 241, 131 )
 shape = SubResource( 3 )
 
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 323, 162 )
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet4")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 2
 
 [node name="Pickupable_Battery" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
@@ -78,7 +80,10 @@ position = Vector2( 366, 60 )
 position = Vector2( 403, 58 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 1039, 173 )
+position = Vector2( 791, 49 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BaseTileSet2"]

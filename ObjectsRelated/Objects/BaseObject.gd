@@ -21,6 +21,7 @@ var last_calculated_object_mass : float
 enum BlockCollisionWithPlayerClauseIds {
 	BLOCK_UNTIL_EXIT_PLAYER = 1
 	TILE_FRAGMENT__DURATION_DELAY = 2
+	IS_TILE_FRAGMENT = 3
 }
 var block_can_collide_with_player_cond_clauses : ConditionalClauses
 var last_calculated_can_collide_with_player : bool
@@ -113,6 +114,8 @@ func set_texture_in_anim_sprite__first_time(arg_texture : Texture, arg_create_sh
 	var shape = RectangleShape2D.new()
 	shape.extents = arg_texture.get_size() / 2
 	collision_shape.set_deferred("shape", shape)
+	
+	return shape
 
 #
 

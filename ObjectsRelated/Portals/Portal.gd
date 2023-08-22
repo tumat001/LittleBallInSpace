@@ -242,7 +242,7 @@ func _initialize_is_scene_transition_type_portal():
 func _on_player_entered__for_scene_transition(arg_player):
 	arg_player.visible = false
 	
-	#todo not working
+	#todo ripple effect not working
 	#_start_show_ripple_effect()
 	
 
@@ -408,7 +408,7 @@ func _teleport_node_to_other_linked_portal(body):
 	
 	if body.get("is_player"):
 		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
-		body.ignore_effect_based_on_pos_change__next_frame = true
+		body.ignore_effect_based_on_pos_change__next_frame_count = 2
 		#CameraManager.disable_camera_smoothing()
 	
 	body.global_position = _portal_to_link_with.global_position
@@ -416,7 +416,7 @@ func _teleport_node_to_other_linked_portal(body):
 	if body.get("is_player"):
 		var dist = _portal_to_link_with.global_position.distance_to(global_position)
 		#print(dist)
-		if dist >= 300:
+		if dist >= 9000:
 			#CameraManager.set_camera_glob_pos(_portal_to_link_with.global_position)
 			CameraManager.make_camera_immediatelty_catch_up_to_node()
 			

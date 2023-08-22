@@ -8,3 +8,11 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" parent="." index="1"]
 position = Vector2( 0, -0.5 )
+
+[node name="PlayerSoftArea2D" type="Area2D" parent="." index="2"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSoftArea2D" index="0"]
+
+[connection signal="body_entered" from="PlayerSoftArea2D" to="." method="_on_PlayerSoftArea2D_body_entered"]
+[connection signal="body_exited" from="PlayerSoftArea2D" to="." method="_on_PlayerSoftArea2D_body_exited"]

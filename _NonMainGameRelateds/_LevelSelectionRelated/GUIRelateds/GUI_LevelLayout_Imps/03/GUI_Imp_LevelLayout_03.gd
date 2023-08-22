@@ -10,6 +10,7 @@ onready var level_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_05
 
 
 onready var layout_02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To02
+onready var layout_04__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To04
 
 
 #
@@ -28,5 +29,8 @@ func _ready():
 	
 	layout_02__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02)
 	layout_02__tile.layout_ele_id_to_put_cursor_to = 15
+	
+	layout_04__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_04)
+	layout_04__tile.layout_ele_id_to_put_cursor_to = 0
 	
 

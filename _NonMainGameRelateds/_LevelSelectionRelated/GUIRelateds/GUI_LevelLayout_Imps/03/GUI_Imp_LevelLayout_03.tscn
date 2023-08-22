@@ -100,7 +100,7 @@ margin_right = 460.0
 margin_bottom = 322.0
 is_path = true
 
-[node name="GUI_LevelLayoutEle_Tile_06" parent="LayoutElesContainer" index="14" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Layout_To04" parent="LayoutElesContainer" index="14" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 276.0
 margin_right = 506.0

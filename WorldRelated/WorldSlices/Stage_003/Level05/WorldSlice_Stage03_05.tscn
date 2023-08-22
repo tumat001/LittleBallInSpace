@@ -63,7 +63,6 @@ modulate = Color( 1, 0.129412, 0.129412, 1 )
 tile_data = PoolIntArray( 327681, 7, 65538, 327682, 7, 65540, 458743, 9, 0, 524279, 9, 131072 )
 
 [node name="BaseTileSet_Breakables" parent="TileContainer" index="6" instance=ExtResource( 3 )]
-momentum_breaking_point = 0.0
 is_rewindable = true
 
 [node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 6 )]
