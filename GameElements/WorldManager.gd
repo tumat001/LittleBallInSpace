@@ -14,6 +14,12 @@ var _world_slice_to_is_captured_all_PCA_map : Dictionary
 
 var _is_all_world_slice_PCAs_captured : bool = false
 
+#
+
+var _all_pca_to_is_captured_map : Dictionary
+
+var _all_uncaptured_pca : Array
+
 ######
 
 func add_world_slice(arg_world_slice_id, arg_glob_pos : Vector2):
@@ -75,6 +81,12 @@ func _update_is_all_world_slice_PCAs_captured(arg_emit_signal : bool):
 	var old_val = _is_all_world_slice_PCAs_captured
 	_is_all_world_slice_PCAs_captured = _is_all_PCAs_captured__internal_calcs()
 	
+	#
+	
+	_update_all_pca_to_is_captured_map()
+	
+	#
+	
 	if arg_emit_signal:
 		if old_val != _is_all_world_slice_PCAs_captured:
 			if _is_all_world_slice_PCAs_captured:
@@ -83,9 +95,7 @@ func _update_is_all_world_slice_PCAs_captured(arg_emit_signal : bool):
 				
 			else:
 				emit_signal("all_PCAs_of_all_world_slices_uncaptured")
-				
-				
-	
+
 
 func _is_all_PCAs_captured__internal_calcs():
 	for is_captured in _world_slice_to_is_captured_all_PCA_map.values():
@@ -97,4 +107,33 @@ func _is_all_PCAs_captured__internal_calcs():
 
 func is_all_world_slice_PCAs_captured() -> bool:
 	return _is_all_world_slice_PCAs_captured
+
+
+#
+
+func _update_all_pca_to_is_captured_map():
+	for world_slice in _world_slice_to_is_captured_all_PCA_map.keys():
+		var all_win_type_pca_to_is_captured_map = world_slice.get_all_win_type_player_capture_area_region_to_is_captured_map()
+		for pca in all_win_type_pca_to_is_captured_map.keys():
+			var is_captured = all_win_type_pca_to_is_captured_map[pca]
+			
+			_all_pca_to_is_captured_map[pca] = is_captured
+			
+			if is_captured and _all_uncaptured_pca.has(pca):
+				_all_uncaptured_pca.erase(pca)
+			elif !is_captured and !_all_uncaptured_pca.has(pca):
+				_all_uncaptured_pca.append(pca)
+
+func get_all_uncaptured_pca():
+	return _all_uncaptured_pca
+
+#func _initialize_all_pca_to_is_captured_map():
+#	for world_slice in _world_slice_to_is_captured_all_PCA_map.keys():
+#		var all_win_type_pca_to_is_captured_map = world_slice.get_all_win_type_player_capture_area_region_to_is_captured_map()
+#		for pca in all_win_type_pca_to_is_captured_map.keys():
+#			var is_captured = all_win_type_pca_to_is_captured_map[pca]
+#
+#			_all_pca_to_is_captured_map[pca] = is_captured
+#
+
 

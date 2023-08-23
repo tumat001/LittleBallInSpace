@@ -63,3 +63,14 @@ func show_in_game_pause_control_tree():
 	in_game_pause_panel_tree.show_in_game_pause_main_page()
 
 
+
+func show_warning_out_of_map_bounds():
+	pass
+	
+
+func hide_warning_out_of_map_bounds():
+	pass
+	
+
+
+

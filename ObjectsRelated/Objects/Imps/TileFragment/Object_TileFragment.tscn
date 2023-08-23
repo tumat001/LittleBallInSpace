@@ -4,6 +4,8 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/TileFragment/Object_TileFragment.gd" type="Script" id=2]
 
 [node name="Object_TileFragment" instance=ExtResource( 1 )]
+collision_layer = 128
+collision_mask = 136
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" parent="." index="1"]
@@ -11,6 +13,7 @@ position = Vector2( 0, -0.5 )
 
 [node name="PlayerSoftArea2D" type="Area2D" parent="." index="2"]
 collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSoftArea2D" index="0"]
 

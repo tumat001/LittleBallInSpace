@@ -1,26 +1,90 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_004/Level01/WorldSlice_Stage04_01.gd" type="Script" id=2]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 38.5, 96.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 54, 29.5 )
 
 [node name="WorldSlice_Stage04_01" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 3 )]
 
+[node name="TileMap" parent="TileContainer/BaseTileSet_Normal" index="0"]
+tile_data = PoolIntArray( -1179640, 14, 196608, -1114104, 14, 262144, -1048568, 14, 262144, -786428, 14, 262146, -786427, 14, 262147, -786426, 14, 262147, -786425, 14, 262147, -786424, 14, 262148, -720882, 14, 196608, -655346, 14, 262144, -589810, 14, 262144, -524274, 14, 262144, -458738, 14, 262144, -393202, 14, 262144, -327666, 14, 262144, -262130, 14, 327680, -196607, 14, 262146, -196606, 14, 262147, -196605, 14, 262147, -196604, 14, 262147, -196603, 14, 262147, -196602, 14, 262147, -196601, 14, 262147, -196600, 14, 262147, -196599, 14, 262147, -196598, 14, 262148, -131061, 14, 196608, -65525, 14, 262144, 11, 14, 262144, 65547, 14, 262144, 131083, 14, 262144, 196619, 14, 327680 )
+
 [node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
 energy_mode = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
 modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( -1900560, 14, 262146, -1900559, 14, 262147, -1900558, 14, 262147, -1900557, 14, 262147, -1900556, 14, 262147, -1900555, 14, 262147, -1900554, 14, 262147, -1900553, 14, 262147, -1900552, 14, 262147, -1900551, 14, 262148, -1835025, 14, 196608, -1769489, 14, 262144, -1703953, 14, 262144, -1703943, 14, 262146, -1703942, 14, 262147, -1703941, 14, 262147, -1703940, 14, 262147, -1703939, 14, 4, -1638417, 14, 262144, -1638403, 14, 327680, -1703933, 14, 196608, -1572881, 14, 262144, -1638397, 14, 262144, -1507345, 14, 327680, -1572861, 14, 262144, -1441808, 14, 262146, -1441807, 14, 262147, -1441806, 14, 262147, -1441805, 14, 262148, -1441799, 14, 262146, -1441798, 14, 262147, -1441797, 14, 262147, -1441796, 14, 262147, -1441795, 14, 262147, -1441794, 14, 262147, -1441793, 14, 262147, -1507328, 14, 262147, -1507327, 14, 262147, -1507326, 14, 262147, -1507325, 14, 131076, -1245183, 14, 196608, -1179647, 14, 262144, -1114111, 14, 262144, -1048575, 14, 262144, -983039, 14, 262144, -983032, 14, 131074, -983031, 14, 262147, -983030, 14, 262147, -983029, 14, 262147, -983028, 14, 262147, -983027, 14, 262147, -983026, 14, 262148, -917503, 14, 262144, -851967, 14, 262144, -786431, 14, 327680, -458754, 14, 262146, -458753, 14, 262147, -524288, 14, 262147, -524287, 14, 262148, -393219, 14, 196608, -327683, 14, 262144, -262147, 14, 262144, -196611, 14, 262144, -131075, 14, 262144, -65539, 14, 262144, -3, 14, 327680, 327678, 14, 262146, 327679, 14, 262147, 262144, 14, 262147, 262145, 14, 262147, 262146, 14, 262147, 262147, 14, 262147, 262148, 14, 262147, 262149, 14, 262147, 262150, 14, 262147, 262151, 14, 262147, 262152, 14, 262147, 262153, 14, 262147, 262154, 14, 262148 )
 
-[node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 3 )]
-energy_mode = 2
+[node name="BaseTileSet_InstantBreak" parent="TileContainer" index="2" instance=ExtResource( 3 )]
 
-[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
-modulate = Color( 0.682353, 0.372549, 0, 1 )
+[node name="TileMap" parent="TileContainer/BaseTileSet_InstantBreak" index="0"]
+tile_data = PoolIntArray( -983034, 16, 0, -983033, 16, 0, -458748, 16, 0, -458745, 16, 0, -65532, 16, 196608, -65529, 16, 196608, 4, 16, 262144, 7, 16, 262144, 65540, 16, 262144, 65543, 16, 262144, 131076, 16, 262144, 131079, 16, 262144, 196612, 16, 327680, 196615, 16, 327680 )
+
+[node name="BaseTileSet_Fragile" parent="TileContainer" index="3" instance=ExtResource( 3 )]
+glass_breakable_type = 3
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Fragile" index="0"]
+tile_data = PoolIntArray( -1572874, 17, 196608, -1507338, 17, 262144, -1441802, 17, 262144, -1376266, 17, 262144, -1310730, 17, 327680, -1114110, 17, 262146, -1114109, 17, 262148 )
+
+[node name="PDAR_NearFragileGlassType" parent="AreaRegionContainer" index="0" instance=ExtResource( 5 )]
+position = Vector2( 34, -570 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_NearFragileGlassType" index="0"]
+position = Vector2( 39.5, 124.5 )
+shape = SubResource( 1 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 6 )]
+position = Vector2( -91, -787 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 133, 21.5 )
+shape = SubResource( 2 )
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 77, -365 )
+
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
+position = Vector2( 78, -849 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 36, 111 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[node name="MiscContainer" type="Node2D" parent="." index="6"]
+
+[node name="GlassInsLabel" type="Label" parent="MiscContainer" index="0"]
+margin_left = 15.0
+margin_top = -631.0
+margin_right = 318.0
+margin_bottom = -583.0
+rect_rotation = 90.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Glass breaks at certain speeds.
+You can hover your mouse over glass
+ to see the breaking speed."
+align = 1
+
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_NearFragileGlassType" to="." method="_on_PDAR_NearFragileGlassType_player_entered_in_area"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
-[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="TileContainer/BaseTileSet_InstantBreak"]
+[editable path="TileContainer/BaseTileSet_Fragile"]
+[editable path="AreaRegionContainer/PDAR_NearFragileGlassType"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

@@ -261,6 +261,10 @@ var ignore_effect_based_on_pos_change__next_frame_count : int
 
 ##
 
+var is_show_lines_to_uncaptured_player_capture_regions : bool = false setget set_is_show_lines_to_uncaptured_player_capture_regions
+
+##
+
 const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 0.5
 const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
 const NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC : float = 10.5
@@ -297,7 +301,7 @@ onready var anim_on_screen = $SpriteLayer/AnimOnScreen
 onready var main_body_sprite = $SpriteLayer/MainBodySprite
 
 onready var pca_progress_drawer = $PCAProgressDrawer
-
+onready var pca_line_direction_drawer = $PCALineDirectionDrawer
 
 onready var light_2d = $Light2D
 
@@ -1106,8 +1110,7 @@ func _process(delta):
 				
 			else:
 				_no_energy_consecutive_duration = 0
-
-
+	
 
 #############
 
@@ -1822,6 +1825,14 @@ func _is_any_static_body_impeding_movement(arg_counter_mov : Vector2):
 	
 	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
 	return false
+
+#
+
+func set_is_show_lines_to_uncaptured_player_capture_regions(arg_val):
+	is_show_lines_to_uncaptured_player_capture_regions = arg_val
+	
+	pca_line_direction_drawer.is_show_lines_to_uncaptured_player_capture_regions = arg_val
+
 
 
 #

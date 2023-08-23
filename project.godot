@@ -125,6 +125,7 @@ game_zoom_out={
 2d_physics/layer_5="PlayerPickupables"
 2d_physics/layer_6="AreaRegionForPlayer"
 2d_physics/layer_7="AreaRegionForObjects"
+2d_physics/layer_8="ObjectTileFragments"
 
 [physics]
 

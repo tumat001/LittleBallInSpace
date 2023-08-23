@@ -211,6 +211,12 @@ func add_to_rewindables(arg_obj):
 			#arg_obj.add_to_group(REWINDABLE_GROUP_NAME)
 			_all_registered_rewindables.append(arg_obj)
 
+#func remove_from_rewindables(arg_obj):
+#	if _all_registered_rewindables.has(arg_obj):
+#		arg_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
+#		_remove_obj_from_all_registered_rewindables(arg_obj)
+#
+
 
 
 #
@@ -316,6 +322,7 @@ func _physics_process(delta):
 		
 		# remove permanently since the timeline of spawn has been passed (backwards)
 		for non_existing_obj in objs_for_traversal:
+			#remove_from_rewindables(non_existing_obj)
 			non_existing_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
 			_remove_obj_from_all_registered_rewindables(non_existing_obj)
 		

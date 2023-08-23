@@ -64,7 +64,7 @@ enum AudioIds {
 	SFX_LaunchBall_03 = 5112
 	SFX_LaunchBall_AimModeChanged = 5113
 	
-	# SWITCH
+	# SWITCH/BUTTON
 	SFX_SwitchToggle_01 = 5120
 	
 	# ENERGY
@@ -89,6 +89,7 @@ enum AudioIds {
 	# REGION RELATED
 	SFX_AreaRegion_ObjectDestroyed = 5170
 	SFX_AreaRegion_ClearPlayer = 5171
+	SFX_PDAR_PlayerReachedOutOfBoundsOfMap = 5172
 	
 	# PICKUPABLE RELATED
 	SFX_Pickupable_Coin_01 = 5180

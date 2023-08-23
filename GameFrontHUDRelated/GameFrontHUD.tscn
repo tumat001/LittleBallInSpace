@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://GameElements/ScreenShaderSprite/ScreenShaderSprite.png" type="Texture" id=11]
 [ext_resource path="res://GameFrontHUDRelated/Subs/GameDialogPanel/GameDialogPanel.tscn" type="PackedScene" id=12]
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/InGamePauseRelated/InGamePausePanelTree.tscn" type="PackedScene" id=13]
+[ext_resource path="res://GameFrontHUDRelated/NonGameSubs/OutOfMapBoundsWarningPanel/OutOfMapBoundsWarningPanel.tscn" type="PackedScene" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 10 )
@@ -132,6 +133,8 @@ size_flags_horizontal = 10
 [node name="TooltipContainer" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+
+[node name="OutOfMapBoundsWarningPanel" parent="." instance=ExtResource( 14 )]
 
 [node name="VicDefAnimContainer" type="Control" parent="."]
 margin_right = 40.0

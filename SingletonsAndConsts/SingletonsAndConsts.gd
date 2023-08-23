@@ -7,6 +7,10 @@ signal current_game_elements_changed(arg_elements)
 
 #
 
+const GROUP_NAME__OBJECT_TILE_FRAGMENT = "GroupName_ObjectTileFragment"
+
+#
+
 var current_base_level
 var current_base_level_id
 var current_level_details
@@ -99,6 +103,14 @@ func if_level_id_has_restart_only_persisting_data(arg_id):
 
 func get_restart_only_persisting_data_of_level_id(arg_id):
 	return _level_id_to_restart_only_persisting_data[arg_id]
+	
+
+##
+
+func queue_free_all_glass_fragments():
+	for node in get_tree().get_nodes_in_group(GROUP_NAME__OBJECT_TILE_FRAGMENT):
+		node.queue_free()
+		
 	
 
 

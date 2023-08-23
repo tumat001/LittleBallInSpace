@@ -41,6 +41,11 @@ var _is_player_inside : bool
 
 var is_player_capture_area_region : bool = true
 
+
+#
+
+onready var main_collision_shape_2d = $CollisionShape2D
+
 ##
 
 

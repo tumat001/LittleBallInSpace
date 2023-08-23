@@ -23,10 +23,17 @@ const COLOR_GREEN__P_FRAME = Color("#00c200")
 const COLOR_BLUE__P_SPRITE = Color("#000021")
 const COLOR_BLUE__P_FRAME = Color("#0000c2")
 
+const COLOR_WHITE__P_SPRITE = Color("#ffffff")
+const COLOR_WHITE__P_FRAME = Color("#999999")
+
+
+
 enum PortalColor {
 	RED = 0,
 	GREEN = 1,
 	BLUE = 2,
+	
+	WHITE = 3,
 }
 
 #
@@ -104,7 +111,8 @@ func _update_last_calculated_is_collision_disabled():
 #
 
 func _ready():
-	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	if !Engine.editor_hint:
+		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	
 	
 	_is_in_ready = true
@@ -163,6 +171,9 @@ func set_portal_color(arg_color):
 			portal_sprite.modulate = COLOR_BLUE__P_SPRITE
 			portal_frame.modulate = COLOR_BLUE__P_FRAME
 			
+		elif portal_color == PortalColor.WHITE:
+			portal_sprite.modulate = COLOR_WHITE__P_SPRITE
+			portal_frame.modulate = COLOR_WHITE__P_FRAME
 			
 		
 

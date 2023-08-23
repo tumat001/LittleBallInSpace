@@ -167,6 +167,11 @@ func _on_all_PCAs_captured():
 func is_all_PCA_regions_captured():
 	return _is_all_pca_regions_captured
 
+
+func get_all_win_type_player_capture_area_region_to_is_captured_map():
+	return _all_win_type_player_capture_area_region_to_is_captured_map
+
+
 #########
 
 func _attempt_set_player__to_all_base_tiles():

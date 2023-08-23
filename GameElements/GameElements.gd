@@ -16,6 +16,8 @@ signal before_game_quit()
 
 signal player_spawned(arg_player)
 
+signal game_front_hud_initialized(arg_game_front_hud)
+
 #
 
 var current_base_level : BaseLevel
@@ -152,6 +154,7 @@ func _deferred_add_child__game_front_hud():
 	#CameraManager.set_non_gui_screen_shader_sprite(non_gui_screen_sprite)
 	hide_non_screen_gui_shader_sprite()
 	
+	emit_signal("game_front_hud_initialized", game_front_hud)
 
 #
 

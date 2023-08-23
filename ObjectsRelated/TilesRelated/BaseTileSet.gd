@@ -27,33 +27,47 @@ enum EnergyMode {
 var _is_energy_mode_set : bool = false
 export(EnergyMode) var energy_mode : int setget set_energy_mode
 
+
+##################
+
 # if this is changable beyond ready, make rewind system take it to account
 const MOMENTUM_FOR_BREAK__NEVER_BREAK = -1
 const MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE = 0
-const MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE = 21000  # 150 speed needed for break
+const MOMENTUM_FOR_BREAK__FRAGILE_BREAKABLE_TILE = 21000  # 150 speed needed for break
+const MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE = 42000  # 300 speed needed for break
 
-enum MomentumForBreakStandard {
+enum GlassBreakableType {
 	NEVER_BREAK = 0,
 	INSTANT_BREAK = 1,
 	SIMPLE_BREAKABLE = 2,
+	FRAGILE_BREAKABLE = 3,
 }
-const _momentum_break_standard_to_momentum_val_map = {
-	MomentumForBreakStandard.NEVER_BREAK : MOMENTUM_FOR_BREAK__NEVER_BREAK,
-	MomentumForBreakStandard.INSTANT_BREAK : MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE,
-	MomentumForBreakStandard.SIMPLE_BREAKABLE : MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE,
+const _glass_breakable_type_to_momentum_for_break_val_map = {
+	GlassBreakableType.NEVER_BREAK : MOMENTUM_FOR_BREAK__NEVER_BREAK,
+	GlassBreakableType.INSTANT_BREAK : MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE,
+	GlassBreakableType.SIMPLE_BREAKABLE : MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE,
+	GlassBreakableType.FRAGILE_BREAKABLE : MOMENTUM_FOR_BREAK__FRAGILE_BREAKABLE_TILE,
 }
+export(GlassBreakableType) var glass_breakable_type : int setget set_glass_breakable_type
 
-export(MomentumForBreakStandard) var momentum_breaking_point_standard : int = MomentumForBreakStandard.NEVER_BREAK setget set_momentum_breaking_point_standard
+#export(GlassBreakableType) var momentum_breaking_point_standard : int = GlassBreakableType.NEVER_BREAK setget set_momentum_breaking_point_standard
 #export(float) var momentum_breaking_point : float = MOMENTUM_BREAKING_POINT__NEVER_BREAK setget set_momentum_breaking_point
 var momentum_breaking_point #setget set_momentum_breaking_point
 var _is_breakable : bool
 
 
 # if this is changable beyond ready, make rewind system take it to account
-const SPEED_SLOWDOWN_RATIO__GLASS = 0.0
-export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
+const _glass_breakable_type_to_speed_ratio_reduction_val_map = {
+	GlassBreakableType.NEVER_BREAK : 0.0,
+	GlassBreakableType.INSTANT_BREAK : 0.0,
+	GlassBreakableType.SIMPLE_BREAKABLE : 0.0,
+	GlassBreakableType.FRAGILE_BREAKABLE : 0.6,
+}
+#export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
+var speed_slowdown_on_tile_break #: float = SPEED_SLOWDOWN_RATIO__GLASS
 
 
+#############################
 
 export(bool) var has_glowables : bool = false
 var _light_2d_glowables_node_2d_container : Node2D setget set_light_2d_glowables_node_2d_container
@@ -134,7 +148,8 @@ func set_energy_mode(arg_val):
 #
 
 func _ready():
-	set_momentum_breaking_point_standard(momentum_breaking_point_standard)
+	#set_momentum_breaking_point_standard(momentum_breaking_point_standard)
+	set_glass_breakable_type(glass_breakable_type)
 	
 	_update_display_based_on_energy_mode()
 	_update_properties_based_on_is_breakable()
@@ -179,9 +194,15 @@ func _update_tilemap_modulate():
 
 #
 
-func set_momentum_breaking_point_standard(arg_val):
-	momentum_breaking_point_standard = arg_val
-	_set_momentum_breaking_point(_momentum_break_standard_to_momentum_val_map[arg_val])
+func set_glass_breakable_type(arg_type):
+	glass_breakable_type = arg_type
+	
+	_set_momentum_breaking_point(_glass_breakable_type_to_momentum_for_break_val_map[arg_type])
+	speed_slowdown_on_tile_break = _glass_breakable_type_to_speed_ratio_reduction_val_map[arg_type]
+
+#func set_momentum_breaking_point_standard(arg_val):
+#	momentum_breaking_point_standard = arg_val
+#	_set_momentum_breaking_point(_glass_breakable_type_to_momentum_for_break_val_map[arg_val])
 
 func _set_momentum_breaking_point(arg_val):
 	momentum_breaking_point = arg_val

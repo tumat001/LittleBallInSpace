@@ -350,8 +350,9 @@ func set_can_be_triggered_by_tiles(arg_val):
 
 func _on_ButtonArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if !_is_in_press_transition:
-		set_is_pressed(!is_pressed)
-		
+		if !body.get("is_class_type_object_tile_fragment"):
+			set_is_pressed(!is_pressed)
+			
 
 
 #########
