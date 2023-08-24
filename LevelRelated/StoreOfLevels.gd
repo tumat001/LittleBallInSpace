@@ -36,6 +36,7 @@ enum LevelIds {
 	LEVEL_02__STAGE_4 = 31
 	LEVEL_03__STAGE_4 = 32
 	LEVEL_04__STAGE_4 = 33
+	LEVEL_05__STAGE_4 = 34
 	
 }
 # dont change this in runtime(useless). 
@@ -822,6 +823,8 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4.gd").new()
 	elif arg_id == LevelIds.LEVEL_04__STAGE_4:
 		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4.gd").new()
+	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
+		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4.gd").new()
 	
 	
 	
@@ -870,6 +873,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_02__STAGE_4 : 0,
 		LevelIds.LEVEL_03__STAGE_4 : 3,
 		LevelIds.LEVEL_04__STAGE_4 : 2,
+		LevelIds.LEVEL_05__STAGE_4 : 0,
 		
 		
 	}

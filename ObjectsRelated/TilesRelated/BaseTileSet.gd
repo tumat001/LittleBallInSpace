@@ -60,8 +60,8 @@ var _is_breakable : bool
 const _glass_breakable_type_to_speed_ratio_reduction_val_map = {
 	GlassBreakableType.NEVER_BREAK : 0.0,
 	GlassBreakableType.INSTANT_BREAK : 0.0,
-	GlassBreakableType.SIMPLE_BREAKABLE : 0.0,
-	GlassBreakableType.FRAGILE_BREAKABLE : 0.6,
+	GlassBreakableType.SIMPLE_BREAKABLE : 0.6,
+	GlassBreakableType.FRAGILE_BREAKABLE : 0.0,
 }
 #export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
 var speed_slowdown_on_tile_break #: float = SPEED_SLOWDOWN_RATIO__GLASS
@@ -885,6 +885,10 @@ func restore_from_destroyed_from_rewind():
 
 func stared_rewind():
 	pass
+	#if _save_tiles_data_next_frame__for_rewind_save__count > 0:
+	#	_save_tiles_data_next_frame__for_rewind_save__count = 0
+	#	save_state["cell_save_data"] = _saved_cell_data_queue.pop_back()#_saved_cell_data
+	
 	#_save_tiles_data_next_frame__for_rewind_save = true
 	#mode = RigidBody2D.MODE_STATIC
 	#collision_shape.set_deferred("disabled", true)

@@ -145,7 +145,13 @@ func stared_rewind():
 
 
 func ended_rewind():
-	.ended_rewind()
+	if !is_dead_but_reserved_for_rewind:
+		mode = body_mode_to_use
+		
+		collision_shape.set_deferred("disabled", false)
+		
+		#_use_integ_forces_new_vals = true
+	
 	
 	if !is_dead_but_reserved_for_rewind:
 		player_soft_coll_shape.set_deferred("disabled", false)
@@ -154,6 +160,13 @@ func ended_rewind():
 	
 	
 
+
+
+func get_rewind_save_state():
+	return {}
+
+func load_into_rewind_save_state(arg_state):
+	pass
 
 
 #func get_rewind_save_state():

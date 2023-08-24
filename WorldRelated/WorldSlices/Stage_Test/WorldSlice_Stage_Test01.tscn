@@ -39,7 +39,6 @@ energy_mode = 2
 tile_data = PoolIntArray( 393240, 0, 4, 458776, 0, 4, 524302, 0, 4, 524303, 0, 4, 524304, 0, 4, 524305, 0, 4, 524306, 0, 4, 524307, 0, 4, 524312, 0, 4 )
 
 [node name="BaseTileSet3" parent="TileContainer" index="2" instance=ExtResource( 3 )]
-momentum_breaking_point_standard = 2
 
 [node name="TileMap" parent="TileContainer/BaseTileSet3" index="0"]
 tile_data = PoolIntArray( 36, 2, 0, 37, 2, 0, 38, 2, 0, 39, 2, 0, 40, 2, 0, 41, 2, 0, 65564, 2, 0, 65569, 2, 0, 131100, 2, 0, 131105, 2, 0, 196636, 2, 0, 196641, 2, 0, 262177, 2, 0, 327713, 2, 0, 393249, 2, 0 )
@@ -48,6 +47,12 @@ tile_data = PoolIntArray( 36, 2, 0, 37, 2, 0, 38, 2, 0, 39, 2, 0, 40, 2, 0, 41, 
 
 [node name="TileMap" parent="TileContainer/BaseTileSet4" index="0"]
 tile_data = PoolIntArray( 65541, 7, 0, 131077, 7, 65536, 196611, 9, 65536, 196613, 7, 65536, 262147, 9, 131072, 262149, 7, 131072 )
+
+[node name="BaseTileSet5_INstabreak" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+glass_breakable_type = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet5_INstabreak" index="0"]
+tile_data = PoolIntArray( 393222, 16, 0, 393223, 16, 0, 458758, 16, 0, 458759, 16, 0, 655373, 16, 0 )
 
 [node name="EnergyAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 656, 239 )
@@ -79,8 +84,20 @@ position = Vector2( 366, 60 )
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
 position = Vector2( 403, 58 )
 
+[node name="Object_InteractableButton2" parent="ObjectContainer" index="3" instance=ExtResource( 2 )]
+position = Vector2( 262, 344 )
+body_mode_to_use = 1
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
+
+[node name="Object_InteractableButton3" parent="ObjectContainer" index="4" instance=ExtResource( 2 )]
+position = Vector2( 770, 343 )
+body_mode_to_use = 1
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
+
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 791, 49 )
+position = Vector2( 352, 336 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }
@@ -89,5 +106,6 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet2"]
 [editable path="TileContainer/BaseTileSet3"]
 [editable path="TileContainer/BaseTileSet4"]
+[editable path="TileContainer/BaseTileSet5_INstabreak"]
 [editable path="AreaRegionContainer/EnergyAreaRegion"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

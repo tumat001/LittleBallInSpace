@@ -104,10 +104,10 @@ enum AudioIds {
 	
 	
 	# GAME RELATED
-	SFX_Restart_01 = 5190
+	SFX_Restart_01 = 5200
 	
 	# TILE BREAK
-	SFX_Misc_GlassBreak_Hard = 5200
+	SFX_Misc_GlassBreak_Hard = 5300
 	
 	
 }

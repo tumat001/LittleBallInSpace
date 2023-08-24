@@ -114,6 +114,8 @@ func set_is_pressed(arg_val):
 						if is_instance_valid(portal):
 							_press_on_portal(portal)
 					
+					set_pressable_count(pressable_count - 1)
+					
 					#
 					
 					_is_in_press_transition = true
@@ -295,7 +297,7 @@ func _press_on_tileset(arg_tileset, arg_is_reversed):
 		else:
 			arg_tileset.toggle_fill_to_unfilled_and_vise_versa()
 		
-		set_pressable_count(pressable_count - 1)
+		
 
 func _start_wait_tween__to_toggle(arg_tileset):
 	var tween = create_tween()

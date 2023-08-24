@@ -39,7 +39,7 @@ var _all_registered_rewindables : Array
 
 #
 
-var rewind_duration : float = 50.0
+var rewind_duration : float = 20.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
