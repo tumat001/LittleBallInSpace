@@ -10,6 +10,3 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	
-
-
-

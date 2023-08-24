@@ -320,7 +320,8 @@ func play_transition__alter_no_states(arg_transition, arg_queue_free_at_end : bo
 #
 
 
-
+func is_playing_any_transition():
+	return _is_transitioning
 
 ##########
 

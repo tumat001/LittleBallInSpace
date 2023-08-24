@@ -13,6 +13,10 @@ signal is_level_locked_changed(arg_val)
 const DEFAULT_LEVEL_TILE_LOCKED_TEXTURE = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_Dark_32x32.png")
 const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.3, 0.3, 0.3, 1.0)
 
+const LEVEL_TYPE_ID_COLOR__CAMPAIGN = Color("#dddddd")
+const LEVEL_TYPE_ID_COLOR__FOR_FUN = Color(218/255.0, 164/255.0, 2/255.0, 1.0)
+const LEVEL_TYPE_ID_COLOR__CHALLENGE = Color(253/255.0, 63/255.0, 66/255.0, 1.0)
+
 #
 
 enum LevelTypeId {
@@ -120,3 +124,11 @@ func get_texture_and_modulate_to_use__based_on_properties() -> Array:
 	return bucket
 
 
+
+func get_title_color_based_on_level_type():
+	if level_type == LevelTypeId.CAMPAIGN:
+		return LEVEL_TYPE_ID_COLOR__CAMPAIGN
+	elif level_type == LevelTypeId.FOR_FUN:
+		return LEVEL_TYPE_ID_COLOR__FOR_FUN
+	elif level_type == LevelTypeId.CHALLENGE:
+		return LEVEL_TYPE_ID_COLOR__CHALLENGE

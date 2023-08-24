@@ -1,0 +1,270 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_003/Level03_Hard/WorldSlice_Stage03_03_Hard.gd" type="Script" id=3]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=4]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ObjectsRelated/Portals/Portal.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=9]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=10]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=11]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 52, 32.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 1481.5, 42.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 30, 563 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 15.5, 112 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 15.5, 32.5 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 746, 451.5 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 171.5, 400.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 326, 179 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 326, 137.5 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 297, 288 )
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 368.5, 266.5 )
+
+[node name="WorldSlice_Stage03_03" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="0" instance=ExtResource( 2 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( -2883571, 14, 196608, -2883568, 14, 196608, -2818035, 14, 262144, -2818032, 14, 262144, -2752499, 14, 262144, -2752496, 14, 262144, -2686963, 14, 262144, -2686960, 14, 262144, -2621427, 14, 262144, -2621424, 14, 262144, -2555891, 14, 262144, -2555888, 14, 262144, -2490355, 14, 262144, -2490352, 14, 131074, -2490351, 14, 4, -2424819, 14, 262144, -2424815, 14, 262144, -2359283, 14, 262144, -2359279, 14, 262144, -2293750, 14, 2, -2293749, 14, 262147, -2293748, 14, 262147, -2293747, 14, 131076, -2293743, 14, 262144, -2228214, 14, 262144, -2228207, 14, 262144, -2162678, 14, 262144, -2162671, 14, 262144, -2097142, 14, 262144, -2097139, 14, 262146, -2097138, 14, 262147, -2097137, 14, 262147, -2097136, 14, 262147, -2097135, 14, 262144, -1966086, 14, 262146, -1966085, 14, 262147, -1966084, 14, 262147, -1966083, 14, 262147, -1966082, 14, 262147, -1966081, 14, 262147, -2031616, 14, 262147, -2031615, 14, 262147, -2031614, 14, 262147, -2031613, 14, 262147, -2031612, 14, 262147, -2031611, 14, 262147, -2031610, 14, 262147, -2031609, 14, 262147, -2031608, 14, 262147, -2031607, 14, 262147, -2031606, 14, 131076, -2031599, 14, 262144, -1966063, 14, 262144, -1966059, 14, 2, -1966058, 14, 262147, -1966057, 14, 262147, -1966056, 14, 262147, -1966055, 14, 4, -1900527, 14, 262144, -1900523, 14, 262144, -1900519, 14, 262144, -1835008, 14, 196608, -1834991, 14, 131074, -1834990, 14, 262147, -1834989, 14, 262147, -1834988, 14, 262147, -1834987, 14, 131076, -1834983, 14, 262144, -1769472, 14, 131074, -1769471, 14, 262147, -1769470, 14, 262147, -1769469, 14, 262147, -1769468, 14, 262147, -1769467, 14, 262147, -1769466, 14, 262147, -1769465, 14, 262147, -1769464, 14, 262147, -1769463, 14, 4, -1769447, 14, 131074, -1769446, 14, 262147, -1769445, 14, 262147, -1769444, 14, 262147, -1769443, 14, 262147, -1769442, 14, 262147, -1769441, 14, 262147, -1769440, 14, 262147, -1769439, 14, 262147, -1769438, 14, 262148, -1703935, 14, 262144, -1703927, 14, 262144, -1638399, 14, 262144, -1638391, 14, 131074, -1638390, 14, 262147, -1638389, 14, 262147, -1638388, 14, 262148, -1572863, 14, 262144, -1572847, 14, 262146, -1572846, 14, 262147, -1572845, 14, 262147, -1572844, 14, 262147, -1572843, 14, 262147, -1572842, 14, 4, -1572834, 14, 196608, -1507327, 14, 262144, -1507306, 14, 262144, -1507303, 14, 262146, -1507302, 14, 262147, -1507301, 14, 262147, -1507300, 14, 262147, -1507299, 14, 262147, -1507298, 14, 131076, -1441791, 14, 262144, -1441782, 14, 196608, -1441770, 14, 262144, -1376255, 14, 262144, -1376246, 14, 262144, -1376234, 14, 262144, -1310719, 14, 131074, -1310718, 14, 262147, -1310717, 14, 262147, -1310716, 14, 262147, -1310715, 14, 262147, -1310714, 14, 262147, -1310713, 14, 262147, -1310712, 14, 262147, -1310711, 14, 262147, -1310710, 14, 262147, -1310709, 14, 262147, -1310708, 14, 4, -1310704, 14, 196608, -1310698, 14, 262144, -1245172, 14, 262144, -1245168, 14, 262144, -1245162, 14, 131074, -1245161, 14, 262147, -1245160, 14, 262147, -1245159, 14, 262147, -1245158, 14, 262147, -1245157, 14, 262147, -1245156, 14, 262147, -1245155, 14, 262147, -1245154, 14, 262147, -1245153, 14, 262147, -1245152, 14, 262147, -1245151, 14, 262147, -1245150, 14, 262147, -1245149, 14, 262147, -1245148, 14, 262148, -1179636, 14, 262144, -1179632, 14, 262144, -1114100, 14, 262144, -1114096, 14, 262144, -1048564, 14, 262144, -1048560, 14, 262144, -983028, 14, 262144, -983024, 14, 262144, -917492, 14, 262144, -917488, 14, 262144, -851956, 14, 262144, -851952, 14, 262144, -786420, 14, 131074, -786419, 14, 262148, -786416, 14, 262144, -720880, 14, 262144, -655344, 14, 262144, -589808, 14, 327680, -458740, 14, 196608, -393204, 14, 262144, -327668, 14, 262144, -262132, 14, 262144, -262128, 14, 196608, -196596, 14, 327680, -196592, 14, 262144, -131056, 14, 262144, -65520, 14, 262144, 16, 14, 262144, 131063, 14, 2, 131064, 14, 262147, 131065, 14, 262147, 131066, 14, 262147, 131067, 14, 262147, 131068, 14, 262147, 131069, 14, 262147, 131070, 14, 262147, 131071, 14, 262147, 65536, 14, 262147, 65537, 14, 262147, 65538, 14, 262147, 65539, 14, 262147, 65540, 14, 262147, 65541, 14, 262147, 65542, 14, 262147, 65543, 14, 262147, 65544, 14, 262147, 65545, 14, 262147, 65546, 14, 262147, 65547, 14, 262147, 65548, 14, 262148, 65552, 14, 262144, 196599, 14, 262144, 131088, 14, 262144, 262135, 14, 262144, 196624, 14, 262144, 327671, 14, 262144, 327672, 14, 262147, 327673, 14, 262147, 327674, 14, 262147, 327675, 14, 262147, 327676, 14, 262147, 327677, 14, 262147, 327678, 14, 262147, 327679, 14, 262147, 262144, 14, 262147, 262145, 14, 262147, 262146, 14, 262148, 262150, 14, 2, 262151, 14, 262147, 262152, 14, 262147, 262153, 14, 262147, 262154, 14, 262147, 262155, 14, 262147, 262156, 14, 262147, 262157, 14, 262147, 262158, 14, 262147, 262159, 14, 262147, 262160, 14, 131076, 393207, 14, 262144, 327686, 14, 262144, 458743, 14, 262144, 393222, 14, 262144, 524279, 14, 262144, 458758, 14, 262144, 589815, 14, 131074, 589816, 14, 262147, 589817, 14, 262147, 589818, 14, 262147, 589819, 14, 262147, 589820, 14, 262147, 589821, 14, 262147, 589822, 14, 262147, 589823, 14, 262147, 524288, 14, 262147, 524289, 14, 262147, 524290, 14, 262147, 524291, 14, 262147, 524292, 14, 262147, 524293, 14, 262147, 524294, 14, 131076 )
+
+[node name="BaseTileSet_Grounded" parent="TileContainer" index="1" instance=ExtResource( 2 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
+modulate = Color( 0.427451, 0.231373, 0, 1 )
+tile_data = PoolIntArray( -1638407, 14, 262146, -1638406, 14, 262147, -1638405, 14, 262147, -1638404, 14, 262147, -1638403, 14, 262148 )
+
+[node name="BaseTileSet_Blue" parent="TileContainer" index="2" instance=ExtResource( 2 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
+modulate = Color( 0.0705882, 0.454902, 1, 1 )
+tile_data = PoolIntArray( -1966071, 7, 0, -1900535, 7, 65536, -1834999, 7, 131072, 131072, 7, 0, 196608, 7, 131072 )
+
+[node name="BaseTileSet_Green" parent="TileContainer" index="3" instance=ExtResource( 2 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Green" index="0"]
+modulate = Color( 0.109804, 1, 0.00784314, 1 )
+tile_data = PoolIntArray( -1769455, 7, 0, -1703919, 7, 65536, -1638383, 7, 131072, 196606, 7, 0, 262142, 7, 131072 )
+
+[node name="BaseTileSet_Red" parent="TileContainer" index="4" instance=ExtResource( 2 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Red" index="0"]
+modulate = Color( 1, 0.105882, 0.105882, 1 )
+tile_data = PoolIntArray( 131074, 7, 0, 196610, 7, 131072 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( -255, 66 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 50, 29.5 )
+shape = SubResource( 1 )
+
+[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 5 )]
+position = Vector2( 353, -1086 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion" index="0"]
+position = Vector2( 31, 30 )
+shape = SubResource( 2 )
+
+[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 6 )]
+position = Vector2( 1149, -1606 )
+is_hidden_and_silent = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion" index="0"]
+position = Vector2( 991, 32.5 )
+shape = SubResource( 3 )
+
+[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="3" instance=ExtResource( 6 )]
+position = Vector2( -2058, -1606 )
+is_hidden_and_silent = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion2" index="0"]
+position = Vector2( 1228.5, 32.5 )
+shape = SubResource( 3 )
+
+[node name="ObjectDestroyingAreaRegion3" parent="AreaRegionContainer" index="4" instance=ExtResource( 6 )]
+position = Vector2( 2047, -1557 )
+is_hidden_and_silent = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion3" index="0"]
+position = Vector2( 73, 610 )
+shape = SubResource( 4 )
+
+[node name="ObjectDestroyingAreaRegion4" parent="AreaRegionContainer" index="5" instance=ExtResource( 6 )]
+position = Vector2( -910, -1565 )
+is_hidden_and_silent = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion4" index="0"]
+position = Vector2( 73, 610 )
+shape = SubResource( 4 )
+
+[node name="PlayerClearAreaRegion2" parent="AreaRegionContainer" index="6" instance=ExtResource( 5 )]
+position = Vector2( 803, -830 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion2" index="0"]
+position = Vector2( 13.5, 110 )
+shape = SubResource( 5 )
+
+[node name="PlayerClearAreaRegion3" parent="AreaRegionContainer" index="7" instance=ExtResource( 5 )]
+position = Vector2( -3, -957 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion3" index="0"]
+position = Vector2( 19.5, 29.5 )
+shape = SubResource( 6 )
+
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="8" instance=ExtResource( 11 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 488, -1005.5 )
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( 481.5, -175.5 )
+shape = SubResource( 8 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="2"]
+position = Vector2( 5, 169 )
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="3"]
+position = Vector2( -1777, -941 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="4"]
+position = Vector2( 257, -3168 )
+shape = SubResource( 11 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="5"]
+position = Vector2( 3558.5, -815 )
+shape = SubResource( 12 )
+
+[node name="Portal_Blue01" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
+position = Vector2( 465, -1363 )
+portal_to_link_with__path = NodePath("../Portal_Blue02")
+
+[node name="Portal_Blue02" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
+position = Vector2( 465, -3153 )
+portal_to_link_with__path = NodePath("../Portal_Blue01")
+
+[node name="Object_InteractableButton_Blue" parent="ObjectContainer" index="2" instance=ExtResource( 8 )]
+position = Vector2( 233, -3202 )
+rotation = 1.5708
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
+portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
+
+[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 9 )]
+position = Vector2( 466, -1281 )
+rotation = 1.5708
+launch_ball_type = 1
+
+[node name="Portal_Red01" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
+position = Vector2( 1133, -817 )
+portal_color = 0
+portal_to_link_with__path = NodePath("../Portal_Red02")
+
+[node name="Portal_Red02" parent="ObjectContainer" index="5" instance=ExtResource( 7 )]
+position = Vector2( 3374, -824 )
+portal_color = 0
+portal_to_link_with__path = NodePath("../Portal_Red01")
+
+[node name="Object_InteractableButton" parent="ObjectContainer" index="6" instance=ExtResource( 8 )]
+position = Vector2( 3842, -824 )
+rotation = 4.71239
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
+portal_01_to_register_in_toggle__path = NodePath("../Portal_Red01")
+portal_02_to_register_in_toggle__path = NodePath("../Portal_Red02")
+button_color = 0
+
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="7" instance=ExtResource( 9 )]
+position = Vector2( 1065, -810 )
+rotation = 3.14159
+launch_ball_type = 2
+
+[node name="Portal_Green01" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
+position = Vector2( -174, -943 )
+portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green02")
+
+[node name="Portal_Green02" parent="ObjectContainer" index="9" instance=ExtResource( 7 )]
+position = Vector2( -1801, -947 )
+portal_color = 1
+portal_to_link_with__path = NodePath("../Portal_Green01")
+
+[node name="Object_InteractableButton2" parent="ObjectContainer" index="10" instance=ExtResource( 8 )]
+position = Vector2( -1801, -985 )
+rotation = 3.14159
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
+portal_01_to_register_in_toggle__path = NodePath("../Portal_Green01")
+portal_02_to_register_in_toggle__path = NodePath("../Portal_Green02")
+button_color = 1
+
+[node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="11" instance=ExtResource( 9 )]
+position = Vector2( 593, -780 )
+
+[node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="12" instance=ExtResource( 9 )]
+position = Vector2( -70, -944 )
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 10 )]
+position = Vector2( 268, -812 )
+
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 10 )]
+position = Vector2( 1053, -726 )
+
+[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 10 )]
+position = Vector2( 426, -187 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( -162, 240 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="TileContainer/BaseTileSet_Blue"]
+[editable path="TileContainer/BaseTileSet_Green"]
+[editable path="TileContainer/BaseTileSet_Red"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="AreaRegionContainer/PlayerClearAreaRegion"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion3"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion4"]
+[editable path="AreaRegionContainer/PlayerClearAreaRegion2"]
+[editable path="AreaRegionContainer/PlayerClearAreaRegion3"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

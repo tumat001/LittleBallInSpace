@@ -10,24 +10,31 @@ enum WorldSliceIds {
 	STAGE_01_04 = 4
 	STAGE_01_05 = 5
 	
-	STAGE_02_01 = 10
-	STAGE_02_02 = 11
-	STAGE_02_03 = 12
-	STAGE_02_04 = 13
-	STAGE_02_05 = 14
-	STAGE_02_06 = 15
+	STAGE_02_01 = 100
+	STAGE_02_02 = 101
+	STAGE_02_03 = 102
+	STAGE_02_04 = 103
+	STAGE_02_05 = 104
+	STAGE_02_06 = 105
 	
-	STAGE_03_01 = 20
-	STAGE_03_02 = 21
-	STAGE_03_03 = 22
-	STAGE_03_04 = 23
-	STAGE_03_05 = 24
+	STAGE_02_02__HARD = 150
+	STAGE_02_06__HARD = 151
 	
-	STAGE_04_01 = 30
-	STAGE_04_02 = 31
-	STAGE_04_03 = 32
-	STAGE_04_04 = 33
-	STAGE_04_05 = 34
+	STAGE_03_01 = 200
+	STAGE_03_02 = 201
+	STAGE_03_03 = 202
+	STAGE_03_04 = 203
+	STAGE_03_05 = 204
+	
+	STAGE_03_03__HARD = 250
+	STAGE_03_04__HARD = 251
+	STAGE_03_05__HARD = 252
+	
+	STAGE_04_01 = 300
+	STAGE_04_02 = 301
+	STAGE_04_03 = 302
+	STAGE_04_04 = 303
+	STAGE_04_05 = 304
 	
 }
 
@@ -64,6 +71,11 @@ func load_world_slice_from_id(arg_id):
 	elif arg_id == WorldSliceIds.STAGE_02_06:
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_002/Level06/WorldSlice_Stage02_06.tscn")
 		
+	elif arg_id == WorldSliceIds.STAGE_02_02__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_002/Level02_Hard/WorldSlice_Stage02_02_Hard.tscn")
+	elif arg_id == WorldSliceIds.STAGE_02_06__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_002/Level06_Hard/WorldSlice_Stage02_06_Hard.tscn")
+		
 		
 	elif arg_id == WorldSliceIds.STAGE_03_01:
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level01/WorldSlice_Stage03_01.tscn")
@@ -75,6 +87,13 @@ func load_world_slice_from_id(arg_id):
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level04/WorldSlice_Stage03_04.tscn")
 	elif arg_id == WorldSliceIds.STAGE_03_05:
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level05/WorldSlice_Stage03_05.tscn")
+		
+	elif arg_id == WorldSliceIds.STAGE_03_03__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level03_Hard/WorldSlice_Stage03_03_Hard.tscn")
+	elif arg_id == WorldSliceIds.STAGE_03_04__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level04_Hard/WorldSlice_Stage03_04_Hard.tscn")
+	elif arg_id == WorldSliceIds.STAGE_03_05__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_003/Level05_Hard/WorldSlice_Stage03_05_Hard.tscn")
 		
 		
 	elif arg_id == WorldSliceIds.STAGE_04_01:

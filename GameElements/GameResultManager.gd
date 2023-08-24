@@ -62,6 +62,9 @@ func attempt_set_current_game_result(arg_result):
 		#print("GRM: result decided: %s" % [_current_game_result])
 		emit_signal("game_result_decided", _current_game_result)
 		
+		if is_instance_valid(SingletonsAndConsts.current_game_front_hud):
+			SingletonsAndConsts.current_game_front_hud.hide_in_game_pause_control_tree()
+		
 		_play_game_result_showing_anim()
 
 

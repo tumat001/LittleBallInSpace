@@ -159,6 +159,15 @@ func _deferred_add_child__game_front_hud():
 #
 
 func _unhandled_key_input(event):
+	if is_player_spawned():
+		if _current_player.last_calc_block_all_inputs:
+			return
+	
+	if game_result_manager.is_game_result_decided:
+		return
+	
+	#####
+	
 	if event.is_action_pressed("rewind"):
 		rewind_manager.attempt_start_rewind()
 		
@@ -205,6 +214,9 @@ func configure_game_state_for_cutscene_occurance(arg_stop_player_movement : bool
 		if arg_reset_cam_zoom_to_default:
 			CameraManager.reset_camera_zoom_level()
 		
+		if is_instance_valid(game_front_hud):
+			game_front_hud.hide_in_game_pause_control_tree()
+
 
 func configure_game_state_for_end_of_cutscene_occurance(arg_reenable_store_and_cast_rewind : bool):
 	if _is_in_cutscene:
