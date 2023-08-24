@@ -24,6 +24,8 @@ onready var misc_center_container = $MiscCenterContainer
 
 onready var in_game_pause_panel_tree = $InGamePausePanelTree
 
+onready var out_of_map_bounds_warning_panel = $OutOfMapBoundsWarningPanel
+
 ###
 
 func add_node_to_other_hosters(arg_node : Node):
@@ -65,11 +67,11 @@ func show_in_game_pause_control_tree():
 
 
 func show_warning_out_of_map_bounds():
-	pass
+	out_of_map_bounds_warning_panel.show_self()
 	
 
 func hide_warning_out_of_map_bounds():
-	pass
+	out_of_map_bounds_warning_panel.hide_self()
 	
 
 

@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_001/Level02/WorldSlice_Stage01_02.gd" type="Script" id=2]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=6]
+[ext_resource path="res://MiscRelated/VisualsRelated/KeyPressVisual/Visual_KeyPress.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 51, 30 )
+
+[node name="WorldSlice_Stage01_02" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="BaseTileSet" parent="TileContainer" index="0" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet" index="0"]
+tile_data = PoolIntArray( -2228231, 0, 0, -2228230, 0, 1, -2228229, 0, 1, -2228228, 0, 1, -2228227, 0, 1, -2228226, 0, 1, -2228225, 0, 1, -2293760, 0, 1, -2293759, 0, 1, -2293758, 0, 1, -2293757, 0, 1, -2293756, 0, 2, -2162696, 0, 131076, -2097160, 0, 196612, -2031624, 0, 196612, -2031617, 0, 131072, -2097152, 0, 131073, -2097151, 0, 131074, -1966088, 0, 196612, -1966081, 0, 262144, -2031616, 0, 262145, -2031615, 0, 262146, -1900552, 0, 196612, -1966077, 0, 131072, -1966076, 0, 131074, -1835016, 0, 262148, -1900541, 0, 196608, -1900540, 0, 196610, -1769475, 0, 131072, -1769474, 0, 131073, -1769473, 0, 131074, -1835005, 0, 262144, -1835004, 0, 262146, -1703939, 0, 262144, -1703938, 0, 262145, -1703937, 0, 262146, -1703935, 0, 131072, -1703934, 0, 131074, -1638399, 0, 262144, -1638398, 0, 262146, -1507336, 0, 131076, -1507332, 0, 131072, -1507331, 0, 131074, -1572860, 0, 0, -1572859, 0, 1, -1572858, 0, 1, -1572857, 0, 1, -1572856, 0, 2, -1441800, 0, 262148, -1441796, 0, 196608, -1441795, 0, 196610, -1507319, 0, 131076, -1376260, 0, 196608, -1376259, 0, 196610, -1441783, 0, 196612, -1310725, 0, 0, -1310724, 0, 262145, -1310723, 0, 262146, -1376255, 0, 0, -1376254, 0, 1, -1376253, 0, 1, -1376252, 0, 1, -1376251, 0, 2, -1376247, 0, 196612, -1245190, 0, 131076, -1310714, 0, 131076, -1310711, 0, 196612, -1179654, 0, 196612, -1245178, 0, 196612, -1245175, 0, 196612, -1114118, 0, 262148, -1179642, 0, 196612, -1179639, 0, 262148, -1048587, 0, 0, -1048586, 0, 1, -1048585, 0, 1, -1048584, 0, 1, -1048583, 0, 2, -1114106, 0, 196612, -1048570, 0, 196612, -917508, 0, 4, -917507, 0, 4, -983034, 0, 196612, -851972, 0, 4, -851971, 0, 4, -917498, 0, 196612, -917495, 0, 131076, -786447, 0, 0, -786446, 0, 1, -786445, 0, 1, -786444, 0, 131074, -786438, 0, 131072, -786437, 0, 131074, -851962, 0, 262148, -851959, 0, 196612, -720908, 0, 196612, -720902, 0, 196608, -720901, 0, 196610, -786423, 0, 196612, -655372, 0, 196612, -655366, 0, 262144, -655365, 0, 262146, -720894, 0, 0, -720893, 0, 1, -720892, 0, 2, -720887, 0, 196612, -589836, 0, 262148, -655355, 0, 131072, -655354, 0, 131074, -655351, 0, 196612, -589819, 0, 196608, -589818, 0, 196610, -589815, 0, 262148, -458763, 0, 0, -458762, 0, 1, -458761, 0, 1, -458760, 0, 1, -458759, 0, 1, -458758, 0, 2, -458754, 0, 0, -458753, 0, 1, -524288, 0, 1, -524287, 0, 1, -524286, 0, 2, -524283, 0, 196608, -524282, 0, 196610, -524281, 0, 0, -524280, 0, 2, -458747, 0, 196608, -458746, 0, 196610, -393211, 0, 262144, -393210, 0, 262146, -262151, 0, 4, -262150, 0, 4, -327678, 0, 0, -327677, 0, 1, -327676, 0, 2, -196620, 0, 4, -196619, 0, 4, -196615, 0, 4, -196614, 0, 4, -196611, 0, 131072, -196610, 0, 131073, -196609, 0, 131074, -131084, 0, 4, -131083, 0, 4, -131078, 0, 4, -131075, 0, 196608, -131074, 0, 6, -131073, 0, 196610, -65539, 0, 196608, -65538, 0, 6, -65537, 0, 196610, -3, 0, 262144, -2, 0, 262145, -1, 0, 262146, 65525, 0, 131072, 65526, 0, 131073, 65527, 0, 131073, 65528, 0, 131074, 131061, 0, 196608, 131062, 0, 6, 131063, 0, 6, 131064, 0, 196610, 196597, 0, 262144, 196598, 0, 262145, 196599, 0, 262145, 196600, 0, 262146, 196604, 0, 0, 196605, 0, 1, 196606, 0, 1, 196607, 0, 1, 131072, 0, 1, 131073, 0, 1, 131074, 0, 1, 131075, 0, 1, 131076, 0, 1, 131077, 0, 1, 131078, 0, 1, 131079, 0, 2, 131082, 0, 0, 131083, 0, 1, 131084, 0, 1, 131085, 0, 1, 131086, 0, 1, 131087, 0, 2 )
+
+[node name="BaseTileSet2" parent="TileContainer" index="1" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet2" index="0"]
+tile_set = ExtResource( 6 )
+tile_data = PoolIntArray( -1310724, 10, 131075, -786444, 10, 131072 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 3 )]
+position = Vector2( -288, -599 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 41, 20 )
+shape = SubResource( 1 )
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( -403, -432 )
+
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
+position = Vector2( 239, -723 )
+
+[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 4 )]
+position = Vector2( -51, -570 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 369, 48 )
+
+[node name="MessegesContainer" type="Node2D" parent="." index="5"]
+
+[node name="Label" type="Label" parent="MessegesContainer" index="0"]
+margin_left = 470.0
+margin_top = -39.0
+margin_right = 718.0
+margin_bottom = -8.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "If it looks like there's nothing beyond,
+then there probably is nothing beyond."
+align = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MessegesContainer" index="1"]
+margin_left = 317.0
+margin_top = 111.0
+margin_right = 517.0
+margin_bottom = 172.0
+custom_constants/separation = 10
+
+[node name="Label3Rewind" type="Label" parent="MessegesContainer/VBoxContainer" index="0"]
+margin_right = 200.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "You can rewind time by holding"
+align = 1
+valign = 1
+
+[node name="VKP_Rewind" parent="MessegesContainer/VBoxContainer" index="1" instance=ExtResource( 7 )]
+margin_left = 79.0
+margin_top = 24.0
+margin_right = 121.0
+margin_bottom = 61.0
+size_flags_horizontal = 6
+
+[editable path="TileContainer/BaseTileSet"]
+[editable path="TileContainer/BaseTileSet2"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

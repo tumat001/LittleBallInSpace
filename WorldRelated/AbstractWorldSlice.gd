@@ -62,6 +62,7 @@ func _ready():
 	_initialize_spawn_coords()
 	_initialize_coins()
 	_initialize_base_tilesets()
+	
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():

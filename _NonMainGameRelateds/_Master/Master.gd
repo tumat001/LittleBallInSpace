@@ -52,9 +52,9 @@ func _ready():
 	#Temp for quick testing of lvls
 	#todo
 	if (true):
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05__STAGE_4
+		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05__STAGE_4
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
-		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_04
 		
 		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		

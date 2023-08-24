@@ -140,6 +140,8 @@ var _audio_id_to_custom_standard_db_map := {
 	
 	AudioIds.SFX_Pickupable_LaunchBallModi : -10,
 	
+	AudioIds.SFX_PDAR_PlayerReachedOutOfBoundsOfMap : -10,
+	
 }
 
 
