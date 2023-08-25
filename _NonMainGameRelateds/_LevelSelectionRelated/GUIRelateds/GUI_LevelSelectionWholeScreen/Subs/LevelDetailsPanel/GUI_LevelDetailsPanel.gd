@@ -12,8 +12,11 @@ onready var level_status_label = $DetailsContainer/VBoxContainer/LevelStatusPane
 onready var level_status_tex_rect = $DetailsContainer/VBoxContainer/LevelStatusPanel/HBoxContainer/LevelStatusTexRect
 onready var details_container = $DetailsContainer
 
+onready var level_completion_additional_panel = $DetailsContainer/VBoxContainer/LevelCompletionAdditonalPanel
 
-func set_level_id(arg_id):
+
+func set_level_details(arg_details):
+	var arg_id = arg_details.level_id
 	
 	if StoreOfLevels.is_level_id_exists(arg_id):
 		details_container.visible = true
@@ -35,7 +38,11 @@ func set_level_id(arg_id):
 		elif level_status_of_id == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED:
 			level_status_label.text = "Unlocked"
 			level_status_tex_rect.texture = Flag_Gray
-			
+		
+		#
+		
+		level_completion_additional_panel.visible = arg_details.has_additional_level_ids_to_mark_as_complete()
+		
 		
 	else:
 		hide_contents()

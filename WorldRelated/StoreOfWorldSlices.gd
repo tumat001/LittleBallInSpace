@@ -36,6 +36,9 @@ enum WorldSliceIds {
 	STAGE_04_04 = 303
 	STAGE_04_05 = 304
 	
+	STAGE_04_03__HARD = 350
+	
+	
 }
 
 

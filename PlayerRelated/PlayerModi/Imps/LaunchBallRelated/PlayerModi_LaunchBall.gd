@@ -195,44 +195,45 @@ func _begin_charge_ball():
 
 
 func _attempt_launch_ball():
-	player_modi_launch_ball_node.end_launch_charge()
-	
-	
-	var ball_and_player_force = _calculate_launch_force_of_ball_and_player(player_modi_launch_ball_node.current_launch_force)
-	
-	if !_player.is_on_ground():
-		_player.apply_inside_induced_force(ball_and_player_force[1])
-	
-	#
-	
-	_create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
-	if !is_infinite_ball_count:
-		set_current_ball_count(_current_ball_count - 1)
-	
-	#
-	
-	if _player.is_player_modi_energy_set:
-		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
-		_player.player_modi__energy.dec_current_energy(energy_consume_on_launch)
-	
-	#
-	
-	SingletonsAndConsts.current_rewind_manager.attempt_set_rewindable_marker_data_at_next_frame(SingletonsAndConsts.current_rewind_manager.RewindMarkerData.LAUNCH_BALL)
-	
-	#
-	
-	var strength_factor_from_0_to_2 = player_modi_launch_ball_node.get_launch_force_as_range_from_0_to_2()
-	var volume_ratio
-	if strength_factor_from_0_to_2 == 0:
-		volume_ratio = 0.33
-	elif strength_factor_from_0_to_2 == 1:
-		volume_ratio = 0.66
-	else:
-		volume_ratio = 1
-	
-	var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
-	AudioManager.helper__play_sound_effect__2d__major(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
-	
+	if player_modi_launch_ball_node.is_charging_launch():
+		player_modi_launch_ball_node.end_launch_charge()
+		
+		
+		var ball_and_player_force = _calculate_launch_force_of_ball_and_player(player_modi_launch_ball_node.current_launch_force)
+		
+		if !_player.is_on_ground():
+			_player.apply_inside_induced_force(ball_and_player_force[1])
+		
+		#
+		
+		_create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
+		if !is_infinite_ball_count:
+			set_current_ball_count(_current_ball_count - 1)
+		
+		#
+		
+		if _player.is_player_modi_energy_set:
+			_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+			_player.player_modi__energy.dec_current_energy(energy_consume_on_launch)
+		
+		#
+		
+		SingletonsAndConsts.current_rewind_manager.attempt_set_rewindable_marker_data_at_next_frame(SingletonsAndConsts.current_rewind_manager.RewindMarkerData.LAUNCH_BALL)
+		
+		#
+		
+		var strength_factor_from_0_to_2 = player_modi_launch_ball_node.get_launch_force_as_range_from_0_to_2()
+		var volume_ratio
+		if strength_factor_from_0_to_2 == 0:
+			volume_ratio = 0.33
+		elif strength_factor_from_0_to_2 == 1:
+			volume_ratio = 0.66
+		else:
+			volume_ratio = 1
+		
+		var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
+		AudioManager.helper__play_sound_effect__2d__major(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
+		
 
 
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):

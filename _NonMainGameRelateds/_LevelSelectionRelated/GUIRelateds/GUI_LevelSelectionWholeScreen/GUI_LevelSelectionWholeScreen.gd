@@ -167,6 +167,11 @@ func play_victory_animation_on_level_id(arg_level_id) -> bool:
 	else:
 		return false
 
+func play_victory_animation_on_level_ids__as_additonals(arg_level_ids) -> bool:
+	if is_instance_valid(_current_active_level_layout):
+		return _current_active_level_layout.play_victory_animation_on_level_ids__as_additonals(arg_level_ids)
+	else:
+		return false
 
 #
 
@@ -177,7 +182,7 @@ func _on_layout_currently_hovered_layout_ele_changed(arg_id, arg_currently_hover
 
 func _update_level_details_panel(arg_level_details):
 	if arg_level_details != null:
-		level_details_panel.set_level_id(arg_level_details.level_id)
+		level_details_panel.set_level_details(arg_level_details)
 		
 	else:
 		level_details_panel.hide_contents()
@@ -233,6 +238,10 @@ func play_circular_draw_node__circle_burst__for_victory(arg_pos : Vector2):
 
 func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
 	emit_signal("triggered_circular_burst_on_curr_ele_for_victory", arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
+
+func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles):
+	emit_signal("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", arg_tile_eles)
 	
+
 
 

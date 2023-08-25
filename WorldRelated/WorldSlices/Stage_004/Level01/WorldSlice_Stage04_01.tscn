@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_004/Level01/WorldSlice_Stage04_01.gd" type="Script" id=2]
@@ -6,12 +6,19 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=5]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=6]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 38.5, 96.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 54, 29.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 315, 392.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 381.75, 226 )
 
 [node name="WorldSlice_Stage04_01" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -54,6 +61,16 @@ position = Vector2( -91, -787 )
 position = Vector2( 133, 21.5 )
 shape = SubResource( 2 )
 
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="2" instance=ExtResource( 7 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 193, -227.5 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( -204.75, -774 )
+shape = SubResource( 4 )
+
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 77, -365 )
 
@@ -88,3 +105,4 @@ align = 1
 [editable path="TileContainer/BaseTileSet_Fragile"]
 [editable path="AreaRegionContainer/PDAR_NearFragileGlassType"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

@@ -43,6 +43,9 @@ var level_desc
 
 var level_id : int
 
+var additional_level_ids_to_mark_as_complete : Array
+
+#
 
 var texture_of_level_tile : Texture
 var modulate_of_level_tile : Color
@@ -132,3 +135,13 @@ func get_title_color_based_on_level_type():
 		return LEVEL_TYPE_ID_COLOR__FOR_FUN
 	elif level_type == LevelTypeId.CHALLENGE:
 		return LEVEL_TYPE_ID_COLOR__CHALLENGE
+
+
+#
+
+func has_additional_level_ids_to_mark_as_complete():
+	return additional_level_ids_to_mark_as_complete.size() != 0
+
+
+
+

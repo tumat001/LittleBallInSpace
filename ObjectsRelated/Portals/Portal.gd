@@ -428,8 +428,9 @@ func _teleport_node_to_other_linked_portal(body):
 	if body.get("is_player"):
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		var dist = _portal_to_link_with.global_position.distance_to(global_position)
+		var speed : Vector2 = body.linear_velocity
 		#print(dist)
-		if dist >= 9000:
+		if dist >= 9000 or speed.length() >= 500:
 			#CameraManager.set_camera_glob_pos(_portal_to_link_with.global_position)
 			CameraManager.make_camera_immediatelty_catch_up_to_node()
 			

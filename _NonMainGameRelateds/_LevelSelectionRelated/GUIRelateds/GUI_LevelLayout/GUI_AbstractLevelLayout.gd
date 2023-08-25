@@ -37,6 +37,7 @@ signal currently_hovered_layout_ele_changed(arg_id, arg_currently_hovered_tile)
 
 
 signal triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
+signal triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles)
 
 ##
 
@@ -106,11 +107,14 @@ const BEFORE_BURST_PARTICLE__DELAY_PER_PARTICLE = 0.08
 const BEFORE_BURST_PARTICLE__COUNT_FOR_TRIGGER_NEXT_PHASE = 15
 
 var _before_burst_particle_counter_timer : Timer
+var _before_burst_particle_counter_timer__as_additionals : Timer
 
 var _tile_ele_for_playing_victory_animation_for : GUI_LevelLayoutEle_Tile
+var _tile_eles_to_play_additional_vic_animation_for : Array
 
 
 var _current_burst_particle_summoned_count : int
+var _current_burst_particle_summon_loop_count__for_additonal : int
 
 #
 
@@ -143,6 +147,11 @@ func _initialize_particles_related():
 	_before_burst_particle_counter_timer.one_shot = false
 	_before_burst_particle_counter_timer.connect("timeout", self, "_on_before_burst_particle_counter_timer_timeout")
 	add_child(_before_burst_particle_counter_timer)
+	
+	_before_burst_particle_counter_timer__as_additionals = Timer.new()
+	_before_burst_particle_counter_timer__as_additionals.one_shot = false
+	_before_burst_particle_counter_timer__as_additionals.connect("timeout", self, "_on_before_burst_particle_counter_timer__as_additionals_timeout")
+	add_child(_before_burst_particle_counter_timer__as_additionals)
 
 #
 
@@ -337,30 +346,31 @@ func _unhandled_key_input(event):
 
 
 func _process(delta):
-	if _input_delay > 0:
-		_input_delay -= delta
-	
-	if _input_delay <= 0:
-		if _is_player_cursor_active and is_layout_enabled:
-			
-			if _last_input_type == INPUT_TYPE__LEFT:
-				_attempt_glide_cursor_from_current__to_left()
-				_input_delay += INPUT_DELAY_AFTER_GLIDE
+	if SingletonsAndConsts.current_master.can_level_layout_move_cursor():
+		if _input_delay > 0:
+			_input_delay -= delta
+		
+		if _input_delay <= 0:
+			if _is_player_cursor_active and is_layout_enabled:
 				
-			elif _last_input_type == INPUT_TYPE__RIGHT:
-				_attempt_glide_cursor_from_current__to_right()
-				_input_delay += INPUT_DELAY_AFTER_GLIDE
+				if _last_input_type == INPUT_TYPE__LEFT:
+					_attempt_glide_cursor_from_current__to_left()
+					_input_delay += INPUT_DELAY_AFTER_GLIDE
+					
+				elif _last_input_type == INPUT_TYPE__RIGHT:
+					_attempt_glide_cursor_from_current__to_right()
+					_input_delay += INPUT_DELAY_AFTER_GLIDE
+					
+				elif _last_input_type == INPUT_TYPE__UP:
+					_attempt_glide_cursor_from_current__to_up()
+					_input_delay += INPUT_DELAY_AFTER_GLIDE
+					
+				elif _last_input_type == INPUT_TYPE__DOWN:
+					_attempt_glide_cursor_from_current__to_down()
+					_input_delay += INPUT_DELAY_AFTER_GLIDE
+					
 				
-			elif _last_input_type == INPUT_TYPE__UP:
-				_attempt_glide_cursor_from_current__to_up()
-				_input_delay += INPUT_DELAY_AFTER_GLIDE
 				
-			elif _last_input_type == INPUT_TYPE__DOWN:
-				_attempt_glide_cursor_from_current__to_down()
-				_input_delay += INPUT_DELAY_AFTER_GLIDE
-				
-			
-			
 
 
 #
@@ -499,6 +509,56 @@ func _trigger_circular_burst_on_curr_ele_for_victory():
 
 func _create_circular_burst_effect(arg_pos : Vector2):
 	gui_level_selection_whole_screen.play_circular_draw_node__circle_burst__for_victory(arg_pos)
+
+#
+
+func play_victory_animation_on_level_ids__as_additonals(arg_ids : Array) -> bool:
+	var eles = []
+	for id in arg_ids:
+		if !_all_level_only_tile_ele__level_id_to_ele__map.has(id):
+			return false
+		else:
+			eles.append(_all_level_only_tile_ele__level_id_to_ele__map[id])
+	
+	_start_show_stream_of_particles_from_center_of_eles__as_additionals(eles)
+	return true
+
+
+func _start_show_stream_of_particles_from_center_of_eles__as_additionals(arg_eles : Array):
+	_tile_eles_to_play_additional_vic_animation_for = arg_eles
+	
+	_current_burst_particle_summon_loop_count__for_additonal = 0
+	
+	var is_last = _show_before_burst_particle__and_other_actions__for_additionals()
+	if !is_last:
+		_before_burst_particle_counter_timer__as_additionals.start(BEFORE_BURST_PARTICLE__DELAY_PER_PARTICLE)
+	
+
+func _on_before_burst_particle_counter_timer__as_additionals_timeout():
+	_show_before_burst_particle__and_other_actions__for_additionals()
+	
+
+func _show_before_burst_particle__and_other_actions__for_additionals() -> bool:
+	for ele in _tile_eles_to_play_additional_vic_animation_for:
+		var center_pos_of_ele = ele.get_center_position()
+		_create_before_burst_stream_particle(center_pos_of_ele)
+		_create_before_burst_stream_particle(center_pos_of_ele)
+	
+	_current_burst_particle_summon_loop_count__for_additonal += 1
+	if _current_burst_particle_summon_loop_count__for_additonal == BEFORE_BURST_PARTICLE__COUNT_FOR_TRIGGER_NEXT_PHASE:
+		_trigger_circular_burst_on_curr_ele_for_victory()
+	
+	if _current_burst_particle_summon_loop_count__for_additonal >= BEFORE_BURST_PARTICLE__COUNT:
+		_before_burst_particle_counter_timer__as_additionals.stop()
+		return true
+	else:
+		return false
+
+func _trigger_circular_burst_on_curr_ele_for_victory__as_additionals():
+	for ele in _tile_eles_to_play_additional_vic_animation_for:
+		_create_circular_burst_effect(ele.get_center_position())
+	
+	emit_signal("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", _tile_eles_to_play_additional_vic_animation_for)
 
 
 ################################

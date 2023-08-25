@@ -7,7 +7,7 @@ const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightT
 const INSTANT_BREAK_GLASS_TILE__MASS = 5
 const FRAGILE_BREAK_GLASS_TILE__MASS = 15
 const BREAKABLE_GLASS_TILE__MASS = 30
-
+const STRONG_BREAKABLE_GLASS_TILE__MASS = 40
 
 # THESE are not custom defined. THESE are defined by tileset resource
 const BREAKABLE_GLASS_TILE_ID__ATLAS_01 = 2
@@ -20,6 +20,10 @@ const INSTANT_BREAK_GLASS_GLOWING_TILE_ID = 15
 
 const FRAGILE_BREAK_GLASS_TILE_ID = 17
 const FRAGILE_BREAK_GLASS_GLOWING_TILE_ID = 18
+
+const STRONG_BREAK_GLASS_TILE_ID = 19
+const STRONG_BREAK_GLASS_GLOWING_TILE_ID = 20
+
 
 
 const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01 = 6
@@ -96,7 +100,7 @@ static func convert_filled_tile_id__to_unfilled(arg_id):
 	elif arg_id == TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02:
 		return TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02
 
-###
+####
 
 static func is_tile_id_glowing(arg_id):
 	match arg_id:
@@ -106,7 +110,8 @@ static func is_tile_id_glowing(arg_id):
 			return true
 		FRAGILE_BREAK_GLASS_GLOWING_TILE_ID:
 			return true
-		
+		STRONG_BREAK_GLASS_GLOWING_TILE_ID:
+			return true
 	
 	return false
 
@@ -120,6 +125,8 @@ static func convert_non_glowing_breakable_tile_id__to_glowing(arg_id):
 		return INSTANT_BREAK_GLASS_GLOWING_TILE_ID
 	elif arg_id == FRAGILE_BREAK_GLASS_TILE_ID:
 		return FRAGILE_BREAK_GLASS_GLOWING_TILE_ID
+	elif arg_id == STRONG_BREAK_GLASS_TILE_ID:
+		return STRONG_BREAK_GLASS_GLOWING_TILE_ID
 
 static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 	if arg_id == BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01:
@@ -130,6 +137,8 @@ static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 		return INSTANT_BREAK_GLASS_TILE_ID
 	elif arg_id == FRAGILE_BREAK_GLASS_GLOWING_TILE_ID:
 		return FRAGILE_BREAK_GLASS_TILE_ID
+	elif arg_id == STRONG_BREAK_GLASS_GLOWING_TILE_ID:
+		return STRONG_BREAK_GLASS_TILE_ID
 
 ##################
 
@@ -154,7 +163,14 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 			return FRAGILE_BREAK_GLASS_TILE__MASS
 		FRAGILE_BREAK_GLASS_GLOWING_TILE_ID:
 			return FRAGILE_BREAK_GLASS_TILE__MASS
-
+			
+			
+		STRONG_BREAK_GLASS_TILE_ID:
+			return STRONG_BREAKABLE_GLASS_TILE__MASS
+		STRONG_BREAK_GLASS_GLOWING_TILE_ID:
+			return STRONG_BREAKABLE_GLASS_TILE__MASS
+			
+			
 
 ###############################
 
@@ -422,6 +438,8 @@ func _initialize_all_tile_to_sound_id_map():
 		16 : _standard_tile_glass_hit,
 		17 : _standard_tile_glass_hit,
 		18 : _standard_tile_glass_hit,
+		19 : _standard_tile_glass_hit,
+		20 : _standard_tile_glass_hit,
 		
 	}
 	
@@ -439,6 +457,9 @@ func _initialize_all_tile_to_sound_id_map():
 		
 		17 : _standard_tile_glass_break,
 		18 : _standard_tile_glass_break,
+		
+		19 : _standard_tile_glass_break,
+		20 : _standard_tile_glass_break,
 		
 	}
 	

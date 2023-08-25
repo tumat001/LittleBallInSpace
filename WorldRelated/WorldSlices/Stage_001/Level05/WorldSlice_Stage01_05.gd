@@ -235,21 +235,12 @@ func _on_delay_for_game_end_complete():
 
 func _do_game_state_modifying_actions__setup_for_layout_02():
 	var lin_vel : Vector2 = game_elements.get_current_player().linear_velocity
-	
 	GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_2, [lin_vel.x, lin_vel.y, true])
-	GameSaveManager.last_hovered_over_level_layout_element_id = 0 # the first one
-	GameSaveManager.last_opened_level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02
 	
-	#var all_levels__with_no_test = StoreOfLevels.get_all_level_ids__not_including_tests()
-	#StoreOfLevels.add_level_ids_as_non_hidden(all_levels__with_no_test)
-	StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST)
+	#
 	
-	GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
-	GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-	
-	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
-	SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_01__STAGE_2
-	
+	GameSaveManager.unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
+
 
 ####
 

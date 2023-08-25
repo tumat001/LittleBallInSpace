@@ -23,10 +23,11 @@ var gui__level_selection_whole_screen : GUI_LevelSelectionWholeScreen
 
 
 var _level_id_to_mark_as_finish__and_display_win_vic_on
-
+var _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on : Array
 
 var _is_transitioning : bool
 var _is_in_game_or_loading_to_game : bool
+var _is_playing_victory_animations : bool
 
 #
 
@@ -71,7 +72,6 @@ func _ready():
 		
 
 
-# go straight to very first stage
 func _do_appropriate_action__for_first_time():
 	#var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
 	#instant_start_game_elements__with_level_details(first_stage_details)
@@ -166,6 +166,7 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 func switch_to_level_selection_scene__from_game_elements__as_win():
 	_is_in_game_or_loading_to_game = false
 	_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+	_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on = SingletonsAndConsts.current_level_details.additional_level_ids_to_mark_as_complete.duplicate()
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.clear_coin_ids_in_tentative()
 	
@@ -259,18 +260,36 @@ func _unlock_and_play_anim_on_victory__on_level_id():
 	var is_playing_anim = gui__level_selection_whole_screen.play_victory_animation_on_level_id(_level_id_to_mark_as_finish__and_display_win_vic_on)
 	
 	if is_playing_anim:
+		_is_playing_victory_animations = true
 		gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory", [], CONNECT_ONESHOT)
+		if !gui__level_selection_whole_screen.is_connected("_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals"):
+			gui__level_selection_whole_screen.connect("_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", [], CONNECT_ONESHOT)
 	else:
-		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+		#AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 		_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
+		_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 	
-	_level_id_to_mark_as_finish__and_display_win_vic_on = -1
+	#_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 
+
+func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles):
+	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+	
+	for ele in arg_tile_eles:
+		_make_level_id_mark_as_finished(ele.level_details.level_id)
+	_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on = []
+	
+	_is_playing_victory_animations = false
 
 func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
 	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 	_make_level_id_mark_as_finished(arg_level_details.level_id)
+	_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 	
+	if _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on.size() == 0:
+		_is_playing_victory_animations = false
+	else:
+		gui__level_selection_whole_screen.play_victory_animation_on_level_ids__as_additonals(_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on)
 
 func _make_level_id_mark_as_finished(arg_level_id):
 	GameSaveManager.set_level_id_status_completion(arg_level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
@@ -349,4 +368,12 @@ func _on_question_panel_finished():
 	instant_start_game_elements__with_level_details(first_stage_details)
 	#GameSaveManager.first_time_opening_game = false
 	
+
+
+##
+
+func can_level_layout_move_cursor():
+	return !_is_transitioning and !_is_playing_victory_animations and !_is_in_game_or_loading_to_game
+	
+
 

@@ -38,7 +38,7 @@ func _on_player_entered__as_scene_transition(arg_player):
 	
 	#
 	
-	StoreOfLevels.unlock_stage_03__and_start_at_stage_03_01_on_level_finish()
+	StoreOfLevels.unlock_stage_03__and_start_at_stage_03_01_on_level_finish__if_appropriate()
 	
 	#
 	
