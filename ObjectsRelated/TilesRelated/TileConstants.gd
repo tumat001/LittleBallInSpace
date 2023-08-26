@@ -8,6 +8,7 @@ const INSTANT_BREAK_GLASS_TILE__MASS = 5
 const FRAGILE_BREAK_GLASS_TILE__MASS = 15
 const BREAKABLE_GLASS_TILE__MASS = 30
 const STRONG_BREAKABLE_GLASS_TILE__MASS = 40
+const SPACESHIP_WALL_BREAKABLE_TILE__MASS = 60
 
 # THESE are not custom defined. THESE are defined by tileset resource
 const BREAKABLE_GLASS_TILE_ID__ATLAS_01 = 2
@@ -23,6 +24,9 @@ const FRAGILE_BREAK_GLASS_GLOWING_TILE_ID = 18
 
 const STRONG_BREAK_GLASS_TILE_ID = 19
 const STRONG_BREAK_GLASS_GLOWING_TILE_ID = 20
+
+const SPACESHIP_WALL_BREAKABLE_TILE_ID = 21
+const SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID = 22
 
 
 
@@ -112,6 +116,8 @@ static func is_tile_id_glowing(arg_id):
 			return true
 		STRONG_BREAK_GLASS_GLOWING_TILE_ID:
 			return true
+		SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID:
+			return true
 	
 	return false
 
@@ -127,6 +133,8 @@ static func convert_non_glowing_breakable_tile_id__to_glowing(arg_id):
 		return FRAGILE_BREAK_GLASS_GLOWING_TILE_ID
 	elif arg_id == STRONG_BREAK_GLASS_TILE_ID:
 		return STRONG_BREAK_GLASS_GLOWING_TILE_ID
+	elif arg_id == SPACESHIP_WALL_BREAKABLE_TILE_ID:
+		return SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID
 
 static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 	if arg_id == BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01:
@@ -139,6 +147,8 @@ static func convert_glowing_breakable_tile_id__to_non_glowing(arg_id):
 		return FRAGILE_BREAK_GLASS_TILE_ID
 	elif arg_id == STRONG_BREAK_GLASS_GLOWING_TILE_ID:
 		return STRONG_BREAK_GLASS_TILE_ID
+	elif arg_id == SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID:
+		return SPACESHIP_WALL_BREAKABLE_TILE_ID
 
 ##################
 
@@ -171,6 +181,10 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 			return STRONG_BREAKABLE_GLASS_TILE__MASS
 			
 			
+		SPACESHIP_WALL_BREAKABLE_TILE_ID:
+			return SPACESHIP_WALL_BREAKABLE_TILE__MASS
+		SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID:
+			return SPACESHIP_WALL_BREAKABLE_TILE__MASS
 
 ###############################
 
@@ -447,6 +461,9 @@ func _initialize_all_tile_to_sound_id_map():
 	var _standard_tile_glass_break = {
 		ANY_AUTO_COORD : StoreOfAudio.AudioIds.SFX_Misc_GlassBreak_Hard
 	}
+	var _spaceship_wall_breakable_break = {
+		ANY_AUTO_COORD : StoreOfAudio.AudioIds.SFX_SpaceshipWall_Tile_Break
+	}
 	
 	_breakable_tile_id_to_auto_coord_to_sound_id_map = {
 		4 : _standard_tile_glass_break,
@@ -460,6 +477,9 @@ func _initialize_all_tile_to_sound_id_map():
 		
 		19 : _standard_tile_glass_break,
 		20 : _standard_tile_glass_break,
+		
+		21 : _spaceship_wall_breakable_break,
+		22 : _spaceship_wall_breakable_break,
 		
 	}
 	

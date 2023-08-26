@@ -34,6 +34,8 @@ const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
 const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
+const LEVEL_ID_DIED_IN__DIC_IDENTIFIER = "LEVEL_ID_DIED_IN__DIC_IDENTIFIER"
+
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
@@ -41,6 +43,7 @@ const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
+var level_id_died_in
 
 var player_name : String
 
@@ -244,7 +247,12 @@ func _load_player_related_data(arg_file : File):
 	else:
 		animal_choice_id = AnimalChoiceId.DOG
 	
+	##
 	
+	if data.has(LEVEL_ID_DIED_IN__DIC_IDENTIFIER):
+		level_id_died_in = data[LEVEL_ID_DIED_IN__DIC_IDENTIFIER]
+	else:
+		level_id_died_in = -1
 
 #
 
@@ -445,7 +453,9 @@ func _save_player_data():
 		PLAYER_HEALTH__DIC_IDENTIFIER : player_health_on_start,
 		PLAYER_NAME__DIC_IDENTIFIER : player_name,
 		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
-		ANIMAL_CHOICE__DIC_IDENTIFIER : animal_choice_id
+		ANIMAL_CHOICE__DIC_IDENTIFIER : animal_choice_id,
+		LEVEL_ID_DIED_IN__DIC_IDENTIFIER : level_id_died_in,
+		
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -496,7 +506,9 @@ func set_game_elements(arg_elements):
 func _on_game_result_decided(arg_result, arg_game_result_manager):
 	if arg_result == arg_game_result_manager.GameResult.WIN:
 		player_health_on_start = tentative_player_health_on_start
-	
+		
+		if is_zero_approx(player_health_on_start) and level_id_died_in == -1:
+			level_id_died_in = SingletonsAndConsts.current_base_level_id
 
 
 #####################################

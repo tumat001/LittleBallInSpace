@@ -42,6 +42,12 @@ var is_class_type_base_object : bool = true
 
 #
 
+# determined at start (before ready)
+var has_finite_lifespan : bool = false
+var current_lifespan : float = -1
+
+#
+
 onready var anim_sprite = $AnimatedSprite
 
 onready var collision_shape = $CollisionShape2D
@@ -147,6 +153,16 @@ func destroy_self_caused_by_destroying_area_region(arg_region):
 	
 	queue_free()
 
+
+func _process(delta):
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if has_finite_lifespan:
+			current_lifespan -= delta
+			
+			if current_lifespan <= 0 and !is_dead_but_reserved_for_rewind:
+				queue_free()
+		
+
 ###################### 
 # REWIND RELATED
 #####################
@@ -166,20 +182,23 @@ var _rewinded__block_can_collide_with_player_cond_clauses_save_state
 
 func queue_free():
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
-		if !SingletonsAndConsts.current_rewind_manager.is_connected("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables"):
-			SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
-		
-		collision_shape.set_deferred("disabled", true)
-		visible = false
-		is_dead_but_reserved_for_rewind = true
+		if !is_dead_but_reserved_for_rewind:
+			if !SingletonsAndConsts.current_rewind_manager.is_connected("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables"):
+				SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
+			
+			collision_shape.set_deferred("disabled", true)
+			visible = false
+			is_dead_but_reserved_for_rewind = true
 		
 	else:
-		.queue_free()
+		if !is_queued_for_deletion():
+			.queue_free()
 		
 
 func _on_obj_removed_from_rewindables(arg_obj):
 	if arg_obj == self:
-		.queue_free()
+		if !is_queued_for_deletion():
+			.queue_free()
 
 
 
@@ -191,7 +210,9 @@ func get_rewind_save_state():
 		"sleeping" : state.sleeping,
 		"transform" : state.transform,
 		
-		"block_can_collide_with_player_cond_clauses_save_state" : block_can_collide_with_player_cond_clauses.get_rewind_save_state()
+		"block_can_collide_with_player_cond_clauses_save_state" : block_can_collide_with_player_cond_clauses.get_rewind_save_state(),
+		
+		"current_lifespan" : current_lifespan,
 	}
 	
 
@@ -201,6 +222,8 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded__sleeping = arg_state["sleeping"]
 	_rewinded__transform = arg_state["transform"]
 	_rewinded__block_can_collide_with_player_cond_clauses_save_state = arg_state["block_can_collide_with_player_cond_clauses_save_state"]
+	
+	current_lifespan = arg_state["current_lifespan"]
 	
 	#
 	global_position = _rewinded__transform.origin

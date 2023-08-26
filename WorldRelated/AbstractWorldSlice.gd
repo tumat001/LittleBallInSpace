@@ -38,6 +38,11 @@ var _next_available_coin_id : int = 1
 
 #
 
+var is_player_capture_area_style_one_at_a_time__in_node_order : bool
+var _current_pca_index : int
+
+#
+
 onready var tile_container = $TileContainer
 onready var object_container = $ObjectContainer
 onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
@@ -62,7 +67,7 @@ func _ready():
 	_initialize_spawn_coords()
 	_initialize_coins()
 	_initialize_base_tilesets()
-	
+	_attempt_init_player_capture_area_style_to_one_at_a_time()
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
@@ -200,4 +205,42 @@ func _initialize_base_tilesets():
 	for child in tile_container.get_children():
 		child.set_light_2d_glowables_node_2d_container(lights_container)
 
+
+#########################
+
+func _attempt_init_player_capture_area_style_to_one_at_a_time():
+	if is_player_capture_area_style_one_at_a_time__in_node_order:
+		_set_player_capture_area_style_to_one_at_a_time()
+	
+
+func _set_player_capture_area_style_to_one_at_a_time():
+	for arg_region in area_region_container.get_children():
+		if arg_region.get("is_player_capture_area_region"):
+			if arg_region.is_capture_type_win:
+				arg_region.connect("region_area_captured", self, "_on_PCA_region_area_captured__for_one_at_a_time_tracking", [arg_region])
+				arg_region.connect("region_area_uncaptured", self, "_on_PCA_region_area_uncaptured__for_one_at_a_time_tracking", [arg_region])
+				
+				arg_region.visible = false
+				
+	
+	_current_pca_index = 0
+
+
+func _on_PCA_region_area_captured__for_one_at_a_time_tracking(curr_pca):
+	_current_pca_index += 1
+	if _all_win_type_player_capture_area_region_to_is_captured_map.size() > _current_pca_index:
+		var next_pca = _all_win_type_player_capture_area_region_to_is_captured_map.keys()[_current_pca_index]
+		next_pca.visible = true
+	
+	curr_pca.visible = false
+
+func _on_PCA_region_area_uncaptured__for_one_at_a_time_tracking(curr_pca):
+	_current_pca_index -= 1
+	var prev_pca = _all_win_type_player_capture_area_region_to_is_captured_map.keys()[_current_pca_index]
+	prev_pca.visible = true
+	curr_pca.visible = false
+
+
+func make_first_pca_region_visible():
+	_all_win_type_player_capture_area_region_to_is_captured_map.keys()[0].visible = true
 

@@ -108,7 +108,10 @@ enum AudioIds {
 	
 	# TILE BREAK
 	SFX_Misc_GlassBreak_Hard = 5300
+	SFX_SpaceshipWall_Tile_Break = 5301
 	
+	# SPECIAL
+	#SFX_SpaceshipWall_Break = 6000
 	
 }
 

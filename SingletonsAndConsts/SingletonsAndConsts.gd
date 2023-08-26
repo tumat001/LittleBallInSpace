@@ -36,6 +36,9 @@ var _level_id_to_restart_only_persisting_data : Dictionary
 var interrupt_return_to_screen_layout_panel__go_directly_to_level : bool = false
 var level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel
 
+
+var show_end_game_result_pre_hud : bool = false
+
 #
 
 func set_current_game_elements(arg_elements):

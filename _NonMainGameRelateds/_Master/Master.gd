@@ -11,6 +11,9 @@ const GameElements_Scene = preload("res://GameElements/GameElements.tscn")
 const FirstTimeQuestionWSPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.gd")
 const FirstTimeQuestionWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.tscn")
 
+const EndingSummaryWSPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.gd")
+const EndingSummaryWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.tscn")
+
 
 #
 
@@ -32,6 +35,7 @@ var _is_playing_victory_animations : bool
 #
 
 var first_time_question_ws_panel : FirstTimeQuestionWSPanel
+var ending_summary_ws_panel : EndingSummaryWSPanel
 
 #
 
@@ -222,15 +226,24 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 	
 	SingletonsAndConsts.current_game_elements.queue_free()
 	
-	if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
-		load_and_show_layout_selection_whole_screen()
+	
+	if !SingletonsAndConsts.show_end_game_result_pre_hud:
+		if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
+			load_and_show_layout_selection_whole_screen()
+			
+			arg_curr_transition.queue_free()
+			var transition = play_transition__using_id(arg_next_transition_id)
+			transition.queue_free_on_end_of_transition = true
+			
+			if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+				call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
+			
+		else:
+			arg_curr_transition.queue_free()
+			
+			if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+				_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
 		
-		arg_curr_transition.queue_free()
-		var transition = play_transition__using_id(arg_next_transition_id)
-		transition.queue_free_on_end_of_transition = true
-		
-		if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
-			call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
 		
 	else:
 		arg_curr_transition.queue_free()
@@ -238,6 +251,7 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 		if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
 			_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
 		
+		#_show_ending_summary_wsp()
 	
 	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = false
 	
@@ -375,5 +389,19 @@ func _on_question_panel_finished():
 func can_level_layout_move_cursor():
 	return !_is_transitioning and !_is_playing_victory_animations and !_is_in_game_or_loading_to_game
 	
+
+
+#################
+
+func show_ending_summary_wsp():
+	if !is_instance_valid(ending_summary_ws_panel):
+		ending_summary_ws_panel = EndingSummaryWSPanel_Scene.instance()
+		
+		add_child(ending_summary_ws_panel)
+		move_child(ending_summary_ws_panel, 0)
+		
+		ending_summary_ws_panel.connect("ending_panel_finished", self, "_on_question_panel_finished")
+
+
 
 

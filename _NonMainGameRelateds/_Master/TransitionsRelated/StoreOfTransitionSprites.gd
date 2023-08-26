@@ -1,5 +1,8 @@
 extends Reference
 
+const Transition_StandardFade = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/StandardFade/Transition_StandardFade.gd")
+
+#
 
 enum TransitionSpriteIds {
 	
@@ -10,6 +13,11 @@ enum TransitionSpriteIds {
 	
 	OUT__STANDARD_CIRCLE__WHITE = 3,
 	IN__STANDARD_CIRCLE__WHITE = 4,
+	
+	#
+	
+	OUT__STANDARD_FADE__BLACK__LONG = 10,
+	#IN__STANDARD_FADE__BLACK = 11,
 	
 }
 
@@ -36,6 +44,10 @@ static func construct_transition_sprite(arg_id):
 		_configure_transition__standard_circle__to_in(transition)
 		_configure_transition__any__to_white(transition)
 		
+	elif arg_id == TransitionSpriteIds.OUT__STANDARD_FADE__BLACK__LONG:
+		transition = _construct_transition__standard_fade()
+		_configure_transition__standard_fade__to_out(transition, 3.0)
+		_configure_transition__any__to_black(transition)
 	
 	return transition
 
@@ -63,3 +75,17 @@ static func _configure_transition__any__to_white(arg_transition):
 	arg_transition.modulate = Color(1, 1, 1, 1)
 
 
+
+
+static func _construct_transition__standard_fade():
+	var transition = load("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/StandardFade/Transition_StandardFade.tscn")
+	
+	return transition
+
+static func _configure_transition__standard_fade__to_out(arg_transition : Transition_StandardFade, arg_duration):
+	var fade_ins = Transition_StandardFade.FadeInstruction.new()
+	fade_ins.fade_duration = arg_duration
+	fade_ins.fade_target_modulate = Color(0, 0, 0, 1)
+	fade_ins.delay = 0
+	arg_transition.add_fade_instruction(fade_ins)
+	

@@ -10,6 +10,8 @@ const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightT
 
 signal light_2d_glowables_node_2d_container_setted()
 
+signal tile_broken_via_player_and_speed()
+
 ##
 
 const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
@@ -36,6 +38,7 @@ const MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE = 0
 const MOMENTUM_FOR_BREAK__FRAGILE_BREAKABLE_TILE = 21000  # 150 speed needed for break
 const MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE = 42000  # 300 speed needed for break
 const MOMENTUM_FOR_BREAK__STRONG_GLASS_TILE = 140000 #1000
+const MOMENTUM_FOR_BREAK__SPACESHIP_WEAK_WALL_BREAKABLE = 56000
 
 enum GlassBreakableType {
 	NEVER_BREAK = 0,
@@ -43,6 +46,7 @@ enum GlassBreakableType {
 	SIMPLE_BREAKABLE = 2,
 	FRAGILE_BREAKABLE = 3,
 	STRONG_BREAKABLE = 4,
+	SPACESHIP_WEAK_WALL_BREAKABLE = 5,
 }
 const _glass_breakable_type_to_momentum_for_break_val_map = {
 	GlassBreakableType.NEVER_BREAK : MOMENTUM_FOR_BREAK__NEVER_BREAK,
@@ -50,6 +54,8 @@ const _glass_breakable_type_to_momentum_for_break_val_map = {
 	GlassBreakableType.SIMPLE_BREAKABLE : MOMENTUM_FOR_BREAK__SIMPLE_BREAKABLE_TILE,
 	GlassBreakableType.FRAGILE_BREAKABLE : MOMENTUM_FOR_BREAK__FRAGILE_BREAKABLE_TILE,
 	GlassBreakableType.STRONG_BREAKABLE : MOMENTUM_FOR_BREAK__STRONG_GLASS_TILE,
+	GlassBreakableType.SPACESHIP_WEAK_WALL_BREAKABLE : MOMENTUM_FOR_BREAK__SPACESHIP_WEAK_WALL_BREAKABLE,
+	
 }
 export(GlassBreakableType) var glass_breakable_type : int setget set_glass_breakable_type
 
@@ -65,7 +71,9 @@ const _glass_breakable_type_to_speed_ratio_reduction_val_map = {
 	GlassBreakableType.INSTANT_BREAK : 0.0,
 	GlassBreakableType.SIMPLE_BREAKABLE : 0.6,
 	GlassBreakableType.FRAGILE_BREAKABLE : 0.0,
-	GlassBreakableType.STRONG_BREAKABLE : 0.0
+	GlassBreakableType.STRONG_BREAKABLE : 0.0,
+	GlassBreakableType.SPACESHIP_WEAK_WALL_BREAKABLE : 0.0,
+	
 }
 #export(float) var speed_slowdown_on_tile_break : float = SPEED_SLOWDOWN_RATIO__GLASS
 var speed_slowdown_on_tile_break #: float = SPEED_SLOWDOWN_RATIO__GLASS
@@ -376,6 +384,9 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	_set_tile_at_coords(arg_tile_coord, -1, Vector2(0, 0), true)
 	
 	call_deferred("_attempt_induce_speed_slowdown_on_player", arg_player)
+	
+	
+	emit_signal("tile_broken_via_player_and_speed")
 
 func _create_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, arg_tile_id, arg_auto_coords):
 	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, 9, arg_tile_id, arg_auto_coords)

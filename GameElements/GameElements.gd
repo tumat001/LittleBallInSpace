@@ -37,6 +37,10 @@ var game_front_hud : GameFrontHUD
 
 #
 
+var object_lifespan__ball : float = -1
+
+#
+
 var _is_in_cutscene : bool
 
 #

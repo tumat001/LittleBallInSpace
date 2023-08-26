@@ -11,6 +11,9 @@ signal max_energy_changed(arg_val)
 # for use of energy HUD
 signal forecasted_or_current_energy_changed(arg_curr_energy, arg_forecasted_energy)
 
+
+signal battery_visual_type_id_changed(arg_id)
+
 #
 
 
@@ -47,6 +50,14 @@ var _forecasted_energy : float
 #
 
 var _has_no_energy : bool
+
+#
+
+enum BatteryVisualTypeId {
+	STANDARD = 0,
+	MEGA = 1,
+}
+var battery_visual_type_id : int setget set_battery_visual_type_id
 
 #
 
@@ -177,6 +188,23 @@ func get_max_energy():
 
 func is_no_energy():
 	return _has_no_energy
+
+##
+
+func set_battery_visual_type_id(arg_id):
+	var old_val = battery_visual_type_id
+	battery_visual_type_id = arg_id
+	
+	if old_val != battery_visual_type_id:
+		emit_signal("battery_visual_type_id_changed", battery_visual_type_id)
+
+#
+
+func set_properties__as_mega_battery():
+	set_battery_visual_type_id(BatteryVisualTypeId.MEGA)
+	set_max_energy(150)
+	#set_current_energy(150)
+	
 
 
 ###################### 

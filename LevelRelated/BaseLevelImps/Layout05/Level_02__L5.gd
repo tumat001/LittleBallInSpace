@@ -3,7 +3,7 @@ extends "res://LevelRelated/Classes/BaseLevel.gd"
 
 
 func _init():
-	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.NONE
+	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.NONE   # changed by code in worldslice
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
 	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
@@ -16,8 +16,9 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_05_01, Vector2(0, 0))
-
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_05_02, Vector2(0, 0))
+	
+	arg_elements.object_lifespan__ball = 15.0
 
 
 ######

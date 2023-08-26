@@ -58,6 +58,7 @@ enum LevelIds {
 	##
 	
 	LEVEL_01__STAGE_5 = 400
+	LEVEL_02__STAGE_5 = 401
 	
 	
 }
@@ -987,10 +988,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_5:
 		level_details.level_full_name = [
-			["5-1 Terminal Velocity", []]
+			["5-0 Limitless", []]
 		]
 		level_details.level_name = [
-			["Terminal Velocity", []]
+			["Limitless", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -1005,7 +1006,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
 		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
 		
-		level_details.level_label_on_tile = "01"
+		level_details.level_label_on_tile = "00"
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
@@ -1280,6 +1281,13 @@ func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_stat
 ###########################
 #
 ###########################
+
+func unlock_and_goto_stage_05_level_02_on_win():
+	if !GameSaveManager.is_level_id_finished(LevelIds.LEVEL_01__STAGE_5):
+		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
+		SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_02__STAGE_5
+	
+
 
 func unlock_stage_05__and_unhide_eles_to_layout_05():
 	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05):

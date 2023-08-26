@@ -405,6 +405,10 @@ func _remove_obj_from_all_registered_rewindables(arg_obj):
 func is_obj_registered_in_rewindables(arg_obj):
 	return _all_registered_rewindables.has(arg_obj)
 
+
+func prevent_rewind_up_to_this_time_point():
+	_rewindable_datas.clear()
+
 ##
 
 func attempt_set_rewindable_marker_data_at_next_frame(arg_marker_id):

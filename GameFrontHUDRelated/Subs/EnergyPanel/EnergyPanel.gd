@@ -1,6 +1,13 @@
 extends Control
 
 
+const EnergyPanel_BatteryFillForeground_Normal = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground.png")
+const EnergyPanel_BatteryFillForeground_Normal_Forecasted = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground_Forecasted.png")
+const EnergyPanel_BatteryFillForeground_Mega = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground__MegaBattery.png")
+const EnergyPanel_BatteryFillForeground_Mega_Forecasted = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground_Forecasted__MegaBattery.png")
+
+#
+
 const ENERGY_LABEL_STRING_FORMAT = "%s / %s"
 
 #
@@ -28,9 +35,12 @@ func set_player_modi__energy(arg_modi):
 	player_modi__energy.connect("discarged_to_zero_energy", self, "_on_discarged_to_zero_energy")
 	player_modi__energy.connect("recharged_from_no_energy", self, "_on_recharged_from_no_energy")
 	
+	player_modi__energy.connect("battery_visual_type_id_changed", self, "_on_battery_visual_type_id_changed")
+	
 	if is_inside_tree():
 		_update_display__for_max()
 		_update_display__for_current_and_forecasted()
+		_update_bar_visual_based_on_type_id()
 	
 	visible = true
 
@@ -90,6 +100,26 @@ func _on_discarged_to_zero_energy():
 
 func _on_recharged_from_no_energy():
 	rewind_reminder_label.visible = false
+	
+
+
+###
+
+func _on_battery_visual_type_id_changed(arg_id):
+	_update_bar_visual_based_on_type_id()
+	
+
+func _update_bar_visual_based_on_type_id():
+	var id = player_modi__energy.battery_visual_type_id
+	if id == player_modi__energy.BatteryVisualTypeId.STANDARD:
+		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Normal
+		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Normal_Forecasted
+		
+	elif id == player_modi__energy.BatteryVisualTypeId.MEGA:
+		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Mega
+		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Mega_Forecasted
+		
+	
 	
 
 

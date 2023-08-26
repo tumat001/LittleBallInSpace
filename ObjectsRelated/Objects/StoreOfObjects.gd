@@ -9,6 +9,7 @@ enum ObjectTypeIds {
 var _object_type_id_to_file_path_map : Dictionary
 
 
+
 func _init():
 	_object_type_id_to_file_path_map[ObjectTypeIds.BALL] = "res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.tscn"
 	_object_type_id_to_file_path_map[ObjectTypeIds.TILE_FRAGMENT] = "res://ObjectsRelated/Objects/Imps/TileFragment/Object_TileFragment.tscn"
@@ -17,5 +18,13 @@ func _init():
 
 func construct_object(arg_id):
 	var object = load(_object_type_id_to_file_path_map[arg_id]).instance()
+	
+	if arg_id == ObjectTypeIds.BALL:
+		if is_instance_valid(SingletonsAndConsts.current_game_elements):
+			var lifespan = SingletonsAndConsts.current_game_elements.object_lifespan__ball
+			if lifespan != -1:
+				object.has_finite_lifespan = true
+				object.current_lifespan = lifespan
+	
 	
 	return object

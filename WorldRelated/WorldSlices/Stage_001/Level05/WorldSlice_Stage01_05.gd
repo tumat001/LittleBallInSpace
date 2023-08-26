@@ -118,12 +118,17 @@ func _start_remote_dialog__01():
 
 
 func _on_display_of_desc_finished__01(arg_metadata):
+	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
+	call_deferred("_deferred__end_of_desc_finish_01")
+
+func _deferred__end_of_desc_finish_01():
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
 	
 	CDSU_pickupable_remote__sprite.material.shader = Shader_Rainbow
 	CDSU_pickupable_remote.set_collidable_with_player(true)
 	CDSU_pickupable_remote.connect("player_entered_self__custom_defined", self, "_on_player_entered_self__custom_defined__remote")
-	
+
+
 
 
 func _on_player_entered_self__custom_defined__remote():
@@ -146,9 +151,14 @@ func _start_remote_dialog__02():
 
 
 func _on_display_of_desc_finished__02(arg_metadata):
+	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
+	call_deferred("_deferred_finish_desc_display_02")
+
+func _deferred_finish_desc_display_02():
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
 	
 	PDAR_cancel_dialog_remote.connect("player_entered_in_area", self, "_on_PDAR_cancel_dialog_remote_player_entered_area")
+	
 
 
 func _on_PDAR_cancel_dialog_remote_player_entered_area():
