@@ -81,13 +81,11 @@ func _play_game_result_showing_anim__win():
 	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_victory()
 	if anim_scene != null:
 		_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
-	
 
 func _play_game_result_showing_anim__lose():
 	var anim_scene = SingletonsAndConsts.current_base_level.get_anim_instance_to_play__on_defeat()
 	if anim_scene != null:
 		_add_anim_scene_to_game_front_hud__and_monitor_for_end(anim_scene)
-	
 
 func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
 	arg_scene.win_message_type = SingletonsAndConsts.current_base_level.win_message_type
@@ -96,7 +94,6 @@ func _add_anim_scene_to_game_front_hud__and_monitor_for_end(arg_scene):
 	arg_scene.connect("end_of_anim", self, "_on_end_of_anim")
 	SingletonsAndConsts.current_game_front_hud.add_vic_def_anim(arg_scene)
 	
-
 
 func _on_end_of_anim():
 	if _current_game_result == GameResult.WIN:

@@ -244,3 +244,7 @@ func _on_PCA_region_area_uncaptured__for_one_at_a_time_tracking(curr_pca):
 func make_first_pca_region_visible():
 	_all_win_type_player_capture_area_region_to_is_captured_map.keys()[0].visible = true
 
+
+
+
+

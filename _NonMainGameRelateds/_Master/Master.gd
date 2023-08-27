@@ -14,6 +14,10 @@ const FirstTimeQuestionWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreG
 const EndingSummaryWSPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.gd")
 const EndingSummaryWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.tscn")
 
+#
+
+signal switching_from_game_elements__as_win(arg_transition_scene)
+signal switching_from_game_elements__as_win__transition_ended()
 
 #
 
@@ -179,6 +183,8 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
+	
+	emit_signal("switching_from_game_elements__as_win", transition)
 
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
@@ -393,15 +399,36 @@ func can_level_layout_move_cursor():
 
 #################
 
-func show_ending_summary_wsp():
+func show_ending_summary_wsp(arg_transition_to_wait_for):
 	if !is_instance_valid(ending_summary_ws_panel):
 		ending_summary_ws_panel = EndingSummaryWSPanel_Scene.instance()
 		
 		add_child(ending_summary_ws_panel)
 		move_child(ending_summary_ws_panel, 0)
 		
-		ending_summary_ws_panel.connect("ending_panel_finished", self, "_on_question_panel_finished")
+		ending_summary_ws_panel.connect("ending_panel_finished", self, "_on_ending_summary_panel_finished")
+		
+		connect("switching_from_game_elements__as_win", self, "_on_switching_from_game_elements__as_win__start_ending_sequence", [], CONNECT_ONESHOT)
+		
+		ending_summary_ws_panel.start_display()
+
+func _on_switching_from_game_elements__as_win__start_ending_sequence(arg_transition):
+	arg_transition.connect("transition_finished", self, "_on_switching_from_game_elements__as_win__transition_ended", [], CONNECT_ONESHOT)
+	
+
+func _on_switching_from_game_elements__as_win__transition_ended():
+	emit_signal("switching_from_game_elements__as_win__transition_ended")
+	
 
 
+
+
+func _on_ending_summary_panel_finished():
+	var transition = play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
+	transition.queue_free_on_end_of_transition = true
+	
+	load_and_show_layout_selection_whole_screen()
+	
+	ending_summary_ws_panel.queue_free()
 
 

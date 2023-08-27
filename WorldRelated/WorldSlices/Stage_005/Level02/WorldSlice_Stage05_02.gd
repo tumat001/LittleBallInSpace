@@ -107,6 +107,8 @@ func _start_spaceship_tile_break_dialog__01():
 
 func _on_PCA_Last_region_area_captured():
 	if _is_first_time_playing_this_lvl:
+		unlock_relateds_after_winning_stage_05_level_02()
+		
 		SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(false, true)
 		
 		game_elements.ban_rewind_manager_to_store_and_cast_rewind()
@@ -114,5 +116,11 @@ func _on_PCA_Last_region_area_captured():
 		SingletonsAndConsts.show_end_game_result_pre_hud = true
 		
 		SingletonsAndConsts.current_master.show_ending_summary_wsp()
+		
+		call_deferred("_deferred_last_region_captured")
+
+func _deferred_last_region_captured():
+	game_elements.game_result_manager.end_game__as_win()
+
 
 

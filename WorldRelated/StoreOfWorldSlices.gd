@@ -38,6 +38,8 @@ enum WorldSliceIds {
 	
 	STAGE_04_03__HARD = 350
 	
+	STAGE_05_01 = 400
+	STAGE_05_02 = 401
 	
 }
 
@@ -109,7 +111,20 @@ func load_world_slice_from_id(arg_id):
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_004/Level04/WorldSlice_Stage04_04.tscn")
 	elif arg_id == WorldSliceIds.STAGE_04_05:
 		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_004/Level05/WorldSlice_Stage04_05.tscn")
-	
+		
+		
+	elif arg_id == WorldSliceIds.STAGE_04_03__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_004/Level03_Hard/WorldSlice_Stage04_03_Hard.tscn")
+	elif arg_id == WorldSliceIds.STAGE_04_05__HARD:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_004/Level05_Hard/WorldSlice_Stage04_05_Hard.tscn")
+		
+		
+	elif arg_id == WorldSliceIds.STAGE_05_01:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_005/Level01/WorldSlice_Stage05_01.tscn")
+	elif arg_id == WorldSliceIds.STAGE_05_02:
+		world_packed_scene = load("res://WorldRelated/WorldSlices/Stage_005/Level02/WorldSlice_Stage05_02.tscn")
+		
+		
 	
 	####
 	
