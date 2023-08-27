@@ -80,7 +80,8 @@ func _on_current_game_elements_changed(arg_ele):
 
 func _attempt_connect_self_to_game_elements():
 	if is_instance_valid(SingletonsAndConsts.current_game_elements):
-		SingletonsAndConsts.current_game_elements.connect("before_game_quit", self, "_on_before_game_quit__game_elements")
+		if !SingletonsAndConsts.current_game_elements.is_connected("before_game_quit", self, "_on_before_game_quit__game_elements"):
+			SingletonsAndConsts.current_game_elements.connect("before_game_quit", self, "_on_before_game_quit__game_elements")
 	else:
 		if !SingletonsAndConsts.is_connected("current_game_elements_changed", self, "_on_current_game_elements_changed"):
 			SingletonsAndConsts.connect("current_game_elements_changed", self, "_on_current_game_elements_changed")

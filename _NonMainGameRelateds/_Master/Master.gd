@@ -43,11 +43,17 @@ var ending_summary_ws_panel : EndingSummaryWSPanel
 
 #
 
+var _frames_to_wait_for_level_relateds_save : int
+
+#
+
 onready var game_elements_container = $GameElementsContainer
 onready var layout_selection_container = $LayoutSelectionContainer
 onready var transition_container = $TransitionContainer
 
 onready var master_menu_control_tree = $MasterMenuControlTree
+
+onready var above_transition_container = $AboveTransitionContainer
 
 #
 
@@ -58,9 +64,10 @@ func _enter_tree():
 #
 
 func _ready():
+	set_process(false)
+	
 	#Temp for quick testing of lvls
-	#todo
-	if (true):
+	if (false):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05__STAGE_4
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
 		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_04
@@ -249,13 +256,18 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 			
 			if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
 				_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
-		
+			for level_id in _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on:
+				if !GameSaveManager.is_level_id_finished(level_id):
+					_make_level_id_mark_as_finished(level_id)
 		
 	else:
 		arg_curr_transition.queue_free()
 		
 		if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
 			_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
+		for level_id in _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on:
+			if !GameSaveManager.is_level_id_finished(level_id):
+				_make_level_id_mark_as_finished(level_id)
 		
 		#_show_ending_summary_wsp()
 	
@@ -282,8 +294,9 @@ func _unlock_and_play_anim_on_victory__on_level_id():
 	if is_playing_anim:
 		_is_playing_victory_animations = true
 		gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory", [], CONNECT_ONESHOT)
-		if !gui__level_selection_whole_screen.is_connected("_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals"):
-			gui__level_selection_whole_screen.connect("_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", [], CONNECT_ONESHOT)
+		
+		if !gui__level_selection_whole_screen.is_connected("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals"):
+			gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", [], CONNECT_ONESHOT)
 	else:
 		#AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
 		_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
@@ -314,8 +327,7 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playi
 func _make_level_id_mark_as_finished(arg_level_id):
 	GameSaveManager.set_level_id_status_completion(arg_level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 	
-	
-
+	_request_save_level_relateds_save_state()
 
 
 func _on_transition_out__from_GE__finished__for_restart(arg_next_transition_id, arg_curr_transition):
@@ -399,7 +411,7 @@ func can_level_layout_move_cursor():
 
 #################
 
-func show_ending_summary_wsp(arg_transition_to_wait_for):
+func show_ending_summary_wsp():
 	if !is_instance_valid(ending_summary_ws_panel):
 		ending_summary_ws_panel = EndingSummaryWSPanel_Scene.instance()
 		
@@ -414,7 +426,7 @@ func show_ending_summary_wsp(arg_transition_to_wait_for):
 
 func _on_switching_from_game_elements__as_win__start_ending_sequence(arg_transition):
 	arg_transition.connect("transition_finished", self, "_on_switching_from_game_elements__as_win__transition_ended", [], CONNECT_ONESHOT)
-	
+	arg_transition.queue_free_on_end_of_transition = true
 
 func _on_switching_from_game_elements__as_win__transition_ended():
 	emit_signal("switching_from_game_elements__as_win__transition_ended")
@@ -424,7 +436,7 @@ func _on_switching_from_game_elements__as_win__transition_ended():
 
 
 func _on_ending_summary_panel_finished():
-	var transition = play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
+	var transition = play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK)
 	transition.queue_free_on_end_of_transition = true
 	
 	load_and_show_layout_selection_whole_screen()
@@ -432,3 +444,20 @@ func _on_ending_summary_panel_finished():
 	ending_summary_ws_panel.queue_free()
 
 
+##################
+
+func _request_save_level_relateds_save_state():
+	_frames_to_wait_for_level_relateds_save = 5
+	set_process(true)
+
+func _process(delta):
+	_frames_to_wait_for_level_relateds_save -= 1
+	if _frames_to_wait_for_level_relateds_save <= 0:
+		_save_level_related_save_states()
+	
+
+func _save_level_related_save_states():
+	_frames_to_wait_for_level_relateds_save = 0
+	set_process(false)
+	
+	GameSaveManager.save_level_and_layout_related_data()

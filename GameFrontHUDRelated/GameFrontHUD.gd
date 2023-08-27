@@ -65,7 +65,7 @@ func show_in_game_pause_control_tree():
 	in_game_pause_panel_tree.show_in_game_pause_main_page()
 
 func hide_in_game_pause_control_tree():
-	in_game_pause_panel_tree.hide_current_control__and_traverse_thru_hierarchy()
+	in_game_pause_panel_tree.hide_current_control__and_traverse_thru_hierarchy(false)
 
 
 #

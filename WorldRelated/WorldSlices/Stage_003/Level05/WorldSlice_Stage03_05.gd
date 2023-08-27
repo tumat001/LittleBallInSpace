@@ -11,3 +11,8 @@ func _on_after_game_start_init():
 	
 	
 
+
+
+func _on_PlayerCaptureAreaRegion_region_area_captured():
+	StoreOfLevels.unlock_stage_04__and_unhide_eles_to_layout_04()
+	

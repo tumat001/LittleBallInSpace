@@ -200,10 +200,12 @@ func set_battery_visual_type_id(arg_id):
 
 #
 
-func set_properties__as_mega_battery():
+func set_properties__as_mega_battery(arg_start_with_full_battery : bool = true):
 	set_battery_visual_type_id(BatteryVisualTypeId.MEGA)
 	set_max_energy(150)
-	#set_current_energy(150)
+	
+	if arg_start_with_full_battery:
+		set_current_energy(150)
 	
 
 

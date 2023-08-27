@@ -32,7 +32,7 @@ var status_line__as_true_win
 var status_line__as_false_win
 
 var status_line_02__as_true_win
-var status_line_02__as_false_win
+var status_line_02__as_false_win = []
 
 #
 
@@ -74,14 +74,22 @@ func start_display():
 	if is_true_victory:
 		_init_status_line__as_true_win()
 		_init_status_line_02__as_true_win()
-		_display_ftq_label_victory__as_true_win()
+		
+		ftq_label_victory.set_desc__and_hide_tooltip(first_line__as_true_win)
+		ftq_label_victory.set_anchors_preset(Control.PRESET_CENTER, true)
+		
+		call_deferred("_display_ftq_label_victory__as_true_win")
 	else:
 		_init_status_line__as_false_win()
 		_init_status_line_02__as_false_win()
 		_initialize_texture_rect_saturation_shader(animal_texture_rect)
-		_display_ftq_label_victory__as_false_win()
+		
+		ftq_label_victory.set_desc__and_hide_tooltip(first_line__as_false_win)
+		ftq_label_victory.set_anchors_preset(Control.PRESET_CENTER, true)
+		
+		#_display_ftq_label_victory__as_false_win()
+		call_deferred("_display_ftq_label_victory__as_false_win")
 	
-	ftq_label_victory.set_anchors_preset(Control.PRESET_CENTER_TOP, true)
 	ftq_label_status.set_anchors_preset(Control.PRESET_CENTER_BOTTOM, true)
 	ftq_label_status_02.set_anchors_preset(Control.PRESET_CENTER_BOTTOM, true)
 
@@ -99,7 +107,7 @@ func _init_status_line__as_true_win():
 		descriptor = "[color=#65FD4E]survivor[/color]"
 	
 	status_line__as_true_win = [
-		["The %s against all odds, returning home safely:" % [descriptor], []],
+		["The %s against all odds" % [descriptor], []],
 	]
 	
 	ftq_label_status.set_desc__and_hide_tooltip(status_line__as_true_win)
@@ -114,8 +122,6 @@ func _init_status_line_02__as_true_win():
 
 
 func _display_ftq_label_victory__as_true_win():
-	ftq_label_victory.set_desc__and_hide_tooltip(first_line__as_false_win)
-	
 	ftq_label_victory.start_display_of_descs__all_chars(1.75, 0.75, null)
 	ftq_label_victory.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__first_line__true_vic_01", [], CONNECT_ONESHOT)
 
@@ -160,32 +166,37 @@ func _init_status_line__as_false_win():
 	ftq_label_status.set_desc__and_hide_tooltip(status_line__as_false_win)
 
 func _init_status_line_02__as_false_win():
-	var level_details = StoreOfLevels.generate_or_get_level_details_of_id(GameSaveManager.level_id_died_in)
-	
-	if level_details != null:
-		var line = ["Died at [color=%s]%s[/color]" % [level_details.get_title_color_based_on_level_type() % level_details.level_full_name], []]
-		status_line_02__as_false_win.append(line)
+	if StoreOfLevels.is_level_id_exists(GameSaveManager.level_id_died_in):
+		var level_details = StoreOfLevels.generate_or_get_level_details_of_id(GameSaveManager.level_id_died_in)
+		
+		if level_details != null:
+			var line = ["Died at [color=%s]%s[/color]" % [level_details.get_title_color_based_on_level_type() % level_details.level_full_name], []]
+			status_line_02__as_false_win.append(line)
+		else:
+			var line = ["Died due to carbon dioxide poisoning", []]
+			status_line_02__as_false_win.append(line)
+		
 	else:
-		var line = ["Died due to carbon dioxide poisoning"]
+		var line = ["Died due to carbon dioxide poisoning", []]
 		status_line_02__as_false_win.append(line)
+		
+	
 	
 	ftq_label_status_02.set_desc__and_hide_tooltip(status_line_02__as_false_win)
-
+	
 
 #
 
 func _display_ftq_label_victory__as_false_win():
-	ftq_label_victory.set_desc__and_hide_tooltip(first_line__as_false_win)
-	
-	ftq_label_victory.start_display_of_descs(1.75, 0.75, null, 0, 7)
+	ftq_label_victory.start_display_of_descs(1.75, 0.25, null, 0, 7)
 	ftq_label_victory.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__first_line__false_vic_01", [], CONNECT_ONESHOT)
 
 
 func _on_display_of_desc_finished__first_line__false_vic_01(custom_char_count_to_show_upto, arg_metadata):
-	ftq_label_victory.start_display_of_descs(0.1, 0.65, null, 7, 8)
+	ftq_label_victory.start_display_of_descs(0.1, 0.15, null, 7, 8)
 	ftq_label_victory.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__first_line__false_vic_02", [], CONNECT_ONESHOT)
 
-func _on_display_of_desc_finished__first_line__false_vic_02():
+func _on_display_of_desc_finished__first_line__false_vic_02(custom_char_count_to_show_upto, arg_metadata):
 	_tween_display_player_texture_rect("_on_displayed_player_texture_rect__false_vic", 0.35)
 	
 
@@ -214,7 +225,7 @@ func _display_ftq_label_status__as_false_win_finished__01(custom_char_count_to_s
 
 
 
-func _display_ftq_label_status_02__as_false_win():
+func _display_ftq_label_status_02__as_false_win(custom_char_count_to_show_upto, arg_metadata):
 	ftq_label_status_02.start_display_of_descs__all_chars(1.25, 0.85, null)
 	ftq_label_status_02.connect("display_of_desc_finished", self, "_display_ftq_label_status__as_false_win_finished__02", [], CONNECT_ONESHOT)
 

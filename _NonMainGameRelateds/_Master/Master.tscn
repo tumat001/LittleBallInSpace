@@ -15,4 +15,6 @@ mouse_filter = 2
 
 [node name="TransitionContainer" type="CanvasLayer" parent="."]
 
+[node name="AboveTransitionContainer" type="CanvasLayer" parent="."]
+
 [node name="MasterMenuControlTree" parent="." instance=ExtResource( 2 )]

@@ -23,8 +23,10 @@ func start_display():
 	var is_dead = dead_heart_details[3]
 	
 	if is_dead:
+		es_scene01.is_true_victory = false
 		_start_unique_display__as_dead(dead_heart_details)
 	else:
+		es_scene01.is_true_victory = true
 		_start_unique_display__as_alive()
 
 
@@ -36,13 +38,15 @@ func _start_unique_display__as_dead(dead_heart_details):
 	var sprite = Sprite.new()
 	sprite.texture = dead_heart_texture
 	sprite.global_position = dead_heart_glob_pos
-	add_child(sprite)
+	sprite.z_index = VisualServer.CANVAS_ITEM_Z_MAX
+	sprite.z_as_relative = false
+	SingletonsAndConsts.current_master.above_transition_container.add_child(sprite)
 	_heart_sprite = sprite
 	
-	SingletonsAndConsts.current_master.connect("switching_from_game_elements__as_win__transition_ended", self, "_on_switching_from_game_elements__as_win__transition_ended", [], CONNECT_ONESHOT)
-	es_scene01.connect("fade_out_modulate_reached", self, "_on_fade_out_modulate_reached")
+	SingletonsAndConsts.current_master.connect("switching_from_game_elements__as_win__transition_ended", self, "_on_switching_from_game_elements__as_win__transition_ended__false_win", [], CONNECT_ONESHOT)
+	es_scene01.connect("fade_out_modulate_reached", self, "_on_fade_out_modulate_reached__false_win")
 
-func _on_switching_from_game_elements__as_win__transition_ended():
+func _on_switching_from_game_elements__as_win__transition_ended__false_win():
 	var tweener = create_tween()
 	tweener.set_parallel(false)
 	tweener.tween_property(_heart_sprite, "global_position", position_for_heart.rect_global_position, 0.75).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
@@ -56,6 +60,11 @@ func _on_heart_done_moving():
 ##
 
 func _start_unique_display__as_alive():
+	#_start_scene_sequence__01()
+	SingletonsAndConsts.current_master.connect("switching_from_game_elements__as_win__transition_ended", self, "_on_switching_from_game_elements__as_win__transition_ended__true_win", [], CONNECT_ONESHOT)
+	
+
+func _on_switching_from_game_elements__as_win__transition_ended__true_win():
 	_start_scene_sequence__01()
 	
 
@@ -70,7 +79,7 @@ func _start_scene_sequence__01():
 
 #
 
-func _on_fade_out_modulate_reached(arg_modulate_a_val):
+func _on_fade_out_modulate_reached__false_win(arg_modulate_a_val):
 	_heart_sprite.modulate.a = arg_modulate_a_val
 
 func _on_sequence_finished__scene_01():

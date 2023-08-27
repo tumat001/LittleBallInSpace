@@ -172,6 +172,9 @@ is_scene_transition_type_portal = true
 
 [node name="SpawnPosition2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 39, 48 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
 
 [node name="MiscContainer" type="Node2D" parent="." index="6"]
 

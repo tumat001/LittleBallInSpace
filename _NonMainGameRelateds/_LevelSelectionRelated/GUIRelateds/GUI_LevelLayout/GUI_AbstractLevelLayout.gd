@@ -139,7 +139,7 @@ func _ready():
 	
 	call_deferred("_initialize_layout_ele_dependent_vars")
 	call_deferred("_initialize_particles_related")
-
+	
 #
 
 func _initialize_particles_related():
@@ -546,7 +546,7 @@ func _show_before_burst_particle__and_other_actions__for_additionals() -> bool:
 	
 	_current_burst_particle_summon_loop_count__for_additonal += 1
 	if _current_burst_particle_summon_loop_count__for_additonal == BEFORE_BURST_PARTICLE__COUNT_FOR_TRIGGER_NEXT_PHASE:
-		_trigger_circular_burst_on_curr_ele_for_victory()
+		_trigger_circular_burst_on_curr_ele_for_victory__as_additionals()
 	
 	if _current_burst_particle_summon_loop_count__for_additonal >= BEFORE_BURST_PARTICLE__COUNT:
 		_before_burst_particle_counter_timer__as_additionals.stop()

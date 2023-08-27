@@ -171,6 +171,8 @@ __meta__ = {
 "_gizmo_extents_": 16.0
 }
 
+[connection signal="region_area_captured" from="AreaRegionContainer/PlayerCaptureAreaRegion" to="." method="_on_PlayerCaptureAreaRegion_region_area_captured"]
+
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Grounded"]

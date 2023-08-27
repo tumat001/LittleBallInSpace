@@ -56,7 +56,8 @@ func _on_player_exited_in_area__map_bounds():
 	_is_player_in_map_bounds = false
 	
 	if _can_show_out_of_bounds_warning(): #and _frames_to_ignore_out_of_map_bounds <= 0:
-		game_front_hud.show_warning_out_of_map_bounds()
+		#game_front_hud.show_warning_out_of_map_bounds()
+		_start_check_for_out_of_map_bounds__after_frames()
 
 func _can_show_out_of_bounds_warning():
 	if is_instance_valid(SingletonsAndConsts.current_rewind_manager):
@@ -70,13 +71,21 @@ func _on_rewinding_started__pdar_map_bounds():
 	
 
 func _on_done_ending_rewind__pdar_map_bounds():
+	_start_check_for_out_of_map_bounds__after_frames()
+
+
+
+
+func _start_check_for_out_of_map_bounds__after_frames():
 	_frames_to_check_for_out_of_map_bounds = 2
 	set_process(true)
-
 
 func _process(delta):
 	if _frames_to_check_for_out_of_map_bounds > 0:
 		_frames_to_check_for_out_of_map_bounds -= 1
+		
+		if _is_player_in_map_bounds:
+			_cancel_frames_to_check_for_out_of_map_bounds()
 		
 		if _frames_to_check_for_out_of_map_bounds <= 0:
 			_cancel_frames_to_check_for_out_of_map_bounds()

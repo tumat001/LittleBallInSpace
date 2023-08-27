@@ -13,7 +13,7 @@
 extents = Vector2( 19.5, 40 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 78, 58 )
+extents = Vector2( 114.5, 58 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 12, 104 )
@@ -76,7 +76,7 @@ shape = SubResource( 1 )
 position = Vector2( 520, 41 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
-position = Vector2( 201, 55 )
+position = Vector2( 237.5, 55 )
 shape = SubResource( 2 )
 
 [node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 4 )]
@@ -97,6 +97,10 @@ shape = SubResource( 5 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( -154, -16 )
+launch_ball_type = 2
+
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 3 )]
+position = Vector2( -195, -16 )
 launch_ball_type = 2
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 6 )]

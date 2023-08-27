@@ -78,7 +78,7 @@ func _start_dialog__03():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__03", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 3.0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
 func _on_display_of_desc_finished__03(arg_metadata):
@@ -96,14 +96,14 @@ func _on_PDAR_TriggerDialog04_player_entered_in_area():
 func _start_dialog__04():
 	var dialog_desc = [
 		["Congratulations! You've made it in!", []],
-		["Through a portal, you'll be able to go back to the escape pod.", []]
+		["Through a portal, you can go back to the escape pod.", []]
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__04", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 4.0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
-func _on_display_of_desc_finished__04():
+func _on_display_of_desc_finished__04(arg_metadata):
 	_end_dialog__04()
 
 func _end_dialog__04():
@@ -141,7 +141,7 @@ func _deferred_finish_battery_desc_display_01():
 
 func _on_pickup_mega_battery():
 	var energy_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.ENERGY)
-	energy_modi.set_properties__as_mega_battery()
+	energy_modi.set_properties__as_mega_battery(false)
 	
 
 

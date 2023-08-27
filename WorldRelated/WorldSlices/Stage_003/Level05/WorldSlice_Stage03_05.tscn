@@ -11,7 +11,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 256, 15.5 )
+extents = Vector2( 256, 13.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28, 28 )
@@ -66,7 +66,7 @@ tile_data = PoolIntArray( 1048596, 17, 196608, 1114132, 17, 262144, 1179668, 17,
 position = Vector2( -356, 101 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion" index="0"]
-position = Vector2( 260, 11.5 )
+position = Vector2( 260, 9.5 )
 shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 7 )]
@@ -88,9 +88,11 @@ shape = SubResource( 4 )
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 15, 144 )
+portal_to_link_with__path = NodePath("../Portal_Blue02")
 
 [node name="Portal_Blue02" parent="ObjectContainer" index="1" instance=ExtResource( 4 )]
-position = Vector2( -32, 285 )
+position = Vector2( -32, 277 )
+portal_to_link_with__path = NodePath("../Portal_Blue01")
 
 [node name="Object_InteractableButton_Green" parent="ObjectContainer" index="2" instance=ExtResource( 8 )]
 position = Vector2( 152, 144 )
@@ -129,6 +131,8 @@ position = Vector2( -161, 144 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }
+
+[connection signal="region_area_captured" from="AreaRegionContainer/PlayerCaptureAreaRegion" to="." method="_on_PlayerCaptureAreaRegion_region_area_captured"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]

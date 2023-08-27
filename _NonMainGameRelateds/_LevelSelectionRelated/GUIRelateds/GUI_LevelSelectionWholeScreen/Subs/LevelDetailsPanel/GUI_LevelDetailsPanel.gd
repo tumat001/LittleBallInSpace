@@ -7,6 +7,12 @@ const Flag_Transparent = preload("res://_NonMainGameRelateds/_LevelSelectionRela
 const Flag_HalfGrayGreen = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_Flag_HalfGrayGreen.png")
 
 
+#
+
+var level_details setget set_level_details
+
+#
+
 onready var coins_panel = $DetailsContainer/VBoxContainer/CoinsPanel
 onready var level_status_label = $DetailsContainer/VBoxContainer/LevelStatusPanel/HBoxContainer/LevelStatusLabel
 onready var level_status_tex_rect = $DetailsContainer/VBoxContainer/LevelStatusPanel/HBoxContainer/LevelStatusTexRect
@@ -14,9 +20,34 @@ onready var details_container = $DetailsContainer
 
 onready var level_completion_additional_panel = $DetailsContainer/VBoxContainer/LevelCompletionAdditonalPanel
 
+#
+
+func _ready():
+	GameSaveManager.connect("level_id_completion_status_changed", self, "_on_level_id_completion_status_changed")
+
+
+func _on_level_id_completion_status_changed(arg_id, arg_status):
+	if level_details != null:
+		if arg_id == level_details.level_id:
+			_update_display()
+
+#
 
 func set_level_details(arg_details):
-	var arg_id = arg_details.level_id
+	level_details = arg_details
+	
+	if level_details != null:
+		_update_display()
+	else:
+		hide_contents()
+
+
+func hide_contents():
+	details_container.visible = false
+
+
+func _update_display():
+	var arg_id = level_details.level_id
 	
 	if StoreOfLevels.is_level_id_exists(arg_id):
 		details_container.visible = true
@@ -41,13 +72,10 @@ func set_level_details(arg_details):
 		
 		#
 		
-		level_completion_additional_panel.visible = arg_details.has_additional_level_ids_to_mark_as_complete()
+		level_completion_additional_panel.visible = level_details.has_additional_level_ids_to_mark_as_complete()
 		
 		
 	else:
 		hide_contents()
 		
-
-func hide_contents():
-	details_container.visible = false
 

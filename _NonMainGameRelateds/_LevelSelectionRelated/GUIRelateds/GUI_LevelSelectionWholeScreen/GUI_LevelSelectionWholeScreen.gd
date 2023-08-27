@@ -7,6 +7,7 @@ const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelect
 signal prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hovered_layout_ele_id)
 
 signal triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
+signal triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles)
 
 #
 
@@ -120,6 +121,8 @@ func _set_level_layout_as_inactive(layout_scene : GUI_AbstractLevelLayout):
 	if layout_scene.is_connected("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory"):
 		layout_scene.disconnect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory")
 	
+	if layout_scene.is_connected("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals"):
+		layout_scene.disconnect("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals")
 
 
 func _set_level_layout_as_current_and_active(layout_scene : GUI_AbstractLevelLayout):
@@ -134,6 +137,7 @@ func _set_level_layout_as_current_and_active(layout_scene : GUI_AbstractLevelLay
 	layout_scene.connect("prompt_entered_into_level", self, "_on_layout_prompt_entered_into_level")
 	layout_scene.connect("prompt_entered_into_link_to_other_layout", self, "_on_layout_prompt_entered_into_link_to_other_layout")
 	layout_scene.connect("triggered_circular_burst_on_curr_ele_for_victory", self, "_on_triggered_circular_burst_on_curr_ele_for_victory")
+	layout_scene.connect("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals")
 	
 	_on_layout_currently_hovered_layout_ele_changed(layout_scene.get_currently_hovered_layout_ele_id(), layout_scene.get_currently_hovered_tile())
 

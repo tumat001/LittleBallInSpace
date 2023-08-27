@@ -16,16 +16,25 @@ var wait_at_start : float = 0
 
 #
 
+var modulate_at_end : Color
+
+#
+
 var trans_type = Tween.TRANS_LINEAR
 var ease_type = Tween.EASE_IN
 
 ####
 
+func _ready():
+	material = ShaderMaterial.new()
+	material.shader = preload("res://MiscRelated/ShadersRelated/Shader_CircleTransition.tres")
+
+
 func start_transition():
 	.start_transition()
 	
 	_configure_properties_for_shader()
-	
+	_configure_modulate_tweener()
 
 
 func _configure_properties_for_shader():
@@ -64,6 +73,24 @@ func _tween_circle_size_of_shader(arg_ratio):
 func _finished_tween():
 	_on_end_of_transition()
 	
+
+
+
+##
+
+func _configure_modulate_tweener():
+	
+	if modulate != modulate_at_end:
+		var tweener = create_tween()
+		tweener.set_parallel(true)
+		
+		tweener.tween_property(self, "modulate:r", modulate_at_end.r, duration).set_delay(wait_at_start)
+		tweener.tween_property(self, "modulate:g", modulate_at_end.g, duration).set_delay(wait_at_start)
+		tweener.tween_property(self, "modulate:b", modulate_at_end.b, duration).set_delay(wait_at_start)
+		tweener.tween_property(self, "modulate:a", modulate_at_end.a, duration).set_delay(wait_at_start)
+		
+		tweener.set_parallel(false)
+		#tweener.tween_callback(self, "finished_with_fade_inses")
 
 
 

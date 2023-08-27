@@ -42,8 +42,9 @@ func _add_launch_ball_modi():
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
-	modi.set_max_energy(15)
-	modi.set_current_energy(15)
+	modi.set_properties__as_mega_battery()
+	#modi.set_max_energy(15)
+	#modi.set_current_energy(15)
 	
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 

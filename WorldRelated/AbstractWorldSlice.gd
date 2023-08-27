@@ -14,6 +14,9 @@ signal player_spawned(arg_player)
 signal all_PCA_region_areas_captured()
 signal all_PCA_region_areas_uncaptured()
 
+signal PCA_region_area_captured(arg_region)
+signal PCA_region_area_uncaptured(arg_region)
+
 ########
 
 var _player_global_spawn_coords : Array
@@ -144,11 +147,13 @@ func _add_and_register_area_region(arg_region):
 
 func _on_PCA_region_area_captured(arg_region):
 	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = true
+	emit_signal("PCA_region_area_captured", arg_region)
 	if _is_all_PCAs_are_captured():
 		_on_all_PCAs_captured()
 
 func _on_PCA_region_area_uncaptured(arg_region):
 	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = false
+	emit_signal("PCA_region_area_uncaptured", arg_region)
 	
 	var old_val = _is_all_pca_regions_captured
 	_is_all_pca_regions_captured = false
@@ -237,9 +242,11 @@ func _on_PCA_region_area_captured__for_one_at_a_time_tracking(curr_pca):
 func _on_PCA_region_area_uncaptured__for_one_at_a_time_tracking(curr_pca):
 	_current_pca_index -= 1
 	var prev_pca = _all_win_type_player_capture_area_region_to_is_captured_map.keys()[_current_pca_index]
-	prev_pca.visible = true
-	curr_pca.visible = false
-
+	prev_pca.visible = false
+	curr_pca.visible = true
+	
+	var next_pca = _all_win_type_player_capture_area_region_to_is_captured_map.keys()[_current_pca_index + 1]
+	next_pca.visible = false
 
 func make_first_pca_region_visible():
 	_all_win_type_player_capture_area_region_to_is_captured_map.keys()[0].visible = true

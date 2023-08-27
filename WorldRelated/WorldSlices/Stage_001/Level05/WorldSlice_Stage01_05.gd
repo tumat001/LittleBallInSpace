@@ -249,7 +249,7 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 	
 	#
 	
-	GameSaveManager.unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
+	StoreOfLevels.unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 
 
 ####
@@ -257,6 +257,7 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 func _on_PDAR_TeachAndEnableAimMode_player_entered_in_area():
 	#_launch_ball_modi.can_change_aim_mode = true
 	var launch_ball_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+	launch_ball_modi.can_change_aim_mode = true
 	
 	var dialog_desc = [
 		["Look at the bottom left, and you'll see a glowing button. Click it to toggle between aim modes.", []]

@@ -112,12 +112,12 @@ func _on_battery_visual_type_id_changed(arg_id):
 func _update_bar_visual_based_on_type_id():
 	var id = player_modi__energy.battery_visual_type_id
 	if id == player_modi__energy.BatteryVisualTypeId.STANDARD:
-		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Normal
-		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Normal_Forecasted
+		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Normal_Forecasted
+		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Normal
 		
 	elif id == player_modi__energy.BatteryVisualTypeId.MEGA:
-		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Mega
-		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Mega_Forecasted
+		texture_progress_current.texture_progress = EnergyPanel_BatteryFillForeground_Mega_Forecasted
+		texture_progress_forcasted.texture_progress = EnergyPanel_BatteryFillForeground_Mega
 		
 	
 	

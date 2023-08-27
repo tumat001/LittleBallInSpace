@@ -676,7 +676,7 @@ func get_layout_id__layout_element_id__is_invis(arg_layout_id, arg_layout_elemen
 
 #
 
-func _save_level_and_layout_related_data():
+func save_level_and_layout_related_data():
 	var save_dict = {
 		LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER : last_opened_level_layout_id,
 		LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER : last_hovered_over_level_layout_element_id,
@@ -806,10 +806,10 @@ func get_game_control_name_string_to_is_hidden_map__not_copy():
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		_save_player_data()
-		_save_level_and_layout_related_data()
+		save_level_and_layout_related_data()
 		_save_game_control_related_data()
 
 #func _exit_tree():
 #	_save_player_data()
-#	_save_level_and_layout_related_data()
+#	save_level_and_layout_related_data()
 #

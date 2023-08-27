@@ -4,7 +4,7 @@ extends Node
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
 
-const INSTANT_BREAK_GLASS_TILE__MASS = 5
+const INSTANT_BREAK_GLASS_TILE__MASS = 12
 const FRAGILE_BREAK_GLASS_TILE__MASS = 15
 const BREAKABLE_GLASS_TILE__MASS = 30
 const STRONG_BREAKABLE_GLASS_TILE__MASS = 40

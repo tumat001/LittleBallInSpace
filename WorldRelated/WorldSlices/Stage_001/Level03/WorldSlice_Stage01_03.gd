@@ -8,6 +8,8 @@ onready var vkp_rewind = $MessegesContainer/VBoxContainer/VKP_Rewind
 onready var vkp_zoom_out = $MessegesContainer/VBoxContainer2/VKP_ZoomOut
 onready var vkp_slow_down = $MessegesContainer/VBoxContainer3/VKPSlowDown
 
+onready var vkp_zoom_out_container = $MessegesContainer/VBoxContainer2
+onready var vkp_slow_down_container = $MessegesContainer/VBoxContainer3
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
@@ -32,8 +34,8 @@ func _on_after_game_start_init():
 	var orig_text_slowdown = vkp_slow_down.text_for_keypress
 	vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
 	
-	vkp_zoom_out.modulate.a = 0
-	vkp_slow_down.modulate.a = 0
+	vkp_zoom_out_container.modulate.a = 0
+	vkp_slow_down_container.modulate.a = 0
 	
 
 ##
@@ -49,7 +51,9 @@ func _on_PDAR_ZoomAndSlow_player_entered_in_area():
 	
 	
 	var vkp_zoom_out_tweener = create_tween()
-	vkp_zoom_out_tweener.tween_property(vkp_zoom_out, "modulate:a", 1.0, 0.75)
+	vkp_zoom_out_tweener.tween_property(vkp_zoom_out_container, "modulate:a", 1.0, 0.75)
 	
+	var vkp_slow_down_tweener = create_tween()
+	vkp_slow_down_tweener.tween_property(vkp_slow_down_container, "modulate:a", 1.0, 0.75)
 
 
