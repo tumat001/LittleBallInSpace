@@ -1,5 +1,6 @@
 extends MarginContainer
 
+
 onready var button_resume = $MainPanel/Control/Button_Resume
 onready var button_quit = $MainPanel/Control/Button_Quit
 

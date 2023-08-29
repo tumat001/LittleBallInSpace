@@ -12,11 +12,11 @@ signal hidden_levels_state_changed()
 enum LevelIds {
 	TEST = -10,
 	
-	LEVEL_01 = 1
-	LEVEL_02 = 2
-	LEVEL_03 = 3
-	LEVEL_04 = 4
-	LEVEL_05 = 5
+	LEVEL_01__STAGE_1 = 1
+	LEVEL_02__STAGE_1 = 2
+	LEVEL_03__STAGE_1 = 3
+	LEVEL_04__STAGE_1 = 4
+	LEVEL_05__STAGE_1 = 5
 	
 	##
 	
@@ -67,11 +67,11 @@ enum LevelIds {
 const level_ids_not_hidden : Array = [
 	#LevelIds.TEST,
 	
-	LevelIds.LEVEL_01,
-	LevelIds.LEVEL_02,
-	LevelIds.LEVEL_03,
-	LevelIds.LEVEL_04,
-	LevelIds.LEVEL_05,
+	LevelIds.LEVEL_01__STAGE_1,
+	LevelIds.LEVEL_02__STAGE_1,
+	LevelIds.LEVEL_03__STAGE_1,
+	LevelIds.LEVEL_04__STAGE_1,
+	LevelIds.LEVEL_05__STAGE_1,
 	
 ]
 
@@ -87,7 +87,7 @@ var _total_coin_count__unhidden : int
 
 
 var level_ids_unlocked_by_default = [
-	LevelIds.LEVEL_01
+	LevelIds.LEVEL_01__STAGE_1
 ]
 
 
@@ -104,8 +104,35 @@ var current_level_hidden_state : int setget set_current_level_hidden_state, get_
 # should never happen normally...
 const DEFAULT_LEVEL_ID_FOR_EMPTY = LevelIds.TEST
 
+#
+
+var _level_layout_id_to_level_id_map : Dictionary
+# see func to initialize this
+var _stage_name_to_level_layout_id_map : Dictionary
 
 #################
+
+func _initialize_levels_in_level_layout():
+	_stage_name_to_level_layout_id_map = {
+		"STAGE_1" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01,
+		"STAGE_2" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02,
+		"STAGE_3" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_03,
+		"STAGE_4" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_04,
+		"STAGE_5" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05,
+	}
+	
+	##
+	
+	for level_id_name in LevelIds.keys():
+		for stage_name in _stage_name_to_level_layout_id_map.keys():
+			if stage_name in level_id_name:
+				var layout_id = _stage_name_to_level_layout_id_map[stage_name]
+				if !_level_layout_id_to_level_id_map.has(layout_id):
+					_level_layout_id_to_level_id_map[layout_id] = []
+				_level_layout_id_to_level_id_map[layout_id].append(LevelIds[level_id_name])
+	
+
+##
 
 func _init():
 	_initialize__all_non_hidden_level_ids()
@@ -113,6 +140,7 @@ func _init():
 
 
 func _ready():
+	_initialize_levels_in_level_layout()
 	_initialize_level_id_unlock_requirmenets()
 	
 	_initialize_for__and_check_for_game_save_manager()
@@ -204,7 +232,40 @@ func set_current_level_hidden_state(arg_val):
 	
 	
 
+###
 
+func is_level_layout_all_associated_levels_completed(arg_layout_id):
+	for level_id in _level_layout_id_to_level_id_map[arg_layout_id]:
+		if !GameSaveManager.is_level_id_finished(level_id):
+			return false
+	
+	return true
+
+func is_level_layout_all_associated_levels_all_coins_collected(arg_layout_id):
+	for level_id in _level_layout_id_to_level_id_map[arg_layout_id]:
+		if !GameSaveManager.is_all_coins_collected_in_level(level_id):
+			return false
+	
+	return true
+
+
+# coins, level compl
+func get_level_layout_completion_status__for_all(arg_layout_id):
+	var all_levels_completed : bool = true
+	var all_coins_collected : bool = true
+	for level_id in _level_layout_id_to_level_id_map[arg_layout_id]:
+		if !GameSaveManager.is_all_coins_collected_in_level(level_id):
+			all_coins_collected = false
+		
+		if !GameSaveManager.is_level_id_finished(level_id):
+			all_levels_completed = false
+		
+		
+		###
+		if !all_coins_collected and !all_levels_completed:
+			break
+	
+	return [all_coins_collected, all_levels_completed]
 
 ###############
 
@@ -235,7 +296,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
-	elif arg_id == LevelIds.LEVEL_01:
+	elif arg_id == LevelIds.LEVEL_01__STAGE_1:
 		level_details.level_name = [
 			["Beginnings", []]
 		]
@@ -259,7 +320,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
-	elif arg_id == LevelIds.LEVEL_02:
+	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
 		level_details.level_name = [
 			["Labyrinth", []]
 		]
@@ -282,7 +343,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		
-	elif arg_id == LevelIds.LEVEL_03:
+	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
 		level_details.level_name = [
 			["Energy", []]
 		]
@@ -305,7 +366,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		
-	elif arg_id == LevelIds.LEVEL_04:
+	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
 		level_details.level_name = [
 			["Remnants", []]
 		]
@@ -328,7 +389,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		
-	elif arg_id == LevelIds.LEVEL_05:
+	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
 		level_details.level_name = [
 			["Escape", []]
 		]
@@ -1055,16 +1116,16 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 func generate_base_level_imp_new(arg_id):
 	if arg_id == LevelIds.TEST:
 		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
-	elif arg_id == LevelIds.LEVEL_01:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
-	elif arg_id == LevelIds.LEVEL_02:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_02.gd").new()
-	elif arg_id == LevelIds.LEVEL_03:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
-	elif arg_id == LevelIds.LEVEL_04:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
-	elif arg_id == LevelIds.LEVEL_05:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
+	elif arg_id == LevelIds.LEVEL_01__STAGE_1:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_01__STAGE_1.gd").new()
+	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_02__STAGE_1.gd").new()
+	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_03__STAGE_1.gd").new()
+	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_04__STAGE_1.gd").new()
+	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
+		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_05__STAGE_1.gd").new()
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
@@ -1151,11 +1212,11 @@ func _initialize_coin_details():
 	_level_id_to_coin_amount_map = {
 		LevelIds.TEST : 0,
 		
-		LevelIds.LEVEL_01 : 3,
-		LevelIds.LEVEL_02 : 3,
-		LevelIds.LEVEL_03 : 4,
-		LevelIds.LEVEL_04 : 3,
-		LevelIds.LEVEL_05 : 3,
+		LevelIds.LEVEL_01__STAGE_1 : 3,
+		LevelIds.LEVEL_02__STAGE_1 : 3,
+		LevelIds.LEVEL_03__STAGE_1 : 4,
+		LevelIds.LEVEL_04__STAGE_1 : 3,
+		LevelIds.LEVEL_05__STAGE_1 : 3,
 		
 		LevelIds.LEVEL_01__STAGE_2 : 2,
 		LevelIds.LEVEL_02__STAGE_2 : 1,
@@ -1248,15 +1309,15 @@ func _set_level_details_configs_and_params_based_on_GSM(arg_details : LevelDetai
 
 func _initialize_level_id_unlock_requirmenets():
 	_level_id_to_level_ids_required_for_unlock = {
-		LevelIds.LEVEL_01 : [],
-		LevelIds.LEVEL_02 : [LevelIds.LEVEL_01],
-		LevelIds.LEVEL_03 : [LevelIds.LEVEL_02],
-		LevelIds.LEVEL_04 : [LevelIds.LEVEL_03],
-		LevelIds.LEVEL_05 : [LevelIds.LEVEL_04],
+		LevelIds.LEVEL_01__STAGE_1 : [],
+		LevelIds.LEVEL_02__STAGE_1 : [LevelIds.LEVEL_01__STAGE_1],
+		LevelIds.LEVEL_03__STAGE_1 : [LevelIds.LEVEL_02__STAGE_1],
+		LevelIds.LEVEL_04__STAGE_1 : [LevelIds.LEVEL_03__STAGE_1],
+		LevelIds.LEVEL_05__STAGE_1 : [LevelIds.LEVEL_04__STAGE_1],
 		
 		#######
 		
-		LevelIds.LEVEL_01__STAGE_2 : [LevelIds.LEVEL_05],
+		LevelIds.LEVEL_01__STAGE_2 : [LevelIds.LEVEL_05__STAGE_1],
 		LevelIds.LEVEL_02__STAGE_2 : [LevelIds.LEVEL_01__STAGE_2],
 		LevelIds.LEVEL_03__STAGE_2 : [LevelIds.LEVEL_02__STAGE_2],
 		LevelIds.LEVEL_04__STAGE_2 : [LevelIds.LEVEL_03__STAGE_2],

@@ -314,6 +314,14 @@ func get_coin_ids_collected_in_level(arg_level_id):
 func get_total_coin_collected_count() -> int:
 	return _total_coin_collected_count
 
+
+
+func is_all_coins_collected_in_level(arg_level_id) -> bool:
+	var coin_count = get_coin_ids_collected_in_level(arg_level_id).size()
+	var total_for_level = StoreOfLevels.get_coin_count_for_level(arg_level_id)
+	
+	return coin_count == total_for_level
+
 #
 
 func remove_official_coin_ids_collected_from_tentative():

@@ -1,7 +1,3 @@
-# IMPORTANT:
-# WHEN BUILDING A layout, make sure that the paths are ordered sequencially (1, 2, 3 ,4 ,5) and not (3, 5, 4, 1, 2)
-#
-#
 extends Control
 
 const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd")

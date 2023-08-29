@@ -12,3 +12,5 @@ script = ExtResource( 2 )
 mouse_filter = 2
 
 [node name="MasterMenu_MainPage" parent="ControlContainer" index="0" instance=ExtResource( 3 )]
+
+[connection signal="info_button_pressed" from="." to="." method="_on_MasterMenuControlTree_info_button_pressed"]

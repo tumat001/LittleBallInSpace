@@ -70,7 +70,7 @@ func _ready():
 	if (false):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_05__STAGE_4
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_04
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_04__STAGE_1
 		
 		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		
@@ -88,7 +88,7 @@ func _ready():
 
 
 func _do_appropriate_action__for_first_time():
-	#var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
+	#var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1)
 	#instant_start_game_elements__with_level_details(first_stage_details)
 	#GameSaveManager.first_time_opening_game = false
 	
@@ -396,7 +396,7 @@ func _show_first_time_question_ws_panel():
 func _on_question_panel_finished():
 	first_time_question_ws_panel.queue_free()
 	
-	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01)
+	var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1)
 	instant_start_game_elements__with_level_details(first_stage_details)
 	#GameSaveManager.first_time_opening_game = false
 	

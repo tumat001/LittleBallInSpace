@@ -77,6 +77,9 @@ onready var path_texture_rect__editor = $PathTextureRect__Editor
 
 onready var label = $Control/Label
 
+onready var level_completed_marker = $Control/CompletedMarker
+onready var got_all_coins_marker = $Control/GotAllCoinsMarker
+
 ########
 
 func _ready():
@@ -104,6 +107,7 @@ func set_level_details(arg_level):
 	
 	_update_tile_texture_rect__texture()
 	_update_label_text()
+	_update_all_marker_visibility()
 
 func _is_level_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
@@ -122,6 +126,7 @@ func set_level_layout_details(arg_level_layout_det):
 	
 	_update_tile_texture_rect__texture()
 	_update_label_text()
+	_update_all_marker_visibility()
 
 func _is_level_layout_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
@@ -207,20 +212,21 @@ func set_is_path(arg_val):
 	
 	if is_inside_tree() or Engine.editor_hint:
 		#if old_val != is_path:
-			if is_path:
-				tile_texture_rect.visible = false
-				_update_display__as_path()
-				
-				
-			else:
-				tile_texture_rect.visible = true
-				#for path in _all_paths:
-				#	path.visible = false
-				_update_display__as_path()
-				
-				path_texture_rect__editor.visible = false
+		if is_path:
+			tile_texture_rect.visible = false
+			_update_display__as_path()
 			
-			_update_label_text()
+			
+		else:
+			tile_texture_rect.visible = true
+			#for path in _all_paths:
+			#	path.visible = false
+			_update_display__as_path()
+			
+			path_texture_rect__editor.visible = false
+		
+		_update_label_text()
+		_update_all_marker_visibility()
 
 func _update_display__as_path():
 	for path in _all_paths:
@@ -381,6 +387,30 @@ func is_link_to_level():
 	else:
 		return false
 
+##################
+
+func _update_all_marker_visibility():
+	if level_details != null:
+		var is_completed = GameSaveManager.is_level_id_finished(level_details.level_id)
+		level_completed_marker.visible = is_completed
+		
+		var all_coins_collected = GameSaveManager.is_all_coins_collected_in_level(level_details.level_id)
+		got_all_coins_marker.visible = all_coins_collected
+		
+	elif level_layout_details != null:
+		var status_arr = StoreOfLevels.get_level_layout_completion_status__for_all(level_layout_details.level_layout_id)
+		
+		var all_coins_collected = status_arr[0]
+		got_all_coins_marker.visible = all_coins_collected
+		
+		var is_all_levels_completed = status_arr[1]
+		level_completed_marker.visible = is_all_levels_completed
+		
+	else:
+		level_completed_marker.visible = false
+		got_all_coins_marker.visible = false
+	
+
 
 #########
 
@@ -402,4 +432,6 @@ func set_is_layout_element_invis(arg_val):
 
 func get_center_position() -> Vector2:
 	return rect_global_position + (rect_size / 2)
+
+#
 

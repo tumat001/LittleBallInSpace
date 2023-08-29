@@ -4,6 +4,11 @@ extends MarginContainer
 
 signal hierarchy_emptied()
 
+signal hierarchy_traversed_backwards(arg_control)  # control being faded away/removed
+signal hierarchy_advanced_forwards(arg_control)  # contol being showed
+
+signal info_button_pressed()
+
 #
 
 const CONTROL_METHOD_NAME__RECEIVED_FOCUS = "on_control_received_focus"
@@ -32,7 +37,17 @@ export(bool) var pause_tree_on_show : bool = true setget set_pause_tree_on_show
 
 #
 
+var show_info_button : bool = false setget set_show_info_button
+var show_back_button : bool = true setget set_show_back_button
+
+#
+
 onready var control_container = $ControlContainer
+
+onready var info_button = $TopRightButtonMarginer/HBoxContainer/InfoButton
+onready var back_button = $TopRightButtonMarginer/HBoxContainer/BackButton
+
+onready var top_right_hbox_container = $TopRightButtonMarginer/HBoxContainer
 
 #
 
@@ -66,6 +81,12 @@ func _ready():
 	for child in control_container.get_children():
 		child.visible = false
 		_register_control(child)
+	
+	#
+	
+	_init_top_right_hbox_container()
+	set_show_info_button(show_info_button)
+	set_show_back_button(show_back_button)
 
 
 func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_for_show : bool):
@@ -74,7 +95,7 @@ func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_fo
 func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_tweeners_for_show : bool,
 		arg_add_in_hierarchy : bool):
 	
-	_register_control(arg_control)
+	#_register_control(arg_control)
 	
 	if !visible:
 		visible = true
@@ -88,8 +109,17 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	if !control_container.get_children().has(arg_control):
 		add_control__but_dont_show(arg_control)
 	
-	_current_control_showing = arg_control
+	_register_control(arg_control)
 	
+	#
+	
+	var prev_control = _current_control_showing
+	if is_instance_valid(_current_control_showing) and _current_control_showing != arg_control:
+		 _hide_control__no_traverse_thru_hierarchy__internal(prev_control)
+	
+	#
+	
+	_current_control_showing = arg_control
 	if arg_add_in_hierarchy and !_current_hierarchy.has(arg_control):
 		_current_hierarchy.append(arg_control)
 	
@@ -110,6 +140,10 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	
 	
 	_check_if_control_implements_necessaries__and_print_if_not(arg_control)
+	
+	emit_signal("hierarchy_advanced_forwards", arg_control)
+	
+	print("curr: %s, prev: %s. hier size: %s" % [_current_control_showing, prev_control, _current_hierarchy.size()])
 
 func _on_control_fully_visible_from_tweener(arg_control):
 	_is_transitioning = false
@@ -121,9 +155,9 @@ func add_control__but_dont_show(arg_control : Control):
 	arg_control.visible = false
 	_register_control(arg_control)
 	control_container.add_child(arg_control)
-	
+
+
 func _register_control(arg_control):
-	
 	arg_control.set(CONTROL_PROPERTY_NAME__CONTROL_TREE, self)
 	
 	_check_if_control_implements_necessaries__and_print_if_not(arg_control)
@@ -155,20 +189,31 @@ func hide_control__and_traverse_thru_hierarchy(arg_control : Control, arg_use_tw
 	else:
 		_is_transitioning = false
 		_make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweeners)
-		
+	
+	emit_signal("hierarchy_traversed_backwards", arg_control)
+
+func _hide_control__no_traverse_thru_hierarchy__internal(arg_control):
+	arg_control.call(CONTROL_METHOD_NAME__LOST_FOCUS)
+	
+	arg_control.visible = false
+	arg_control.call(CONTROL_METHOD_NAME__FULLY_INVISIBLE)
+	
+
+#
 
 func _on_control_fully_invisible_from_tweener(arg_control, arg_use_tweeners):
 	_is_transitioning = false
 	_make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweeners)
 	
 
-func _make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweeners):
+func _make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweeners) -> Control:
 	arg_control.visible = false
 	arg_control.call(CONTROL_METHOD_NAME__FULLY_INVISIBLE)
 	
 	if _current_hierarchy.size() != 0:
-		_show_control__and_add_if_unadded__internal(_current_hierarchy.pop_back(), arg_use_tweeners, false)
-		
+		var control_to_show = _current_hierarchy.back()
+		_show_control__and_add_if_unadded__internal(control_to_show, arg_use_tweeners, false)
+		return control_to_show
 	else:
 		_current_control_showing = null
 		visible = false
@@ -178,8 +223,9 @@ func _make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweene
 		if pause_tree_on_show:
 			get_tree().paused = false
 		
-		emit_signal("hierarchy_emptied")
-		
+		#emit_signal("hierarchy_emptied")
+		call_deferred("emit_signal", "hierarchy_emptied")
+		return null
 
 func hide_current_control__and_traverse_thru_hierarchy(arg_use_tweener : bool):
 	if is_instance_valid(_current_control_showing):
@@ -217,4 +263,34 @@ func _on_TextureRect_gui_input(event):
 					hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
 				
 			
+
+
+##############
+#
+###############
+
+func _init_top_right_hbox_container():
+	for child in top_right_hbox_container.get_children():
+		child.focus_mode = Control.FOCUS_NONE
+
+func set_show_info_button(arg_val):
+	show_info_button = arg_val
+	
+	if is_inside_tree():
+		info_button.visible = arg_val
+
+func set_show_back_button(arg_val):
+	show_back_button = arg_val
+	
+	if is_inside_tree():
+		back_button.visible = arg_val
+
+
+
+func _on_InfoButton_pressed():
+	emit_signal("info_button_pressed")
+
+func _on_BackButton_pressed():
+	hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
+	
 
