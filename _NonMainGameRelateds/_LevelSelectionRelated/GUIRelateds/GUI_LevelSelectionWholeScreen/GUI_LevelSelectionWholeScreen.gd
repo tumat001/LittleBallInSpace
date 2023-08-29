@@ -9,6 +9,8 @@ signal prompt_entered_into_level(arg_currently_hovered_tile, arg_currently_hover
 signal triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
 signal triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles)
 
+signal current_level_layout_changed(arg_layout, arg_layout_id)
+
 #
 
 var _current_active_level_layout
@@ -25,6 +27,7 @@ onready var level_title_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxCo
 onready var level_desc_tooltip_body = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelDescTooltipBody
 
 onready var level_details_panel = $HUDContainer/LevelDetailsPanel
+onready var level_layout_shortcut_panel = $HUDContainer/LevelLayoutShortcutPanel
 
 onready var coins_panel = $HUDContainer/VBoxContainer/CoinsPanel
 onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel/
@@ -42,6 +45,7 @@ func _ready():
 	if GameSaveManager.is_manager_initialized():
 		_initialize_coins_panel()
 		_initialize_level_count_panel()
+		_initialize_layout_shortcut_panel()
 		
 	else:
 		coins_panel.visible = false
@@ -52,6 +56,7 @@ func _ready():
 func _on_save_manager_initialized():
 	_initialize_coins_panel()
 	_initialize_level_count_panel()
+	_initialize_layout_shortcut_panel()
 	
 
 #
@@ -78,6 +83,12 @@ func _initialize_level_count_panel():
 	level_count_panel.visible = true
 	level_count_panel.configure_self_to_monitor_level_count_status()
 
+
+func _initialize_layout_shortcut_panel():
+	level_layout_shortcut_panel.set_level_selection_whole_screen__and_init(self)
+	
+	level_layout_shortcut_panel.connect("layout_tile_pressed", self, "_on_shortcut_panel_layout_tile_pressed")
+
 #
 
 func show_level_layout__last_saved_in_save_manager():
@@ -85,25 +96,26 @@ func show_level_layout__last_saved_in_save_manager():
 
 
 func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor):
-	for child in abstract_level_layout_container.get_children():
-		if child.level_layout_id != arg_layout_id:
-			_set_level_layout_as_inactive(child)
-	
-	#
-	
-	var layout_scene : GUI_AbstractLevelLayout
-	if _layout_id_to_level_layout_map.has(arg_layout_id):
-		layout_scene = _layout_id_to_level_layout_map[arg_layout_id]
-	else:
-		layout_scene = StoreOfLevelLayouts.generate_instance_of_layout(arg_layout_id)
-		layout_scene.level_layout_id = arg_layout_id
-		abstract_level_layout_container.add_child(layout_scene)
+	if !is_instance_valid(_current_active_level_layout) or _current_active_level_layout.level_layout_id != arg_layout_id:
+		for child in abstract_level_layout_container.get_children():
+			if child.level_layout_id != arg_layout_id:
+				_set_level_layout_as_inactive(child)
 		
-		layout_scene.gui_level_selection_whole_screen = self
-		layout_scene.particles_container = particles_container
-	
-	layout_scene.layout_ele_id_to_summon_cursor_to = arg_layout_element_id_of_cursor
-	_set_level_layout_as_current_and_active(layout_scene)
+		#
+		
+		var layout_scene : GUI_AbstractLevelLayout
+		if _layout_id_to_level_layout_map.has(arg_layout_id):
+			layout_scene = _layout_id_to_level_layout_map[arg_layout_id]
+		else:
+			layout_scene = StoreOfLevelLayouts.generate_instance_of_layout(arg_layout_id)
+			layout_scene.level_layout_id = arg_layout_id
+			abstract_level_layout_container.add_child(layout_scene)
+			
+			layout_scene.gui_level_selection_whole_screen = self
+			layout_scene.particles_container = particles_container
+		
+		layout_scene.layout_ele_id_to_summon_cursor_to = arg_layout_element_id_of_cursor
+		_set_level_layout_as_current_and_active(layout_scene)
 
 
 func _set_level_layout_as_inactive(layout_scene : GUI_AbstractLevelLayout):
@@ -140,6 +152,8 @@ func _set_level_layout_as_current_and_active(layout_scene : GUI_AbstractLevelLay
 	layout_scene.connect("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals")
 	
 	_on_layout_currently_hovered_layout_ele_changed(layout_scene.get_currently_hovered_layout_ele_id(), layout_scene.get_currently_hovered_tile())
+	
+	emit_signal("current_level_layout_changed", _current_active_level_layout, _current_active_level_layout.level_layout_id)
 
 #
 
@@ -247,5 +261,14 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_ti
 	emit_signal("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", arg_tile_eles)
 	
 
+#
+
+func _on_shortcut_panel_layout_tile_pressed(arg_tile, arg_id):
+	if !SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
+		show_level_layout(arg_id, arg_tile.layout_ele_id_to_put_cursor_to)
 
 
+#########
+
+func get_current_active_level_layout() -> GUI_AbstractLevelLayout:
+	return _current_active_level_layout

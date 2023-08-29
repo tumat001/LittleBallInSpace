@@ -428,12 +428,13 @@ func _if_can_hover_over_tile(tile) -> bool:
 
 
 func _attempt_enter_inside_current_tile():
-	if _currently_hovered_tile.level_details != null:
-		emit_signal("prompt_entered_into_level", _currently_hovered_tile, _currently_hovered_layout_ele_id)
-		
-	elif _currently_hovered_tile.is_link_to_layout():
-		emit_signal("prompt_entered_into_link_to_other_layout", _currently_hovered_tile, _currently_hovered_layout_ele_id)
-		
+	if !SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
+		if _currently_hovered_tile.level_details != null:
+			emit_signal("prompt_entered_into_level", _currently_hovered_tile, _currently_hovered_layout_ele_id)
+			
+		elif _currently_hovered_tile.is_link_to_layout():
+			emit_signal("prompt_entered_into_link_to_other_layout", _currently_hovered_tile, _currently_hovered_layout_ele_id)
+			
 	
 
 
@@ -566,10 +567,23 @@ func _initialize_layout_ele_dependent_vars():
 		_rect_position_to_layout_ele_map[child.rect_global_position] = child
 	
 	for child in layout_elements_container.get_children():
+		_init_signals_with_tile_ele(child)
 		_configure_ele_tile_neighbors(child)
 		_attempt_add_tile_ele_as_level_only_ele(child)
 		_check_for_if_invis_by_default__and_do_appropriate_action(child)
 	
+
+
+func _init_signals_with_tile_ele(arg_ele_tile : GUI_LevelLayoutEle_Tile):
+	arg_ele_tile.connect("tile_pressed", self, "_on_tile_pressed", [arg_ele_tile])
+
+func _on_tile_pressed(arg_ele_tile : GUI_LevelLayoutEle_Tile):
+	if _if_can_hover_over_tile(arg_ele_tile):
+		if _currently_hovered_tile != arg_ele_tile:
+			_instant_place_cursor_at_layout_ele(arg_ele_tile)
+		else:
+			_attempt_enter_inside_current_tile()
+
 
 func _configure_ele_tile_neighbors(arg_ele_tile : GUI_LevelLayoutEle_Tile):
 	var neighoring_poses = _get_four_neighboring_poses_from_center(arg_ele_tile.rect_global_position)

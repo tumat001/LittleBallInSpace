@@ -10,7 +10,15 @@ const Tile_White = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GU
 
 #
 
+const BUTTON_HOVER__MODULATE = Color(1.3, 1.3, 1.3, 1)
+const BUTTON_NORMAL__MODULATE = Color(1.0, 1.0, 1.0, 1)
+
+
+#
+
 signal is_layout_element_invis_changed(arg_val)
+
+signal tile_pressed()
 
 #
 
@@ -64,10 +72,17 @@ var is_layout_element_invis : bool = false setget set_is_layout_element_invis
 
 #
 
+var is_a_tile_type : bool = true setget set_is_a_tile_type
+var is_hovered_by_hover_icon_in_non_tile_type : bool setget set_is_hovered_by_hover_icon_in_non_tile_type
+
+#
+
 # managed by abstratlevellayout
 #var _all_non_path_tiles_connected : Array = []
 
 #
+
+var _hover_icon : TextureRect
 
 onready var tile_texture_rect = $TileTextureRect
 
@@ -79,6 +94,8 @@ onready var label = $Control/Label
 
 onready var level_completed_marker = $Control/CompletedMarker
 onready var got_all_coins_marker = $Control/GotAllCoinsMarker
+
+onready var free_form_control = $Control
 
 ########
 
@@ -237,6 +254,8 @@ func _update_display__as_path():
 		path_texture_rect__editor.visible = true
 		return
 	
+	if !is_a_tile_type:
+		return
 	
 	if is_instance_valid(layout_element_tile__up) and !layout_element_tile__up.is_layout_element_invis:
 		if !is_instance_valid(_path__to_north):
@@ -433,5 +452,58 @@ func set_is_layout_element_invis(arg_val):
 func get_center_position() -> Vector2:
 	return rect_global_position + (rect_size / 2)
 
-#
+##############################
+
+func set_is_a_tile_type(arg_val):
+	is_a_tile_type = arg_val
+	
+	if is_a_tile_type:
+		if is_instance_valid(_hover_icon):
+			_hover_icon.visible = false
+		
+	else:
+		
+		if is_inside_tree():
+			if !is_instance_valid(_hover_icon):
+				_hover_icon = TextureRect.new()
+				_hover_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				_hover_icon.texture = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LayoutShortcutPanel_HoverIndicator.png")
+				_hover_icon.visible = false
+				
+				free_form_control.add_child(_hover_icon)
+		
+	
+	_update_display__as_path()
+
+
+func set_is_hovered_by_hover_icon_in_non_tile_type(arg_val):
+	is_hovered_by_hover_icon_in_non_tile_type = arg_val
+	
+	if is_hovered_by_hover_icon_in_non_tile_type:
+		if is_instance_valid(_hover_icon):
+			_hover_icon.visible = true
+		
+	else:
+		if is_instance_valid(_hover_icon):
+			_hover_icon.visible = false
+		
+		
+	
+
+#############
+
+func _on_Button_pressed():
+	emit_signal("tile_pressed")
+
+
+###
+
+func _on_Button_mouse_entered():
+	modulate = BUTTON_HOVER__MODULATE
+
+func _on_Button_mouse_exited():
+	modulate = BUTTON_NORMAL__MODULATE
+
+func _on_Button_visibility_changed():
+	modulate = BUTTON_NORMAL__MODULATE
 
