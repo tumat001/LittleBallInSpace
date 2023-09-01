@@ -69,7 +69,7 @@ var _is_breakable : bool
 const _glass_breakable_type_to_speed_ratio_reduction_val_map = {
 	GlassBreakableType.NEVER_BREAK : 0.0,
 	GlassBreakableType.INSTANT_BREAK : 0.0,
-	GlassBreakableType.SIMPLE_BREAKABLE : 0.6,
+	GlassBreakableType.SIMPLE_BREAKABLE : 0.0,
 	GlassBreakableType.FRAGILE_BREAKABLE : 0.0,
 	GlassBreakableType.STRONG_BREAKABLE : 0.0,
 	GlassBreakableType.SPACESHIP_WEAK_WALL_BREAKABLE : 0.0,
@@ -126,6 +126,7 @@ var _cell_metadatas = {}
 #
 
 var _object_details_panel_tooltip
+var can_generate_tooltips : bool = true
 
 #
 
@@ -731,13 +732,14 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 
 func _on_BaseTileSet_mouse_entered():
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
-		if desc.size() != 0:
-			_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
-			
-			SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
-			
-			_object_details_panel_tooltip.show_descs(desc)
+		if can_generate_tooltips:
+			var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
+			if desc.size() != 0:
+				_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
+				
+				SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
+				
+				_object_details_panel_tooltip.show_descs(desc)
 
 
 func _on_BaseTileSet_mouse_exited():

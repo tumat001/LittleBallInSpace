@@ -20,11 +20,15 @@ onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
 onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
 
-onready var misc_center_container = $MiscCenterContainer
-
 onready var in_game_pause_panel_tree = $InGamePausePanelTree
 
 onready var out_of_map_bounds_warning_panel = $OutOfMapBoundsWarningPanel
+
+#
+
+onready var misc_center_container = $MiscCenterContainer
+
+
 
 ###
 
@@ -36,13 +40,13 @@ func add_node_to_other_hosters__deferred(arg_node : Node):
 	other_hosters.call_deferred("add_child", arg_node)
 	
 
-#
+##
 
 func add_node_to_tooltip_container(arg_node : Node):
 	tooltip_container.add_child(arg_node)
 	
 
-#
+##
 
 func add_vic_def_anim(arg_anim):
 	#vic_def_anim_container.add_child(arg_anim)

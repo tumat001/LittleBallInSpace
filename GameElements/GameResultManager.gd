@@ -110,5 +110,8 @@ func end_game__as_lose():
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
 	
 
+##
 
+func is_game_result_win():
+	return _current_game_result == GameResult.WIN
 

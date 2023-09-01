@@ -158,12 +158,24 @@ func _set_level_layout_as_current_and_active(layout_scene : GUI_AbstractLevelLay
 #
 
 
-func _update_level_desc_tooltip_body(arg_level_details):
+func _update_level_desc_tooltip_body(arg_currently_hovered_tile):
+	var arg_level_details = arg_currently_hovered_tile.level_details
+	var arg_level_layout_details = arg_currently_hovered_tile.level_layout_details
+	
 	if arg_level_details != null:
 		level_title_tooltip_body.default_font_color = arg_level_details.get_title_color_based_on_level_type()
 		
 		level_title_tooltip_body.descriptions = arg_level_details.level_name
 		level_desc_tooltip_body.descriptions = arg_level_details.level_desc
+		
+		level_title_tooltip_body.update_display()
+		level_desc_tooltip_body.update_display()
+		
+	elif arg_level_layout_details != null:
+		level_title_tooltip_body.default_font_color = Color("#dddddd")
+		
+		level_title_tooltip_body.descriptions = arg_level_layout_details.level_layout_name
+		level_desc_tooltip_body.descriptions = arg_level_layout_details.level_layout_desc
 		
 		level_title_tooltip_body.update_display()
 		level_desc_tooltip_body.update_display()
@@ -194,7 +206,7 @@ func play_victory_animation_on_level_ids__as_additonals(arg_level_ids) -> bool:
 #
 
 func _on_layout_currently_hovered_layout_ele_changed(arg_id, arg_currently_hovered_tile):
-	_update_level_desc_tooltip_body(arg_currently_hovered_tile.level_details)
+	_update_level_desc_tooltip_body(arg_currently_hovered_tile)
 	_update_level_details_panel(arg_currently_hovered_tile.level_details)
 	
 

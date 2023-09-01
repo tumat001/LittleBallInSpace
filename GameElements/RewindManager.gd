@@ -30,6 +30,7 @@ signal obj_removed_from_rewindables(arg_obj)
 signal done_ending_rewind()
 
 signal rewindable_datas_pop_back(arg_data_count_left)
+signal rewindable_datas_saved(arg_rewindable_obj_to_save_state_map, arg_rewindable_marker_data_at_next_frame)
 
 signal rewinding_started()
 
@@ -177,6 +178,8 @@ func remove_node_from_block_rewind_cast(arg_node):
 
 func _ready():
 	_initialize_rewind_cooldown_timer()
+	
+	set_physics_process(false)
 
 func _initialize_rewind_cooldown_timer():
 	rewind_cooldown_timer = Timer.new()
@@ -191,12 +194,13 @@ func set_game_elements(arg_ele):
 	game_elements = arg_ele
 	
 	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
-
+	game_elements.connect("after_game_start_init", self, "_on_game_ele_after_game_start_init", [], CONNECT_ONESHOT)
 
 func _on_game_result_decided(arg_state):
 	can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.IS_GAME_RESULT_DECIDED)
 
-
+func _on_game_ele_after_game_start_init():
+	set_physics_process(true)
 
 ##########################
 
@@ -276,7 +280,6 @@ func add_to_rewindables(arg_obj):
 
 func _physics_process(delta):
 	if !is_rewinding:
-		
 		if last_calculated_can_store_rewind_data:
 			_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
 			if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
@@ -288,15 +291,17 @@ func _physics_process(delta):
 				var save_state = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
 				save_state[SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED] = obj.get(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED)
 				rewindable_obj_to_save_state_map[obj] = save_state
-				
 			
 			_rewindable_datas.append(rewindable_obj_to_save_state_map)
+			
 			
 			#
 			
 			_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
 			_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
 			
+			
+			emit_signal("rewindable_datas_saved", rewindable_obj_to_save_state_map, _rewindable_marker_data_at_next_frame)
 		
 	else:
 		
@@ -337,6 +342,19 @@ func _physics_process(delta):
 			_end_rewind_with_state_map(rewindable_obj_to_save_state_map)
 		
 		
+
+## for use in Special01_02
+## arg_reuse__rewind_save_datas_list is the curr dict to add the (arg_obj and save_state) to
+## call arg_reuse__rewind_save_datas_list to each obj.
+## When done with this, append it to the _rewindable datas
+## for the very first call of this method, arg_reuse__rewind_save_datas_list can be just an empty dict
+#func __add_object_rewind_data_list(arg_obj, arg_save_state : Dictionary, arg_reuse__rewind_save_datas_list : Dictionary):
+#	arg_reuse__rewind_save_datas_list[arg_obj] = arg_save_state
+
+func __append_to_rewind_datas__single_frame(arg_objs_and_their_save_states : Dictionary):
+	_rewindable_datas.append(arg_objs_and_their_save_states)
+
+
 
 #
 
@@ -465,4 +483,9 @@ func _end_rewind_audio_play_sequence():
 		_rewind_audio_player__mid_fill_loop = null
 	
 	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Ending, 1.0, null)
+
+
+
+
+
 

@@ -3,7 +3,7 @@ extends "res://LevelRelated/Classes/BaseLevel.gd"
 
 
 func _init():
-	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
+	#anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
 	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
@@ -15,6 +15,8 @@ func _init():
 
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
+	
+	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION   # placed here cause it is changed by code (depends on events)
 	
 	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_02_02__HARD, Vector2(0, 0))
 

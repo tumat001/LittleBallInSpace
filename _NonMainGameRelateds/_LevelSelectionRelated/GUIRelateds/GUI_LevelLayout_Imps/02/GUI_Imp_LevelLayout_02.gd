@@ -13,6 +13,7 @@ onready var level_06_hard__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_0
 
 
 onready var layout_03__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To03
+onready var layout_special_01__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_ToSpecial01
 
 
 func _init():
@@ -32,6 +33,9 @@ func _ready():
 	
 	layout_03__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_03)
 	layout_03__tile.layout_ele_id_to_put_cursor_to = 3
+	
+	layout_special_01__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01)
+	layout_special_01__tile.layout_ele_id_to_put_cursor_to = 0
 	
 
 

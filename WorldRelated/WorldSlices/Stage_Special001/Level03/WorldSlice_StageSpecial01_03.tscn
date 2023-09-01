@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_Special001/Level03/WorldSlice_StageSpecial01_03.gd" type="Script" id=2]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 31.5 )
+
+[node name="WorldSlice_StageSpecial01_03" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 3 )]
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.984314, 0.0196078, 1 )
+tile_data = PoolIntArray( 393213, 14, 262146, 393214, 14, 262147, 393215, 14, 262147, 327680, 14, 262147, 327681, 14, 262147, 327682, 14, 262148 )
+
+[node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 3 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
+modulate = Color( 0.709804, 0.360784, 0.0235294, 1 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( -95, 157 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 42, -29 )
+shape = SubResource( 1 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 49, 144 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[editable path="TileContainer/BaseTileSet_Normal"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

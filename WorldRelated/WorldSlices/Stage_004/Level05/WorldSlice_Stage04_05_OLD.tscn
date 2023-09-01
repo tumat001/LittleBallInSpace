@@ -1,0 +1,199 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_004/Level05/WorldSlice_Stage04_05.gd" type="Script" id=1]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=2]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=4]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ObjectsRelated/Portals/Portal.tscn" type="PackedScene" id=8]
+[ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=9]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=11]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=12]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 557.5, 9 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 13, 80 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 12, 79.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 27.75, 48 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 624, 286.5 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 123, 208.5 )
+
+[node name="WorldSlice_Stage04_05" instance=ExtResource( 11 )]
+script = ExtResource( 1 )
+
+[node name="BaseTileSet_Normal" parent="TileContainer" index="0" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Normal" index="0"]
+tile_data = PoolIntArray( -720899, 14, 2, -720898, 14, 262147, -720897, 14, 262147, -786432, 14, 262147, -786431, 14, 262147, -786430, 14, 262147, -786429, 14, 262147, -786428, 14, 4, -786427, 14, 2, -786426, 14, 262147, -786425, 14, 262147, -786424, 14, 262147, -786423, 14, 262147, -786422, 14, 262147, -786421, 14, 262147, -786420, 14, 4, -655363, 14, 262144, -720892, 14, 262144, -720891, 14, 262144, -720884, 14, 262144, -589827, 14, 327680, -655356, 14, 262144, -655355, 14, 327680, -655348, 14, 262144, -589820, 14, 262144, -589812, 14, 262144, -524284, 14, 262144, -524276, 14, 262144, -458748, 14, 262144, -458740, 14, 262144, -262118, 14, 3, -262117, 14, 3, -262116, 14, 4, -196582, 14, 65539, -196581, 14, 65539, -196580, 14, 65540, -131046, 14, 65539, -131045, 14, 65539, -131044, 14, 65540, 196608, 23, 1, 196609, 23, 1, 196610, 23, 1, 196611, 23, 1, 196612, 23, 1, 196613, 23, 1, 327669, 14, 65538, 327670, 14, 65539, 327671, 14, 65539, 327672, 14, 65539, 327673, 14, 65539, 327674, 14, 65539, 327675, 14, 65539, 327676, 14, 65539, 327677, 14, 65539, 327678, 14, 131075, 327679, 14, 65539, 262149, 14, 65539, 262150, 14, 65539, 262151, 14, 65539, 262152, 14, 65539, 262153, 14, 65539, 262154, 14, 65539, 262155, 14, 65539, 262156, 14, 65539, 262157, 14, 65539, 262158, 14, 65539, 262159, 14, 65539, 262160, 14, 65539, 262161, 14, 65539, 262162, 14, 65539, 262163, 14, 65539, 262164, 14, 65539, 262165, 14, 65539, 262166, 14, 65539, 262167, 14, 65539, 262168, 14, 65539, 262169, 14, 65539, 262170, 14, 65539, 262171, 14, 65539, 262172, 14, 65539, 262173, 14, 65539, 262174, 14, 65539, 262175, 14, 65539, 262176, 14, 65539, 262177, 14, 65540, 393205, 14, 65538, 393206, 14, 65539, 393207, 14, 65539, 393208, 14, 65539, 393209, 14, 65539, 393210, 14, 65539, 393211, 14, 65539, 393212, 14, 65539, 393213, 14, 131076, 327685, 14, 65538, 327686, 14, 65539, 327687, 14, 65539, 327688, 14, 65539, 327689, 14, 65539, 327690, 14, 65539, 327691, 14, 65539, 327692, 14, 65539, 327693, 14, 65539, 327694, 14, 65539, 327695, 14, 65539, 327696, 14, 65539, 327697, 14, 65539, 327698, 14, 65539, 327699, 14, 65539, 327700, 14, 65539, 327701, 14, 65539, 327702, 14, 65539, 327703, 14, 65539, 327704, 14, 65539, 327705, 14, 65539, 327706, 14, 65539, 327707, 14, 65539, 327708, 14, 65539, 327709, 14, 65539, 327710, 14, 65539, 327711, 14, 65539, 327712, 14, 65539, 327713, 14, 65540, 458741, 14, 65538, 458742, 14, 65539, 458743, 14, 65539, 458744, 14, 65539, 458745, 14, 65539, 458746, 14, 65539, 458747, 14, 65539, 458748, 14, 131076, 458749, 23, 1, 458750, 23, 1, 393217, 23, 1, 393218, 23, 1, 393219, 23, 1, 393220, 14, 2, 393221, 14, 65539, 393222, 14, 65539, 393223, 14, 65539, 393224, 23, 1, 393226, 14, 65539, 393228, 23, 1, 393229, 14, 65539, 393230, 14, 65539, 393231, 14, 65539, 393232, 14, 65539, 393233, 14, 65539, 393234, 14, 65539, 393235, 14, 65539, 393236, 14, 65539, 393237, 14, 65539, 393238, 14, 65539, 393239, 14, 65539, 393240, 14, 65539, 393241, 14, 65539, 393242, 14, 65539, 393243, 14, 65539, 393244, 14, 0, 393245, 14, 131075, 393246, 14, 131075, 393247, 14, 131075, 393248, 14, 131075, 393249, 14, 131076, 524277, 14, 65538, 524278, 14, 65539, 524279, 14, 65539, 524280, 14, 65539, 524281, 14, 65539, 524282, 14, 65539, 458755, 14, 65539, 458756, 14, 65539, 458757, 14, 65539, 458758, 14, 65539, 458759, 14, 131076, 458765, 14, 65538, 458766, 14, 65539, 458767, 14, 65539, 458768, 14, 65539, 458769, 14, 65539, 458770, 14, 65539, 458771, 14, 65539, 458772, 14, 65539, 458773, 14, 65539, 458774, 14, 65539, 458775, 14, 65539, 458776, 14, 65539, 458777, 14, 65539, 458778, 14, 65539, 458779, 14, 65539, 458780, 14, 65540, 589813, 14, 131074, 589814, 14, 131075, 589815, 14, 131075, 589816, 14, 131075, 589817, 14, 131075, 589818, 14, 131075, 589819, 23, 1, 589820, 23, 1, 589821, 23, 1, 589822, 23, 1, 524290, 23, 1, 524291, 14, 131075, 524292, 14, 131075, 524293, 14, 131075, 524294, 14, 131075, 524301, 14, 131075, 524302, 14, 131075, 524303, 14, 131075, 524304, 14, 131075, 524305, 14, 131075, 524306, 14, 131075, 524307, 14, 131075, 524308, 14, 131075, 524309, 14, 131075, 524310, 14, 131075, 524311, 14, 131075, 524312, 14, 131075, 524313, 14, 131075, 524314, 14, 131075, 524315, 14, 131075, 524316, 14, 131076 )
+
+[node name="BaseTileSet_Energized" parent="TileContainer" index="1" instance=ExtResource( 3 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( -589823, 14, 196608, -589815, 14, 196608, -458759, 14, 2, -458758, 14, 262147, -458757, 14, 262147, -458756, 14, 262147, -458755, 14, 262147, -458754, 14, 4, -524287, 14, 262144, -524279, 14, 262144, -393223, 14, 262144, -393218, 14, 262144, -458751, 14, 262144, -458743, 14, 327680, -327687, 14, 262144, -327682, 14, 131074, -393193, 6, 0, -393191, 14, 4, -262151, 14, 262144, -327655, 14, 262144, -196615, 14, 262144, -262119, 14, 262144, -131079, 14, 262144, -196583, 14, 262144, -65543, 14, 262144, -131047, 14, 262144, -7, 14, 131076, -65514, 14, 262146, -65513, 14, 262147, -65512, 14, 262147, -65511, 14, 262147, -65510, 14, 262147, -65509, 14, 262147, -65508, 14, 262147, -65507, 14, 262147, -65506, 14, 262147, -65505, 14, 262147, -65504, 14, 262147, -65503, 14, 4, 33, 14, 262144, 65569, 14, 262144, 131105, 14, 262144, 262133, 14, 0, 262134, 14, 3, 262135, 14, 3, 262136, 14, 3, 262137, 14, 3, 262138, 14, 3, 262139, 14, 3, 262140, 14, 3, 262141, 14, 3, 262142, 14, 3, 262143, 14, 3, 196614, 14, 3, 196615, 14, 3, 196616, 14, 3, 196617, 14, 3, 196618, 14, 3, 196619, 14, 3, 196620, 14, 3, 196621, 14, 3, 196622, 14, 3, 196623, 14, 3, 196624, 14, 3, 196625, 14, 3, 196626, 14, 3, 196627, 14, 3, 196628, 14, 3, 196629, 14, 3, 196630, 14, 3, 196631, 14, 3, 196632, 14, 3, 196633, 14, 3, 196634, 14, 3, 196635, 14, 3, 196636, 14, 3, 196637, 14, 3, 196638, 14, 3, 196639, 14, 3, 196640, 14, 3, 196641, 14, 0 )
+
+[node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 3 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Grounded" index="0"]
+modulate = Color( 0.682353, 0.372549, 0, 1 )
+tile_data = PoolIntArray( -327681, 14, 262147, -393216, 14, 262147, -393215, 14, 131076, -393212, 14, 131074, -393211, 14, 262147, -393210, 14, 262147, -393209, 14, 262147, -393208, 14, 262147, -393207, 14, 131076, -393204, 14, 131074, -393203, 14, 262147, -393202, 14, 262147, -393201, 14, 262147, -393200, 14, 262147, -393199, 14, 262147, -393198, 14, 262147, -393197, 14, 262147, -393196, 14, 262147, -393195, 14, 262147, -393194, 14, 262147, -393193, 14, 262147, -393192, 14, 262147, -11, 14, 2, -10, 14, 262147, -9, 14, 262147, -8, 14, 262147, 65525, 14, 262144, 131061, 14, 262144, 196597, 14, 262144 )
+
+[node name="BaseTileSet_Uncolls01" parent="TileContainer" index="3" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls01" index="0"]
+tile_set = ExtResource( 2 )
+tile_data = PoolIntArray( -655362, 12, 0, -655361, 12, 0, -720896, 12, 0, -720895, 12, 0, -720894, 12, 0, -720893, 12, 0, -720890, 12, 0, -720889, 12, 0, -720888, 12, 0, -720887, 12, 0, -720886, 12, 0, -720885, 12, 0, -589826, 12, 0, -589825, 12, 0, -655360, 12, 0, -655359, 12, 0, -655358, 12, 0, -655357, 12, 0, -655354, 12, 0, -655353, 12, 0, -655352, 12, 0, -655351, 12, 0, -655350, 12, 0, -655349, 12, 0, -589822, 12, 0, -589821, 12, 0, -589814, 12, 0, -589813, 12, 0, -524286, 12, 0, -524285, 12, 0, -524278, 12, 0, -524277, 12, 0, -393222, 12, 0, -393221, 12, 0, -393220, 12, 0, -393219, 12, 0, -458750, 12, 0, -458749, 12, 0, -458742, 12, 0, -458741, 12, 0, -327686, 12, 0, -327685, 12, 0, -327684, 12, 0, -327683, 12, 0, -393214, 12, 0, -393213, 12, 0, -393206, 12, 0, -393205, 12, 0, -262150, 12, 0, -262149, 12, 0, -262148, 12, 0, -262147, 12, 0, -262146, 12, 0, -262145, 12, 0, -327680, 12, 0, -327679, 12, 0, -327678, 12, 0, -327677, 12, 0, -327676, 12, 0, -327675, 12, 0, -327674, 12, 0, -327673, 12, 0, -327672, 12, 0, -327671, 12, 0, -327670, 12, 0, -327669, 12, 0, -327668, 12, 0, -327667, 12, 0, -327666, 12, 0, -327665, 12, 0, -327664, 12, 0, -327663, 12, 0, -327662, 12, 0, -327661, 12, 0, -327660, 12, 0, -327659, 12, 0, -327658, 12, 0, -327657, 12, 0, -327656, 12, 0, -196614, 12, 0, -196613, 12, 0, -196612, 12, 0, -196611, 12, 0, -196610, 12, 0, -196609, 12, 0, -262144, 12, 0, -262143, 12, 0, -262142, 12, 0, -262141, 12, 0, -262140, 12, 0, -262139, 12, 0, -262138, 12, 0, -262137, 12, 0, -262136, 12, 0, -262135, 12, 0, -262134, 12, 0, -262133, 12, 0, -262132, 12, 0, -262131, 12, 0, -262130, 12, 0, -262129, 12, 0, -262128, 12, 0, -262127, 12, 0, -262126, 12, 0, -262125, 12, 0, -262124, 12, 0, -262123, 12, 0, -262122, 12, 0, -262121, 12, 0, -262120, 12, 0, -131081, 19, 131074, -131080, 19, 0, -131078, 12, 0, -131077, 12, 0, -131076, 12, 0, -131075, 12, 0, -131074, 12, 0, -131073, 12, 0, -196608, 12, 0, -196607, 12, 0, -196606, 12, 0, -196605, 12, 0, -196604, 12, 0, -196603, 12, 0, -196602, 12, 0, -196601, 12, 0, -196600, 12, 0, -196599, 12, 0, -196598, 12, 0, -196597, 12, 0, -196596, 12, 0, -196595, 12, 0, -196594, 12, 0, -196593, 12, 0, -196592, 12, 0, -196591, 12, 0, -196590, 12, 0, -196589, 12, 0, -196588, 12, 0, -196587, 12, 0, -196586, 12, 0, -196585, 12, 0, -196584, 12, 0, -65545, 19, 1, -65544, 19, 131074, -65542, 12, 0, -65541, 12, 0, -65540, 12, 0, -65539, 12, 0, -65538, 12, 0, -65537, 12, 0, -131072, 12, 0, -131071, 12, 0, -131070, 12, 0, -131069, 12, 0, -131068, 12, 0, -131067, 12, 0, -131066, 12, 0, -131065, 12, 0, -131064, 12, 0, -131063, 12, 0, -131062, 12, 0, -131061, 12, 0, -131060, 12, 0, -131059, 12, 0, -131058, 12, 0, -131057, 12, 0, -131056, 12, 0, -131055, 12, 0, -131054, 12, 0, -131053, 12, 0, -131052, 12, 0, -131051, 12, 0, -131050, 12, 0, -131049, 12, 0, -131048, 12, 0, -6, 12, 0, -5, 12, 0, -4, 12, 0, -3, 12, 0, -2, 12, 0, -1, 12, 0, -65536, 12, 0, -65535, 12, 0, -65534, 12, 0, -65533, 12, 0, -65532, 12, 0, -65531, 12, 0, -65530, 12, 0, -65529, 12, 0, -65528, 12, 0, -65527, 12, 0, -65526, 12, 0, -65525, 12, 0, -65524, 12, 0, -65523, 12, 0, -65522, 12, 0, -65521, 12, 0, -65520, 12, 0, -65519, 12, 0, -65518, 12, 0, -65517, 12, 0, -65516, 12, 0, -65515, 12, 0, 65526, 12, 0, 65527, 12, 0, 65528, 12, 0, 65529, 12, 0, 65530, 12, 0, 65531, 12, 0, 65532, 12, 0, 65533, 12, 0, 65534, 12, 0, 65535, 12, 0, 0, 12, 0, 1, 12, 0, 2, 12, 0, 3, 12, 0, 4, 12, 0, 5, 12, 0, 6, 12, 0, 7, 12, 0, 8, 12, 0, 9, 12, 0, 10, 12, 0, 11, 12, 0, 12, 12, 0, 13, 12, 0, 14, 12, 0, 15, 12, 0, 16, 12, 0, 17, 12, 0, 18, 12, 0, 19, 12, 0, 20, 12, 0, 21, 12, 0, 22, 12, 0, 23, 12, 0, 24, 12, 0, 25, 12, 0, 26, 12, 0, 27, 12, 0, 28, 12, 0, 29, 12, 0, 30, 12, 0, 31, 12, 0, 32, 12, 0, 131062, 12, 0, 131063, 12, 0, 131064, 12, 0, 131065, 12, 0, 131066, 12, 0, 131067, 12, 0, 131068, 12, 0, 131069, 12, 0, 131070, 12, 0, 131071, 12, 0, 65536, 12, 0, 65537, 12, 0, 65538, 12, 0, 65539, 12, 0, 65540, 12, 0, 65541, 12, 0, 65542, 12, 0, 65543, 12, 0, 65544, 12, 0, 65545, 12, 0, 65546, 12, 0, 65547, 12, 0, 65548, 12, 0, 65549, 12, 0, 65550, 12, 0, 65551, 12, 0, 65552, 12, 0, 65553, 12, 0, 65554, 12, 0, 65555, 12, 0, 65556, 12, 0, 65557, 12, 0, 65558, 12, 0, 65559, 12, 0, 65560, 12, 0, 65561, 12, 0, 65562, 12, 0, 65563, 12, 0, 65564, 12, 0, 65565, 12, 0, 65566, 12, 0, 65567, 12, 0, 65568, 12, 0, 196598, 12, 0, 196599, 12, 0, 196600, 12, 0, 196601, 12, 0, 196602, 12, 0, 196603, 12, 0, 196604, 12, 0, 196605, 12, 0, 196606, 12, 0, 196607, 12, 0, 131072, 12, 0, 131073, 12, 0, 131074, 12, 0, 131075, 12, 0, 131076, 12, 0, 131077, 12, 0, 131078, 12, 0, 131079, 12, 0, 131080, 12, 0, 131081, 12, 0, 131082, 12, 0, 131083, 12, 0, 131084, 12, 0, 131085, 12, 0, 131086, 12, 0, 131087, 12, 0, 131088, 12, 0, 131089, 12, 0, 131090, 12, 0, 131091, 12, 0, 131092, 12, 0, 131093, 12, 0, 131094, 12, 0, 131095, 12, 0, 131096, 12, 0, 131097, 12, 0, 131098, 12, 0, 131099, 12, 0, 131100, 12, 0, 131101, 12, 0, 131102, 12, 0, 131103, 12, 0, 131104, 12, 0 )
+
+[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls02" index="0"]
+tile_set = ExtResource( 2 )
+tile_data = PoolIntArray( -720893, 17, 0, -720885, 17, 0, -589826, 18, 2, -655354, 18, 2, -589822, 18, 196609, -589821, 18, 196609, -589814, 18, 196609, -589813, 18, 196609, -524286, 13, 1, -524278, 13, 1, -458750, 18, 65537, -458742, 18, 65537, -327683, 18, 2, -6, 19, 0, -5, 19, 0, -4, 19, 0, -3, 19, 0, -2, 19, 0, -1, 19, 0, -65536, 19, 0, -65535, 19, 0, -65534, 19, 0, -65533, 19, 0, -65532, 19, 0, -65531, 19, 0, -65530, 19, 0, -65529, 19, 0, -65528, 19, 0, -65527, 19, 0, -65526, 19, 0, -65525, 19, 0, -65524, 19, 0, -65523, 19, 0, -65522, 19, 0, -65521, 19, 0, -65520, 19, 0, -65519, 19, 0, -65518, 19, 0, -65517, 19, 0, -65516, 19, 0, -65515, 19, 0, 22, 17, 65538, 65558, 17, 65538, 131094, 17, 65538 )
+
+[node name="BaseTileSet_Light" parent="TileContainer" index="5" instance=ExtResource( 3 )]
+has_glowables = true
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Light" index="0"]
+tile_set = ExtResource( 2 )
+tile_data = PoolIntArray( -196612, 14, 0, -262122, 14, 0 )
+
+[node name="BaseTileSet_Fragile" parent="TileContainer" index="6" instance=ExtResource( 3 )]
+glass_breakable_type = 3
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Fragile" index="0"]
+tile_data = PoolIntArray( -262144, 17, 0, -262143, 17, 0, -262140, 17, 0, -262139, 17, 0, -262136, 17, 0, -262135, 17, 0, -262132, 17, 0, -262131, 17, 0, -262128, 17, 0, -262127, 17, 0, -196608, 17, 0, -196607, 17, 0, -196604, 17, 0, -196603, 17, 0, -196600, 17, 0, -196599, 17, 0, -196596, 17, 0, -196595, 17, 0, -196592, 17, 0, -196591, 17, 0 )
+
+[node name="BaseTileSet_Blue" parent="TileContainer" index="7" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
+modulate = Color( 0.247059, 0.184314, 0.984314, 1 )
+tile_data = PoolIntArray( 25, 7, 0, 65561, 7, 65536, 131097, 7, 131072 )
+
+[node name="BaseTileSet_Red" parent="TileContainer" index="8" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Red" index="0"]
+modulate = Color( 0.788235, 0.054902, 0.054902, 1 )
+tile_data = PoolIntArray( 27, 7, 0, 65563, 7, 65536, 131099, 7, 131072 )
+
+[node name="BaseTileSet_Green" parent="TileContainer" index="9" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_Green" index="0"]
+modulate = Color( 0.27451, 1, 0.403922, 1 )
+tile_data = PoolIntArray( 29, 9, 0, 65565, 9, 65536, 131101, 9, 131072 )
+
+[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 9 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion" index="0"]
+position = Vector2( 237.5, 9 )
+shape = SubResource( 1 )
+
+[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="1" instance=ExtResource( 9 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion2" index="0"]
+position = Vector2( -51, -80 )
+shape = SubResource( 2 )
+
+[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 5 )]
+position = Vector2( -29, -5 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion" index="0"]
+position = Vector2( 9, -75.5 )
+shape = SubResource( 3 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 7 )]
+position = Vector2( 997, 3 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 30.75, 45 )
+shape = SubResource( 4 )
+
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="4" instance=ExtResource( 10 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 517, -121.5 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( -226, -39.5 )
+shape = SubResource( 6 )
+
+[node name="Portal_Blue01" parent="ObjectContainer" index="0" instance=ExtResource( 8 )]
+position = Vector2( -303, 80 )
+portal_to_link_with__path = NodePath("../Portal_Blue02")
+
+[node name="Portal_Blue02" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
+position = Vector2( 639, -94 )
+portal_to_link_with__path = NodePath("../Portal_Blue01")
+
+[node name="Object_InteractableButton_Blue" parent="ObjectContainer" index="2" instance=ExtResource( 12 )]
+position = Vector2( -72, -208 )
+rotation = 4.71239
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
+portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
+
+[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 4 )]
+position = Vector2( -121, 80 )
+
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="4" instance=ExtResource( 4 )]
+position = Vector2( 732, 80 )
+
+[node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="5" instance=ExtResource( 4 )]
+position = Vector2( -129, -203 )
+
+[node name="Object_InteractableButton" parent="ObjectContainer" index="6" instance=ExtResource( 12 )]
+position = Vector2( 200, -336 )
+rotation = 1.5708
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
+button_color = 0
+
+[node name="Object_InteractableButton2" parent="ObjectContainer" index="7" instance=ExtResource( 12 )]
+position = Vector2( -56, -336 )
+rotation = 1.5708
+body_mode_to_use = 1
+tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
+portal_01_to_register_in_toggle__path = NodePath("")
+portal_02_to_register_in_toggle__path = NodePath("")
+button_color = 1
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 444, 80 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[connection signal="region_area_captured" from="AreaRegionContainer/PlayerCaptureAreaRegion" to="." method="_on_PlayerCaptureAreaRegion_region_area_captured"]
+
+[editable path="TileContainer/BaseTileSet_Normal"]
+[editable path="TileContainer/BaseTileSet_Energized"]
+[editable path="TileContainer/BaseTileSet_Grounded"]
+[editable path="TileContainer/BaseTileSet_Uncolls01"]
+[editable path="TileContainer/BaseTileSet_Uncolls02"]
+[editable path="TileContainer/BaseTileSet_Light"]
+[editable path="TileContainer/BaseTileSet_Fragile"]
+[editable path="TileContainer/BaseTileSet_Blue"]
+[editable path="TileContainer/BaseTileSet_Red"]
+[editable path="TileContainer/BaseTileSet_Green"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
+[editable path="AreaRegionContainer/PlayerClearAreaRegion"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

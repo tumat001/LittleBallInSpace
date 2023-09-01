@@ -70,6 +70,10 @@ var _is_in_ready : bool
 var _button_pos_tweener
 var _coll_shape_tweener
 
+#
+
+var is_class_type_object_interactable_button : bool = true
+
 ##
 
 const ANIM_NAME__BASE__BLUE_OFF = "blue_off"

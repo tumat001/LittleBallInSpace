@@ -67,7 +67,6 @@ var show_player_trajectory_line : bool setget set_show_player_trajectory_line
 
 var destroyed_ball_particles_pool_component : AttackSpritePoolComponent
 
-
 #
 
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
@@ -249,11 +248,9 @@ func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 
 
 func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
-	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
-	ball.base_object_mass = ball_mass
+	var ball = create_ball__for_any_use()
 	ball.global_position = _player.global_position
-	ball.connect("after_ready", self, "_on_ball_after_ready", [ball, arg_vec])
-	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
+	ball.connect("after_ready", self, "_on_ball_after_ready__give_vel", [ball, arg_vec])
 	
 	_player.add_object_to_not_collide_with(ball)
 	_player.add_objects_to_collide_with_after_exit(ball)
@@ -261,8 +258,17 @@ func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
 	
 	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
 
+func create_ball__for_any_use() -> Object_Ball:
+	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
+	ball.base_object_mass = ball_mass
+	
+	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
+	
+	return ball
 
-func _on_ball_after_ready(ball, arg_vec):
+
+
+func _on_ball_after_ready__give_vel(ball, arg_vec):
 	var body_state = Physics2DServer.body_get_direct_state(ball.get_rid())
 	body_state.linear_velocity = arg_vec
 	

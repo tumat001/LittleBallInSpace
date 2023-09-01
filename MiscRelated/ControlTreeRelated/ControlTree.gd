@@ -143,7 +143,7 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	
 	emit_signal("hierarchy_advanced_forwards", arg_control)
 	
-	print("curr: %s, prev: %s. hier size: %s" % [_current_control_showing, prev_control, _current_hierarchy.size()])
+	#print("curr: %s, prev: %s. hier size: %s" % [_current_control_showing, prev_control, _current_hierarchy.size()])
 
 func _on_control_fully_visible_from_tweener(arg_control):
 	_is_transitioning = false

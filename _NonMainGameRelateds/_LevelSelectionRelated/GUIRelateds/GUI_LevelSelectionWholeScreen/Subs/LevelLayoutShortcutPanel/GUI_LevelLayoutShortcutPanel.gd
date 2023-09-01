@@ -73,8 +73,11 @@ func _on_level_layout_id_completion_status_changed():
 
 
 func _update_shortcut_panel__visible_buttons():
+	var vis_count : int = 0
 	for level_layout_id in StoreOfLevelLayouts.LevelLayoutIds.values():
 		if GameSaveManager.is_level_layout_id_playable(level_layout_id):
+			vis_count += 1
+			
 			if !_level_layout_id_to_tile_map.has(level_layout_id):
 				_create_level_layout_tile_for_id(level_layout_id)
 			else:
@@ -86,6 +89,11 @@ func _update_shortcut_panel__visible_buttons():
 				var tile = _level_layout_id_to_tile_map[level_layout_id]
 				tile.visible = false
 	
+	if vis_count <= 1:
+		visible = false
+	else:
+		visible = true
+
 
 func _create_level_layout_tile_for_id(arg_id):
 	var tile = GUI_LevelLayoutEle_Tile_Scene.instance()

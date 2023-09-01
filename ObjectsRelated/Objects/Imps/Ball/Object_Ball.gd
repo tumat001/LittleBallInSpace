@@ -21,6 +21,10 @@ const all_colors = [
 	COLOR_WHITE,
 ]
 
+#
+
+var is_class_type_obj_ball : bool = true
+
 ##
 
 func _ready():

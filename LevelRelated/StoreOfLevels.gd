@@ -61,6 +61,13 @@ enum LevelIds {
 	LEVEL_02__STAGE_5 = 401
 	
 	
+	
+	##
+	
+	LEVEL_01__STAGE_SPECIAL_1 = 10000
+	LEVEL_02__STAGE_SPECIAL_1 = 10001
+	LEVEL_03__STAGE_SPECIAL_1 = 10002
+	
 }
 # dont change this in runtime(useless). 
 # This determines which levels are not hidden at the very start, before any save states. i.e. not hidden by default
@@ -119,6 +126,9 @@ func _initialize_levels_in_level_layout():
 		"STAGE_3" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_03,
 		"STAGE_4" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_04,
 		"STAGE_5" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05,
+		
+		"STAGE_SPECIAL_1" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01,
+		
 	}
 	
 	##
@@ -965,10 +975,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_4:
 		level_details.level_full_name = [
-			["4-4 Bounce 3.0", []]
+			["4-4 Speed", []]
 		]
 		level_details.level_name = [
-			["Bounce 3.0", []]
+			["Speed", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -991,10 +1001,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
 		level_details.level_full_name = [
-			["4-5 Slow Down", []]
+			["4-5 Surface", []]
 		]
 		level_details.level_name = [
-			["Slow Down", []]
+			["Surface", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -1099,6 +1109,94 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		
+		
+		
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_1:
+		level_details.level_full_name = [
+			["S-!1 Darkness", []]
+		]
+		level_details.level_name = [
+			["Darkness", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!1"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		
+		
+	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
+		level_details.level_full_name = [
+			["S-!2 Too Late", []]
+		]
+		level_details.level_name = [
+			["Too Late", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!2"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		
+	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
+		level_details.level_full_name = [
+			["S-!3 You are Right", []]
+		]
+		level_details.level_name = [
+			["You are Right", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!3"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	
@@ -1117,15 +1215,15 @@ func generate_base_level_imp_new(arg_id):
 	if arg_id == LevelIds.TEST:
 		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
 	elif arg_id == LevelIds.LEVEL_01__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_01__STAGE_1.gd").new()
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
 	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_02__STAGE_1.gd").new()
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_02.gd").new()
 	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_03__STAGE_1.gd").new()
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
 	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_04__STAGE_1.gd").new()
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
 	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/LEVEL_05__STAGE_1.gd").new()
+		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
@@ -1189,6 +1287,15 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout05/Level_02__L5.gd").new()
 		
 		
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_1:
+		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_01__LSpecial1.gd").new()
+	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
+		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_02__LSpecial1.gd").new()
+	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
+		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_03__LSpecial1.gd").new()
+		
+	
 	
 
 ###### COINS
@@ -1212,7 +1319,7 @@ func _initialize_coin_details():
 	_level_id_to_coin_amount_map = {
 		LevelIds.TEST : 0,
 		
-		LevelIds.LEVEL_01__STAGE_1 : 3,
+		LevelIds.LEVEL_01__STAGE_1 : 2,
 		LevelIds.LEVEL_02__STAGE_1 : 3,
 		LevelIds.LEVEL_03__STAGE_1 : 4,
 		LevelIds.LEVEL_04__STAGE_1 : 3,
@@ -1223,7 +1330,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_03__STAGE_2 : 2,
 		LevelIds.LEVEL_04__STAGE_2 : 2,
 		LevelIds.LEVEL_05__STAGE_2 : 2,
-		LevelIds.LEVEL_06__STAGE_2 : 1,
+		LevelIds.LEVEL_06__STAGE_2 : 0,
 		
 		LevelIds.LEVEL_02__STAGE_2__HARD : 1,
 		LevelIds.LEVEL_06__STAGE_2__HARD : 0,
@@ -1244,7 +1351,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_02__STAGE_4 : 0,
 		LevelIds.LEVEL_03__STAGE_4 : 1,
 		LevelIds.LEVEL_04__STAGE_4 : 2,
-		LevelIds.LEVEL_05__STAGE_4 : 1,
+		LevelIds.LEVEL_05__STAGE_4 : 0,
 		
 		LevelIds.LEVEL_03__STAGE_4__HARD : 3,
 		LevelIds.LEVEL_05__STAGE_4__HARD : 0,
@@ -1252,6 +1359,14 @@ func _initialize_coin_details():
 		
 		LevelIds.LEVEL_01__STAGE_5 : 0,
 		LevelIds.LEVEL_02__STAGE_5 : 0,
+		
+		
+		#
+		
+		LevelIds.LEVEL_01__STAGE_SPECIAL_1 : 0,
+		LevelIds.LEVEL_02__STAGE_SPECIAL_1 : 0,
+		LevelIds.LEVEL_03__STAGE_SPECIAL_1 : 0,
+		
 		
 	}
 	
@@ -1352,9 +1467,14 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_05__STAGE_4__HARD : [LevelIds.LEVEL_04__STAGE_4],
 		
 		
+		##
 		
 		LevelIds.LEVEL_01__STAGE_5 : [LevelIds.LEVEL_05__STAGE_4, LevelIds.LEVEL_05__STAGE_4__HARD],
 		LevelIds.LEVEL_02__STAGE_5 : [LevelIds.LEVEL_01__STAGE_5],
+		
+		##
+		
+		
 		
 		
 	}
@@ -1384,6 +1504,22 @@ func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_stat
 #
 ###########################
 
+func unlock_stage_special_01__and_unhide_eles_to_layout_special_01():
+	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01):
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+		
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, 25, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, 26, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, 27, false)
+		
+		_make_all_special_stage_levels_unlocked()
+
+func _make_all_special_stage_levels_unlocked():
+	for level_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
+		GameSaveManager.set_level_id_status_completion(level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+	
+
+
 
 func unlock_relateds_after_winning_stage_05_level_02():
 	if !GameSaveManager.is_level_id_finished(LevelIds.LEVEL_02__STAGE_5):
@@ -1398,6 +1534,8 @@ func unlock_relateds_after_winning_stage_05_level_02():
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, 13, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, 14, false)
 		
+		# done this only now to make it unlocked in shortcut panel
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 
 
 func unlock_and_goto_stage_05_level_02_on_win():
@@ -1467,7 +1605,9 @@ func unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 		
 		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST)
 		
-		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+		# do not do this yet, so that it does not show up in shortcuts
+		#GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+		
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 		
 		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true

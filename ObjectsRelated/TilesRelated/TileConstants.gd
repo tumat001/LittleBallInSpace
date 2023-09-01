@@ -455,6 +455,10 @@ func _initialize_all_tile_to_sound_id_map():
 		19 : _standard_tile_glass_hit,
 		20 : _standard_tile_glass_hit,
 		
+		
+		23 : _standard_tile_metal_hit__ping,
+		24 : _standard_tile_metal_hit__ping,
+		
 	}
 	
 	###########
@@ -530,8 +534,19 @@ func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
 		14 : {
 			Vector2(0, 0) : _construct_light_details__for_14__dark_metal_lamp__vert(),
 			Vector2(1, 0) : _construct_light_details__for_14__dark_metal_lamp__horiz(),
+		},
+		
+		23 : {
+			Vector2(0, 0) : _construct_light_details__for_23__V00_00(),
+			Vector2(1, 0) : _construct_light_details__for_23__V01_00(),
+			
+			Vector2(0, 1) : _construct_light_details__for_23__Vxx_01(),
+			Vector2(1, 1) : _construct_light_details__for_23__Vxx_01(),
+			Vector2(2, 1) : _construct_light_details__for_23__Vxx_01(),
+			Vector2(3, 1) : _construct_light_details__for_23__Vxx_01(),
 			
 		}
+		
 	}
 	
 
@@ -543,12 +558,40 @@ func _construct_light_details__for_14__dark_metal_lamp__vert():
 	return light_details
 
 func _construct_light_details__for_14__dark_metal_lamp__horiz():
-	var light_details = LightDetails.new()
-	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(120, 240))
-	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
+	var light_details = _construct_light_details__for_14__dark_metal_lamp__vert()
 	light_details.rotation = 90
 	
 	return light_details
+#	var light_details = LightDetails.new()
+#	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(120, 240))
+#	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(253/255.0, 215/255.0, 98/255.0, 0.6), Color(0, 0, 0, 0))
+#	light_details.rotation = 90
+#
+#	return light_details
+
+
+func _construct_light_details__for_23__V00_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(255, 195))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(129/255.0, 209/255.0, 254/255.0, 0.6), Color(0, 0, 0, 0))
+	
+	return light_details
+
+func _construct_light_details__for_23__V01_00():
+	var light_details = _construct_light_details__for_23__V00_00()
+	light_details.rotation = 90
+	
+	return light_details
+
+
+func _construct_light_details__for_23__Vxx_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(180, 180))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(255/255.0, 145/255.0, 41/255.0, 0.6), Color(0, 0, 0, 0))
+	
+	return light_details
+	
+
 
 
 func get_light_details_of_tile_id(arg_tile_id, arg_auto_coords) -> LightDetails:

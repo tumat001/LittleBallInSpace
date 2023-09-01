@@ -162,4 +162,8 @@ func get_all_uncaptured_pca():
 #			_all_pca_to_is_captured_map[pca] = is_captured
 #
 
+############
 
+func set_enable_base_tileset_generate_tooltips__for_all_current_slices(arg_val):
+	for slice in _all_world_slices:
+		slice.set_enable_base_tileset_generate_tooltips(arg_val)

@@ -5,4 +5,5 @@
 
 [node name="PlayerDetectionAreaRegion" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+is_rewindable = false
 triggerable_only_once = false

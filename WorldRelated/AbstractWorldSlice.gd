@@ -58,8 +58,10 @@ onready var lights_container = $LightsContainer
 func set_game_elements(arg_elements):
 	game_elements = arg_elements
 	
+	game_elements.connect("before_game_start_init", self, "_on_before_game_start_init", [], CONNECT_ONESHOT)
+	
 	if !game_elements.is_game_after_init:
-		game_elements.connect("after_game_start_init", self, "_on_after_game_start_init")
+		game_elements.connect("after_game_start_init", self, "_on_after_game_start_init", [], CONNECT_ONESHOT)
 	else:
 		_on_after_game_start_init()
 
@@ -118,6 +120,9 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 
 
 ####
+
+func _on_before_game_start_init():
+	pass
 
 func _on_after_game_start_init():
 	_attempt_set_player__to_all_base_tiles()
@@ -253,5 +258,9 @@ func make_first_pca_region_visible():
 
 
 
+############
 
+func set_enable_base_tileset_generate_tooltips(arg_val):
+	for tileset in tile_container.get_children():
+		tileset.can_generate_tooltips = arg_val
 

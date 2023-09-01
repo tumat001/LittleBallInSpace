@@ -10,6 +10,11 @@ const DEFAULT_LEVEL_TILE_LOCKED_MODULATE = Color(0.5, 0.5, 0.5, 1.0)
 
 #
 
+var level_layout_full_name : Array
+var level_layout_name : Array setget set_level_layout_name
+var level_layout_desc : Array
+
+
 var level_layout_id
 
 var level_layout_label_on_tile : String
@@ -72,4 +77,14 @@ func get_texture_and_modulate_to_use__based_on_properties() -> Array:
 		bucket.append(modulate_of_level_tile)
 	
 	return bucket
+
+#
+
+func set_level_layout_name(arg_val):
+	level_layout_name = arg_val
+	
+	if level_layout_full_name.size() == 0:
+		level_layout_full_name = level_layout_name
+
+
 

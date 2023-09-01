@@ -134,6 +134,11 @@ const GAME_CONTROLS_TO_NOT_BE_HIDDEN_BY_DEFAULT = [
 const GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER = "GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER"
 
 
+###
+
+const stage_special_01_02__data_arr_file_path = "user://stage_special_01_02_data.save"
+
+
 ##############################
 #### base methods
 #############################
@@ -162,8 +167,9 @@ func _save_using_arr(arg_arr, arg_file_path, arg_print_err_msg):
 		print(arg_print_err_msg)
 		return
 	
-	for ele in save_arr:
-		save_file.store_line(to_json(ele))
+	#for ele in save_arr:
+	#	save_file.store_line(to_json(ele))
+	save_file.store_line(to_json(arg_arr))
 	
 	save_file.close()
 
@@ -805,6 +811,46 @@ func get_game_control_name__is_hidden(arg_game_control_name : String):
 
 func get_game_control_name_string_to_is_hidden_map__not_copy():
 	return _game_control_name_string_to_is_hidden_map
+
+
+#
+
+
+func attempt_load_special_stage_01_02_data():
+	var load_file = File.new()
+	
+	if load_file.file_exists(stage_special_01_02__data_arr_file_path):
+		var err_stat = load_file.open(stage_special_01_02__data_arr_file_path, File.READ)
+		
+		if err_stat != OK:
+			print("Loading error! -- stage_special_01_02__data")
+			return false
+		
+		var result = _load_stage_special_01_02_data(load_file)
+		
+		load_file.close()
+		return result
+		
+	else:
+		#_load_game_controls_related_data(null)
+		return null
+
+func _load_stage_special_01_02_data(arg_file : File):
+	var data : Array
+	if arg_file != null:
+		data = parse_json(arg_file.get_line())
+		
+		#while !arg_file.eof_reached():
+		#	var line = parse_json(arg_file.get_line())
+		#	data.append(line)
+	
+	return data
+
+
+# special case use.
+func _save_stage_special_01_02_data(arg_data : Array):
+	_save_using_arr(arg_data, stage_special_01_02__data_arr_file_path, "SAVE ERROR: SpecialStage01 02 settings")
+	
 
 
 #############################################

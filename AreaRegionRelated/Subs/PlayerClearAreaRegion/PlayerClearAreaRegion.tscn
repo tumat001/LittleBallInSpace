@@ -5,3 +5,4 @@
 
 [node name="PlayerClearAreaRegion" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+is_rewindable = false

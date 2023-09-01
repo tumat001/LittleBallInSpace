@@ -11,6 +11,7 @@ const BaseLevel = preload("res://LevelRelated/Classes/BaseLevel.gd")
 
 #
 
+signal before_game_start_init()
 signal after_game_start_init()
 signal before_game_quit()
 
@@ -33,6 +34,7 @@ var is_game_after_init : bool
 
 #
 
+var is_game_front_hud_initialized : bool = false
 var game_front_hud : GameFrontHUD
 
 #
@@ -82,6 +84,7 @@ func _ready():
 	current_base_level = SingletonsAndConsts.current_base_level
 	current_base_level.apply_modification_to_game_elements(self)
 	
+	player_modi_manager.game_elements = self
 	
 	if !is_instance_valid(_current_player):
 		var player = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE().spawn_player_at_spawn_coords_index()
@@ -89,6 +92,8 @@ func _ready():
 		
 		GameSaveManager.set_player(player)
 		game_result_manager.set_player(player)
+		player_modi_manager.set_current_player(_current_player)
+		
 		emit_signal("player_spawned", player)
 	
 	
@@ -96,8 +101,8 @@ func _ready():
 	CameraManager.set_current_default_zoom_out_vec(SingletonsAndConsts.current_level_details.zoom_out_vec)
 	
 	
-	player_modi_manager.game_elements = self
-	player_modi_manager.set_current_player(_current_player)
+	#player_modi_manager.game_elements = self
+	#player_modi_manager.set_current_player(_current_player)
 	
 	rewind_manager.game_elements = self
 	
@@ -106,6 +111,7 @@ func _ready():
 	
 	####
 	
+	emit_signal("before_game_start_init")
 	call_deferred("_deferred__after_init")
 
 
@@ -158,6 +164,7 @@ func _deferred_add_child__game_front_hud():
 	#CameraManager.set_non_gui_screen_shader_sprite(non_gui_screen_sprite)
 	hide_non_screen_gui_shader_sprite()
 	
+	is_game_front_hud_initialized = true
 	emit_signal("game_front_hud_initialized", game_front_hud)
 
 #

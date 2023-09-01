@@ -49,6 +49,10 @@ enum BlockPlayerMoveLeftAndRightClauseIds {
 var block_player_move_left_and_right_cond_clauses : ConditionalClauses
 var last_calc_can_player_move_left_and_right : bool
 
+
+var can_move_left__special_case : bool = true
+
+
 var _is_on_ground : bool
 var _is_on_ground__with_energy : bool
 var _is_on_ground__with_instant_ground : bool
@@ -745,7 +749,8 @@ func _unhandled_key_input(event):
 			
 		else:
 			if event.is_action("ui_left"):
-				_is_moving_left = true
+				if can_move_left__special_case:
+					_is_moving_left = true
 			elif event.is_action("ui_right"):
 				_is_moving_right = true
 			elif event.is_action("ui_down"):
@@ -1164,7 +1169,7 @@ func _ready():
 	SingletonsAndConsts.current_rewind_manager.connect("done_ending_rewind", self, "_on_rewind_manager__ended_rewind__iterated_over_all", [], CONNECT_PERSIST)
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	CameraManager.connect("current_cam_rotation_changed", self, "_on_cam_manager_rotation_changed", [], CONNECT_PERSIST)
-	_ready__include_relevant_objs_for_rewind()
+	#_ready__include_relevant_objs_for_rewind()
 	
 	##
 	
@@ -1344,11 +1349,24 @@ func set_player_modi_energy__from_modi_manager(arg_modi : PlayerModi_Energy):
 	player_modi__energy = arg_modi
 	is_player_modi_energy_set = true
 	
-	SingletonsAndConsts.current_game_front_hud.energy_panel.set_player_modi__energy(arg_modi)
+	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:
+		_do_current_hud_actions__for_energy_init()
+	else:
+		SingletonsAndConsts.current_game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized__for_energy_panel", [], CONNECT_ONESHOT)
+		
+	
+
+func _on_game_front_hud_initialized__for_energy_panel(arg_front_hud):
+	_do_current_hud_actions__for_energy_init()
+
+func _do_current_hud_actions__for_energy_init():
+	SingletonsAndConsts.current_game_front_hud.energy_panel.set_player_modi__energy(player_modi__energy)
 	
 	player_modi__energy.connect("discarged_to_zero_energy", self, "_update_self_based_on_has_energy")
 	player_modi__energy.connect("recharged_from_no_energy", self, "_update_self_based_on_has_energy")
 	_update_self_based_on_has_energy()
+
+
 
 func _update_self_based_on_has_energy():
 	var has_no_energy = player_modi__energy.is_no_energy()
@@ -1850,11 +1868,9 @@ func _is_any_static_body_impeding_movement(arg_counter_mov : Vector2):
 			
 			#print("angle to body: %s" % rad2deg(abs(direction_of_counter_mov.angle() - angle_to_body)))
 			if abs(direction_of_counter_mov.angle() - angle_to_body) <= PI/8:
-				print("ret true")
 				return true
 	
 	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
-	print("ret false")
 	return false
 
 #
@@ -1888,20 +1904,24 @@ var _rewinded__linear_velocity
 var _rewinded__sleeping
 var _rewinded__transform : Transform2D
 
+var _rewinded__block_player_move_left_and_right_cond_clauses
+var _rewinded__block_rotate_cond_clause
+var _rewinded__ignore_outside_induced_forces_cond_clauses
+
 var _most_recent_rewind_state
 
 #var _rewinded__current_player_left_right_move_speed
 #var _rewinded__current_player_left_right_move_speed__from_last_integrate_forces
 
 
-func _ready__include_relevant_objs_for_rewind():
-	_include_obj_for_rewind_manager(block_player_move_left_and_right_cond_clauses)
-	_include_obj_for_rewind_manager(block_rotate_cond_clause)
-	_include_obj_for_rewind_manager(ignore_outside_induced_forces_cond_clauses)
-
-func _include_obj_for_rewind_manager(arg_obj):
-	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(arg_obj)
-	
+#func _ready__include_relevant_objs_for_rewind():
+#	_include_obj_for_rewind_manager(block_player_move_left_and_right_cond_clauses)
+#	_include_obj_for_rewind_manager(block_rotate_cond_clause)
+#	_include_obj_for_rewind_manager(ignore_outside_induced_forces_cond_clauses)
+#
+#func _include_obj_for_rewind_manager(arg_obj):
+#	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(arg_obj)
+#
 
 
 func get_rewind_save_state():
@@ -1951,7 +1971,14 @@ func get_rewind_save_state():
 		"current_robot_health" : _current_robot_health,
 		#"max_robot_health" : _max_robot_health,
 		
-		"rotating_for_floor_area_2d.rotation" : rotating_for_floor_area_2d.rotation
+		"rotating_for_floor_area_2d.rotation" : rotating_for_floor_area_2d.rotation,
+		
+		###
+		
+		"block_player_move_left_and_right_cond_clauses" : block_player_move_left_and_right_cond_clauses.get_rewind_save_state(),
+		"block_rotate_cond_clause" : block_rotate_cond_clause.get_rewind_save_state(),
+		"ignore_outside_induced_forces_cond_clauses" : ignore_outside_induced_forces_cond_clauses.get_rewind_save_state(),
+		
 	}
 	
 	if is_player_modi_energy_set:
@@ -1966,6 +1993,10 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded__linear_velocity = arg_state["linear_velocity"]
 	_rewinded__sleeping = arg_state["sleeping"]
 	_rewinded__transform = arg_state["transform"]
+	
+	_rewinded__block_player_move_left_and_right_cond_clauses = arg_state["block_player_move_left_and_right_cond_clauses"]
+	_rewinded__block_rotate_cond_clause = arg_state["block_rotate_cond_clause"]
+	_rewinded__ignore_outside_induced_forces_cond_clauses = arg_state["ignore_outside_induced_forces_cond_clauses"]
 	
 	global_position = _rewinded__transform.origin
 	
@@ -2050,6 +2081,12 @@ func ended_rewind():
 	is_player_modi_energy_set = _most_recent_rewind_state["is_player_modi_energy_set"]
 	
 	rotating_for_floor_area_2d.rotation = _most_recent_rewind_state["rotating_for_floor_area_2d.rotation"]
+	
+	#
+	
+	block_player_move_left_and_right_cond_clauses.load_into_rewind_save_state(_rewinded__block_player_move_left_and_right_cond_clauses)
+	block_rotate_cond_clause.load_into_rewind_save_state(_rewinded__block_rotate_cond_clause)
+	ignore_outside_induced_forces_cond_clauses.load_into_rewind_save_state(_rewinded__ignore_outside_induced_forces_cond_clauses)
 	
 
 func _on_rewind_manager__ended_rewind__iterated_over_all():
