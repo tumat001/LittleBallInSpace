@@ -142,9 +142,10 @@ func _pre_ready():
 
 func _on_region__body_entered_in_area__e(body):
 	if body.get("is_player"):
-		_is_player_inside = true
-		
-		body.set_current_player_capture_area_region(self)
+		if visible:
+			_is_player_inside = true
+			
+			body.set_current_player_capture_area_region(self)
 	
 
 func _on_region__body_exited_from_area__e(body):
@@ -168,13 +169,14 @@ func _process(delta):
 
 func _on_region__body_remained_in_area__e(body, delta, tracked_delta):
 	if body.get("is_player"):
-		if _current_duration_for_capture_left > 0:
-			_set_and_emit_current_duration_for_capture_left(_current_duration_for_capture_left - delta, delta, false)
-			
-			if _current_duration_for_capture_left <= 0:
-				_current_duration_for_capture_left = 0
+		if visible:
+			if _current_duration_for_capture_left > 0:
+				_set_and_emit_current_duration_for_capture_left(_current_duration_for_capture_left - delta, delta, false)
 				
-				_set_is_area_captured(true)
+				if _current_duration_for_capture_left <= 0:
+					_current_duration_for_capture_left = 0
+					
+					_set_is_area_captured(true)
 
 
 

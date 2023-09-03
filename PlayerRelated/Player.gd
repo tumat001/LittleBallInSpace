@@ -1890,6 +1890,8 @@ func get_base_player_size():
 func get_player_radius():
 	return _base_player_size.x
 
+
+
 ###################### 
 # REWIND RELATED
 #####################

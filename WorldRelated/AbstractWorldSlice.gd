@@ -218,12 +218,20 @@ func _initialize_base_tilesets():
 
 #########################
 
+func set_true__is_player_capture_area_style_one_at_a_time__in_node_order__from_not_ready():
+	if !is_player_capture_area_style_one_at_a_time__in_node_order:
+		is_player_capture_area_style_one_at_a_time__in_node_order = true
+		_set_player_capture_area_style_to_one_at_a_time()
+
 func _attempt_init_player_capture_area_style_to_one_at_a_time():
 	if is_player_capture_area_style_one_at_a_time__in_node_order:
 		_set_player_capture_area_style_to_one_at_a_time()
 	
 
 func _set_player_capture_area_style_to_one_at_a_time():
+	var index = 0
+	_current_pca_index = 0
+	
 	for arg_region in area_region_container.get_children():
 		if arg_region.get("is_player_capture_area_region"):
 			if arg_region.is_capture_type_win:
@@ -232,8 +240,10 @@ func _set_player_capture_area_style_to_one_at_a_time():
 				
 				arg_region.visible = false
 				
+				if arg_region.is_area_captured():
+					_current_pca_index = index
+				index += 1
 	
-	_current_pca_index = 0
 
 
 func _on_PCA_region_area_captured__for_one_at_a_time_tracking(curr_pca):
@@ -254,8 +264,15 @@ func _on_PCA_region_area_uncaptured__for_one_at_a_time_tracking(curr_pca):
 	next_pca.visible = false
 
 func make_first_pca_region_visible():
-	_all_win_type_player_capture_area_region_to_is_captured_map.keys()[0].visible = true
+	#_all_win_type_player_capture_area_region_to_is_captured_map.keys()[0].visible = true
+	make_first_uncaptured_pca_region_visible()
 
+func make_first_uncaptured_pca_region_visible():
+	for pca in _all_win_type_player_capture_area_region_to_is_captured_map.keys():
+		var is_cap = _all_win_type_player_capture_area_region_to_is_captured_map[pca]
+		if !is_cap:
+			pca.visible = true
+			return
 
 
 ############
