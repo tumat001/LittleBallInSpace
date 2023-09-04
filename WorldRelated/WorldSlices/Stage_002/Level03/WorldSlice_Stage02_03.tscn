@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=2]
@@ -10,9 +10,6 @@
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level03/WorldSlice_Stage02_03.gd" type="Script" id=8]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=9]
 [ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=10]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 34.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 784, 350 )
@@ -34,6 +31,27 @@ extents = Vector2( 1239.5, 66 )
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 50, 1086.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 32, 41.5 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 32, 31 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 47.5, 23 )
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 47.5, 16 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 31.5, 12 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 48, 13.5 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 34.5 )
 
 [node name="WorldSlice_Stage02_03" instance=ExtResource( 1 )]
 script = ExtResource( 8 )
@@ -78,14 +96,7 @@ has_glowables = true
 tile_set = ExtResource( 2 )
 tile_data = PoolIntArray( -786427, 14, 0, -786424, 14, 0, -458747, 14, 0, -458744, 14, 0, -131067, 14, 0, -131064, 14, 0, 65531, 14, 0, 18, 14, 0, 196608, 14, 0, 196613, 14, 0, 196616, 14, 0, 196621, 14, 0, 458747, 14, 0, 393234, 14, 0 )
 
-[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 5 )]
-position = Vector2( 732, 52 )
-
-[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
-position = Vector2( 4, -12 )
-shape = SubResource( 1 )
-
-[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 9 )]
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="0" instance=ExtResource( 9 )]
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( 220, 208 )
@@ -99,7 +110,7 @@ shape = SubResource( 3 )
 position = Vector2( 216.25, -654.5 )
 shape = SubResource( 4 )
 
-[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 10 )]
+[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 10 )]
 position = Vector2( -954, -712 )
 is_hidden_and_silent = true
 
@@ -107,7 +118,7 @@ is_hidden_and_silent = true
 position = Vector2( 85.5, 618.5 )
 shape = SubResource( 5 )
 
-[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
+[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="2" instance=ExtResource( 10 )]
 position = Vector2( -954, -712 )
 is_hidden_and_silent = true
 
@@ -115,7 +126,7 @@ is_hidden_and_silent = true
 position = Vector2( 1189, -454.5 )
 shape = SubResource( 6 )
 
-[node name="ObjectDestroyingAreaRegion3" parent="AreaRegionContainer" index="4" instance=ExtResource( 10 )]
+[node name="ObjectDestroyingAreaRegion3" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
 position = Vector2( -954, -712 )
 is_hidden_and_silent = true
 
@@ -123,13 +134,62 @@ is_hidden_and_silent = true
 position = Vector2( 1239, 1707 )
 shape = SubResource( 7 )
 
-[node name="ObjectDestroyingAreaRegion4" parent="AreaRegionContainer" index="5" instance=ExtResource( 10 )]
+[node name="ObjectDestroyingAreaRegion4" parent="AreaRegionContainer" index="4" instance=ExtResource( 10 )]
 position = Vector2( -954, -712 )
 is_hidden_and_silent = true
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion4" index="0"]
 position = Vector2( 2328, 634.5 )
 shape = SubResource( 8 )
+
+[node name="PlayerCaptureAreaRegion3" parent="AreaRegionContainer" index="5" instance=ExtResource( 5 )]
+position = Vector2( 394, -179 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion3" index="0"]
+position = Vector2( 22, -31.5 )
+shape = SubResource( 9 )
+
+[node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="6" instance=ExtResource( 5 )]
+position = Vector2( 246, -584 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
+position = Vector2( -22, -23 )
+shape = SubResource( 10 )
+
+[node name="PlayerCaptureAreaRegion4" parent="AreaRegionContainer" index="7" instance=ExtResource( 5 )]
+position = Vector2( -114, -70 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion4" index="0"]
+position = Vector2( -30.5, -17 )
+shape = SubResource( 11 )
+
+[node name="PlayerCaptureAreaRegion5" parent="AreaRegionContainer" index="8" instance=ExtResource( 5 )]
+position = Vector2( -114, 299 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion5" index="0"]
+position = Vector2( -30.5, 5 )
+shape = SubResource( 12 )
+
+[node name="PlayerCaptureAreaRegion6" parent="AreaRegionContainer" index="9" instance=ExtResource( 5 )]
+position = Vector2( 246, 456 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion6" index="0"]
+position = Vector2( -21.5, 4 )
+shape = SubResource( 13 )
+
+[node name="PlayerCaptureAreaRegion7" parent="AreaRegionContainer" index="10" instance=ExtResource( 5 )]
+position = Vector2( 627, 296 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion7" index="0"]
+position = Vector2( -35, 5.5 )
+shape = SubResource( 14 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="11" instance=ExtResource( 5 )]
+position = Vector2( 732, 52 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 4, -12 )
+shape = SubResource( 1 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 471, 139 )
@@ -159,7 +219,7 @@ battery_type = 1
 position = Vector2( 112, -105 )
 
 [node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 7 )]
-position = Vector2( 495, -160 )
+position = Vector2( 527, -169 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 27, 143 )
@@ -170,9 +230,15 @@ position = Vector2( 27, 143 )
 [editable path="TileContainer/BaseTileSet_Grounded"]
 [editable path="TileContainer/BaseTileSet_UncolNormal"]
 [editable path="TileContainer/BaseTileSet_UncolGlow"]
-[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
 [editable path="AreaRegionContainer/PDAR_MapBounds"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion3"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion4"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion3"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion2"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion4"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion5"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion6"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion7"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

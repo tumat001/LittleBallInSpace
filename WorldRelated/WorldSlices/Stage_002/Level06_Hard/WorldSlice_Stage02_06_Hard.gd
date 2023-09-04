@@ -62,7 +62,8 @@ func _on_PlayerDetectionAreaRegion_FastCheckpoint_player_entered_in_area():
 
 
 func _on_PDAR_SpecialCamGiver_player_entered_in_area():
-	pass # Replace with function body.
+	if CameraManager.is_at_default_zoom():
+		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
 	
 
 #

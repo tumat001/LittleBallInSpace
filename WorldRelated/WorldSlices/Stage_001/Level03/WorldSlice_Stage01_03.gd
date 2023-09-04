@@ -9,6 +9,8 @@ var _currently_blocking_leaving_part_2 : bool = true
 
 var _mod_tweener_for_not_all_captured : SceneTreeTween
 
+var _started_part_03_sequence : bool
+
 #onready var label_rewind = $MessegesContainer/Label3Rewind
 #onready var label_zoomout = $MessegesContainer/Label4Zoomout
 
@@ -143,17 +145,22 @@ func _update_block_for_part_2__check_for_if_all_is_captured():
 #####
 
 func _on_PDAR_StartSequenceCapturePart03_player_entered_in_area():
-	var wait_tween = create_tween()
-	wait_tween.tween_callback(self, "_on_wait_tween_finished__for_part_03").set_delay(1.0)
-	
-	set_true__is_player_capture_area_style_one_at_a_time__in_node_order__from_not_ready()
-	make_first_uncaptured_pca_region_visible()
-	
-	if CameraManager.is_at_default_zoom():
-		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
-	
-	
-	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+	if !_started_part_03_sequence:
+		_started_part_03_sequence = true
+		
+		#
+		
+		var wait_tween = create_tween()
+		wait_tween.tween_callback(self, "_on_wait_tween_finished__for_part_03").set_delay(1.0)
+		
+		set_true__is_player_capture_area_style_one_at_a_time__in_node_order__from_not_ready()
+		make_first_uncaptured_pca_region_visible()
+		
+		if CameraManager.is_at_default_zoom():
+			CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+		
+		
+		game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 
 func _on_wait_tween_finished__for_part_03():
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
