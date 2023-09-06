@@ -48,7 +48,7 @@ func show_self():
 		_show_tweener.tween_property(self, "modulate:a", 1.0, 0.5)
 		_show_tweener.connect("finished", self, "_on_show_tweener_finished")
 		
-		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_PDAR_PlayerReachedOutOfBoundsOfMap, 1.0, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_PDAR_PlayerReachedOutOfBoundsOfMap, 1.0, null)
 
 func _on_show_tweener_finished():
 	_show_tweener = null

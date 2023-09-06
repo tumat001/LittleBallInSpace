@@ -55,6 +55,8 @@ onready var master_menu_control_tree = $MasterMenuControlTree
 
 onready var above_transition_container = $AboveTransitionContainer
 
+onready var cutscene_container = $CutsceneContainer
+
 #
 
 func _enter_tree():
@@ -111,7 +113,7 @@ func _on_selection_screen__prompt_entered_into_level(arg_currently_hovered_tile,
 		var level_details = arg_currently_hovered_tile.level_details
 		start_game_elements__with_level_details(level_details, arg_currently_hovered_tile.get_center_position())
 		
-		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelSelected_01, 1.0, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelSelected_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 		
 
 func start_game_elements__with_level_details(level_details, arg_circle_pos):
@@ -179,6 +181,7 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 ###
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
+	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
 	_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on = SingletonsAndConsts.current_level_details.additional_level_ids_to_mark_as_complete.duplicate()
@@ -195,6 +198,7 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
+	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
@@ -206,6 +210,7 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
+	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
@@ -217,11 +222,12 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
 
 func switch_to_game_elements__from_game_elements__from_restart():
+	get_tree().paused = false
 	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	
 	#_on_transition_out__from_GE__finished__for_restart()
 	
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Restart_01, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Restart_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
 	var transition = play_transition__using_id(transition_id)
@@ -298,7 +304,7 @@ func _unlock_and_play_anim_on_victory__on_level_id():
 		if !gui__level_selection_whole_screen.is_connected("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals"):
 			gui__level_selection_whole_screen.connect("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", self, "_on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals", [], CONNECT_ONESHOT)
 	else:
-		#AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+		#AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 		_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
 		_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 	
@@ -306,7 +312,7 @@ func _unlock_and_play_anim_on_victory__on_level_id():
 
 
 func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile_eles):
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 	
 	for ele in arg_tile_eles:
 		_make_level_id_mark_as_finished(ele.level_details.level_id)
@@ -315,7 +321,7 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_ti
 	_is_playing_victory_animations = false
 
 func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelUnlock_Burst_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 	_make_level_id_mark_as_finished(arg_level_details.level_id)
 	_level_id_to_mark_as_finish__and_display_win_vic_on = -1
 	
@@ -461,3 +467,15 @@ func _save_level_related_save_states():
 	set_process(false)
 	
 	GameSaveManager.save_level_and_layout_related_data()
+
+##
+
+func add_cutscene_to_container(arg_cutscene):
+	cutscene_container.add_child(arg_cutscene)
+	
+
+
+func set_pause_game(arg_val):
+	get_tree().paused = arg_val
+	
+

@@ -71,7 +71,7 @@ func _configure_labels():
 
 func _on_player_entered_self__custom_defined__launcher():
 	game_elements.configure_game_state_for_cutscene_occurance(true, true)
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
 	
 	_play_animations_for_acquiring_launcher()
 
@@ -133,7 +133,7 @@ func _deferred__end_of_desc_finish_01():
 
 func _on_player_entered_self__custom_defined__remote():
 	game_elements.configure_game_state_for_cutscene_occurance(true, true)
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
 	
 	_start_remote_dialog__02()
 

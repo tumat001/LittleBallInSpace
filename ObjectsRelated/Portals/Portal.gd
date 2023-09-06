@@ -390,7 +390,7 @@ static func angle_to_angle(from, to):
 func _on_Area2D_body_entered(body):
 	if !is_disabled:
 		if is_scene_transition_type_portal:
-			AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
+			AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
 			emit_signal("player_entered__as_scene_transition", body)
 			return
 		
@@ -418,7 +418,7 @@ func _teleport_node_to_other_linked_portal(body):
 	# END OF DO NOT REMOVE
 	
 	if body.get("is_player"):
-		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
 		body.ignore_effect_based_on_pos_change__next_frame_count = 2
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		#CameraManager.disable_camera_smoothing()

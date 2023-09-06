@@ -25,6 +25,9 @@ var custom_horizontal_size_flags_for_descs : int = SIZE_FILL
 var font_id_to_use : int = -1
 
 
+
+export(String, MULTILINE) var descriptions__from_export : String
+
 #
 
 enum BBCodeAlignMode {
@@ -50,8 +53,26 @@ var use_color_for_dark_background : bool = true
 
 #
 
+var _current_tweener : SceneTreeTween
+
+#
+
 func _ready():
+	_set_descriptions__from_export()
+	
 	update_display()
+
+
+func _set_descriptions__from_export():
+	if descriptions__from_export.length() != 0:
+		var descs = descriptions__from_export.rsplit("\n", false)
+		for desc_line in descs:
+			descriptions.append([desc_line, []])
+		
+	
+
+
+#
 
 func update_display():
 	rect_min_size.y = 0
@@ -199,9 +220,9 @@ func start_tween_display_of_text(arg_duration_to_finish : bool, arg_func_source,
 
 func _deferred_start_vis_character_tween_tween(arg_duration_to_finish, arg_func_source, arg_func_name, arg_func_params):
 	var tween = create_tween()
-	var method_tweener = tween.tween_method(self, "set_visible_character_count", 0, get_total_character_count(), arg_duration_to_finish)
+	_current_tweener = tween.tween_method(self, "set_visible_character_count", 0, get_total_character_count(), arg_duration_to_finish)
 	
-	arg_func_source.call(arg_func_name, [tween, method_tweener], arg_func_params)
+	arg_func_source.call(arg_func_name, [tween, _current_tweener], arg_func_params)
 
 
 #
@@ -216,9 +237,20 @@ func start_tween_display_of_text__custom_char_count(arg_duration_to_finish : boo
 
 func _deferred_start_vis_character_tween_tween__custom_char_count(arg_duration_to_finish, initial_vis_char_count, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params):
 	var tween = create_tween()
-	var method_tweener = tween.tween_method(self, "set_visible_character_count", initial_vis_char_count, arg_char_count_to_show, arg_duration_to_finish)
+	_current_tweener = tween.tween_method(self, "set_visible_character_count", initial_vis_char_count, arg_char_count_to_show, arg_duration_to_finish)
 	
-	arg_func_source.call(arg_func_name, [tween, method_tweener], arg_func_params)
+	arg_func_source.call(arg_func_name, [tween, _current_tweener], arg_func_params)
+
+
+
+
+func finish_display_now():
+	if _current_tweener != null and _current_tweener.is_running():
+		_current_tweener.custom_step(99999)
+		return true
+		
+	else:
+		return false
 
 
 

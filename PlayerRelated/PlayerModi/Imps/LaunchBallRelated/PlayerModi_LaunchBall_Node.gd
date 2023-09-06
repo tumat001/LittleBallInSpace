@@ -89,7 +89,7 @@ func set_current_aim_mode(arg_mode):
 	current_aim_mode = arg_mode
 	
 	if old_val != current_aim_mode:
-		AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_LaunchBall_AimModeChanged, 1.0, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LaunchBall_AimModeChanged, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
 		emit_signal("aim_mode_changed", current_aim_mode)
 		
 

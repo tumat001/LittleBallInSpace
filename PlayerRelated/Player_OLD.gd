@@ -443,7 +443,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		
 		var sound_id_of_break = TileConstants.get_sound_id_to_play_for_tile_break(cell_id, cell_autocoord)
 		if sound_id_of_break != -1:
-			AudioManager.helper__play_sound_effect__2d__major(sound_id_of_break, tile_global_pos, 1.0, null)
+			AudioManager.helper__play_sound_effect__2d(sound_id_of_break, tile_global_pos, 1.0, null)
 		
 		#
 		
@@ -525,7 +525,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				_pos_change_caused_by_tile = true
 				
 				
-				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
+				AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
 				
 			
 		else:
@@ -1506,7 +1506,7 @@ func _play_tile_hit_sound__and_show_particles(diff):
 	
 	#print("cell id: %s. sound_id: %s. vol_ratio: %s, diff: %s" % [_last_cell_id, cell_hit_sound_id, volume_ratio, diff])
 	if cell_hit_sound_id != -1 and volume_ratio != 0:
-		AudioManager.helper__play_sound_effect__2d__major(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
+		AudioManager.helper__play_sound_effect__2d(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
 	
 	##################
 	
@@ -1758,7 +1758,7 @@ func _on_PCA_region_area_captured():
 	
 	#
 	
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
 	
 
 ##
@@ -1767,7 +1767,7 @@ func _start_audio_player__capturing_point():
 	var play_adv_param = AudioManager.construct_play_adv_params()
 	play_adv_param.is_audio_looping = true
 	
-	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
+	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
 	
 
 func _attempt_end_audio_player__capturing_point():

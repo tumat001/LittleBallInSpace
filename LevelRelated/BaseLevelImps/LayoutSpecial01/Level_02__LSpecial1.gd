@@ -29,6 +29,7 @@ func apply_modification_to_game_elements(arg_elements):
 func _on_player_spawned(arg_player):
 	pass
 
+
 ######
 
 func after_game_init():

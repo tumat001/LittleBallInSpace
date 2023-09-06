@@ -231,20 +231,32 @@ func _attempt_launch_ball():
 			volume_ratio = 1
 		
 		var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
-		AudioManager.helper__play_sound_effect__2d__major(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
-		
+		AudioManager.helper__play_sound_effect__2d(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
+
+func force_launch_ball_at_pos__min_speed(arg_pos):
+	var angle_to_use = _player.global_position.angle_to_point(arg_pos)
+	var ball_and_player_force = _calculate_launch_force_of_ball_and_player__using_angle(starting_launch_strength, angle_to_use)
+	
+	var ball = _create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
+	
+	return ball
 
 
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 	#var mouse_pos : Vector2 = _player.get_global_mouse_position()
 	#var angle = _player.global_position.angle_to_point(mouse_pos)
 	var angle = player_modi_launch_ball_node.last_calc_angle_of_node_to_mouse
+	return _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength, angle)
+
+func _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength : float, angle):
 	var launch_vector = Vector2(arg_launch_strength, 0).rotated(angle)
 	
 	var ball_launch_vector = -launch_vector / ball_mass
 	var player_launch_vector = launch_vector / _player.last_calculated_object_mass
 	
 	return [ball_launch_vector, player_launch_vector]
+	
+
 
 
 func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
@@ -257,6 +269,8 @@ func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
 	_player.add_objects_to_add_mask_layer_collision_after_exit(ball)
 	
 	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
+	
+	return ball
 
 func create_ball__for_any_use() -> Object_Ball:
 	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)

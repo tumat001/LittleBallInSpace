@@ -14,6 +14,7 @@ const BaseLevel = preload("res://LevelRelated/Classes/BaseLevel.gd")
 signal before_game_start_init()
 signal after_game_start_init()
 signal before_game_quit()
+signal quiting_game_by_queue_free__on_game_quit()
 
 signal player_spawned(arg_player)
 
@@ -267,6 +268,7 @@ func _exit_tree():
 	
 
 func attempt_quit_game__by_queue_freeing():
+	emit_signal("quiting_game_by_queue_free__on_game_quit")
 	queue_free()
 
 

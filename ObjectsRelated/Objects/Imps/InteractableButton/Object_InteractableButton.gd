@@ -151,7 +151,7 @@ func set_is_pressed(arg_val):
 					
 					#
 					
-					AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
+					AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
 					
 					
 				else:

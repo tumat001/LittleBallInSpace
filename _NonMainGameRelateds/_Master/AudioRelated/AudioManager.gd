@@ -32,6 +32,7 @@ enum MaskLevel {
 	
 	Major_SoundFX = 1,
 	Minor_SoundFX = 2,
+	UI_SoundFX = 3,
 	
 }
 
@@ -227,11 +228,17 @@ func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player,
 			if !play_adv_params.is_connected("node_source_tree_exiting", self, "_on_play_adv_param_node_source_tree_exiting"):
 				play_adv_params.connect("node_source_tree_exiting", self, "_on_play_adv_param_node_source_tree_exiting")
 		
+		
+		if StoreOfAudio.mute_all_game_sfx_unaffecting_volume_settings and (arg_mask_level == MaskLevel.Major_SoundFX or arg_mask_level == MaskLevel.Minor_SoundFX):
+			arg_stream_player.volume_db = DECIBEL_VAL__INAUDIABLE
+		
+		
 		if play_adv_params != null:
 			arg_stream_player.bus = player_sound_type_to_bus_name_map[play_adv_params.play_sound_type]
 		else:
 			arg_stream_player.bus = player_sound_type_to_bus_name_map[PlayerSoundType.DEFAULT]
 		arg_stream_player.play()
+		
 		
 		#
 		
@@ -630,7 +637,7 @@ func helper__linearly_set_current_player_db_to_inaudiable(player, time_to_reach_
 
 #########
 
-func helper__play_sound_effect__2d__major(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
+func helper__play_sound_effect__2d(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null, arg_mask_level : int = MaskLevel.Major_SoundFX):
 	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.TWO_D, arg_adv_param)
 	var pause_mode_of_player = PAUSE_MODE_INHERIT
 	if arg_adv_param != null:
@@ -639,11 +646,11 @@ func helper__play_sound_effect__2d__major(arg_id, arg_pos : Vector2, arg_volume_
 	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, pause_mode_of_player, arg_adv_param)
 	sound_player.global_position = arg_pos
 	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
-	play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	
 	return sound_player
 
-func helper__play_sound_effect__plain__major(arg_id, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null):
+func helper__play_sound_effect__plain(arg_id, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null, arg_mask_level : int = MaskLevel.Major_SoundFX):
 	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.PLAIN, arg_adv_param)
 	var pause_mode_of_player = PAUSE_MODE_INHERIT
 	if arg_adv_param != null:
@@ -652,7 +659,7 @@ func helper__play_sound_effect__plain__major(arg_id, arg_volume_ratio : float, a
 	
 	var sound_player : AudioStreamPlayer = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.PLAIN, pause_mode_of_player, arg_adv_param)
 	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
-	play_sound__with_provided_stream_player(arg_id, sound_player, MaskLevel.Major_SoundFX, arg_adv_param)
+	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	
 	return sound_player
 

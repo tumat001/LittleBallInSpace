@@ -23,6 +23,7 @@ shader_param/shake_block_size = 10.5
 shader_param/shake_color_rate = 0.01
 
 [node name="GameFrontHUD" type="CanvasLayer"]
+pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="NonGUIScreenShaderSprite" type="Sprite" parent="."]

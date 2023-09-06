@@ -12,6 +12,14 @@ onready var tooltip_body = $TooltipBody
 
 #
 
+export(bool) var cutscene_initially_visible : bool = false
+
+#
+
+var is_class_type_ftq_custom_label : bool = true
+
+#
+
 func _ready():
 	grow_horizontal = GROW_DIRECTION_BOTH
 	grow_vertical = GROW_DIRECTION_BOTH
@@ -22,7 +30,6 @@ func _ready():
 	
 	tooltip_body.grow_horizontal = GROW_DIRECTION_BOTH
 	tooltip_body.grow_vertical = GROW_DIRECTION_BOTH
-	
 
 func set_default_font_size(arg_size):
 	default_font_size = arg_size
@@ -72,4 +79,10 @@ func _on_tweener_finished_displaying_descs(custom_char_count_to_show_upto, arg_m
 	emit_signal("display_of_desc_finished", custom_char_count_to_show_upto, arg_metadata)
 	
 
+
+##
+
+func finish_display_now():
+	tooltip_body.finish_display_now()
+	
 

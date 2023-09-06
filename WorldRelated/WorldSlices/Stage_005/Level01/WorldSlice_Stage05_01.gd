@@ -115,7 +115,7 @@ func _end_dialog__04():
 
 func _on_CDSU_MegaBattery_player_entered_self__custom_defined():
 	game_elements.configure_game_state_for_cutscene_occurance(true, true)
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
 	
 	_on_pickup_mega_battery()
 	_start_battery_pickup_dialog__01()

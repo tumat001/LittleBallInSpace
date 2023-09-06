@@ -13,6 +13,12 @@ script = ExtResource( 1 )
 [node name="HUDContainer" type="Control" parent="."]
 mouse_filter = 2
 
+[node name="CutsceneContainer" type="Control" parent="."]
+pause_mode = 2
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+
 [node name="TransitionContainer" type="CanvasLayer" parent="."]
 
 [node name="AboveTransitionContainer" type="CanvasLayer" parent="."]

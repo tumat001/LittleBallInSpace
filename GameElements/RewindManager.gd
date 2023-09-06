@@ -451,7 +451,7 @@ func get_current_rewindable_duration_length():
 ###############################
 
 func _start_rewind_audio_play_sequence():
-	_rewind_audio_player__start = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Beginning, 1.0, null)
+	_rewind_audio_player__start = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Rewind_Beginning, 1.0, null)
 	_rewind_audio_player__start.connect("finished", self, "_on_rewind_audio_player__start_finished")
 
 func _on_rewind_audio_player__start_finished():
@@ -465,7 +465,7 @@ func _on_rewind_audio_player__start_finished():
 func _play_rewind_audio__mid_section():
 	var play_adv_param = AudioManager.construct_play_adv_params()
 	play_adv_param.is_audio_looping = true
-	_rewind_audio_player__mid_fill_loop = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Middle, 1.0, play_adv_param)
+	_rewind_audio_player__mid_fill_loop = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Rewind_Middle, 1.0, play_adv_param)
 	
 
 
@@ -482,7 +482,7 @@ func _end_rewind_audio_play_sequence():
 		AudioManager.stop_stream_player_and_mark_as_inactive(_rewind_audio_player__mid_fill_loop)
 		_rewind_audio_player__mid_fill_loop = null
 	
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_Rewind_Ending, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Rewind_Ending, 1.0, null)
 
 
 

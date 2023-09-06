@@ -22,7 +22,7 @@ func _on_player_entered_in_area__CAR():
 	
 	
 	if cleared_at_least_one:
-		AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_AreaRegion_ClearPlayer, game_elements.get_current_player().global_position, 1.0, null)
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_AreaRegion_ClearPlayer, game_elements.get_current_player().global_position, 1.0, null)
 		
 
 

@@ -21,7 +21,7 @@ func _ready():
 func _on_region__body_entered_in_area_o(body):
 	if body.get("is_class_type_base_object"):
 		if !is_hidden_and_silent:
-			AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_AreaRegion_ObjectDestroyed, body.global_position, 1.5, null)
+			AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_AreaRegion_ObjectDestroyed, body.global_position, 1.5, null)
 		
 		#body.queue_free()
 		body.destroy_self_caused_by_destroying_area_region(self)

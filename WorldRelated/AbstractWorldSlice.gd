@@ -281,3 +281,4 @@ func set_enable_base_tileset_generate_tooltips(arg_val):
 	for tileset in tile_container.get_children():
 		tileset.can_generate_tooltips = arg_val
 
+

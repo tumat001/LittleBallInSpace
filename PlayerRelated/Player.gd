@@ -447,7 +447,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		
 		var sound_id_of_break = TileConstants.get_sound_id_to_play_for_tile_break(cell_id, cell_autocoord)
 		if sound_id_of_break != -1:
-			AudioManager.helper__play_sound_effect__2d__major(sound_id_of_break, tile_global_pos, 1.0, null)
+			AudioManager.helper__play_sound_effect__2d(sound_id_of_break, tile_global_pos, 1.0, null)
 		
 		#
 		
@@ -529,7 +529,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				_pos_change_caused_by_tile = true
 				
 				
-				AudioManager.helper__play_sound_effect__2d__major(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
+				AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
 				
 			
 		else:
@@ -1524,7 +1524,7 @@ func _play_tile_hit_sound__and_show_particles(diff):
 	
 	#print("cell id: %s. sound_id: %s. vol_ratio: %s, diff: %s" % [_last_cell_id, cell_hit_sound_id, volume_ratio, diff])
 	if cell_hit_sound_id != -1 and volume_ratio != 0:
-		AudioManager.helper__play_sound_effect__2d__major(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
+		AudioManager.helper__play_sound_effect__2d(cell_hit_sound_id, _last_cell_global_pos, volume_ratio, null)
 	
 	##################
 	
@@ -1776,7 +1776,7 @@ func _on_PCA_region_area_captured():
 	
 	#
 	
-	AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
 	
 
 ##
@@ -1785,7 +1785,7 @@ func _start_audio_player__capturing_point():
 	var play_adv_param = AudioManager.construct_play_adv_params()
 	play_adv_param.is_audio_looping = true
 	
-	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain__major(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
+	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
 	
 
 func _attempt_end_audio_player__capturing_point():
@@ -1912,6 +1912,16 @@ var _rewinded__ignore_outside_induced_forces_cond_clauses
 
 var _most_recent_rewind_state
 
+
+# FOR stage02 special
+var _save_rewind_save_state_of_any_nodes : bool = true
+
+#var _override__all_nodes_to_rotate_with_cam : Array
+#var _override__objects_to_not_collide_with : Array
+#var _override__objects_to_collide_with_after_exit : Array
+#var _override__objects_to_add_mask_layer_collision_after_exit : Array
+
+
 #var _rewinded__current_player_left_right_move_speed
 #var _rewinded__current_player_left_right_move_speed__from_last_integrate_forces
 
@@ -1955,12 +1965,6 @@ func get_rewind_save_state():
 		
 		"flat_mass_id_to_amount_map" : _flat_mass_id_to_amount_map.duplicate(true),
 		
-		"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
-		
-		"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
-		"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
-		"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
-		
 		"is_player_modi_energy_set" : is_player_modi_energy_set,
 		"player_modi__energy_save_state" : null,
 		
@@ -1981,11 +1985,37 @@ func get_rewind_save_state():
 		"block_rotate_cond_clause" : block_rotate_cond_clause.get_rewind_save_state(),
 		"ignore_outside_induced_forces_cond_clauses" : ignore_outside_induced_forces_cond_clauses.get_rewind_save_state(),
 		
+		
+		
+		"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
+		"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
+		"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
+		"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
+		
 	}
 	
 	if is_player_modi_energy_set:
 		save_state["player_modi__energy_save_state"] = player_modi__energy.get_rewind_save_state()
 	
+	
+	save_state["_save_rewind_save_state_of_any_nodes"] = _save_rewind_save_state_of_any_nodes
+	
+	if _save_rewind_save_state_of_any_nodes:
+		#"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
+		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
+		#"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
+		#"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
+		save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
+		save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
+		save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
+		save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
+		
+	else:
+		save_state["_all_nodes_to_rotate_with_cam"] = []
+		save_state["_objects_to_not_collide_with"] = []
+		save_state["_objects_to_collide_with_after_exit"] = []
+		save_state["_objects_to_add_mask_layer_collision_after_exit"] = []
+		
 	
 	return save_state
 
@@ -2065,6 +2095,11 @@ func ended_rewind():
 	_flat_mass_id_to_amount_map = _most_recent_rewind_state["flat_mass_id_to_amount_map"]
 	_update_last_calculated_object_mass()
 	
+	
+	###
+	
+	var override_specific_nodes = _most_recent_rewind_state["_save_rewind_save_state_of_any_nodes"]
+	#if !override_specific_nodes:
 	_all_nodes_to_rotate_with_cam.clear()
 	_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["all_nodes_to_rotate_with_cam"])
 	
@@ -2079,6 +2114,26 @@ func ended_rewind():
 	_objects_to_add_mask_layer_collision_after_exit.clear()
 	for obj in _most_recent_rewind_state["objects_to_add_mask_layer_collision_after_exit"]:
 		add_objects_to_add_mask_layer_collision_after_exit(obj)
+	
+	
+#	else:
+#		_all_nodes_to_rotate_with_cam.clear()
+#		_all_nodes_to_rotate_with_cam.append(_override__all_nodes_to_rotate_with_cam)
+#
+#		_objects_to_not_collide_with.clear()
+#		for obj in _override__objects_to_not_collide_with:
+#			add_object_to_not_collide_with(obj)
+#
+#		_objects_to_collide_with_after_exit.clear()
+#		for obj in _override__objects_to_collide_with_after_exit:
+#			add_objects_to_collide_with_after_exit(obj)
+#
+#		_objects_to_add_mask_layer_collision_after_exit.clear()
+#		for obj in _override__objects_to_add_mask_layer_collision_after_exit:
+#			add_objects_to_add_mask_layer_collision_after_exit(obj)
+#
+	
+	###
 	
 	is_player_modi_energy_set = _most_recent_rewind_state["is_player_modi_energy_set"]
 	
