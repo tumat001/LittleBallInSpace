@@ -11,24 +11,26 @@
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 32.0
-margin_top = -210.0
+margin_top = -238.0
 margin_right = 613.0
-margin_bottom = 210.0
+margin_bottom = 182.0
 texture = ExtResource( 3 )
 cutscene_initially_visible = true
 
 [node name="FTQ_CustomLabel" parent="." index="1" instance=ExtResource( 4 )]
 margin_left = 651.0
-margin_top = 86.0
+margin_top = 67.0
 margin_right = 923.0
-margin_bottom = 456.0
+margin_bottom = 437.0
 rect_min_size = Vector2( 250, 0 )
 default_font_size = 25
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
+margin_top = 185.0
 margin_right = 272.0
-margin_bottom = 370.0
+margin_bottom = 185.0
+size_flags_vertical = 6
 descriptions__from_export = "The background used to be dark blue."
 
 [editable path="FTQ_CustomLabel"]

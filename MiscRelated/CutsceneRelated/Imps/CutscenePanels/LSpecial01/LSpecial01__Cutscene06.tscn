@@ -11,24 +11,28 @@
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 32.0
-margin_top = -211.5
+margin_top = -239.5
 margin_right = 646.0
-margin_bottom = 211.5
+margin_bottom = 183.5
 texture = ExtResource( 3 )
 cutscene_initially_visible = true
 
 [node name="FTQ_CustomLabel" parent="." index="1" instance=ExtResource( 4 )]
 margin_left = 577.0
-margin_top = 86.0
+margin_top = 53.0
 margin_right = 923.0
-margin_bottom = 456.0
+margin_bottom = 423.0
 rect_min_size = Vector2( 250, 0 )
 default_font_size = 25
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
+margin_top = 185.0
 margin_right = 346.0
-margin_bottom = 370.0
-descriptions__from_export = "Launching the ball used to launch you as well even if you're on the ground."
+margin_bottom = 185.0
+size_flags_vertical = 6
+descriptions__from_export = "Launching the ball used to launch you even if you're on the ground.
+
+The sole reason this was done is to make 1-5's gimmik possible. Mechanics-wise it also worked nicely."
 
 [editable path="FTQ_CustomLabel"]

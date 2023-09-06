@@ -65,7 +65,7 @@ func _ready():
 
 func _set_descriptions__from_export():
 	if descriptions__from_export.length() != 0:
-		var descs = descriptions__from_export.rsplit("\n", false)
+		var descs = descriptions__from_export.rsplit("\n", true)
 		#var descs = descriptions__from_export
 		for desc_line in descs:
 			descriptions.append([desc_line, []])

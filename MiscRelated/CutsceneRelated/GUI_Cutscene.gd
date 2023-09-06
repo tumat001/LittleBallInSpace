@@ -52,7 +52,7 @@ enum BlockChangeCutsceneClauseId {
 	CURR_CUTSCENE_NOT_ALL_CONTROLS_DISPLAYED__OR_NO_BLOCKING_ELEMENT = 0,
 	CURR_CUTSCENE_TRANSITIONING = 1,
 	
-	IS_IN_LOADING_OR_FINAL_SCENE = 2,
+	IS_IN_LOADING_SCENE = 2,
 }
 var block_change_cutscene_panel_page_cond_clauses : ConditionalClauses
 var last_calculated_can_change_cutscene_panel_page : bool
@@ -143,6 +143,9 @@ func _ready():
 func initialize_cutscene():
 	_init_all_cutscene_panels()
 	_update_properties_based_on_can_change_cutscene_panel_page()
+	
+	if display_loading_panel_on_end_of_cutscene:
+		_initialize_cutscene_panel_loading()
 
 func _init_all_cutscene_panels():
 	for child in cutscene_container.get_children():
@@ -177,22 +180,23 @@ func _attempt_traverse_page__to_left():
 	_attempt_traverse_page__with_index_shift(-1)
 
 func _attempt_traverse_page__to_right():
-	if _current_cutscene_panel_index == _total_cutscene_panel_count - 1:
-		_attempt_end_cutscene()
-		
-	else:
-		_attempt_traverse_page__with_index_shift(1)
+	#if _current_cutscene_panel_index == _total_cutscene_panel_count - 1:
+	#	_attempt_end_cutscene()
+	#	
+	#else:
+	_attempt_traverse_page__with_index_shift(1)
 	
 
 func _attempt_traverse_page__with_index_shift(arg_shift : int):
-	#print("can_change: %s" % [last_calculated_can_change_cutscene_panel_page])
-	
 	if last_calculated_can_change_cutscene_panel_page:
 		#if !_is_currently_blocked_by_current_cutscene():
 		var is_finished = _attempt_finish_display_of_curr_cutscene__is_finished()
 		#print("is_finished: %s" % is_finished)
 		if is_finished:
-			set_current_cutscene_panel_index__and_start_transition_from_old_to_new(_current_cutscene_panel_index + arg_shift)
+			if _current_cutscene_panel_index == _total_cutscene_panel_count - 1:
+				_attempt_end_cutscene()
+			else:
+				set_current_cutscene_panel_index__and_start_transition_from_old_to_new(_current_cutscene_panel_index + arg_shift)
 	
 
 
@@ -253,7 +257,7 @@ func _attempt_hide_and_finish_current_cutscene():
 	
 
 func _on_current_cutscene_start_fully_undisplayed():
-	block_change_cutscene_panel_page_cond_clauses.remove_clause(BlockChangeCutsceneClauseId.CURR_CUTSCENE_TRANSITIONING)
+	#block_change_cutscene_panel_page_cond_clauses.remove_clause(BlockChangeCutsceneClauseId.CURR_CUTSCENE_TRANSITIONING)
 	
 	_set_current_cutscene__to_curr_index()
 
@@ -351,11 +355,11 @@ func _on_curr_cutscene_fully_displayed__from_fade_in():
 	
 
 func _on_curr_cutscene_all_controls_displayed():
-	block_change_cutscene_panel_page_cond_clauses.remove_all_clauses(BlockChangeCutsceneClauseId.CURR_CUTSCENE_NOT_ALL_CONTROLS_DISPLAYED__OR_NO_BLOCKING_ELEMENT)
+	block_change_cutscene_panel_page_cond_clauses.remove_clause(BlockChangeCutsceneClauseId.CURR_CUTSCENE_NOT_ALL_CONTROLS_DISPLAYED__OR_NO_BLOCKING_ELEMENT)
 	
 
 func _on_curr_cutscene_current_control_blocking_advance_to_next_finished_display():
-	block_change_cutscene_panel_page_cond_clauses.remove_all_clauses(BlockChangeCutsceneClauseId.CURR_CUTSCENE_NOT_ALL_CONTROLS_DISPLAYED__OR_NO_BLOCKING_ELEMENT)
+	block_change_cutscene_panel_page_cond_clauses.remove_clause(BlockChangeCutsceneClauseId.CURR_CUTSCENE_NOT_ALL_CONTROLS_DISPLAYED__OR_NO_BLOCKING_ELEMENT)
 	
 
 func _on_curr_control_started_display_of_new_control_with_param(arg_param):
@@ -379,11 +383,12 @@ func set_display_loading_panel_on_end_of_cutscene(arg_val):
 		emit_signal("display_loading_panel_on_end_of_cutscene_changed", display_loading_panel_on_end_of_cutscene)
 
 func _initialize_cutscene_panel_loading():
-	if !is_instance_valid(_cutscene_panel_loading):
-		_cutscene_panel_loading = GUI_CutscenePanel_Loading_Scene.instance()
-		_cutscene_panel_loading.visible = false
-		#cutscene_loading_container.add_child(_cutscene_panel_loading)
-		cutscene_loading_container.call_deferred("add_child", _cutscene_panel_loading)
+	if is_inside_tree():
+		if !is_instance_valid(_cutscene_panel_loading):
+			_cutscene_panel_loading = GUI_CutscenePanel_Loading_Scene.instance()
+			_cutscene_panel_loading.visible = false
+			#cutscene_loading_container.add_child(_cutscene_panel_loading)
+			cutscene_loading_container.call_deferred("add_child", _cutscene_panel_loading)
 
 
 ##
@@ -402,7 +407,7 @@ func _show_loading_panel():
 	_is_currently_displaying_loading_panel = true
 	set_process(true)
 	_hide_left_and_right_buttons()
-	block_change_cutscene_panel_page_cond_clauses.attempt_insert_clause(BlockChangeCutsceneClauseId.IS_IN_LOADING_OR_FINAL_SCENE)
+	block_change_cutscene_panel_page_cond_clauses.attempt_insert_clause(BlockChangeCutsceneClauseId.IS_IN_LOADING_SCENE)
 	
 	_cutscene_panel_loading.start_display()
 

@@ -36,16 +36,16 @@ func after_game_init():
 	.after_game_init()
 	
 	_add_energy_modi()
-	_add_launch_ball_modi()
-
-
-func _add_launch_ball_modi():
-	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 1
-	modi.is_infinite_ball_count = false
-	modi.show_player_trajectory_line = true
-	
-	game_elements.player_modi_manager.add_modi_to_player(modi)
+#	_add_launch_ball_modi()
+#
+#
+#func _add_launch_ball_modi():
+#	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+#	modi.starting_ball_count = 1
+#	modi.is_infinite_ball_count = false
+#	modi.show_player_trajectory_line = true
+#
+#	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)

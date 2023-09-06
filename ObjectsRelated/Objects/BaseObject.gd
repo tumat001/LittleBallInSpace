@@ -42,8 +42,9 @@ var is_class_type_base_object : bool = true
 
 #
 
-# determined at start (before ready)
+
 var has_finite_lifespan : bool = false
+# determined at start (before ready)
 var current_lifespan : float = -1
 
 #

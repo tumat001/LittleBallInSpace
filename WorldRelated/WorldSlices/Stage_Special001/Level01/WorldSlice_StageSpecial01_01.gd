@@ -17,16 +17,20 @@ func _init():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	_show_cutscene()
+	_attempt_show_cutscene()
 
 
 ## CUTSCENE
 
-func _show_cutscene():
-	cutscene = StoreOfCutscenes.generate_cutscene_from_id(StoreOfCutscenes.CutsceneId.LSpecial01_Lvl01)
-	SingletonsAndConsts.current_master.add_cutscene_to_container(cutscene)
-	
-	cutscene.start_display()
+func _attempt_show_cutscene():
+	if !SingletonsAndConsts.if_level_id_has_restart_only_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1):
+		cutscene = StoreOfCutscenes.generate_cutscene_from_id(StoreOfCutscenes.CutsceneId.LSpecial01_Lvl01)
+		SingletonsAndConsts.current_master.add_cutscene_to_container(cutscene)
+		
+		cutscene.start_display()
+		
+		
+		SingletonsAndConsts.if_level_id_has_restart_only_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1)
 
 
 #func _process(delta):

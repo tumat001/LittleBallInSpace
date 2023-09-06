@@ -239,6 +239,8 @@ func force_launch_ball_at_pos__min_speed(arg_pos):
 	
 	var ball = _create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
 	
+	SingletonsAndConsts.current_rewind_manager.attempt_set_rewindable_marker_data_at_next_frame(SingletonsAndConsts.current_rewind_manager.RewindMarkerData.LAUNCH_BALL)
+	
 	return ball
 
 
@@ -260,7 +262,7 @@ func _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength
 
 
 func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
-	var ball = create_ball__for_any_use()
+	var ball = create_ball__for_any_use(false)
 	ball.global_position = _player.global_position
 	ball.connect("after_ready", self, "_on_ball_after_ready__give_vel", [ball, arg_vec])
 	
@@ -272,11 +274,14 @@ func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
 	
 	return ball
 
-func create_ball__for_any_use() -> Object_Ball:
+func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
 	ball.base_object_mass = ball_mass
 	
 	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
+	
+	if arg_add_child:
+		SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
 	
 	return ball
 

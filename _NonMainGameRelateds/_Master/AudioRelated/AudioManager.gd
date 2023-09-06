@@ -42,6 +42,7 @@ var mask_level_to_max_active_count_available_map : Dictionary = {
 	
 	MaskLevel.Major_SoundFX : 40,
 	MaskLevel.Minor_SoundFX : 40,
+	MaskLevel.UI_SoundFX : 40,
 }
 
 
@@ -208,6 +209,9 @@ func play_sound(arg_audio_id,
 func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player, 
 		arg_mask_level : int, play_adv_params : PlayAdvParams = null):
 	
+	if StoreOfAudio.mute_all_game_sfx_unaffecting_volume_settings and (arg_mask_level == MaskLevel.Major_SoundFX or arg_mask_level == MaskLevel.Minor_SoundFX):
+		return false
+	
 	var arg_audio_path_name = StoreOfAudio.get_audio_file_path_of_id(arg_audio_id)
 	
 	#if mask_level_to_active_count_map[arg_mask_level] <= total_active_stream_player_count_per_mask_level:
@@ -227,10 +231,6 @@ func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player,
 			
 			if !play_adv_params.is_connected("node_source_tree_exiting", self, "_on_play_adv_param_node_source_tree_exiting"):
 				play_adv_params.connect("node_source_tree_exiting", self, "_on_play_adv_param_node_source_tree_exiting")
-		
-		
-		if StoreOfAudio.mute_all_game_sfx_unaffecting_volume_settings and (arg_mask_level == MaskLevel.Major_SoundFX or arg_mask_level == MaskLevel.Minor_SoundFX):
-			arg_stream_player.volume_db = DECIBEL_VAL__INAUDIABLE
 		
 		
 		if play_adv_params != null:

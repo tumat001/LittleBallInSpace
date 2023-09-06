@@ -354,7 +354,8 @@ func _physics_process(delta):
 func __append_to_rewind_datas__single_frame(arg_objs_and_their_save_states : Dictionary):
 	_rewindable_datas.append(arg_objs_and_their_save_states)
 
-
+func __append_to_rewind_marker_datas__single_frame(arg_marker_data):
+	_rewindable_marker_datas.append(arg_marker_data)
 
 #
 

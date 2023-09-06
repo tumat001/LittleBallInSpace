@@ -27,9 +27,11 @@ default_font_size = 25
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
+margin_top = 185.0
 margin_right = 382.0
-margin_bottom = 370.0
+margin_bottom = 185.0
+size_flags_vertical = 6
 descriptions__from_export = "Glass particles used to collide with objects.
-While this is realistic, it also ruins a lot of mechanics, and is annoying."
+While this is realistic, it also ruins a lot of mechanics, and is annoying. It gets in the way of walls/floors."
 
 [editable path="FTQ_CustomLabel"]

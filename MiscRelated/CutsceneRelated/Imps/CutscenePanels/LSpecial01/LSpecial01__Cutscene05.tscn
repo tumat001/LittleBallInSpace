@@ -23,12 +23,16 @@ margin_top = 86.0
 margin_right = 923.0
 margin_bottom = 456.0
 rect_min_size = Vector2( 250, 0 )
-default_font_size = 25
+default_font_size = 22
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
+margin_top = 185.0
 margin_right = 312.0
-margin_bottom = 370.0
-descriptions__from_export = "Day 2 of development. "
+margin_bottom = 185.0
+size_flags_vertical = 6
+descriptions__from_export = "Day 2 of development.
+
+Player Physics was very annoying to tweak."
 
 [editable path="FTQ_CustomLabel"]
