@@ -122,11 +122,14 @@ func _update_properties_based_on_can_change_cutscene_panel_page():
 
 #
 
-func _gui_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		pass
-	else:
+func _input(event):
+	#if event.is_action_pressed("ui_cancel"):
+	#	pass
+	#else:
+	
+	if event is InputEventKey:
 		get_viewport().set_input_as_handled()
+
 
 #
 
@@ -182,13 +185,14 @@ func _attempt_traverse_page__to_right():
 	
 
 func _attempt_traverse_page__with_index_shift(arg_shift : int):
+	#print("can_change: %s" % [last_calculated_can_change_cutscene_panel_page])
+	
 	if last_calculated_can_change_cutscene_panel_page:
 		#if !_is_currently_blocked_by_current_cutscene():
 		var is_finished = _attempt_finish_display_of_curr_cutscene__is_finished()
+		#print("is_finished: %s" % is_finished)
 		if is_finished:
 			set_current_cutscene_panel_index__and_start_transition_from_old_to_new(_current_cutscene_panel_index + arg_shift)
-
-
 	
 
 
@@ -200,7 +204,10 @@ func _attempt_traverse_page__with_index_shift(arg_shift : int):
 
 func _attempt_finish_display_of_curr_cutscene__is_finished() -> bool:
 	if is_instance_valid(_current_cutscene):
-		return _current_cutscene.finish_display_now()
+		if _current_cutscene.finished_all_controls_displayed:
+			return true
+		else:
+			return _current_cutscene.finish_display_now()
 		
 	else:
 		return true
@@ -238,6 +245,7 @@ func _attempt_hide_and_finish_current_cutscene():
 		if _current_cutscene.is_connected("started_display_of_new_control_with_param", self, "_on_curr_control_started_display_of_new_control_with_param"):
 			_current_cutscene.disconnect("started_display_of_new_control_with_param", self, "_on_curr_control_started_display_of_new_control_with_param")
 		
+		_current_cutscene.start_end_display()
 		
 	else:
 		_set_current_cutscene__to_curr_index()
@@ -252,7 +260,7 @@ func _on_current_cutscene_start_fully_undisplayed():
 
 
 func _set_current_cutscene__to_curr_index():
-	_set_current_cutscene__and_start_display(get_children()[_current_cutscene_panel_index], _current_cutscene_panel_index)
+	_set_current_cutscene__and_start_display(cutscene_container.get_children()[_current_cutscene_panel_index], _current_cutscene_panel_index)
 
 func _set_current_cutscene__and_start_display(arg_cutscene : GUI_CutscenePanel, arg_page_index : int):
 	_current_cutscene = arg_cutscene
@@ -270,7 +278,9 @@ func _set_current_cutscene__and_start_display(arg_cutscene : GUI_CutscenePanel, 
 	
 	#
 	
-	ftq_label_page_num_displayer.set_desc__and_hide_tooltip([PAGE_LABEL_TEXT_FORMAT % [arg_page_index + 1, _total_cutscene_panel_count], []])
+	ftq_label_page_num_displayer.set_desc__and_hide_tooltip([
+		[PAGE_LABEL_TEXT_FORMAT % [arg_page_index + 1, _total_cutscene_panel_count], []],
+	])
 	ftq_label_page_num_displayer.visible = true
 	
 	##
@@ -284,7 +294,10 @@ func _set_current_cutscene__and_start_display(arg_cutscene : GUI_CutscenePanel, 
 	else:
 		_show_left_and_right_buttons__standard()
 		
-
+	
+	##
+	
+	_current_cutscene.start_display()
 
 
 func _show_left_and_right_buttons__right_as_last():

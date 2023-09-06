@@ -35,7 +35,7 @@ enum BBCodeAlignMode {
 	CENTER = 1,
 	RIGHT = 2,
 }
-var bbcode_align_mode : int
+export(BBCodeAlignMode) var bbcode_align_mode : int
 
 const _bbcode_align_mode_string__left = "%s"
 const _bbcode_align_mode_string__center = "[center]%s[/center]"
@@ -66,6 +66,7 @@ func _ready():
 func _set_descriptions__from_export():
 	if descriptions__from_export.length() != 0:
 		var descs = descriptions__from_export.rsplit("\n", false)
+		#var descs = descriptions__from_export
 		for desc_line in descs:
 			descriptions.append([desc_line, []])
 		

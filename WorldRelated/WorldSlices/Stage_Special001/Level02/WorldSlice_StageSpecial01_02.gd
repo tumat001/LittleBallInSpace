@@ -122,6 +122,7 @@ func _show_cutscene_for_obstruction():
 	
 	_cutscene.start_display()
 
+
 ## SIMULATION OF EVENTS
 
 func _start_simulation_of_events():
@@ -151,8 +152,11 @@ func _end_simulation_of_events():
 	_player._save_rewind_save_state_of_any_nodes = true
 	_cutscene.display_loading_panel_on_end_of_cutscene = false
 	
-	if _cutscene.is_currently_displaying_loading_panel():
+	if !_cutscene.is_currently_displaying_loading_panel():
 		SingletonsAndConsts.current_master.set_pause_game(true)
-	
+		_cutscene.connect("cutscene_ended", self, "_on_cutscene_ended__from_paused")
 
+func _on_cutscene_ended__from_paused():
+	SingletonsAndConsts.current_master.set_pause_game(false)
+	
 

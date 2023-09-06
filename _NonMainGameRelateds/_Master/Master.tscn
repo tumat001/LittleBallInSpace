@@ -11,16 +11,17 @@ script = ExtResource( 1 )
 [node name="LayoutSelectionContainer" type="Node" parent="."]
 
 [node name="HUDContainer" type="Control" parent="."]
+pause_mode = 2
 mouse_filter = 2
 
-[node name="CutsceneContainer" type="Control" parent="."]
+[node name="CutsceneContainer" type="CanvasLayer" parent="."]
 pause_mode = 2
-margin_right = 960.0
-margin_bottom = 540.0
-mouse_filter = 2
 
 [node name="TransitionContainer" type="CanvasLayer" parent="."]
+pause_mode = 2
 
 [node name="AboveTransitionContainer" type="CanvasLayer" parent="."]
+pause_mode = 2
 
 [node name="MasterMenuControlTree" parent="." instance=ExtResource( 2 )]
+pause_mode = 2

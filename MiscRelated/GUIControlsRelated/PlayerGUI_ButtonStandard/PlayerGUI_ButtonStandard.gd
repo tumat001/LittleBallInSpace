@@ -11,11 +11,29 @@ const LABEL_MODULATE__HAS_FOCUS = Color(1, 1, 1, 1.0)
 
 #
 
+export(bool) var can_grab_focus : bool = true setget set_can_grab_focus
+
 var _has_focus : bool
 
 onready var label = $LabelContainer
 onready var texture_button = $TextureButton
 
+#
+
+func set_can_grab_focus(arg_val):
+	can_grab_focus = arg_val
+	
+	if !can_grab_focus:
+		if is_inside_tree():
+			label.modulate = LABEL_MODULATE__HAS_FOCUS
+			texture_button.focus_mode = Control.FOCUS_NONE
+		
+	else:
+		if is_inside_tree():
+			label.modulate = LABEL_MODULATE__NO_FOCUS
+			texture_button.focus_mode = Control.FOCUS_ALL
+
+#
 
 func _ready():
 	texture_button.connect("focus_entered", self, "_on_texture_button_focus_entered")
@@ -23,9 +41,11 @@ func _ready():
 	texture_button.connect("mouse_entered", self, "_on_texture_button_mouse_entered")
 	
 	_set_has_focus(false)
+	set_can_grab_focus(can_grab_focus)
 
 func grab_focus():
-	texture_button.grab_focus()
+	if can_grab_focus:
+		texture_button.grab_focus()
 
 func lose_focus():
 	if texture_button.has_focus():
@@ -46,7 +66,7 @@ func _on_texture_button_mouse_entered():
 func _set_has_focus(arg_val):
 	_has_focus = arg_val
 	
-	if _has_focus:
+	if _has_focus or !can_grab_focus:
 		label.modulate = LABEL_MODULATE__HAS_FOCUS
 		
 	else:

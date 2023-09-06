@@ -29,6 +29,7 @@ stretch_mode = 2
 [node name="Button" type="TextureButton" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 960, 540 )
 
 [node name="CutsceneChangerButtonPanel" type="MarginContainer" parent="."]
 anchor_left = 0.5
@@ -49,6 +50,7 @@ margin_left = 20.0
 margin_right = 120.0
 margin_bottom = 50.0
 size_flags_horizontal = 2
+can_grab_focus = false
 
 [node name="TextureButton" parent="CutsceneChangerButtonPanel/LeftButton" index="0"]
 margin_right = 100.0
@@ -74,6 +76,7 @@ margin_left = 840.0
 margin_right = 940.0
 margin_bottom = 50.0
 size_flags_horizontal = 8
+can_grab_focus = false
 
 [node name="TextureButton" parent="CutsceneChangerButtonPanel/RightButton" index="0"]
 margin_right = 100.0

@@ -289,7 +289,10 @@ func _on_control_display_finished(arg_param : StartDisplayGenParam):
 func finish_display_now():
 	if _current_tweener != null and _current_tweener.is_running():
 		_current_tweener.custom_step(9999)
+		return false
 		
+	else:
+		return true
 
 
 #func get_last_calculated_can_progress_thru_cutscene():
