@@ -9,6 +9,10 @@ var _hide_tweener : SceneTreeTween
 
 #
 
+var original_warning_text : String
+
+#
+
 onready var gradient_background = $GradientBackground
 
 onready var warning_label = $WarningPanel/Marginer/Label
@@ -18,8 +22,8 @@ onready var warning_label = $WarningPanel/Marginer/Label
 func _ready():
 	visible = false
 	_initialize_gradient_background()
-	
 	_initialize_warning_label()
+	_initialize_game_settings_signal()
 
 func _initialize_gradient_background():
 	var gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(0, 0, 0, 0), Color(255/255.0, 128/255.0, 0/255.0, 0.2))
@@ -29,10 +33,21 @@ func _initialize_gradient_background():
 	gradient_background.texture = gradient_texture_2d
 
 func _initialize_warning_label():
-	var orig_text = warning_label.text
-	warning_label.text = orig_text % [InputMap.get_action_list("rewind")[0].as_text()]
+	#var orig_text = warning_label.text
+	original_warning_text = warning_label.text
+	#warning_label.text = orig_text % [InputMap.get_action_list("rewind")[0].as_text()]
+	_update_warning_label_text()
+
+func _update_warning_label_text():
+	warning_label.text = original_warning_text % GameSettingsManager.get_game_control_hotkey__as_string("rewind")
 
 
+func _initialize_game_settings_signal():
+	GameSettingsManager.connect("game_control_hotkey_changed", self, "_on_game_control_hotkey_changed")
+
+func _on_game_control_hotkey_changed(arg_action_name, arg_old, arg_new):
+	if arg_action_name == "rewind":
+		_update_warning_label_text()
 
 ##
 

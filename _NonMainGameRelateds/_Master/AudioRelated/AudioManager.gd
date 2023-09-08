@@ -380,7 +380,7 @@ func _on_stream_player_queue_free(arg_stream_player):
 func remove_stream_player(arg_stream_player):
 	var arg_path_name = arg_stream_player.stream.resource_name
 	
-	var mask_level = stream_player_node_to_mask_level_map[arg_stream_player]
+	#var mask_level = stream_player_node_to_mask_level_map[arg_stream_player]
 	
 	var node_to_is_active_map
 	if sound_path_name_to__stream_player_node_to_is_active_map.has(arg_path_name):
@@ -392,22 +392,30 @@ func remove_stream_player(arg_stream_player):
 	if node_to_is_active_map != null:
 		is_active = node_to_is_active_map[arg_stream_player]
 	
-	stream_player_node_to_mask_level_map.erase(arg_stream_player)
+	if stream_player_node_to_mask_level_map.has(arg_stream_player):
+		var mask_level = stream_player_node_to_mask_level_map[arg_stream_player]
+		if is_active:
+			mask_level_to_active_count_map[mask_level] -= 1
+		
+		stream_player_node_to_mask_level_map.erase(arg_stream_player)
+	
+	#stream_player_node_to_mask_level_map.erase(arg_stream_player)
 	
 	if stream_player_to_linear_audio_set_param_map.has(arg_stream_player):
 		stream_player_to_linear_audio_set_param_map.erase(arg_stream_player)
 	
-	if is_active:
-		mask_level_to_active_count_map[mask_level] -= 1
+	#if is_active:
+	#	mask_level_to_active_count_map[mask_level] -= 1
 	
 	
-	var adv_param : PlayAdvParams = stream_player_to_adv_params_map[arg_stream_player]
-	if adv_param != null:
-		var sound_type = adv_param.play_sound_type
-		if player_sound_type_to_stream_players_map[sound_type].has(arg_stream_player):
-			player_sound_type_to_stream_players_map[sound_type].erase(arg_stream_player)
-	
-	stream_player_to_adv_params_map.erase(arg_stream_player)
+	if stream_player_to_adv_params_map.has(arg_stream_player):
+		var adv_param : PlayAdvParams = stream_player_to_adv_params_map[arg_stream_player]
+		if adv_param != null:
+			var sound_type = adv_param.play_sound_type
+			if player_sound_type_to_stream_players_map[sound_type].has(arg_stream_player):
+				player_sound_type_to_stream_players_map[sound_type].erase(arg_stream_player)
+		
+		stream_player_to_adv_params_map.erase(arg_stream_player)
 
 
 #######

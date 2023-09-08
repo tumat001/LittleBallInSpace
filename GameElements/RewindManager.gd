@@ -19,7 +19,7 @@ const REWINDABLE_METHOD_NAME__LOAD_STATE = "load_into_rewind_save_state"
 const REWINDABLE_METHOD_NAME__DESTROY_STATE = "destroy_from_rewind_save_state"
 const REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE = "restore_from_destroyed_from_rewind"
 
-const REWINDABLE_METHOD_NAME__STARTED_REWIND = "stared_rewind"
+const REWINDABLE_METHOD_NAME__STARTED_REWIND = "started_rewind"
 const REWINDABLE_METHOD_NAME__ENDED_REWIND = "ended_rewind"
 # End of ALL
 
@@ -37,6 +37,11 @@ signal rewinding_started()
 #
 
 var _all_registered_rewindables : Array
+
+#
+
+var remove_non_existing_objs_in_traversal : bool = true
+#var obj_to_not_remove_in_removal_traversal : Array = []
 
 #
 
@@ -297,11 +302,12 @@ func _physics_process(delta):
 			
 			#
 			
+			var marker_data = _rewindable_marker_data_at_next_frame
 			_rewindable_marker_datas.append(_rewindable_marker_data_at_next_frame)
 			_rewindable_marker_data_at_next_frame = RewindMarkerData.NONE
 			
 			
-			emit_signal("rewindable_datas_saved", rewindable_obj_to_save_state_map, _rewindable_marker_data_at_next_frame)
+			emit_signal("rewindable_datas_saved", rewindable_obj_to_save_state_map, marker_data)
 		
 	else:
 		
@@ -326,10 +332,12 @@ func _physics_process(delta):
 		_rewindable_objs_in_prev_load_step = rewindable_obj_to_save_state_map.keys()
 		
 		# remove permanently since the timeline of spawn has been passed (backwards)
-		for non_existing_obj in objs_for_traversal:
-			#remove_from_rewindables(non_existing_obj)
-			non_existing_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
-			_remove_obj_from_all_registered_rewindables(non_existing_obj)
+		if remove_non_existing_objs_in_traversal:
+			for non_existing_obj in objs_for_traversal:
+				#if !obj_to_not_remove_in_removal_traversal.has(non_existing_obj):
+				#remove_from_rewindables(non_existing_obj)
+				non_existing_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
+				_remove_obj_from_all_registered_rewindables(non_existing_obj)
 		
 		#
 		

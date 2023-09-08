@@ -112,27 +112,6 @@ var _registered_layout_id_to_layout_element_ids_to_is_invis_map : Dictionary
 const audio_settings_file_path = "user://audio_settings.save"
 
 
-####
-
-const game_control_settings_file_path = "user://game_control_settings.save"
-
-var _game_control_name_string_to_is_hidden_map : Dictionary
-const GAME_CONTROLS_TO_NAME_MAP = {
-	"ui_left" : "Move Left",
-	"ui_right" : "Move Right",
-	"ui_down" : "Slow to Stop",
-	"game_zoom_out" : "Toggle Zoom",
-	"rewind" : "Rewind",
-	"game_launch_ball" : "Launch Ball",
-}
-const GAME_CONTROLS_TO_NOT_BE_HIDDEN_BY_DEFAULT = [
-	"ui_left",
-	"ui_right"
-]
-
-
-const GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER = "GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER"
-
 
 ###
 
@@ -180,7 +159,9 @@ func _ready():
 	_attempt_load_existing_level_related_data()
 	
 	_load_stats__of_audio_manager()
-	_attempt_load_game_controls_related_data()
+	#_attempt_load_game_controls_related_data()
+	
+	GameSettingsManager.load_all__from_ready_of_save_manager()
 	
 	_is_manager_initialized = true
 	emit_signal("save_manager_initialized")
@@ -741,79 +722,8 @@ func _load_stats__of_audio_manager():
 
 
 
-## CONTROLS RELATED
 
-func _save_game_control_related_data():
-	var save_dict = {
-		GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER : _game_control_name_string_to_is_hidden_map,
-		
-	}
-	
-	_save_using_dict(save_dict, game_control_settings_file_path, "SAVE ERROR: Control settings")
-
-
-
-func _attempt_load_game_controls_related_data():
-	var load_file = File.new()
-	
-	if load_file.file_exists(game_control_settings_file_path):
-		var err_stat = load_file.open(game_control_settings_file_path, File.READ)
-		
-		if err_stat != OK:
-			print("Loading error! -- Game control settings data")
-			return false
-		
-		_load_game_controls_related_data(load_file)
-		
-		load_file.close()
-		return true
-		
-	else:
-		_load_game_controls_related_data(null)
-		return false
-
-func _load_game_controls_related_data(arg_file : File):
-	var data : Dictionary
-	if arg_file != null:
-		data = parse_json(arg_file.get_line())
-	
-	if data == null:
-		data = {}
-	
-	###
-	
-	if data.has(GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER):
-		_game_control_name_string_to_is_hidden_map = data[GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER]
-	else:
-		_initialize_game_control_name_string_map__from_nothing()
-		
-	
-
-
-func _initialize_game_control_name_string_map__from_nothing():
-	for control_name in GAME_CONTROLS_TO_NAME_MAP.keys():
-		if GAME_CONTROLS_TO_NOT_BE_HIDDEN_BY_DEFAULT.has(control_name):
-			_game_control_name_string_to_is_hidden_map[control_name] = false
-		else:
-			_game_control_name_string_to_is_hidden_map[control_name] = true
-		
-	
-
-#
-
-func set_game_control_name_string__is_hidden(arg_game_control_name : String, arg_is_hidden : bool):
-	_game_control_name_string_to_is_hidden_map[arg_game_control_name] = arg_is_hidden
-	
-	emit_signal("game_control_is_hidden_changed", arg_game_control_name, arg_is_hidden)
-
-func get_game_control_name__is_hidden(arg_game_control_name : String):
-	return _game_control_name_string_to_is_hidden_map[arg_game_control_name]
-
-func get_game_control_name_string_to_is_hidden_map__not_copy():
-	return _game_control_name_string_to_is_hidden_map
-
-
-#
+###
 
 
 func attempt_load_special_stage_01_02_data():
@@ -861,7 +771,7 @@ func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		_save_player_data()
 		save_level_and_layout_related_data()
-		_save_game_control_related_data()
+		#_save_game_control_related_data()
 
 #func _exit_tree():
 #	_save_player_data()

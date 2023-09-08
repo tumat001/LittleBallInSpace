@@ -354,7 +354,7 @@ func restore_from_destroyed_from_rewind():
 	pass
 	
 
-func stared_rewind():
+func started_rewind():
 	pass
 	
 

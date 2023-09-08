@@ -65,7 +65,7 @@ export(int) var pressable_count : int = 1 setget set_pressable_count
 #
 
 var _is_in_ready : bool
-
+var force_update_pressed_state : bool = false
 
 var _button_pos_tweener
 var _coll_shape_tweener
@@ -101,13 +101,13 @@ onready var use_count_label = $UseCountLabel
 func set_is_pressed(arg_val):
 	var old_val = is_pressed
 	
-	if pressable_count != 0 or _is_in_ready:
+	if pressable_count != 0 or (_is_in_ready or force_update_pressed_state):
 		is_pressed = arg_val
 	
 	if is_inside_tree():
-		if old_val != is_pressed:
-			if pressable_count != 0:
-				if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if old_val != is_pressed or (_is_in_ready or force_update_pressed_state):
+			if pressable_count != 0 or (_is_in_ready or force_update_pressed_state):
+				if !SingletonsAndConsts.current_rewind_manager.is_rewinding and !_is_in_ready:
 					for tileset in _tilesets_to_toggle_to_is_reverse_map.keys():
 						if is_instance_valid(tileset):
 							var is_reverse = _tilesets_to_toggle_to_is_reverse_map[tileset]
@@ -118,7 +118,8 @@ func set_is_pressed(arg_val):
 						if is_instance_valid(portal):
 							_press_on_portal(portal)
 					
-					set_pressable_count(pressable_count - 1)
+					if !(_is_in_ready or force_update_pressed_state):
+						set_pressable_count(pressable_count - 1)
 					
 					#
 					
@@ -133,25 +134,38 @@ func set_is_pressed(arg_val):
 						_coll_shape_tweener.kill()
 						_is_in_press_transition = false
 					
-					_button_pos_tweener = create_tween()
-					_coll_shape_tweener = create_tween()
-					_button_pos_tweener.set_parallel(false)
-					_coll_shape_tweener.set_parallel(false)
-					if is_pressed:
-						_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
-						_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+					
+					if !(_is_in_ready or force_update_pressed_state):
+						_button_pos_tweener = create_tween()
+						_coll_shape_tweener = create_tween()
+						_button_pos_tweener.set_parallel(false)
+						_coll_shape_tweener.set_parallel(false)
+						if is_pressed:
+							_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+							_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+							
+						else:
+							_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+							_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
+						
+						_button_pos_tweener.tween_callback(self, "_on_button_pos_change_finished")
+						_coll_shape_tweener.tween_callback(self, "_on_button_pos_change_finished__coll_shape")
+						
+						_is_in_press_transition = true
+						
+						
+						AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
+						
 						
 					else:
-						_button_pos_tweener.tween_property(button_container, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED, BUTTON_CONTAINER_Y_CHANGE_DURATION)
-						_coll_shape_tweener.tween_property(collision_shape_2d_02, "position:y", BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button, BUTTON_CONTAINER_Y_CHANGE_DURATION)
-					
-					_button_pos_tweener.tween_callback(self, "_on_button_pos_change_finished")
-					_coll_shape_tweener.tween_callback(self, "_on_button_pos_change_finished__coll_shape")
-					
-					
-					#
-					
-					AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
+						if is_pressed:
+							button_container.position.y = BUTTON_CONTAINER_Y_POS__PRESSED
+							collision_shape_2d_02.position.y = BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button
+						else:
+							button_container.position.y = BUTTON_CONTAINER_Y_POS__NOT_PRESSED
+							collision_shape_2d_02.position.y = BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button
+						
+						_is_in_press_transition = false
 					
 					
 				else:
@@ -167,11 +181,12 @@ func set_is_pressed(arg_val):
 						collision_shape_2d_02.position.y = BUTTON_CONTAINER_Y_POS__PRESSED - coll_shape_button_blocker_y_pos_diff_from_button
 						
 					else:
+						
 						button_container.position.y = BUTTON_CONTAINER_Y_POS__NOT_PRESSED
 						collision_shape_2d_02.position.y = BUTTON_CONTAINER_Y_POS__NOT_PRESSED - coll_shape_button_blocker_y_pos_diff_from_button
-						
+					
 				
-				
+		
 	
 	_update_button_display()
 
@@ -355,11 +370,13 @@ func set_can_be_triggered_by_tiles(arg_val):
 ########
 
 func _on_ButtonArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	#print(_is_in_press_transition)
+	
 	if !_is_in_press_transition:
 		if !body.get("is_class_type_object_tile_fragment"):
 			set_is_pressed(!is_pressed)
 			
-
+	
 
 #########
 
@@ -392,9 +409,8 @@ func load_into_rewind_save_state(arg_state):
 	set_is_pressed(arg_state["is_pressed"])
 
 
-
-func stared_rewind():
-	.stared_rewind()
+func started_rewind():
+	.started_rewind()
 	
 	collision_shape_2d_02.set_deferred("disabled", true)
 	button_collision_shape_2d.set_deferred("disabled", true)

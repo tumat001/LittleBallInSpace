@@ -69,6 +69,10 @@ var destroyed_ball_particles_pool_component : AttackSpritePoolComponent
 
 #
 
+var is_class_type_player_modi_launch_ball : bool = true
+
+#
+
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
 	pass
 
@@ -440,7 +444,7 @@ func restore_from_destroyed_from_rewind():
 	
 
 
-func stared_rewind():
+func started_rewind():
 	if player_modi_launch_ball_node.is_charging_launch():
 		player_modi_launch_ball_node.end_launch_charge()
 		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)

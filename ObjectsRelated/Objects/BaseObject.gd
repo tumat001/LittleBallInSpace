@@ -240,7 +240,7 @@ func restore_from_destroyed_from_rewind():
 	is_dead_but_reserved_for_rewind = false
 
 
-func stared_rewind():
+func started_rewind():
 	mode = RigidBody2D.MODE_STATIC
 	collision_shape.set_deferred("disabled", true)
 	

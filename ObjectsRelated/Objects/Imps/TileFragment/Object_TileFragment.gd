@@ -138,8 +138,8 @@ func queue_free():
 
 
 
-func stared_rewind():
-	.stared_rewind()
+func started_rewind():
+	.started_rewind()
 	
 	player_soft_coll_shape.set_deferred("disabled", true)
 

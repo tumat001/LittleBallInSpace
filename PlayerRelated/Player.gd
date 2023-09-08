@@ -736,24 +736,24 @@ func _unhandled_key_input(event):
 		#if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		var is_consumed = false
 		
-		if event.is_action_released("ui_left"):
+		if event.is_action_released("game_left"):
 			_is_moving_left = false
 			
-		elif event.is_action_released("ui_right"):
+		elif event.is_action_released("game_right"):
 			_is_moving_right = false
 			
-		elif event.is_action_released("ui_down"):
+		elif event.is_action_released("game_down"):
 			_is_move_breaking = false
 			sleeping = false
 			pass
 			
 		else:
-			if event.is_action("ui_left"):
+			if event.is_action("game_left"):
 				if can_move_left__special_case:
 					_is_moving_left = true
-			elif event.is_action("ui_right"):
+			elif event.is_action("game_right"):
 				_is_moving_right = true
-			elif event.is_action("ui_down"):
+			elif event.is_action("game_down"):
 				_is_move_breaking = true
 				pass
 			
@@ -1987,10 +1987,10 @@ func get_rewind_save_state():
 		
 		
 		
-		"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
-		"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
-		"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
-		"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
+		#"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
+		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
+		#"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
+		#"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
 		
 	}
 	
@@ -2028,8 +2028,10 @@ func __remove_nodes_from_save_state(save_state : Dictionary):
 
 func __map_save_state_map_nodes_with_own_nodes(save_state : Dictionary):
 	save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
-	#todo continue this
-
+	save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
+	save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
+	save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
+	
 
 # END Of FOR Special01_02
 
@@ -2068,7 +2070,7 @@ func restore_from_destroyed_from_rewind():
 	pass
 	
 
-func stared_rewind():
+func started_rewind():
 	mode = RigidBody2D.MODE_STATIC
 	collision_shape.set_deferred("disabled", true)
 	floor_area_2d_coll_shape.set_deferred("disabled", true)
@@ -2114,18 +2116,18 @@ func ended_rewind():
 	var override_specific_nodes = _most_recent_rewind_state["_save_rewind_save_state_of_any_nodes"]
 	#if !override_specific_nodes:
 	_all_nodes_to_rotate_with_cam.clear()
-	_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["all_nodes_to_rotate_with_cam"])
+	_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["_all_nodes_to_rotate_with_cam"])
 	
 	_objects_to_not_collide_with.clear()
-	for obj in _most_recent_rewind_state["objects_to_not_collide_with"]:
+	for obj in _most_recent_rewind_state["_objects_to_not_collide_with"]:
 		add_object_to_not_collide_with(obj)
 	
 	_objects_to_collide_with_after_exit.clear()
-	for obj in _most_recent_rewind_state["objects_to_collide_with_after_exit"]:
+	for obj in _most_recent_rewind_state["_objects_to_collide_with_after_exit"]:
 		add_objects_to_collide_with_after_exit(obj)
 	
 	_objects_to_add_mask_layer_collision_after_exit.clear()
-	for obj in _most_recent_rewind_state["objects_to_add_mask_layer_collision_after_exit"]:
+	for obj in _most_recent_rewind_state["_objects_to_add_mask_layer_collision_after_exit"]:
 		add_objects_to_add_mask_layer_collision_after_exit(obj)
 	
 	

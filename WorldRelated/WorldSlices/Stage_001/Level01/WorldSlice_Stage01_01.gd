@@ -12,11 +12,12 @@ func _init():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	var orig_text__left = vkp_left.text_for_keypress
-	vkp_left.text_for_keypress = orig_text__left % InputMap.get_action_list("ui_left")[0].as_text()
-	
-	var orig_text__right = vkp_right.text_for_keypress
-	vkp_right.text_for_keypress = orig_text__right % InputMap.get_action_list("ui_right")[0].as_text()
+	#var orig_text__left = vkp_left.text_for_keypress
+	#vkp_left.text_for_keypress = orig_text__left % InputMap.get_action_list("ui_left")[0].as_text()
+	vkp_left.game_control_action_name = "game_left"
+	vkp_right.game_control_action_name = "game_right"
+	#var orig_text__right = vkp_right.text_for_keypress
+	#vkp_right.text_for_keypress = orig_text__right % InputMap.get_action_list("ui_right")[0].as_text()
 	
 
 

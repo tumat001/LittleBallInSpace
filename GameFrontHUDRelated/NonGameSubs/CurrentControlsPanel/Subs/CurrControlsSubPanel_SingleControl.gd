@@ -30,11 +30,12 @@ func _update_display():
 	
 
 func _update_display__control_related_properties():
-	control_name_label.text = GameSaveManager.GAME_CONTROLS_TO_NAME_MAP[control_identifier_string]
-	visual_key_press.text_for_keypress = InputMap.get_action_list(control_identifier_string)[0].as_text()
+	control_name_label.text = GameSettingsManager.ALL_SAVABLE_GAME_CONTROLS_TO_NAME_MAP[control_identifier_string]
+	#visual_key_press.text_for_keypress = InputMap.get_action_list(control_identifier_string)[0].as_text()
+	visual_key_press.game_control_action_name = control_identifier_string
 
 func _update_display__hidden_related_properties():
-	var is_hidden = GameSaveManager.get_game_control_name__is_hidden(control_identifier_string)
+	var is_hidden = GameSettingsManager.get_game_control_name__is_hidden(control_identifier_string)
 	if is_hidden:
 		visible = false
 	else:

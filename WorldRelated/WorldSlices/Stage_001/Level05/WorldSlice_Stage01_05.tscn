@@ -414,7 +414,7 @@ position = Vector2( 1300, -948 )
 position = Vector2( 1938, -1082 )
 
 [node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 18 )]
-position = Vector2( 2576, -942 )
+position = Vector2( 2751, -894 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 112, 144 )

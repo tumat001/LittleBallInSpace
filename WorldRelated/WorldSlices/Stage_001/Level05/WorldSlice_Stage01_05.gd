@@ -60,12 +60,13 @@ func _configure_labels():
 	#var orig_text__reminder_label = rewind_reminder_label.text
 	#rewind_reminder_label.text = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
 	
-	var orig_text__launch_ball = vkp_launch_ball.text_for_keypress
-	vkp_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
+	#var orig_text__launch_ball = vkp_launch_ball.text_for_keypress
+	#vkp_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
+	vkp_launch_ball.game_control_action_name = "game_launch_ball"
 	
-	var orig_text__reminder_label = vkp_rewind.text_for_keypress
-	vkp_rewind.text_for_keypress = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
-	
+	#var orig_text__reminder_label = vkp_rewind.text_for_keypress
+	#vkp_rewind.text_for_keypress = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
+	vkp_rewind.game_control_action_name = "rewind"
 
 ############
 
@@ -297,7 +298,7 @@ func _on_PDAR_EndTeachAimMode_player_entered_in_area():
 
 
 func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
-	GameSaveManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
 	
 
 

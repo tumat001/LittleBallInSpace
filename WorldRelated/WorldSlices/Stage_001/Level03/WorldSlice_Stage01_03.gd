@@ -43,11 +43,13 @@ func _on_after_game_start_init():
 	#var orig_text_zoomout = label_zoomout.text
 	#label_zoomout.text = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()
 	
-	var orig_text_zoomout = vkp_zoom_out.text_for_keypress
-	vkp_zoom_out.text_for_keypress = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()
+	#var orig_text_zoomout = vkp_zoom_out.text_for_keypress
+	#vkp_zoom_out.text_for_keypress = orig_text_zoomout % InputMap.get_action_list("game_zoom_out")[0].as_text()
+	vkp_zoom_out.game_control_action_name = "game_zoom_out"
 	
-	var orig_text_slowdown = vkp_slow_down.text_for_keypress
-	vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
+	#var orig_text_slowdown = vkp_slow_down.text_for_keypress
+	#vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
+	vkp_zoom_out.game_control_action_name = "game_down"
 	
 	vkp_zoom_out_container.modulate.a = 0
 	vkp_slow_down_container.modulate.a = 0
@@ -60,8 +62,8 @@ func _on_after_game_start_init():
 
 
 func _on_PDAR_ZoomAndSlow_player_entered_in_area():
-	GameSaveManager.set_game_control_name_string__is_hidden("game_zoom_out", false)
-	GameSaveManager.set_game_control_name_string__is_hidden("ui_down", false)
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_zoom_out", false)
+	GameSettingsManager.set_game_control_name_string__is_hidden("ui_down", false)
 	
 	
 	var vkp_zoom_out_tweener = create_tween()

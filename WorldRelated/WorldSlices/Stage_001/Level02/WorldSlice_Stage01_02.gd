@@ -27,12 +27,14 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	
-	var orig_text_rewind = vkp_rewind.text_for_keypress
-	vkp_rewind.text_for_keypress = orig_text_rewind % InputMap.get_action_list("rewind")[0].as_text()
-	GameSaveManager.set_game_control_name_string__is_hidden("rewind", false)
+	#var orig_text_rewind = vkp_rewind.text_for_keypress
+	#vkp_rewind.text_for_keypress = orig_text_rewind % InputMap.get_action_list("rewind")[0].as_text()
+	vkp_rewind.game_control_action_name = "rewind"
+	GameSettingsManager.set_game_control_name_string__is_hidden("rewind", false)
 	
-	var orig_text_rewind_02 = vkp_rewind_02.text_for_keypress
-	vkp_rewind_02.text_for_keypress = orig_text_rewind_02 % InputMap.get_action_list("rewind")[0].as_text()
+	vkp_rewind_02.game_control_action_name = "rewind"
+	#var orig_text_rewind_02 = vkp_rewind_02.text_for_keypress
+	#vkp_rewind_02.text_for_keypress = orig_text_rewind_02 % InputMap.get_action_list("rewind")[0].as_text()
 	
 	
 	stuck_label_container.modulate.a = 0

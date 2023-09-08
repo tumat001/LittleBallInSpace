@@ -239,7 +239,7 @@ func destroy_from_rewind_save_state():
 	
 
 
-func stared_rewind():
+func started_rewind():
 	pass
 	
 

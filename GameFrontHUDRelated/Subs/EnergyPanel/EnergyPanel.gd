@@ -16,6 +16,10 @@ var player_modi__energy setget set_player_modi__energy
 
 #
 
+var original_rewind_reminder_text : String
+
+#
+
 onready var energy_label = $EnergyLabel
 
 onready var texture_progress_current = $TextureProgressCurrent
@@ -36,6 +40,8 @@ func set_player_modi__energy(arg_modi):
 	player_modi__energy.connect("recharged_from_no_energy", self, "_on_recharged_from_no_energy")
 	
 	player_modi__energy.connect("battery_visual_type_id_changed", self, "_on_battery_visual_type_id_changed")
+	
+	GameSettingsManager.connect("game_control_hotkey_changed", self, "_on_game_control_hotkey_changed")
 	
 	if is_inside_tree():
 		_update_display__for_max()
@@ -88,10 +94,19 @@ func _ready():
 
 func _initialize_rewind_reminder_label():
 	rewind_reminder_label.visible = false
-	var orig_text = rewind_reminder_label.text
-	var corrected_text = orig_text % InputMap.get_action_list("rewind")[0].as_text()
-	
-	rewind_reminder_label.text = corrected_text
+	original_rewind_reminder_text = rewind_reminder_label.text
+	#var corrected_text = orig_text % InputMap.get_action_list("rewind")[0].as_text()
+	#rewind_reminder_label.text = corrected_text
+	_update_rewind_reminder_label()
+
+func _update_rewind_reminder_label():
+	var text = original_rewind_reminder_text % GameSettingsManager.get_game_control_hotkey__as_string("rewind")
+	rewind_reminder_label.text = text
+
+func _on_game_control_hotkey_changed(arg_action_name, arg_old, arg_new):
+	if arg_action_name == "rewind":
+		_update_rewind_reminder_label()
+
 
 
 func _on_discarged_to_zero_energy():

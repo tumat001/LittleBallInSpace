@@ -30,7 +30,7 @@ func _attempt_show_cutscene():
 		cutscene.start_display()
 		
 		
-		SingletonsAndConsts.if_level_id_has_restart_only_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1)
+		SingletonsAndConsts.set_restart_only_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1, true)
 
 
 #func _process(delta):

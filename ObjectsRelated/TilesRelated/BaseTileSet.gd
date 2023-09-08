@@ -900,7 +900,7 @@ func restore_from_destroyed_from_rewind():
 	is_dead_but_reserved_for_rewind = false
 	
 
-func stared_rewind():
+func started_rewind():
 	pass
 	#if _save_tiles_data_next_frame__for_rewind_save__count > 0:
 	#	_save_tiles_data_next_frame__for_rewind_save__count = 0

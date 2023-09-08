@@ -166,7 +166,7 @@ func restore_from_destroyed_from_rewind():
 	
 
 
-func stared_rewind():
+func started_rewind():
 	pass
 
 func ended_rewind():

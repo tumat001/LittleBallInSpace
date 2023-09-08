@@ -34,9 +34,9 @@ func _on_after_game_start_init():
 	
 	#
 	
-	var orig_text__launch_ball = VKP_launch_ball.text_for_keypress
-	VKP_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
-
+	#var orig_text__launch_ball = VKP_launch_ball.text_for_keypress
+	#VKP_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
+	VKP_launch_ball.game_control_action_name = "game_launch_ball"
 
 
 
