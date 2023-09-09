@@ -2,14 +2,22 @@ extends MarginContainer
 
 const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
 
+const GUI_ChangeControlsHotkeyPanel = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/GUI_ChangeControlsHotkeyPanel.gd")
+const GUI_ChangeControlsHotkeyPanel_Scene = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/GUI_ChangeControlsHotkeyPanel.tscn")
 
+
+#
+
+var _gui_change_controls_hotkeys_panel : GUI_ChangeControlsHotkeyPanel
+
+
+##
 
 onready var button_resume = $MainContainer/FreeFormControl/VBoxContainer/Button_Resume
 onready var button_restart = $MainContainer/FreeFormControl/VBoxContainer/Button_Restart
 onready var button_main_menu = $MainContainer/FreeFormControl/VBoxContainer/Button_MainMenu
 
 onready var level_name_tooltip_body = $FreeFormControl/LevelNameTooltipBody
-
 
 var all_buttons : Array
 
@@ -62,6 +70,23 @@ func _on_Button_MainMenu_button_pressed():
 	if !SingletonsAndConsts.current_game_elements.game_result_manager.is_game_result_decided:
 		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
 
+
+
+
+func _on_CurrentControlsPanel_requested_change_hotkeys():
+	if !is_instance_valid(_gui_change_controls_hotkeys_panel):
+		_init_gui_change_controls_hotkeys_panel()
+	
+	_show_gui_change_controls_hotkeys_panel()
+
+func _init_gui_change_controls_hotkeys_panel():
+	_gui_change_controls_hotkeys_panel = GUI_ChangeControlsHotkeyPanel_Scene.instance()
+	control_tree.add_control__but_dont_show(_gui_change_controls_hotkeys_panel)
+
+
+func _show_gui_change_controls_hotkeys_panel():
+	control_tree.show_control__and_add_if_unadded(_gui_change_controls_hotkeys_panel)
+	
 
 
 ##########

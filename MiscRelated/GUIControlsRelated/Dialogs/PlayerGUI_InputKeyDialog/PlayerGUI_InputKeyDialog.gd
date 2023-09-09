@@ -1,6 +1,7 @@
 extends MarginContainer
 
 
+signal ok_on_key_event_captured(arg_captured_event)
 signal dialog_ended()
 
 #
@@ -65,14 +66,16 @@ func _input(event):
 		
 		accept_event()
 
-#todo
-func _on_button_pressed__reset_to_default():
-	pass
 
-#
+func _on_button_pressed__reset_to_default():
+	_set_captured_input_event_key(GameSettingsManager.get_game_control_default(associated_game_control_action_name))
+	
+
+
+###
 
 func start_capture():
-	modulate.a = 1
+	#modulate.a = 1
 	_set_captured_input_event_key(null)
 	_update_display__for_associated_game_control()
 	set_process_input(true)
@@ -83,16 +86,19 @@ func _connect_button_signals():
 		button_ok.connect("button_pressed", self, "_on_button_pressed__ok")
 	if !button_cancel.is_connected("button_pressed", self, "_on_button_pressed__cancel"):
 		button_cancel.connect("button_pressed", self, "_on_button_pressed__cancel")
-
+	if !button_default.is_connected("button_pressed", self, "_on_button_pressed__reset_to_default"):
+		button_default.connect("button_pressed", self, "_on_button_pressed__reset_to_default")
+	
 
 func _update_display__for_associated_game_control():
 	associated_control_name_label.text = associated_game_control_action_name
 	
 	if GameSettingsManager.game_control_to_default_event.has(associated_game_control_action_name):
 		default_container.visible = true
+		
 	else:
 		default_container.visible = false
-
+		
 
 #
 
@@ -103,7 +109,7 @@ func _set_captured_input_event_key(arg_captured_event : InputEventKey):
 func _update_display_based_on_captured_event():
 	_update_display__for_validity()
 	_update_display__for_conflicts_if_any()
-	
+	_update_display__for_setting_default()
 
 
 #
@@ -136,7 +142,7 @@ func _display_as_invalid_input():
 	invalid_hotkey_container.visible = true
 	button_ok.visible = false
 
-#
+##
 
 func _update_display__for_conflicts_if_any():
 	if captured_event != null:
@@ -178,39 +184,77 @@ func _convert_game_controls_in_arr_into_multiline_string(arg_arr : Array):
 		
 		return base_string % converted_name_arr
 
-
 ##
 
+func _update_display__for_setting_default():
+	if GameSettingsManager.is_game_control_hotkey_default_for_action(associated_game_control_action_name, captured_event):
+		button_default.is_disabled = true
+	else:
+		button_default.is_disabled = false
+
+
+#######
+
 func _do_ok_dialog():
-	GameSettingsManager.set_game_control_new_hotkey__using_captured_event(associated_game_control_action_name, captured_event)
-	_transition_end_dialog()
+	emit_signal("ok_on_key_event_captured", captured_event)
+	cancel_dialog()
 
-func cancel_dialog():
-	_transition_end_dialog()
-
-
-#
-
-func _transition_end_dialog():
-	_disconnect_button_signals()
+func cancel_dialog():#arg_do_transition : bool):
+	control_tree.hide_control__and_traverse_thru_hierarchy__if_control(self, control_tree.use_mod_a_tweeners_for_traversing_hierarchy)
 	
-	var tweener = create_tween()
-	tweener.set_parallel(false)
-	tweener.tween_property(self, "modulate:a", 0.0, 0.5)
-	tweener.tween_callback(self, "_on_end_of_end_transition")
+	#if arg_do_transition:
+	#	_transition_end_dialog()
 
 func _disconnect_button_signals():
 	if button_ok.is_connected("button_pressed", self, "_on_button_pressed__ok"):
 		button_ok.disconnect("button_pressed", self, "_on_button_pressed__ok")
 	if button_cancel.is_connected("button_pressed", self, "_on_button_pressed__cancel"):
 		button_cancel.disconnect("button_pressed", self, "_on_button_pressed__cancel")
-
+	if button_default.is_connected("button_pressed", self, "_on_button_pressed__reset_to_default"):
+		button_default.disconnect("button_pressed", self, "_on_button_pressed__reset_to_default")
+	
 
 #
 
-func _on_end_of_end_transition():
-	visible = false
+#func _transition_end_dialog():
+#	var tweener = create_tween()
+#	tweener.set_parallel(false)
+#	tweener.tween_property(self, "modulate:a", 0.0, 0.5)
+#	tweener.tween_callback(self, "_on_end_of_end_transition")
+#
+#
+##
+#
+#func _on_end_of_end_transition():
+#	visible = false
+#	set_process_input(false)
+#	emit_signal("dialog_ended")
+
+
+
+#############################################
+# TREE ITEM Specific methods/vars
+
+var control_tree
+
+
+func on_control_received_focus():
+	start_capture()
+	
+
+func on_control_fully_visible():
+	pass
+
+func on_control_lost_focus():
+	_disconnect_button_signals()
+
+func on_control_fully_invisible():
 	set_process_input(false)
 	emit_signal("dialog_ended")
+
+
+############
+# END OF TREE ITEM Specific methods/vars
+###########
 
 

@@ -137,14 +137,15 @@ margin_bottom = 491.0
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 
 [node name="CurrentControlsPanel" parent="FreeFormControl" instance=ExtResource( 7 )]
-margin_left = 76.0
+margin_left = 48.0
 margin_top = 88.0
-margin_right = 275.0
+margin_right = 300.0
 margin_bottom = 456.0
 
 [connection signal="button_pressed" from="MainContainer/FreeFormControl/VBoxContainer/Button_Resume" to="." method="_on_Button_Resume_button_pressed"]
 [connection signal="button_pressed" from="MainContainer/FreeFormControl/VBoxContainer/Button_Restart" to="." method="_on_Button_Restart_button_pressed"]
 [connection signal="button_pressed" from="MainContainer/FreeFormControl/VBoxContainer/Button_MainMenu" to="." method="_on_Button_MainMenu_button_pressed"]
+[connection signal="requested_change_hotkeys" from="FreeFormControl/CurrentControlsPanel" to="." method="_on_CurrentControlsPanel_requested_change_hotkeys"]
 
 [editable path="MainContainer/FreeFormControl/VBoxContainer/Button_Resume"]
 [editable path="MainContainer/FreeFormControl/VBoxContainer/Button_Restart"]

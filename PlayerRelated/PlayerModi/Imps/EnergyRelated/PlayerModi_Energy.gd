@@ -14,6 +14,8 @@ signal forecasted_or_current_energy_changed(arg_curr_energy, arg_forecasted_ener
 
 signal battery_visual_type_id_changed(arg_id)
 
+signal is_energy_deductable_changed(arg_val)
+
 #
 
 
@@ -61,6 +63,10 @@ var battery_visual_type_id : int setget set_battery_visual_type_id
 
 #
 
+var is_energy_deductable : bool = true setget set_is_energy_deductable
+
+#
+
 func apply_modification_to_player_and_game_elements(arg_player, arg_game_elements):
 	.apply_modification_to_player_and_game_elements(arg_player, arg_game_elements)
 	
@@ -79,6 +85,11 @@ func dec_current_energy(arg_amount, arg_source_id = -1):
 func set_current_energy(arg_val, arg_source_id = -1):
 	var old_val = _current_energy
 	_current_energy = arg_val
+	
+	
+	if is_energy_deductable and _current_energy < old_val:
+		_current_energy = old_val
+	
 	
 	if _current_energy < 0:
 		_current_energy = 0
@@ -207,6 +218,15 @@ func set_properties__as_mega_battery(arg_start_with_full_battery : bool = true):
 	if arg_start_with_full_battery:
 		set_current_energy(150)
 	
+
+#
+
+func set_is_energy_deductable(arg_val):
+	var old_val = is_energy_deductable
+	is_energy_deductable = arg_val
+	
+	if old_val != arg_val:
+		emit_signal("is_energy_deductable_changed", is_energy_deductable)
 
 
 ###################### 
