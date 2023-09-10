@@ -15,20 +15,20 @@ var censor_hidden_game_control_actions_name : bool = true
 
 #
 
-onready var associated_control_name_label = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/AssociatedControlNameLabel
+onready var associated_control_name_label = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/AssociatedControlNameLabel
 
-onready var vkp_for_input = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/Container/VKPForInput
+onready var vkp_for_input = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/Container/VKPForInput
 
-onready var invalid_hotkey_container = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/InvalidContainer
+onready var invalid_hotkey_container = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/InvalidContainer
 
-onready var conflicting_hotkeys_container = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer
-onready var conflicting_hotkeys_label = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer/VBoxContainer/ConflictingLabel
+onready var conflicting_hotkeys_container = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer
+onready var conflicting_hotkeys_label = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer/VBoxContainer/ConflictingLabel
 
-onready var default_container = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer
+onready var default_container = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer
 
-onready var button_ok = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Ok
-onready var button_cancel = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Cancel
-onready var button_default = $VBoxContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer/Button_Default
+onready var button_ok = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Ok
+onready var button_cancel = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Cancel
+onready var button_default = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer/Button_Default
 
 #
 
@@ -43,6 +43,8 @@ func set_associated_game_control_action_name(arg_name):
 #
 
 func _ready():
+	vkp_for_input.update_keypress_label_based_on_game_control = false
+	
 	set_process_input(false)
 
 #
@@ -56,13 +58,14 @@ func _on_button_pressed__cancel():
 func _input(event):
 	if event is InputEventKey:
 		if !event.echo and event.pressed:
-			if captured_event == null:
-				_set_captured_input_event_key(event)
-			else:
-				if event.is_action("ui_cancel"):
-					cancel_dialog()
-				elif event.is_action("ui_accept"):
-					_do_ok_dialog()
+			_set_captured_input_event_key(event)
+			
+			#if event.is_action("ui_cancel"):
+			#	cancel_dialog()
+			#elif event.is_action("ui_accept"):
+			#	_do_ok_dialog()
+			#else:
+			#	_set_captured_input_event_key(event)
 		
 		accept_event()
 
@@ -76,7 +79,7 @@ func _on_button_pressed__reset_to_default():
 
 func start_capture():
 	#modulate.a = 1
-	_set_captured_input_event_key(null)
+	#_set_captured_input_event_key(null)
 	_update_display__for_associated_game_control()
 	set_process_input(true)
 	_connect_button_signals()
@@ -91,14 +94,24 @@ func _connect_button_signals():
 	
 
 func _update_display__for_associated_game_control():
-	associated_control_name_label.text = associated_game_control_action_name
-	
-	if GameSettingsManager.game_control_to_default_event.has(associated_game_control_action_name):
-		default_container.visible = true
+	if _is_game_control:
+		if !GameSettingsManager.get_game_control_name__is_hidden(associated_game_control_action_name):
+			associated_control_name_label.text = GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP[associated_game_control_action_name]
+		else:
+			associated_control_name_label.text = GameSettingsManager.GAME_CONTROL_HIDDEN_PLACEHOLDER_NAME
+		
+		if GameSettingsManager.game_control_to_default_event.has(associated_game_control_action_name):
+			default_container.visible = true
+		else:
+			default_container.visible = false
+		
+		#vkp_for_input.input_event_key = GameSettingsManager.get_game_control_input_key_event(associated_game_control_action_name)
+		_set_captured_input_event_key(GameSettingsManager.get_game_control_input_key_event(associated_game_control_action_name))
 		
 	else:
 		default_container.visible = false
 		
+		_set_captured_input_event_key(null)
 
 #
 
@@ -107,6 +120,8 @@ func _set_captured_input_event_key(arg_captured_event : InputEventKey):
 	_update_display_based_on_captured_event()
 
 func _update_display_based_on_captured_event():
+	vkp_for_input.input_event_key = captured_event
+	
 	_update_display__for_validity()
 	_update_display__for_conflicts_if_any()
 	_update_display__for_setting_default()
@@ -136,18 +151,18 @@ func _check_if_captured_event_is_valid():
 
 func _display_as_valid_input():
 	invalid_hotkey_container.visible = false
-	button_ok.visible = true
+	button_ok.is_disabled = false
 
 func _display_as_invalid_input():
 	invalid_hotkey_container.visible = true
-	button_ok.visible = false
+	button_ok.is_disabled = true
 
 ##
 
 func _update_display__for_conflicts_if_any():
 	if captured_event != null:
 		if _is_game_control:
-			var conflicting_game_controls = GameSettingsManager.get_last_calc_game_control_conflicting_inputs_with_other_controls(associated_game_control_action_name)
+			var conflicting_game_controls = GameSettingsManager.calculate_game_control_name_conflicts_when_assigned_to_hotkey(associated_game_control_action_name, captured_event)
 			if conflicting_game_controls.size() != 0:
 				conflicting_hotkeys_label.text = _convert_game_controls_in_arr_into_multiline_string(conflicting_game_controls)
 				conflicting_hotkeys_container.visible = true
@@ -167,13 +182,16 @@ func _convert_game_controls_in_arr_into_multiline_string(arg_arr : Array):
 		var base_string = ""
 		for i in arg_arr.size():
 			base_string += "%s\n"
-		return base_string % arg_arr
+		return base_string % GameSettingsManager.convert_game_control_actions_into_names(arg_arr)
 		
 		
 	else:
 		var base_string = ""
+		var arr_size = arg_arr.size()
 		for i in arg_arr.size():
-			base_string += "%s\n"
+			base_string += "%s"
+			if i != (arr_size - 1):
+				base_string += "\n"
 		
 		var converted_name_arr = []
 		for game_control_name in arg_arr:
@@ -182,7 +200,7 @@ func _convert_game_controls_in_arr_into_multiline_string(arg_arr : Array):
 			else:
 				converted_name_arr.append(game_control_name)
 		
-		return base_string % converted_name_arr
+		return base_string % GameSettingsManager.convert_game_control_actions_into_names(converted_name_arr)
 
 ##
 

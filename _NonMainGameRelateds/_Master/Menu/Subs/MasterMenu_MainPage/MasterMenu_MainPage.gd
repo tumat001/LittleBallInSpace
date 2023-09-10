@@ -34,9 +34,11 @@ func _assign_button_neighbors():
 
 
 func _on_Button_Resume_button_pressed():
+	accept_event()
 	control_tree.hide_control__and_traverse_thru_hierarchy__if_control(self, false)
 
 func _on_Button_Quit_button_pressed():
+	accept_event()
 	get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 	
 

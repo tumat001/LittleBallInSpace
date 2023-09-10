@@ -5,17 +5,22 @@ extends Node
 signal settings_manager_initialized()
 
 
+signal game_control_is_hidden_changed(arg_game_control_name, arg_is_hidden)
+
+
 signal game_control_hotkey_changed(arg_game_control_action, arg_old_hotkey, arg_new_hotkey)
 signal conflicting_game_controls_hotkey_changed(arg_last_calc_game_controls_in_conflicts)
 
 
 signal any_game_modifying_assist_mode_settings_changed()
 
+signal is_assist_mode_first_time_open_changed(arg_val)
 signal is_assist_mode_active_changed(arg_val)
 signal assist_mode_toggle_active_mode_changed(arg_val)
 signal assist_mode__additional_energy_mode_changed(arg_val)
 signal assist_mode__energy_reduction_mode_changed(arg_val)
 signal assist_mode__additional_launch_ball_mode_changed(arg_val)
+signal assist_mode__pause_at_esc_mode_changed(arg_val)
 
 ####
 
@@ -70,6 +75,10 @@ var _last_calc_game_controls_in_conflicts : Dictionary   # dict of arrs (string 
 
 
 ### Assist mode
+const ASSIST_MODE__FIRST_TIME_OPENING_ASSIST_MODE_PANEL__DIC_IDENTIFIER = "ASSIST_MODE__FIRST_TIME_OPENING_ASSIST_MODE_PANEL__DIC_IDENTIFIER"
+var is_assist_mode_first_time_open : bool setget set_is_assist_mode_first_time_open
+
+
 const ASSIST_MODE__IS_ASSIST_MODE_ACTIVE__DIC_IDENTIFIER = "ASSIST_MODE__IS_ASSIST_MODE_ACTIVE__DIC_IDENTIFIER"
 var is_assist_mode_active : bool setget set_is_assist_mode_active
 
@@ -137,6 +146,17 @@ const assist_mode__additional_launch_ball_mode_id__no_effect : int = AssistMode_
 var assist_mode__additional_launch_ball_mode_id : int setget set_assist_mode__additional_launch_ball_mode_id
 
 
+const ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER = "ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER"
+enum AssistMode_PauseAtESCModeId {
+	NO_PAUSE = 0,
+	PAUSE = 1,
+}
+const assist_mode__pause_at_esc_id__default : int = AssistMode_PauseAtESCModeId.NO_PAUSE
+const assist_mode__pause_at_esc_id__no_effect : int = AssistMode_PauseAtESCModeId.NO_PAUSE
+var assist_mode__pause_at_esc_id : int setget set_assist_mode__pause_at_esc_id
+
+
+
 ####
 
 var _is_manager_initialized : bool
@@ -187,9 +207,10 @@ func load_all__from_ready_of_save_manager():
 	_is_manager_initialized = true
 	emit_signal("settings_manager_initialized")
 
-
-
-
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		_save_game_control_related_data()
+		_save_general_game_settings_related_data()
 
 
 #################
@@ -309,6 +330,8 @@ func _attempt_load_general_game_settings():
 		return true
 		
 	else:
+		
+		_load_general_game_settings_using_file(null)
 		return false
 
 func _load_general_game_settings_using_file(arg_file : File):
@@ -321,6 +344,7 @@ func _load_general_game_settings_using_file(arg_file : File):
 	
 	###
 	
+	_update_game_control_to_default_event_map()
 	if data.has(CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER):
 		_load_game_hotkey_using_dic(data[CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER])
 	else:
@@ -348,6 +372,11 @@ func _load_general_game_settings_using_file(arg_file : File):
 #
 
 
+func _update_game_control_to_default_event_map():
+	for game_control in GAME_CONTROLS_TO_NAME_MAP.keys():
+		game_control_to_default_event[game_control] = get_game_control_input_key_event(game_control)
+	
+
 
 func set_game_control_new_hotkey__using_captured_event(arg_control_action_name : String, arg_captured_event : InputEventKey):
 	var old_key_char = get_game_control_hotkey__as_string(arg_control_action_name)
@@ -362,12 +391,13 @@ func set_game_control_new_hotkey__using_captured_event(arg_control_action_name :
 
 func _update_states_based_on_changed_game_control_hotkeys(arg_control_action_name, arg_captured_event):
 	_game_control_to_current_event[arg_control_action_name] = arg_captured_event
-	_update_control_conflict_based_on_game_control_hotkeys(false)
+	
+	_update_control_conflict_based_on_game_control_hotkeys(_is_manager_initialized)
 	
 
 func _update_states_based_on_game_control_hotkeys__from_ready():
 	for game_control in GAME_CONTROLS_TO_NAME_MAP.keys():
-		_game_control_to_current_event[game_control] = get_game_control_action_event(game_control)
+		_game_control_to_current_event[game_control] = get_game_control_input_key_event(game_control)
 	
 	_update_control_conflict_based_on_game_control_hotkeys(true)
 	
@@ -383,8 +413,8 @@ func _update_control_conflict_based_on_game_control_hotkeys(arg_emit_signal : bo
 	
 	###
 	
-	# probably safe to assume it will be in order
-	if deep_equal(new_vals, _last_calc_game_controls_in_conflicts):
+	## probably safe to assume it will be in order
+	if !deep_equal(new_vals, _last_calc_game_controls_in_conflicts):
 		_last_calc_game_controls_in_conflicts = new_vals
 		
 		if arg_emit_signal:
@@ -398,10 +428,10 @@ func can_game_control_name_share_input_action_with_game_control_name(arg_name_01
 	
 	return false
 
-func calculate_game_control_name_conflicts_when_assigned_to_hotkey(arg_control_action_name : String, arg_captured_event : InputEventKey):
+func calculate_game_control_name_conflicts_when_assigned_to_hotkey(arg_control_action_name : String, arg_captured_event : InputEventKey) -> Array:
 	var conflicts = []
 	
-	var curr_event : InputEventKey = _game_control_to_current_event[arg_control_action_name]
+	var curr_event : InputEventKey = arg_captured_event #_game_control_to_current_event[arg_control_action_name]
 	for game_control_name__j in _game_control_to_current_event.keys():
 		if arg_control_action_name != game_control_name__j:
 			var curr_event__j : InputEventKey = _game_control_to_current_event[game_control_name__j]
@@ -410,6 +440,22 @@ func calculate_game_control_name_conflicts_when_assigned_to_hotkey(arg_control_a
 					conflicts.append(game_control_name__j)
 	
 	return conflicts
+
+func calculate_game_control_name_conflicts_when_assigned_to_hotkey__as_control_names(arg_control_action_name : String, arg_captured_event : InputEventKey) -> Array:
+	var conflicts_game_control_action_name = calculate_game_control_name_conflicts_when_assigned_to_hotkey(arg_control_action_name, arg_captured_event)
+	return convert_game_control_actions_into_names(conflicts_game_control_action_name)
+
+func convert_game_control_actions_into_names(arg_actions : Array) -> Array:
+	var bucket = []
+	
+	for game_control in arg_actions:
+		if GAME_CONTROLS_TO_NAME_MAP.has(game_control):
+			bucket.append(GAME_CONTROLS_TO_NAME_MAP[game_control])
+		else:
+			bucket.append(game_control)
+	
+	return bucket
+
 
 #
 
@@ -422,7 +468,7 @@ func get_game_control_hotkey__as_string(arg_control_action_name : String):
 	
 	return key_char
 
-func get_game_control_action_event(arg_control_action_name : String):
+func get_game_control_input_key_event(arg_control_action_name : String):
 	var input_events = InputMap.get_action_list(arg_control_action_name)
 	if input_events.size() > 0:
 		return input_events[0]
@@ -473,12 +519,11 @@ func if_last_calc_game_control_has_conflicts(arg_control_action_name : String):
 ##
 
 func _get_game_controls_as_dict():
-	var all_actions = InputMap.get_actions()
+	#var all_actions = InputMap.get_actions()
 	var dict = {}
-	for action_name in all_actions:
-		if GAME_CONTROLS_TO_NAME_MAP.has(action_name):
-			var input_events = InputMap.get_action_list(action_name)
-			dict[action_name] = _convert_input_events_to_basic_prop_arr(input_events)
+	for action_name in GAME_CONTROLS_TO_NAME_MAP.keys():
+		var input_events = InputMap.get_action_list(action_name)
+		dict[action_name] = _convert_input_events_to_basic_prop_arr(input_events)
 	
 	return dict
 
@@ -514,6 +559,11 @@ func _load_game_hotkey_using_dic(data : Dictionary):
 ## ASSIST MODE
 
 func _load_assist_mode_settings_using_dic(data : Dictionary):
+	if data.has(ASSIST_MODE__FIRST_TIME_OPENING_ASSIST_MODE_PANEL__DIC_IDENTIFIER):
+		set_is_assist_mode_first_time_open(data[ASSIST_MODE__FIRST_TIME_OPENING_ASSIST_MODE_PANEL__DIC_IDENTIFIER])
+	else:
+		set_is_assist_mode_first_time_open(false)
+	
 	if data.has(ASSIST_MODE__IS_ASSIST_MODE_ACTIVE__DIC_IDENTIFIER):
 		set_is_assist_mode_active(data[ASSIST_MODE__IS_ASSIST_MODE_ACTIVE__DIC_IDENTIFIER])
 	else:
@@ -538,17 +588,24 @@ func _load_assist_mode_settings_using_dic(data : Dictionary):
 		set_assist_mode__additional_launch_ball_mode_id(data[ASSIST_MODE__ADDITIONAL_LAUNCH_BALL_MODE_ID__DIC_IDENTIFIER])
 	else:
 		set_assist_mode__additional_launch_ball_mode_id(assist_mode__additional_launch_ball_mode_id__default)
-
-
+	
+	if data.has(ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER):
+		set_assist_mode__pause_at_esc_id(data[ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER])
+	else:
+		set_assist_mode__pause_at_esc_id(assist_mode__pause_at_esc_id__default)
+	
+	
 
 func _generate_save_dict__for_assist_mode():
 	return {
+		ASSIST_MODE__FIRST_TIME_OPENING_ASSIST_MODE_PANEL__DIC_IDENTIFIER : is_assist_mode_first_time_open,
 		ASSIST_MODE__IS_ASSIST_MODE_ACTIVE__DIC_IDENTIFIER : is_assist_mode_active,
 		ASSIST_MODE__TOGGLE_ACTIVE_MODE_ID__DIC_IDENTIFIER : assist_mode_toggle_active_mode_id,
 		
 		ASSIST_MODE__ADDITIONAL_ENERGY_MODE_ID__DIC_IDENTIFIER : assist_mode__additional_energy_mode_id,
 		ASSIST_MODE__ENERGY_REDUCTION_MODE_ID__DIC_IDENTIFIER : assist_mode__energy_reduction_mode_id,
 		ASSIST_MODE__ADDITIONAL_LAUNCH_BALL_MODE_ID__DIC_IDENTIFIER : assist_mode__additional_launch_ball_mode_id,
+		ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER : assist_mode__pause_at_esc_id,
 		
 	}
 
@@ -563,11 +620,23 @@ func _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
 	if assist_mode__additional_launch_ball_mode_id != assist_mode__additional_launch_ball_mode_id__no_effect:
 		return true
 	
+	if assist_mode__pause_at_esc_id != assist_mode__pause_at_esc_id__no_effect:
+		return true
+	
 	###
 	
 	return false
 
 #
+
+func set_is_assist_mode_first_time_open(arg_val):
+	var old_val = is_assist_mode_first_time_open
+	is_assist_mode_first_time_open = arg_val
+	
+	if old_val != arg_val:
+		if _is_manager_initialized:
+			emit_signal("is_assist_mode_first_time_open_changed", arg_val)
+
 
 func _any_game_modifying_assist_mode_config_changed():
 	emit_signal("any_game_modifying_assist_mode_settings_changed")
@@ -582,7 +651,6 @@ func set_is_assist_mode_active(arg_val):
 			if _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
 				_any_game_modifying_assist_mode_config_changed()
 
-
 func set_assist_mode_toggle_active_mode_id(arg_val):
 	var old_val = assist_mode_toggle_active_mode_id
 	assist_mode_toggle_active_mode_id = arg_val
@@ -591,7 +659,6 @@ func set_assist_mode_toggle_active_mode_id(arg_val):
 		if _is_manager_initialized:
 			emit_signal("assist_mode_toggle_active_mode_changed", arg_val)
 			#_any_game_modifying_assist_mode_config_changed()
-
 
 
 
@@ -625,6 +692,12 @@ func set_assist_mode__additional_launch_ball_mode_id(arg_val):
 			_any_game_modifying_assist_mode_config_changed()
 	
 
-
-
+func set_assist_mode__pause_at_esc_id(arg_val):
+	var old_val = assist_mode__pause_at_esc_id
+	assist_mode__pause_at_esc_id = arg_val
+	
+	if old_val != arg_val:
+		if _is_manager_initialized:
+			emit_signal("assist_mode__pause_at_esc_mode_changed", arg_val)
+			_any_game_modifying_assist_mode_config_changed()
 

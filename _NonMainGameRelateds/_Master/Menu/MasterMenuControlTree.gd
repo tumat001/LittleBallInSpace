@@ -19,6 +19,8 @@ func _ready():
 	
 	connect("hierarchy_advanced_forwards", self, "_on_hierarchy_advanced_forwards__MMCT")
 
+
+
 func show_main_page():
 	show_control__and_add_if_unadded(main_page, use_mod_a_tweeners_for_traversing_hierarchy)
 	
@@ -43,4 +45,7 @@ func show_about_page__construct_if_unconstructed():
 		about_page = MasterMenu_AboutPage_Scene.instance()
 	
 	show_control__and_add_if_unadded(about_page, use_mod_a_tweeners_for_traversing_hierarchy)
+
+#
+
 

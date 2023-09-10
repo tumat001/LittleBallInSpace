@@ -5,7 +5,6 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
-outline_size = 2
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 2 )
 
@@ -35,9 +34,10 @@ margin_right = 40.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
 custom_fonts/font = SubResource( 1 )
 align = 1
 valign = 1
 
+[connection signal="visibility_changed" from="." to="." method="_on_PlayerGUI_ButtonStandard_visibility_changed"]
 [connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

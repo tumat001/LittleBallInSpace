@@ -12,8 +12,6 @@ signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_co
 
 signal is_player_health_on_start_zero_changed()
 
-signal game_control_is_hidden_changed(arg_game_control_name, arg_is_hidden)
-
 
 signal first_time_play()
 

@@ -10,7 +10,7 @@ outline_size = 2
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=5]
 size = 20
 outline_size = 2
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
@@ -18,13 +18,11 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 15
-outline_size = 2
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 10
-outline_size = 2
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 2 )
 
@@ -69,7 +67,7 @@ margin_left = -66.0
 margin_top = -32.5
 margin_right = 66.0
 margin_bottom = 12.5
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 5 )
 text = "Little Ball
 In Space"
 align = 1

@@ -35,6 +35,8 @@ export(bool) var use_mod_a_tweeners_for_traversing_hierarchy : bool = false setg
 
 export(bool) var pause_tree_on_show : bool = true setget set_pause_tree_on_show
 
+export(bool) var consume_all_key_inputs : bool = true
+
 #
 
 var show_info_button : bool = false setget set_show_info_button
@@ -75,7 +77,7 @@ func set_pause_tree_on_show(arg_val):
 
 func _ready():
 	visible = false
-	#set_process_unhandled_key_input(false)
+	set_process_unhandled_key_input(false)
 	set_process_input(false)
 	
 	for child in control_container.get_children():
@@ -89,7 +91,7 @@ func _ready():
 	set_show_back_button(show_back_button)
 
 
-func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_for_show : bool):
+func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_for_show : bool = use_mod_a_tweeners_for_traversing_hierarchy):
 	_show_control__and_add_if_unadded__internal(arg_control, arg_use_tweeners_for_show, true)
 
 func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_tweeners_for_show : bool,
@@ -103,7 +105,7 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 		if pause_tree_on_show:
 			get_tree().paused = true
 		
-		#set_process_unhandled_key_input(true)
+		set_process_unhandled_key_input(true)
 		set_process_input(true)
 	
 	if !control_container.get_children().has(arg_control):
@@ -217,7 +219,7 @@ func _make_control_invis__and_proceed_thru_hierarchy(arg_control, arg_use_tweene
 	else:
 		_current_control_showing = null
 		visible = false
-		#set_process_unhandled_key_input(false)
+		set_process_unhandled_key_input(false)
 		set_process_input(false)
 		
 		if pause_tree_on_show:
@@ -251,13 +253,17 @@ func _input(event):
 				if traverse_hierarchy_on_ESC_click:
 					get_viewport().set_input_as_handled()
 					hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
-					
-	
-	
+			
+
+func _unhandled_key_input(event):
+	if consume_all_key_inputs:
+		get_viewport().set_input_as_handled()
+
+
 
 func _on_TextureRect_gui_input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT:
+		if event.button_index == BUTTON_LEFT and event.pressed:
 			if !_is_transitioning:
 				if traverse_hierarchy_on_background_click:
 					hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)

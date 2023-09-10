@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_LineBox.gd" type="Script" id=1]
+
+[node name="DialogTemplate_Body_LineBox" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+script = ExtResource( 1 )
+
+[node name="BorderLeft" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 3
+stretch_mode = 2
+
+[node name="BorderRight" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 40.0
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+stretch_mode = 2
+
+[node name="BorderUp" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_right = 40.0
+mouse_filter = 2
+size_flags_vertical = 2
+stretch_mode = 2
+
+[node name="BorderDown" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_top = 40.0
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_vertical = 10
+stretch_mode = 2
+
+[node name="ContentContainer" type="MarginContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2

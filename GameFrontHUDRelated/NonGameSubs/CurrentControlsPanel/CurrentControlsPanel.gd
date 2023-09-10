@@ -9,7 +9,7 @@ signal requested_change_hotkeys()
 
 #
 
-onready var curr_controls_container = $VBoxContainer2/CurrControlsContainer
+onready var curr_controls_container = $VBoxContainer/CurrControlsContainer
 
 
 func _ready():
@@ -18,7 +18,7 @@ func _ready():
 		subpanel_single_control.control_identifier_string = control_string
 		
 		curr_controls_container.add_child(subpanel_single_control)
-		
+		subpanel_single_control.visual_key_press.change_state_if_game_control_is_conflicting = true
 	
 	
 

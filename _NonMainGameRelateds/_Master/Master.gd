@@ -32,6 +32,7 @@ var gui__level_selection_whole_screen : GUI_LevelSelectionWholeScreen
 var _level_id_to_mark_as_finish__and_display_win_vic_on
 var _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on : Array
 
+
 var _is_transitioning : bool
 var _is_in_game_or_loading_to_game : bool
 var _is_playing_victory_animations : bool
@@ -69,8 +70,7 @@ func _ready():
 	set_process(false)
 	
 	#Temp for quick testing of lvls
-	#todo
-	if (true):
+	if (false):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
 		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1
@@ -383,6 +383,7 @@ func is_playing_any_transition():
 
 ##########
 
+#func _input(event):
 func _unhandled_key_input(event):
 	if !_is_transitioning:
 		if !is_instance_valid(SingletonsAndConsts.current_game_elements):
@@ -415,6 +416,9 @@ func can_level_layout_move_cursor():
 	return !_is_transitioning and !_is_playing_victory_animations and !_is_in_game_or_loading_to_game
 	
 
+func can_level_layout_do_action():
+	return !_is_transitioning and !_is_playing_victory_animations and !_is_in_game_or_loading_to_game
+	
 
 #################
 

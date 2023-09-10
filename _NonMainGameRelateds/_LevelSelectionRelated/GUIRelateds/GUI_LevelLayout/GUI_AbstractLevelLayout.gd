@@ -428,7 +428,7 @@ func _if_can_hover_over_tile(tile) -> bool:
 
 
 func _attempt_enter_inside_current_tile():
-	if !SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
+	if SingletonsAndConsts.current_master.can_level_layout_do_action():
 		if _currently_hovered_tile.level_details != null:
 			emit_signal("prompt_entered_into_level", _currently_hovered_tile, _currently_hovered_layout_ele_id)
 			

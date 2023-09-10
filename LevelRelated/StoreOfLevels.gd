@@ -332,7 +332,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
 		level_details.level_name = [
-			["Labyrinth", []]
+			["Decision", []]
 		]
 		level_details.level_desc = [
 			["", []]

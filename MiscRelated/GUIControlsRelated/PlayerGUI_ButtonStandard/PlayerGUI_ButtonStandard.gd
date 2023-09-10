@@ -6,10 +6,13 @@ signal button_pressed()
 
 #
 
-const LABEL_MODULATE__DISABLED = Color(0.25, 0.25, 0.25, 0.6)
+#const LABEL_MODULATE__DISABLED = Color(0.5, 0.5, 0.5, 0.75)
+#const LABEL_MODULATE__NO_FOCUS = Color(0.7, 0.7, 0.7, 1.0)
+#const LABEL_MODULATE__HAS_FOCUS = Color(1, 1, 1, 1.0)
 
-const LABEL_MODULATE__NO_FOCUS = Color(0.6, 0.6, 0.6, 1.0)
-const LABEL_MODULATE__HAS_FOCUS = Color(1, 1, 1, 1.0)
+const LABEL_MODULATE__DISABLED = Color(0.6, 0.6, 0.6, 0.75)
+const LABEL_MODULATE__NO_FOCUS = Color(1, 1, 1, 1.0)
+const LABEL_MODULATE__HAS_FOCUS = Color("#FDD14D")
 
 #
 
@@ -17,6 +20,7 @@ export(bool) var can_grab_focus : bool = true setget set_can_grab_focus
 export(bool) var is_disabled : bool = false setget set_is_disabled
 
 var _has_focus : bool
+var _is_mouse_inside : bool
 
 #
 
@@ -30,7 +34,7 @@ onready var texture_button = $TextureButton
 func _update_control_states():
 	if is_inside_tree():
 		if !is_disabled:
-			if _has_focus or !can_grab_focus:
+			if _has_focus or _is_mouse_inside:
 				label.modulate = LABEL_MODULATE__HAS_FOCUS
 				
 				if !can_grab_focus:
@@ -73,6 +77,7 @@ func _ready():
 	texture_button.connect("focus_entered", self, "_on_texture_button_focus_entered")
 	texture_button.connect("focus_exited", self, "_on_texture_button_focus_exited")
 	texture_button.connect("mouse_entered", self, "_on_texture_button_mouse_entered")
+	texture_button.connect("mouse_exited", self, "_on_texture_button_mouse_exited")
 	
 	_set_has_focus(false)
 	set_can_grab_focus(can_grab_focus)
@@ -92,30 +97,32 @@ func lose_focus():
 
 func _on_texture_button_focus_entered():
 	_set_has_focus(true)
-	
 
 func _on_texture_button_focus_exited():
 	_set_has_focus(false)
 	
 
 func _on_texture_button_mouse_entered():
-	grab_focus()
+	_is_mouse_inside = true
+	if can_grab_focus:
+		grab_focus()
+		#_update_control_states is called
+		
+	else:
+		_update_control_states()
+		
+
+func _on_texture_button_mouse_exited():
+	_is_mouse_inside = false
+	_update_control_states()
+
 
 func _set_has_focus(arg_val):
 	_has_focus = arg_val
 	
 	_update_control_states()
 	
-#	if !is_disabled:
-#		if _has_focus or !can_grab_focus:
-#			label.modulate = LABEL_MODULATE__HAS_FOCUS
-#
-#		else:
-#			label.modulate = LABEL_MODULATE__NO_FOCUS
-#
-#
-#	else:
-#
+
 
 
 #
@@ -138,4 +145,10 @@ func get_texture_button():
 func _on_TextureButton_pressed():
 	emit_signal("button_pressed")
 
+
+
+
+func _on_PlayerGUI_ButtonStandard_visibility_changed():
+	_is_mouse_inside = false
+	lose_focus()
 
