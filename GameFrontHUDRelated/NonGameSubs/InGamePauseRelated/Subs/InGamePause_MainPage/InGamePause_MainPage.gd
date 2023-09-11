@@ -8,6 +8,13 @@ const GUI_ChangeControlsHotkeyPanel_Scene = preload("res://GameSaveRelated/GUIs/
 
 #
 
+const HEADER_LABEL__TEXT__WITH_PAUSE = "Paused"
+const HEADER_LABEL__TEXT__NO_PAUSE = "NOT Paused"
+
+const HEADER_LABEL__MODULATE__NO_PAUSE = Color("#dddddd")
+
+#
+
 var _gui_change_controls_hotkeys_panel : GUI_ChangeControlsHotkeyPanel
 
 
@@ -18,6 +25,8 @@ onready var button_restart = $MainContainer/FreeFormControl/VBoxContainer/Button
 onready var button_main_menu = $MainContainer/FreeFormControl/VBoxContainer/Button_MainMenu
 
 onready var level_name_tooltip_body = $FreeFormControl/LevelNameTooltipBody
+
+onready var header_label_for_pause = $MainContainer/FreeFormControl/HeaderLabelPause
 
 var all_buttons : Array
 
@@ -34,10 +43,26 @@ func _ready():
 	
 	level_name_tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.PIXEL_EMULATOR
 	level_name_tooltip_body.bbcode_align_mode = level_name_tooltip_body.BBCodeAlignMode.CENTER
-	
 	level_name_tooltip_body.descriptions = SingletonsAndConsts.current_level_details.level_full_name
 	level_name_tooltip_body.update_display()
+	
+	#
+	
+	_update_disp_based_on_pause_on_esc()
 
+#
+
+func _update_disp_based_on_pause_on_esc():
+	if SingletonsAndConsts.current_game_elements.pause_game_at_startup:
+		header_label_for_pause.modulate = GameSettingsManager.ASSIST_MODE__TEXT_MODULATE__LIGHT
+		header_label_for_pause.text = HEADER_LABEL__TEXT__WITH_PAUSE
+		
+	else:
+		header_label_for_pause.modulate = HEADER_LABEL__MODULATE__NO_PAUSE
+		header_label_for_pause.text = HEADER_LABEL__TEXT__NO_PAUSE
+		
+
+	
 
 #
 

@@ -2,7 +2,7 @@ tool
 extends MarginContainer
 
 
-const MODULATE_NORMAL = Color("#cccccc")
+const MODULATE_NORMAL = Color("#cfcfcf")
 const MODULATE_WITH_CONFLICT = Color("#ff7777")
 
 

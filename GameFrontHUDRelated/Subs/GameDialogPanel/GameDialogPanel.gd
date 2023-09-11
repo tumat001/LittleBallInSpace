@@ -18,6 +18,7 @@ onready var tooltip_body = $MarginContainer/TooltipBody
 
 func _ready():
 	visible = false
+	tooltip_body.default_font_size = 32
 
 ###
 

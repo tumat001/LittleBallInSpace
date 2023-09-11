@@ -41,6 +41,8 @@ onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
 
 func _ready():
 	level_title_tooltip_body.bbcode_align_mode = level_title_tooltip_body.BBCodeAlignMode.CENTER
+	level_title_tooltip_body.default_font_size = 32
+	level_desc_tooltip_body.default_font_size = 24
 	
 	if GameSaveManager.is_manager_initialized():
 		_initialize_coins_panel()

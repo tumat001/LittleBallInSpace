@@ -76,6 +76,9 @@ var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.Transi
 
 var BGM_playlist_id_to_use__on_level_start : int = StoreOfAudio.BGMPlaylistId.CALM_01
 
+#
+
+var ignore_assist_mode_modifications : bool = false
 
 ##
 

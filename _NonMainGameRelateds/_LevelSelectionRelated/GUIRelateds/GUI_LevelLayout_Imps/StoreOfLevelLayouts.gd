@@ -84,7 +84,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 			["Beginning", []]
 		]
 		details.level_layout_desc = [
-			
+			["Where it all began", []]
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)
@@ -141,7 +141,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 			["Glass", []]
 		]
 		details.level_layout_desc = [
-			
+			["If you like to break stuffs, then this is for you!", []]
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)
@@ -160,7 +160,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 			["Return", []]
 		]
 		details.level_layout_desc = [
-			["Back to where it all began", []]
+			
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)
@@ -181,7 +181,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		]
 		details.level_layout_desc = [
 			["The true challenges, series A", []],
-			["Also has other levels that don't fit anywhere"]
+			["Also has other levels that don't fit anywhere", []]
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)

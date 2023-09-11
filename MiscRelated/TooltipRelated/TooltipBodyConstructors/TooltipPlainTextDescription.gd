@@ -12,9 +12,9 @@ const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
 
 var description : String
 var color : Color = Color(0, 0, 0, 1)
-var font_size : int = 8 setget set_font_size
+var font_size : int = 24 setget set_font_size
 var uses_bbcode : bool
-var font_id_to_use : int = StoreOfFonts.FontTypes.PIXEL_EMULATOR setget set_font_id_to_use
+var font_id_to_use : int = StoreOfFonts.FontTypes.MONOGRAM setget set_font_id_to_use
 
 onready var label = $Label
 

@@ -4,15 +4,17 @@ enum FontTypes {
 	PIXEL_EMULATOR,
 	ATARI_CLASSIC,
 	ATARI_CLASSIC_SMOOTH,
-	CONSOLA,
-	CAROLYN_HANDWRITTEN,
+	#CONSOLA,
+	#CAROLYN_HANDWRITTEN,
+	MONOGRAM,
 }
 
 const _pixel_emulator_font_size_to_font_map : Dictionary = {}
 const _atari_classic_font_size_to_font_map : Dictionary = {}
 const _atari_classic_smooth_font_size_to_font_map : Dictionary = {}
-const _consola_font_size_to_font_map : Dictionary = {}
-const _carolyn_handwritten_font_size_to_font_map : Dictionary = {}
+#const _consola_font_size_to_font_map : Dictionary = {}
+#const _carolyn_handwritten_font_size_to_font_map : Dictionary = {}
+const _monogram_font_size_to_font_map : Dictionary = {}
 
 
 #
@@ -20,14 +22,16 @@ const _carolyn_handwritten_font_size_to_font_map : Dictionary = {}
 static func get_font_with_size(font_type : int, font_size : int) -> DynamicFont:
 	if font_type == FontTypes.PIXEL_EMULATOR:
 		return get_pixel_emulator_font_with_size(font_size)
-	if font_type == FontTypes.ATARI_CLASSIC:
+	elif font_type == FontTypes.ATARI_CLASSIC:
 		return get_atari_classic_font_with_size(font_size)
-	if font_type == FontTypes.ATARI_CLASSIC_SMOOTH:
+	elif font_type == FontTypes.ATARI_CLASSIC_SMOOTH:
 		return get_atari_classic_smooth_font_with_size(font_size)
-	if font_size == FontTypes.CONSOLA:
-		return get_consola_font_with_size(font_size)
-	if font_size == FontTypes.CAROLYN_HANDWRITTEN:
-		return get_carolyn_handwritten_font_with_size(font_size)
+	#if font_type == FontTypes.CONSOLA:
+	#	return get_consola_font_with_size(font_size)
+	#if font_type == FontTypes.CAROLYN_HANDWRITTEN:
+	#	return get_carolyn_handwritten_font_with_size(font_size)
+	elif font_type == FontTypes.MONOGRAM:
+		return get_monogram_font_with_size(font_size)
 	
 	return null
 
@@ -92,41 +96,62 @@ static func _add_atari_classic_smooth_font_with_size_to_map(font_size : int) -> 
 
 
 #
-
-static func get_consola_font_with_size(font_size : int) -> DynamicFont:
-	if _consola_font_size_to_font_map.has(font_size):
-		return _consola_font_size_to_font_map[font_size]
-	else:
-		return _add_consola_font_with_size_to_map(font_size)
-
-static func _add_consola_font_with_size_to_map(font_size : int) -> DynamicFont:
-	var font_data = DynamicFontData.new()
-	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/Consola/CONSOLA.ttf"
-	
-	var font = DynamicFont.new()
-	font.font_data = font_data
-	font.size = font_size
-	
-	_consola_font_size_to_font_map[font_size] = font
-	return font
-
 #
+#static func get_consola_font_with_size(font_size : int) -> DynamicFont:
+#	if _consola_font_size_to_font_map.has(font_size):
+#		return _consola_font_size_to_font_map[font_size]
+#	else:
+#		return _add_consola_font_with_size_to_map(font_size)
+#
+#static func _add_consola_font_with_size_to_map(font_size : int) -> DynamicFont:
+#	var font_data = DynamicFontData.new()
+#	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/Consola/CONSOLA.ttf"
+#
+#	var font = DynamicFont.new()
+#	font.font_data = font_data
+#	font.size = font_size
+#
+#	_consola_font_size_to_font_map[font_size] = font
+#	return font
+#
+##
+#
+#static func get_carolyn_handwritten_font_with_size(font_size : int) -> DynamicFont:
+#	if _carolyn_handwritten_font_size_to_font_map.has(font_size):
+#		return _carolyn_handwritten_font_size_to_font_map[font_size]
+#	else:
+#		return _add_carolyn_handwritten_font_with_size_to_map(font_size)
+#
+#static func _add_carolyn_handwritten_font_with_size_to_map(font_size : int) -> DynamicFont:
+#	var font_data = DynamicFontData.new()
+#	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.ttf"
+#
+#	var font = DynamicFont.new()
+#	font.font_data = font_data
+#	font.size = font_size
+#
+#	_carolyn_handwritten_font_size_to_font_map[font_size] = font
+#	return font
 
-static func get_carolyn_handwritten_font_with_size(font_size : int) -> DynamicFont:
-	if _carolyn_handwritten_font_size_to_font_map.has(font_size):
-		return _carolyn_handwritten_font_size_to_font_map[font_size]
+
+#######
+
+static func get_monogram_font_with_size(font_size : int) -> DynamicFont:
+	if _monogram_font_size_to_font_map.has(font_size):
+		return _monogram_font_size_to_font_map[font_size]
 	else:
-		return _add_carolyn_handwritten_font_with_size_to_map(font_size)
+		return _add_monogram_font_with_size_to_map(font_size)
 
-static func _add_carolyn_handwritten_font_with_size_to_map(font_size : int) -> DynamicFont:
+static func _add_monogram_font_with_size_to_map(font_size : int) -> DynamicFont:
 	var font_data = DynamicFontData.new()
-	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/CarolynHandwritten/CarolynHandwrittenMedium-lqry.ttf"
+	font_data.font_path = "res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf"
 	
 	var font = DynamicFont.new()
 	font.font_data = font_data
 	font.size = font_size
+	font.extra_spacing_top = -4
 	
-	_carolyn_handwritten_font_size_to_font_map[font_size] = font
+	_monogram_font_size_to_font_map[font_size] = font
 	return font
 
 

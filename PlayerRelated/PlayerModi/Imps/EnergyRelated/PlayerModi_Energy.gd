@@ -87,7 +87,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	_current_energy = arg_val
 	
 	
-	if is_energy_deductable and _current_energy < old_val:
+	if !is_energy_deductable and _current_energy < old_val:
 		_current_energy = old_val
 	
 	
@@ -227,6 +227,20 @@ func set_is_energy_deductable(arg_val):
 	
 	if old_val != arg_val:
 		emit_signal("is_energy_deductable_changed", is_energy_deductable)
+
+########
+
+func make_assist_mode_modification__additional_energy():
+	var extra_energy_amount = GameSettingsManager.get_assist_mode__additional_energy_amount_from_current_id()
+	set_max_energy(_max_energy + extra_energy_amount)
+	set_current_energy(_current_energy + extra_energy_amount)
+
+func make_assist_mode_modification__energy_reduction_mode():
+	var reduc_id = GameSettingsManager.assist_mode__energy_reduction_mode_id
+	if reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.REDUCABLE__NORMAL:
+		set_is_energy_deductable(true)
+	elif reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.INFINITE:
+		set_is_energy_deductable(false)
 
 
 ###################### 

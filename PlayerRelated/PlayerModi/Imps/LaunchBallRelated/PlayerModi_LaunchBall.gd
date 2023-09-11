@@ -412,6 +412,18 @@ func set_can_change_aim_mode(arg_val):
 		player_modi_launch_ball_node.can_change_aim_mode = arg_val
 	
 
+###########
+
+
+func make_assist_mode_modification__additional_launch_ball():
+	var launch_ball_details = GameSettingsManager.get_assist_mode__additional_launch_ball_details_from_current_id()
+	set_current_ball_count(_current_ball_count + launch_ball_details[0])
+	
+	if launch_ball_details[1]:
+		if !is_infinite_ball_count:
+			set_is_infinite_ball_count(true)
+
+
 ###################### 
 # REWIND RELATED
 #####################

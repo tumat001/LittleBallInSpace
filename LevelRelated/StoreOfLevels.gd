@@ -872,7 +872,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["Breakables", []]
 		]
 		level_details.level_desc = [
-			["If you like breaking things, then this stage of the game is for you", []]
+			["Breakables", []]
 		]
 		
 		
@@ -1137,6 +1137,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.ignore_assist_mode_modifications = true
+		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
 		
@@ -1166,6 +1168,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.ignore_assist_mode_modifications = true
+		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
 		
@@ -1193,6 +1197,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.ignore_assist_mode_modifications = true
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		

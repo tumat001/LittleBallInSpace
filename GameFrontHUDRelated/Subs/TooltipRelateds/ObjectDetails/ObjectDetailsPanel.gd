@@ -16,7 +16,7 @@ onready var tooltip_body = $MarginContainer2/MarginContainer/TooltipBody
 #
 
 func _ready():
-	tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.CONSOLA
+	#tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.CONSOLA
 	tooltip_body.use_color_for_dark_background = has_dark_background
 	
 	#tooltip_body.

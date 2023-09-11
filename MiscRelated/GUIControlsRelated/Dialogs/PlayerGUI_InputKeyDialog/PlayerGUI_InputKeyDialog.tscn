@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/PlayerGUI_InputKeyDialog.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=2]
@@ -7,18 +7,15 @@
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/Assets/PlayerGUI_InputKeyDialog_BackgroundFill.png" type="Texture" id=5]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/Assets/PlayerGUI_InputKeyDialog_CornerPiece_TopLeft.png" type="Texture" id=6]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.tscn" type="PackedScene" id=7]
-[ext_resource path="res://MiscRelated/FontRelated/Fonts/Consola/CONSOLA.TTF" type="DynamicFontData" id=8]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/Assets/PlayerGUI_InputKeyDialog_Border_Top.png" type="Texture" id=9]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/Assets/PlayerGUI_InputKeyDialog_Border_Left.png" type="Texture" id=10]
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/Assets/ChangeControlsHotkeyPanel_HeaderBackground.png" type="Texture" id=11]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/Assets/PlayerGUI_InputKeyDialog_Separator.png" type="Texture" id=12]
 
-[sub_resource type="DynamicFont" id=1]
-size = 20
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 15
+[sub_resource type="DynamicFont" id=6]
+size = 32
+extra_spacing_top = -4
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -51,8 +48,8 @@ script = ExtResource( 1 )
 
 [node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 4 )]
 margin_top = 75.0
-margin_right = 250.0
-margin_bottom = 454.0
+margin_right = 278.0
+margin_bottom = 459.0
 custom_constants/margin_top = 23
 corner_piece_texture__top_left = ExtResource( 6 )
 border_piece_texture__top = ExtResource( 9 )
@@ -61,8 +58,8 @@ mid_fill_texture = ExtResource( 5 )
 
 [node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
 margin_top = 23.0
-margin_right = 250.0
-margin_bottom = 379.0
+margin_right = 278.0
+margin_bottom = 384.0
 
 [node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
 margin_right = 10.0
@@ -71,48 +68,48 @@ texture = ExtResource( 6 )
 
 [node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
 margin_left = 10.0
-margin_right = 240.0
+margin_right = 268.0
 margin_bottom = 10.0
 texture = ExtResource( 9 )
 
 [node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
-margin_left = 240.0
-margin_right = 250.0
+margin_left = 268.0
+margin_right = 278.0
 margin_bottom = 10.0
 texture = ExtResource( 6 )
 
 [node name="Border_Left" parent="DialogTemplate_Body_CBM/GridContainer" index="3"]
 margin_top = 10.0
 margin_right = 10.0
-margin_bottom = 346.0
+margin_bottom = 351.0
 texture = ExtResource( 10 )
 
 [node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 240.0
-margin_bottom = 346.0
+margin_right = 268.0
+margin_bottom = 351.0
 
 [node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
-margin_right = 230.0
-margin_bottom = 336.0
+margin_right = 258.0
+margin_bottom = 341.0
 texture = ExtResource( 5 )
 
 [node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
-margin_right = 230.0
-margin_bottom = 336.0
+margin_right = 258.0
+margin_bottom = 341.0
 custom_constants/margin_top = 14
 
 [node name="MidContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
 margin_top = 14.0
-margin_right = 230.0
-margin_bottom = 336.0
+margin_right = 258.0
+margin_bottom = 341.0
 mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer"]
-margin_right = 230.0
-margin_bottom = 322.0
+margin_right = 258.0
+margin_bottom = 327.0
 mouse_filter = 2
 custom_constants/margin_right = 12
 custom_constants/margin_top = 12
@@ -122,54 +119,55 @@ custom_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer"]
 margin_left = 12.0
 margin_top = 12.0
-margin_right = 218.0
-margin_bottom = 316.0
+margin_right = 246.0
+margin_bottom = 321.0
 mouse_filter = 2
 
 [node name="Label2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_right = 206.0
-margin_bottom = 14.0
+margin_right = 234.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Assign a hotkey for:"
 align = 1
 valign = 1
 
 [node name="AssociatedControlNameLabel" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 206.0
-margin_bottom = 39.0
+margin_top = 19.0
+margin_right = 234.0
+margin_bottom = 41.0
 custom_colors/font_color = Color( 1, 0.968627, 0.0392157, 1 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 6 )
 text = "ActionName"
 align = 1
 
 [node name="Container" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 43.0
-margin_right = 206.0
-margin_bottom = 86.0
+margin_top = 45.0
+margin_right = 234.0
+margin_bottom = 88.0
 mouse_filter = 2
 custom_constants/margin_top = 3
 custom_constants/margin_bottom = 3
 
 [node name="VKPForInput" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/Container" instance=ExtResource( 3 )]
-margin_left = 82.0
+modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
+margin_left = 94.0
 margin_top = 3.0
-margin_right = 124.0
+margin_right = 140.0
 margin_bottom = 40.0
 size_flags_horizontal = 6
 update_keypress_label_based_on_game_control = false
 
 [node name="InvalidContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 90.0
-margin_right = 206.0
-margin_bottom = 126.0
+margin_top = 92.0
+margin_right = 234.0
+margin_bottom = 130.0
 mouse_filter = 2
 custom_constants/margin_top = 5
 
 [node name="Label" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/InvalidContainer"]
 margin_top = 5.0
-margin_right = 206.0
-margin_bottom = 36.0
+margin_right = 234.0
+margin_bottom = 38.0
 custom_colors/font_color = Color( 1, 0.576471, 0.576471, 1 )
 text = "Invalid Hotkey.
 Please choose another key."
@@ -177,22 +175,22 @@ align = 1
 valign = 1
 
 [node name="ConflictingHotkeysContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 130.0
-margin_right = 206.0
-margin_bottom = 226.0
+margin_top = 134.0
+margin_right = 234.0
+margin_bottom = 231.0
 mouse_filter = 2
 custom_constants/margin_top = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer"]
 margin_top = 5.0
-margin_right = 206.0
-margin_bottom = 96.0
+margin_right = 234.0
+margin_bottom = 97.0
 mouse_filter = 2
 custom_constants/separation = 8
 
 [node name="Label" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer/VBoxContainer"]
-margin_right = 206.0
-margin_bottom = 48.0
+margin_right = 234.0
+margin_bottom = 51.0
 custom_colors/font_color = Color( 1, 0.65098, 0.2, 1 )
 text = "Warning!
 Hotkey conflicts with
@@ -200,139 +198,138 @@ these controls:"
 align = 1
 
 [node name="ConflictingLabel" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ConflictingHotkeysContainer/VBoxContainer"]
-margin_top = 56.0
-margin_right = 206.0
-margin_bottom = 91.0
+margin_top = 59.0
+margin_right = 234.0
+margin_bottom = 92.0
 custom_colors/font_color = Color( 1, 0.968627, 0.0392157, 1 )
-custom_fonts/font = SubResource( 2 )
 text = "TEST
 TEST"
 align = 1
 
 [node name="SepaMargin" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 230.0
-margin_right = 206.0
-margin_bottom = 245.0
+margin_top = 235.0
+margin_right = 234.0
+margin_bottom = 250.0
 custom_constants/margin_top = 5
 custom_constants/margin_bottom = 5
 
 [node name="Sepa" type="TextureRect" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/SepaMargin"]
 margin_top = 5.0
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 10.0
 texture = ExtResource( 12 )
 stretch_mode = 2
 
 [node name="ResetToDefaultContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 249.0
-margin_right = 206.0
-margin_bottom = 277.0
+margin_top = 254.0
+margin_right = 234.0
+margin_bottom = 282.0
 custom_constants/margin_bottom = 5
 
 [node name="Button_Default" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer" instance=ExtResource( 7 )]
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 can_grab_focus = false
 
 [node name="TextureButton" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer/Button_Default" index="0"]
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 23.0
 
 [node name="LabelContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer/Button_Default" index="1"]
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 23.0
 
 [node name="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/ResetToDefaultContainer/Button_Default/LabelContainer" index="0"]
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 23.0
 custom_fonts/font = SubResource( 3 )
 text = "Reset to Default"
 
 [node name="BottomChoiceContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer"]
-margin_top = 281.0
-margin_right = 206.0
-margin_bottom = 304.0
+margin_top = 286.0
+margin_right = 234.0
+margin_bottom = 309.0
 mouse_filter = 2
 custom_constants/margin_top = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer"]
-margin_right = 206.0
+margin_right = 234.0
 margin_bottom = 23.0
 mouse_filter = 2
 
 [node name="Button_Ok" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer" instance=ExtResource( 7 )]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 can_grab_focus = false
 
 [node name="TextureButton" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Ok" index="0"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 
 [node name="LabelContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Ok" index="1"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 
 [node name="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Ok/LabelContainer" index="0"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 custom_fonts/font = SubResource( 3 )
 text = "Enter"
 
 [node name="Button_Cancel" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer" instance=ExtResource( 7 )]
-margin_left = 105.0
-margin_right = 206.0
+margin_left = 119.0
+margin_right = 234.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 can_grab_focus = false
 
 [node name="TextureButton" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Cancel" index="0"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 
 [node name="LabelContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Cancel" index="1"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 
 [node name="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/MidContainer/MarginContainer/VBoxContainer/BottomChoiceContainer/HBoxContainer/Button_Cancel/LabelContainer" index="0"]
-margin_right = 101.0
+margin_right = 115.0
 margin_bottom = 23.0
 custom_fonts/font = SubResource( 4 )
 text = "Cancel"
 
 [node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
-margin_left = 240.0
+margin_left = 268.0
 margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 346.0
+margin_right = 278.0
+margin_bottom = 351.0
 texture = ExtResource( 10 )
 
 [node name="CornerP_BotLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="6"]
-margin_top = 346.0
+margin_top = 351.0
 margin_right = 10.0
-margin_bottom = 356.0
+margin_bottom = 361.0
 texture = ExtResource( 6 )
 
 [node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
 margin_left = 10.0
-margin_top = 346.0
-margin_right = 240.0
-margin_bottom = 356.0
+margin_top = 351.0
+margin_right = 268.0
+margin_bottom = 361.0
 texture = ExtResource( 9 )
 
 [node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
-margin_left = 240.0
-margin_top = 346.0
-margin_right = 250.0
-margin_bottom = 356.0
+margin_left = 268.0
+margin_top = 351.0
+margin_right = 278.0
+margin_bottom = 361.0
 texture = ExtResource( 6 )
 
 [node name="Control" type="Control" parent="."]
 margin_top = 75.0
-margin_right = 250.0
-margin_bottom = 454.0
+margin_right = 278.0
+margin_bottom = 459.0
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]

@@ -9,7 +9,7 @@ onready var audio_bus_volume_panel__sound_fx = $HBoxContainer/AudioBusVolumePane
 
 func _ready():
 	var audio_properties__sound_fx = AudioBusVolumePanel.AudioProperties.new()
-	audio_properties__sound_fx.audio_bus_display_name = "Sound Effects"
+	audio_properties__sound_fx.audio_bus_display_name = "SFX"
 	audio_properties__sound_fx.bus_player_type_volume__variable_name = "bus__sound_fx_volume"
 	audio_properties__sound_fx.bus_player_type_volume_changed__signal = "bus__sound_fx_volume_changed"
 	audio_properties__sound_fx.bus_player_type_mute__variable_name = "bus__sound_fx_bus_mute"
@@ -19,7 +19,7 @@ func _ready():
 	
 	
 	var audio_properties__background = AudioBusVolumePanel.AudioProperties.new()
-	audio_properties__background.audio_bus_display_name = "Background\nMusic"
+	audio_properties__background.audio_bus_display_name = "BGM"
 	audio_properties__background.bus_player_type_volume__variable_name = "bus__background_music_volume"
 	audio_properties__background.bus_player_type_volume_changed__signal = "bus__background_music_volume_changed"
 	audio_properties__background.bus_player_type_mute__variable_name = "bus__background_music_bus_mute"

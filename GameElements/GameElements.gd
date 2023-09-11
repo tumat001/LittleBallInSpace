@@ -40,6 +40,10 @@ var game_front_hud : GameFrontHUD
 
 #
 
+var pause_game_at_startup : bool = false
+
+#
+
 var object_lifespan__ball : float = -1
 
 #
@@ -75,6 +79,8 @@ func _enter_tree():
 
 
 func _ready():
+	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all()
+	
 	_initialize_game_front_hud()
 	
 	#
@@ -109,6 +115,7 @@ func _ready():
 	
 	GameSaveManager.set_game_elements(self)
 	game_result_manager.set_game_elements(self)
+	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config()
 	
 	####
 	

@@ -4,6 +4,7 @@ const AbstractPlayerModi = preload("res://PlayerRelated/PlayerModi/AbstractPlaye
 
 #
 
+signal before_modi_is_configured(arg_modi)
 signal modi_added_to_player(arg_modi)
 
 #
@@ -25,6 +26,8 @@ func set_current_player(arg_player):
 
 func add_modi_to_player(arg_modi : AbstractPlayerModi):
 	_all_modis.append(arg_modi)
+	
+	emit_signal("before_modi_is_configured", arg_modi)
 	
 	arg_modi.apply_modification_to_player_and_game_elements(current_player, game_elements)
 	

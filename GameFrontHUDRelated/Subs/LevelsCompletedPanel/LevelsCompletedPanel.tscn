@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/LevelsCompletedPanel.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/Assets/LevelsCompletedPanel_GreenFlag.png" type="Texture" id=2]
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/Assets/LevelsCompletedPanel_Background.png" type="Texture" id=3]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=4]
 
 [node name="LevelsCompletedPanel" type="MarginContainer"]
 margin_right = 80.0
@@ -24,6 +25,7 @@ margin_top = 6.0
 margin_right = 57.0
 margin_bottom = 20.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 4 )
 text = "20 / 20"
 align = 1
 valign = 1

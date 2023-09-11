@@ -140,11 +140,8 @@ func _on_player_entered_self__custom_defined__remote():
 
 func _start_remote_dialog__02():
 	var dialog_desc = [
-		[".....", []],
-		#["Oh, is this %s?" % GameSaveManager.player_name, []],
-		["Oh, could this be?", []],
-		["Ok. There's an escape pod in ship. It's near the snacks area.", []],
-		
+		["Oh, could this be?...", []],
+		["Ok. There's an escape pod in ship. It's up north... Where's north?", []],
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
