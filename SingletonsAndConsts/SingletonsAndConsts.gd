@@ -5,6 +5,8 @@ extends Node
 signal current_rewind_manager_changed(arg_manager)
 signal current_game_elements_changed(arg_elements)
 
+signal current_master_setted(arg_master)
+
 #
 
 const GROUP_NAME__OBJECT_TILE_FRAGMENT = "GroupName_ObjectTileFragment"
@@ -19,7 +21,7 @@ var current_level_layout_id
 
 #
 
-var current_master
+var current_master setget set_current_master
 
 var current_game_elements setget set_current_game_elements
 var current_game_elements__other_node_hoster
@@ -41,6 +43,11 @@ var level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel
 var show_end_game_result_pre_hud : bool = false
 
 #
+
+func set_current_master(arg_master):
+	current_master = arg_master
+	
+	emit_signal("current_master_setted", current_master)
 
 func set_current_game_elements(arg_elements):
 	current_game_elements = arg_elements

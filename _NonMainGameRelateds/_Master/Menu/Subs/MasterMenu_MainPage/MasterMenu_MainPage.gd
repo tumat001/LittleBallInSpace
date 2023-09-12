@@ -1,8 +1,20 @@
 extends MarginContainer
 
 
+const GUI_ChangeControlsHotkeyPanel = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/GUI_ChangeControlsHotkeyPanel.gd")
+const GUI_ChangeControlsHotkeyPanel_Scene = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/GUI_ChangeControlsHotkeyPanel.tscn")
+
+
+#
+
+var _gui_change_controls_hotkeys_panel : GUI_ChangeControlsHotkeyPanel
+
+#
+
 onready var button_resume = $MainPanel/Control/Button_Resume
 onready var button_quit = $MainPanel/Control/Button_Quit
+
+onready var assist_mode_mini_summary_panel = $FreeFormControl/VBoxContainer/AssistModeMiniSummaryPanel
 
 var all_buttons : Array
 
@@ -13,7 +25,11 @@ func _ready():
 	all_buttons.append(button_quit)
 	
 	_assign_button_neighbors()
-
+	
+	#
+	
+	assist_mode_mini_summary_panel.control_tree = control_tree
+	assist_mode_mini_summary_panel.is_in_game = false
 
 func _assign_button_neighbors():
 	var i = 0
@@ -43,6 +59,21 @@ func _on_Button_Quit_button_pressed():
 	
 
 
+
+func _on_CurrentControlsPanel_requested_change_hotkeys():
+	if !is_instance_valid(_gui_change_controls_hotkeys_panel):
+		_init_gui_change_controls_hotkeys_panel()
+	
+	_show_gui_change_controls_hotkeys_panel()
+
+func _init_gui_change_controls_hotkeys_panel():
+	_gui_change_controls_hotkeys_panel = GUI_ChangeControlsHotkeyPanel_Scene.instance()
+	control_tree.add_control__but_dont_show(_gui_change_controls_hotkeys_panel)
+
+
+func _show_gui_change_controls_hotkeys_panel():
+	control_tree.show_control__and_add_if_unadded(_gui_change_controls_hotkeys_panel)
+	
 #############################################
 # TREE ITEM Specific methods/vars
 

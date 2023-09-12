@@ -61,7 +61,11 @@ var _tweener_cutscene_changer_button_panel : SceneTreeTween
 
 #
 
-var queue_free_on_cutscene_end : bool = true
+export(bool) var queue_free_on_cutscene_end : bool = true
+
+#
+
+var _ignore_inputs
 
 #
 
@@ -464,4 +468,32 @@ func _on_end_of_cutscene__fade_out_finished():
 
 func is_currently_displaying_loading_panel():
 	return _is_currently_displaying_loading_panel
+
+
+###########################
+
+
+#############################################
+# TREE ITEM Specific methods/vars
+
+var control_tree
+
+
+func on_control_received_focus():
+	_ignore_inputs = true
+
+func on_control_fully_visible():
+	_ignore_inputs = false
+
+func on_control_lost_focus():
+	_ignore_inputs = true
+
+func on_control_fully_invisible():
+	_ignore_inputs = true
+	
+
+############
+# END OF TREE ITEM Specific methods/vars
+###########
+
 

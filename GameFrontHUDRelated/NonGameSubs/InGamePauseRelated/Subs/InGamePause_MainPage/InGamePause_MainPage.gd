@@ -28,6 +28,8 @@ onready var level_name_tooltip_body = $FreeFormControl/LevelNameTooltipBody
 
 onready var header_label_for_pause = $MainContainer/FreeFormControl/HeaderLabelPause
 
+onready var assist_mode_mini_summary_panel = $FreeFormControl/VBoxContainer/AssistModeMiniSummaryPanel
+
 var all_buttons : Array
 
 #
@@ -49,6 +51,11 @@ func _ready():
 	#
 	
 	_update_disp_based_on_pause_on_esc()
+	
+	#
+	
+	assist_mode_mini_summary_panel.control_tree = control_tree
+	
 
 #
 

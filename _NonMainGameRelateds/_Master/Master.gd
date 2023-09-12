@@ -19,6 +19,9 @@ const EndingSummaryWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameH
 signal switching_from_game_elements__as_win(arg_transition_scene)
 signal switching_from_game_elements__as_win__transition_ended()
 
+signal switching_from_game_elements__non_restart()
+signal switching_from_game_elements__non_restart__transition_ended()
+
 #
 
 const screen_size = Vector2(960, 540)
@@ -196,7 +199,7 @@ func switch_to_level_selection_scene__from_game_elements__as_win():
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
 	
 	emit_signal("switching_from_game_elements__as_win", transition)
-
+	emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
 	get_tree().paused = false
@@ -209,6 +212,8 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_lose
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
+	
+	emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
 	get_tree().paused = false
@@ -221,6 +226,8 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
+	
+	emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_game_elements__from_game_elements__from_restart():
 	get_tree().paused = false
@@ -240,7 +247,10 @@ func switch_to_game_elements__from_game_elements__from_restart():
 	
 
 
+# for all transition except for restart
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
+	emit_signal("switching_from_game_elements__non_restart__transition_ended")
+	
 	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
 		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited")
 	

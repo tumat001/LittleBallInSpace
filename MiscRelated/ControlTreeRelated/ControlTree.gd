@@ -18,6 +18,9 @@ const CONTROL_METHOD_NAME__FULLY_INVISIBLE = "on_control_fully_invisible"
 
 const CONTROL_PROPERTY_NAME__CONTROL_TREE = "control_tree"
 
+const CONTROL_PROPERTY_NAME_MARKER_OPTIONAL__MAKE_UNBACKABLE = "is_unbackable__marker"
+
+
 #
 
 var _is_transitioning : bool
@@ -41,6 +44,12 @@ export(bool) var consume_all_key_inputs : bool = true
 
 var show_info_button : bool = false setget set_show_info_button
 var show_back_button : bool = true setget set_show_back_button
+
+#
+
+var _disable_backing_and_esc__by_curr_control : bool
+
+var _control_to_associated_button_list_to_show : Dictionary = {}
 
 #
 
@@ -122,8 +131,12 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	#
 	
 	_current_control_showing = arg_control
-	if arg_add_in_hierarchy and !_current_hierarchy.has(arg_control):
-		_current_hierarchy.append(arg_control)
+	if arg_add_in_hierarchy:
+		attempt_add_control_to_current_hierarchy(arg_control)
+	
+	if _control_to_associated_button_list_to_show.has(arg_control):
+		for button in _control_to_associated_button_list_to_show[arg_control]:
+			button.visible = true
 	
 	arg_control.visible = true
 	arg_control.call(CONTROL_METHOD_NAME__RECEIVED_FOCUS)
@@ -143,9 +156,21 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	
 	_check_if_control_implements_necessaries__and_print_if_not(arg_control)
 	
+	_disable_backing_and_esc__by_curr_control = arg_control.get("CONTROL_PROPERTY_NAME_MARKER_OPTIONAL__MAKE_UNBACKABLE")
+	if _disable_backing_and_esc__by_curr_control:
+		back_button.visible = false
+	else:
+		back_button.visible = true
+		
+	
 	emit_signal("hierarchy_advanced_forwards", arg_control)
 	
 	#print("curr: %s, prev: %s. hier size: %s" % [_current_control_showing, prev_control, _current_hierarchy.size()])
+
+func attempt_add_control_to_current_hierarchy(arg_control):
+	if !_current_hierarchy.has(arg_control):
+		_current_hierarchy.append(arg_control)
+
 
 func _on_control_fully_visible_from_tweener(arg_control):
 	_is_transitioning = false
@@ -196,6 +221,10 @@ func hide_control__and_traverse_thru_hierarchy(arg_control : Control, arg_use_tw
 
 func _hide_control__no_traverse_thru_hierarchy__internal(arg_control):
 	arg_control.call(CONTROL_METHOD_NAME__LOST_FOCUS)
+	
+	if _control_to_associated_button_list_to_show.has(arg_control):
+		for button in _control_to_associated_button_list_to_show[arg_control]:
+			button.visible = false
 	
 	arg_control.visible = false
 	arg_control.call(CONTROL_METHOD_NAME__FULLY_INVISIBLE)
@@ -251,8 +280,9 @@ func _input(event):
 		if event.is_action_pressed("ui_cancel"):
 			if !_is_transitioning:
 				if traverse_hierarchy_on_ESC_click:
-					get_viewport().set_input_as_handled()
-					hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
+					if !_disable_backing_and_esc__by_curr_control:
+						get_viewport().set_input_as_handled()
+						hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
 			
 
 func _unhandled_key_input(event):
@@ -299,4 +329,23 @@ func _on_InfoButton_pressed():
 func _on_BackButton_pressed():
 	hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
 	
+
+
+
+func create_texture_button__with_info_textures() -> TextureButton:
+	var button = TextureButton.new()
+	button.texture_normal = load("res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_InfoButton_Normal.png")
+	button.texture_hover = load("res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_InfoButton_Hovered.png")
+	return button
+
+func add_custom_top_right_button__and_associate_with_control(arg_button : TextureButton, arg_control : Control):
+	arg_button.focus_mode = Control.FOCUS_NONE
+	arg_button.visible = false
+	top_right_hbox_container.add_child(arg_button)
+	
+	if !_control_to_associated_button_list_to_show.has(arg_control):
+		_control_to_associated_button_list_to_show[arg_control] = []
+	_control_to_associated_button_list_to_show[arg_control].append(arg_button)
+
+
 

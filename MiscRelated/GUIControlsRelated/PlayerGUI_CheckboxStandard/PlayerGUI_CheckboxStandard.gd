@@ -1,3 +1,4 @@
+tool
 extends MarginContainer
 
 const StatusPic_Check = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Status_Check.png")
@@ -10,7 +11,7 @@ const CheckBoxPic_Disabled = preload("res://MiscRelated/GUIControlsRelated/Playe
 #
 
 signal is_checked_changed(arg_val)
-signal pressed__intent_for_reactive(arg_check_val_if_updated)
+signal pressed__intent_for_reactive(arg_intent_check_val)
 
 #
 
@@ -21,12 +22,16 @@ const DISABLED_MODULATE = Color(0.6, 0.6, 0.6, 0.75)
 
 export(bool) var update_properties_when_clicked_instead_of_reactive : bool = true
 
+export(String) var label_text : String setget set_label_text
+
 #
 
 var _is_checked : bool
 
 var _is_disabled : bool
 var _change_modulate_based_on_is_disabled : bool
+
+var _is_mouse_inside : bool
 
 #
 
@@ -36,6 +41,9 @@ var _is_in_ready : bool
 
 onready var button = $Button
 onready var status_texture_rect = $StatusPic
+onready var box_texture_rect = $HBoxContainer/Container/BoxPic
+
+onready var checkbox_label = $HBoxContainer/CheckboxLabel
 
 #
 
@@ -44,8 +52,19 @@ func _ready():
 	
 	set_is_checked(_is_checked, false)
 	set_is_disabled(_is_disabled, _change_modulate_based_on_is_disabled)
+	set_label_text(label_text)
 	
 	_is_in_ready = false
+
+#
+
+func set_label_text(arg_label_text):
+	label_text = arg_label_text
+	
+	if is_inside_tree() or Engine.editor_hint:
+		checkbox_label.text = label_text
+
+#
 
 func set_is_disabled(arg_val, arg_change_modulate_based_on_is_disabled):
 	var old_change_val = _change_modulate_based_on_is_disabled
@@ -68,7 +87,9 @@ func set_is_disabled(arg_val, arg_change_modulate_based_on_is_disabled):
 				
 				if arg_change_modulate_based_on_is_disabled:
 					modulate = ENABLED_MODUALTE
-				
+			
+			
+			_update_box_texture_display()
 
 
 func set_is_checked(arg_val, arg_emit_signal : bool):
@@ -96,21 +117,32 @@ func _on_Button_pressed():
 
 #
 
-func _update_box_texture_display():
-	pass
-	
-	
-	
-
-
-
 func _on_Button_mouse_entered():
-	pass # Replace with function body.
+	_is_mouse_inside = true
+	_update_box_texture_display()
 
 
 func _on_Button_mouse_exited():
-	pass # Replace with function body.
+	_is_mouse_inside = false
+	_update_box_texture_display()
 
 
 func _on_PlayerGUI_CheckboxStandard_visibility_changed():
-	pass # Replace with function body.
+	_is_mouse_inside = false
+	_update_box_texture_display()
+
+#
+
+func _update_box_texture_display():
+	if _is_disabled:
+		box_texture_rect.texture = CheckBoxPic_Disabled
+		
+	else:
+		if _is_mouse_inside:
+			box_texture_rect.texture = CheckBoxPic_Hovered
+			
+		else:
+			box_texture_rect.texture = CheckBoxPic_Normal
+			
+
+

@@ -191,7 +191,8 @@ var assist_mode__pause_at_esc_id : int setget set_assist_mode__pause_at_esc_id
 
 var assist_mode_details_helper : AssistModeDetailsHelper
 var _current_assist_mode_id_to_vals_map_at_current_game_elements : Dictionary
-var _current_assist_mode_is_active_at_current_game_elements : bool
+var current_assist_mode_is_active_at_current_game_elements : bool
+var current_assist_mode_is_active_at_current_game_elements__but_no_effect : bool
 var assist_mode_id_to_var_name_map : Dictionary
 var assist_mode_id_to_setter_method_name_map : Dictionary
 var assist_mode_id_to_val_changed_signal_name_map : Dictionary
@@ -630,6 +631,11 @@ func _init_assist_mode_id_to_x_name_map():
 
 func _init_assist_mode_rel_signals():
 	connect("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed__for_GE")
+	
+	if is_instance_valid(SingletonsAndConsts.current_master):
+		_connect_signals_with_master()
+	else:
+		SingletonsAndConsts.connect("current_master_setted", self, "_on_current_master_setted", [], CONNECT_ONESHOT)
 
 
 func _load_assist_mode_settings_using_dic(data : Dictionary):
@@ -770,7 +776,7 @@ func set_assist_mode_ids_unlocked_status__using_array(arg_ids_to_set_as_unlocked
 func is_assist_mode_id_unlocked(arg_id):
 	return _assist_mode__unlocked_ids.has(arg_id)
 
-func is_all_assist_mode_ids_unlocked(arg_id):
+func is_all_assist_mode_ids_unlocked():
 	return _assist_mode__unlocked_ids.size() == AssistModeId.size()
 
 ####
@@ -886,7 +892,8 @@ func _before_game__register_current_assist_mode_id_vals():
 		var curr_val = get(assist_mode_id_to_var_name_map[id])
 		_current_assist_mode_id_to_vals_map_at_current_game_elements[id] = curr_val
 	
-	_current_assist_mode_is_active_at_current_game_elements = is_assist_mode_active
+	current_assist_mode_is_active_at_current_game_elements = is_assist_mode_active
+	current_assist_mode_is_active_at_current_game_elements__but_no_effect = _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals()
 	
 	last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config = false
 
@@ -904,7 +911,7 @@ func _on_any_game_modifying_assist_mode_settings_changed__for_GE():
 
 
 func _is_any_change_difference_from_assist_mode_config_to_current_GE_assist_mode_config() -> bool:
-	if _current_assist_mode_is_active_at_current_game_elements != is_assist_mode_active:
+	if current_assist_mode_is_active_at_current_game_elements != is_assist_mode_active:
 		return true
 	
 	for id in AssistModeId.values():
@@ -928,5 +935,18 @@ func get_val_changed_signal_name_of_assist_mode_id(arg_assist_mode_id):
 func get_no_effect_val_of_assist_mode_id(arg_assist_mode_id):
 	return assist_mode_id_to_no_effect_var_name_map[arg_assist_mode_id]
 
+
+
+##
+
+func _on_current_master_setted(arg_master):
+	_connect_signals_with_master()
+
+func _connect_signals_with_master():
+	SingletonsAndConsts.current_master.connect("switching_from_game_elements__non_restart__transition_ended", self, "_on_switching_from_game_elements__non_restart__transition_ended")
+
+func _on_switching_from_game_elements__non_restart__transition_ended():
+	if assist_mode_toggle_active_mode_id == AssistMode_ToggleActiveModeId.FOR_THIS_LEVEL_ONLY:
+		set_is_assist_mode_active(false)
 
 
