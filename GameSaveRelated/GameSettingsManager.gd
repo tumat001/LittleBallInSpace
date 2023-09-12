@@ -30,6 +30,7 @@ signal assist_mode_unlocked_ids_changed(arg_ids)
 signal assist_mode_id_unlock_status_changed(arg_id, arg_val)
 
 signal assist_mode_toggle_active_mode_changed(arg_val)
+# make these x_mode_changed signals have consistent argument/param count
 signal assist_mode__additional_energy_mode_changed(arg_val)
 signal assist_mode__energy_reduction_mode_changed(arg_val)
 signal assist_mode__additional_launch_ball_mode_changed(arg_val)
@@ -187,10 +188,14 @@ const assist_mode__pause_at_esc_id__no_effect : int = AssistMode_PauseAtESCModeI
 var assist_mode__pause_at_esc_id : int setget set_assist_mode__pause_at_esc_id
 
 
+
 var assist_mode_details_helper : AssistModeDetailsHelper
 var _current_assist_mode_id_to_vals_map_at_current_game_elements : Dictionary
 var _current_assist_mode_is_active_at_current_game_elements : bool
 var assist_mode_id_to_var_name_map : Dictionary
+var assist_mode_id_to_setter_method_name_map : Dictionary
+var assist_mode_id_to_val_changed_signal_name_map : Dictionary
+var assist_mode_id_to_no_effect_var_name_map : Dictionary
 
 var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
 
@@ -395,7 +400,7 @@ func _load_general_game_settings_using_file(arg_file : File):
 	
 	#
 	
-	_init_assist_mode_id_to_var_name_map()
+	_init_assist_mode_id_to_x_name_map()
 	_init_assist_mode_rel_signals()
 	if data.has(ASSIST_MODE__CATEGORY__DIC_IDENTIFIER):
 		_load_assist_mode_settings_using_dic(data[ASSIST_MODE__CATEGORY__DIC_IDENTIFIER])
@@ -600,11 +605,28 @@ func _load_game_hotkey_using_dic(data : Dictionary):
 ######################
 ## ASSIST MODE
 
-func _init_assist_mode_id_to_var_name_map():
+func _init_assist_mode_id_to_x_name_map():
 	assist_mode_id_to_var_name_map[AssistModeId.ADDITIONAL_ENERGY_MODE] = "assist_mode__additional_energy_mode_id"
 	assist_mode_id_to_var_name_map[AssistModeId.ENERGY_REDUC_MODE] = "assist_mode__energy_reduction_mode_id"
 	assist_mode_id_to_var_name_map[AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE] = "assist_mode__additional_launch_ball_mode_id"
 	assist_mode_id_to_var_name_map[AssistModeId.PAUSE_AT_ESC_MODE] = "assist_mode__pause_at_esc_id"
+	
+	assist_mode_id_to_setter_method_name_map[AssistModeId.ADDITIONAL_ENERGY_MODE] = "set_assist_mode__additional_energy_mode_id"
+	assist_mode_id_to_setter_method_name_map[AssistModeId.ENERGY_REDUC_MODE] = "set_assist_mode__energy_reduction_mode_id"
+	assist_mode_id_to_setter_method_name_map[AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE] = "set_assist_mode__additional_launch_ball_mode_id"
+	assist_mode_id_to_setter_method_name_map[AssistModeId.PAUSE_AT_ESC_MODE] = "set_assist_mode__pause_at_esc_id"
+	
+	assist_mode_id_to_val_changed_signal_name_map[AssistModeId.ADDITIONAL_ENERGY_MODE] = "assist_mode__additional_energy_mode_changed"
+	assist_mode_id_to_val_changed_signal_name_map[AssistModeId.ENERGY_REDUC_MODE] = "assist_mode__energy_reduction_mode_changed"
+	assist_mode_id_to_val_changed_signal_name_map[AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE] = "assist_mode__additional_launch_ball_mode_changed"
+	assist_mode_id_to_val_changed_signal_name_map[AssistModeId.PAUSE_AT_ESC_MODE] = "assist_mode__pause_at_esc_mode_changed"
+	
+	assist_mode_id_to_no_effect_var_name_map[AssistModeId.ADDITIONAL_ENERGY_MODE] = "assist_mode__additional_energy_mode_id__no_effect"
+	assist_mode_id_to_no_effect_var_name_map[AssistModeId.ENERGY_REDUC_MODE] = "assist_mode__energy_reduction_mode_id__no_effect"
+	assist_mode_id_to_no_effect_var_name_map[AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE] = "assist_mode__additional_launch_ball_mode_id__no_effect"
+	assist_mode_id_to_no_effect_var_name_map[AssistModeId.PAUSE_AT_ESC_MODE] = "assist_mode__pause_at_esc_id__no_effect"
+	
+
 
 func _init_assist_mode_rel_signals():
 	connect("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed__for_GE")
@@ -892,4 +914,19 @@ func _is_any_change_difference_from_assist_mode_config_to_current_GE_assist_mode
 			return true
 	
 	return false
+
+func get_curr_val_of_assist_mode_id(arg_assist_mode_id):
+	return get(assist_mode_id_to_var_name_map[arg_assist_mode_id])
+
+func set_curr_val_of_assist_mode_id(arg_assist_mode_id, arg_val):
+	var setter_method_name = assist_mode_id_to_setter_method_name_map[arg_assist_mode_id]
+	call(setter_method_name, arg_val)
+
+func get_val_changed_signal_name_of_assist_mode_id(arg_assist_mode_id):
+	return assist_mode_id_to_val_changed_signal_name_map[arg_assist_mode_id]
+
+func get_no_effect_val_of_assist_mode_id(arg_assist_mode_id):
+	return assist_mode_id_to_no_effect_var_name_map[arg_assist_mode_id]
+
+
 

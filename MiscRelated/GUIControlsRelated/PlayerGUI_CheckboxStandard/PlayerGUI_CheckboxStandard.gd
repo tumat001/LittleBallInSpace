@@ -3,6 +3,10 @@ extends MarginContainer
 const StatusPic_Check = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Status_Check.png")
 const StatusPic_X = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Status_X.png")
 
+const CheckBoxPic_Normal = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Box_Normal.png")
+const CheckBoxPic_Hovered = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Box_Hovered.png")
+const CheckBoxPic_Disabled = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/Assets/PlayerGUI_CheckboxStandard_Box_Disabled.png")
+
 #
 
 signal is_checked_changed(arg_val)
@@ -90,3 +94,23 @@ func _on_Button_pressed():
 	else:
 		emit_signal("pressed__intent_for_reactive", !_is_checked)
 
+#
+
+func _update_box_texture_display():
+	pass
+	
+	
+	
+
+
+
+func _on_Button_mouse_entered():
+	pass # Replace with function body.
+
+
+func _on_Button_mouse_exited():
+	pass # Replace with function body.
+
+
+func _on_PlayerGUI_CheckboxStandard_visibility_changed():
+	pass # Replace with function body.

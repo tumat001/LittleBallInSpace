@@ -27,9 +27,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -271.0
+margin_left = -249.5
 margin_top = -159.0
-margin_right = 271.0
+margin_right = 249.5
 margin_bottom = 159.0
 mouse_filter = 2
 size_flags_horizontal = 6
@@ -37,7 +37,7 @@ size_flags_vertical = 6
 custom_constants/separation = 50
 
 [node name="HeaderLabel" type="Label" parent="Control/VBoxContainer"]
-margin_right = 542.0
+margin_right = 499.0
 margin_bottom = 69.0
 size_flags_vertical = 1
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
@@ -49,14 +49,14 @@ valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
 margin_top = 119.0
-margin_right = 542.0
+margin_right = 499.0
 margin_bottom = 307.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 40
 
 [node name="VBoxName" type="VBoxContainer" parent="Control/VBoxContainer/HBoxContainer"]
-margin_right = 288.0
+margin_right = 296.0
 margin_bottom = 188.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -64,7 +64,7 @@ custom_constants/separation = 20
 
 [node name="Label_AdditionalEnergy" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxName"]
 margin_top = 5.0
-margin_right = 288.0
+margin_right = 296.0
 margin_bottom = 27.0
 size_flags_vertical = 6
 custom_fonts/font = ExtResource( 1 )
@@ -73,7 +73,7 @@ valign = 1
 
 [node name="Label_EnergyReduc" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxName"]
 margin_top = 57.0
-margin_right = 288.0
+margin_right = 296.0
 margin_bottom = 79.0
 size_flags_vertical = 6
 custom_fonts/font = ExtResource( 1 )
@@ -82,7 +82,7 @@ valign = 1
 
 [node name="Label_AdditionalLaunchBall" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxName"]
 margin_top = 109.0
-margin_right = 288.0
+margin_right = 296.0
 margin_bottom = 131.0
 size_flags_vertical = 6
 custom_fonts/font = ExtResource( 1 )
@@ -91,7 +91,7 @@ valign = 1
 
 [node name="Label_PauseAtESC" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxName"]
 margin_top = 161.0
-margin_right = 288.0
+margin_right = 296.0
 margin_bottom = 183.0
 size_flags_vertical = 6
 custom_fonts/font = ExtResource( 1 )
@@ -99,33 +99,33 @@ text = "Pause at Escape Menu:"
 valign = 1
 
 [node name="VBoxHOption" type="VBoxContainer" parent="Control/VBoxContainer/HBoxContainer"]
-margin_left = 328.0
-margin_right = 542.0
+margin_left = 336.0
+margin_right = 499.0
 margin_bottom = 188.0
 mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.75
+size_flags_stretch_ratio = 0.55
 custom_constants/separation = 20
 
 [node name="HOption_AdditionalEnergy" parent="Control/VBoxContainer/HBoxContainer/VBoxHOption" instance=ExtResource( 3 )]
-margin_right = 214.0
+margin_right = 163.0
 update_properties_when_clicked_instead_of_reactive = false
 
 [node name="HOption_EnergyReduc" parent="Control/VBoxContainer/HBoxContainer/VBoxHOption" instance=ExtResource( 3 )]
 margin_top = 52.0
-margin_right = 214.0
+margin_right = 163.0
 margin_bottom = 84.0
 update_properties_when_clicked_instead_of_reactive = false
 
 [node name="HOption_AdditionalLaunchBall" parent="Control/VBoxContainer/HBoxContainer/VBoxHOption" instance=ExtResource( 3 )]
 margin_top = 104.0
-margin_right = 214.0
+margin_right = 163.0
 margin_bottom = 136.0
 update_properties_when_clicked_instead_of_reactive = false
 
 [node name="HOption_PauseAtESC" parent="Control/VBoxContainer/HBoxContainer/VBoxHOption" instance=ExtResource( 3 )]
 margin_top = 156.0
-margin_right = 214.0
+margin_right = 163.0
 margin_bottom = 188.0
 update_properties_when_clicked_instead_of_reactive = false
 
@@ -137,8 +137,3 @@ margin_bottom = 479.0
 custom_colors/font_color = Color( 1, 0.65098, 0.2, 1 )
 text = "Changes detected! Restart level to take effect."
 align = 1
-
-[connection signal="pressed__intent_for_reactive" from="Control/VBoxContainer/HBoxContainer/VBoxHOption/HOption_AdditionalEnergy" to="." method="_on_HOption_AdditionalEnergy_pressed__intent_for_reactive"]
-[connection signal="pressed__intent_for_reactive" from="Control/VBoxContainer/HBoxContainer/VBoxHOption/HOption_EnergyReduc" to="." method="_on_HOption_EnergyReduc_pressed__intent_for_reactive"]
-[connection signal="pressed__intent_for_reactive" from="Control/VBoxContainer/HBoxContainer/VBoxHOption/HOption_AdditionalLaunchBall" to="." method="_on_HOption_AdditionalLaunchBall_pressed__intent_for_reactive"]
-[connection signal="pressed__intent_for_reactive" from="Control/VBoxContainer/HBoxContainer/VBoxHOption/HOption_PauseAtESC" to="." method="_on_HOption_PauseAtESC_pressed__intent_for_reactive"]

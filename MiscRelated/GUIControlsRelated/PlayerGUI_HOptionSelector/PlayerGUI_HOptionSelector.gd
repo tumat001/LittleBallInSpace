@@ -73,6 +73,15 @@ func set_is_disabled(arg_val, arg_change_modulate_based_on_is_disabled):
 
 #
 
+func set_selector_items__use_id_for_selected(arg_items : Array, arg_selected_item_id, arg_silence_signals : bool):
+	var selected_item
+	for item in arg_items:
+		if item.id == arg_selected_item_id:
+			selected_item = item
+			break
+	
+	set_selector_items(arg_items, selected_item, arg_silence_signals)
+
 func set_selector_items(arg_items : Array, arg_selected_item, arg_silence_signals : bool):
 	_remove_all_selector_items()
 	for item in arg_items:
@@ -80,7 +89,7 @@ func set_selector_items(arg_items : Array, arg_selected_item, arg_silence_signal
 	
 	if arg_silence_signals:
 		_silence_signals = true
-	_set_selected_item(arg_selected_item)
+	set_selected_item(arg_selected_item)
 	_silence_signals = false
 
 func _add_selector_item(arg_item : SelectorItem):
@@ -91,7 +100,17 @@ func _remove_all_selector_items():
 	_all_id_to_selector_item_map.clear()
 	
 
-func _set_selected_item(arg_selected_item : SelectorItem):
+
+func set_selected_item__using_id(arg_selected_item_id):
+	var selected_item
+	for item in _all_id_to_selector_item_map.values():
+		if item.id == arg_selected_item_id:
+			selected_item = item
+			break
+	
+	set_selected_item(selected_item)
+
+func set_selected_item(arg_selected_item : SelectorItem):
 	var index_of_item = _all_id_to_selector_item_map.values().find(arg_selected_item)
 	_current_index = index_of_item
 	_current_id_selected = arg_selected_item.id
@@ -105,6 +124,7 @@ func _set_selected_item__using_index(arg_index):
 	_current_index = arg_index
 	_current_id_selected = id
 	_update_based_on_selected_id()
+
 
 func _get_corrected_index(arg_index):
 	var size = _all_id_to_selector_item_map.size()
