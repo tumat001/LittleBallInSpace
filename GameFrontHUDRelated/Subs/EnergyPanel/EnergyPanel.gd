@@ -18,6 +18,9 @@ var player_modi__energy setget set_player_modi__energy
 
 var original_rewind_reminder_text : String
 
+
+var player_health_panel
+
 #
 
 onready var energy_label = $EnergyLabel
@@ -48,7 +51,14 @@ func set_player_modi__energy(arg_modi):
 		_update_display__for_current_and_forecasted()
 		_update_bar_visual_based_on_type_id()
 	
-	visible = true
+	
+	_update_vis_based_on_modi()
+	player_modi__energy.connect("allow_display_of_energy_hud_changed", self, "_on_allow_display_of_energy_hud_changed")
+	
+	_update_display_based_on_is_true_instant_drain()
+	player_modi__energy.connect("is_true_instant_drain_and_recharge_changed", self, "_on_is_true_instant_drain_and_recharge_changed")
+
+
 
 
 func _on_modi_forecasted_or_current_energy_changed(arg_curr, arg_forcasted):
@@ -137,4 +147,28 @@ func _update_bar_visual_based_on_type_id():
 	
 	
 
+
+#############
+
+func _on_allow_display_of_energy_hud_changed(arg_val):
+	_update_vis_based_on_modi()
+
+func _update_vis_based_on_modi():
+	visible = player_modi__energy.allow_display_of_energy_hud
+	
+	player_health_panel.can_display__by_energy_panel = player_modi__energy.allow_display_of_energy_hud
+
+#
+
+func _on_is_true_instant_drain_and_recharge_changed(arg_val):
+	_update_display_based_on_is_true_instant_drain()
+
+func _update_display_based_on_is_true_instant_drain():
+	if player_modi__energy.is_true_instant_drain_and_recharge:
+		energy_label.visible = false
+		
+	else:
+		energy_label.visible = true
+		
+	
 

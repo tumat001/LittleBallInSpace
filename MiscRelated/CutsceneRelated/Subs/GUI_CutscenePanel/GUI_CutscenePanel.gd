@@ -152,7 +152,15 @@ func _begin_end_display__fade_out():
 	_current_tweener.tween_callback(self, "_on_begin_end_display__fade_out__finished")
 
 func _on_begin_end_display__fade_out__finished():
+	instant_end_display()
+	#visible = false
+	#_set_is_in_showing_or_hiding_transition(false)
+	#emit_signal("fully_undisplayed")
+
+
+func instant_end_display():
 	visible = false
+	#modulate.a = 0
 	_set_is_in_showing_or_hiding_transition(false)
 	emit_signal("fully_undisplayed")
 

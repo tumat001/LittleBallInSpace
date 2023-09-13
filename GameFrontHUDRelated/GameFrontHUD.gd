@@ -28,7 +28,7 @@ onready var out_of_map_bounds_warning_panel = $OutOfMapBoundsWarningPanel
 
 onready var misc_center_container = $MiscCenterContainer
 
-
+onready var sprite_shader_container = $SpriteShaderContainer
 
 ###
 
@@ -61,7 +61,7 @@ func _on_vic_def_anim_ready_finished(arg_anim):
 
 func _ready():
 	coins_panel.configure_self_to_monitor_coin_status_for_level(SingletonsAndConsts.current_base_level_id)
-	
+	energy_panel.player_health_panel = health_panel
 
 ##################
 
@@ -81,6 +81,20 @@ func show_warning_out_of_map_bounds():
 func hide_warning_out_of_map_bounds():
 	out_of_map_bounds_warning_panel.hide_self()
 	
+
+####
+
+func create_sprite_shader(arg_material) -> Sprite:
+	var sprite = Sprite.new()
+	sprite.texture = preload("res://GameElements/ScreenShaderSprite/ScreenShaderSprite.png")
+	sprite.material = arg_material
+	sprite.visible = false
+	sprite.position = Vector2(960, 540)
+	sprite.scale = Vector2(960, 540)
+	
+	sprite_shader_container.add_child(sprite)
+	
+	return sprite
 
 
 

@@ -13,16 +13,16 @@ var _ignore_inputs : bool
 
 #
 
-const MODULATE_HOPTION_LABEL__NO_EFFECT = Color(0.8, 0.8, 0.8, 0.8)
-const MODULATE_HOPTION_LABEL__WITH_EFFECT = Color("#F6FEBA")
+const MODULATE_HOPTION_LABEL__NO_EFFECT = Color(0.7, 0.7, 0.7, 0.8)
+const MODULATE_HOPTION_LABEL__WITH_EFFECT = Color("#E9FC59")
 
 
 const ENABLED_MODUALTE = Color(1, 1, 1, 1)
 const DISABLED_MODULATE = Color(0.6, 0.6, 0.6, 0.75)
 
 
-const ASSIST_MODE_TOGGLE__TEXT__IN_GAME = "For This Level Only"
-const ASSIST_MODE_TOGGLE__TEXT__NOT_IN_GAME = "For Next Level Only"
+const ASSIST_MODE_TOGGLE__TEXT__IN_GAME = "For This Level Only:"
+const ASSIST_MODE_TOGGLE__TEXT__NOT_IN_GAME = "For Next Level Only:"
 
 #
 
@@ -40,7 +40,7 @@ onready var hoption_energy_reduc = $Control/VBoxContainer/VBoxContainer/HBoxCont
 onready var hoption_additional_ball = $Control/VBoxContainer/VBoxContainer/HBoxContainer/VBoxHOption/HOption_AdditionalLaunchBall
 onready var hoption_pause_at_esc = $Control/VBoxContainer/VBoxContainer/HBoxContainer/VBoxHOption/HOption_PauseAtESC
 
-onready var restart_label = $Control/VBoxContainer/RestartLabel
+onready var restart_label = $Control/RestartLabel
 
 onready var is_assist_mode_active_checkbox = $Control/VBoxContainer/VBoxContainer/HBoxContainer2/EnableAssistModeCheckbox
 onready var assist_mode_toggle_mode_checkbox = $Control/VBoxContainer/VBoxContainer/HBoxContainer2/AssistModeToggleCheckbox
@@ -169,28 +169,35 @@ func _init_hoption__any_template(arg_id, arg_hoption_control : PlayerGUI_HOption
 	
 	var select_items = assist_mode_details_helper.get_select_item_list_of_assist_mode_id(arg_id)
 	var selected_item_id = GameSettingsManager.get_curr_val_of_assist_mode_id(arg_id)
-	arg_hoption_control.set_selector_items(select_items, selected_item_id, false)
-
+	arg_hoption_control.set_selector_items__use_id_for_selected(select_items, selected_item_id, false)
+	
+	_update_hoption_label_modulate(selected_item_id, arg_id, arg_hoption_control)
+	
 
 #
 
 func _on_hoption_assist_mode_pressed__intent_for_reactive(arg_intent_item, arg_intent_item_id, arg_assist_mode_id):
 	if !_ignore_inputs:
+		
+		#print("intent: %s, %s, assist_mode_id: %s" % [arg_intent_item.display_value, arg_intent_item_id, arg_assist_mode_id])
 		GameSettingsManager.set_curr_val_of_assist_mode_id(arg_assist_mode_id, arg_intent_item_id)
 
 
 
 func _on_assist_mode_x_changed__for_hoption(arg_val, arg_assist_mode_id, arg_hoption_control : PlayerGUI_HOptionSelection):
+	_update_hoption_label_modulate(arg_val, arg_assist_mode_id, arg_hoption_control)
+	
+	#print("setted val: %s" % arg_val)
+	arg_hoption_control.set_selected_item__using_id(arg_val)
+
+func _update_hoption_label_modulate(arg_val, arg_assist_mode_id, arg_hoption_control):
 	var no_effect_id = GameSettingsManager.get_no_effect_val_of_assist_mode_id(arg_assist_mode_id)
 	if arg_val == no_effect_id:
 		arg_hoption_control.set_modulate_for_label(MODULATE_HOPTION_LABEL__NO_EFFECT)
-		
 	else:
 		arg_hoption_control.set_modulate_for_label(MODULATE_HOPTION_LABEL__WITH_EFFECT)
-		
 	
-	arg_hoption_control.set_selected_item__using_id(arg_val)
-
+	
 
 #####
 
@@ -286,7 +293,7 @@ func _update_not_all_unlocked_label_status():
 # TREE ITEM Specific methods/vars
 
 var control_tree setget set_control_tree
-var is_unbackable__marker = true
+
 
 func on_control_received_focus():
 	_ignore_inputs = true
@@ -304,6 +311,7 @@ func on_control_fully_invisible():
 func set_control_tree(arg_tree):
 	control_tree = arg_tree
 	
+	#print('setted control tree')
 	var button : TextureButton = control_tree.create_texture_button__with_info_textures()
 	button.connect("pressed", self, "_on_assist_about_button_pressed")
 	control_tree.add_custom_top_right_button__and_associate_with_control(button, self)
@@ -323,6 +331,16 @@ func _init_assist_mode_about_cutscene():
 
 func _show_assist_mode_about_cutscene():
 	control_tree.show_control__and_add_if_unadded(_assist_mode_about_cutscene)
+	_assist_mode_about_cutscene.reset_for_another_use()
+	_assist_mode_about_cutscene.start_display()
+	
+	if !_assist_mode_about_cutscene.is_connected("cutscene_ended", self, "_on_assist_mode_aboout_cutscene_ended"):
+		_assist_mode_about_cutscene.connect("cutscene_ended", self, "_on_assist_mode_aboout_cutscene_ended")
+
+func _on_assist_mode_aboout_cutscene_ended():
+	control_tree.hide_current_control__and_traverse_thru_hierarchy(true)
+	
+
 
 ############
 # END OF TREE ITEM Specific methods/vars

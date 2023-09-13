@@ -17,8 +17,7 @@ const CONTROL_METHOD_NAME__LOST_FOCUS = "on_control_lost_focus"
 const CONTROL_METHOD_NAME__FULLY_INVISIBLE = "on_control_fully_invisible"
 
 const CONTROL_PROPERTY_NAME__CONTROL_TREE = "control_tree"
-
-const CONTROL_PROPERTY_NAME_MARKER_OPTIONAL__MAKE_UNBACKABLE = "is_unbackable__marker"
+const CONTROL_PROPERTY_NAME_OPTIONAL__MAKE_UNBACKABLE = "is_unbackable"
 
 
 #
@@ -91,7 +90,7 @@ func _ready():
 	
 	for child in control_container.get_children():
 		child.visible = false
-		_register_control(child)
+		_attempt_register_control(child)
 	
 	#
 	
@@ -106,7 +105,7 @@ func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_fo
 func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_tweeners_for_show : bool,
 		arg_add_in_hierarchy : bool):
 	
-	#_register_control(arg_control)
+	#_attempt_register_control(arg_control)
 	
 	if !visible:
 		visible = true
@@ -120,7 +119,7 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	if !control_container.get_children().has(arg_control):
 		add_control__but_dont_show(arg_control)
 	
-	_register_control(arg_control)
+	_attempt_register_control(arg_control)
 	
 	#
 	
@@ -156,11 +155,14 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 	
 	_check_if_control_implements_necessaries__and_print_if_not(arg_control)
 	
-	_disable_backing_and_esc__by_curr_control = arg_control.get("CONTROL_PROPERTY_NAME_MARKER_OPTIONAL__MAKE_UNBACKABLE")
-	if _disable_backing_and_esc__by_curr_control:
-		back_button.visible = false
+	
+	if arg_control.get(CONTROL_PROPERTY_NAME_OPTIONAL__MAKE_UNBACKABLE):
+		_disable_backing_and_esc__by_curr_control = true
+		back_button.modulate.a = 0
+		
 	else:
-		back_button.visible = true
+		_disable_backing_and_esc__by_curr_control = false
+		back_button.modulate.a = 1
 		
 	
 	emit_signal("hierarchy_advanced_forwards", arg_control)
@@ -180,14 +182,15 @@ func _on_control_fully_visible_from_tweener(arg_control):
 
 func add_control__but_dont_show(arg_control : Control):
 	arg_control.visible = false
-	_register_control(arg_control)
+	_attempt_register_control(arg_control)
 	control_container.add_child(arg_control)
 
 
-func _register_control(arg_control):
-	arg_control.set(CONTROL_PROPERTY_NAME__CONTROL_TREE, self)
-	
-	_check_if_control_implements_necessaries__and_print_if_not(arg_control)
+func _attempt_register_control(arg_control):
+	if !is_instance_valid(arg_control.get(CONTROL_PROPERTY_NAME__CONTROL_TREE)):
+		arg_control.set(CONTROL_PROPERTY_NAME__CONTROL_TREE, self)
+		
+		_check_if_control_implements_necessaries__and_print_if_not(arg_control)
 
 
 func _check_if_control_implements_necessaries__and_print_if_not(arg_control : Control):
@@ -327,7 +330,8 @@ func _on_InfoButton_pressed():
 	emit_signal("info_button_pressed")
 
 func _on_BackButton_pressed():
-	hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
+	if !_disable_backing_and_esc__by_curr_control:
+		hide_current_control__and_traverse_thru_hierarchy(use_mod_a_tweeners_for_traversing_hierarchy)
 	
 
 
@@ -339,13 +343,14 @@ func create_texture_button__with_info_textures() -> TextureButton:
 	return button
 
 func add_custom_top_right_button__and_associate_with_control(arg_button : TextureButton, arg_control : Control):
-	arg_button.focus_mode = Control.FOCUS_NONE
-	arg_button.visible = false
-	top_right_hbox_container.add_child(arg_button)
-	
-	if !_control_to_associated_button_list_to_show.has(arg_control):
-		_control_to_associated_button_list_to_show[arg_control] = []
-	_control_to_associated_button_list_to_show[arg_control].append(arg_button)
+	if !top_right_hbox_container.get_children().has(arg_button):
+		arg_button.focus_mode = Control.FOCUS_NONE
+		arg_button.visible = false
+		top_right_hbox_container.add_child(arg_button)
+		
+		if !_control_to_associated_button_list_to_show.has(arg_control):
+			_control_to_associated_button_list_to_show[arg_control] = []
+		_control_to_associated_button_list_to_show[arg_control].append(arg_button)
 
 
 

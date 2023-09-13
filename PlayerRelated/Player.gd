@@ -35,6 +35,8 @@ signal max_robot_health_changed(arg_val)
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
 
+signal can_capture_PCA_regions_changed(arg_val)
+
 #
 
 var _base_player_size
@@ -213,6 +215,8 @@ var _no_energy_consecutive_duration : float
 enum BlockHealthChangeClauseIds {
 	IS_GAME_RESULT_DECIDED = 0,
 	IN_CUTSCENE = 1,
+	
+	CUSTOM_DEFINED__01 = 10,
 }
 var block_health_change_cond_clauses : ConditionalClauses
 var last_calculated_is_block_health_change : bool
@@ -246,6 +250,7 @@ var _is_robot_dead : bool
 ###
 
 var _current_player_capture_area_region setget set_current_player_capture_area_region
+var can_capture_PCA_regions : bool = true setget set_can_capture_PCA_regions
 
 ##
 
@@ -745,7 +750,6 @@ func _unhandled_key_input(event):
 		elif event.is_action_released("game_down"):
 			_is_move_breaking = false
 			sleeping = false
-			pass
 			
 		else:
 			if event.is_action("game_left"):
@@ -753,13 +757,13 @@ func _unhandled_key_input(event):
 					_is_moving_left = true
 			elif event.is_action("game_right"):
 				_is_moving_right = true
-			elif event.is_action("game_down"):
+			elif event.is_action("game_down") and !GameSettingsManager.get_game_control_name__is_hidden("game_down"):
 				_is_move_breaking = true
-				pass
+				
 			
 		
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-			if event.is_action_pressed("game_zoom_out"):
+			if event.is_action_pressed("game_zoom_out") and !GameSettingsManager.get_game_control_name__is_hidden("game_zoom_out"):
 				if CameraManager.is_at_default_zoom():
 					CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
 				else:
@@ -767,6 +771,8 @@ func _unhandled_key_input(event):
 				
 				is_consumed = true
 				
+		
+		
 #			elif event.is_action_released("game_zoom_out"):
 #				CameraManager.reset_camera_zoom_level()
 #				is_consumed = true
@@ -1676,6 +1682,14 @@ func get_momentum_mag__using_linear_velocity() -> float:
 
 ################
 
+func set_can_capture_PCA_regions(arg_val):
+	var old_val = can_capture_PCA_regions
+	can_capture_PCA_regions = arg_val
+	
+	if old_val != can_capture_PCA_regions:
+		emit_signal("can_capture_PCA_regions_changed", can_capture_PCA_regions)
+
+
 func set_current_player_capture_area_region(arg_area_region):
 	if is_instance_valid(_current_player_capture_area_region):
 		_disconnect_curr_area_region_signals()
@@ -1714,7 +1728,6 @@ func set_current_player_capture_area_region(arg_area_region):
 		
 	else:
 		_attempt_end_audio_player__capturing_point()
-	
 
 func _disconnect_curr_area_region_signals():
 	if _current_player_capture_area_region.is_connected("duration_for_capture_left_changed", self, "_on_PCA_duration_for_capture_left_changed"):
@@ -1786,12 +1799,24 @@ func _start_audio_player__capturing_point():
 	play_adv_param.is_audio_looping = true
 	
 	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
-	
+	if !can_capture_PCA_regions:
+		_audio_player__capturing_point.volume_db = AudioManager.DECIBEL_VAL__INAUDIABLE
 
 func _attempt_end_audio_player__capturing_point():
 	if _audio_player__capturing_point != null and _audio_player__capturing_point.playing:
 		AudioManager.stop_stream_player_and_mark_as_inactive(_audio_player__capturing_point)
 		_audio_player__capturing_point = null
+
+
+
+func _attempt_linear_mute_capture_pca_region_audio_player():
+	if is_instance_valid(_audio_player__capturing_point):
+		AudioManager.helper__linearly_set_current_player_db_to_inaudiable(_audio_player__capturing_point, 0.5)
+
+func _attempt_linear_unmute_capture_pca_region_audio_player():
+	if is_instance_valid(_audio_player__capturing_point):
+		AudioManager.helper__linearly_set_player_db_to_audiable(_audio_player__capturing_point, StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 0.5)
+	
 
 
 #
@@ -1910,6 +1935,8 @@ var _rewinded__block_player_move_left_and_right_cond_clauses
 var _rewinded__block_rotate_cond_clause
 var _rewinded__ignore_outside_induced_forces_cond_clauses
 
+var _rewinded__can_capture_PCA_regions
+
 var _most_recent_rewind_state
 
 
@@ -1985,7 +2012,7 @@ func get_rewind_save_state():
 		"block_rotate_cond_clause" : block_rotate_cond_clause.get_rewind_save_state(),
 		"ignore_outside_induced_forces_cond_clauses" : ignore_outside_induced_forces_cond_clauses.get_rewind_save_state(),
 		
-		
+		"can_capture_PCA_regions" : can_capture_PCA_regions,
 		
 		#"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
 		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
@@ -2044,6 +2071,8 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded__block_player_move_left_and_right_cond_clauses = arg_state["block_player_move_left_and_right_cond_clauses"]
 	_rewinded__block_rotate_cond_clause = arg_state["block_rotate_cond_clause"]
 	_rewinded__ignore_outside_induced_forces_cond_clauses = arg_state["ignore_outside_induced_forces_cond_clauses"]
+	
+	_rewinded__can_capture_PCA_regions = arg_state["can_capture_PCA_regions"]
 	
 	global_position = _rewinded__transform.origin
 	
@@ -2160,6 +2189,7 @@ func ended_rewind():
 	block_rotate_cond_clause.load_into_rewind_save_state(_rewinded__block_rotate_cond_clause)
 	ignore_outside_induced_forces_cond_clauses.load_into_rewind_save_state(_rewinded__ignore_outside_induced_forces_cond_clauses)
 	
+	can_capture_PCA_regions = _rewinded__can_capture_PCA_regions
 
 func _on_rewind_manager__ended_rewind__iterated_over_all():
 	_update_last_calc_can_move_left_and_right()

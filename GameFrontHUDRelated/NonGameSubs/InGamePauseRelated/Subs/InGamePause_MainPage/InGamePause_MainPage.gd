@@ -54,8 +54,6 @@ func _ready():
 	
 	#
 	
-	assist_mode_mini_summary_panel.control_tree = control_tree
-	
 
 #
 
@@ -124,7 +122,7 @@ func _show_gui_change_controls_hotkeys_panel():
 ##########
 # TREE ITEM Specific methods/vars
 
-var control_tree
+var control_tree setget set_control_tree
 
 
 func on_control_received_focus():
@@ -143,6 +141,13 @@ func on_control_lost_focus():
 func on_control_fully_invisible():
 	pass
 	
+
+
+func set_control_tree(arg_val):
+	control_tree = arg_val
+	
+	assist_mode_mini_summary_panel.control_tree = control_tree
+
 
 ############
 # END OF TREE ITEM Specific methods/vars

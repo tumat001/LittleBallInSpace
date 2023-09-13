@@ -40,7 +40,7 @@ var _is_in_ready : bool
 #
 
 onready var button = $Button
-onready var status_texture_rect = $StatusPic
+onready var status_texture_rect = $HBoxContainer/Container/StatusPic
 onready var box_texture_rect = $HBoxContainer/Container/BoxPic
 
 onready var checkbox_label = $HBoxContainer/CheckboxLabel
@@ -92,7 +92,7 @@ func set_is_disabled(arg_val, arg_change_modulate_based_on_is_disabled):
 			_update_box_texture_display()
 
 
-func set_is_checked(arg_val, arg_emit_signal : bool):
+func set_is_checked(arg_val, arg_emit_signal : bool = true):
 	var old_val = _is_checked
 	_is_checked = arg_val
 	

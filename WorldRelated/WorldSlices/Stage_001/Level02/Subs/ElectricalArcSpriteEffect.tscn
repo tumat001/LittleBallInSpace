@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_ElectricalArcEffect.tres" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/line_width = 0.02
+shader_param/color = Color( 0.533333, 0.705882, 1, 1 )
+shader_param/border_color = Color( 0.0392157, 0.278431, 1, 1 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=1]
+noise = SubResource( 3 )
+
+[node name="ElectricalArcSpriteEffect" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 7, 25 )
+scale = Vector2( -0.0264047, -0.0998167 )
+texture = SubResource( 1 )

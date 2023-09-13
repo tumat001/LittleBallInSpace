@@ -17,7 +17,6 @@ mouse_filter = 2
 [node name="MainButton" parent="VBoxContainer" instance=ExtResource( 1 )]
 margin_right = 207.0
 margin_bottom = 33.0
-can_grab_focus = false
 
 [node name="TextureButton" parent="VBoxContainer/MainButton" index="0"]
 margin_right = 207.0

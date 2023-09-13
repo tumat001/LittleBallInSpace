@@ -15,7 +15,7 @@ margin_top = -60.5
 margin_right = 318.5
 margin_bottom = 176.5
 rect_min_size = Vector2( 250, 0 )
-default_font_size = 25
+default_font_size = 40
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]

@@ -127,10 +127,6 @@ func _update_properties_based_on_can_change_cutscene_panel_page():
 #
 
 func _input(event):
-	#if event.is_action_pressed("ui_cancel"):
-	#	pass
-	#else:
-	
 	if event is InputEventKey:
 		get_viewport().set_input_as_handled()
 
@@ -139,6 +135,7 @@ func _input(event):
 
 func _ready():
 	set_process(false)
+	set_process_input(false)
 	
 	initialize_cutscene()
 
@@ -161,10 +158,15 @@ func _init_all_cutscene_panels():
 ####
 
 func start_display():
+	set_process_input(true)
 	_attempt_traverse_page__with_index_shift(1)
 	
 
-
+func reset_for_another_use():
+	set_process_input(false)
+	if is_instance_valid(_current_cutscene):
+		_current_cutscene.instant_end_display()
+	_current_cutscene_panel_index = -1
 
 #######
 
@@ -197,7 +199,7 @@ func _attempt_traverse_page__with_index_shift(arg_shift : int):
 		var is_finished = _attempt_finish_display_of_curr_cutscene__is_finished()
 		#print("is_finished: %s" % is_finished)
 		if is_finished:
-			if _current_cutscene_panel_index == _total_cutscene_panel_count - 1:
+			if _current_cutscene_panel_index + arg_shift >= _total_cutscene_panel_count:
 				_attempt_end_cutscene()
 			else:
 				set_current_cutscene_panel_index__and_start_transition_from_old_to_new(_current_cutscene_panel_index + arg_shift)
@@ -458,6 +460,7 @@ func _end_cutscene__thru_transition():
 
 func _on_end_of_cutscene__fade_out_finished():
 	visible = false
+	set_process_input(false)
 	
 	if queue_free_on_cutscene_end:
 		queue_free()
@@ -470,14 +473,11 @@ func is_currently_displaying_loading_panel():
 	return _is_currently_displaying_loading_panel
 
 
-###########################
-
-
 #############################################
 # TREE ITEM Specific methods/vars
 
 var control_tree
-
+var is_unbackable = true
 
 func on_control_received_focus():
 	_ignore_inputs = true

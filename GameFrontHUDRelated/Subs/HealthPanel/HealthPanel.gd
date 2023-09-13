@@ -35,6 +35,10 @@ var display_timer : Timer
 
 #
 
+var can_display__by_energy_panel : bool
+
+#
+
 onready var health_icon = $Control/HealthIcon
 onready var health_texture_progress = $Control/HealthTextureProgress
 onready var health_sepa_container = $Control/HealthSeparatorContainer
@@ -137,16 +141,17 @@ func _on_player_current_health_changed(arg_val):
 		var texture = load(_player.above_highest_health_breakpoint_texture_file_path)
 		health_texture_progress.texture_progress = texture
 	
-	if visible:
-		display_timer.start(DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE)
-		
-	else:
-		modulate.a = 0
-		var tween = create_tween()
-		tween.tween_property(self, "modulate:a", 1.0, 0.5)
-		visible = true
-		
-		display_timer.start(DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE)
+	if can_display__by_energy_panel:
+		if visible:
+			display_timer.start(DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE)
+			
+		else:
+			modulate.a = 0
+			var tween = create_tween()
+			tween.tween_property(self, "modulate:a", 1.0, 0.5)
+			visible = true
+			
+			display_timer.start(DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE)
 
 
 func _on_player_all_health_lost():
@@ -165,5 +170,7 @@ func _update_display_based_on_player_is_dead_state():
 		health_icon.texture = preload("res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Alive.png")
 		
 	
+
+
 
 

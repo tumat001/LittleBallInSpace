@@ -165,6 +165,7 @@ func _on_PDAR_StartSequenceCapturePart03_player_entered_in_area():
 		game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 
 func _on_wait_tween_finished__for_part_03():
+	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
 	
 	game_elements.get_current_player().set_is_show_lines_to_uncaptured_player_capture_regions()

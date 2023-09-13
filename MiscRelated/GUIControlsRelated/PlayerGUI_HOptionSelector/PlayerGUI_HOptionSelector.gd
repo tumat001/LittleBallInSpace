@@ -92,6 +92,7 @@ func set_selector_items(arg_items : Array, arg_selected_item, arg_silence_signal
 	set_selected_item(arg_selected_item)
 	_silence_signals = false
 
+
 func _add_selector_item(arg_item : SelectorItem):
 	_all_id_to_selector_item_map[arg_item.id] = arg_item
 	
@@ -146,12 +147,14 @@ func _update_based_on_selected_id():
 ###
 
 func _on_LeftButton_pressed():
+	#print("%s, %s" % [_current_index, _current_id_selected])
 	if update_properties_when_clicked_instead_of_reactive:
 		_set_selected_item__using_index(_current_index - 1)
 	else:
 		_emit_pressed__intent_for_reactive_signal__with_item_index(_current_index - 1)
 
 func _on_RightButton_pressed():
+	#print("%s, %s" % [_current_index, _current_id_selected])
 	if update_properties_when_clicked_instead_of_reactive:
 		_set_selected_item__using_index(_current_index + 1)
 	else:
@@ -161,9 +164,9 @@ func _on_RightButton_pressed():
 
 func _emit_pressed__intent_for_reactive_signal__with_item_index(arg_index):
 	arg_index = _get_corrected_index(arg_index)
-	var item = _all_id_to_selector_item_map[arg_index]
+	var item = _all_id_to_selector_item_map.values()[arg_index]
 	
-	emit_signal("pressed__intent_for_reactive", item, arg_index)
+	emit_signal("pressed__intent_for_reactive", item, item.id)
 
 
 #

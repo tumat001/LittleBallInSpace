@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=23 format=2]
+[gd_resource type="TileSet" load_steps=25 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -22,6 +22,8 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__Decor_WallMisc02.png" type="Texture" id=20]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__Decor_WallMisc01.png" type="Texture" id=21]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__Glowables01.png" type="Texture" id=22]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01.png" type="Texture" id=23]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01_Destroyed.png" type="Texture" id=24]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -528,3 +530,45 @@
 23/shape_one_way_margin = 0.0
 23/shapes = [  ]
 23/z_index = 0
+24/name = "Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01.png 24"
+24/texture = ExtResource( 23 )
+24/tex_offset = Vector2( 0, 0 )
+24/modulate = Color( 1, 1, 1, 1 )
+24/region = Rect2( 0, 0, 160, 128 )
+24/tile_mode = 2
+24/autotile/icon_coordinate = Vector2( 0, 0 )
+24/autotile/tile_size = Vector2( 32, 32 )
+24/autotile/spacing = 0
+24/autotile/occluder_map = [  ]
+24/autotile/navpoly_map = [  ]
+24/autotile/priority_map = [  ]
+24/autotile/z_index_map = [  ]
+24/occluder_offset = Vector2( 0, 0 )
+24/navigation_offset = Vector2( 0, 0 )
+24/shape_offset = Vector2( 0, 0 )
+24/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+24/shape_one_way = false
+24/shape_one_way_margin = 0.0
+24/shapes = [  ]
+24/z_index = 0
+25/name = "Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01_Destroyed.png 25"
+25/texture = ExtResource( 24 )
+25/tex_offset = Vector2( 0, 0 )
+25/modulate = Color( 1, 1, 1, 1 )
+25/region = Rect2( 0, 0, 160, 128 )
+25/tile_mode = 2
+25/autotile/icon_coordinate = Vector2( 0, 0 )
+25/autotile/tile_size = Vector2( 32, 32 )
+25/autotile/spacing = 0
+25/autotile/occluder_map = [  ]
+25/autotile/navpoly_map = [  ]
+25/autotile/priority_map = [  ]
+25/autotile/z_index_map = [  ]
+25/occluder_offset = Vector2( 0, 0 )
+25/navigation_offset = Vector2( 0, 0 )
+25/shape_offset = Vector2( 0, 0 )
+25/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+25/shape_one_way = false
+25/shape_one_way_margin = 0.0
+25/shapes = [  ]
+25/z_index = 0

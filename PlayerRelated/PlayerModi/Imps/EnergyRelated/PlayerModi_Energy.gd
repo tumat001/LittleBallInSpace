@@ -16,6 +16,10 @@ signal battery_visual_type_id_changed(arg_id)
 
 signal is_energy_deductable_changed(arg_val)
 
+
+signal allow_display_of_energy_hud_changed(arg_val)
+signal is_true_instant_drain_and_recharge_changed(arg_val)
+
 #
 
 
@@ -63,7 +67,12 @@ var battery_visual_type_id : int setget set_battery_visual_type_id
 
 #
 
+
+# NOTE: These are not made to be rewindable...
 var is_energy_deductable : bool = true setget set_is_energy_deductable
+
+var allow_display_of_energy_hud : bool = true setget set_allow_display_of_energy_hud
+var is_true_instant_drain_and_recharge : bool = false setget set_is_true_instant_drain_and_recharge
 
 #
 
@@ -98,8 +107,15 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	
 	#
 	
+	if is_true_instant_drain_and_recharge:
+		if old_val > _current_energy:
+			_current_energy = 0
+		elif _current_energy > old_val:
+			_current_energy = _max_energy
+	
+	
 	var old_has_no_energy_val = _has_no_energy
-	_has_no_energy = _current_energy == 0
+	_has_no_energy = is_zero_approx(_current_energy)
 	if old_has_no_energy_val != _has_no_energy:
 		if _has_no_energy:
 			
@@ -107,6 +123,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.38, null)
 				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
+			
+			_player.can_capture_PCA_regions = false
 			
 			emit_signal("discarged_to_zero_energy")
 			
@@ -116,6 +134,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				_energy_restored__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerUp_01, _player.global_position, 1.0, null)
 				if _energy_down__sound_player != null and _energy_down__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_down__sound_player)
+			
+			_player.can_capture_PCA_regions = true
 			
 			emit_signal("recharged_from_no_energy")
 			
@@ -241,6 +261,25 @@ func make_assist_mode_modification__energy_reduction_mode():
 		set_is_energy_deductable(true)
 	elif reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.INFINITE:
 		set_is_energy_deductable(false)
+
+
+#
+
+func set_allow_display_of_energy_hud(arg_val):
+	var old_val = allow_display_of_energy_hud
+	allow_display_of_energy_hud = arg_val
+	
+	if old_val != arg_val:
+		emit_signal("allow_display_of_energy_hud_changed", arg_val)
+
+
+func set_is_true_instant_drain_and_recharge(arg_val):
+	var old_val = is_true_instant_drain_and_recharge
+	is_true_instant_drain_and_recharge = arg_val
+	
+	if old_val != arg_val:
+		emit_signal("is_true_instant_drain_and_recharge_changed", arg_val)
+
 
 
 ###################### 

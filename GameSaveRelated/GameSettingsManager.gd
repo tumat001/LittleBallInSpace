@@ -105,7 +105,7 @@ enum AssistMode_ToggleActiveModeId {
 	FOR_THIS_LEVEL_ONLY = 0,
 	FOR_ALL_LEVELS = 1,
 }
-const assist_mode_toggle_active_mode_id__default : int = AssistMode_ToggleActiveModeId.FOR_THIS_LEVEL_ONLY
+const assist_mode_toggle_active_mode_id__default : int = AssistMode_ToggleActiveModeId.FOR_ALL_LEVELS
 var assist_mode_toggle_active_mode_id : int setget set_assist_mode_toggle_active_mode_id
 
 
@@ -120,7 +120,7 @@ var _assist_mode__unlocked_ids : Array
 const assist_mode__unlocked_ids__default : Array = [
 	#AssistModeId.ADDITIONAL_ENERGY_MODE,
 	#AssistModeId.ENERGY_REDUC_MODE,
-	AssistModeId.PAUSE_AT_ESC_MODE,
+	#AssistModeId.PAUSE_AT_ESC_MODE,
 ]
 
 
@@ -410,6 +410,12 @@ func _load_general_game_settings_using_file(arg_file : File):
 		
 	
 	#
+	
+#	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ADDITIONAL_ENERGY_MODE, true)
+#	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ENERGY_REDUC_MODE, true)
+#	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.PAUSE_AT_ESC_MODE, true)
+
+	
 
 #####################
 ## HOTKEY
@@ -650,38 +656,52 @@ func _load_assist_mode_settings_using_dic(data : Dictionary):
 		set_is_assist_mode_active(false)
 	
 	if data.has(ASSIST_MODE__UNLOCKED_IDS__DIC_IDENTIFIER):
-		set_assist_mode_ids_unlocked_status__using_array(data[ASSIST_MODE__UNLOCKED_IDS__DIC_IDENTIFIER])
+		var arr_with_str = data[ASSIST_MODE__UNLOCKED_IDS__DIC_IDENTIFIER]
+		set_assist_mode_ids_unlocked_status__using_array(_convert_arr_of_string_to_arr_of_int(arr_with_str))
 	else:
 		set_assist_mode_ids_unlocked_status__using_array(assist_mode__unlocked_ids__default)
 	
 	
 	
 	if data.has(ASSIST_MODE__TOGGLE_ACTIVE_MODE_ID__DIC_IDENTIFIER):
-		set_assist_mode_toggle_active_mode_id(data[ASSIST_MODE__TOGGLE_ACTIVE_MODE_ID__DIC_IDENTIFIER])
+		var id_as_str = data[ASSIST_MODE__TOGGLE_ACTIVE_MODE_ID__DIC_IDENTIFIER]
+		set_assist_mode_toggle_active_mode_id(int(id_as_str))
 	else:
 		set_assist_mode_toggle_active_mode_id(assist_mode_toggle_active_mode_id__default)
 	
 	if data.has(ASSIST_MODE__ADDITIONAL_ENERGY_MODE_ID__DIC_IDENTIFIER):
-		set_assist_mode__additional_energy_mode_id(data[ASSIST_MODE__ADDITIONAL_ENERGY_MODE_ID__DIC_IDENTIFIER])
+		var id_as_str = data[ASSIST_MODE__ADDITIONAL_ENERGY_MODE_ID__DIC_IDENTIFIER]
+		set_assist_mode__additional_energy_mode_id(int(id_as_str))
 	else:
 		set_assist_mode__additional_energy_mode_id(assist_mode__additional_energy_mode_id__default)
 	
 	if data.has(ASSIST_MODE__ENERGY_REDUCTION_MODE_ID__DIC_IDENTIFIER):
-		set_assist_mode__energy_reduction_mode_id(data[ASSIST_MODE__ENERGY_REDUCTION_MODE_ID__DIC_IDENTIFIER])
+		var id_as_str = data[ASSIST_MODE__ENERGY_REDUCTION_MODE_ID__DIC_IDENTIFIER]
+		set_assist_mode__energy_reduction_mode_id(int(id_as_str))
 	else:
 		set_assist_mode__energy_reduction_mode_id(assist_mode__energy_reduction_mode_id__default)
 	
 	if data.has(ASSIST_MODE__ADDITIONAL_LAUNCH_BALL_MODE_ID__DIC_IDENTIFIER):
-		set_assist_mode__additional_launch_ball_mode_id(data[ASSIST_MODE__ADDITIONAL_LAUNCH_BALL_MODE_ID__DIC_IDENTIFIER])
+		var id_as_str = data[ASSIST_MODE__ADDITIONAL_LAUNCH_BALL_MODE_ID__DIC_IDENTIFIER]
+		set_assist_mode__additional_launch_ball_mode_id(int(id_as_str))
 	else:
 		set_assist_mode__additional_launch_ball_mode_id(assist_mode__additional_launch_ball_mode_id__default)
 	
 	if data.has(ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER):
-		set_assist_mode__pause_at_esc_id(data[ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER])
+		var id_as_str = data[ASSIST_MODE__PAUSE_AT_ESC_ID__DIC_IDENTIFIER]
+		set_assist_mode__pause_at_esc_id(int(id_as_str))
 	else:
 		set_assist_mode__pause_at_esc_id(assist_mode__pause_at_esc_id__default)
 	
-	
+
+
+func _convert_arr_of_string_to_arr_of_int(arg_arr : Array):
+	var bucket = []
+	for num_as_str in arg_arr:
+		bucket.append(int(num_as_str))
+	return bucket
+
+
 
 func _generate_save_dict__for_assist_mode():
 	return {
@@ -698,7 +718,7 @@ func _generate_save_dict__for_assist_mode():
 	}
 
 
-func _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
+func is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
 	if is_current_assist_mode__additional_energy__has_effect():
 		return true
 	
@@ -736,7 +756,7 @@ func set_is_assist_mode_active(arg_val):
 	if old_val != arg_val:
 		if _is_manager_initialized:
 			emit_signal("is_assist_mode_active_changed", arg_val)
-			if _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
+			if is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals():
 				_any_game_modifying_assist_mode_config_changed()
 
 func set_assist_mode_toggle_active_mode_id(arg_val):
@@ -764,6 +784,8 @@ func set_assist_mode_id_unlocked_status(arg_id, arg_is_unlocked_val):
 			if _is_manager_initialized:
 				emit_signal("assist_mode_id_unlock_status_changed", arg_id, arg_is_unlocked_val)
 				emit_signal("assist_mode_unlocked_ids_changed", _assist_mode__unlocked_ids)
+	
+	#print("%s, %s, %s" % [arg_id, arg_is_unlocked_val, _assist_mode__unlocked_ids])
 
 # all other ids not found here will be locked
 func set_assist_mode_ids_unlocked_status__using_array(arg_ids_to_set_as_unlocked):
@@ -778,6 +800,9 @@ func is_assist_mode_id_unlocked(arg_id):
 
 func is_all_assist_mode_ids_unlocked():
 	return _assist_mode__unlocked_ids.size() == AssistModeId.size()
+
+func is_any_assist_mode_id_unlocked():
+	return _assist_mode__unlocked_ids.size() != 0
 
 ####
 
@@ -797,7 +822,7 @@ func get_assist_mode__additional_energy_amount_from_id(arg_id):
 	return assist_mode__additional_energy_mode_id__details_map[arg_id]
 
 func is_current_assist_mode__additional_energy__has_effect():
-	return assist_mode__additional_energy_mode_id != assist_mode__additional_energy_mode_id__no_effect
+	return assist_mode__additional_energy_mode_id != assist_mode__additional_energy_mode_id__no_effect and is_assist_mode_id_unlocked(AssistModeId.ADDITIONAL_ENERGY_MODE)
 
 #
 
@@ -811,7 +836,7 @@ func set_assist_mode__energy_reduction_mode_id(arg_val):
 			_any_game_modifying_assist_mode_config_changed()
 
 func is_current_assist_mode__energy_reduction__has_effect():
-	return assist_mode__energy_reduction_mode_id != assist_mode__energy_reduction_mode_id__no_effect
+	return assist_mode__energy_reduction_mode_id != assist_mode__energy_reduction_mode_id__no_effect and is_assist_mode_id_unlocked(AssistModeId.ENERGY_REDUC_MODE)
 
 
 #
@@ -826,7 +851,7 @@ func set_assist_mode__additional_launch_ball_mode_id(arg_val):
 			_any_game_modifying_assist_mode_config_changed()
 
 func is_current_assist_mode__additional_launch_ball__has_effect():
-	return assist_mode__additional_launch_ball_mode_id != assist_mode__additional_launch_ball_mode_id__no_effect
+	return assist_mode__additional_launch_ball_mode_id != assist_mode__additional_launch_ball_mode_id__no_effect and is_assist_mode_id_unlocked(AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE)
 
 func get_assist_mode__additional_launch_ball_details_from_current_id():
 	return assist_mode__additional_launch_ball_mode_id__details_map[assist_mode__additional_launch_ball_mode_id]
@@ -837,13 +862,15 @@ func set_assist_mode__pause_at_esc_id(arg_val):
 	var old_val = assist_mode__pause_at_esc_id
 	assist_mode__pause_at_esc_id = arg_val
 	
+	#print("setted pause at esc %s" % arg_val)
+	
 	if old_val != arg_val:
 		if _is_manager_initialized:
 			emit_signal("assist_mode__pause_at_esc_mode_changed", arg_val)
 			_any_game_modifying_assist_mode_config_changed()
 
 func is_current_assist_mode__pause_at_esc__has_effect():
-	return assist_mode__pause_at_esc_id != assist_mode__pause_at_esc_id__no_effect
+	return assist_mode__pause_at_esc_id != assist_mode__pause_at_esc_id__no_effect and is_assist_mode_id_unlocked(AssistModeId.PAUSE_AT_ESC_MODE)
 
 #### ASSIST MODE GAME MODI
 func attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all():
@@ -852,7 +879,7 @@ func attempt_make_game_modifications__based_on_curr_assist_mode_config__before_a
 	
 
 func attempt_make_game_modifications__based_on_curr_assist_mode_config():
-	if is_assist_mode_active and !SingletonsAndConsts.current_base_level.ignore_assist_mode_modifications:
+	if is_assist_mode_active and !SingletonsAndConsts.current_level_details.ignore_assist_mode_modifications:
 		_before_game__setup_modifications__based_on_curr_assist_mode_config()
 		
 
@@ -867,19 +894,19 @@ func _before_game__setup_assist_mode__player_modi__changes():
 
 func _on_before_modi_is_configured__for_assist_mode(arg_modi):
 	if arg_modi.modi_id == StoreOfPlayerModi.PlayerModiIds.ENERGY:
-		if is_assist_mode_id_unlocked(AssistModeId.ADDITIONAL_ENERGY_MODE) and is_current_assist_mode__additional_energy__has_effect():
+		if is_current_assist_mode__additional_energy__has_effect():
 			arg_modi.make_assist_mode_modification__additional_energy()
 		
-		if is_assist_mode_id_unlocked(AssistModeId.ENERGY_REDUC_MODE) and is_current_assist_mode__energy_reduction__has_effect():
+		if is_current_assist_mode__energy_reduction__has_effect():
 			arg_modi.make_assist_mode_modification__energy_reduction_mode()
 		
 	elif arg_modi.modi_id == StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL:
-		if is_assist_mode_id_unlocked(AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE) and is_current_assist_mode__additional_launch_ball__has_effect():
+		if is_current_assist_mode__additional_launch_ball__has_effect():
 			arg_modi.make_assist_mode_modification__additional_launch_ball()
 	
 
 func _before_game__setup_assist_mode__plause_on_esc_changes():
-	if is_assist_mode_id_unlocked(AssistModeId.PAUSE_AT_ESC_MODE) and is_current_assist_mode__pause_at_esc__has_effect():
+	if is_current_assist_mode__pause_at_esc__has_effect():
 		if assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.PAUSE:
 			SingletonsAndConsts.current_game_elements.pause_game_at_startup = true
 		elif assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.NO_PAUSE:
@@ -893,7 +920,7 @@ func _before_game__register_current_assist_mode_id_vals():
 		_current_assist_mode_id_to_vals_map_at_current_game_elements[id] = curr_val
 	
 	current_assist_mode_is_active_at_current_game_elements = is_assist_mode_active
-	current_assist_mode_is_active_at_current_game_elements__but_no_effect = _is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals()
+	current_assist_mode_is_active_at_current_game_elements__but_no_effect = !is_any_game_modifying_assist_mode_can_make_changes_based_on_curr_vals()
 	
 	last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config = false
 
@@ -933,7 +960,7 @@ func get_val_changed_signal_name_of_assist_mode_id(arg_assist_mode_id):
 	return assist_mode_id_to_val_changed_signal_name_map[arg_assist_mode_id]
 
 func get_no_effect_val_of_assist_mode_id(arg_assist_mode_id):
-	return assist_mode_id_to_no_effect_var_name_map[arg_assist_mode_id]
+	return get(assist_mode_id_to_no_effect_var_name_map[arg_assist_mode_id])
 
 
 

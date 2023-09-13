@@ -16,7 +16,11 @@ func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
 	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_01_04, Vector2(0, 0))
-	
+	arg_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__lvlx")
+
+func _on_game_result_decided__lvlx(arg_res):
+	if game_elements.game_result_manager.is_game_result_win():
+		GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ADDITIONAL_LAUNCH_BALL_MODE, true)
 
 
 ######
