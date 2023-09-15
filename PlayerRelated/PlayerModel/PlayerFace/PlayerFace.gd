@@ -397,9 +397,10 @@ func play_sequence__charging_launch_ball():
 	#if !tweener.is_connected("finished", self, "_on_sequence_finished__charging_launch_ball"):
 	#	tweener.connect("finished", self, "_on_sequence_finished__charging_launch_ball")
 	
+	_curr_strength_factor_of_player_modi_launch_ball_node = -1
 	_start_new_FE_sequence(_InternalSequenceId.LAUNCHING_BALL, false, true)
 	_connect_signals_with__player_modi_launch_ball_node()
-	_play_FE__charging_launch_ball__with_strength_factor(-1)
+	_play_FE__charging_launch_ball__with_strength_factor(0)
 	
 	_intent__relocate_node__at_offset(_InternalFaceExpressionNodeOffsetId.CHARGING_LAUNCH_BALL, "_current_FE_offset_id__for_left_eye", left_eye, _left_eye__normal_offset, false)
 	_intent__relocate_node__at_offset(_InternalFaceExpressionNodeOffsetId.CHARGING_LAUNCH_BALL, "_current_FE_offset_id__for_right_eye", right_eye, _right_eye__normal_offset, false)
@@ -598,8 +599,6 @@ func _on_player_on_integ_forces(arg_state : Physics2DDirectBodyState):
 	_current_x_perspective_axis_velocity = lin_velocity.rotated(curr_cam_angle).x
 	if is_equal_approx(curr_cam_angle, PI/2) or is_equal_approx(curr_cam_angle, -PI/2):
 		_current_x_perspective_axis_velocity = -_current_x_perspective_axis_velocity
-	
-	print(curr_cam_angle)
 	
 	var calced_offset_x__for_right = _calculate_offset_mag__for_right_eye()
 	var calced_offset_x__for_left = _calculate_offset_mag__for_left_eye()

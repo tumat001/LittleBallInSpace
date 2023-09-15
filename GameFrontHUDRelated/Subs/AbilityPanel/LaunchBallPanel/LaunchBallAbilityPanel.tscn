@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_PlusSign_DisplayHUD.png" type="Texture" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_DisplayHud.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_SwapButton_Highlighted.png" type="Texture" id=7]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_AimMode_Omni.png" type="Texture" id=8]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_AimMode_NamePanel.png" type="Texture" id=9]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_20.tres" type="DynamicFont" id=10]
 
 [node name="LaunchBallAbilityPanel" type="MarginContainer"]
 margin_right = 155.0
@@ -39,6 +40,7 @@ margin_top = 45.0
 margin_right = 128.0
 margin_bottom = 63.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 10 )
 text = "Balls:"
 align = 1
 
@@ -48,6 +50,7 @@ margin_top = 61.0
 margin_right = 124.0
 margin_bottom = 79.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 10 )
 text = "x"
 align = 1
 
