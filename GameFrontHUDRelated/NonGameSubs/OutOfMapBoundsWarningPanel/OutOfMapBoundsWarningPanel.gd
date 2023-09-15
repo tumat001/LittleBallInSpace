@@ -26,7 +26,7 @@ func _ready():
 	_initialize_game_settings_signal()
 
 func _initialize_gradient_background():
-	var gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(0, 0, 0, 0), Color(255/255.0, 128/255.0, 0/255.0, 0.2))
+	var gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(0, 0, 0, 0), Color(255/255.0, 128/255.0, 0/255.0, 0.2), false)
 	var gradient_texture_2d = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(960, 540), false) 
 	
 	gradient_texture_2d.gradient = gradient

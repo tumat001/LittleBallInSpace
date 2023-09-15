@@ -16,6 +16,10 @@ const LINE_WIDTH__FOR_BALL : int = 4
 signal aim_mode_changed(arg_mode)
 signal can_change_aim_mode_changed(arg_val)
 
+signal current_launch_force_changed(arg_val, is_min, is_max, strength_factor_from_0_to_2)
+
+signal ended_launch_charge()
+
 #
 
 var _starting_launch_force
@@ -39,7 +43,7 @@ var _current_color_to_use_for_draw : Color
 
 var _node_to_follow : Node2D
 
-var current_launch_force : float
+var current_launch_force : float setget _set_current_launch_force
 var last_calc_angle_of_node_to_mouse
 
 var _is_charging_launch : bool setget set_is_charging_launch
@@ -149,7 +153,8 @@ func _process(delta):
 		elif current_launch_force < _starting_launch_force:
 			current_launch_force = _starting_launch_force
 			
-			
+		
+		_set_current_launch_force(current_launch_force)
 	
 	#
 	
@@ -159,7 +164,15 @@ func _process(delta):
 	
 	if launch_ability != null:
 		launch_ability.time_decreased(delta)
+
+
+func _set_current_launch_force(arg_val):
+	current_launch_force = arg_val
 	
+	var is_min = current_launch_force == _starting_launch_force
+	var is_max = current_launch_force == _max_launch_force
+	var strength_factor_from_0_to_2 = get_launch_force_as_range_from_0_to_2()
+	emit_signal("current_launch_force_changed", arg_val, is_min, is_max, strength_factor_from_0_to_2)
 
 #
 
@@ -174,7 +187,8 @@ func begin_launch_charge(arg_starting_launch_force : float,
 		arg_launch_peak_wait_before_alternate : float):
 	
 	_starting_launch_force = arg_starting_launch_force
-	current_launch_force = arg_starting_launch_force
+	#current_launch_force = arg_starting_launch_force
+	_set_current_launch_force(arg_starting_launch_force)
 	_launch_force_per_sec = arg_launch_force_per_sec
 	_max_launch_force = arg_max_launch_force
 	_current_delay_before_increase_launch = arg_initial_launch_force_delay_before_gain
@@ -194,6 +208,8 @@ func end_launch_charge():
 	
 	set_is_charging_launch(false)
 	update()
+	
+	emit_signal("ended_launch_charge")
 
 ##
 

@@ -39,6 +39,11 @@ signal can_capture_PCA_regions_changed(arg_val)
 
 signal light_2d_mod_a_changed(arg_val)
 
+
+signal pos_change__for_aesth_effects(curr_pos_mag, prev_pos_mag, diff, delta)
+#state : Physics2DDirectBodyState
+signal on_integ_forces(state)
+
 #
 
 var _base_player_size
@@ -309,8 +314,8 @@ onready var floor_area_2d_coll_shape = $FloorArea2D/CollisionShape2D
 onready var rotating_for_floor_area_2d = $RotatingForFloorArea2D
 onready var rotating_for_floor_area_2d_coll_shape = $RotatingForFloorArea2D/CollisionShape2D
 
-onready var face_screen = $SpriteLayer/FaceScreen
-onready var anim_on_screen = $SpriteLayer/AnimOnScreen
+#onready var face_screen = $SpriteLayer/FaceScreen
+#onready var anim_on_screen = $SpriteLayer/AnimOnScreen
 onready var main_body_sprite = $SpriteLayer/MainBodySprite
 
 onready var pca_progress_drawer = $PCAProgressDrawer
@@ -1120,6 +1125,9 @@ func _integrate_forces(state):
 			clear_all_outside_induced_forces()
 		
 		
+		#state : Physics2DDirectBodyState
+		emit_signal("on_integ_forces", state)
+		
 	else:
 		pass
 
@@ -1179,9 +1187,13 @@ func _ready():
 	
 	_player_prev_global_position = global_position
 	
+	
+	player_face.player = self
+	
 	#_make_node_rotate_with_cam(sprite_layer)
-	_make_node_rotate_with_cam(face_screen)
-	_make_node_rotate_with_cam(anim_on_screen)
+	#_make_node_rotate_with_cam(face_screen)
+	#_make_node_rotate_with_cam(anim_on_screen)
+	_make_node_rotate_with_cam(player_face)
 	_make_node_rotate_with_cam(pca_progress_drawer)
 	
 	CameraManager.connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam", [], CONNECT_PERSIST)
@@ -1404,18 +1416,20 @@ func _update_self_based_on_has_energy():
 func _update_self_based_on_has_energy__no_energy():
 	block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
 	
-	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
+	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
 	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
-	anim_on_screen.visible = false
+	#anim_on_screen.visible = false
+	player_face.on_energy_discharged_to_zero()
 	
 	set_light_energy_mod_a__gradual(0.0)
 
 func _update_self_based_on_has_energy__has_energy():
 	block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
 	
-	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
+	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
 	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
-	anim_on_screen.visible = true
+	#anim_on_screen.visible = true
+	player_face.on_energy_restored_from_zero()
 	
 	set_light_energy_mod_a__gradual(1.0)
 
@@ -1472,10 +1486,9 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 		set_deferred("_is_pos_change_potentially_from_tileset", false)
 	
 	#print("diff: %s" % [(prev_pos_mag - curr_pos_mag) / delta])
+	var diff = (prev_pos_mag - curr_pos_mag) / delta
 	
 	if prev_pos_mag > curr_pos_mag:  # from fast to slow
-		var diff = (prev_pos_mag - curr_pos_mag) / delta
-		
 		#print("_pos_change_caused_by_tile: %s" % _pos_change_caused_by_tile)
 		
 		# for tiles
@@ -1490,25 +1503,29 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 			var stress = diff / 220
 			CameraManager.camera.add_stress(stress)
 		
-		if diff > 450:
-			var tweener = create_tween()
-			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-			tweener.tween_callback(self, "_play_ouch_to_normal", [0.9]).set_delay(0.9)
-			
-		elif diff > 300:
-			var tweener = create_tween()
-			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-			tweener.tween_callback(self, "_play_ouch_to_normal", [0.65]).set_delay(0.65)
-			
-		elif diff > 220:
-			var tweener = create_tween()
-			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-			tweener.tween_callback(self, "_play_ouch_to_normal", [0.5]).set_delay(0.5)
-			
+#		if diff > 450:
+#			var tweener = create_tween()
+#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
+#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.9]).set_delay(0.9)
+#
+#		elif diff > 300:
+#			var tweener = create_tween()
+#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
+#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.65]).set_delay(0.65)
+#
+#		elif diff > 220:
+#			var tweener = create_tween()
+#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
+#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.5]).set_delay(0.5)
+		
 		
 		#print("diff: %s, prev_mag: %s, curr_mag: %s. |||||||| for_rewind: %s, prev_pos: %s, prev_change: %s, glob_pos: %s, pos_change: %s, use: %s" % [diff, prev_pos_mag, curr_pos_mag, _player_prev_global_position__for_rewind, _player_prev_global_position, arg_player_pos_change_from_last_frame, global_position, _player_pos_change_from_last_frame, _use_prev_glob_pos_for_rewind])
 		
 		#_use_prev_glob_pos_for_rewind = false
+	
+	
+	emit_signal("pos_change__for_aesth_effects", curr_pos_mag, prev_pos_mag, diff, delta)
+	
 
 func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
 	var diff = arg_max - arg_min
@@ -1517,19 +1534,19 @@ func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimu
 
 
 
-func _play_normal_to_ouch(arg_duration : float):
-	var frame_count = anim_on_screen.frames.get_frame_count(FACE_ANIMATION_NAME__NORMAL_TO_OUCH)
-	var fps = frame_count / arg_duration
-	
-	anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__NORMAL_TO_OUCH, fps)
-	anim_on_screen.play(FACE_ANIMATION_NAME__NORMAL_TO_OUCH)
-
-func _play_ouch_to_normal(arg_duration : float):
-	var frame_count = anim_on_screen.frames.get_frame_count(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
-	var fps = frame_count / arg_duration
-	
-	anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__OUCH_TO_NORMAL, fps)
-	anim_on_screen.play(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
+#func _play_normal_to_ouch(arg_duration : float):
+#	#var frame_count = anim_on_screen.frames.get_frame_count(FACE_ANIMATION_NAME__NORMAL_TO_OUCH)
+#	#var fps = frame_count / arg_duration
+#
+#	#anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__NORMAL_TO_OUCH, fps)
+#	#anim_on_screen.play(FACE_ANIMATION_NAME__NORMAL_TO_OUCH)
+#
+#func _play_ouch_to_normal(arg_duration : float):
+#	#var frame_count = anim_on_screen.frames.get_frame_count(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
+#	#var fps = frame_count / arg_duration
+#
+#	#anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__OUCH_TO_NORMAL, fps)
+#	#anim_on_screen.play(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
 
 
 #

@@ -342,7 +342,10 @@ func _create_blackout_no_energy_sprite():
 
 func _on_light_2d_mod_a_changed(arg_val):
 	var reverse_val = 1 - arg_val
+	if reverse_val > 1:
+		reverse_val = 1
 	_blackout_hud_sprite.modulate.a = reverse_val
+
 
 #
 

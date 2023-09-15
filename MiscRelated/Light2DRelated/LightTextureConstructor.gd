@@ -7,9 +7,10 @@ const _color_pair__to_gradient_map : Dictionary = {}
 ##########
 
 static func construct_or_get_rect_gradient_texture(arg_size : Vector2, arg_save_in_map : bool = true) -> GradientTexture2D:
-	if _size_to_texture_map.has(arg_size):
-		return _size_to_texture_map[arg_size]
-		
+	if arg_save_in_map:
+		if _size_to_texture_map.has(arg_size):
+			return _size_to_texture_map[arg_size]
+			
 	
 	var texture = GradientTexture2D.new()
 	
@@ -22,18 +23,19 @@ static func construct_or_get_rect_gradient_texture(arg_size : Vector2, arg_save_
 	texture.width = arg_size.x
 	texture.height = arg_size.y
 	
-	
-	if !_size_to_texture_map.has(arg_size):
-		_size_to_texture_map[arg_size] = texture
-		
+	if arg_save_in_map:
+		if !_size_to_texture_map.has(arg_size):
+			_size_to_texture_map[arg_size] = texture
+			
 	
 	return texture
 
 
 static func construct_or_get_gradient_two_color(arg_color_start_center, arg_color_end, arg_save_to_map : bool = true):
-	for pair in _color_pair__to_gradient_map.keys():
-		if pair[0] == arg_color_start_center and pair[1] == arg_color_end:
-			return _color_pair__to_gradient_map[pair]
+	if arg_save_to_map:
+		for pair in _color_pair__to_gradient_map.keys():
+			if pair[0] == arg_color_start_center and pair[1] == arg_color_end:
+				return _color_pair__to_gradient_map[pair]
 	
 	var gradient = Gradient.new()
 	# we use set_color because default starts with two colors

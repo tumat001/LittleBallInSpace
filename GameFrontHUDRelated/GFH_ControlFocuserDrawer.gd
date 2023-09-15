@@ -1,7 +1,7 @@
 extends Node2D
 
 
-var color_of_background_from_focus = Color(0, 0, 0, 0.9)
+var color_of_background_from_focus = Color(0, 0, 0, 0.92)
 
 
 var _rects_to_draw : Array

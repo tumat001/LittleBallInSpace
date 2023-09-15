@@ -195,6 +195,8 @@ func _begin_charge_ball():
 	if _player.is_player_modi_energy_set:
 		_player.player_modi__energy.set_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
 		
+	
+	_player.player_face.play_sequence__charging_launch_ball()
 
 
 func _attempt_launch_ball():

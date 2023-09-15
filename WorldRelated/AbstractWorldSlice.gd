@@ -342,6 +342,8 @@ func helper__start_cutscene_of_pickup_important_item(arg_param : PickupImportant
 	_ICIP_func_source = arg_func_source
 	_ICIP_func_name = arg_func_name
 	_ICIP_func_param = arg_params
+	
+	game_elements.get_current_player().player_face.play_sequence__upgrading()
 
 
 func _start_item_pickup_particles(arg_param : PickupImportantItemCutsceneParam):
@@ -450,7 +452,8 @@ func _on_any_item_particle_reached_final_destination():
 	CameraManager.reset_camera_zoom_level()
 	
 	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Special_ImportantItemFound, 1.0, null)
-
+	
+	game_elements.get_current_player().player_face.end_sequence__upgrading()
 
 
 
