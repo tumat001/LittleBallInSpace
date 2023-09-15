@@ -318,6 +318,8 @@ onready var pca_line_direction_drawer = $PCALineDirectionDrawer
 
 onready var light_2d = $Light2D
 
+onready var player_face = $SpriteLayer/PlayerFace
+
 #onready var remote_transform_2d = $RemoteTransform2D
 
 #

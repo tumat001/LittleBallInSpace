@@ -107,7 +107,6 @@ func template__start_focus_on_energy_panel__with_glow_up(arg_delay_for_func_call
 	gfh_control_focuser.focus_draw_on_control(energy_panel, 15)
 	gfh_control_focuser.start_mod_a_tween(1.0, 0.7, 0.4, self, "_on_ghf_mod_a_to_1_finished__focus_on_energy_panel", ending_metadata)
 
-
 func _on_ghf_mod_a_to_1_finished__focus_on_energy_panel(arg_ending_metadata):
 	energy_panel.template__do_brief_glowup(0.6, self, "_on_energy_panel__done_glowup__focus_on_energy_panel", arg_ending_metadata)
 

@@ -331,10 +331,10 @@ func helper__start_cutscene_of_pickup_important_item(arg_param : PickupImportant
 	
 	CameraManager.start_camera_zoom_change(Vector2(0.5, 0.5), CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
 	
-	var wait_tween = create_tween()
-	wait_tween.set_parallel(false)
-	wait_tween.tween_interval(3.0)
-	wait_tween.tween_callback(self, "_on_wait_tween_finished__cutscene_for_pickup", [arg_func_source, arg_func_name, arg_params])
+	#var wait_tween = create_tween()
+	#wait_tween.set_parallel(false)
+	#wait_tween.tween_interval(3.0)
+	#wait_tween.tween_callback(self, "_on_wait_tween_finished__cutscene_for_pickup", [arg_func_source, arg_func_name, arg_params])
 	
 	#
 	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
@@ -359,12 +359,12 @@ func _start_item_pickup_particles(arg_param : PickupImportantItemCutsceneParam):
 
 
 
-func _on_wait_tween_finished__cutscene_for_pickup(arg_func_source, arg_func_name, arg_params):
-	#CameraManager.set_current_default_zoom_normal_vec__to_default_zoom_normal_val(true)
-	#CameraManager.start_camera_zoom_change(CameraManager.DEFAULT_ZOOM_LEVEL, CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
-	CameraManager.reset_camera_zoom_level()
-	
-	arg_func_source.call(arg_func_name, arg_params)
+#func _on_wait_tween_finished__cutscene_for_pickup(arg_func_source, arg_func_name, arg_params):
+#	#CameraManager.set_current_default_zoom_normal_vec__to_default_zoom_normal_val(true)
+#	#CameraManager.start_camera_zoom_change(CameraManager.DEFAULT_ZOOM_LEVEL, CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+#	CameraManager.reset_camera_zoom_level()
+#
+#	arg_func_source.call(arg_func_name, arg_params)
 
 
 #
@@ -447,6 +447,7 @@ func _on_any_item_particle_reached_final_destination():
 	
 	_ICIP_func_source.call(_ICIP_func_name, _ICIP_func_param)
 	
+	CameraManager.reset_camera_zoom_level()
 	
 	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Special_ImportantItemFound, 1.0, null)
 

@@ -9,6 +9,8 @@ var _speed_for_break
 
 onready var toughened_glass_tileset = $TileContainer/BaseTileSet_StrongGlass
 
+onready var cdsu_mega_battery = $ObjectContainer/CDSU_MegaBattery
+
 #
 
 func _init():
@@ -73,6 +75,11 @@ func _on_PDAR_TriggerDialog03_player_entered_in_area():
 func _start_dialog__03():
 	#var plain_fragment__speed_to_break = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.SPEED, "%s speed" % (_speed_for_break))
 	
+	if CameraManager.is_at_default_zoom():
+		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+	
+	#
+	
 	var dialog_desc = [
 		["Use balls and portals to build up speed!", []],
 	]
@@ -114,20 +121,33 @@ func _end_dialog__04():
 
 
 func _on_CDSU_MegaBattery_player_entered_self__custom_defined():
-	game_elements.configure_game_state_for_cutscene_occurance(true, true)
-	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
+	var player_pos = game_elements.get_current_player().global_position
 	
+	var param = PickupImportantItemCutsceneParam.new()
+	param.item_texture = cdsu_mega_battery.sprite.texture
+	param.staring_pos = cdsu_mega_battery.global_position
+	param.ending_pos = player_pos
+	
+	helper__start_cutscene_of_pickup_important_item(param, self, "_on_item_cutscene_end", null)
+
+
+func _on_item_cutscene_end(arg_param):
 	_on_pickup_mega_battery()
+	SingletonsAndConsts.current_game_front_hud.template__start_focus_on_energy_panel__with_glow_up(0.4, self, "_finished_energy_panel_brief_focus_and_glow_up", null)
+
+func _finished_energy_panel_brief_focus_and_glow_up(arg_param):
 	_start_battery_pickup_dialog__01()
+
 
 func _start_battery_pickup_dialog__01():
 	var dialog_desc = [
 		["With the MEGA battery, you can store LOTS of energy!", []],
 	]
 	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_battery_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	if !SingletonsAndConsts.current_game_front_hud.game_dialog_panel.is_connected("display_of_desc_finished", self, "_on_display_of_battery_desc_finished__01"):
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_battery_desc_finished__01", [], CONNECT_ONESHOT)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
 func _on_display_of_battery_desc_finished__01(arg_metadata):
 	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()

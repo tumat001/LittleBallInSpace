@@ -147,7 +147,7 @@ func _deferred_init_electrical_shock_screen():
 	
 	##
 	
-	SingletonsAndConsts.current_game_front_hud.energy_panel.can_show_rewind_label = false
+	#SingletonsAndConsts.current_game_front_hud.energy_panel.can_show_rewind_label = false
 	_broken_energy_panel_frame_texture_rect = SingletonsAndConsts.current_game_front_hud.energy_panel.template__set_cosmetically_broken()
 
 func _deferred_init_all_electrical_equi_particles_related():

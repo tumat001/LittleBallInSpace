@@ -403,7 +403,7 @@ button_color = 0
 
 [node name="Portal_Cosmetic" parent="ObjectContainer" index="13" instance=ExtResource( 21 )]
 modulate = Color( 0.5, 0.5, 0.5, 0.85 )
-position = Vector2( 289, 610 )
+position = Vector2( 293, 656 )
 portal_color = 3
 is_disabled = true
 

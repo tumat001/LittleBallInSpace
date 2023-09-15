@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png" type="Texture" id=1]
 [ext_resource path="res://PlayerRelated/Player.gd" type="Script" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://PlayerRelated/PlayerModel/Assets/PlayerModel_Face_Ouch/PlayerModel_Face_Ouch_05.png" type="Texture" id=17]
 [ext_resource path="res://PlayerRelated/PCAProgressDrawer.gd" type="Script" id=18]
 [ext_resource path="res://PlayerRelated/PCALineDirectionDrawer.gd" type="Script" id=19]
+[ext_resource path="res://PlayerRelated/PlayerModel/PlayerFace/PlayerFace.tscn" type="PackedScene" id=20]
 
 [sub_resource type="PhysicsMaterial" id=4]
 friction = 0.0
@@ -73,6 +74,9 @@ texture = ExtResource( 3 )
 frames = SubResource( 6 )
 animation = "normal"
 playing = true
+
+[node name="PlayerFace" parent="SpriteLayer" instance=ExtResource( 20 )]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
