@@ -20,6 +20,11 @@ var original_rewind_reminder_text : String
 
 
 var player_health_panel
+var can_show_rewind_label : bool = true
+
+#
+
+var _template__broken_batt_foreground_texture_rect : TextureRect
 
 #
 
@@ -28,7 +33,7 @@ onready var energy_label = $EnergyLabel
 onready var texture_progress_current = $TextureProgressCurrent
 onready var texture_progress_forcasted = $TextureProgressForcasted
 
-
+onready var bar_foreground_cosmetic_container = $BarForegroundCosmeticContainer
 onready var rewind_reminder_label = $RewindReminder
 
 #
@@ -120,7 +125,8 @@ func _on_game_control_hotkey_changed(arg_action_name, arg_old, arg_new):
 
 
 func _on_discarged_to_zero_energy():
-	rewind_reminder_label.visible = true
+	if can_show_rewind_label:
+		rewind_reminder_label.visible = true
 	
 
 func _on_recharged_from_no_energy():
@@ -171,4 +177,46 @@ func _update_display_based_on_is_true_instant_drain():
 		energy_label.visible = true
 		
 	
+
+#############
+
+func create_bar_foreground_sprite(arg_texture : Texture) -> TextureRect:
+	var texture_rect = TextureRect.new()
+	texture_rect.texture = arg_texture
+	texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar_foreground_cosmetic_container.add_child(texture_rect)
+	
+	return texture_rect
+
+func set_texture_progresses_modulate__tween(arg_modulate : Color, arg_duration : float):
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(texture_progress_current, "modulate", arg_modulate, arg_duration)
+	tween.tween_property(texture_progress_forcasted, "modulate", arg_modulate, arg_duration)
+
+
+#
+
+func template__set_cosmetically_broken():
+	var texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed.png")
+	_template__broken_batt_foreground_texture_rect = create_bar_foreground_sprite(texture)
+	set_texture_progresses_modulate__tween(Color(0.3, 0.3, 0.3, 1.0), 0)
+	
+	return _template__broken_batt_foreground_texture_rect
+
+func template__set_to_normal__from_cosmetically_broken():
+	if is_instance_valid(_template__broken_batt_foreground_texture_rect):
+		_template__broken_batt_foreground_texture_rect.visible = false
+		_template__broken_batt_foreground_texture_rect.queue_free()
+	set_texture_progresses_modulate__tween(Color(1, 1, 1, 1.0), 1.0)
+
+#
+
+func template__do_brief_glowup(arg_delay_for_func_call, arg_func_source, arg_func_name, arg_func_params):
+	var tween = create_tween()
+	tween.set_parallel(false)
+	tween.tween_property(self, "modulate", Color(1.6, 1.6, 1.6, 1.0), 0.5)
+	tween.tween_interval(0.5)
+	tween.tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.5)
+	tween.tween_callback(arg_func_source, arg_func_name, [arg_func_params]).set_delay(arg_delay_for_func_call)
 

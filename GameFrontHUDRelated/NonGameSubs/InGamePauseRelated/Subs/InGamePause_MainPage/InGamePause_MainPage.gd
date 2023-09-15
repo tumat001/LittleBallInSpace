@@ -54,6 +54,7 @@ func _ready():
 	
 	#
 	
+	assist_mode_mini_summary_panel.is_in_game = true
 
 #
 

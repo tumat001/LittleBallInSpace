@@ -77,9 +77,18 @@ enum PlayerSoundType {
 const bus__sound_fx_name : String = "SoundFX"
 const bus__background_name : String = "Background"
 
+const bus__background_name__internal : String = "_BackgroundHidden"
+var bus__background_name__internal__idx : int = -1
+
+
 const player_sound_type_to_bus_name_map : Dictionary = {
 	PlayerSoundType.SOUND_FX : bus__sound_fx_name,
 	PlayerSoundType.BACKGROUND_MUSIC : bus__background_name,
+}
+
+const player_sound_type_to_bus_name_map__internal : Dictionary = {
+	PlayerSoundType.SOUND_FX : bus__sound_fx_name,
+	PlayerSoundType.BACKGROUND_MUSIC : bus__background_name__internal,
 }
 
 
@@ -234,9 +243,12 @@ func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player,
 		
 		
 		if play_adv_params != null:
-			arg_stream_player.bus = player_sound_type_to_bus_name_map[play_adv_params.play_sound_type]
+			#arg_stream_player.bus = player_sound_type_to_bus_name_map[play_adv_params.play_sound_type]
+			arg_stream_player.bus = player_sound_type_to_bus_name_map__internal[play_adv_params.play_sound_type]
 		else:
-			arg_stream_player.bus = player_sound_type_to_bus_name_map[PlayerSoundType.DEFAULT]
+			arg_stream_player.bus = player_sound_type_to_bus_name_map__internal[PlayerSoundType.DEFAULT]
+			#arg_stream_player.bus = player_sound_type_to_bus_name_map[PlayerSoundType.DEFAULT]
+			
 		arg_stream_player.play()
 		
 		
@@ -527,6 +539,7 @@ func set_bus__background_music_volume(arg_val):
 	
 	emit_signal("bus__background_music_volume_changed", arg_val)
 
+#
 
 func set_bus__sound_fx_bus_mute(arg_val):
 	bus__sound_fx_bus_mute = arg_val
@@ -543,6 +556,19 @@ func set_bus__background_music_bus_mute(arg_val):
 	AudioServer.set_bus_mute(idx, bus__background_music_bus_mute)
 	
 	emit_signal("bus__background_music_mute_changed", arg_val)
+
+#
+
+func set_bus__background_music_volume__internal(arg_val):
+	if bus__background_name__internal__idx == -1:
+		bus__background_name__internal__idx = AudioServer.get_bus_index(bus__background_name__internal)
+	AudioServer.set_bus_volume_db(bus__background_name__internal__idx, arg_val)
+
+func get_bus__background_music_volume__internal():
+	if bus__background_name__internal__idx == -1:
+		bus__background_name__internal__idx = AudioServer.get_bus_index(bus__background_name__internal)
+	
+	return bus__background_name__internal__idx
 
 
 ####################

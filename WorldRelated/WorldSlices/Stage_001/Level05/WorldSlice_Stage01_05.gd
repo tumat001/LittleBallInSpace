@@ -71,19 +71,34 @@ func _configure_labels():
 ############
 
 func _on_player_entered_self__custom_defined__launcher():
-	game_elements.configure_game_state_for_cutscene_occurance(true, true)
-	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
+	var player_pos = game_elements.get_current_player().global_position
 	
-	_play_animations_for_acquiring_launcher()
-
-func _play_animations_for_acquiring_launcher():
-	_on_end_of_animations_for_acquiring_launcher()
+	var param = PickupImportantItemCutsceneParam.new()
+	param.item_texture = CDSU_pickupable_launcher.sprite.texture
+	param.staring_pos = CDSU_pickupable_launcher.global_position
+	param.ending_pos = player_pos
 	
+	helper__start_cutscene_of_pickup_important_item(param, self, "_on_item_cutscene_end", null)
+	
+#	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+#	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
+#
+#	_play_animations_for_acquiring_launcher()
+#
+#func _play_animations_for_acquiring_launcher():
+#	_on_end_of_animations_for_acquiring_launcher()
+#
 
 
-func _on_end_of_animations_for_acquiring_launcher():
+#func _on_end_of_animations_for_acquiring_launcher():
+func _on_item_cutscene_end(arg_param):
 	_add_launch_ball_modi()
 	
+	SingletonsAndConsts.current_game_front_hud.template__start_focus_on_launch_ball_panel__with_glow_up(0.4, self, "_on_highlight_launchball_panel_ended", null)
+
+
+
+func _on_highlight_launchball_panel_ended(arg_param):
 	_start_hide_god_rays()
 	_start_remote_dialog__01()
 
@@ -113,9 +128,10 @@ func _start_remote_dialog__01():
 		["Anyways, pick up the remote control so we can talk.", []]
 	]
 	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	if !SingletonsAndConsts.current_game_front_hud.game_dialog_panel.is_connected("display_of_desc_finished", self, "_on_display_of_desc_finished__01"):
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
 
 func _on_display_of_desc_finished__01(arg_metadata):

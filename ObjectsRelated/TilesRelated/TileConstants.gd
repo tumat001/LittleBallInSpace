@@ -390,7 +390,7 @@ func generate_rects_for_size__and_autocoords(arg_size : Vector2, arg_x_segments 
 	return rects_and_auto_coords
 
 
-############
+###
 
 func generate_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region : Rect2, arg_tilesheet : Texture):
 	var atlas_img = AtlasTexture.new()

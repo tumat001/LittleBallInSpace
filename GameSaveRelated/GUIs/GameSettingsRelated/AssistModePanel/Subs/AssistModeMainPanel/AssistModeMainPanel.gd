@@ -69,6 +69,7 @@ func _ready():
 	
 	GameSettingsManager.connect("assist_mode_id_unlock_status_changed", self, "_on_assist_mode_id_unlock_status_changed")
 	_update_options_visiblity_and_config_based_on_game_settings()
+	GameSettingsManager.connect("last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config_changed", self, "_on_last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config_changed")
 	_update_restart_label_vis()
 	
 	_init_assist_mode_is_active_all_relateds()
@@ -206,7 +207,7 @@ func _on_last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config_c
 	
 
 func _update_restart_label_vis():
-	restart_label.visible = GameSettingsManager.last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config
+	restart_label.visible = GameSettingsManager.last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config and is_in_game
 	
 
 ##########

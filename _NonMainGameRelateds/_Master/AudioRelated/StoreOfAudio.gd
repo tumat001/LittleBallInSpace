@@ -110,8 +110,14 @@ enum AudioIds {
 	SFX_Misc_GlassBreak_Hard = 5300
 	SFX_SpaceshipWall_Tile_Break = 5301
 	
+	
+	
 	# SPECIAL
-	#SFX_SpaceshipWall_Break = 6000
+	SFX_Special_ElectricGenerator = 6000
+	SFX_Special_Electrical_Shock = 6001
+	SFX_Special_Electrical_Explosion = 6002
+	SFX_Special_Electrical_SwitchFlip = 6003
+	SFX_Special_ImportantItemFound = 6004
 	
 }
 
@@ -268,6 +274,7 @@ func _initialize_bgm_stages_playlist():
 		#playlist.set_autoplay_delay_with_node_to_host_timer(0, 1, self)
 		
 		playlist.node_pause_mode = Node.PAUSE_MODE_PROCESS
+		playlist.bus_internal_name = AudioManager.bus__background_name__internal
 	
 	#
 	

@@ -190,7 +190,7 @@ func _unhandled_key_input(event):
 	if event.is_action_pressed("rewind") and !GameSettingsManager.get_game_control_name__is_hidden("rewind"):
 		rewind_manager.attempt_start_rewind()
 		
-	elif event.is_action_released("rewind") and !!GameSettingsManager.get_game_control_name__is_hidden("rewind"):
+	elif event.is_action_released("rewind") and !GameSettingsManager.get_game_control_name__is_hidden("rewind"):
 		rewind_manager.end_rewind()
 		
 		

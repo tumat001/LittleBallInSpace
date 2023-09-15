@@ -3,6 +3,19 @@
 # the coin functionality prevents that....
 extends Node2D
 
+
+#
+
+const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
+const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
+const With2ndCenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.gd")
+const With2ndCenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.tscn")
+
+
+const TextureMethodHelper = preload("res://MiscRelated/TextureRelated/TextureMethodHelper.gd")
+
+#
+
 const Player = preload("res://PlayerRelated/Player.gd")
 const Player_Scene = preload("res://PlayerRelated/Player.tscn")
 
@@ -43,6 +56,17 @@ var _next_available_coin_id : int = 1
 
 var is_player_capture_area_style_one_at_a_time__in_node_order : bool
 var _current_pca_index : int
+
+#
+
+var _all_imp_cutscene_item_particles : Array
+var _item_particle_reached_dest_count : int
+var _current_item_cutscene_param : PickupImportantItemCutsceneParam
+
+var _ICIP_func_source
+var _ICIP_func_name
+var _ICIP_func_param
+
 
 #
 
@@ -280,5 +304,152 @@ func make_first_uncaptured_pca_region_visible():
 func set_enable_base_tileset_generate_tooltips(arg_val):
 	for tileset in tile_container.get_children():
 		tileset.can_generate_tooltips = arg_val
+
+
+
+######
+# HELPER
+######
+
+
+const DIST_OF_ITEM_PARTICLE_FROM_PLAYER : float = 36.0
+class PickupImportantItemCutsceneParam:
+	var item_texture : Texture
+	var staring_pos : Vector2
+	var ending_pos : Vector2
+
+# make it do the circle thing animation
+func helper__start_cutscene_of_pickup_important_item(arg_param : PickupImportantItemCutsceneParam,
+		arg_func_source, arg_func_name, arg_params):
+	
+	_current_item_cutscene_param = arg_param
+	
+	#CameraManager.set_current_default_zoom_normal_vec__to_default_zoom_out_val(true)
+	#CameraManager.start_camera_zoom_change(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL, CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	call_deferred("_start_item_pickup_particles", arg_param)
+	
+	CameraManager.start_camera_zoom_change(Vector2(0.5, 0.5), CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+	
+	var wait_tween = create_tween()
+	wait_tween.set_parallel(false)
+	wait_tween.tween_interval(3.0)
+	wait_tween.tween_callback(self, "_on_wait_tween_finished__cutscene_for_pickup", [arg_func_source, arg_func_name, arg_params])
+	
+	#
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
+	
+	_ICIP_func_source = arg_func_source
+	_ICIP_func_name = arg_func_name
+	_ICIP_func_param = arg_params
+
+
+func _start_item_pickup_particles(arg_param : PickupImportantItemCutsceneParam):
+	var atlas_texture_to_top_left_pos_modi_map = TextureMethodHelper.generate_atlas_textures_and_pos_modifier_map__for_texture(arg_param.item_texture, 5, 5)
+	#var center_based_attk_sprites_list = TextureMethodHelper.generate_center_based_attk_sprite__from_atlas_textures_and_pos_modifier_map(atlas_texture_map, arg_param.staring_pos, With2ndCenterBasedAttackSprite_Scene)
+	
+	var idx = 0
+	var total_idx = atlas_texture_to_top_left_pos_modi_map.size() - 1
+	for texture in atlas_texture_to_top_left_pos_modi_map:
+		var pos_modi__top_left_based = atlas_texture_to_top_left_pos_modi_map[texture]
+		var pos_modi__center_based = TextureMethodHelper.convert_pos_modi_top_left_based__into_center_based(arg_param.item_texture.get_size(), pos_modi__top_left_based)
+		
+		var attk_sprite = _configure_CBAS_item_pickup_particle(texture, arg_param, idx, total_idx, pos_modi__center_based)
+		idx += 1
+
+
+
+func _on_wait_tween_finished__cutscene_for_pickup(arg_func_source, arg_func_name, arg_params):
+	#CameraManager.set_current_default_zoom_normal_vec__to_default_zoom_normal_val(true)
+	#CameraManager.start_camera_zoom_change(CameraManager.DEFAULT_ZOOM_LEVEL, CameraManager.ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
+	CameraManager.reset_camera_zoom_level()
+	
+	arg_func_source.call(arg_func_name, arg_params)
+
+
+#
+
+func _configure_CBAS_item_pickup_particle(texture : Texture, arg_param : PickupImportantItemCutsceneParam, arg_idx, arg_total_idx, arg_pos_modi : Vector2):
+	var attk_sprite = With2ndCenterBasedAttackSprite_Scene.instance()
+	attk_sprite.texture_to_use = texture
+	
+	#
+	
+	#attk_sprite.reset_for_another_use_on_ready = false
+	
+	var pos_modi_from_dest = _calculate_pos_modi_from_final_dest_center__for_item_particle(arg_idx, arg_total_idx)
+	var circle_arc_dest = arg_param.ending_pos + pos_modi_from_dest
+	attk_sprite.center_pos_of_basis = circle_arc_dest
+	#attk_sprite.center_pos_of_basis = arg_param.staring_pos + arg_pos_modi
+	
+	
+	attk_sprite.use_override__initial_pos = true
+	var initial_pos = arg_param.staring_pos + arg_pos_modi
+	attk_sprite.override__initial_pos = initial_pos
+	attk_sprite.position = initial_pos
+	
+	attk_sprite.is_enabled_mov_toward_center = true
+	
+	attk_sprite.initial_speed_towards_center = 60
+	attk_sprite.speed_accel_towards_center = -8
+	attk_sprite.min_speed_towards_center = 40
+	
+	attk_sprite.min_starting_angle = 0
+	attk_sprite.max_starting_angle = 0
+	
+	_all_imp_cutscene_item_particles.append(attk_sprite)
+	
+	SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(attk_sprite)
+	
+	attk_sprite.connect("reached_center_pos_of_basis", self, "_on_imp_cutscene_item_particle_reached_center_pos_of_basis", [], CONNECT_ONESHOT)
+	
+	var tweener = create_tween()
+	tweener.tween_property(attk_sprite, "modulate", Color("#4DFDFC"), 0.3)
+	
+	#var dist = attk_sprite.center_pos_of_basis.distance_to(arg_param.staring_pos)
+	#attk_sprite.min_starting_distance_from_center = dist
+	#attk_sprite.max_starting_distance_from_center = dist
+	
+
+
+func _calculate_pos_modi_from_final_dest_center__for_item_particle(arg_idx, arg_total_idx):
+	var angle = (360 * arg_idx * 2 / float(arg_total_idx) - 90)
+	return Vector2(DIST_OF_ITEM_PARTICLE_FROM_PLAYER, 0).rotated(deg2rad(angle))
+
+
+func _on_imp_cutscene_item_particle_reached_center_pos_of_basis():
+	_item_particle_reached_dest_count += 1
+	if _item_particle_reached_dest_count == _all_imp_cutscene_item_particles.size():
+		var wait_tween = create_tween()
+		wait_tween.tween_interval(0.5)
+		wait_tween.tween_callback(self, "_make_all_imp_cutscene_item_particles_go_to_final_pos")
+
+func _make_all_imp_cutscene_item_particles_go_to_final_pos():
+	var i = 0
+	for particle in _all_imp_cutscene_item_particles:
+		particle.secondary_center = _current_item_cutscene_param.ending_pos
+		particle.secondary_speed_accel_towards_center = 200
+		particle.secondary_initial_speed_towards_center = 40
+		
+		particle._configure_self_to_change_to_secondary_center()
+		
+		if i == 0:
+			particle.connect("reached_final_destination", self, "_on_any_item_particle_reached_final_destination", [], CONNECT_PERSIST)
+		i += 1
+		
+	
+
+
+
+func _on_any_item_particle_reached_final_destination():
+	for particle in _all_imp_cutscene_item_particles:
+		particle.queue_free()
+	
+	_ICIP_func_source.call(_ICIP_func_name, _ICIP_func_param)
+	
+	
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Special_ImportantItemFound, 1.0, null)
+
+
 
 

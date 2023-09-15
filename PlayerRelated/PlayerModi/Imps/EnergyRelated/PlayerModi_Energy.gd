@@ -1,6 +1,8 @@
 extends "res://PlayerRelated/PlayerModi/AbstractPlayerModi.gd"
 
+const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
+##
 
 signal discarged_to_zero_energy()
 signal recharged_from_no_energy()
@@ -76,10 +78,25 @@ var is_true_instant_drain_and_recharge : bool = false setget set_is_true_instant
 
 #
 
+var _game_front_hud
+var _blackout_hud_sprite : Sprite
+
+#
+
 func apply_modification_to_player_and_game_elements(arg_player, arg_game_elements):
 	.apply_modification_to_player_and_game_elements(arg_player, arg_game_elements)
 	
 	_player = arg_player
+	
+	if arg_game_elements.is_game_front_hud_initialized:
+		_init_all_game_hud_relateds()
+	else:
+		arg_game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized", [], CONNECT_ONESHOT)
+
+func _on_game_front_hud_initialized(arg_hud):
+	_init_all_game_hud_relateds()
+
+
 
 #
 
@@ -126,6 +143,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 			
 			_player.can_capture_PCA_regions = false
 			
+			_tween_mute_background_music__internal()
 			emit_signal("discarged_to_zero_energy")
 			
 		else:
@@ -137,6 +155,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 			
 			_player.can_capture_PCA_regions = true
 			
+			_tween_unmute_background_music__internal()
 			emit_signal("recharged_from_no_energy")
 			
 	
@@ -168,8 +187,25 @@ func set_current_energy(arg_val, arg_source_id = -1):
 func get_current_energy():
 	return _current_energy
 
-
 #
+
+func _tween_mute_background_music__internal():
+	var background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	background_music_playlist.set_volume_db__bus_internal__tween(AudioManager.DECIBEL_VAL__INAUDIABLE, 1.5, self, "_on_finish_tweening_background_music", null)
+
+func _tween_unmute_background_music__internal():
+	var background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	background_music_playlist.set_volume_db__bus_internal__tween(AudioManager.DECIBEL_VAL__STANDARD, 1.5, self, "_on_finish_tweening_background_music", null)
+
+
+
+
+func _on_finish_tweening_background_music(arg_params):
+	pass
+	
+
+
+##
 
 func clear_source_id_energy_modified(arg_id):
 	_source_id_to_energy_amount_contributed.erase(arg_id)
@@ -281,6 +317,39 @@ func set_is_true_instant_drain_and_recharge(arg_val):
 		emit_signal("is_true_instant_drain_and_recharge_changed", arg_val)
 
 
+#####
+
+
+func _init_all_game_hud_relateds():
+	_game_front_hud = SingletonsAndConsts.current_game_front_hud
+	_create_blackout_no_energy_sprite()
+	
+	_player.connect("light_2d_mod_a_changed", self, "_on_light_2d_mod_a_changed")
+
+func _create_blackout_no_energy_sprite():
+	_blackout_hud_sprite = _game_front_hud.create_sprite_shader(null)
+	var gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color(0, 0, 0, 0), Color(0, 0, 0, 0.8), false)
+	var grad_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(960, 540), false)
+	grad_texture.gradient = gradient
+	_blackout_hud_sprite.visible = true
+	_blackout_hud_sprite.global_position = Vector2(0, 0)
+	_blackout_hud_sprite.centered = false
+	_blackout_hud_sprite.scale = Vector2(1, 1)
+	
+	_blackout_hud_sprite.texture = grad_texture
+	_blackout_hud_sprite.modulate.a = 0
+
+
+func _on_light_2d_mod_a_changed(arg_val):
+	var reverse_val = 1 - arg_val
+	_blackout_hud_sprite.modulate.a = reverse_val
+
+#
+
+func custom_event__tween_blackout_hud_sprite(arg_val, arg_duration):
+	var tween : SceneTreeTween = _player.create_tween()
+	tween.tween_property(_blackout_hud_sprite, "modulate:a", arg_val, arg_duration)
+	
 
 ###################### 
 # REWIND RELATED

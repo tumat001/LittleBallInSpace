@@ -35,7 +35,7 @@ var display_timer : Timer
 
 #
 
-var can_display__by_energy_panel : bool
+var can_display__by_energy_panel : bool = false
 
 #
 

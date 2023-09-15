@@ -15,7 +15,7 @@ var original_warning_text : String
 
 onready var gradient_background = $GradientBackground
 
-onready var warning_label = $WarningPanel/Marginer/Label
+onready var warning_label = $WarningPanel/DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Label
 
 #
 

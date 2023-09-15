@@ -37,6 +37,8 @@ signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_i
 
 signal can_capture_PCA_regions_changed(arg_val)
 
+signal light_2d_mod_a_changed(arg_val)
+
 #
 
 var _base_player_size
@@ -293,6 +295,8 @@ const DEFAULT_LIGHT_COLOR = Color("#feffa3")
 var _light_color : Color = DEFAULT_LIGHT_COLOR
 
 var _light_energy : float = 1.0
+var _light_2d__target_mod_a : float = -1
+const LIGHT_2D_MOD_A_PER_SEC : float = 0.4
 
 #
 
@@ -1146,7 +1150,19 @@ func _process(delta):
 				
 			else:
 				_no_energy_consecutive_duration = 0
-	
+		
+		
+		if !is_equal_approx(_light_2d__target_mod_a, -1):
+			var mod_a_per_sec = LIGHT_2D_MOD_A_PER_SEC * delta
+			if light_2d.color.a > _light_2d__target_mod_a:
+				mod_a_per_sec *= -1
+			
+			var final_val = light_2d.color.a + mod_a_per_sec
+			final_val = light_energy_mod_a__get_cleaned_val(final_val)
+			set_light_energy_mod_a(final_val)
+			
+			if is_equal_approx(final_val, _light_2d__target_mod_a):
+				_light_2d__target_mod_a = -1
 
 #############
 
@@ -1389,6 +1405,8 @@ func _update_self_based_on_has_energy__no_energy():
 	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
 	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
 	anim_on_screen.visible = false
+	
+	set_light_energy_mod_a__gradual(0.0)
 
 func _update_self_based_on_has_energy__has_energy():
 	block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
@@ -1396,7 +1414,8 @@ func _update_self_based_on_has_energy__has_energy():
 	face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
 	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
 	anim_on_screen.visible = true
-
+	
+	set_light_energy_mod_a__gradual(1.0)
 
 
 ##
@@ -1859,6 +1878,27 @@ func set_light_energy__tween(arg_val, arg_duration):
 	tween.tween_property(light_2d, "energy", _light_energy, arg_duration)
 
 
+func light_energy_mod_a__get_cleaned_val(arg_val):
+	if arg_val > 1:
+		arg_val = 1
+	if arg_val < 0:
+		arg_val = 0
+	
+	return arg_val
+
+
+func set_light_energy_mod_a__gradual(arg_val):
+	_light_2d__target_mod_a = arg_val
+
+func set_light_energy_mod_a(arg_val):
+	if !is_equal_approx(_light_2d__target_mod_a, -1):
+		light_2d.color.a = arg_val
+		
+		emit_signal("light_2d_mod_a_changed", arg_val)
+
+func get_light_energy_mod_a():
+	return light_2d.color.a
+
 #
 
 func add_static_base_object_in_contact_with(arg_obj):
@@ -2013,6 +2053,7 @@ func get_rewind_save_state():
 		"ignore_outside_induced_forces_cond_clauses" : ignore_outside_induced_forces_cond_clauses.get_rewind_save_state(),
 		
 		"can_capture_PCA_regions" : can_capture_PCA_regions,
+		"_light_2d__target_mod_a" : _light_2d__target_mod_a,
 		
 		#"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
 		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
@@ -2089,6 +2130,8 @@ func load_into_rewind_save_state(arg_state):
 	_max_health = arg_state["max_health"]
 	
 	set_current_robot_health(arg_state["current_robot_health"])
+	
+	set_light_energy_mod_a(arg_state["_light_2d__target_mod_a"])
 
 
 func destroy_from_rewind_save_state():

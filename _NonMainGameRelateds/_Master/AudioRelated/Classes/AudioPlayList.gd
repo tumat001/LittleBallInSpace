@@ -57,9 +57,14 @@ var _all_audio_id_list : Array
 
 var _audio_ids_played : Array
 
-
 #
 
+var bus_internal_name : String
+var volume_db__bus_internal : float = 0.0 setget set_volume_db__bus_internal
+
+var _volume_db_tweener : SceneTreeTween
+
+#
 
 func _init(arg_play_adv_param : AudioManager.PlayAdvParams = null, arg_rng_to_use : RandomNumberGenerator = null):
 	if arg_play_adv_param == null:
@@ -374,5 +379,26 @@ func _set_is_playing(arg_is_playing):
 
 
 #
+
+func set_volume_db__bus_internal(arg_val):
+	volume_db__bus_internal = arg_val
+	
+	if bus_internal_name == AudioManager.bus__background_name__internal:
+		AudioManager.set_bus__background_music_volume__internal(arg_val)
+
+func set_volume_db__bus_internal__tween(arg_val, arg_duration,
+		arg_func_source_on_finish, arg_func_name_on_finish, arg_func_params):
+	
+	if bus_internal_name == AudioManager.bus__background_name__internal:
+		if _volume_db_tweener != null and _volume_db_tweener.is_valid():
+			_volume_db_tweener.kill()
+		
+		var curr_volume : float = AudioManager.get_bus__background_music_volume__internal()
+		
+		_volume_db_tweener = AudioManager.create_tween()
+		_volume_db_tweener.set_parallel(false)
+		_volume_db_tweener.tween_method(self, "set_volume_db__bus_internal", curr_volume, arg_val, arg_duration)
+		_volume_db_tweener.tween_callback(arg_func_source_on_finish, arg_func_name_on_finish, [arg_func_params])
+		
 
 

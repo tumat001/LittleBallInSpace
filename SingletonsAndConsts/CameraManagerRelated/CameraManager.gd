@@ -273,7 +273,15 @@ func set_current_default_zoom_normal_vec(arg_zoom,
 
 func set_current_default_zoom_out_vec(arg_zoom):
 	_current_default_zoom_out_vec = arg_zoom
-	
+
+
+
+func set_current_default_zoom_normal_vec__to_default_zoom_normal_val(arg_use_ease_for_change : bool, arg_duration_for_ease_of_change = ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION):
+	set_current_default_zoom_normal_vec(DEFAULT_ZOOM_LEVEL, arg_use_ease_for_change, arg_duration_for_ease_of_change)
+
+func set_current_default_zoom_normal_vec__to_default_zoom_out_val(arg_use_ease_for_change : bool, arg_duration_for_ease_of_change = ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION):
+	set_current_default_zoom_normal_vec(ZOOM_OUT__DEFAULT__ZOOM_LEVEL, arg_use_ease_for_change, arg_duration_for_ease_of_change)
+
 
 #
 

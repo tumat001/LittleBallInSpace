@@ -43,8 +43,8 @@ func reset_for_another_use():
 	.reset_for_another_use()
 	
 	#_lifetime_from_zero = 0
-	max_speed_towards_center = 0
-	min_speed_towards_center = -9999
+	#max_speed_towards_center = 0
+	#min_speed_towards_center = -9999
 	
 	_angle_modi = 0
 	

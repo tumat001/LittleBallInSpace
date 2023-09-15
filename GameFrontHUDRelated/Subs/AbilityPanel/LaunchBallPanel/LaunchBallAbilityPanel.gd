@@ -46,6 +46,9 @@ onready var aim_mode_label = $FreeFormControl/ModeContainer/FreeFormControl/AimM
 onready var aim_mode_container = $FreeFormControl/ModeContainer
 onready var aim_mode_swap_button = $FreeFormControl/ModeContainer/FreeFormControl/SwapButton
 
+
+onready var free_form_control = $FreeFormControl
+
 #
 
 func set_player_modi_launch_ball(arg_modi):
@@ -214,4 +217,14 @@ func end_highlight_of_aim_mode_swap_button():
 		_aim_mode_swap_button_highlight_tweener.kill()
 		_aim_mode_swap_button_highlight_tweener = null
 	
+
+######
+
+func template__do_brief_glowup(arg_delay_for_func_call, arg_func_source, arg_func_name, arg_func_params):
+	var tween = create_tween()
+	tween.set_parallel(false)
+	tween.tween_property(free_form_control, "modulate", Color(1.6, 1.6, 1.6, 1.0), 0.5)
+	tween.tween_interval(0.5)
+	tween.tween_property(free_form_control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.5)
+	tween.tween_callback(arg_func_source, arg_func_name, [arg_func_params]).set_delay(arg_delay_for_func_call)
 

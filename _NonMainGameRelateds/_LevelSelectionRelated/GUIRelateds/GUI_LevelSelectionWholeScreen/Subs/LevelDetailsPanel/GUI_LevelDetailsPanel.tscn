@@ -76,8 +76,26 @@ margin_right = 118.0
 margin_bottom = 60.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "Complete this
-to complete
+text = "Completing this
+auto-completes
 its non challenge
 counterpart"
+align = 1
+
+[node name="AssistModeDisabledPanel" type="MarginContainer" parent="DetailsContainer/VBoxContainer"]
+visible = false
+margin_top = 132.0
+margin_right = 118.0
+margin_bottom = 180.0
+custom_constants/margin_top = 15
+
+[node name="Label" type="Label" parent="DetailsContainer/VBoxContainer/AssistModeDisabledPanel"]
+margin_top = 15.0
+margin_right = 118.0
+margin_bottom = 48.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Assist Mode has
+no effect
+for this level"
 align = 1

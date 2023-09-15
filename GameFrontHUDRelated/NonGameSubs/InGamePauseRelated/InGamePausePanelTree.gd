@@ -15,4 +15,7 @@ func show_in_game_pause_main_page():
 
 ##
 
+func _on_ControlTree_gui_input(event):
+	pass
+	
 

@@ -18,6 +18,7 @@ onready var level_status_label = $DetailsContainer/VBoxContainer/LevelStatusPane
 onready var level_status_tex_rect = $DetailsContainer/VBoxContainer/LevelStatusPanel/HBoxContainer/LevelStatusTexRect
 onready var details_container = $DetailsContainer
 
+onready var assist_mode_disabled_panel = $DetailsContainer/VBoxContainer/AssistModeDisabledPanel
 onready var level_completion_additional_panel = $DetailsContainer/VBoxContainer/LevelCompletionAdditonalPanel
 
 #
@@ -73,7 +74,7 @@ func _update_display():
 		#
 		
 		level_completion_additional_panel.visible = level_details.has_additional_level_ids_to_mark_as_complete()
-		
+		assist_mode_disabled_panel.visible = level_details.ignore_assist_mode_modifications
 		
 	else:
 		hide_contents()
