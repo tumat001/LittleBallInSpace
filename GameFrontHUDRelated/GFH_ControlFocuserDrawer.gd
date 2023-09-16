@@ -3,7 +3,6 @@ extends Node2D
 
 var color_of_background_from_focus = Color(0, 0, 0, 0.92)
 
-
 var _rects_to_draw : Array
 
 func _ready():
@@ -12,6 +11,9 @@ func _ready():
 
 
 func focus_draw_on_control(arg_control : Control, arg_margins_each_direction : float):
+	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(true)
+	
+	#
 	var top_left_pos_of_focus_region = arg_control.rect_global_position - Vector2(arg_margins_each_direction, arg_margins_each_direction)
 	var region_size = arg_control.rect_size + Vector2(arg_margins_each_direction * 2, arg_margins_each_direction * 2)
 	

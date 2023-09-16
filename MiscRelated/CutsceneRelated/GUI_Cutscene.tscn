@@ -1,16 +1,20 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://MiscRelated/CutsceneRelated/GUI_Cutscene.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.tscn" type="PackedScene" id=2]
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://MiscRelated/CutsceneRelated/Assets/GUI_Cutscene_NextButton_Highlighted.png" type="Texture" id=4]
 [ext_resource path="res://MiscRelated/CutsceneRelated/Assets/GUI_Cutscene_NextButton_Normal.png" type="Texture" id=5]
-[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_CustomLabel/FTQ_CustomLabel.tscn" type="PackedScene" id=6]
 [ext_resource path="res://MiscRelated/CutsceneRelated/Assets/GUI_Cutscene_Background_1x1.png" type="Texture" id=7]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
-outline_size = 2
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 3 )
 
@@ -92,14 +96,19 @@ custom_constants/margin_right = 26
 [node name="Label" parent="CutsceneChangerButtonPanel/RightButton/LabelContainer" index="0"]
 margin_right = 74.0
 margin_bottom = 50.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Next"
 
-[node name="FTQLabel_PageDisplayer" parent="CutsceneChangerButtonPanel" instance=ExtResource( 6 )]
+[node name="PageDisplayLabel" type="Label" parent="CutsceneChangerButtonPanel"]
 margin_left = 20.0
+margin_top = 14.0
 margin_right = 940.0
-margin_bottom = 50.0
-default_font_size = 25
+margin_bottom = 36.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 8 )
+text = "Test"
+align = 1
+valign = 1
 
 [node name="CutsceneContainer" type="Control" parent="."]
 margin_right = 960.0

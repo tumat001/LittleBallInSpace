@@ -16,6 +16,7 @@ onready var main_page = $ControlContainer/MasterMenu_MainPage
 func _ready():
 	pause_tree_on_show = false
 	use_mod_a_tweeners_for_traversing_hierarchy = false
+	can_show_settings_button_on_first_hierarchy = true
 	
 	connect("hierarchy_advanced_forwards", self, "_on_hierarchy_advanced_forwards__MMCT")
 

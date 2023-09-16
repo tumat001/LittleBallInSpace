@@ -83,7 +83,8 @@ onready var right_button_tex_button = $CutsceneChangerButtonPanel/RightButton/Te
 onready var cutscene_changer_button_panel = $CutsceneChangerButtonPanel
 
 
-onready var ftq_label_page_num_displayer = $CutsceneChangerButtonPanel/FTQLabel_PageDisplayer
+#onready var ftq_label_page_num_displayer = $CutsceneChangerButtonPanel/FTQLabel_PageDisplayer
+onready var page_display_label = $CutsceneChangerButtonPanel/PageDisplayLabel
 
 #
 
@@ -288,10 +289,12 @@ func _set_current_cutscene__and_start_display(arg_cutscene : GUI_CutscenePanel, 
 	
 	#
 	
-	ftq_label_page_num_displayer.set_desc__and_hide_tooltip([
-		[PAGE_LABEL_TEXT_FORMAT % [arg_page_index + 1, _total_cutscene_panel_count], []],
-	])
-	ftq_label_page_num_displayer.visible = true
+	#ftq_label_page_num_displayer.set_desc__and_hide_tooltip([
+	#	[PAGE_LABEL_TEXT_FORMAT % [arg_page_index + 1, _total_cutscene_panel_count], []],
+	#])
+	##ftq_label_page_num_displayer.visible = true
+	#ftq_label_page_num_displayer.modulate.a = 1
+	page_display_label.text = PAGE_LABEL_TEXT_FORMAT % [arg_page_index + 1, _total_cutscene_panel_count]
 	
 	##
 	

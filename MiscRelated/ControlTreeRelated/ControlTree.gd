@@ -2,6 +2,11 @@ extends MarginContainer
 
 #
 
+const GUI_SettingsPanel = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/GUI_SettingsPanel.gd")
+const GUI_SettingsPanel_Scene = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/GUI_SettingsPanel.tscn")
+
+#
+
 signal hierarchy_emptied()
 
 signal hierarchy_traversed_backwards(arg_control)  # control being faded away/removed
@@ -50,12 +55,20 @@ var _disable_backing_and_esc__by_curr_control : bool
 
 var _control_to_associated_button_list_to_show : Dictionary = {}
 
+
+var can_show_settings_button_on_first_hierarchy : bool = false setget set_can_show_settings_button_on_first_hierarchy
+
+#
+
+var _gui_settings_panel : GUI_SettingsPanel
+
 #
 
 onready var control_container = $ControlContainer
 
 onready var info_button = $TopRightButtonMarginer/HBoxContainer/InfoButton
 onready var back_button = $TopRightButtonMarginer/HBoxContainer/BackButton
+onready var settings_button = $TopRightButtonMarginer/HBoxContainer/SettingsButton
 
 onready var top_right_hbox_container = $TopRightButtonMarginer/HBoxContainer
 
@@ -97,6 +110,7 @@ func _ready():
 	_init_top_right_hbox_container()
 	set_show_info_button(show_info_button)
 	set_show_back_button(show_back_button)
+	set_can_show_settings_button_on_first_hierarchy(can_show_settings_button_on_first_hierarchy)
 
 
 func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_for_show : bool = use_mod_a_tweeners_for_traversing_hierarchy):
@@ -164,6 +178,8 @@ func _show_control__and_add_if_unadded__internal(arg_control : Control, arg_use_
 		_disable_backing_and_esc__by_curr_control = false
 		back_button.modulate.a = 1
 		
+	
+	_update_settings_button_visiblity()
 	
 	emit_signal("hierarchy_advanced_forwards", arg_control)
 	
@@ -352,5 +368,28 @@ func add_custom_top_right_button__and_associate_with_control(arg_button : Textur
 			_control_to_associated_button_list_to_show[arg_control] = []
 		_control_to_associated_button_list_to_show[arg_control].append(arg_button)
 
+################
 
+func set_can_show_settings_button_on_first_hierarchy(arg_val):
+	can_show_settings_button_on_first_hierarchy = arg_val
+	
+	if is_inside_tree():
+		_update_settings_button_visiblity()
+
+func _update_settings_button_visiblity():
+	settings_button.visible = can_show_settings_button_on_first_hierarchy and _current_hierarchy.size() == 1
+
+
+
+func _on_SettingsButton_pressed():
+	_init_gui_settings_panel()
+	_show_gui_settings_panel()
+
+func _init_gui_settings_panel():
+	if !is_instance_valid(_gui_settings_panel):
+		_gui_settings_panel = GUI_SettingsPanel_Scene.instance()
+
+func _show_gui_settings_panel():
+	show_control__and_add_if_unadded(_gui_settings_panel)
+	
 

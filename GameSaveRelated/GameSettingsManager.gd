@@ -36,6 +36,10 @@ signal assist_mode__energy_reduction_mode_changed(arg_val)
 signal assist_mode__additional_launch_ball_mode_changed(arg_val)
 signal assist_mode__pause_at_esc_mode_changed(arg_val)
 
+
+signal settings_config__is_full_screen_changed(arg_val)
+signal settings_config__cam_rotation_duration_changed(arg_val)
+
 ####
 
 const game_control_settings_file_path = "user://game_control_settings.save"
@@ -80,6 +84,7 @@ const GAME_CONTROLS_TO_ALLOW_HOTKEY_SHARING_WITH_NO_WARNING = [
 const general_game_settings_file_path = "user://general_game_settings.save"
 const CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER = "CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER"
 const ASSIST_MODE__CATEGORY__DIC_IDENTIFIER = "ASSIST_MODE_CATEGORY__DIC_IDENTFIER"
+const SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER = "SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER"
 
 ### Hotkey
 var game_control_to_default_event : Dictionary
@@ -199,6 +204,18 @@ var assist_mode_id_to_val_changed_signal_name_map : Dictionary
 var assist_mode_id_to_no_effect_var_name_map : Dictionary
 
 var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
+
+
+### Settings Config
+
+const SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER = "SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER"
+var settings_config__is_full_screen : bool setget set_settings_config__is_full_screen
+
+
+const SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER = "SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER"
+var settings_config__cam_rotation_duration : float setget set_settings_config__cam_rotation_duration
+const settings_config__cam_rotation_duration__default = 0.5
+
 
 ####
 
@@ -349,13 +366,14 @@ func is_any_game_control_name_hidden() -> bool:
 func _save_general_game_settings_related_data():
 	var assist_mode_save_dict = _generate_save_dict__for_assist_mode()
 	var hotkey_save_dict = _get_game_controls_as_dict()
+	var settings_save_dict = _get_settings_as_save_dict()
 	
 	#
 	
 	var general_game_settings_save_dict = {
 		ASSIST_MODE__CATEGORY__DIC_IDENTIFIER : assist_mode_save_dict,
 		CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER : hotkey_save_dict,
-		
+		SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER : settings_save_dict
 	}
 	
 	_save_using_dict(general_game_settings_save_dict, general_game_settings_file_path, "SAVE ERROR: general game settings")
@@ -408,6 +426,13 @@ func _load_general_game_settings_using_file(arg_file : File):
 	else:
 		_load_assist_mode_settings_using_dic({})
 		
+	
+	#
+	
+	if data.has(SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER):
+		_load_settings_config_using_dic(data[SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER])
+	else:
+		_load_settings_config_using_dic({})
 	
 	#
 	
@@ -976,4 +1001,53 @@ func _on_switching_from_game_elements__non_restart__transition_ended():
 	if assist_mode_toggle_active_mode_id == AssistMode_ToggleActiveModeId.FOR_THIS_LEVEL_ONLY:
 		set_is_assist_mode_active(false)
 
+
+
+####################
+
+#tood save and load this
+func set_settings_config__is_full_screen(arg_val):
+	var old_val = settings_config__is_full_screen
+	settings_config__is_full_screen = arg_val
+	
+	OS.window_fullscreen = arg_val
+	
+	if _is_manager_initialized:
+		emit_signal("settings_config__is_full_screen_changed", arg_val)
+
+func _get_settings_config__is_full_screen__from_proj_settings():
+	return ProjectSettings.get_setting("display/window/size/fullscreen")
+
+
+func set_settings_config__cam_rotation_duration(arg_val):
+	var old_val = settings_config__cam_rotation_duration
+	settings_config__cam_rotation_duration = arg_val
+	
+	if old_val != arg_val:
+		if _is_manager_initialized:
+			emit_signal("settings_config__cam_rotation_duration_changed", arg_val)
+		
+
+
+
+func _load_settings_config_using_dic(data : Dictionary):
+	if data.has(SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER):
+		set_settings_config__is_full_screen(data[SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER])
+	else:
+		set_settings_config__is_full_screen(_get_settings_config__is_full_screen__from_proj_settings())
+	
+	if data.has(SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER):
+		set_settings_config__cam_rotation_duration(data[SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER])
+	else:
+		set_settings_config__cam_rotation_duration(settings_config__cam_rotation_duration__default)
+
+
+#
+
+func _get_settings_as_save_dict():
+	return {
+		SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER : settings_config__is_full_screen,
+		SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER : settings_config__cam_rotation_duration,
+		
+	}
 

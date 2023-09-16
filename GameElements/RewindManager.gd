@@ -369,7 +369,7 @@ func __append_to_rewind_marker_datas__single_frame(arg_marker_data):
 
 func attempt_start_rewind():
 	if last_calculated_can_cast_rewind:
-		CameraManager.reset_camera_zoom_level()
+		#CameraManager.reset_camera_zoom_level()
 		
 		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
 		for obj in rewindable_obj_to_save_state_map:

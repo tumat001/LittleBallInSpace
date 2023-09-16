@@ -314,6 +314,8 @@ func set_control_tree(arg_tree):
 	
 	#print('setted control tree')
 	var button : TextureButton = control_tree.create_texture_button__with_info_textures()
+	button.texture_normal = load("res://GameSaveRelated/GUIs/GameSettingsRelated/AssistModePanel/Subs/AssistModeMainPanel/Assets/AssistModeMainPanel_AboutButton_Normal.png")
+	button.texture_hover = load("res://GameSaveRelated/GUIs/GameSettingsRelated/AssistModePanel/Subs/AssistModeMainPanel/Assets/AssistModeMainPanel_AboutButton_Hovered.png")
 	button.connect("pressed", self, "_on_assist_about_button_pressed")
 	control_tree.add_custom_top_right_button__and_associate_with_control(button, self)
 

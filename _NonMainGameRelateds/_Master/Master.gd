@@ -77,7 +77,7 @@ func _ready():
 	if (true):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_04__STAGE_2
+		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_1
 		
 		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
 		

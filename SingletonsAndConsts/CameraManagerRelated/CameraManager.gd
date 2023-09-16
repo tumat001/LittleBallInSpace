@@ -1,6 +1,6 @@
 extends Node
 
-const CAM_ANGLE_TURN_DURATION : float = 0.5
+#const CAM_ANGLE_TURN_DURATION : float = 0.5
 
 #
 
@@ -199,7 +199,7 @@ func _start_rotate_cam_visually_to_rad(arg_rad, old_rotation):
 	#
 	
 	var tweener = create_tween()
-	tweener.tween_method(self, "_set_actual_rotation_of_cam", camera.rotation, arg_rad, CAM_ANGLE_TURN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tweener.tween_method(self, "_set_actual_rotation_of_cam", camera.rotation, arg_rad, GameSettingsManager.settings_config__cam_rotation_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
 
 func short_angle_dist(from, to):

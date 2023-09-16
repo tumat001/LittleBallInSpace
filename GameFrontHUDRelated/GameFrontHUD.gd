@@ -32,7 +32,11 @@ onready var sprite_shader_container = $SpriteShaderContainer
 
 onready var gfh_control_focuser = $GFH_ControlFocuserDrawer
 
-###
+#
+
+onready var control_container = $ControlContainer
+
+####
 
 func add_node_to_other_hosters(arg_node : Node):
 	other_hosters.add_child(arg_node)
@@ -68,6 +72,7 @@ func _ready():
 ##################
 
 func show_in_game_pause_control_tree():
+	set_control_container_visibility(true)
 	in_game_pause_panel_tree.show_in_game_pause_main_page()
 
 func hide_in_game_pause_control_tree():
@@ -145,5 +150,13 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 	func_source.call(func_name, func_params)
 	
 
+
+############
+
+func set_control_container_visibility(arg_val : bool):
+	control_container.visible = arg_val
+
+func toggle_control_container_visibility():
+	set_control_container_visibility(!control_container.visible)
 
 

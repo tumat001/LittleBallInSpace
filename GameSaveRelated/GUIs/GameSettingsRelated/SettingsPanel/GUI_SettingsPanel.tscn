@@ -1,0 +1,243 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_CBM.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/Assets/ChangeControlsHotkeyPanel_HeaderBackground.png" type="Texture" id=3]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/PlayerGUI_CheckboxStandard.tscn" type="PackedScene" id=4]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/Assets/SettingsPanel_Border_Left.png" type="Texture" id=5]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/Assets/SettingsPanel_Border_Top.png" type="Texture" id=6]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/Assets/SettingsPanel_CornerPiece_TopLeft.png" type="Texture" id=7]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/Assets/SettingsPanel_BackgroundFill.png" type="Texture" id=8]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=9]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SpinBox/PlayerGUI_SpinBox.tscn" type="PackedScene" id=10]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/Assets/SettingsPanel_Separator.png" type="Texture" id=11]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/SettingsPanel/GUI_SettingsPanel.gd" type="Script" id=12]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.tscn" type="PackedScene" id=13]
+
+[sub_resource type="DynamicFont" id=4]
+size = 20
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+outline_size = 2
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 2 )
+
+[node name="GUI_SettingsPanel" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -510.0
+margin_bottom = -396.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource( 12 )
+
+[node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 1 )]
+margin_right = 506.0
+margin_bottom = 202.0
+custom_constants/margin_top = 23
+corner_piece_texture__top_left = ExtResource( 7 )
+border_piece_texture__top = ExtResource( 6 )
+border_piece_texture__left = ExtResource( 5 )
+mid_fill_texture = ExtResource( 8 )
+
+[node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
+margin_top = 23.0
+margin_right = 506.0
+margin_bottom = 202.0
+
+[node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
+margin_right = 10.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
+margin_left = 10.0
+margin_right = 496.0
+margin_bottom = 10.0
+texture = ExtResource( 6 )
+
+[node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
+margin_left = 496.0
+margin_right = 506.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Left" parent="DialogTemplate_Body_CBM/GridContainer" index="3"]
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = 169.0
+texture = ExtResource( 5 )
+
+[node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 496.0
+margin_bottom = 169.0
+
+[node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
+margin_right = 486.0
+margin_bottom = 159.0
+texture = ExtResource( 8 )
+
+[node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
+margin_right = 486.0
+margin_bottom = 159.0
+custom_constants/margin_right = 12
+custom_constants/margin_top = 26
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
+margin_left = 12.0
+margin_top = 26.0
+margin_right = 474.0
+margin_bottom = 153.0
+custom_constants/separation = 15
+
+[node name="Checkbox_Fullscreen" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer" instance=ExtResource( 4 )]
+margin_right = 462.0
+update_properties_when_clicked_instead_of_reactive = false
+label_text = "Fullscreen:"
+
+[node name="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Checkbox_Fullscreen" index="0"]
+margin_right = 462.0
+
+[node name="CheckboxLabel" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Checkbox_Fullscreen/HBoxContainer" index="0"]
+margin_top = 5.0
+margin_right = 132.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 9 )
+text = "Fullscreen:"
+
+[node name="Container" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Checkbox_Fullscreen/HBoxContainer" index="1"]
+margin_left = 430.0
+margin_right = 462.0
+size_flags_horizontal = 10
+
+[node name="Button" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Checkbox_Fullscreen" index="1"]
+margin_right = 462.0
+
+[node name="MarginContainer" type="MarginContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer"]
+margin_top = 47.0
+margin_right = 462.0
+margin_bottom = 52.0
+
+[node name="Sepa" type="TextureRect" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/MarginContainer"]
+margin_right = 462.0
+margin_bottom = 5.0
+texture = ExtResource( 11 )
+stretch_mode = 2
+
+[node name="SpinBox_RotationDuration" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer" instance=ExtResource( 10 )]
+margin_top = 67.0
+margin_right = 462.0
+margin_bottom = 89.0
+label_text = "Camera Rotation Duration:"
+spin_box_suffix = "seconds"
+adjust_min_spaces_of_spin_box_based_on_suffix = false
+
+[node name="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/SpinBox_RotationDuration" index="0"]
+margin_right = 462.0
+margin_bottom = 22.0
+
+[node name="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/SpinBox_RotationDuration/HBoxContainer" index="0"]
+margin_top = 0.0
+margin_right = 300.0
+margin_bottom = 22.0
+text = "Camera Rotation Duration:"
+
+[node name="Container" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/SpinBox_RotationDuration/HBoxContainer" index="1"]
+margin_left = 314.0
+margin_top = 0.0
+margin_right = 462.0
+margin_bottom = 22.0
+
+[node name="SpinBox" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/SpinBox_RotationDuration/HBoxContainer/Container" index="0"]
+suffix = "seconds"
+
+[node name="Button_ResetToDefault" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer" instance=ExtResource( 13 )]
+margin_top = 104.0
+margin_right = 462.0
+margin_bottom = 127.0
+can_grab_focus = false
+
+[node name="TextureButton" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Button_ResetToDefault" index="0"]
+margin_right = 462.0
+margin_bottom = 23.0
+
+[node name="LabelContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Button_ResetToDefault" index="1"]
+margin_right = 462.0
+margin_bottom = 23.0
+
+[node name="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Button_ResetToDefault/LabelContainer" index="0"]
+margin_right = 462.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 4 )
+text = "Reset to Default"
+
+[node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
+margin_left = 496.0
+margin_top = 10.0
+margin_right = 506.0
+margin_bottom = 169.0
+texture = ExtResource( 5 )
+
+[node name="CornerP_BotLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="6"]
+margin_top = 169.0
+margin_right = 10.0
+margin_bottom = 179.0
+texture = ExtResource( 7 )
+
+[node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
+margin_left = 10.0
+margin_top = 169.0
+margin_right = 496.0
+margin_bottom = 179.0
+texture = ExtResource( 6 )
+
+[node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
+margin_left = 496.0
+margin_top = 169.0
+margin_right = 506.0
+margin_bottom = 179.0
+texture = ExtResource( 7 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 506.0
+margin_bottom = 202.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -73.0
+margin_right = 73.0
+margin_bottom = 48.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer"]
+margin_right = 146.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="Control/MarginContainer"]
+margin_right = 146.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Settings"
+align = 1
+valign = 1
+
+[connection signal="button_pressed" from="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Button_ResetToDefault" to="." method="_on_Button_ResetToDefault_button_pressed"]
+
+[editable path="DialogTemplate_Body_CBM"]
+[editable path="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Checkbox_Fullscreen"]
+[editable path="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/SpinBox_RotationDuration"]
+[editable path="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/VBoxContainer/Button_ResetToDefault"]

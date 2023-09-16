@@ -488,7 +488,8 @@ func play_FE__charging_launch_ball__med(arg_old_str_val):
 		mouth_piece.play(MOUTH_ANIMATION_NAME__CHARGING_BALL_02)
 	elif arg_old_str_val == 3:  # from high
 		mouth_piece.play(MOUTH_ANIMATION_NAME__CHARGING_BALL_02)
-	
+	else:
+		mouth_piece.play(MOUTH_ANIMATION_NAME__CHARGING_BALL_02)
 
 func play_FE__charging_launch_ball__high(arg_old_str_val):
 	var duration = 0.25

@@ -194,10 +194,13 @@ func _unhandled_key_input(event):
 		rewind_manager.end_rewind()
 		
 		
-	if event.is_action_pressed("ui_cancel"):
+	elif event.is_action_pressed("ui_cancel"):
 		if is_instance_valid(game_front_hud):
 			game_front_hud.show_in_game_pause_control_tree()
-	
+		
+	elif event.is_action_pressed("toggle_hide_hud"):
+		if is_instance_valid(game_front_hud):
+			game_front_hud.toggle_control_container_visibility()
 	
 
 

@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SpinBox/PlayerGUI_SpinBox.gd" type="Script" id=1]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="Theme" id=4]
+LineEdit/colors/clear_button_color = Color( 0.88, 0.88, 0.88, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 1, 1, 1, 1 )
+LineEdit/colors/cursor_color = Color( 0.94, 0.94, 0.94, 1 )
+LineEdit/colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0.88, 0.88, 0.88, 0.5 )
+LineEdit/colors/selection_color = Color( 0.49, 0.49, 0.49, 1 )
+LineEdit/constants/minimum_spaces = 11
+LineEdit/fonts/font = ExtResource( 2 )
+LineEdit/icons/clear = null
+LineEdit/styles/focus = SubResource( 1 )
+LineEdit/styles/normal = SubResource( 2 )
+LineEdit/styles/read_only = SubResource( 3 )
+constants/constants/minimum_spaces = 1
+
+[node name="PlayerGUI_SpinBox" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+script = ExtResource( 1 )
+adjust_min_spaces_of_spin_box_based_on_suffix = true
+custom_min_spaces_of_spin_box = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 162.0
+margin_bottom = 40.0
+mouse_filter = 2
+custom_constants/separation = 14
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_top = 9.0
+margin_bottom = 31.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Container" type="MarginContainer" parent="HBoxContainer"]
+margin_left = 14.0
+margin_top = 9.0
+margin_right = 162.0
+margin_bottom = 31.0
+mouse_filter = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/Container"]
+margin_right = 148.0
+margin_bottom = 22.0
+theme = SubResource( 4 )
+max_value = 3.0
+step = 0.1
+align = 2

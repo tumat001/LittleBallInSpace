@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://MiscRelated/ControlTreeRelated/ControlTree.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/ControlTreeRelated/Assets/ControlTree_BlackBackground.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_InfoButton_Hovered.png" type="Texture" id=4]
 [ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_InfoButton_Normal.png" type="Texture" id=5]
 [ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_BackButton_Hovered.png" type="Texture" id=6]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_Settings_Normal.png" type="Texture" id=7]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Assets/MasterMenu_MainPage_Settings_Hovered.png" type="Texture" id=8]
 
 [node name="ControlTree" type="MarginContainer"]
 margin_right = 960.0
@@ -26,7 +28,7 @@ margin_bottom = 540.0
 mouse_filter = 2
 
 [node name="TopRightButtonMarginer" type="MarginContainer" parent="."]
-margin_left = 877.0
+margin_left = 842.0
 margin_right = 960.0
 margin_bottom = 48.0
 mouse_filter = 2
@@ -37,7 +39,7 @@ custom_constants/margin_top = 18
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TopRightButtonMarginer"]
 margin_top = 18.0
-margin_right = 65.0
+margin_right = 100.0
 margin_bottom = 48.0
 mouse_filter = 2
 custom_constants/separation = 5
@@ -49,9 +51,17 @@ focus_mode = 0
 texture_normal = ExtResource( 5 )
 texture_hover = ExtResource( 4 )
 
-[node name="BackButton" type="TextureButton" parent="TopRightButtonMarginer/HBoxContainer"]
+[node name="SettingsButton" type="TextureButton" parent="TopRightButtonMarginer/HBoxContainer"]
 margin_left = 35.0
 margin_right = 65.0
+margin_bottom = 30.0
+focus_mode = 0
+texture_normal = ExtResource( 7 )
+texture_hover = ExtResource( 8 )
+
+[node name="BackButton" type="TextureButton" parent="TopRightButtonMarginer/HBoxContainer"]
+margin_left = 70.0
+margin_right = 100.0
 margin_bottom = 30.0
 focus_mode = 0
 texture_normal = ExtResource( 3 )
@@ -59,4 +69,5 @@ texture_hover = ExtResource( 6 )
 
 [connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]
 [connection signal="pressed" from="TopRightButtonMarginer/HBoxContainer/InfoButton" to="." method="_on_InfoButton_pressed"]
+[connection signal="pressed" from="TopRightButtonMarginer/HBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="TopRightButtonMarginer/HBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
