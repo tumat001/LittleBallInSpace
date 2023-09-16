@@ -31,8 +31,9 @@ margin_top = 185.0
 margin_right = 312.0
 margin_bottom = 185.0
 size_flags_vertical = 6
+default_font_size = 40
 descriptions__from_export = "Day 2 of development.
 
-Player Physics was very annoying to tweak."
+Player physics was very annoying to tweak. I have no where else to rant about this... So here you go. It took 5+ days for me to be satisfied, and even then, there are still bugs."
 
 [editable path="FTQ_CustomLabel"]

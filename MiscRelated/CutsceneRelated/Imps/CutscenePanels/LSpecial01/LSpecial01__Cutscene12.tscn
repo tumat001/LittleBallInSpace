@@ -21,6 +21,7 @@ cutscene_initially_visible = true
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
 margin_right = 884.0
 margin_bottom = 87.0
+default_font_size = 60
 descriptions__from_export = "Origins"
 bbcode_align_mode = 1
 
@@ -50,6 +51,7 @@ margin_top = 121.0
 margin_right = 424.0
 margin_bottom = 121.0
 size_flags_vertical = 6
+default_font_size = 40
 descriptions__from_export = "The title was chosen because:
 
 1) It looked/sounded cute

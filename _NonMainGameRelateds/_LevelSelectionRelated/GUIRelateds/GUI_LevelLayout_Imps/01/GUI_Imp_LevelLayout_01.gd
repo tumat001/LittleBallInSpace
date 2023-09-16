@@ -10,7 +10,17 @@ onready var level_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_05
 
 onready var layout_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To05
 
+#
 
+onready var vkp_ui_up = $OthersContainer/ToMoveContainer/MarginContainer/HBoxContainer/VBoxContainer/VKP_Up
+onready var vkp_ui_down = $OthersContainer/ToMoveContainer/MarginContainer/HBoxContainer/VBoxContainer/VKP_Down
+onready var vkp_ui_left = $OthersContainer/ToMoveContainer/MarginContainer/HBoxContainer/VKP_Left
+onready var vkp_ui_right = $OthersContainer/ToMoveContainer/MarginContainer/HBoxContainer/VKP_Right
+
+onready var vkp_ui_enter = $OthersContainer/EnterContainer/VKP_EnterLevel
+
+
+#
 
 func _init():
 	level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01
@@ -25,4 +35,11 @@ func _ready():
 	layout_05__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05)
 	layout_05__tile.layout_ele_id_to_put_cursor_to = 15
 	
+	###########
+	
+	vkp_ui_up.any_control_action_name = "ui_up"
+	vkp_ui_down.any_control_action_name = "ui_down"
+	vkp_ui_left.any_control_action_name = "ui_left"
+	vkp_ui_right.any_control_action_name = "ui_right"
+	vkp_ui_enter.any_control_action_name = "ui_accept"
 

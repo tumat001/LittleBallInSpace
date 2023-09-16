@@ -67,6 +67,9 @@ var _ICIP_func_source
 var _ICIP_func_name
 var _ICIP_func_param
 
+#
+
+var _shader_mat__capture_type_win : ShaderMaterial
 
 #
 
@@ -172,7 +175,22 @@ func _add_and_register_area_region(arg_region):
 			
 			arg_region.connect("region_area_captured", self, "_on_PCA_region_area_captured", [arg_region])
 			arg_region.connect("region_area_uncaptured", self, "_on_PCA_region_area_uncaptured", [arg_region])
+			
+			###
+			
+			_add_shine_shader_material_to_region__capture_type_win(arg_region)
 
+func _add_shine_shader_material_to_region__capture_type_win(arg_region):
+	if _shader_mat__capture_type_win == null:
+		_shader_mat__capture_type_win = ShaderMaterial.new()
+		_shader_mat__capture_type_win.shader = load("res://MiscRelated/ShadersRelated/Shader_Shine.tres")
+		
+	
+	#arg_region.construct_and_add_sprite_for_shader(_shader_mat__capture_type_win)
+	arg_region.add_shader_to_collshape(_shader_mat__capture_type_win)
+
+
+##
 
 func _on_PCA_region_area_captured(arg_region):
 	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = true

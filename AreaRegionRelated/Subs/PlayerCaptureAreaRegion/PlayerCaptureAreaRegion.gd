@@ -75,6 +75,7 @@ func set_capture_type(arg_val):
 		
 		is_capture_type_win = true
 
+
 func set_ratio_duration_reduction_on_no_occupancy_per_sec(arg_val):
 	ratio_duration_reduction_on_no_occupancy_per_sec = arg_val
 

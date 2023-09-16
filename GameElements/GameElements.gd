@@ -61,6 +61,8 @@ onready var rewind_manager = $GameContainer/RewindManager
 
 onready var game_result_manager = $GameContainer/GameResultManager
 
+onready var player_container = $GameContainer/PlayerContainer
+
 var non_gui_screen_sprite
 
 #####
@@ -92,9 +94,9 @@ func _ready():
 	current_base_level.apply_modification_to_game_elements(self)
 	
 	player_modi_manager.game_elements = self
-	
 	if !is_instance_valid(_current_player):
 		var player = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE().spawn_player_at_spawn_coords_index()
+		player_container.add_child(player)
 		_set_player__and_register_signals(player)
 		
 		GameSaveManager.set_player(player)

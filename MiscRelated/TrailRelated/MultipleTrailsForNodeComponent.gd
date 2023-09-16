@@ -14,7 +14,7 @@ var all_associated_trails : Array = []
 var trail_type_id : int
 
 var node_to_host_trails : Node setget set_node_to_host_trails # Ex: the tower (that is going to shoot bullets that have trails)
-
+var custom_func_name_for_adding_trail_as_child : String
 
 func set_node_to_host_trails(arg_node):
 	if is_instance_valid(node_to_host_trails):
@@ -25,7 +25,7 @@ func set_node_to_host_trails(arg_node):
 	
 	if is_instance_valid(node_to_host_trails):
 		if !node_to_host_trails.is_connected("tree_exiting", self, "_on_hosting_node_queued_free"):
-			node_to_host_trails.connect("tree_exiting", self, "_on_hosting_node_queued_free", [], CONNECT_PERSIST)
+			node_to_host_trails.connect("tree_exiting", self, "_on_hosting_node_queued_free")
 
 
 #
@@ -60,8 +60,11 @@ func _construct_trail():
 	
 	all_associated_trails.append(trail_instance)
 	
-	#node_to_host_trails.get_tree().get_root().add_child(trail_instance)
-	node_to_host_trails.add_child(trail_instance)
+	if node_to_host_trails.has_meta(custom_func_name_for_adding_trail_as_child):
+		node_to_host_trails.call(custom_func_name_for_adding_trail_as_child, trail_instance)
+	else:
+		node_to_host_trails.add_child(trail_instance)
+	
 	
 	return trail_instance
 

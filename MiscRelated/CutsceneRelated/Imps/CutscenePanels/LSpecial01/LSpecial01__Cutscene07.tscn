@@ -31,6 +31,7 @@ margin_top = 185.0
 margin_right = 272.0
 margin_bottom = 185.0
 size_flags_vertical = 6
+default_font_size = 40
 descriptions__from_export = "The background used to be dark blue."
 
 [editable path="FTQ_CustomLabel"]

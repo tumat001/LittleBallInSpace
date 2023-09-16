@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://GameElements/GameElements.gd" type="Script" id=1]
 [ext_resource path="res://GameElements/WorldManager.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://GameElements/RewindManager.gd" type="Script" id=6]
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_GlitchEffect.tres" type="Shader" id=7]
 [ext_resource path="res://GameElements/ScreenShaderSprite/ScreenShaderSprite.png" type="Texture" id=8]
+[ext_resource path="res://GameElements/PlayerContainer.gd" type="Script" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 7 )
@@ -23,6 +24,9 @@ script = ExtResource( 1 )
 
 [node name="WorldManager" type="Node" parent="GameContainer"]
 script = ExtResource( 2 )
+
+[node name="PlayerContainer" type="Node" parent="GameContainer"]
+script = ExtResource( 9 )
 
 [node name="PlayerModiManager" type="Node" parent="GameContainer"]
 script = ExtResource( 3 )

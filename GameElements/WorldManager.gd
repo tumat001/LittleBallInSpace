@@ -6,6 +6,7 @@ const AbstractWorldSlice = preload("res://WorldRelated/AbstractWorldSlice.gd")
 signal all_PCAs_of_all_world_slices_captured()
 signal all_PCAs_of_all_world_slices_uncaptured()
 
+signal player_spawned(arg_player)
 
 var game_elements setget set_game_elements
 var _all_world_slices : Array
@@ -64,7 +65,8 @@ func get_world_slice__can_spawn_player_when_no_current_player_in_GE() -> Abstrac
 ##
 
 func _on_player_spawned(arg_player):
-	add_child(arg_player)
+	#add_child(arg_player)
+	emit_signal("player_spawned", arg_player)
 
 ##
 

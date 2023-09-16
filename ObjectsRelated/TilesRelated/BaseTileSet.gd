@@ -731,15 +731,16 @@ func _update_cells_based_on_saved_difference_from_current(arg_saved_cell_save_da
 
 
 func _on_BaseTileSet_mouse_entered():
-	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		if can_generate_tooltips:
-			var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
-			if desc.size() != 0:
-				_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
-				
-				SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
-				
-				_object_details_panel_tooltip.show_descs(desc)
+	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			if can_generate_tooltips:
+				var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
+				if desc.size() != 0:
+					_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
+					
+					SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
+					
+					_object_details_panel_tooltip.show_descs(desc)
 
 
 func _on_BaseTileSet_mouse_exited():

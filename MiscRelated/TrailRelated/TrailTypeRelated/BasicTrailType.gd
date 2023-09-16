@@ -11,9 +11,9 @@ var is_idle_and_available : bool = true
 
 var set_to_idle_and_available_if_node_is_not_visible : bool = false
 
-var z_index_modifier : int = -1
-
 var trail_offset : Vector2
+
+var can_add_points : bool = true
 
 
 var _one_time_enable_per_use : bool
@@ -57,9 +57,12 @@ func _process(delta):
 	if is_instance_valid(node_to_trail) and node_is_not_invis and _one_time_enable_per_use:
 		if node_to_trail.is_inside_tree():
 			var pos_of_point = node_to_trail.global_position - global_position + trail_offset
+			
 			global_rotation = 0
 			
-			add_point(pos_of_point)
+			if can_add_points:
+				add_point(pos_of_point)
+			
 			if get_point_count() > max_trail_length:
 				remove_point(0)
 	else:

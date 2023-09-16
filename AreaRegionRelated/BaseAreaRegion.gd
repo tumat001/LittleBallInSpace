@@ -30,10 +30,16 @@ export(int) var outine_width_of_region_to_use : int = 0
 
 var monitor_entities_remaining_in_area : bool = false setget set_monitor_entities_remaining_in_area
 
-
 #
 
 var game_elements
+
+#
+
+var _rect_used_for_region : Rect2
+
+var sprite_for_shader : Sprite
+
 
 #
 
@@ -153,7 +159,10 @@ func _create_draw_visuals__rect(arg_extents : Vector2):
 	draw_param.target_rect = draw_param.initial_rect
 	
 	_rect_draw_node.add_draw_param(draw_param)
-
+	
+	##
+	
+	_rect_used_for_region = rect_to_use
 
 
 
@@ -182,6 +191,25 @@ func _process(delta):
 		
 		emit_signal("region__body_remained_in_area", entity, delta, tracked_delta)
 	
+
+#
+
+func construct_and_add_sprite_for_shader(arg_material : ShaderMaterial):
+	sprite_for_shader = Sprite.new()
+	sprite_for_shader.texture = preload("res://MiscRelated/ShadersRelated/Assets/ShaderImgTemplate_Trans1x1.png")
+	sprite_for_shader.centered = true
+	sprite_for_shader.scale = _rect_used_for_region.size
+	sprite_for_shader.position = _rect_used_for_region.size / 2
+	sprite_for_shader.material = arg_material
+	
+	collision_shape.add_child(sprite_for_shader)
+	
+	return sprite_for_shader
+
+func add_shader_to_collshape(arg_material : ShaderMaterial):
+	_rect_draw_node.material = arg_material
+	
+	return sprite_for_shader
 
 ###################### 
 # REWIND RELATED

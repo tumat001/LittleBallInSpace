@@ -13,6 +13,10 @@ const PlayerParticle_HitTile_Scene = preload("res://PlayerRelated/PlayerParticle
 
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
+const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailType.gd")
+const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
+
+
 #
 
 signal last_calculated_object_mass_changed(arg_val)
@@ -279,7 +283,24 @@ var ignore_effect_based_on_pos_change__next_frame_count : int
 
 var is_show_lines_to_uncaptured_player_capture_regions : bool = false setget set_is_show_lines_to_uncaptured_player_capture_regions
 
-##
+#
+
+var speed_trail_component : MultipleTrailsForNodeComponent
+var _current_speed_trail
+
+const SPEED_TRAIL_COLOR = Color("#66cccccc")
+const SPEED_TRAIL_LENGTH_01 : int = 12
+const SPEED_TRAIL_LENGTH_02 : int = 18
+const SPEED_TRAIL_SPEED_TRIGGER : float = 200.0
+const SPEED_TRAIL_SPEED_TRIGGER_02 : float = 280.0
+
+#const SPEED_TRAIL__MIN_LENGTH : int = 10
+#const SPEED_TRAIL__MAX_LENGTH : int = 20
+#const SPEED_TRAIL__MIN_LENGTH__SPEED_TRIGGER : float = 220.0
+#const SPEED_TRAIL__MAX_LENGTH__SPEED_TRIGGER : float = 400.0
+
+
+###
 
 const NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC : float = 0.5
 const NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC : float = 2.0
@@ -1212,6 +1233,7 @@ func _ready():
 	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
 	
 	_initialize_player_light()
+	_initialize_speed_trail_component()
 
 #
 
@@ -1503,29 +1525,13 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 			var stress = diff / 220
 			CameraManager.camera.add_stress(stress)
 		
-#		if diff > 450:
-#			var tweener = create_tween()
-#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.9]).set_delay(0.9)
-#
-#		elif diff > 300:
-#			var tweener = create_tween()
-#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.65]).set_delay(0.65)
-#
-#		elif diff > 220:
-#			var tweener = create_tween()
-#			tweener.tween_callback(self, "_play_normal_to_ouch", [0.5])
-#			tweener.tween_callback(self, "_play_ouch_to_normal", [0.5]).set_delay(0.5)
-		
-		
-		#print("diff: %s, prev_mag: %s, curr_mag: %s. |||||||| for_rewind: %s, prev_pos: %s, prev_change: %s, glob_pos: %s, pos_change: %s, use: %s" % [diff, prev_pos_mag, curr_pos_mag, _player_prev_global_position__for_rewind, _player_prev_global_position, arg_player_pos_change_from_last_frame, global_position, _player_pos_change_from_last_frame, _use_prev_glob_pos_for_rewind])
-		
 		#_use_prev_glob_pos_for_rewind = false
 	
 	
-	emit_signal("pos_change__for_aesth_effects", curr_pos_mag, prev_pos_mag, diff, delta)
+	_play_or_kill_speed_trail_based_on_curr_state()
 	
+	emit_signal("pos_change__for_aesth_effects", curr_pos_mag, prev_pos_mag, diff, delta)
+
 
 func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
 	var diff = arg_max - arg_min
@@ -1975,6 +1981,55 @@ func get_player_radius():
 	return _base_player_size.x
 
 
+##################
+
+func _initialize_speed_trail_component():
+	speed_trail_component = MultipleTrailsForNodeComponent.new()
+	speed_trail_component.node_to_host_trails = SingletonsAndConsts.current_game_elements.player_container
+	speed_trail_component.trail_type_id = StoreOfTrailType.BASIC_TRAIL
+	speed_trail_component.connect("on_trail_before_attached_to_node", self, "_speed_trail_before_attached_to_self")
+	#speed_trail_component.custom_func_name_for_adding_trail_as_child = "_add_speed_trail__as_child"
+	
+	_attempt_create_curr_speed_trail()
+
+#func _add_speed_trail__as_child(arg_trail):
+#	add_child(arg_trail)
+#	#move_child(arg_trail, 0)
+
+func _attempt_create_curr_speed_trail():
+	if !is_instance_valid(_current_speed_trail):
+		_current_speed_trail = speed_trail_component.create_trail_for_node(self)
+	
+
+func _speed_trail_before_attached_to_self(arg_trail, arg_self):
+	arg_trail.max_trail_length = SPEED_TRAIL_LENGTH_01
+	arg_trail.trail_color = SPEED_TRAIL_COLOR
+	arg_trail.width = 34
+	
+	_current_speed_trail = arg_trail
+
+
+func _play_or_kill_speed_trail_based_on_curr_state():
+	var speed = linear_velocity.length()
+	if speed >= SPEED_TRAIL_SPEED_TRIGGER:
+		_attempt_create_curr_speed_trail()
+		_current_speed_trail.can_add_points = true
+		
+		if speed >= SPEED_TRAIL_SPEED_TRIGGER_02:
+			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_02
+		else:
+			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_01
+		
+	else:
+		_current_speed_trail.max_trail_length = 0
+		_current_speed_trail.can_add_points = false
+		#_attempt_destroy_current_speed_trail()
+
+func _attempt_destroy_current_speed_trail():
+	if is_instance_valid(_current_speed_trail):
+		_current_speed_trail.queue_free()
+	
+
 
 ###################### 
 # REWIND RELATED
@@ -2167,6 +2222,7 @@ func started_rewind():
 	floor_area_2d_coll_shape.set_deferred("disabled", true)
 	rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", true)
 	
+	_attempt_destroy_current_speed_trail()
 
 func ended_rewind():
 	_ignore_next_current_player_left_right_move_reset = true

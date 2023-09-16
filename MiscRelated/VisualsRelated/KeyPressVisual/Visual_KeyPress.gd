@@ -17,6 +17,13 @@ var input_event_key : InputEventKey setget set_input_event_key
 
 #
 
+var any_control_action_name : String setget set_any_control_action_name
+var _all_key_char__of_any_control_name : Array
+var _any_control_action_name_key_displayer__tweener : SceneTreeTween
+var _curr_idx__any_control_action_name
+
+#
+
 onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer/KeyPressLabel
 
 #
@@ -47,9 +54,9 @@ func set_game_control_action_name(arg_val):
 	if old_action_name != arg_val:
 		if is_inside_tree():
 			if update_keypress_label_based_on_game_control:
-				_update_key_press_label()
+				_update_key_press_label__as_game_control()
 
-func _update_key_press_label():
+func _update_key_press_label__as_game_control():
 	var key_char = GameSettingsManager.get_game_control_hotkey__as_string(game_control_action_name)
 	
 	key_press_label.text = key_char
@@ -57,7 +64,7 @@ func _update_key_press_label():
 
 
 func _on_game_control_hotkey_changed(arg_game_control_action, arg_old_hotkey, arg_new_hotkey):
-	_update_key_press_label()
+	_update_key_press_label__as_game_control()
 	
 
 
@@ -102,4 +109,44 @@ func set_input_event_key(arg_event):
 			key_press_label.text = "(none)"
 		else:
 			key_press_label.text = input_event_key.as_text()
+
+
+############
+
+func set_any_control_action_name(arg_name):
+	any_control_action_name = arg_name
+	
+	if is_inside_tree():
+		_curr_idx__any_control_action_name = 0
+		_init_all_key_char__of_any_control()
+		_update_key_press_label__as_any_control()
+		
+
+func _init_all_key_char__of_any_control():
+	_all_key_char__of_any_control_name.clear()
+	var input_events = InputMap.get_action_list(any_control_action_name)
+	for event in input_events:
+		_all_key_char__of_any_control_name.append(event.as_text())
+
+func _update_key_press_label__as_any_control():
+	if _all_key_char__of_any_control_name.size() > 1:
+		if _any_control_action_name_key_displayer__tweener != null and _any_control_action_name_key_displayer__tweener.is_valid():
+			_any_control_action_name_key_displayer__tweener.kill()
+		
+		_any_control_action_name_key_displayer__tweener = create_tween()
+		_any_control_action_name_key_displayer__tweener.set_loops(0)
+		_any_control_action_name_key_displayer__tweener.set_parallel(false)
+		_any_control_action_name_key_displayer__tweener.tween_interval(5.0)
+		_any_control_action_name_key_displayer__tweener.tween_callback(self, "_show_next_control_char__any_control")
+	
+	_show_next_control_char__any_control()
+
+
+func _show_next_control_char__any_control():
+	key_press_label.text = _all_key_char__of_any_control_name[_curr_idx__any_control_action_name]
+	
+	_curr_idx__any_control_action_name += 1
+	if _all_key_char__of_any_control_name.size() <= _curr_idx__any_control_action_name:
+		_curr_idx__any_control_action_name = 0
+
 

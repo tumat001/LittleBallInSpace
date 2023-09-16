@@ -31,8 +31,9 @@ margin_top = 185.0
 margin_right = 346.0
 margin_bottom = 185.0
 size_flags_vertical = 6
+default_font_size = 40
 descriptions__from_export = "Launching the ball used to launch you even if you're on the ground.
 
-The sole reason this was done is to make 1-5's gimmik possible. Mechanics-wise it also worked nicely."
+The reason this was done is to make 1-5's gimmik possible. Mechanics-wise it also worked very nicely."
 
 [editable path="FTQ_CustomLabel"]

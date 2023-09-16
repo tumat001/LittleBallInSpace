@@ -15,13 +15,13 @@ margin_top = 48.0
 margin_right = 442.0
 margin_bottom = 135.0
 rect_min_size = Vector2( 250, 0 )
-default_font_size = 35
+default_font_size = 64
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
 margin_right = 884.0
 margin_bottom = 87.0
-default_font_size = 30
+default_font_size = 64
 descriptions__from_export = "Origins"
 bbcode_align_mode = 1
 
@@ -43,7 +43,7 @@ margin_top = 162.0
 margin_right = 454.0
 margin_bottom = 405.0
 rect_min_size = Vector2( 250, 0 )
-default_font_size = 22
+default_font_size = 40
 cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel2" index="0"]
@@ -51,7 +51,8 @@ margin_top = 121.0
 margin_right = 424.0
 margin_bottom = 121.0
 size_flags_vertical = 6
-descriptions__from_export = "The game was originally made for a for-fun 2 week game jam. This also happened to be my first game jam."
+default_font_size = 40
+descriptions__from_export = "The game was originally made for a for fun 2 week game jam. It also (would have) happened to be my first game jam."
 
 [editable path="FTQ_CustomLabel"]
 [editable path="FTQ_CustomLabel2"]
