@@ -14,13 +14,13 @@ signal player_entered__as_scene_transition(arg_player)
 
 #
 
-const COLOR_RED__P_SPRITE = Color("#210000")
+const COLOR_RED__P_SPRITE = Color("#620000")
 const COLOR_RED__P_FRAME = Color("#c20000")
 
-const COLOR_GREEN__P_SPRITE = Color("#002100")
+const COLOR_GREEN__P_SPRITE = Color("#006200")
 const COLOR_GREEN__P_FRAME = Color("#00c200")
 
-const COLOR_BLUE__P_SPRITE = Color("#000021")
+const COLOR_BLUE__P_SPRITE = Color("#000062")
 const COLOR_BLUE__P_FRAME = Color("#0000c2")
 
 const COLOR_WHITE__P_SPRITE = Color("#ffffff")

@@ -337,8 +337,6 @@ shape = SubResource( 11 )
 position = Vector2( 1920, -40 )
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_SwitchBlue")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 12 )]
 position = Vector2( 1799, -239 )
@@ -348,8 +346,6 @@ position = Vector2( 1864, -720 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_SwitchBlue02")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 2
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="5" instance=ExtResource( 12 )]
@@ -366,8 +362,6 @@ position = Vector2( 1488, -984 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green01")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Object_CustomDefined" parent="ObjectContainer" index="9" instance=ExtResource( 15 )]
@@ -385,8 +379,6 @@ position = Vector2( 2721, -1112 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red01")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="11" instance=ExtResource( 12 )]
@@ -397,8 +389,6 @@ position = Vector2( 2440, -3056 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_FakeoutRed01")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Portal_Cosmetic" parent="ObjectContainer" index="13" instance=ExtResource( 21 )]
@@ -407,13 +397,7 @@ position = Vector2( 293, 656 )
 portal_color = 3
 is_disabled = true
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 18 )]
-position = Vector2( 1300, -948 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 18 )]
-position = Vector2( 1938, -1082 )
-
-[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 18 )]
+[node name="Pickupables_Coin3" parent="CoinsContainer" index="0" instance=ExtResource( 18 )]
 position = Vector2( 2751, -894 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

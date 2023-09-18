@@ -110,24 +110,15 @@ position = Vector2( 1160, -1136 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_BlueSwitch")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
+pressable_count = 99
 
 [node name="Object_InteractableButton2" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
 position = Vector2( 136, -336 )
 rotation = 1.5708
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_GreenSwitch")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 876, -881 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
-position = Vector2( 720, -435 )
-
-[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 4 )]
+[node name="Pickupables_Coin3" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 1135, -1048 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

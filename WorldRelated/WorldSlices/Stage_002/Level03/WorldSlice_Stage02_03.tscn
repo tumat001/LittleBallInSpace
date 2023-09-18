@@ -215,10 +215,7 @@ position = Vector2( 592, 307 )
 rotation = 3.14159
 battery_type = 1
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
-position = Vector2( 112, -105 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 7 )]
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 527, -169 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

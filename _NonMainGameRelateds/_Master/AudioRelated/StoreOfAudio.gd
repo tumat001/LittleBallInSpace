@@ -111,6 +111,13 @@ enum AudioIds {
 	SFX_SpaceshipWall_Tile_Break = 5301
 	
 	
+	## GUI
+	SFX_GUI_Button_Hover = 5400
+	SFX_GUI_LevelTile_Hover = 5401
+	#SFX_GUI_LevelLayout_Enter = 5402
+	SFX_GUI_InGamePauseMenu_OrMainMenu_Open = 5403
+	SFX_GUI_Checkbox_Clicked = 5404
+	
 	
 	# SPECIAL
 	SFX_Special_ElectricGenerator = 6000
@@ -150,6 +157,9 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_Pickupable_LaunchBallModi : -10,
 	
 	AudioIds.SFX_PDAR_PlayerReachedOutOfBoundsOfMap : -10,
+	
+	AudioIds.SFX_GUI_Checkbox_Clicked : -24,
+	AudioIds.SFX_GUI_InGamePauseMenu_OrMainMenu_Open : -24,
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false
 

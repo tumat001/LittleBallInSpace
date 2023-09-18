@@ -179,6 +179,7 @@ func _on_button_pressed():
 
 func _on_button_mouse_entered():
 	_is_mouse_inside = true
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Hover, 1.0, null)
 	_update_button_display_based_on_properties()
 
 func _on_button_mouse_exited():

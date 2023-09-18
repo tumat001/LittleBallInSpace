@@ -127,17 +127,12 @@ position = Vector2( 176, 704 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( -263, 215 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 434, 322 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
-position = Vector2( -44, 781 )
+position = Vector2( 401, 242 )
 
 [node name="SpawnPosition2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 145, -2 )
@@ -163,24 +158,25 @@ rect_rotation = 270.0
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="MiscContainer/VBoxContainer" index="0"]
-margin_left = 78.0
-margin_right = 108.0
-margin_bottom = 14.0
+margin_left = 117.0
+margin_right = 153.0
+margin_bottom = 15.0
 size_flags_horizontal = 6
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Hold"
 
 [node name="VKP_LaunchBall" parent="MiscContainer/VBoxContainer" index="1" instance=ExtResource( 12 )]
-margin_left = 72.0
-margin_top = 18.0
-margin_right = 114.0
-margin_bottom = 55.0
+modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
+margin_left = 112.0
+margin_top = 19.0
+margin_right = 158.0
+margin_bottom = 56.0
 size_flags_horizontal = 6
 
 [node name="Label2" type="Label" parent="MiscContainer/VBoxContainer" index="2"]
-margin_top = 59.0
-margin_right = 187.0
-margin_bottom = 90.0
+margin_top = 60.0
+margin_right = 270.0
+margin_bottom = 93.0
 size_flags_horizontal = 6
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "To increase the launch speed

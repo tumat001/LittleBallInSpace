@@ -227,13 +227,7 @@ texture = ExtResource( 12 )
 position = Vector2( -1, 0 )
 shape = SubResource( 12 )
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 225, -4137 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
-position = Vector2( 16, -753 )
-
-[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 4 )]
+[node name="Pickupables_Coin3" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 267, -25 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

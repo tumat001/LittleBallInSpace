@@ -193,7 +193,7 @@ func set_layout_ele_id_to_summon_cursor_to(arg_ele_id):
 		if !is_instance_valid(player_cursor):
 			_summon_cursor_at_appropriate_loc()
 		else:
-			_instant_place_cursor_at_layout_ele_id(arg_ele_id)
+			_instant_place_cursor_at_layout_ele_id(arg_ele_id, false)
 
 func _summon_cursor_at_appropriate_loc():
 	if layout_ele_id_to_summon_cursor_to == NO_CURSOR:
@@ -202,7 +202,7 @@ func _summon_cursor_at_appropriate_loc():
 		
 	elif layout_ele_id_to_summon_cursor_to == UNINITIALIZED_CURSOR:
 		var node = get_node(default_node_to_summon_cursor_on__for_first_time__path)
-		_instant_place_cursor_at_layout_ele(node)
+		_instant_place_cursor_at_layout_ele(node, false)
 		_set_is_player_cursor_active(true)
 		
 	else:
@@ -210,7 +210,7 @@ func _summon_cursor_at_appropriate_loc():
 		
 
 
-func _instant_place_cursor_at_layout_ele_id(arg_id):
+func _instant_place_cursor_at_layout_ele_id(arg_id, arg_play_sound : bool = true):
 	var ele
 	if arg_id == UNINITIALIZED_CURSOR:
 		ele = get_node(default_node_to_summon_cursor_on__for_first_time__path)
@@ -220,13 +220,13 @@ func _instant_place_cursor_at_layout_ele_id(arg_id):
 		 ele = _id_to_layout_ele_map[arg_id]
 	
 	if ele != null:
-		_instant_place_cursor_at_layout_ele(ele)
+		_instant_place_cursor_at_layout_ele(ele, arg_play_sound)
 
-func _instant_place_cursor_at_layout_ele(arg_ele : Control):
+func _instant_place_cursor_at_layout_ele(arg_ele : Control, arg_play_sound : bool = true):
 	#player_cursor.rect_global_position = arg_ele.rect_global_position
 	player_cursor.rect_global_position = _get_adjusted_cursor_pos__based_on_pos(arg_ele)
 	
-	_assign_layout_ele_as_current_hovered(arg_ele)
+	_assign_layout_ele_as_current_hovered(arg_ele, arg_play_sound)
 
 func _get_adjusted_cursor_pos__based_on_pos(arg_ele : Control):
 	var arg_ele_size : Vector2 = arg_ele.rect_size
@@ -238,11 +238,15 @@ func _get_adjusted_cursor_pos__based_on_pos(arg_ele : Control):
 	return arg_ele_pos - diff
 
 
-func _assign_layout_ele_as_current_hovered(arg_ele):
+func _assign_layout_ele_as_current_hovered(arg_ele, arg_play_sound : bool = true):
 	_currently_hovered_layout_ele_id = _layout_ele_to_id_map[arg_ele]
 	_currently_hovered_tile = arg_ele
 	
 	GameSaveManager.last_hovered_over_level_layout_element_id = _currently_hovered_layout_ele_id
+	
+	if arg_play_sound:
+		if !arg_ele.is_path and !SingletonsAndConsts.current_master._is_transitioning:
+			AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_LevelTile_Hover, 1.0, null)
 	
 	emit_signal("currently_hovered_layout_ele_changed", _currently_hovered_layout_ele_id, _currently_hovered_tile)
 

@@ -1325,17 +1325,17 @@ func _initialize_coin_details():
 	_level_id_to_coin_amount_map = {
 		LevelIds.TEST : 0,
 		
-		LevelIds.LEVEL_01__STAGE_1 : 2,
-		LevelIds.LEVEL_02__STAGE_1 : 3,
-		LevelIds.LEVEL_03__STAGE_1 : 4,
-		LevelIds.LEVEL_04__STAGE_1 : 3,
-		LevelIds.LEVEL_05__STAGE_1 : 3,
+		LevelIds.LEVEL_01__STAGE_1 : 1,
+		LevelIds.LEVEL_02__STAGE_1 : 1,
+		LevelIds.LEVEL_03__STAGE_1 : 1,
+		LevelIds.LEVEL_04__STAGE_1 : 1,
+		LevelIds.LEVEL_05__STAGE_1 : 1,
 		
-		LevelIds.LEVEL_01__STAGE_2 : 2,
+		LevelIds.LEVEL_01__STAGE_2 : 1,
 		LevelIds.LEVEL_02__STAGE_2 : 1,
-		LevelIds.LEVEL_03__STAGE_2 : 2,
-		LevelIds.LEVEL_04__STAGE_2 : 2,
-		LevelIds.LEVEL_05__STAGE_2 : 2,
+		LevelIds.LEVEL_03__STAGE_2 : 1,
+		LevelIds.LEVEL_04__STAGE_2 : 1,
+		LevelIds.LEVEL_05__STAGE_2 : 1,
 		LevelIds.LEVEL_06__STAGE_2 : 0,
 		
 		LevelIds.LEVEL_02__STAGE_2__HARD : 1,

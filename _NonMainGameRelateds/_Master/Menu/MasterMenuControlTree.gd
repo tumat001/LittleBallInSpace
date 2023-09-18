@@ -32,6 +32,8 @@ func show_main_page():
 func _on_hierarchy_advanced_forwards__MMCT(arg_control):
 	if arg_control == main_page:
 		set_show_info_button(true)
+		
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_InGamePauseMenu_OrMainMenu_Open, 1.0, null)
 	else:
 		set_show_info_button(false)
 

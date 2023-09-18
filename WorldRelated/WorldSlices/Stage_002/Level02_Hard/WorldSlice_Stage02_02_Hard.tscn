@@ -150,8 +150,6 @@ position = Vector2( 144, -500 )
 position = Vector2( -486, -461 )
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Portal" parent="ObjectContainer" index="3" instance=ExtResource( 11 )]

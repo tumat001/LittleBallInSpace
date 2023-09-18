@@ -48,6 +48,9 @@ signal pos_change__for_aesth_effects(curr_pos_mag, prev_pos_mag, diff, delta)
 #state : Physics2DDirectBodyState
 signal on_integ_forces(state)
 
+
+signal on_ground_state_changed(arg_val)
+
 #
 
 var _base_player_size
@@ -734,6 +737,8 @@ func _attempt_remove_on_ground_count__with_any_identif(arg_identif):
 
 
 func _update_is_on_ground__and_update_others():
+	var old_val = _is_on_ground
+	
 	if _on_ground_any_identif_list.size() != 0:
 		block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NOT_ON_GROUND)
 		
@@ -760,6 +765,11 @@ func _update_is_on_ground__and_update_others():
 	_is_on_ground__with_energy = is_on_ground_with_energy
 	_is_on_ground__with_instant_ground = is_on_ground_with_instant_ground
 	
+	
+	##
+	
+	if old_val != _is_on_ground:
+		emit_signal("on_ground_state_changed", _is_on_ground)
 
 ##
 

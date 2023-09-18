@@ -21,7 +21,8 @@ func _on_end_of_transition():
 	if queue_free_on_end_of_transition:
 		queue_free()
 
-###
 
+func set_is_transition_paused(arg_val):
+	pass
 
-
+#

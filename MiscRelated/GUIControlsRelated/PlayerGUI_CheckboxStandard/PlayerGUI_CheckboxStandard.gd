@@ -110,6 +110,8 @@ func set_is_checked(arg_val, arg_emit_signal : bool = true):
 #
 
 func _on_Button_pressed():
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Checkbox_Clicked, 1.0, null)
+	
 	if update_properties_when_clicked_instead_of_reactive:
 		set_is_checked(!_is_checked, true)
 	else:
@@ -119,6 +121,7 @@ func _on_Button_pressed():
 
 func _on_Button_mouse_entered():
 	_is_mouse_inside = true
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Hover, 1.0, null)
 	_update_box_texture_display()
 
 

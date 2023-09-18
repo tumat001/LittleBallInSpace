@@ -92,6 +92,10 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 		_init_all_game_hud_relateds()
 	else:
 		arg_game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized", [], CONNECT_ONESHOT)
+	
+	if is_zero_approx(_current_energy):
+		_player.can_capture_PCA_regions = false
+
 
 func _on_game_front_hud_initialized(arg_hud):
 	_init_all_game_hud_relateds()
@@ -141,7 +145,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
 			
-			_player.can_capture_PCA_regions = false
+			if is_instance_valid(_player):
+				_player.can_capture_PCA_regions = false
 			
 			_tween_mute_background_music__internal()
 			emit_signal("discarged_to_zero_energy")

@@ -4,6 +4,7 @@ const EYE_ANIMATION_NAME__NORMAL = "normal"
 const EYE_ANIMATION_NAME__NORMAL_TO_OUCH = "normal_to_ouch"
 const EYE_ANIMATION_NAME__OUCH = "ouch"
 const EYE_ANIMATION_NAME__OUCH_TO_NORMAL = "ouch_to_normal"
+const EYE_ANIMATION_NAME__WAKING_UP = "waking_up"
 
 const MOUTH_ANIMATION_NAME__NORMAL = "normal"
 const MOUTH_ANIMATION_NAME__CHARGING_BALL_01 = "charging_ball_01"
@@ -25,6 +26,7 @@ enum _InternalFaceExpressionAnimId {
 	LAUNCHED_BALL = 11,
 	UPGRADING = 20,
 	REWINDING = 30,
+	WAKING_UP = 40,
 }
 var _current_FE_anim_id__for_left_eye : int
 var _current_FE_anim_id__for_right_eye : int
@@ -109,6 +111,7 @@ enum _InternalSequenceId {
 	LAUNCHING_BALL = 2,
 	UPGRADING = 3,
 	REWINDING = 4,
+	WAKING_UP = 5,
 }
 var _current_sequence_ids_active : Array
 var _current_sequence_of_FE_tweener : SceneTreeTween
@@ -638,4 +641,25 @@ func _calculate_offset_mag__for_left_eye():
 func _convert_result_into_ratio_using_num_range(arg_result, arg_min, arg_max):
 	return (arg_result - arg_min) / (arg_max - arg_min)
 
+
+######
+
+func play_sequence__waking_up(arg_duration, arg_func_source, arg_func_name, arg_delay_for_func_source):
+	_start_new_FE_sequence(_InternalSequenceId.WAKING_UP, false, false)
+	_current_sequence_of_FE_tweener.tween_callback(self, "play_FE__waking_up", [arg_duration])
+	_current_sequence_of_FE_tweener.tween_interval(arg_duration)
+	_current_sequence_of_FE_tweener.tween_callback(self, "play_FE__normal")
+	_current_sequence_of_FE_tweener.tween_callback(arg_func_source, arg_func_name).set_delay(arg_delay_for_func_source)
+
+func play_FE__waking_up(arg_duration):
+	var frame_count = _eye_sprite_frames.get_frame_count(EYE_ANIMATION_NAME__WAKING_UP)
+	var fps = frame_count / arg_duration
+	
+	_eye_sprite_frames.set_animation_speed(EYE_ANIMATION_NAME__WAKING_UP, fps)
+	left_eye.frame = 0
+	right_eye.frame = 0
+	left_eye.play(EYE_ANIMATION_NAME__WAKING_UP)
+	right_eye.play(EYE_ANIMATION_NAME__WAKING_UP)
+	
+	
 

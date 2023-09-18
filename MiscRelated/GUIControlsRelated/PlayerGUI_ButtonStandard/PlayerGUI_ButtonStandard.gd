@@ -110,7 +110,10 @@ func _on_texture_button_mouse_entered():
 		
 	else:
 		_update_control_states()
-		
+	
+	##
+	
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Hover, 1.0, null)
 
 func _on_texture_button_mouse_exited():
 	_is_mouse_inside = false

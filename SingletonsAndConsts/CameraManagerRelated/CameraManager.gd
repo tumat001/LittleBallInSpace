@@ -328,6 +328,9 @@ func make_camera_immediatelty_catch_up_to_node():
 func set_camera_glob_pos(arg_pos):
 	camera.global_position = arg_pos
 
+#
+
+
 
 ###################### 
 # REWIND RELATED
