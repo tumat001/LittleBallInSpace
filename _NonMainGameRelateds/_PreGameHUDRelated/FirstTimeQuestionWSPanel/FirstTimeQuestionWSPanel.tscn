@@ -29,3 +29,5 @@ margin_bottom = 540.0
 [node name="FTQ_Scene03" parent="FreeFormControl" instance=ExtResource( 3 )]
 
 [node name="FTQ_Scene04" parent="FreeFormControl" instance=ExtResource( 6 )]
+
+[connection signal="gui_input" from="." to="." method="_on_FirstTimeQuestionWSPanel_gui_input"]

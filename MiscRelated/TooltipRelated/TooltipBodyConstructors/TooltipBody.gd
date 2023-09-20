@@ -253,5 +253,10 @@ func finish_display_now():
 	else:
 		return false
 
-
+func custom_step_current_tweener(arg_step):
+	if _current_tweener != null and _current_tweener.is_running():
+		return !_current_tweener.custom_step(arg_step)
+		
+	else:
+		return false
 

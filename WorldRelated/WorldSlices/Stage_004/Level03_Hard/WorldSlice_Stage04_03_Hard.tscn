@@ -141,14 +141,8 @@ position = Vector2( -373, -176 )
 portal_color = 1
 portal_to_link_with__path = NodePath("../Portal_Green01")
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 5 )]
-position = Vector2( 686, 80 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 5 )]
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="0" instance=ExtResource( 5 )]
 position = Vector2( 686, 110 )
-
-[node name="Pickupables_Coin3" parent="CoinsContainer" index="2" instance=ExtResource( 5 )]
-position = Vector2( 686, 50 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 48, 112 )

@@ -4,6 +4,11 @@ signal question_panel_finished()
 
 #
 
+
+var _current_ftq_scene
+
+#
+
 onready var ftq_scene01 = $FreeFormControl/FTQ_Scene01
 onready var ftq_scene02 = $FreeFormControl/FTQ_Scene02
 onready var ftq_scene03 = $FreeFormControl/FTQ_Scene03
@@ -21,6 +26,7 @@ func _ready():
 	_start_scene_sequence__01()
 
 func _start_scene_sequence__01():
+	_current_ftq_scene = ftq_scene01
 	ftq_scene01.visible = true
 	ftq_scene01.start_display()
 	ftq_scene01.connect("sequence_finished", self, "_on_sequence_finished__scene_01")
@@ -32,6 +38,7 @@ func _on_sequence_finished__scene_01():
 	
 	##
 	
+	_current_ftq_scene = ftq_scene02
 	ftq_scene02.visible = true
 	ftq_scene02.start_display()
 	ftq_scene02.connect("sequence_finished", self, "_on_sequence_finished__scene_02")
@@ -42,6 +49,7 @@ func _on_sequence_finished__scene_02():
 	
 	##
 	
+	_current_ftq_scene = ftq_scene03
 	ftq_scene03.visible = true
 	ftq_scene03.start_display()
 	ftq_scene03.connect("sequence_finished", self, "_on_sequence_finished__scene_03")
@@ -53,6 +61,7 @@ func _on_sequence_finished__scene_03():
 	
 	##
 	
+	_current_ftq_scene = ftq_scene04
 	ftq_scene04.visible = true
 	ftq_scene04.start_display()
 	ftq_scene04.connect("sequence_finished", self, "_on_sequence_finished__scene_04")
@@ -63,9 +72,20 @@ func _on_sequence_finished__scene_04():
 	#var wait_tweener = create_tween()
 	#wait_tweener.tween_callback(self, "_emit_finished").set_delay(2.0)
 	
+	_current_ftq_scene = null
 	_emit_finished()
 
 func _emit_finished():
 	emit_signal("question_panel_finished")
+
+
+##
+
+func _on_FirstTimeQuestionWSPanel_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.doubleclick:
+			if is_instance_valid(_current_ftq_scene):
+				_current_ftq_scene.custom_step_current_control_tweener(1)
+	
 
 

@@ -59,6 +59,10 @@ var _current_pca_index : int
 
 #
 
+var _coin_audio_player : AudioStreamPlayer
+
+#
+
 var _all_imp_cutscene_item_particles : Array
 var _item_particle_reached_dest_count : int
 var _current_item_cutscene_param : PickupImportantItemCutsceneParam
@@ -97,35 +101,14 @@ func set_game_elements(arg_elements):
 
 func _ready():
 	_initialize_spawn_coords()
-	_initialize_coins()
+	#_initialize_coins()
 	_initialize_base_tilesets()
 	_attempt_init_player_capture_area_style_to_one_at_a_time()
+	call_deferred("_deferred_initialize_game_background_configs_related")
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
 		_player_global_spawn_coords.append(child.global_position)
-
-#
-
-func _initialize_coins():
-	var coin_count = coins_container.get_child_count()
-	
-	for coin in coins_container.get_children():
-		_configure_coin(coin)
-	
-	var curr_level_id = SingletonsAndConsts.current_base_level_id
-	if coin_count != StoreOfLevels.get_coin_count_for_level(curr_level_id):
-		print("level with id %s not having the correct coin amount." % [curr_level_id])
-
-
-func _configure_coin(arg_coin):
-	arg_coin.coin_id = str(_next_available_coin_id)
-	_next_available_coin_id += 1
-	
-	if GameSaveManager.is_coin_id_collected_in_level(arg_coin.coin_id, SingletonsAndConsts.current_base_level_id):
-		arg_coin.visible = false
-		arg_coin.queue_free()
-	
 
 
 #
@@ -157,6 +140,8 @@ func _on_after_game_start_init():
 	
 	if _is_all_PCAs_are_captured():
 		_on_all_PCAs_captured()
+	
+	_initialize_coins()
 
 func _initialize_area_regions():
 	for child in area_region_container.get_children():
@@ -228,6 +213,36 @@ func is_all_PCA_regions_captured():
 
 func get_all_win_type_player_capture_area_region_to_is_captured_map():
 	return _all_win_type_player_capture_area_region_to_is_captured_map
+
+
+##
+
+func _initialize_coins():
+	var coin_count = coins_container.get_child_count()
+	
+	for coin in coins_container.get_children():
+		_configure_coin(coin)
+	
+	var curr_level_id = SingletonsAndConsts.current_base_level_id
+	if coin_count != StoreOfLevels.get_coin_count_for_level(curr_level_id):
+		print("level with id %s not having the correct star amount." % [curr_level_id])
+
+
+func _configure_coin(arg_coin):
+	arg_coin.coin_id = str(_next_available_coin_id)
+	_next_available_coin_id += 1
+	
+	if GameSaveManager.is_coin_id_collected_in_level(arg_coin.coin_id, SingletonsAndConsts.current_base_level_id):
+		arg_coin.visible = false
+		arg_coin.queue_free()
+		
+		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin, true)
+		
+	else:
+		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin, false)
+	
+	arg_coin.connect("collected_by_player", self, "_on_coin_collected_by_player", [arg_coin])
+	arg_coin.connect("uncollected_by_player", self, "_on_coin_uncollected_by_player", [arg_coin])
 
 
 #########
@@ -473,5 +488,51 @@ func _on_any_item_particle_reached_final_destination():
 	
 	game_elements.get_current_player().player_face.end_sequence__upgrading()
 
+
+
+############
+
+func _on_coin_collected_by_player(arg_coin):
+	_coin_audio_player = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_Star_01, 1.0, null)
+	_coin_audio_player.connect("finished", self, "_on_coin_audio_player_finished", [], CONNECT_ONESHOT)
+	
+	_update_game_background_configs_related()
+
+func _on_coin_audio_player_finished():
+	_coin_audio_player = null
+
+func _on_coin_uncollected_by_player(arg_coin):
+	if _coin_audio_player != null:
+		_coin_audio_player.stop()
+		_coin_audio_player = null
+	
+	_update_game_background_configs_related()
+
+#
+
+func _deferred_initialize_game_background_configs_related():
+	if game_elements.is_game_background_initialized:
+		_update_game_background_configs_related()
+	else:
+		game_elements.connect("game_background_initialized", self, "_on_game_background_initialized", [], CONNECT_ONESHOT)
+
+func _on_game_background_initialized(arg_game_background):
+	_update_game_background_configs_related()
+	
+
+func _update_game_background_configs_related():
+	if GameSaveManager.is_all_coins_collected_in_curr_level__tentative():
+		request_show_brightened_star_background__star_collectible_collected()
+	else:
+		request_unshow_brightened_star_background__star_collectible_uncollected()
+
+
+func request_show_brightened_star_background__star_collectible_collected():
+	game_elements.game_background.request_show_brightened_star_background__star_collectible_collected()
+	
+
+func request_unshow_brightened_star_background__star_collectible_uncollected():
+	game_elements.game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
+	
 
 

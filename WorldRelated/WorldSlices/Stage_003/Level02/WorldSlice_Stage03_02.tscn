@@ -117,8 +117,6 @@ position = Vector2( -48, -215 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Portal_Green01" parent="ObjectContainer" index="5" instance=ExtResource( 6 )]
@@ -131,10 +129,7 @@ position = Vector2( 491, -192 )
 portal_color = 1
 portal_to_link_with__path = NodePath("../Portal_Green01")
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
-position = Vector2( 116, -144 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 9 )]
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 391, -306 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

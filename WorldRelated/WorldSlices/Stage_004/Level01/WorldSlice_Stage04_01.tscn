@@ -85,11 +85,8 @@ shape = SubResource( 3 )
 position = Vector2( -204.75, -774 )
 shape = SubResource( 4 )
 
-[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 77, -348 )
-
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 4 )]
-position = Vector2( 78, -849 )
+[node name="Pickupables_Coin2" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 78, -972 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -17, 111 )

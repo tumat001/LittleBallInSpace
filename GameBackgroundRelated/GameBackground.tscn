@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GameBackgroundRelated/GameBackground.gd" type="Script" id=1]
+[ext_resource path="res://GameBackgroundRelated/Subs/StarGridBackground/StarGridBackground.tscn" type="PackedScene" id=2]
+
+[node name="GameBackground" type="ParallaxBackground"]
+scroll_ignore_camera_zoom = true
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="StarGridBackground" parent="." instance=ExtResource( 2 )]
+motion_scale = Vector2( 0, 0 )
+star_count__at_start = 40
+grid_size = Vector2( 960, 540 )
+grid_cell_size = Vector2( 20, 20 )
+grid_cell_dist_count_consume_on_star_placed = Vector2( 1, 1 )

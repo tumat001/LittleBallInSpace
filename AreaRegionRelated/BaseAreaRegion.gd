@@ -207,9 +207,10 @@ func construct_and_add_sprite_for_shader(arg_material : ShaderMaterial):
 	return sprite_for_shader
 
 func add_shader_to_collshape(arg_material : ShaderMaterial):
-	_rect_draw_node.material = arg_material
-	
-	return sprite_for_shader
+	if is_instance_valid(_rect_draw_node):
+		_rect_draw_node.material = arg_material
+		
+		return sprite_for_shader
 
 ###################### 
 # REWIND RELATED

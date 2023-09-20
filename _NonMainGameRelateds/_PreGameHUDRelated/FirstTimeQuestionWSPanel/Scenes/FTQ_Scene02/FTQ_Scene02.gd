@@ -58,6 +58,7 @@ func _ready():
 func start_display():
 	.start_display()
 	
+	_current_custom_steppable_control = ftq_custom_label_01
 	ftq_custom_label_01.start_display_of_descs__all_chars(0.5, 1.0, null)
 	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_01")
 	ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
@@ -70,6 +71,7 @@ func _on_display_of_desc_finished__line_01(custom_char_count_to_show_upto, arg_m
 
 func _on_done_moving_label_01():
 	#30
+	_current_custom_steppable_control = ftq_custom_label_02
 	ftq_custom_label_02.start_display_of_descs(0.75, 0.5, null, 0, 30)
 	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_02_01", [], CONNECT_ONESHOT)
 	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
@@ -92,16 +94,19 @@ func _on_display_of_desc_finished__line_02_02(custom_char_count_to_show_upto, ar
 func _delay__start_disp_of_third_line():
 	_current_tweener = null
 	
-	ftq_custom_label_03.start_display_of_descs__all_chars(3.5, 1.5, null)
+	_current_custom_steppable_control = ftq_custom_label_03
+	ftq_custom_label_03.start_display_of_descs__all_chars(2.75, 1.25, null)
 	ftq_custom_label_03.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_03")
 	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
 func _on_display_of_desc_finished__line_03(custom_char_count_to_show_upto, arg_metadata):
-	ftq_custom_label_04.start_display_of_descs__all_chars(1.5, 5.0, null)
+	_current_custom_steppable_control = ftq_custom_label_04
+	ftq_custom_label_04.start_display_of_descs__all_chars(1.25, 4.0, null)
 	ftq_custom_label_04.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_04")
 	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
 func _on_display_of_desc_finished__line_04(custom_char_count_to_show_upto, arg_metadata):
+	_current_custom_steppable_control = ftq_custom_label_05
 	ftq_custom_label_05.start_display_of_descs__all_chars(1.0, 0.0, null)
 	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 

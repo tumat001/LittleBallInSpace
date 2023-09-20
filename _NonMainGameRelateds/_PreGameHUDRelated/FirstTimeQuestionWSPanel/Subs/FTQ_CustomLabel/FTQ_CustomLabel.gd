@@ -71,6 +71,7 @@ func _on_tooltip_body_started_displaying_text__tween(details, arg_params):
 	var custom_char_count_to_show_upto = arg_params[2]
 	var arg_metadata = arg_params[3]
 	
+	# tweener if from tooltip body
 	var tweener : SceneTreeTween = details[0]
 	tweener.tween_callback(self, "_on_tweener_finished_displaying_descs", [custom_char_count_to_show_upto, arg_metadata]).set_delay(arg_duration + arg_additional_delay_for_finish)
 
@@ -85,4 +86,7 @@ func _on_tweener_finished_displaying_descs(custom_char_count_to_show_upto, arg_m
 func finish_display_now():
 	tooltip_body.finish_display_now()
 	
+
+func custom_step_display_tweener(arg_step : float):
+	tooltip_body.custom_step_current_tweener(arg_step)
 

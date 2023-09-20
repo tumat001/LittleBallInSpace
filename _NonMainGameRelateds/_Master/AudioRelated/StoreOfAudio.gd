@@ -28,6 +28,7 @@ enum AudioIds {
 	BGM_Calm01_01 = 1000
 	BGM_Calm01_02 = 1001
 	BGM_Calm01_03 = 1002
+	BGM_Calm01_04 = 1003
 	
 	# RISING
 	BGM_Rising01_01 = 1100
@@ -92,7 +93,7 @@ enum AudioIds {
 	SFX_PDAR_PlayerReachedOutOfBoundsOfMap = 5172
 	
 	# PICKUPABLE RELATED
-	SFX_Pickupable_Coin_01 = 5180
+	SFX_Pickupable_Star_01 = 5180
 	SFX_Pickupable_LaunchBallModi = 5181
 	SFX_Pickupable_LaunchBallAmmo = 5182
 	SFX_Pickupable_Battery_01 = 5183
@@ -152,7 +153,7 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_TileHit_MetalBang_SoftHollow : 18,
 	AudioIds.SFX_TileHit_MetalHitGlass : 10,
 	
-	AudioIds.SFX_Pickupable_Coin_01 : -12,
+	AudioIds.SFX_Pickupable_Star_01 : -12,
 	
 	AudioIds.SFX_Pickupable_LaunchBallModi : -10,
 	

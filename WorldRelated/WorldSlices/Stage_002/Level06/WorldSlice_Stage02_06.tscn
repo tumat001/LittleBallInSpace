@@ -118,7 +118,7 @@ portal_color = 3
 is_scene_transition_type_portal = true
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
-position = Vector2( -16, -46 )
+position = Vector2( -26, -46 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -88, 144 )

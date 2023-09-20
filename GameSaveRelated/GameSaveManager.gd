@@ -8,7 +8,7 @@ const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelect
 signal level_layout_id_completion_status_changed(arg_id, arg_status)
 signal level_id_completion_status_changed(arg_id, arg_status)
 signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id)
-
+signal tentative_coin_ids_collected_changed__for_curr_level(arg_tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, arg_is_all_collected)
 
 signal is_player_health_on_start_zero_changed()
 
@@ -278,17 +278,31 @@ func _update_coin_count_collected_in_whole_game():
 	
 	_total_coin_collected_count = total
 
+#
 
+func set_coin_id_as_collected__using_all_tentatives():
+	for coin_id in _tentative_coin_ids_collected_in_curr_level_id:
+		set_coin_id_in_level_as_collected(coin_id, SingletonsAndConsts.current_base_level_id, true)
 
 func set_tentative_coin_id_collected_in_curr_level(arg_id, arg_is_collected):
 	if arg_is_collected:
 		if !_tentative_coin_ids_collected_in_curr_level_id.has(arg_id):
 			_tentative_coin_ids_collected_in_curr_level_id.append(arg_id)
+			
+			var is_all_collected = is_all_coins_collected_in_curr_level__tentative()
+			emit_signal("tentative_coin_ids_collected_changed__for_curr_level", _tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, is_all_collected)
 		
 	else:
 		if _tentative_coin_ids_collected_in_curr_level_id.has(arg_id):
 			_tentative_coin_ids_collected_in_curr_level_id.erase(arg_id)
-		
+			
+			emit_signal("tentative_coin_ids_collected_changed__for_curr_level", _tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, false)
+
+func is_all_coins_collected_in_curr_level__tentative() -> bool:
+	var coin_count = _tentative_coin_ids_collected_in_curr_level_id.size()
+	var total_for_level = StoreOfLevels.get_coin_count_for_level(SingletonsAndConsts.current_base_level_id)
+	
+	return coin_count == total_for_level
 
 
 func get_coin_ids_collected_in_level(arg_level_id):

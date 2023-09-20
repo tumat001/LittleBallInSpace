@@ -80,6 +80,8 @@ func _on_player_entered_self__custom_defined__launcher():
 	
 	helper__start_cutscene_of_pickup_important_item(param, self, "_on_item_cutscene_end", null)
 	
+	StoreOfAudio.BGM_playlist_catalog.stop_play()
+	
 #	game_elements.configure_game_state_for_cutscene_occurance(true, true)
 #	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallModi, 1.0, null)
 #
@@ -95,7 +97,12 @@ func _on_item_cutscene_end(arg_param):
 	_add_launch_ball_modi()
 	
 	SingletonsAndConsts.current_game_front_hud.template__start_focus_on_launch_ball_panel__with_glow_up(0.4, self, "_on_highlight_launchball_panel_ended", null)
-
+	
+	
+	var BGM_playlist_id_to_play = StoreOfAudio.BGMPlaylistId.RISING_01
+	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
+		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
+	
 
 
 func _on_highlight_launchball_panel_ended(arg_param):

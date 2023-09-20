@@ -2031,8 +2031,9 @@ func _play_or_kill_speed_trail_based_on_curr_state():
 			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_01
 		
 	else:
-		_current_speed_trail.max_trail_length = 0
-		_current_speed_trail.can_add_points = false
+		if is_instance_valid(_current_speed_trail):
+			_current_speed_trail.max_trail_length = 0
+			_current_speed_trail.can_add_points = false
 		#_attempt_destroy_current_speed_trail()
 
 func _attempt_destroy_current_speed_trail():

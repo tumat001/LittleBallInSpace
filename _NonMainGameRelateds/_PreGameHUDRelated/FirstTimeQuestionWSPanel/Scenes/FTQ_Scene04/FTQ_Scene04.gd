@@ -38,7 +38,8 @@ func _ready():
 func start_display():
 	.start_display()
 	
-	ftq_custom_label_01.start_display_of_descs__all_chars(0.5, 1.5, null)
+	_current_custom_steppable_control = ftq_custom_label_01
+	ftq_custom_label_01.start_display_of_descs__all_chars(0.5, 1.25, null)
 	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_01", [], CONNECT_ONESHOT)
 	
 
@@ -49,7 +50,8 @@ func _on_display_of_desc_finished__seq_01(custom_char_count_to_show_upto, arg_me
 	pos_moving_tweener.tween_callback(self, "_on_done_moving_label_01")
 
 func _on_done_moving_label_01():
-	ftq_custom_label_02.start_display_of_descs__all_chars(0.5, 1.5, null)
+	_current_custom_steppable_control = ftq_custom_label_02
+	ftq_custom_label_02.start_display_of_descs__all_chars(0.5, 1.25, null)
 	ftq_custom_label_02.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_02", [], CONNECT_ONESHOT)
 	
 
@@ -60,6 +62,7 @@ func _on_display_of_desc_finished__seq_02(custom_char_count_to_show_upto, arg_me
 	pos_moving_tweener.tween_callback(self, "_on_done_moving_label_02")
 
 func _on_done_moving_label_02():
+	_current_custom_steppable_control = ftq_custom_label_03
 	ftq_custom_label_03.start_display_of_descs__all_chars(0.5, 1.0, null)
 	ftq_custom_label_03.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_03", [], CONNECT_ONESHOT)
 	
@@ -72,9 +75,10 @@ func _on_display_of_desc_finished__seq_03(custom_char_count_to_show_upto, arg_me
 	
 
 func _on_done_moving_label_03():
+	_current_custom_steppable_control = ftq_custom_label_04
 	ftq_custom_label_04.rect_position.y += 150
 	
-	ftq_custom_label_04.start_display_of_descs__all_chars(0.5, 2.5, null)
+	ftq_custom_label_04.start_display_of_descs__all_chars(0.5, 2, null)
 	ftq_custom_label_04.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__seq_04", [], CONNECT_ONESHOT)
 	
 

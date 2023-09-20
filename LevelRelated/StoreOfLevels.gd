@@ -609,7 +609,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
-		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_2__HARD:
@@ -640,6 +640,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_06__STAGE_2)
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_3:
@@ -831,7 +832,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
-		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_3__HARD:
@@ -862,6 +863,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_3)
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_4:
@@ -1024,7 +1026,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
-		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4__HARD:
@@ -1055,6 +1057,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_4)
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_5:
@@ -1108,7 +1111,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
-		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 		
@@ -1336,30 +1339,30 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_03__STAGE_2 : 1,
 		LevelIds.LEVEL_04__STAGE_2 : 1,
 		LevelIds.LEVEL_05__STAGE_2 : 1,
-		LevelIds.LEVEL_06__STAGE_2 : 0,
+		LevelIds.LEVEL_06__STAGE_2 : 1,
 		
 		LevelIds.LEVEL_02__STAGE_2__HARD : 1,
-		LevelIds.LEVEL_06__STAGE_2__HARD : 0,
+		LevelIds.LEVEL_06__STAGE_2__HARD : 1,
 		
 		
-		LevelIds.LEVEL_01__STAGE_3 : 0,
-		LevelIds.LEVEL_02__STAGE_3 : 2,
+		LevelIds.LEVEL_01__STAGE_3 : 1,
+		LevelIds.LEVEL_02__STAGE_3 : 1,
 		LevelIds.LEVEL_03__STAGE_3 : 1,
 		LevelIds.LEVEL_04__STAGE_3 : 1,
-		LevelIds.LEVEL_05__STAGE_3 : 0,
+		LevelIds.LEVEL_05__STAGE_3 : 1,
 		
-		LevelIds.LEVEL_03__STAGE_3__HARD : 3,
-		LevelIds.LEVEL_04__STAGE_3__HARD : 2,
-		LevelIds.LEVEL_05__STAGE_3__HARD : 0,
+		LevelIds.LEVEL_03__STAGE_3__HARD : 1,
+		LevelIds.LEVEL_04__STAGE_3__HARD : 1,
+		LevelIds.LEVEL_05__STAGE_3__HARD : 1,
 		
 		
-		LevelIds.LEVEL_01__STAGE_4 : 2,
-		LevelIds.LEVEL_02__STAGE_4 : 0,
+		LevelIds.LEVEL_01__STAGE_4 : 1,
+		LevelIds.LEVEL_02__STAGE_4 : 1,
 		LevelIds.LEVEL_03__STAGE_4 : 1,
-		LevelIds.LEVEL_04__STAGE_4 : 2,
-		LevelIds.LEVEL_05__STAGE_4 : 0,
+		LevelIds.LEVEL_04__STAGE_4 : 1,
+		LevelIds.LEVEL_05__STAGE_4 : 1,
 		
-		LevelIds.LEVEL_03__STAGE_4__HARD : 3,
+		LevelIds.LEVEL_03__STAGE_4__HARD : 1,
 		LevelIds.LEVEL_05__STAGE_4__HARD : 0,
 		
 		

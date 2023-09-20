@@ -115,9 +115,6 @@ launch_ball_type = 2
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( -81, -304 )
 
-[node name="Pickupables_Coin2" parent="CoinsContainer" index="1" instance=ExtResource( 6 )]
-position = Vector2( 786, 108 )
-
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 42, 112 )
 __meta__ = {

@@ -30,8 +30,10 @@ config/name="LittleBallInSpace"
 run/main_scene="res://_NonMainGameRelateds/_Master/Master.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="littleballinspace"
-config/icon="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon_PNG_64x64.png"
-config/windows_native_icon="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon_Ico.ico"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
+config/icon="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon_64x64.png"
+config/windows_native_icon="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon.ico"
 
 [autoload]
 
@@ -76,6 +78,7 @@ enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )
 [global]
 
 rotate=false
+splash=false
 
 [gui]
 

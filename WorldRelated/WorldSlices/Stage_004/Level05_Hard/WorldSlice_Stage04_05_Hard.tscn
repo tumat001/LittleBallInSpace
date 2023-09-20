@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_004/Level05_Hard/WorldSlice_Stage04_05_Hard.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=8]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=9]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.5, 30 )
@@ -163,8 +164,6 @@ position = Vector2( -8, 203 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="10" instance=ExtResource( 8 )]
@@ -184,6 +183,9 @@ rotation = 1.5708
 body_mode_to_use = 1
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 11 )]
+position = Vector2( 671, 146 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 465, 144 )

@@ -6,6 +6,9 @@ const RotationRequestData = Player.RotationRequestData
 
 const GameFrontHUD = preload("res://GameFrontHUDRelated/GameFrontHUD.gd")
 const GameFrontHUD_Scene = preload("res://GameFrontHUDRelated/GameFrontHUD.tscn")
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+const GameBackground_Scene = preload("res://GameBackgroundRelated/GameBackground.tscn")
+
 
 const BaseLevel = preload("res://LevelRelated/Classes/BaseLevel.gd")
 
@@ -19,6 +22,7 @@ signal quiting_game_by_queue_free__on_game_quit()
 signal player_spawned(arg_player)
 
 signal game_front_hud_initialized(arg_game_front_hud)
+signal game_background_initialized(arg_game_background)
 
 #
 
@@ -37,6 +41,10 @@ var is_game_after_init : bool
 
 var is_game_front_hud_initialized : bool = false
 var game_front_hud : GameFrontHUD
+
+
+var is_game_background_initialized : bool = false
+var game_background : GameBackground
 
 #
 
@@ -83,6 +91,7 @@ func _enter_tree():
 func _ready():
 	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all()
 	
+	_initialize_game_background()
 	_initialize_game_front_hud()
 	
 	#
@@ -176,6 +185,21 @@ func _deferred_add_child__game_front_hud():
 	
 	is_game_front_hud_initialized = true
 	emit_signal("game_front_hud_initialized", game_front_hud)
+
+#
+
+func _initialize_game_background():
+	game_background = GameBackground_Scene.instance()
+	SingletonsAndConsts.current_game_background = game_background
+	
+	call_deferred("_deferred_add_child__game_background")
+
+func _deferred_add_child__game_background():
+	add_child(game_background)
+	move_child(game_background, 0)
+	
+	is_game_background_initialized = true
+	emit_signal("game_background_initialized", game_background)
 
 #
 
