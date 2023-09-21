@@ -164,6 +164,7 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 	## playlist/audio related
 	var BGM_playlist_id_to_play = level_details.BGM_playlist_id_to_use__on_level_start
 	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
+		StoreOfAudio.BGM_playlist_catalog.stop_play()
 		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
 	
 	#

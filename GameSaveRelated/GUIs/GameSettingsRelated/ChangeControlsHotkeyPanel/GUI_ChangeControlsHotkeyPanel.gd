@@ -7,12 +7,17 @@ const CurrControlSubPanel_SingleControl_Scene = preload("res://GameFrontHUDRelat
 const PlayerGUI_InputKeyDialog = preload("res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/PlayerGUI_InputKeyDialog.gd")
 const PlayerGUI_InputKeyDialog_Scene = preload("res://MiscRelated/GUIControlsRelated/Dialogs/PlayerGUI_InputKeyDialog/PlayerGUI_InputKeyDialog.tscn")
 
+const MiscControlsHotkeyPanel = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/MiscControlsHotkeyPanel/MiscControlsHotkeyPanel.gd")
+const MiscControlsHotkeyPanel_Scene = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/MiscControlsHotkeyPanel/MiscControlsHotkeyPanel.tscn")
+
 #const CurrControlSubPanel_ButtonHoverBorder_Pic = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/ChangeControlsHotkeyPanel/Assets/ChangeControlsHotkeyPanel_ButtonHoverBorder.png")
 
 
 #
 
 var _input_key_dialog : PlayerGUI_InputKeyDialog
+
+var _misc_controls_hotkey_panel : MiscControlsHotkeyPanel
 
 #
 
@@ -93,6 +98,18 @@ func _update_display__on_show():
 		
 	
 
+#
+
+func _on_ViewMiscControlsButton_button_pressed():
+	if !is_instance_valid(_misc_controls_hotkey_panel):
+		_init_misc_controls_hotkey_panel()
+	
+	control_tree.show_control__and_add_if_unadded(_misc_controls_hotkey_panel)
+
+func _init_misc_controls_hotkey_panel():
+	_misc_controls_hotkey_panel = MiscControlsHotkeyPanel_Scene.instance()
+	control_tree.add_control__but_dont_show(_misc_controls_hotkey_panel)
+	
 
 #############################################
 # TREE ITEM Specific methods/vars
@@ -117,8 +134,3 @@ func on_control_fully_invisible():
 # END OF TREE ITEM Specific methods/vars
 ###########
 
-
-
-func _on_ViewMiscControlsButton_button_pressed():
-	pass # Replace with function body.
-	

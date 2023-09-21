@@ -10,6 +10,10 @@ onready var spawn_position_2d = $PlayerSpawnCoordsContainer/SpawnPosition2D
 
 #
 
+var triggered_cam_area : bool = false
+
+#
+
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	
@@ -62,9 +66,11 @@ func _on_PlayerDetectionAreaRegion_FastCheckpoint_player_entered_in_area():
 
 
 func _on_PDAR_SpecialCamGiver_player_entered_in_area():
-	if CameraManager.is_at_default_zoom():
-		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
-	
+	if !triggered_cam_area:
+		if CameraManager.is_at_default_zoom():
+			CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+		
+		triggered_cam_area = true
 
 #
 

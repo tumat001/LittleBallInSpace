@@ -90,3 +90,8 @@ func _on_sequence_finished__scene_01():
 	emit_signal("ending_panel_finished")
 	
 
+#
+
+func _unhandled_input(event):
+	get_viewport().set_input_as_handled()
+

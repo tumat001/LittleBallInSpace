@@ -29,10 +29,12 @@ enum AudioIds {
 	BGM_Calm01_02 = 1001
 	BGM_Calm01_03 = 1002
 	BGM_Calm01_04 = 1003
+	BGM_Calm01_05 = 1004
 	
 	# RISING
 	BGM_Rising01_01 = 1100
 	BGM_Rising01_02 = 1101
+	BGM_Rising01_02 = 1102
 	
 	# DOOM
 	BGM_Doom01_01 = 1200

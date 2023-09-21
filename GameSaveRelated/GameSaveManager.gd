@@ -816,6 +816,11 @@ func _get_file_count_in_dir(dir : Directory) -> int:
 	
 	return file_count
 
+func get_absolute_path_of__user_dir__img_save_filepath():
+	var abs_dir_to_user_path = OS.get_user_data_dir()
+	return "%s/%s" % [abs_dir_to_user_path, USER_DIR__IMG_SAVE_FilePath]
+
+
 #############################################
 ##
 #############################################

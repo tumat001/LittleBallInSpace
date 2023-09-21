@@ -88,4 +88,6 @@ func _on_FirstTimeQuestionWSPanel_gui_input(event):
 				_current_ftq_scene.custom_step_current_control_tweener(0.5)
 				
 
+func _unhandled_input(event):
+	get_viewport().set_input_as_handled()
 

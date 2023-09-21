@@ -741,7 +741,8 @@ func _on_BaseTileSet_mouse_entered():
 					SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
 					
 					_object_details_panel_tooltip.show_descs(desc)
-
+			
+	
 
 func _on_BaseTileSet_mouse_exited():
 	_queue_free_object_details_tooltip()

@@ -67,6 +67,13 @@ const KEY_PRESS_ACTION_BAN_FOR_GAME_CONTROLS = [
 	"Enter"
 ]
 
+const MISC_CONTROLS_TO_NAME_MAP = {
+	"toggle_hide_hud" : "Toggle Hide/Show HUD",
+	"printscreen" : "Screen Shot",
+}
+
+#
+
 const GAME_CONTROLS_TO_ALLOW_HOTKEY_SHARING_WITH_NO_WARNING = [
 	#[
 	#	"game_launch_ball",

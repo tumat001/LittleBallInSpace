@@ -128,6 +128,7 @@ func set_level_details(arg_level):
 
 func _is_level_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
+	_update_all_marker_visibility()
 
 func set_default_texture_of_tile(arg_texture):
 	default_texture_of_tile = arg_texture

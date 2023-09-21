@@ -69,7 +69,11 @@ func _update_display():
 
 func _update_display__control_related_properties():
 	if hidden_display_mode != HiddenDisplayModeId.CENSOR:
-		control_name_label.text = GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP[control_identifier_string]
+		if GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP.has(control_identifier_string):
+			control_name_label.text = GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP[control_identifier_string]
+		elif GameSettingsManager.MISC_CONTROLS_TO_NAME_MAP.has(control_identifier_string):
+			control_name_label.text = GameSettingsManager.MISC_CONTROLS_TO_NAME_MAP[control_identifier_string]
+		
 	else:
 		if GameSettingsManager.get_game_control_name__is_hidden(control_identifier_string):
 			control_name_label.text = GameSettingsManager.GAME_CONTROL_HIDDEN_PLACEHOLDER_NAME
@@ -79,14 +83,17 @@ func _update_display__control_related_properties():
 	visual_key_press.game_control_action_name = control_identifier_string
 
 func _update_display__hidden_related_properties():
-	var is_hidden = GameSettingsManager.get_game_control_name__is_hidden(control_identifier_string)
-	
-	if hidden_display_mode == HiddenDisplayModeId.VISIBILITY:
-		visible = !is_hidden
+	if GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP.has(control_name_label):
+		var is_hidden = GameSettingsManager.get_game_control_name__is_hidden(control_identifier_string)
+		
+		if hidden_display_mode == HiddenDisplayModeId.VISIBILITY:
+			visible = !is_hidden
+			
+		else:
+			visible = true
 		
 	else:
 		visible = true
-	
 
 
 func _ready():

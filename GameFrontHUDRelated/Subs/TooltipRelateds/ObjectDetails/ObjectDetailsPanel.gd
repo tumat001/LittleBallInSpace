@@ -43,20 +43,20 @@ static func generate_descs__for_tileset(arg_base_tileset):
 	
 	##
 	
-	var energy_mode_desc_line
-	
-	#if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.NORMAL:
-	#	energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.NORMAL_TILES, "None")]]
-	#	
-	if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.ENERGIZED:
-		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "Energized")]]
-		
-	elif arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.INSTANT_GROUND:
-		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES, "Grounded")]]
-	
-	
-	if energy_mode_desc_line != null:
-		final_desc.append(energy_mode_desc_line)
+#	var energy_mode_desc_line
+#
+#	#if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.NORMAL:
+#	#	energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.NORMAL_TILES, "None")]]
+#	#	
+#	if arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.ENERGIZED:
+#		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "Energized")]]
+#
+#	elif arg_base_tileset.energy_mode == arg_base_tileset.EnergyMode.INSTANT_GROUND:
+#		energy_mode_desc_line = ["Energy type: |0|", [PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES, "Grounded")]]
+#
+#
+#	if energy_mode_desc_line != null:
+#		final_desc.append(energy_mode_desc_line)
 	
 	##
 	if arg_base_tileset.is_breakable():
