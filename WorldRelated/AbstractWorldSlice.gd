@@ -298,7 +298,7 @@ func _set_player_capture_area_style_to_one_at_a_time():
 				arg_region.visible = false
 				
 				if arg_region.is_area_captured():
-					_current_pca_index = index
+					_current_pca_index = index + 1
 				index += 1
 	
 

@@ -13,7 +13,6 @@ margin_left = 460.0
 margin_top = 322.0
 margin_right = 506.0
 margin_bottom = 368.0
-is_layout_element_invis_by_default = true
 
 [node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 2 )]
 margin_left = 460.0

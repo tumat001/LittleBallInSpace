@@ -89,7 +89,7 @@ func _update_shortcut_panel__visible_buttons():
 				var tile = _level_layout_id_to_tile_map[level_layout_id]
 				tile.visible = false
 	
-	if vis_count <= 1:
+	if vis_count <= 2:
 		visible = false
 	else:
 		visible = true

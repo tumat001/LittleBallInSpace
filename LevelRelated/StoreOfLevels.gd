@@ -66,7 +66,7 @@ enum LevelIds {
 	
 	LEVEL_01__STAGE_SPECIAL_1 = 10000
 	LEVEL_02__STAGE_SPECIAL_1 = 10001
-	LEVEL_03__STAGE_SPECIAL_1 = 10002
+	#LEVEL_03__STAGE_SPECIAL_1 = 10002
 	
 }
 # dont change this in runtime(useless). 
@@ -1363,7 +1363,7 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_05__STAGE_4 : 1,
 		
 		LevelIds.LEVEL_03__STAGE_4__HARD : 1,
-		LevelIds.LEVEL_05__STAGE_4__HARD : 0,
+		LevelIds.LEVEL_05__STAGE_4__HARD : 1,
 		
 		
 		LevelIds.LEVEL_01__STAGE_5 : 0,
@@ -1374,7 +1374,7 @@ func _initialize_coin_details():
 		
 		LevelIds.LEVEL_01__STAGE_SPECIAL_1 : 0,
 		LevelIds.LEVEL_02__STAGE_SPECIAL_1 : 0,
-		LevelIds.LEVEL_03__STAGE_SPECIAL_1 : 0,
+		#LevelIds.LEVEL_03__STAGE_SPECIAL_1 : 0,
 		
 		
 	}
@@ -1616,6 +1616,7 @@ func unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 		
 		# do not do this yet, so that it does not show up in shortcuts
 		#GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
 		
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 		

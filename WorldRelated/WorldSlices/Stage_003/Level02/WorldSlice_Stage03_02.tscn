@@ -19,7 +19,7 @@ extents = Vector2( 288.5, 17.5 )
 extents = Vector2( 494, 502.5 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 16, 32 )
+extents = Vector2( 62.5, 32 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 68, 33 )
@@ -88,7 +88,7 @@ shape = SubResource( 3 )
 position = Vector2( -74, -92 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
-position = Vector2( -6, 28 )
+position = Vector2( -52.5, 28 )
 shape = SubResource( 4 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 7 )]

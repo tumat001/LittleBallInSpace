@@ -115,6 +115,11 @@ const audio_settings_file_path = "user://audio_settings.save"
 
 const stage_special_01_02__data_arr_file_path = "user://stage_special_01_02_data.save"
 
+##
+
+const USER_DIR = "user://"
+const USER_DIR__IMG_SAVE_FilePath = "ScrnShots/"
+
 
 ##############################
 #### base methods
@@ -774,6 +779,42 @@ func _save_stage_special_01_02_data(arg_data : Array):
 	_save_using_arr(arg_data, stage_special_01_02__data_arr_file_path, "SAVE ERROR: SpecialStage01 02 settings")
 	
 
+
+#
+
+func save_viewport_img_in_scrnshot_folder():
+	var image = get_viewport().get_texture().get_data()
+	image.flip_y()
+	
+	var dir = Directory.new()
+	dir.open("user://")
+	if !dir.dir_exists(USER_DIR__IMG_SAVE_FilePath):
+		dir.make_dir(USER_DIR__IMG_SAVE_FilePath)
+	
+	var dir_of_img_save_filepath = Directory.new()
+	dir_of_img_save_filepath.open(USER_DIR + USER_DIR__IMG_SAVE_FilePath)
+	
+	var file_count = _get_file_count_in_dir(dir_of_img_save_filepath)
+	var final_file_name = "%s%03d.png" % ["scrnshot_", (file_count + 1)]
+	
+	
+	image.save_png(USER_DIR + USER_DIR__IMG_SAVE_FilePath + final_file_name)
+
+func _get_file_count_in_dir(dir : Directory) -> int:
+	var file_count = 0
+	
+	dir.list_dir_begin()
+	
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif not file.begins_with("."):
+			file_count += 1
+	
+	dir.list_dir_end()
+	
+	return file_count
 
 #############################################
 ##

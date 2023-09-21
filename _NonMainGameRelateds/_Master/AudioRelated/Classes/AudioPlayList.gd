@@ -249,6 +249,8 @@ func _on_player_finished(arg_player, arg_path_name, arg_id):
 			
 		else:
 			_autoplay_delay_timer.start(autoplay_delay)
+			if _autoplay_delay_timer.is_connected("timeout", self, "_on_autoplay_delay_timer_timeout"):
+				_autoplay_delay_timer.disconnect("timeout", self, "_on_autoplay_delay_timer_timeout")
 			_autoplay_delay_timer.connect("timeout", self, "_on_autoplay_delay_timer_timeout", [arg_player, arg_path_name, arg_id], CONNECT_ONESHOT)
 		
 	else:

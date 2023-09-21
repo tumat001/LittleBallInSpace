@@ -401,7 +401,9 @@ func _unhandled_key_input(event):
 			if event.is_action_pressed("ui_cancel"):
 				master_menu_control_tree.show_main_page()
 				get_viewport().set_input_as_handled()
-
+	
+	if event is InputEventKey and event.is_action_pressed("printscreen"):
+		GameSaveManager.save_viewport_img_in_scrnshot_folder()
 
 ################################################
 

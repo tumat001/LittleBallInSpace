@@ -20,6 +20,10 @@ func _on_after_game_start_init():
 #####
 
 func _on_Portal_player_entered__as_scene_transition(arg_player):
+	SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	
+	#
+	
 	SingletonsAndConsts.current_base_level.anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.NONE
 	
 	StoreOfLevels.unlock_stage_special_01__and_unhide_eles_to_layout_special_01()

@@ -22,7 +22,7 @@ onready var vkp_slow_down_container = $MessegesContainer/VBoxContainer3
 
 onready var base_tileset_block_leaving_part_02 = $TileContainer/BaseTileSet_ToggleNotAllCapturedPart02
 
-onready var label_not_all_areas_in_part_2_captured = $AreaRegionContainer/PDAR_NotAllAreasInPart2Captured
+onready var label_not_all_areas_in_part_2_captured = $MessegesContainer/LabelNotAllAreasInPart2Captured
 
 #
 
@@ -49,7 +49,7 @@ func _on_after_game_start_init():
 	
 	#var orig_text_slowdown = vkp_slow_down.text_for_keypress
 	#vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
-	vkp_zoom_out.game_control_action_name = "game_down"
+	vkp_slow_down.game_control_action_name = "game_down"
 	
 	vkp_zoom_out_container.modulate.a = 0
 	vkp_slow_down_container.modulate.a = 0
@@ -63,7 +63,7 @@ func _on_after_game_start_init():
 
 func _on_PDAR_ZoomAndSlow_player_entered_in_area():
 	GameSettingsManager.set_game_control_name_string__is_hidden("game_zoom_out", false)
-	GameSettingsManager.set_game_control_name_string__is_hidden("ui_down", false)
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_down", false)
 	
 	
 	var vkp_zoom_out_tweener = create_tween()
@@ -119,6 +119,8 @@ func _attempt_tween_show_not_all_captured_warning():
 	
 	_mod_tweener_for_not_all_captured = create_tween()
 	_mod_tweener_for_not_all_captured.tween_property(label_not_all_areas_in_part_2_captured, "modulate:a", 1.0, 0.5)
+	
+	#print("show warning label")
 
 func _attempt_tween_hide_not_all_captured_warning():
 	if _mod_tweener_for_not_all_captured != null:
@@ -126,17 +128,19 @@ func _attempt_tween_hide_not_all_captured_warning():
 	
 	_mod_tweener_for_not_all_captured = create_tween()
 	_mod_tweener_for_not_all_captured.tween_property(label_not_all_areas_in_part_2_captured, "modulate:a", 0.0, 0.5)
-
+	
+	#print("hid warning label")
 
 
 func _update_block_for_part_2__check_for_if_all_is_captured():
-	if part_2_captured_areas_count_current == part_2_capture_count_total:
+	if part_2_captured_areas_count_current >= part_2_capture_count_total:
 		_attempt_tween_hide_not_all_captured_warning()
 		if _currently_blocking_leaving_part_2:
 			_currently_blocking_leaving_part_2 = false
 			base_tileset_block_leaving_part_02.convert_all_filled_tiles_to_unfilled()
 		
 	else:
+		#label_not_all_areas_in_part_2_captured.modulate.a = 1.0
 		if !_currently_blocking_leaving_part_2:
 			_currently_blocking_leaving_part_2 = true
 			base_tileset_block_leaving_part_02.convert_all_unfilled_tiles_to_filled()
@@ -168,6 +172,6 @@ func _on_wait_tween_finished__for_part_03():
 	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
 	
-	game_elements.get_current_player().set_is_show_lines_to_uncaptured_player_capture_regions()
+	game_elements.get_current_player().set_is_show_lines_to_uncaptured_player_capture_regions(true)
 	
 

@@ -108,7 +108,6 @@ shape = SubResource( 11 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 5 )]
 position = Vector2( 300, -75 )
-duration_for_capture = 2.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( -11.5, 11.25 )
@@ -116,7 +115,6 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion_Part02_01" parent="AreaRegionContainer" index="3" instance=ExtResource( 5 )]
 position = Vector2( 1067, -172 )
-duration_for_capture = 2.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion_Part02_01" index="0"]
 position = Vector2( -11.5, 11.25 )
@@ -124,7 +122,6 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion_Part02_02" parent="AreaRegionContainer" index="4" instance=ExtResource( 5 )]
 position = Vector2( 1195, -299 )
-duration_for_capture = 2.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion_Part02_02" index="0"]
 position = Vector2( -11.5, 11.25 )
@@ -132,7 +129,6 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion_Part02_03" parent="AreaRegionContainer" index="5" instance=ExtResource( 5 )]
 position = Vector2( 1311, -427 )
-duration_for_capture = 2.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion_Part02_03" index="0"]
 position = Vector2( 15, 11 )
@@ -145,10 +141,10 @@ position = Vector2( 1584, -388 )
 position = Vector2( -79.5, -28 )
 shape = SubResource( 7 )
 
-[node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="7" instance=ExtResource( 5 )]
+[node name="PCAR_Part03_01" parent="AreaRegionContainer" index="7" instance=ExtResource( 5 )]
 position = Vector2( 2595, -326 )
 
-[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
+[node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_Part03_01" index="0"]
 position = Vector2( -3, -25 )
 shape = SubResource( 8 )
 
@@ -160,10 +156,10 @@ triggerable_only_once = true
 position = Vector2( -158, 39 )
 shape = SubResource( 9 )
 
-[node name="PlayerCaptureAreaRegion3" parent="AreaRegionContainer" index="9" instance=ExtResource( 5 )]
+[node name="PCAR_Part03_02" parent="AreaRegionContainer" index="9" instance=ExtResource( 5 )]
 position = Vector2( 3326, -420 )
 
-[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion3" index="0"]
+[node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_Part03_02" index="0"]
 position = Vector2( 33, -28 )
 shape = SubResource( 10 )
 
@@ -176,6 +172,7 @@ position = Vector2( 48, 50 )
 [node name="MessegesContainer" type="Node2D" parent="." index="5"]
 
 [node name="Label" type="Label" parent="MessegesContainer" index="0"]
+visible = false
 margin_left = -28.0
 margin_top = -97.0
 margin_right = 163.0
@@ -187,6 +184,7 @@ align = 1
 valign = 1
 
 [node name="Label2" type="Label" parent="MessegesContainer" index="1"]
+visible = false
 margin_left = 237.0
 margin_top = 11.0
 margin_right = 428.0
@@ -275,6 +273,6 @@ size_flags_horizontal = 6
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion_Part02_02"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion_Part02_03"]
 [editable path="AreaRegionContainer/PDAR_NotAllAreasInPart2Captured"]
-[editable path="AreaRegionContainer/PlayerCaptureAreaRegion2"]
+[editable path="AreaRegionContainer/PCAR_Part03_01"]
 [editable path="AreaRegionContainer/PDAR_StartSequenceCapturePart03"]
-[editable path="AreaRegionContainer/PlayerCaptureAreaRegion3"]
+[editable path="AreaRegionContainer/PCAR_Part03_02"]

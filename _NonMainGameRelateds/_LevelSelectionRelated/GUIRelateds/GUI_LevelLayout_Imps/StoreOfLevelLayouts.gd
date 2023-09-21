@@ -55,7 +55,7 @@ func generate_instance_of_layout(arg_id):
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_01:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/05/GUI_Imp_LevelLayout_05.tscn")
+		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special01/GUI_Imp_LevelLayout_Special01.tscn")
 	
 	
 	return scene_ref.instance()

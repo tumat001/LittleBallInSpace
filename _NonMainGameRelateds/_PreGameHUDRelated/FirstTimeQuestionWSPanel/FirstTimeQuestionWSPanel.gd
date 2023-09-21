@@ -83,9 +83,9 @@ func _emit_finished():
 
 func _on_FirstTimeQuestionWSPanel_gui_input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.doubleclick:
+		if event.button_index == BUTTON_LEFT: #and event.doubleclick:
 			if is_instance_valid(_current_ftq_scene):
-				_current_ftq_scene.custom_step_current_control_tweener(1)
-	
+				_current_ftq_scene.custom_step_current_control_tweener(0.5)
+				
 
 

@@ -155,7 +155,7 @@ portal_02_to_register_in_toggle__path = NodePath("../Portal_Red02")
 button_color = 0
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
-position = Vector2( 3221, -288 )
+position = Vector2( 3229, -288 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 8, 144 )

@@ -117,3 +117,8 @@ func on_control_fully_invisible():
 # END OF TREE ITEM Specific methods/vars
 ###########
 
+
+
+func _on_ViewMiscControlsButton_button_pressed():
+	pass # Replace with function body.
+	
