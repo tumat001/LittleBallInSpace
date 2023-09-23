@@ -125,7 +125,7 @@ func _update_label_based_on_all_properties():
 	if !is_infinite:
 		ball_count_label.text = str(count)
 	else:
-		ball_count_label.text = "Inf %s" % count
+		ball_count_label.text = "Inf"
 
 
 

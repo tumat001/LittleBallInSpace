@@ -83,7 +83,7 @@ func _update_display__control_related_properties():
 	visual_key_press.game_control_action_name = control_identifier_string
 
 func _update_display__hidden_related_properties():
-	if GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP.has(control_name_label):
+	if GameSettingsManager.GAME_CONTROLS_TO_NAME_MAP.has(control_identifier_string):
 		var is_hidden = GameSettingsManager.get_game_control_name__is_hidden(control_identifier_string)
 		
 		if hidden_display_mode == HiddenDisplayModeId.VISIBILITY:

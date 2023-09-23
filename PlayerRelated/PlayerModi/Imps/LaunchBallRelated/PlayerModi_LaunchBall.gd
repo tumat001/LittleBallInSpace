@@ -207,7 +207,7 @@ func _attempt_launch_ball():
 		var ball_and_player_force = _calculate_launch_force_of_ball_and_player(player_modi_launch_ball_node.current_launch_force)
 		
 		if !_player.is_on_ground():
-			_player.apply_inside_induced_force(ball_and_player_force[1])
+			_player.apply_inside_induced_force__with_counterforce_speed_if_applicable(ball_and_player_force[1])
 		
 		#
 		
@@ -332,7 +332,8 @@ func set_current_ball_count(arg_count):
 			_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
 		
 	else:
-		launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__NO_BALLS_LEFT)
+		if launch_ability != null:
+			launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__NO_BALLS_LEFT)
 	
 	emit_signal("current_ball_count_changed", arg_count)
 

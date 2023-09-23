@@ -63,8 +63,13 @@ func _process(delta):
 			if can_add_points:
 				add_point(pos_of_point)
 			
+			#for i in 2:
 			if get_point_count() > max_trail_length:
 				remove_point(0)
+			
+			#while get_point_count() > max_trail_length:
+			#	remove_point(0)
+			
 	else:
 		if is_instance_valid(node_to_trail):
 			if node_to_trail.is_connected("tree_exiting", self, "_on_node_tree_exiting"):

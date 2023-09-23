@@ -875,6 +875,7 @@ func get_rewind_save_state():
 		#_save_tiles_data_next_frame__for_rewind_save = false
 		_save_tiles_data_next_frame__for_rewind_save__count -= 1
 		save_state["cell_save_data"] = _saved_cell_data_queue.pop_front()#_saved_cell_data
+		save_state[SingletonsAndConsts.current_rewind_manager.REWINDABLE_METHOD_NAME__UNSKIPPABLE_SAVE_STATE_FRAME_STEP] = true
 		#print(save_state["cell_save_data"])
 	
 	return save_state

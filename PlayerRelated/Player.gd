@@ -144,12 +144,15 @@ class RotationRequestData:
 
 const MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED = 200.0
 const ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC = 200.0
-const PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED : float = 1.5
+const PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED : float = 2.0 #1.5
 
 var _current_player_left_right_move_speed : float
 var _current_player_left_right_move_speed__from_last_integrate_forces : float
 var _ignore_next_current_player_left_right_move_reset : bool
 var _current_excess_player_left_right_move_speed_to_fight_counter_speed : Vector2
+
+
+const COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE = PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
 
 #var _swapped_speed__by_rotating_by_PI : bool
 
@@ -290,6 +293,7 @@ var is_show_lines_to_uncaptured_player_capture_regions : bool = false setget set
 
 var speed_trail_component : MultipleTrailsForNodeComponent
 var _current_speed_trail
+#var _current_speed_trail__duration : float
 
 const SPEED_TRAIL_COLOR = Color("#66cccccc")
 const SPEED_TRAIL_LENGTH_01 : int = 12
@@ -1364,6 +1368,58 @@ func is_on_ground():
 
 
 
+#todo
+func apply_inside_induced_force__with_counterforce_speed_if_applicable(arg_vector : Vector2):
+	if _is_directions_significantly_different(linear_velocity, arg_vector):
+		var new_vector = _increase_multiply_counterforce_vector(arg_vector)
+		apply_inside_induced_force(new_vector)
+		
+		#todo
+		print("applied counterforce")
+		
+		#todo
+		#make particle effect play
+		
+	else:
+		apply_inside_induced_force(arg_vector)
+		
+		#todo
+		print("no counterforce applied")
+	
+
+# also used in Portal class. 
+# DO NOT COPY PASTE as values are different
+func _is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : Vector2):
+	if (is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)) or (is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
+		return false
+		
+	else:
+		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > (PI)/2:
+			return true
+		else:
+			return false
+
+static func angle_to_angle(from, to):
+	return fposmod(to-from + PI, PI*2) - PI
+
+
+func _increase_multiply_counterforce_vector(arg_vector : Vector2):
+	var x_to_use = _increase_multiply_counterforce_vector_axis(arg_vector.x, linear_velocity.x)
+	var y_to_use = _increase_multiply_counterforce_vector_axis(arg_vector.y, linear_velocity.y)
+	
+	return Vector2(x_to_use, y_to_use)
+
+func _increase_multiply_counterforce_vector_axis(arg_vector_axis : float, arg_lin_vel_axis : float) -> float:
+	var base = arg_lin_vel_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+	var excess_from_arg = arg_vector_axis - (base)
+	
+	return excess_from_arg + base
+
+
+
+
+
+
 func apply_inside_induced_force(arg_vector : Vector2):
 	_all_inside_induced_forces_list.append(arg_vector)
 	
@@ -1538,7 +1594,7 @@ func _do_effects_based_on_pos_changes(arg_prev_pos_change_from_last_frame : Vect
 		#_use_prev_glob_pos_for_rewind = false
 	
 	
-	_play_or_kill_speed_trail_based_on_curr_state()
+	_play_or_kill_speed_trail_based_on_curr_state(delta)
 	
 	emit_signal("pos_change__for_aesth_effects", curr_pos_mag, prev_pos_mag, diff, delta)
 
@@ -2019,16 +2075,20 @@ func _speed_trail_before_attached_to_self(arg_trail, arg_self):
 	_current_speed_trail = arg_trail
 
 
-func _play_or_kill_speed_trail_based_on_curr_state():
+func _play_or_kill_speed_trail_based_on_curr_state(delta):
 	var speed = linear_velocity.length()
 	if speed >= SPEED_TRAIL_SPEED_TRIGGER:
 		_attempt_create_curr_speed_trail()
 		_current_speed_trail.can_add_points = true
 		
+		#var length_variation = round(1 * sin(_current_speed_trail__duration))
+		
 		if speed >= SPEED_TRAIL_SPEED_TRIGGER_02:
-			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_02
+			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_02 #+ length_variation 
 		else:
-			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_01
+			_current_speed_trail.max_trail_length = SPEED_TRAIL_LENGTH_01 #+ length_variation
+		
+		#_current_speed_trail__duration += delta
 		
 	else:
 		if is_instance_valid(_current_speed_trail):

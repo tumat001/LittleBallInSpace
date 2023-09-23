@@ -367,20 +367,18 @@ func _physics_process(delta):
 					_teleport_node_to_other_linked_portal(body)
 		
 
+# also used in Player class
+# DO NOT COPY PASTE as values are different
 func _is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : Vector2):
 	if (is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)) or (is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
 		return false
 		
 	else:
-		#print("angle_diff: %s" % [rad2deg(abs(arg_dir_01.angle() - arg_dir_02.angle()))])
-		
-		#if abs(arg_dir_01.angle() - arg_dir_02.angle()) > PI/2:
 		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > PI/2:
-			#print("big diff. diff = %s" % [abs(arg_dir_01.angle() - arg_dir_02.angle())])
 			return true
 		else:
 			return false
-		
+
 
 static func angle_to_angle(from, to):
 	return fposmod(to-from + PI, PI*2) - PI
