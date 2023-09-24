@@ -1,7 +1,7 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
-const DISTANCE_IN_SECONDS : float = 3.0
+const DISTANCE_IN_SECONDS : float = 4.5
 const LINEAR_VELOCITY__STRAIGHT_DOWN = Vector2(0, 100)
 
 var _linear_velocity_to_use : Vector2
@@ -14,7 +14,7 @@ onready var target_position_2d = $MiscContainer/TargetPos2D
 
 onready var PDAR_initial_convo_trigger = $MiscContainer/PDAR_InitialConvo
 
-onready var VKP_launch_ball = $MiscContainer/VBoxContainer/VKP_LaunchBall
+onready var VKP_launch_ball = $MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
 
 ##
 
@@ -37,7 +37,8 @@ func _on_after_game_start_init():
 	#var orig_text__launch_ball = VKP_launch_ball.text_for_keypress
 	#VKP_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
 	VKP_launch_ball.game_control_action_name = "game_launch_ball"
-
+	
+	CameraManager.start_camera_zoom_change(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL, 0.0)
 
 
 func _connect_signals_with_energy_modi():
@@ -107,7 +108,7 @@ func _start_remote_dialog__01():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 	
-	
+	CameraManager.reset_camera_zoom_level()
 
 func _on_display_of_desc_finished__01(arg_metadata):
 	var timer_tweener = create_tween()

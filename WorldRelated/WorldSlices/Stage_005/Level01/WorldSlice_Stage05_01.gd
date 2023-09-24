@@ -11,6 +11,8 @@ onready var toughened_glass_tileset = $TileContainer/BaseTileSet_StrongGlass
 
 onready var cdsu_mega_battery = $ObjectContainer/CDSU_MegaBattery
 
+onready var god_rays_sprite = $MiscContainer/GodRays
+
 #
 
 func _init():
@@ -132,6 +134,7 @@ func _on_CDSU_MegaBattery_player_entered_self__custom_defined():
 
 
 func _on_item_cutscene_end(arg_param):
+	_start_hide_god_rays()
 	_on_pickup_mega_battery()
 	SingletonsAndConsts.current_game_front_hud.template__start_focus_on_energy_panel__with_glow_up(0.4, self, "_finished_energy_panel_brief_focus_and_glow_up", null)
 
@@ -163,6 +166,16 @@ func _on_pickup_mega_battery():
 	var energy_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.ENERGY)
 	energy_modi.set_properties__as_mega_battery(false)
 	
+
+
+func _start_hide_god_rays():
+	var tweener = create_tween()
+	tweener.set_parallel(false)
+	tweener.tween_property(god_rays_sprite, "modulate:a", 0.0, 2.0)
+	tweener.tween_callback(self, "_make_god_rays_sprite_invisible")
+
+func _make_god_rays_sprite_invisible():
+	god_rays_sprite.visible = false
 
 
 #####

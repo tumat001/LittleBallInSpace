@@ -147,3 +147,20 @@ func _deferred_last_region_captured():
 	
 	game_elements.game_result_manager.end_game__as_win()
 	
+
+
+#
+
+func _on_PDAR_Breakthru_player_entered_in_area():
+	var plain_fragment__energized_tiles = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "energized tiles")
+	
+	var dialog_desc = [
+		["Nice work!", []],
+		["The next |0| are in the escape pod, so preserve your energy!", [plain_fragment__energized_tiles]]
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+
+
+

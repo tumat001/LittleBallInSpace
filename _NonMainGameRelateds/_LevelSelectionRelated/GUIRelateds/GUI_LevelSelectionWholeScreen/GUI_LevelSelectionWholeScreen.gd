@@ -51,6 +51,7 @@ func _ready():
 		
 	else:
 		coins_panel.visible = false
+		coins_panel.display_type = coins_panel.DisplayType.NUMERICAL
 		level_count_panel.visible = false
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
 
@@ -65,6 +66,8 @@ func _on_save_manager_initialized():
 
 func _initialize_coins_panel():
 	coins_panel.visible = true
+	coins_panel.display_type = coins_panel.DisplayType.NUMERICAL
+	coins_panel.instant_change_tweener_transition = true
 	coins_panel.configure_self_to_monitor_coin_status_for_whole_game()
 #
 #	var curr_coin_count = GameSaveManager.get_total_coin_collected_count()

@@ -1366,14 +1366,14 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_05__STAGE_4__HARD : 1,
 		
 		
-		LevelIds.LEVEL_01__STAGE_5 : 0,
-		LevelIds.LEVEL_02__STAGE_5 : 0,
+		LevelIds.LEVEL_01__STAGE_5 : 1,
+		LevelIds.LEVEL_02__STAGE_5 : 1,
 		
 		
 		#
 		
-		LevelIds.LEVEL_01__STAGE_SPECIAL_1 : 0,
-		LevelIds.LEVEL_02__STAGE_SPECIAL_1 : 0,
+		LevelIds.LEVEL_01__STAGE_SPECIAL_1 : 1,
+		LevelIds.LEVEL_02__STAGE_SPECIAL_1 : 1,
 		#LevelIds.LEVEL_03__STAGE_SPECIAL_1 : 0,
 		
 		

@@ -236,10 +236,10 @@ func _configure_coin(arg_coin):
 		arg_coin.visible = false
 		arg_coin.queue_free()
 		
-		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin, true)
+		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, true)
 		
 	else:
-		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin, false)
+		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, false)
 	
 	arg_coin.connect("collected_by_player", self, "_on_coin_collected_by_player", [arg_coin])
 	arg_coin.connect("uncollected_by_player", self, "_on_coin_uncollected_by_player", [arg_coin])
@@ -512,13 +512,13 @@ func _on_coin_uncollected_by_player(arg_coin):
 
 func _deferred_initialize_game_background_configs_related():
 	if game_elements.is_game_background_initialized:
-		_update_game_background_configs_related()
+		call_deferred("_update_game_background_configs_related")
 	else:
 		game_elements.connect("game_background_initialized", self, "_on_game_background_initialized", [], CONNECT_ONESHOT)
 
 func _on_game_background_initialized(arg_game_background):
-	_update_game_background_configs_related()
-	
+	#_update_game_background_configs_related()
+	call_deferred("_update_game_background_configs_related")
 
 func _update_game_background_configs_related():
 	if GameSaveManager.is_all_coins_collected_in_curr_level__tentative():

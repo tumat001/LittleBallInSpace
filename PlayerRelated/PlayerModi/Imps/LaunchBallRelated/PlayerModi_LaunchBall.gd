@@ -87,6 +87,7 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	_game_elements = arg_game_elements
 	
 	arg_player.connect("unhandled_key_input_received", self, "_on_player_unhandled_key_input__for_modi")
+	arg_player.connect("unhandled_mouse_button_input_received", self, "_on_player_unhandled_mouse_button_input_received__for_modi")
 	
 	_construct_ability()
 	_initialize_player_modi_launch_ball_node()
@@ -179,24 +180,33 @@ func _on_can_change_aim_mode_changed(arg_val):
 
 ######
 
+
+func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEventMouseButton):
+	if _is_launch_ability_ready:
+		if event.button_index == BUTTON_LEFT and !event.is_echo() and !event.doubleclick:
+			if event.pressed:
+				_attempt_begin_charge_ball()
+			else:
+				_attempt_launch_ball()
+
 func _on_player_unhandled_key_input__for_modi(event):
-	#if !event.echo:
 	if _is_launch_ability_ready:
 		if event.is_action_pressed("game_launch_ball"):
-			_begin_charge_ball()
+			_attempt_begin_charge_ball()
 			
 		elif event.is_action_released("game_launch_ball"):
 			_attempt_launch_ball()
 			
 
-func _begin_charge_ball():
-	player_modi_launch_ball_node.begin_launch_charge(starting_launch_strength, launch_strength_per_sec, max_launch_strength, launch_strength_initial_delay, launch_peak_wait_before_alternate)
-	
-	if _player.is_player_modi_energy_set:
-		_player.player_modi__energy.set_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
+func _attempt_begin_charge_ball():
+	if !player_modi_launch_ball_node.is_charging_launch():
+		player_modi_launch_ball_node.begin_launch_charge(starting_launch_strength, launch_strength_per_sec, max_launch_strength, launch_strength_initial_delay, launch_peak_wait_before_alternate)
 		
-	
-	_player.player_face.play_sequence__charging_launch_ball()
+		if _player.is_player_modi_energy_set:
+			_player.player_modi__energy.set_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
+			
+		
+		_player.player_face.play_sequence__charging_launch_ball()
 
 
 func _attempt_launch_ball():

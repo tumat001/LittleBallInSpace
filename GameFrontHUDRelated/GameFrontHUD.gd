@@ -16,6 +16,7 @@ onready var tooltip_container = $TooltipContainer
 
 onready var vic_def_anim_container = $VicDefAnimContainer
 onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
+onready var pcar_captured_panel = $ControlContainer/TopRightPanel/VBox/PCARCapturedPanel
 
 onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
@@ -66,8 +67,10 @@ func _on_vic_def_anim_ready_finished(arg_anim):
 #
 
 func _ready():
-	coins_panel.configure_self_to_monitor_coin_status_for_level(SingletonsAndConsts.current_base_level_id)
+	coins_panel.configure_self_to_monitor_coin_status_for_curr_level_tentative()
 	energy_panel.player_health_panel = health_panel
+	
+	pcar_captured_panel.configure_self_to_monitor_curr_world_manager()
 
 ##################
 
@@ -155,6 +158,12 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 
 func set_control_container_visibility(arg_val : bool):
 	control_container.visible = arg_val
+	
+	if arg_val:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		
 
 func toggle_control_container_visibility():
 	set_control_container_visibility(!control_container.visible)

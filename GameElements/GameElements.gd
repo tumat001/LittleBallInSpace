@@ -301,7 +301,9 @@ func _exit_tree():
 		if is_instance_valid(game_front_hud):
 			game_front_hud.queue_free()
 		SingletonsAndConsts.current_game_front_hud = null
-	
+		
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 
 func attempt_quit_game__by_queue_freeing():
 	emit_signal("quiting_game_by_queue_free__on_game_quit")

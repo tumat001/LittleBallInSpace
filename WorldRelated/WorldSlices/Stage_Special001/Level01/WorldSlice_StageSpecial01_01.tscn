@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_Special001/Level01/WorldSlice_StageSpecial01_01.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=7]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 67.5, 28.5 )
@@ -87,11 +88,12 @@ shape = SubResource( 2 )
 position = Vector2( -248, 16 )
 rotation = 1.5708
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 14, 144 )
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
+position = Vector2( 79, 273 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 14, 144 )

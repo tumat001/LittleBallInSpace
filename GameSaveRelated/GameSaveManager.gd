@@ -285,6 +285,10 @@ func _update_coin_count_collected_in_whole_game():
 
 #
 
+func get_tentative_coin_ids_collected_in_curr_level_id__count():
+	return _tentative_coin_ids_collected_in_curr_level_id.size()
+
+
 func set_coin_id_as_collected__using_all_tentatives():
 	for coin_id in _tentative_coin_ids_collected_in_curr_level_id:
 		set_coin_id_in_level_as_collected(coin_id, SingletonsAndConsts.current_base_level_id, true)

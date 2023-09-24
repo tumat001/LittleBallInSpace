@@ -24,6 +24,7 @@ onready var level_completion_additional_panel = $DetailsContainer/VBoxContainer/
 #
 
 func _ready():
+	coins_panel.instant_change_tweener_transition = true
 	GameSaveManager.connect("level_id_completion_status_changed", self, "_on_level_id_completion_status_changed")
 
 

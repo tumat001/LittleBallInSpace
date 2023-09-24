@@ -112,6 +112,10 @@ shape = SubResource( 5 )
 position = Vector2( -185, -16 )
 launch_ball_type = 2
 
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 3 )]
+position = Vector2( -144, -16 )
+launch_ball_type = 2
+
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( -81, -304 )
 

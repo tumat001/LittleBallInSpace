@@ -8,6 +8,10 @@ signal all_PCAs_of_all_world_slices_uncaptured()
 
 signal player_spawned(arg_player)
 
+signal PCA_captured_count_changed(arg_captured_count, arg_max_count)
+
+#
+
 var game_elements setget set_game_elements
 var _all_world_slices : Array
 
@@ -20,6 +24,7 @@ var _is_all_world_slice_PCAs_captured : bool = false
 var _all_pca_to_is_captured_map : Dictionary
 
 var _all_uncaptured_pca : Array
+
 
 ######
 
@@ -150,10 +155,26 @@ func _update_all_pca_to_is_captured_map():
 				_all_uncaptured_pca.erase(pca)
 			elif !is_captured and !_all_uncaptured_pca.has(pca):
 				_all_uncaptured_pca.append(pca)
-		
+	
+	_emit_signal_PCA_captured_count_changed()
 
 func get_all_uncaptured_pca():
 	return _all_uncaptured_pca
+
+
+func _emit_signal_PCA_captured_count_changed():
+	var curr_count = get_current_captured_pca_count()
+	var max_count = get_total_pca_count()
+	
+	emit_signal("PCA_captured_count_changed", curr_count, max_count)
+
+func get_total_pca_count():
+	return _all_pca_to_is_captured_map.size()
+
+func get_current_captured_pca_count():
+	return get_total_pca_count() - _all_uncaptured_pca.size()
+	
+
 
 #func _initialize_all_pca_to_is_captured_map():
 #	for world_slice in _world_slice_to_is_captured_all_PCA_map.keys():

@@ -37,7 +37,7 @@ func set_launch_ball_type(arg_type):
 			
 		elif launch_ball_type == LaunchBallType.INFINITE_AMMO:
 			sprite.texture = preload("res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Assets/Pickupables_LaunchBall_BallInfinity.png")
-			ammo_refill = 0
+			ammo_refill = 1
 			is_make_ammo_infinite = true
 			
 		

@@ -22,6 +22,7 @@ const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/M
 signal last_calculated_object_mass_changed(arg_val)
 
 signal unhandled_key_input_received(event)
+signal unhandled_mouse_button_input_received(event)
 
 signal request_rotate(arg_data)
 
@@ -280,6 +281,7 @@ var _audio_player__capturing_point : AudioStreamPlayer
 ##
 
 var player_hit_tile_particle_compo_pool : AnimSpriteComponentPool
+var counterforce_blast_particle_compo_pool : AnimSpriteComponentPool
 
 ##
 
@@ -392,6 +394,13 @@ func _init():
 	player_hit_tile_particle_compo_pool.node_to_parent = SingletonsAndConsts.current_game_elements__other_node_hoster
 	player_hit_tile_particle_compo_pool.func_name_for_create_resource = "_create_player_hit_tile_particle__for_pool"
 	player_hit_tile_particle_compo_pool.source_of_create_resource = self
+	
+	#todo make conterforce blast particle compo soon
+#	counterforce_blast_particle_compo_pool = AnimSpriteComponentPool.new()
+#	counterforce_blast_particle_compo_pool.node_to_listen_for_queue_free = self
+#	counterforce_blast_particle_compo_pool.node_to_parent = SingletonsAndConsts.current_game_elements__other_node_hoster
+#	counterforce_blast_particle_compo_pool.func_name_for_create_resource = "_create_counterforce_blast_particle__for_pool"
+#	counterforce_blast_particle_compo_pool.source_of_create_resource = self
 	
 	_update_last_calculated_object_mass()
 
@@ -827,6 +836,13 @@ func _unhandled_key_input(event):
 			
 			if !is_consumed:
 				emit_signal("unhandled_key_input_received", event)
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		var is_consumed = false
+		
+		if !is_consumed:
+			emit_signal("unhandled_mouse_button_input_received", event)
 
 
 func stop_all_persisting_actions():
@@ -1368,24 +1384,17 @@ func is_on_ground():
 
 
 
-#todo
 func apply_inside_induced_force__with_counterforce_speed_if_applicable(arg_vector : Vector2):
 	if _is_directions_significantly_different(linear_velocity, arg_vector):
 		var new_vector = _increase_multiply_counterforce_vector(arg_vector)
 		apply_inside_induced_force(new_vector)
 		
-		#todo
-		print("applied counterforce")
+		#_play_particle_effect__counter_force_from_any_source(arg_vector)
 		
-		#todo
-		#make particle effect play
 		
 	else:
 		apply_inside_induced_force(arg_vector)
 		
-		#todo
-		print("no counterforce applied")
-	
 
 # also used in Portal class. 
 # DO NOT COPY PASTE as values are different
@@ -1443,8 +1452,12 @@ func apply_outside_induced_force(arg_vector : Vector2):
 func get_player_linear_velocity():
 	return _player_linear_velocity
 
-func is_player__method_identifier__for_base_object():
-	return true
+#
+
+#func _play_particle_effect__counter_force_from_any_source(arg_applied_force_vec : Vector2):
+#	var mag = arg_applied_force_vec.length()
+#
+
 
 #
 
@@ -1676,6 +1689,13 @@ func _create_player_hit_tile_particle__for_pool():
 	particle.modulate.a = 0.8
 	
 	return particle
+
+#func _create_counterforce_blast_particle__for_pool():
+#	var particle #= 
+#	particle.modulate.a = 0.8
+#
+#	return particle
+
 
 #
 
