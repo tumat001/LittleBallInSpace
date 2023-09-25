@@ -736,13 +736,14 @@ func _on_BaseTileSet_mouse_entered():
 			if can_generate_tooltips:
 				var desc = ObjectDetailsPanel.generate_descs__for_tileset(self)
 				if desc.size() != 0:
-					_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
-					
-					SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
-					
-					_object_details_panel_tooltip.show_descs(desc)
-			
+					_construct_tooltip_using_desc(desc)
+
+func _construct_tooltip_using_desc(desc):
+	_object_details_panel_tooltip = ObjectDetailsPanel_Scene.instance()
+	SingletonsAndConsts.current_game_front_hud.add_node_to_tooltip_container(_object_details_panel_tooltip)
+	_object_details_panel_tooltip.show_descs(desc)
 	
+	MouseManager.request_change_mouse_normal_id(self, MouseManager.MouseNormalSpriteTypeId.INSPECT)
 
 func _on_BaseTileSet_mouse_exited():
 	_queue_free_object_details_tooltip()
@@ -753,7 +754,8 @@ func _on_rewinding_started():
 func _queue_free_object_details_tooltip():
 	if is_instance_valid(_object_details_panel_tooltip):
 		_object_details_panel_tooltip.queue_free()
-	
+		
+		MouseManager.remove_request_change_mouse_normal_id(self)
 
 #
 

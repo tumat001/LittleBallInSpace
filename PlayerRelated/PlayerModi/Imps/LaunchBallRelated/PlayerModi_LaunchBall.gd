@@ -173,10 +173,16 @@ func _initialize_player_modi_launch_ball_node():
 	player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
 	player_modi_launch_ball_node.connect("can_change_aim_mode_changed", self, "_on_can_change_aim_mode_changed")
 	
+	player_modi_launch_ball_node.connect("ended_launch_charge", self, "_on_modi_launch_ball_node__ended_launch_charge")
+	
 	set_can_change_aim_mode(can_change_aim_mode)
 
 func _on_can_change_aim_mode_changed(arg_val):
 	emit_signal("can_change_aim_mode_changed", arg_val)
+
+
+func _on_modi_launch_ball_node__ended_launch_charge():
+	MouseManager.remove_request_change_mouse_normal_id(self)
 
 ######
 
@@ -207,6 +213,8 @@ func _attempt_begin_charge_ball():
 			
 		
 		_player.player_face.play_sequence__charging_launch_ball()
+		
+		MouseManager.request_change_mouse_normal_id(self, MouseManager.MouseNormalSpriteTypeId.TARGET_RETICLE)
 
 
 func _attempt_launch_ball():

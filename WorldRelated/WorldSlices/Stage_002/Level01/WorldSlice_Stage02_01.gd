@@ -16,12 +16,17 @@ onready var PDAR_initial_convo_trigger = $MiscContainer/PDAR_InitialConvo
 
 onready var VKP_launch_ball = $MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
 
+onready var vbox_of_launch_ins = $MiscContainer/VBoxContainer
+
+
 ##
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	
 
+func _ready():
+	vbox_of_launch_ins.modulate.a = 0
 
 
 
@@ -120,6 +125,8 @@ func _on_delay_after_displaying_desc_01():
 #
 
 
-
-
+func _on_PDAR_ShowLaunchIns_player_entered_in_area():
+	var tweener = create_tween()
+	tweener.tween_property(vbox_of_launch_ins, "modulate:a", 1.0, 0.5)
+	
 

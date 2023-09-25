@@ -15,7 +15,7 @@ enum MouseNormalSpriteTypeId {
 var mouse_normal_sprite_type_id__to_offset_map : Dictionary = {
 	MouseNormalSpriteTypeId.NORMAL : Vector2(0, 0),
 	MouseNormalSpriteTypeId.TARGET_RETICLE : CustomMouse_TargetReticle.get_size() / 2,
-	MouseNormalSpriteTypeId.INSPECT : Vector2(5, 5),
+	MouseNormalSpriteTypeId.INSPECT : Vector2(12.5, 12.5),
 }
 const mouse_normal_sprite_type_id__hierarchy = {
 	MouseNormalSpriteTypeId.TARGET_RETICLE : 2,
@@ -46,7 +46,7 @@ func _update_OS_mouse_normal_texture():
 	var texture = mouse_normal_sprite_type_id__to_img_res_map[mouse_normal_id_to_use]
 	var offset_to_use = mouse_normal_sprite_type_id__to_offset_map[mouse_normal_id_to_use]
 	
-	Input.set_custom_mouse_cursor(texture)
+	Input.set_custom_mouse_cursor(texture, Input.CURSOR_ARROW, offset_to_use)
 	
 	_current_mouse_normal_id = mouse_normal_id_to_use
 
@@ -89,14 +89,29 @@ func _on_node_requester_for_mouse_normal_id__mouse_exited(arg_requester):
 	remove_request_change_mouse_normal_id(arg_requester)
 
 
-func remove_request_change_mouse_normal_id(arg_requester):
+func remove_request_change_mouse_normal_id(arg_requester : Object):
 	if _obj_requester_to_custom_requested_mouse_normal_id_map.has(arg_requester):
 		_obj_requester_to_custom_requested_mouse_normal_id_map.erase(arg_requester)
 		
-		if arg_requester.is_connected("tree_exiting", self, "_on_node_requester_for_mouse_normal_id__tree_exiting"):
-			arg_requester.disconnect("tree_exiting", self, "_on_node_requester_for_mouse_normal_id__tree_exiting")
+		if arg_requester.has_signal("tree_exiting"):
+			if arg_requester.is_connected("tree_exiting", self, "_on_node_requester_for_mouse_normal_id__tree_exiting"):
+				arg_requester.disconnect("tree_exiting", self, "_on_node_requester_for_mouse_normal_id__tree_exiting")
+		
+		if arg_requester.has_signal("visibility_changed"):
+			if arg_requester.is_connected("visibility_changed", self, "_on_node_requester_for_mouse_normal_id__visibility_changed"):
+				arg_requester.disconnect("visibility_changed", self, "_on_node_requester_for_mouse_normal_id__visibility_changed")
+		
+		if arg_requester.has_signal("mouse_exited"):
+			if arg_requester.is_connected("mouse_exited", self, "_on_node_requester_for_mouse_normal_id__mouse_exited"):
+				arg_requester.disconnect("mouse_exited", self, "_on_node_requester_for_mouse_normal_id__mouse_exited")
+		
+		_update_OS_mouse_normal_texture()
 
 
+
+func clear_all_requesters__for_mouse_normal_id():
+	_obj_requester_to_custom_requested_mouse_normal_id_map.clear()
+	_update_OS_mouse_normal_texture()
 
 ###
 

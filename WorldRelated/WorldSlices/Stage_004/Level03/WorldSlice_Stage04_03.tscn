@@ -44,31 +44,37 @@ tile_data = PoolIntArray( 19, 14, 2, 20, 14, 3, 21, 14, 3, 22, 14, 3, 23, 14, 3,
 tile_set = ExtResource( 8 )
 tile_data = PoolIntArray( -65535, 12, 0, -65534, 12, 0, -65533, 12, 0, -65532, 12, 0, -65531, 12, 0, -65530, 12, 0, -65529, 12, 0, -65528, 12, 0, -65527, 12, 0, -65526, 12, 0, -65525, 12, 0, 1, 12, 0, 2, 12, 0, 3, 12, 0, 4, 12, 0, 5, 12, 0, 6, 12, 0, 7, 12, 0, 8, 12, 0, 9, 12, 0, 10, 12, 0, 11, 12, 0, 65537, 12, 0, 65538, 12, 0, 65539, 12, 0, 65540, 12, 0, 65541, 12, 0, 65542, 12, 0, 65543, 12, 0, 65544, 12, 0, 65545, 12, 0, 65546, 12, 0, 65547, 12, 196609, 196607, 12, 0, 131072, 12, 0, 131073, 12, 0, 131074, 12, 0, 131075, 12, 0, 131076, 12, 0, 131077, 12, 0, 131078, 12, 196609, 131079, 12, 0, 131080, 12, 0, 131081, 12, 0, 131082, 12, 0, 131093, 12, 0, 131094, 12, 0, 131095, 12, 0, 131096, 12, 0, 131097, 12, 0, 262142, 12, 0, 262143, 12, 0, 196608, 12, 0, 196609, 12, 0, 196610, 12, 0, 196611, 12, 0, 196612, 12, 196609, 196616, 12, 0, 196617, 12, 0, 196618, 12, 0, 196627, 12, 0, 196628, 12, 0, 196629, 12, 0, 196630, 12, 0, 196631, 12, 0, 196632, 12, 0, 196633, 12, 0, 327677, 12, 0, 327678, 12, 0, 327679, 12, 0, 262144, 12, 0, 262145, 12, 0, 262146, 12, 0, 262152, 12, 0, 262153, 12, 0, 262154, 12, 0, 262155, 12, 0, 262163, 12, 0, 262164, 12, 0, 262165, 12, 0, 262166, 12, 0, 262167, 12, 0, 262168, 12, 0, 262169, 12, 0, 327688, 12, 131074, 327689, 12, 0, 327690, 12, 0, 327691, 12, 0, 327699, 12, 0, 327700, 12, 0, 327701, 12, 0, 327702, 12, 0, 327704, 12, 0, 327705, 12, 0, 393225, 12, 0, 393226, 12, 0, 393227, 12, 0, 393237, 12, 0, 393238, 12, 0, 393239, 12, 0, 393240, 12, 0, 393241, 12, 0, 458761, 12, 0, 458762, 12, 0, 458763, 12, 0, 458764, 12, 0, 524298, 12, 131074, 524299, 12, 0, 524300, 12, 0, 524301, 12, 0, 524302, 12, 0, 589836, 12, 0, 589837, 12, 0, 589838, 12, 0, 589839, 12, 0, 589840, 12, 0, 589841, 12, 0, 655372, 12, 0, 655373, 12, 0, 655374, 12, 0, 655375, 12, 0, 655376, 12, 0, 655377, 12, 0 )
 
-[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="4" instance=ExtResource( 4 )]
+[node name="BaseTileSet_UncollsWallDec" parent="TileContainer" index="4" instance=ExtResource( 4 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_UncollsWallDec" index="0"]
+tile_set = ExtResource( 8 )
+tile_data = PoolIntArray( -65530, 27, 1, 6, 27, 1, 65538, 27, 65539, 65539, 27, 0, 65540, 27, 0, 65541, 27, 0, 65542, 27, 65537, 131074, 27, 1, 131095, 27, 1, 262143, 27, 65539, 196608, 27, 0, 196609, 27, 0, 196610, 27, 131074, 196631, 27, 1, 327679, 27, 1, 262146, 27, 1, 262167, 27, 131072, 262168, 27, 0, 262169, 27, 0, 327703, 27, 1, 393237, 27, 0, 393238, 27, 0, 393239, 27, 65537, 524301, 27, 1, 589837, 27, 1, 655373, 27, 65538, 655374, 27, 0, 655375, 27, 65536 )
+
+[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 4 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls02" index="0"]
 tile_set = ExtResource( 8 )
 tile_data = PoolIntArray( -65535, 17, 65538, 65534, 17, 65538, 1, 17, 65538, 131070, 17, 65538, 65537, 17, 65538, 196606, 17, 65538, 131073, 17, 65538, 262142, 17, 65538, 196609, 17, 65538, 196629, 13, 0, 196630, 18, 2, 327678, 17, 65538, 262145, 17, 65538, 327702, 17, 0 )
 
-[node name="BaseTileSet_Red" parent="TileContainer" index="5" instance=ExtResource( 4 )]
+[node name="BaseTileSet_Red" parent="TileContainer" index="6" instance=ExtResource( 4 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Red" index="0"]
 modulate = Color( 1, 0.109804, 0.109804, 1 )
 tile_data = PoolIntArray( 196628, 7, 0, 262164, 7, 65536, 327700, 7, 131072 )
 
-[node name="BaseTileSet_Green" parent="TileContainer" index="6" instance=ExtResource( 4 )]
+[node name="BaseTileSet_Green" parent="TileContainer" index="7" instance=ExtResource( 4 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Green" index="0"]
 modulate = Color( 0.192157, 1, 0.0784314, 1 )
 tile_data = PoolIntArray( 196627, 7, 0, 262163, 7, 65536, 327699, 7, 131072 )
 
-[node name="BaseTileSet_Fragile" parent="TileContainer" index="7" instance=ExtResource( 4 )]
+[node name="BaseTileSet_Fragile" parent="TileContainer" index="8" instance=ExtResource( 4 )]
 glass_breakable_type = 3
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Fragile" index="0"]
 tile_data = PoolIntArray( 131081, 17, 196608, 131085, 17, 196608, 196617, 17, 262144, 196621, 17, 262144, 262153, 17, 262144, 262157, 17, 262144, 327689, 17, 262144, 327693, 17, 262144, 393225, 17, 327680, 393229, 17, 327680 )
 
-[node name="BaseTileSet_SimpleGlass" parent="TileContainer" index="8" instance=ExtResource( 4 )]
+[node name="BaseTileSet_SimpleGlass" parent="TileContainer" index="9" instance=ExtResource( 4 )]
 glass_breakable_type = 2
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_SimpleGlass" index="0"]
@@ -98,8 +104,6 @@ position = Vector2( 375, -16 )
 rotation = 4.71239
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Object_InteractableButton2" parent="ObjectContainer" index="1" instance=ExtResource( 2 )]
@@ -107,8 +111,6 @@ position = Vector2( 567, 335 )
 rotation = 4.71239
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
-portal_01_to_register_in_toggle__path = NodePath("")
-portal_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="2" instance=ExtResource( 6 )]
@@ -134,6 +136,7 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Grounded"]
 [editable path="TileContainer/BaseTileSet_Uncolls01"]
+[editable path="TileContainer/BaseTileSet_UncollsWallDec"]
 [editable path="TileContainer/BaseTileSet_Uncolls02"]
 [editable path="TileContainer/BaseTileSet_Red"]
 [editable path="TileContainer/BaseTileSet_Green"]

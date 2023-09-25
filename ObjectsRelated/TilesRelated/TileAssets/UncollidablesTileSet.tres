@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=26 format=2]
+[gd_resource type="TileSet" load_steps=28 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -25,6 +25,8 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01.png" type="Texture" id=23]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__ElectricalEquipment_01_Destroyed.png" type="Texture" id=24]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__Decor_Battery.png" type="Texture" id=25]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__WallDecor02.png" type="Texture" id=26]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor01.png" type="Texture" id=27]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -594,3 +596,45 @@
 26/shape_one_way_margin = 0.0
 26/shapes = [  ]
 26/z_index = 0
+27/name = "Tileset_Spaceship_Uncollidables__WallDecor02.png 27"
+27/texture = ExtResource( 26 )
+27/tex_offset = Vector2( 0, 0 )
+27/modulate = Color( 1, 1, 1, 1 )
+27/region = Rect2( 0, 0, 128, 96 )
+27/tile_mode = 2
+27/autotile/icon_coordinate = Vector2( 0, 0 )
+27/autotile/tile_size = Vector2( 32, 32 )
+27/autotile/spacing = 0
+27/autotile/occluder_map = [  ]
+27/autotile/navpoly_map = [  ]
+27/autotile/priority_map = [  ]
+27/autotile/z_index_map = [  ]
+27/occluder_offset = Vector2( 0, 0 )
+27/navigation_offset = Vector2( 0, 0 )
+27/shape_offset = Vector2( 0, 0 )
+27/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+27/shape_one_way = false
+27/shape_one_way_margin = 0.0
+27/shapes = [  ]
+27/z_index = 0
+28/name = "Tileset_SimpleMetal_Uncollidables__WallDecor01.png 28"
+28/texture = ExtResource( 27 )
+28/tex_offset = Vector2( 0, 0 )
+28/modulate = Color( 1, 1, 1, 1 )
+28/region = Rect2( 0, 0, 128, 96 )
+28/tile_mode = 2
+28/autotile/icon_coordinate = Vector2( 0, 0 )
+28/autotile/tile_size = Vector2( 32, 32 )
+28/autotile/spacing = 0
+28/autotile/occluder_map = [  ]
+28/autotile/navpoly_map = [  ]
+28/autotile/priority_map = [  ]
+28/autotile/z_index_map = [  ]
+28/occluder_offset = Vector2( 0, 0 )
+28/navigation_offset = Vector2( 0, 0 )
+28/shape_offset = Vector2( 0, 0 )
+28/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+28/shape_one_way = false
+28/shape_one_way_margin = 0.0
+28/shapes = [  ]
+28/z_index = 0

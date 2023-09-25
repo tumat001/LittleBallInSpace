@@ -52,13 +52,19 @@ modulate = Color( 0.709804, 0.360784, 0.0235294, 1 )
 modulate = Color( 1, 0.141176, 0.141176, 1 )
 tile_data = PoolIntArray( 327677, 9, 0, 393213, 9, 131072 )
 
-[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 4 )]
+[node name="BaseTileSet_UncollsWallDec" parent="TileContainer" index="5" instance=ExtResource( 4 )]
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_UncollsWallDec" index="0"]
+tile_set = ExtResource( 7 )
+tile_data = PoolIntArray( -458766, 27, 65538, -458765, 27, 0, -458764, 27, 0, -458763, 27, 0, -458762, 27, 0, -458761, 27, 131074, -393225, 27, 1, -262153, 27, 1, -262150, 27, 1, -196623, 27, 0, -196622, 27, 0, -196621, 27, 131073, -196619, 27, 0, -196618, 27, 0, -196617, 27, 65537, -196614, 27, 1, -131085, 27, 1, -131080, 27, 65539, -131079, 27, 0, -131078, 27, 131075, -131077, 27, 0, -131076, 27, 0, -131075, 27, 0, -131074, 27, 0, -131073, 27, 65536, -65549, 27, 1, -65544, 27, 1, -65537, 27, 1, -13, 27, 1, 65523, 27, 1, 6, 27, 1, 131064, 27, 1, 65542, 27, 1, 196596, 27, 1, 196600, 27, 1, 131076, 27, 65539, 131077, 27, 0, 131078, 27, 131075, 131079, 27, 0, 131080, 27, 0, 262132, 27, 1, 262136, 27, 65538, 262137, 27, 0, 262138, 27, 131073, 262139, 27, 0, 262140, 27, 0, 196612, 27, 1, 327668, 27, 1, 327674, 27, 1, 262148, 27, 1, 262151, 27, 65539, 262152, 27, 0, 262154, 27, 0, 262155, 27, 0, 393203, 27, 0, 393204, 27, 131075, 393205, 27, 0, 393206, 27, 65536, 393210, 27, 1, 327680, 27, 65539, 327681, 27, 0, 327682, 27, 0, 327683, 27, 0, 327684, 27, 65537, 327687, 27, 1, 524278, 27, 1, 524282, 27, 1, 458752, 27, 1, 458759, 27, 1, 589809, 27, 0, 589810, 27, 131073, 589811, 27, 0, 589812, 27, 0, 589813, 27, 0, 589814, 27, 131075, 589815, 27, 0, 589817, 27, 0, 589818, 27, 131075, 589819, 27, 0, 589820, 27, 0, 589821, 27, 0, 589822, 27, 0, 589823, 27, 0, 524288, 27, 131075, 524289, 27, 0, 524290, 27, 0, 524291, 27, 65536, 524295, 27, 1, 655346, 27, 1, 589827, 27, 1, 589831, 27, 1 )
+
+[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="6" instance=ExtResource( 4 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls02" index="0"]
 tile_set = ExtResource( 7 )
 tile_data = PoolIntArray( -458764, 17, 3, -458758, 17, 3, -393228, 17, 3, -393222, 17, 3, -458743, 17, 3, -458740, 17, 3, -393207, 17, 3, -393204, 17, 3, -262159, 17, 65539, -262158, 17, 65539, -262157, 17, 65539, -327671, 17, 3, -327668, 17, 3, -262135, 17, 3, -262132, 17, 3, -196599, 17, 3, -196596, 17, 3, -65546, 18, 65537, -131063, 17, 3, -131060, 17, 3, -10, 13, 1, -65527, 17, 3, -65524, 17, 3, 65525, 18, 196609, 65526, 18, 196609, 9, 17, 3, 12, 17, 3, 131068, 17, 0, 65548, 17, 3, 131084, 17, 3, 196620, 17, 3, 327663, 17, 65539, 327664, 17, 65539, 327665, 17, 65539, 327675, 18, 131072, 262156, 17, 3, 393226, 17, 65539, 393227, 17, 65539, 524275, 17, 3, 524285, 17, 3, 458754, 17, 3, 458761, 17, 3, 589811, 17, 3, 589821, 17, 3, 524290, 17, 3, 524297, 17, 3, 655347, 17, 3, 655357, 17, 3, 589826, 17, 3, 589833, 17, 3 )
 
-[node name="BaseTileSet_Glowables" parent="TileContainer" index="6" instance=ExtResource( 4 )]
+[node name="BaseTileSet_Glowables" parent="TileContainer" index="7" instance=ExtResource( 4 )]
 has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Glowables" index="0"]
@@ -108,6 +114,7 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Grounded"]
 [editable path="TileContainer/BaseTileSet_Red"]
+[editable path="TileContainer/BaseTileSet_UncollsWallDec"]
 [editable path="TileContainer/BaseTileSet_Uncolls02"]
 [editable path="TileContainer/BaseTileSet_Glowables"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]

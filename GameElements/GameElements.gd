@@ -303,7 +303,7 @@ func _exit_tree():
 		SingletonsAndConsts.current_game_front_hud = null
 		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
+		MouseManager.clear_all_requesters__for_mouse_normal_id()
 
 func attempt_quit_game__by_queue_freeing():
 	emit_signal("quiting_game_by_queue_free__on_game_quit")

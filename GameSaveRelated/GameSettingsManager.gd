@@ -217,7 +217,7 @@ var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
 
 const SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER = "SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER"
 var settings_config__is_full_screen : bool setget set_settings_config__is_full_screen
-
+# default val is the proj settings val
 
 const SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER = "SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER"
 var settings_config__cam_rotation_duration : float setget set_settings_config__cam_rotation_duration
