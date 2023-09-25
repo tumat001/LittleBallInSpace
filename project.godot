@@ -54,6 +54,7 @@ AsyncLoader="*res://SingletonsAndConsts/AsyncLoader.gd"
 StoreOfAudio="*res://_NonMainGameRelateds/_Master/AudioRelated/StoreOfAudio.gd"
 AudioManager="*res://_NonMainGameRelateds/_Master/AudioRelated/AudioManager.gd"
 GameSettingsManager="*res://GameSaveRelated/GameSettingsManager.gd"
+MouseManager="*res://SingletonsAndConsts/MouseManager/MouseManager.tscn"
 
 [debug]
 

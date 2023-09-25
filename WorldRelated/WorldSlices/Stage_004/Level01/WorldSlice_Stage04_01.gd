@@ -23,4 +23,9 @@ func _ready():
 func _on_PDAR_NearFragileGlassType_player_entered_in_area():
 	var tweener = create_tween()
 	tweener.tween_property(glass_ins_label, "modulate:a", 1.0, 0.75)
+	
 
+func _on_PDAR_HideIns_player_entered_in_area():
+	var tweener = create_tween()
+	tweener.tween_property(glass_ins_label, "modulate:a", 0.0, 0.75)
+	
