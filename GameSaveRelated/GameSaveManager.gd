@@ -332,20 +332,20 @@ func is_all_coins_collected_in_level(arg_level_id) -> bool:
 
 #
 
-func remove_official_coin_ids_collected_from_tentative():
-	var coin_ids = _level_id_as_str_to_coin_ids_collected_map[str(SingletonsAndConsts.current_level_details.level_id)]
-	var erased_at_least_one : bool = false
-	
-	for id in _tentative_coin_ids_collected_in_curr_level_id:
-		var id_as_str = str(id)
-		if coin_ids.has(id_as_str):
-			erased_at_least_one = true
-			coin_ids.erase(id_as_str)
-	
-	if erased_at_least_one:
-		_update_coin_count_collected_in_whole_game()
-	
-	clear_coin_ids_in_tentative()
+#func remove_official_coin_ids_collected_from_tentative():
+#	var coin_ids = _level_id_as_str_to_coin_ids_collected_map[str(SingletonsAndConsts.current_level_details.level_id)]
+#	var erased_at_least_one : bool = false
+#
+#	for id in _tentative_coin_ids_collected_in_curr_level_id:
+#		var id_as_str = str(id)
+#		if coin_ids.has(id_as_str):
+#			erased_at_least_one = true
+#			coin_ids.erase(id_as_str)
+#
+#	if erased_at_least_one:
+#		_update_coin_count_collected_in_whole_game()
+#
+#	clear_coin_ids_in_tentative()
 
 func clear_coin_ids_in_tentative():
 	_tentative_coin_ids_collected_in_curr_level_id.clear()

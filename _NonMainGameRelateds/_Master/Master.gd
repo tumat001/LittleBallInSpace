@@ -207,7 +207,8 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
-	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
 	var transition = play_transition__using_id(transition_id)
@@ -221,7 +222,8 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
-	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
 	var transition = play_transition__using_id(transition_id)
@@ -233,7 +235,8 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 
 func switch_to_game_elements__from_game_elements__from_restart():
 	get_tree().paused = false
-	GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+	GameSaveManager.clear_coin_ids_in_tentative()
 	
 	#_on_transition_out__from_GE__finished__for_restart()
 	

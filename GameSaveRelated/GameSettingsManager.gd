@@ -217,7 +217,7 @@ var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
 
 const SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER = "SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER"
 var settings_config__is_full_screen : bool setget set_settings_config__is_full_screen
-# default val is the proj settings val
+const settings_config__is_full_screen__default : bool = true
 
 const SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER = "SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER"
 var settings_config__cam_rotation_duration : float setget set_settings_config__cam_rotation_duration
@@ -1022,8 +1022,8 @@ func set_settings_config__is_full_screen(arg_val):
 	if _is_manager_initialized:
 		emit_signal("settings_config__is_full_screen_changed", arg_val)
 
-func _get_settings_config__is_full_screen__from_proj_settings():
-	return ProjectSettings.get_setting("display/window/size/fullscreen")
+#func _get_settings_config__is_full_screen__from_proj_settings():
+#	return ProjectSettings.get_setting("display/window/size/fullscreen")
 
 
 func set_settings_config__cam_rotation_duration(arg_val):
@@ -1041,7 +1041,7 @@ func _load_settings_config_using_dic(data : Dictionary):
 	if data.has(SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER):
 		set_settings_config__is_full_screen(data[SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER])
 	else:
-		set_settings_config__is_full_screen(_get_settings_config__is_full_screen__from_proj_settings())
+		set_settings_config__is_full_screen(settings_config__is_full_screen__default) #_get_settings_config__is_full_screen__from_proj_settings())
 	
 	if data.has(SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER):
 		set_settings_config__cam_rotation_duration(data[SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER])

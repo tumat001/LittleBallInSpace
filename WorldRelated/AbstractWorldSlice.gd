@@ -237,7 +237,6 @@ func _configure_coin(arg_coin):
 		arg_coin.queue_free()
 		
 		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, true)
-		
 	else:
 		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, false)
 	
