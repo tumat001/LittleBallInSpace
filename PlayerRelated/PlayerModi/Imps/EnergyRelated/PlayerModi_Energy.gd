@@ -158,7 +158,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				if _energy_down__sound_player != null and _energy_down__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_down__sound_player)
 			
-			_player.can_capture_PCA_regions = true
+			if is_instance_valid(_player):
+				_player.can_capture_PCA_regions = true
 			
 			_tween_unmute_background_music__internal()
 			emit_signal("recharged_from_no_energy")

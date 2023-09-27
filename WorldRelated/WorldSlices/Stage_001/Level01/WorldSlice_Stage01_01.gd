@@ -58,6 +58,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 		
 		_is_first_time__do_cutscenes = true
 	
+	
 	if _is_first_time__do_cutscenes:
 		#var first_time = GameSaveManager.first_time_opening_game
 		GameSaveManager.first_time_opening_game = false
@@ -106,7 +107,6 @@ func _add_energy_modi():
 	
 	_player_modi_energy = modi
 	
-	game_elements.player_modi_manager.add_modi_to_player(modi)
 
 
 
@@ -120,9 +120,13 @@ func _deferred_init__for_first_time_and_not():
 
 
 func _init__as_not_first_time():
+	game_elements.player_modi_manager.add_modi_to_player(_player_modi_energy)
+	
 	_player_modi_energy.set_current_energy(15)
 
 func _init__as_first_time__and_do_cutscenes():
+	game_elements.player_modi_manager.add_modi_to_player(_player_modi_energy)
+	
 	_player = game_elements.get_current_player()
 	_player.connect("on_ground_state_changed", self, "_on_player_on_ground_state_changed")
 	
