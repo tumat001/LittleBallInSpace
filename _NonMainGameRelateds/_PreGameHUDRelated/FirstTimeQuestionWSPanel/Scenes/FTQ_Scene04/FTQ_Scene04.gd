@@ -7,15 +7,15 @@ var first_line = [
 ]
 
 var second_line = [
-	["[color=#F6FEAE]You[/color] are", []]
+	["[color=#91FE81]You[/color] are", []]
 ]
 
 var third_line = [
-	["A little [color=#91FE81]ball[/color]", []]
+	["A [color=#F6FEAE]little ball[/color]", []]
 ]
 
 var fourth_line = [
-	["In [color=#C0B9FE]space[/color]", []]
+	["In [color=#B0A5FE]space[/color]", []]
 ]
 
 #

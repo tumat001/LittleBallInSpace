@@ -120,7 +120,9 @@ enum AudioIds {
 	#SFX_GUI_LevelLayout_Enter = 5402
 	SFX_GUI_InGamePauseMenu_OrMainMenu_Open = 5403
 	SFX_GUI_Checkbox_Clicked = 5404
+	SFX_GUI_Button_Click_Confirmed = 5405
 	
+	SFX_GUI_CharacterBlip_FTQ = 5406
 	
 	# SPECIAL
 	SFX_Special_ElectricGenerator = 6000
@@ -163,6 +165,14 @@ var _audio_id_to_custom_standard_db_map := {
 	
 	AudioIds.SFX_GUI_Checkbox_Clicked : -24,
 	AudioIds.SFX_GUI_InGamePauseMenu_OrMainMenu_Open : -24,
+	
+	AudioIds.SFX_GUI_Button_Click_Confirmed : -16,
+	
+	AudioIds.SFX_Pickupable_Star_01 : 0,
+	
+	AudioIds.BGM_Calm01_01 : -4,
+	
+	AudioIds.SFX_Pickupable_Star_01 : -4,
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false
 

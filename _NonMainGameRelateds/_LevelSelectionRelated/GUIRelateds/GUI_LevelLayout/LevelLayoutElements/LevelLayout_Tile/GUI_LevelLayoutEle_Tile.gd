@@ -148,7 +148,7 @@ func set_level_layout_details(arg_level_layout_det):
 
 func _is_level_layout_locked_changed(arg_val):
 	_update_tile_texture_rect__texture()
-	
+	_update_all_marker_visibility()
 
 
 

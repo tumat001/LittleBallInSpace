@@ -1,13 +1,33 @@
 tool
 extends "res://ObjectsRelated/Pickupables/BasePickupables.gd"
 
-
 signal collected_by_player()
 signal uncollected_by_player()
 
 
+const POS_UPPER = Vector2(0, -10)
+const POS_LEFT = Vector2(-9, -1.5)
+const POS_LOWER_LEFT = Vector2(-6, 8)
+const POS_RIGHT = Vector2(9, -1.5)
+const POS_LOWER_RIGHT = Vector2(6, 8)
+const all_poses = [
+	POS_UPPER,
+	POS_LEFT,
+	POS_LOWER_LEFT,
+	POS_RIGHT,
+	POS_LOWER_RIGHT
+]
+
+#
+
 var coin_id : String
 
+#
+
+func get_all_poses():
+	return all_poses
+
+#
 
 func _on_player_entered_self(arg_player):
 	._on_player_entered_self(arg_player)

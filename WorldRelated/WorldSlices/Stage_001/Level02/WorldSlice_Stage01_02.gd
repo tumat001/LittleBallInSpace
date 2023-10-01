@@ -1,9 +1,5 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
-const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailType.gd")
-const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
-
-
 ##
 
 var _last_pcr_stuck_captured : bool

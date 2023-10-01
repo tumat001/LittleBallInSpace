@@ -41,6 +41,9 @@ const _bbcode_align_mode_string__left = "%s"
 const _bbcode_align_mode_string__center = "[center]%s[/center]"
 const _bbcode_align_mode_string__right = "[right]%s[/right]"
 
+#
+
+var text_blip_sound_id_to_play : int = -1
 
 #
 
@@ -54,6 +57,10 @@ var use_color_for_dark_background : bool = true
 #
 
 var _current_tweener : SceneTreeTween
+
+#
+
+var _count__from_text_blip : int = -1
 
 #
 
@@ -193,8 +200,22 @@ func set_visible_character_count(arg_count):
 		curr_arg_count -= ch_count
 		if curr_arg_count < 0:
 			curr_arg_count = -1
+
+func set_visible_character_count__with_text_blip(arg_count):
+	if _count__from_text_blip != -1:
+		var prev_count__from_text_blip = _count__from_text_blip
+		
+		_count__from_text_blip = arg_count
+		if prev_count__from_text_blip != _count__from_text_blip:
+			if text_blip_sound_id_to_play != -1:
+				AudioManager.helper__play_sound_effect__plain(text_blip_sound_id_to_play, 1.0, null)
+		
+	else:
+		_count__from_text_blip = 0
 	
-	
+	set_visible_character_count(arg_count)
+
+
 
 func get_percent_visible_character_count():
 	var percent_total : float = 0
@@ -221,7 +242,7 @@ func start_tween_display_of_text(arg_duration_to_finish : bool, arg_func_source,
 
 func _deferred_start_vis_character_tween_tween(arg_duration_to_finish, arg_func_source, arg_func_name, arg_func_params):
 	_current_tweener = create_tween()
-	var method_current_tweener = _current_tweener.tween_method(self, "set_visible_character_count", 0, get_total_character_count(), arg_duration_to_finish)
+	var method_current_tweener = _current_tweener.tween_method(self, "set_visible_character_count__with_text_blip", 0, get_total_character_count(), arg_duration_to_finish)
 	
 	arg_func_source.call(arg_func_name, [_current_tweener, method_current_tweener], arg_func_params)
 
@@ -238,7 +259,7 @@ func start_tween_display_of_text__custom_char_count(arg_duration_to_finish : boo
 
 func _deferred_start_vis_character_tween_tween__custom_char_count(arg_duration_to_finish, initial_vis_char_count, arg_char_count_to_show, arg_func_source, arg_func_name, arg_func_params):
 	_current_tweener = create_tween()
-	var method_current_tweener = _current_tweener.tween_method(self, "set_visible_character_count", initial_vis_char_count, arg_char_count_to_show, arg_duration_to_finish)
+	var method_current_tweener = _current_tweener.tween_method(self, "set_visible_character_count__with_text_blip", initial_vis_char_count, arg_char_count_to_show, arg_duration_to_finish)
 	
 	arg_func_source.call(arg_func_name, [_current_tweener, method_current_tweener], arg_func_params)
 

@@ -417,6 +417,8 @@ func is_obj_registered_in_rewindables(arg_obj):
 
 func prevent_rewind_up_to_this_time_point():
 	_rewindable_datas.clear()
+	_rewindable_marker_datas.clear()
+	_rewindable_is_unskippable_metadata.clear()
 
 ##
 

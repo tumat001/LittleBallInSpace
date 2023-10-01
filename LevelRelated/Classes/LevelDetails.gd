@@ -74,6 +74,7 @@ var transition_id__exiting_level__in__for_quit = StoreOfTransitionSprites.Transi
 
 
 
+var can_start_playlist_on_master : bool = true
 var BGM_playlist_id_to_use__on_level_start : int = StoreOfAudio.BGMPlaylistId.CALM_01
 
 #
@@ -107,8 +108,9 @@ func set_is_level_locked(arg_val):
 		else:
 			pass
 			
-		
-		emit_signal("is_level_locked_changed", is_level_locked)
+	
+	
+	emit_signal("is_level_locked_changed", is_level_locked)
 
 
 func get_texture_and_modulate_to_use__based_on_properties() -> Array:

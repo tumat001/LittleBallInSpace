@@ -162,11 +162,8 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 	#
 	
 	## playlist/audio related
-	var BGM_playlist_id_to_play = level_details.BGM_playlist_id_to_use__on_level_start
-	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
-		StoreOfAudio.BGM_playlist_catalog.stop_play()
-		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
-	
+	if level_details.can_start_playlist_on_master:
+		start_play_music_playlist_of_curr_level()
 	#
 	
 	if is_instance_valid(gui__level_selection_whole_screen):
@@ -181,6 +178,13 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 	transition.circle_center = arg_circle_pos
 	transition.queue_free_on_end_of_transition = true
 	play_transition(transition)
+
+func start_play_music_playlist_of_curr_level():
+	var BGM_playlist_id_to_play = SingletonsAndConsts.current_level_details.BGM_playlist_id_to_use__on_level_start
+	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
+		StoreOfAudio.BGM_playlist_catalog.stop_play()
+		StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(BGM_playlist_id_to_play)
+	
 
 
 ###
@@ -249,12 +253,12 @@ func switch_to_game_elements__from_game_elements__from_restart():
 	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
 	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
 	
-	
-
 
 # for all transition except for restart
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
 	emit_signal("switching_from_game_elements__non_restart__transition_ended")
+	
+	_tween_unmute_background_music__internal()
 	
 	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
 		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited")
@@ -296,13 +300,12 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = false
 	
 
+# for all except restart
 func _on_curr_game_elements_tree_exited():
 	var level_details = StoreOfLevels.generate_or_get_level_details_of_id(SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel)
 	#instant_start_game_elements__with_level_details(level_details)
 	call_deferred("instant_start_game_elements__with_level_details", level_details)
 	
-	
-
 
 
 func _attempt_unlock_and_play_anim_on_victory__on_level_id():
@@ -356,8 +359,19 @@ func _on_transition_out__from_GE__finished__for_restart(arg_next_transition_id, 
 	if is_instance_valid(SingletonsAndConsts.current_game_elements):
 		SingletonsAndConsts.current_game_elements.attempt_quit_game__by_queue_freeing()
 	
+	_tween_unmute_background_music__internal()
+	
 	start_game_elements__with_level_details(SingletonsAndConsts.current_level_details, screen_size / 2)
 	
+
+#
+
+func _tween_unmute_background_music__internal():
+	var background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	background_music_playlist.set_volume_db__bus_internal__tween(AudioManager.DECIBEL_VAL__STANDARD, 1.5, self, "_on_finish_tweening_background_music", null)
+
+func _on_finish_tweening_background_music(arg_params):
+	pass
 
 
 ###########

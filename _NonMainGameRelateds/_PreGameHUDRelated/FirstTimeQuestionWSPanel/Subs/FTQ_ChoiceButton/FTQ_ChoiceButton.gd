@@ -75,6 +75,7 @@ func _on_lose_focus__attempt_do_anims():
 func _on_TextureButton_pressed():
 	emit_signal("button_pressed")
 	
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Click_Confirmed, 1.0, null)
 
 
 #
@@ -116,8 +117,11 @@ func set_focus_neighbour_right(arg_control : Control):
 		texture_button.focus_neighbour_right = arg_control.get_path()
 	
 
+#
 
 func _on_TextureButton_mouse_entered():
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Hover, 1.0, null)
+	
 	grab_focus()
 
 func grab_focus():

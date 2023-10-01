@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_003/Level05/WorldSlice_Stage03_05.gd" type="Script" id=2]
@@ -15,6 +15,9 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 256, 13.5 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 224, 13.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28, 28 )
@@ -100,14 +103,21 @@ position = Vector2( -356, 101 )
 position = Vector2( 260, 9.5 )
 shape = SubResource( 1 )
 
-[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 7 )]
+[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="1" instance=ExtResource( 9 )]
+position = Vector2( -263, 294 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion2" index="0"]
+position = Vector2( 263, 9.5 )
+shape = SubResource( 6 )
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 7 )]
 position = Vector2( 507, 585 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 33, -45.5 )
 shape = SubResource( 2 )
 
-[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="2" instance=ExtResource( 6 )]
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="3" instance=ExtResource( 6 )]
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( -52, 125 )
@@ -117,7 +127,7 @@ shape = SubResource( 3 )
 position = Vector2( 286, 568 )
 shape = SubResource( 4 )
 
-[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
+[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="4" instance=ExtResource( 10 )]
 position = Vector2( 109, 610 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion" index="0"]
@@ -182,6 +192,7 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet_Green"]
 [editable path="TileContainer/BaseTileSet_Fragile"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
+[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
 [editable path="AreaRegionContainer/PDAR_MapBounds"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion"]

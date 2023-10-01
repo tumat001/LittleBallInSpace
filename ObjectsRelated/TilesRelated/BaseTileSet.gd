@@ -284,7 +284,7 @@ func _process(delta):
 				_make_self_breakable_on_player_contact()
 				
 			else:
-				_unapply_visual_changes__breakable()
+				_unapply_visual_changes__breakable(false)
 				_make_self_not_breakable_on_player_contact()
 			
 
@@ -308,8 +308,8 @@ func _apply_visual_changes__breakable():
 		#set_deferred("_can_induce_rotation_change__due_to_cell_v_changes", true)
 		_set_true__can_induce_rotation_change__due_to_cell_v_changes__after_small_delay()
 
-func _unapply_visual_changes__breakable():
-	if _applied_changes_for_breakable:
+func _unapply_visual_changes__breakable(arg_forced : bool):
+	if _applied_changes_for_breakable or arg_forced:
 		_applied_changes_for_breakable = false
 		
 		for cell_pos in tilemap.get_used_cells():
@@ -750,6 +750,9 @@ func _on_BaseTileSet_mouse_exited():
 
 func _on_rewinding_started():
 	_queue_free_object_details_tooltip()
+	
+	if _is_breakable:
+		_unapply_visual_changes__breakable(true)
 
 func _queue_free_object_details_tooltip():
 	if is_instance_valid(_object_details_panel_tooltip):

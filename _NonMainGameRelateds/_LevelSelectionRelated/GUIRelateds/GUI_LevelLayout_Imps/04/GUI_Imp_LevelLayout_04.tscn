@@ -157,3 +157,9 @@ margin_top = 46.0
 margin_right = 736.0
 margin_bottom = 92.0
 is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Tile_04H" parent="LayoutElesContainer" index="22" instance=ExtResource( 3 )]
+margin_left = 460.0
+margin_top = 92.0
+margin_right = 506.0
+margin_bottom = 138.0

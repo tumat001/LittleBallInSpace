@@ -47,7 +47,7 @@ func _draw():
 
 
 func draw_circle_arc(center, radius, angle_from, angle_to, color, line_thickness):
-	var nb_points = 36 #32
+	var nb_points = 54 #32
 	var points_arc = PoolVector2Array()
 	
 	for i in range(nb_points + 1):

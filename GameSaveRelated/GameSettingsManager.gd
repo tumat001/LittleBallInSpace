@@ -2,6 +2,8 @@
 # NOTE:
 # WHEN ADDING ASSIST MODES or ids, check: AssistModeDetailsHelper Class
 
+
+#todo fix assist mode hud
 extends Node
 
 #
@@ -217,7 +219,7 @@ var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
 
 const SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER = "SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER"
 var settings_config__is_full_screen : bool setget set_settings_config__is_full_screen
-const settings_config__is_full_screen__default : bool = true
+const settings_config__is_full_screen__default : bool = false
 
 const SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER = "SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER"
 var settings_config__cam_rotation_duration : float setget set_settings_config__cam_rotation_duration
@@ -938,11 +940,12 @@ func _on_before_modi_is_configured__for_assist_mode(arg_modi):
 	
 
 func _before_game__setup_assist_mode__plause_on_esc_changes():
-	if is_current_assist_mode__pause_at_esc__has_effect():
-		if assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.PAUSE:
-			SingletonsAndConsts.current_game_elements.pause_game_at_startup = true
-		elif assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.NO_PAUSE:
-			SingletonsAndConsts.current_game_elements.pause_game_at_startup = false
+	if is_assist_mode_active:
+		if is_current_assist_mode__pause_at_esc__has_effect():
+			if assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.PAUSE:
+				SingletonsAndConsts.current_game_elements.pause_game_at_startup = true
+			elif assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.NO_PAUSE:
+				SingletonsAndConsts.current_game_elements.pause_game_at_startup = false
 
 
 

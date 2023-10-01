@@ -53,7 +53,8 @@ enum LevelIds {
 	LEVEL_05__STAGE_4 = 304
 	
 	LEVEL_03__STAGE_4__HARD = 350
-	LEVEL_05__STAGE_4__HARD = 351
+	LEVEL_04__STAGE_4__HARD = 351
+	LEVEL_05__STAGE_4__HARD = 352
 	
 	##
 	
@@ -316,6 +317,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.can_start_playlist_on_master = false
 		
 		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
 		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
@@ -1001,6 +1004,34 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		
+	elif arg_id == LevelIds.LEVEL_04__STAGE_4__HARD:
+		level_details.level_full_name = [
+			["4-!4 Speed 2.0", []]
+		]
+		level_details.level_name = [
+			["Speed 2.0", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!4"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
 		level_details.level_full_name = [
 			["4-5 Surface", []]
@@ -1286,6 +1317,8 @@ func generate_base_level_imp_new(arg_id):
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_4__HARD:
 		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4__Hard.gd").new()
+	elif arg_id == LevelIds.LEVEL_04__STAGE_4__HARD:
+		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4__Hard.gd").new()
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4__HARD:
 		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4__Hard.gd").new()
 		
@@ -1363,12 +1396,12 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_05__STAGE_4 : 1,
 		
 		LevelIds.LEVEL_03__STAGE_4__HARD : 1,
+		LevelIds.LEVEL_04__STAGE_4__HARD : 1,
 		LevelIds.LEVEL_05__STAGE_4__HARD : 1,
 		
 		
 		LevelIds.LEVEL_01__STAGE_5 : 1,
 		LevelIds.LEVEL_02__STAGE_5 : 1,
-		
 		
 		#
 		
@@ -1416,15 +1449,15 @@ func _initialize_monitor_of_level_status_changes():
 	
 
 func _on_GSM_level_id_completion_status_changed(arg_id, arg_status):
+	_attempt_unlock_levels_based_on_level_status_changed(arg_id, arg_status)
+	
 	if _level_id_to_level_details_map.has(arg_id):
 		var details = _level_id_to_level_details_map[arg_id]
 		_set_level_details_configs_and_params_based_on_GSM(details)
-	
-	_attempt_unlock_levels_based_on_level_status_changed(arg_id, arg_status)
+
 
 func _set_level_details_configs_and_params_based_on_GSM(arg_details : LevelDetails):
 	arg_details.is_level_locked = !GameSaveManager.is_level_id_playable(arg_details.level_id)
-	
 
 
 ###

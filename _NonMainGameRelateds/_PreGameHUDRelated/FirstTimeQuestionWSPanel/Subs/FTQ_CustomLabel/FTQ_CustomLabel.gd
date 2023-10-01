@@ -30,6 +30,8 @@ func _ready():
 	
 	tooltip_body.grow_horizontal = GROW_DIRECTION_BOTH
 	tooltip_body.grow_vertical = GROW_DIRECTION_BOTH
+	
+	tooltip_body.text_blip_sound_id_to_play = StoreOfAudio.AudioIds.SFX_GUI_CharacterBlip_FTQ
 
 func set_default_font_size(arg_size):
 	default_font_size = arg_size

@@ -355,6 +355,8 @@ onready var light_2d = $Light2D
 
 onready var player_face = $SpriteLayer/PlayerFace
 
+onready var pca_captured_drawer = $PCACapturedDrawer
+
 #onready var remote_transform_2d = $RemoteTransform2D
 
 #
@@ -1385,16 +1387,19 @@ func is_on_ground():
 
 
 func apply_inside_induced_force__with_counterforce_speed_if_applicable(arg_vector : Vector2):
-	if _is_directions_significantly_different(linear_velocity, arg_vector):
-		var new_vector = _increase_multiply_counterforce_vector(arg_vector)
-		apply_inside_induced_force(new_vector)
-		
-		#_play_particle_effect__counter_force_from_any_source(arg_vector)
-		
-		
-	else:
-		apply_inside_induced_force(arg_vector)
-		
+	apply_inside_induced_force(arg_vector)
+	
+#	if _is_directions_significantly_different(linear_velocity, arg_vector):
+#		var new_vector = _increase_multiply_counterforce_vector(arg_vector)
+#		apply_inside_induced_force(new_vector)
+#
+#		#_play_particle_effect__counter_force_from_any_source(arg_vector)
+#
+#		print("applid new vec counter: %s, orig: %s" % [new_vector, arg_vector])
+#
+#	else:
+#		apply_inside_induced_force(arg_vector)
+#
 
 # also used in Portal class. 
 # DO NOT COPY PASTE as values are different
@@ -1416,13 +1421,32 @@ func _increase_multiply_counterforce_vector(arg_vector : Vector2):
 	var x_to_use = _increase_multiply_counterforce_vector_axis(arg_vector.x, linear_velocity.x)
 	var y_to_use = _increase_multiply_counterforce_vector_axis(arg_vector.y, linear_velocity.y)
 	
+	x_to_use = _clean_up_angle__perfect_translated_for_circle_partition(x_to_use)
+	y_to_use = _clean_up_angle__perfect_translated_for_circle_partition(y_to_use)
+	
 	return Vector2(x_to_use, y_to_use)
 
 func _increase_multiply_counterforce_vector_axis(arg_vector_axis : float, arg_lin_vel_axis : float) -> float:
-	var base = arg_lin_vel_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
-	var excess_from_arg = arg_vector_axis - (base)
+	var multiplied_lin = arg_lin_vel_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+	var excess_from_arg = arg_vector_axis
+	if abs(multiplied_lin) > arg_lin_vel_axis:
+		excess_from_arg = multiplied_lin + (arg_vector_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE)
 	
-	return excess_from_arg + base
+	#print("mul: %s, excess: %s" % [multiplied_lin, excess_from_arg])
+	
+	return (multiplied_lin - excess_from_arg) * -1
+	
+#	var multiplied_lin = arg_lin_vel_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+#	if abs(multiplied_lin) >= arg_vector_axis and multiplied_lin < arg_vector_axis:
+#		multiplied_lin = arg_vector_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+#
+#	var excess_from_arg = (arg_vector_axis + multiplied_lin) / COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+#	return multiplied_lin + excess_from_arg
+	
+#	var multiplied_lin = arg_lin_vel_axis * COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+#	var excess_from_arg = (arg_vector_axis + multiplied_lin) / COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE
+#
+#	return multiplied_lin - excess_from_arg
 
 
 
@@ -1915,12 +1939,13 @@ func _stop_pca_progress_drawer():
 
 func _on_PCA_region_area_captured():
 	_stop_pca_progress_drawer()
+	pca_captured_drawer.play_captured_anim__for_PCA(_current_player_capture_area_region)
+	
 	set_current_player_capture_area_region(null)
 	
 	#
 	
 	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02, 1.0, null)
-	
 
 ##
 

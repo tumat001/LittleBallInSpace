@@ -160,7 +160,7 @@ func _on_player_on_ground_state_changed(arg_val):
 		_player_modi_energy.set_current_energy(15)
 		
 		CameraManager.camera.add_stress(2.0)
-		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 1.0, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 0.6, null)
 
 func _on_player_wakeup_sequence_finish():
 	CameraManager.reset_camera_zoom_level()
@@ -169,7 +169,8 @@ func _on_player_wakeup_sequence_finish():
 	
 	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(true)
 	_make_vbox_of_instructions__01__visible_by_tweener()
-
+	
+	SingletonsAndConsts.current_master.start_play_music_playlist_of_curr_level()
 
 func _make_vbox_of_instructions__01__visible_by_tweener():
 	var tweener = create_tween()

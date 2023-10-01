@@ -4,15 +4,17 @@
 extends Node2D
 
 
-#
-
 const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
 const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
 const With2ndCenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.gd")
 const With2ndCenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.tscn")
+const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailType.gd")
+const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
+const AttackSpritePoolComponent = preload("res://MiscRelated/AttackSpriteRelated/GenerateRelated/AttackSpritePoolComponent.gd")
 
 
 const TextureMethodHelper = preload("res://MiscRelated/TextureRelated/TextureMethodHelper.gd")
+
 
 #
 
@@ -75,6 +77,12 @@ var _ICIP_func_param
 
 var _shader_mat__capture_type_win : ShaderMaterial
 
+
+#
+
+var star_pickup_particles_pool_component : AttackSpritePoolComponent
+var trail_compo_for_star_pickup_particle : MultipleTrailsForNodeComponent
+
 #
 
 onready var tile_container = $TileContainer
@@ -105,6 +113,7 @@ func _ready():
 	_initialize_base_tilesets()
 	_attempt_init_player_capture_area_style_to_one_at_a_time()
 	call_deferred("_deferred_initialize_game_background_configs_related")
+	call_deferred("_init_all_star_pickup_related")
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
@@ -496,6 +505,7 @@ func _on_coin_collected_by_player(arg_coin):
 	_coin_audio_player.connect("finished", self, "_on_coin_audio_player_finished", [], CONNECT_ONESHOT)
 	
 	_update_game_background_configs_related()
+	_on_star_pickuped_by_player__for_particle_show(arg_coin)
 
 func _on_coin_audio_player_finished():
 	_coin_audio_player = null
@@ -533,5 +543,81 @@ func request_show_brightened_star_background__star_collectible_collected():
 func request_unshow_brightened_star_background__star_collectible_uncollected():
 	game_elements.game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
 	
+
+
+#####
+
+func _init_all_star_pickup_related():
+	trail_compo_for_star_pickup_particle = MultipleTrailsForNodeComponent.new()
+	trail_compo_for_star_pickup_particle.node_to_host_trails = self
+	trail_compo_for_star_pickup_particle.trail_type_id = StoreOfTrailType.BASIC_TRAIL
+	trail_compo_for_star_pickup_particle.connect("on_trail_before_attached_to_node", self, "_trail_before_attached_to_star_pickup_particle")
+	
+	star_pickup_particles_pool_component = AttackSpritePoolComponent.new()
+	star_pickup_particles_pool_component.source_for_funcs_for_attk_sprite = self
+	star_pickup_particles_pool_component.func_name_for_creating_attack_sprite = "_create_star_particle_pickup_particle__for_pool_compo"
+	star_pickup_particles_pool_component.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
+	star_pickup_particles_pool_component.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
+
+func _create_star_particle_pickup_particle__for_pool_compo():
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	particle.texture_to_use = preload("res://ObjectsRelated/Pickupables/Subs/Coin/Assets/StarParticlePickup/StarParticlePickup_Pic.png")
+	particle.queue_free_at_end_of_lifetime = false
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.initial_speed_towards_center = -200
+	particle.speed_accel_towards_center = 200
+	
+	particle.lifetime_to_start_transparency = 0.7
+	particle.transparency_per_sec = 1 / (particle.lifetime - particle.lifetime_to_start_transparency)
+	
+	particle.reset_for_another_use_on_ready = false
+	
+	return particle
+
+
+func create_and_show_star_particle_pickup_particle(arg_pos, arg_angle, arg_dist):
+	var particle : CenterBasedAttackSprite = star_pickup_particles_pool_component.get_or_create_attack_sprite_from_pool()
+	
+	particle.center_pos_of_basis = arg_pos
+	
+	particle.lifetime = 1.0
+	
+	trail_compo_for_star_pickup_particle.create_trail_for_node(particle)
+	
+	particle.min_starting_angle = arg_angle
+	particle.max_starting_angle = arg_angle
+	
+	particle.min_starting_distance_from_center = arg_dist
+	particle.max_starting_distance_from_center = arg_dist
+	
+	particle.rotation = arg_angle
+	
+	particle.reset_for_another_use()
+	
+	return particle
+
+#func _on_particle_ready(arg_particle):
+#	trail_compo_for_star_pickup_particle.create_trail_for_node(arg_particle)
+#	
+
+func _trail_before_attached_to_star_pickup_particle(arg_trail, arg_particle_node):
+	arg_trail.max_trail_length = 11
+	arg_trail.trail_color = Color("#FDC621")
+	arg_trail.width = 5
+	
+	arg_trail.set_to_idle_and_available_if_node_is_not_visible = true
+
+
+
+func _on_star_pickuped_by_player__for_particle_show(arg_star : Node2D):
+	var edge_poses = arg_star.get_all_poses()
+	for edge_pos in edge_poses:
+		var star_pos = arg_star.global_position
+		var edge_angle = rad2deg(edge_pos.angle())
+		var edge_length = edge_pos.length()
+		
+		create_and_show_star_particle_pickup_particle(star_pos, edge_angle, edge_length)
 
 

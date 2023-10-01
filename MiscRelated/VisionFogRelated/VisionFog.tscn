@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_CBM.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MiscRelated/VisionFogRelated/VisionFog.gd" type="Script" id=2]
+[ext_resource path="res://MiscRelated/VisionFogRelated/Assets/VisionFog_Border_Left__Black__64.png" type="Texture" id=3]
+[ext_resource path="res://MiscRelated/VisionFogRelated/Assets/VisionFog_Border_Top__Black.png" type="Texture" id=4]
+[ext_resource path="res://MiscRelated/VisionFogRelated/Assets/VisionFog_CornerPiece_TopLeft__Black__64.png" type="Texture" id=5]
+[ext_resource path="res://MiscRelated/VisionFogRelated/Assets/VisionFog_MiddleFill__Black.png" type="Texture" id=6]
+[ext_resource path="res://MiscRelated/VisionFogRelated/Assets/VisionFog_Border_Top__Black__64.png" type="Texture" id=7]
+
+[node name="VisionFog" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 1 )]
+grow_horizontal = 2
+grow_vertical = 2
+corner_piece_texture__top_left = ExtResource( 5 )
+border_piece_texture__top = ExtResource( 7 )
+border_piece_texture__left = ExtResource( 3 )
+mid_fill_texture = ExtResource( 4 )
+
+[node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
+margin_right = 192.0
+margin_bottom = 192.0
+
+[node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
+margin_right = 64.0
+margin_bottom = 64.0
+texture = ExtResource( 5 )
+
+[node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
+margin_left = 64.0
+margin_right = 128.0
+margin_bottom = 64.0
+texture = ExtResource( 7 )
+
+[node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
+margin_left = 128.0
+margin_right = 192.0
+margin_bottom = 64.0
+texture = ExtResource( 5 )
+
+[node name="Border_Left" parent="DialogTemplate_Body_CBM/GridContainer" index="3"]
+margin_top = 64.0
+margin_right = 64.0
+margin_bottom = 128.0
+texture = ExtResource( 3 )
+
+[node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 128.0
+margin_bottom = 128.0
+
+[node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
+margin_right = 64.0
+margin_bottom = 64.0
+texture = ExtResource( 6 )
+
+[node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
+margin_right = 64.0
+margin_bottom = 64.0
+
+[node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
+margin_left = 128.0
+margin_top = 64.0
+margin_right = 192.0
+margin_bottom = 128.0
+texture = ExtResource( 3 )
+
+[node name="CornerP_BotLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="6"]
+margin_top = 128.0
+margin_right = 64.0
+margin_bottom = 192.0
+texture = ExtResource( 5 )
+
+[node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
+margin_left = 64.0
+margin_top = 128.0
+margin_right = 128.0
+margin_bottom = 192.0
+texture = ExtResource( 7 )
+
+[node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
+margin_left = 128.0
+margin_top = 128.0
+margin_right = 192.0
+margin_bottom = 192.0
+texture = ExtResource( 5 )
+
+[editable path="DialogTemplate_Body_CBM"]

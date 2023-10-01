@@ -56,7 +56,7 @@ tile_data = PoolIntArray( -65514, 21, 196612, 22, 21, 262148, 65558, 21, 262148,
 [node name="BaseTileSet_NormalAboveMost" parent="TileContainer" index="5" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_NormalAboveMost" index="0"]
-tile_data = PoolIntArray( -131026, 25, 65536, -65490, 25, 0, 45, 25, 65536, 46, 25, 0, 65581, 25, 0, 65582, 25, 0, 131117, 25, 0, 131118, 25, 0, 196653, 25, 0, 196654, 25, 0, 196655, 25, 3, 196656, 25, 3, 196657, 25, 3 )
+tile_data = PoolIntArray( -131026, 25, 65536, -65490, 25, 0, 45, 25, 65536, 46, 25, 0, 65581, 25, 0, 65582, 25, 0, 131117, 25, 0, 131118, 25, 0, 196653, 25, 0, 196654, 25, 0 )
 
 [node name="BaseTileSet_Glowables" parent="TileContainer" index="6" instance=ExtResource( 3 )]
 has_glowables = true
