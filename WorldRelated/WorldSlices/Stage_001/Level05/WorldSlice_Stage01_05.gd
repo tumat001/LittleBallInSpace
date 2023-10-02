@@ -295,9 +295,9 @@ func _on_PDAR_TeachAndEnableAimMode_player_entered_in_area():
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim")
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 15.0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.connect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed")
 	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.show_highlight_of_aim_mode_swap_button()
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 	_is_displaying_switch_aim_mode = true
 
 func _on_toggle_button_of_mode_change_pressed():

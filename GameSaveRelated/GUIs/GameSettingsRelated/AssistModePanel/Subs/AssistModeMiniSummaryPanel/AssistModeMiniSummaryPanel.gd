@@ -14,7 +14,7 @@ var _assist_mode_main_panel : AssistModeMainPanel
 
 #
 
-var is_in_game : bool
+var is_in_game : bool setget set_is_in_game
 
 #
 
@@ -29,7 +29,7 @@ func _ready():
 	_update_vis_based_on_if_anything_is_unlocked__from_ready()
 	
 	_update_status_based_on_configs()
-	_connect_to_signals__based_on_states()
+	_update_connection_to_signals__based_on_states()
 
 
 func _update_vis_based_on_if_anything_is_unlocked__from_ready():
@@ -52,6 +52,12 @@ func _make_show_self__any_assist_mode_id_is_unlocked():
 
 #
 
+func set_is_in_game(arg_val):
+	is_in_game = arg_val
+	
+	_update_connection_to_signals__based_on_states()
+	_update_status_based_on_configs()
+
 func _update_status_based_on_configs():
 	var is_disabled = false
 	if SingletonsAndConsts.current_level_details != null:
@@ -62,10 +68,10 @@ func _update_status_based_on_configs():
 		label_status.text = "(Banned for This Level)"
 		label_status.modulate = MODULATE__BANNED
 	elif is_in_game:
+		#print("from GE. %s" % self)
 		if GameSettingsManager.current_assist_mode_is_active_at_current_game_elements__but_no_effect:
 			label_status.text = "(Active, but No Effect)"
 			label_status.modulate = GameSettingsManager.ASSIST_MODE__TEXT_MODULATE__LIGHT
-			
 		elif GameSettingsManager.current_assist_mode_is_active_at_current_game_elements:
 			label_status.text = "(Active)"
 			label_status.modulate = GameSettingsManager.ASSIST_MODE__TEXT_MODULATE__LIGHT
@@ -74,16 +80,23 @@ func _update_status_based_on_configs():
 			label_status.modulate = MODULATE__NORMAL
 		
 	elif !is_in_game:
+		#print("not from GE. %s" % self)
 		_update_label_status__based_on_game_settings__not_for_current_GE()
 		
 
 
-func _connect_to_signals__based_on_states():
+func _update_connection_to_signals__based_on_states():
 	if !is_in_game:
-		GameSettingsManager.connect("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed")
+		if !GameSettingsManager.is_connected("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed"):
+			GameSettingsManager.connect("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed")
+	else:
+		if GameSettingsManager.is_connected("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed"):
+			GameSettingsManager.disconnect("any_game_modifying_assist_mode_settings_changed", self, "_on_any_game_modifying_assist_mode_settings_changed")
+
 
 func _on_any_game_modifying_assist_mode_settings_changed():
-	_update_label_status__based_on_game_settings__not_for_current_GE()
+	_update_status_based_on_configs()
+	#_update_label_status__based_on_game_settings__not_for_current_GE()
 
 
 func _update_label_status__based_on_game_settings__not_for_current_GE():

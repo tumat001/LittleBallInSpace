@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=7]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_002/Level03/WorldSlice_Stage02_03.gd" type="Script" id=8]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=9]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 601.375, 554.5 )
@@ -45,6 +46,9 @@ extents = Vector2( 32, 50.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 32, 48 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 48, 22.5 )
 
 [node name="WorldSlice_Stage02_03" instance=ExtResource( 1 )]
 script = ExtResource( 8 )
@@ -165,6 +169,7 @@ shape = SubResource( 6 )
 
 [node name="PCA_SemiLast" parent="AreaRegionContainer" index="7" instance=ExtResource( 5 )]
 position = Vector2( 4567, 291 )
+duration_for_capture = 0.25
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_SemiLast" index="0"]
 position = Vector2( -7, -21.5 )
@@ -176,6 +181,14 @@ position = Vector2( -127, 289 )
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_Last" index="0"]
 position = Vector2( 31, 47 )
 shape = SubResource( 3 )
+
+[node name="PDAR_EnteringSpecialArea" parent="AreaRegionContainer" index="9" instance=ExtResource( 10 )]
+position = Vector2( 4356, 121 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_EnteringSpecialArea" index="0"]
+position = Vector2( 44, 16 )
+shape = SubResource( 13 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 205, 141 )
@@ -224,6 +237,7 @@ position = Vector2( 4560, 299 )
 position = Vector2( 4402, 217 )
 
 [connection signal="region_area_captured" from="AreaRegionContainer/PCA_SemiLast" to="." method="_on_PCA_SemiLast_region_area_captured"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_EnteringSpecialArea" to="." method="_on_PDAR_EnteringSpecialArea_player_entered_in_area"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
@@ -242,3 +256,4 @@ position = Vector2( 4402, 217 )
 [editable path="AreaRegionContainer/PCA_06"]
 [editable path="AreaRegionContainer/PCA_SemiLast"]
 [editable path="AreaRegionContainer/PCA_Last"]
+[editable path="AreaRegionContainer/PDAR_EnteringSpecialArea"]

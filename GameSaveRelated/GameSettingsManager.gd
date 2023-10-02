@@ -906,10 +906,11 @@ func set_assist_mode__pause_at_esc_id(arg_val):
 func is_current_assist_mode__pause_at_esc__has_effect():
 	return assist_mode__pause_at_esc_id != assist_mode__pause_at_esc_id__no_effect and is_assist_mode_id_unlocked(AssistModeId.PAUSE_AT_ESC_MODE)
 
+
 #### ASSIST MODE GAME MODI
 func attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all():
 	_before_game__register_current_assist_mode_id_vals()
-	_before_game__setup_assist_mode__plause_on_esc_changes()
+	_before_game__setup_assist_mode__pause_on_esc_changes()
 	
 
 func attempt_make_game_modifications__based_on_curr_assist_mode_config():
@@ -939,7 +940,7 @@ func _on_before_modi_is_configured__for_assist_mode(arg_modi):
 			arg_modi.make_assist_mode_modification__additional_launch_ball()
 	
 
-func _before_game__setup_assist_mode__plause_on_esc_changes():
+func _before_game__setup_assist_mode__pause_on_esc_changes():
 	if is_assist_mode_active:
 		if is_current_assist_mode__pause_at_esc__has_effect():
 			if assist_mode__pause_at_esc_id == AssistMode_PauseAtESCModeId.PAUSE:

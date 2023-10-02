@@ -259,6 +259,7 @@ func _rotate_nodes_to_rotate_with_cam(arg_angle):
 
 ######################
 
+# use these if you want to change the defaults
 func set_current_default_zoom_normal_vec(arg_zoom,
 		arg_use_ease_for_change : bool, arg_duration_for_ease_of_change = ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION):
 	
