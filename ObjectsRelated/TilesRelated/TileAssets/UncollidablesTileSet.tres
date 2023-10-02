@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=30 format=2]
+[gd_resource type="TileSet" load_steps=31 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -29,6 +29,7 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor01.png" type="Texture" id=27]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_DarkMetal_Uncollidables__InternalWallAndWindows.png" type="Texture" id=28]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_DarkMetal_Uncollidables__Research_Enemy.png" type="Texture" id=29]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_DarkMetal_Uncollidables__Research_InfBalls.png" type="Texture" id=30]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -682,3 +683,24 @@
 30/shape_one_way_margin = 0.0
 30/shapes = [  ]
 30/z_index = 0
+31/name = "Tileset_DarkMetal_Uncollidables__Research_InfBalls.png 31"
+31/texture = ExtResource( 30 )
+31/tex_offset = Vector2( 0, 0 )
+31/modulate = Color( 1, 1, 1, 1 )
+31/region = Rect2( 0, 0, 160, 192 )
+31/tile_mode = 2
+31/autotile/icon_coordinate = Vector2( 0, 0 )
+31/autotile/tile_size = Vector2( 32, 32 )
+31/autotile/spacing = 0
+31/autotile/occluder_map = [  ]
+31/autotile/navpoly_map = [  ]
+31/autotile/priority_map = [  ]
+31/autotile/z_index_map = [  ]
+31/occluder_offset = Vector2( 0, 0 )
+31/navigation_offset = Vector2( 0, 0 )
+31/shape_offset = Vector2( 0, 0 )
+31/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+31/shape_one_way = false
+31/shape_one_way_margin = 0.0
+31/shapes = [  ]
+31/z_index = 0

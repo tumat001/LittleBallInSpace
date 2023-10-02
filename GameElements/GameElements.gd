@@ -60,6 +60,10 @@ var _is_in_cutscene : bool
 
 #
 
+var node_2d_to_receive_cam_focus__at_ready_start : Node2D
+
+#
+
 onready var world_manager = $GameContainer/WorldManager
 onready var player_modi_manager = $GameContainer/PlayerModiManager
 
@@ -101,12 +105,13 @@ func _ready():
 	
 	current_base_level = SingletonsAndConsts.current_base_level
 	current_base_level.apply_modification_to_game_elements(self)
+	world_manager.apply_slices_modification_to_game_elements__from_ready()
 	
 	player_modi_manager.game_elements = self
 	if !is_instance_valid(_current_player):
 		var player = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE().spawn_player_at_spawn_coords_index()
 		player_container.add_child(player)
-		_set_player__and_register_signals(player)
+		_set_player__and_register_signals__at_ready(player)
 		
 		GameSaveManager.set_player(player)
 		game_result_manager.set_player(player)
@@ -142,18 +147,25 @@ func _deferred__after_init():
 
 #
 
-func _set_player__and_register_signals(arg_player : Player):
+func _set_player__and_register_signals__at_ready(arg_player : Player):
 	_current_player = arg_player
 	
 	_current_player.connect("request_rotate", self, "_on_current_player_request_rotate", [], CONNECT_PERSIST)
 	
 	CameraManager.generate_camera()
-	give_camera_focus_and_follow_to_player()
+	
+	if !is_instance_valid(node_2d_to_receive_cam_focus__at_ready_start):
+		give_camera_focus_and_follow_to_player()
+	else:
+		give_camera_focus_to_node(node_2d_to_receive_cam_focus__at_ready_start)
+
 #
 
 func give_camera_focus_and_follow_to_player():
 	CameraManager.set_camera_to_follow_node_2d(_current_player)
 
+func give_camera_focus_to_node(arg_node):
+	CameraManager.set_camera_to_follow_node_2d(arg_node)
 
 ###
 

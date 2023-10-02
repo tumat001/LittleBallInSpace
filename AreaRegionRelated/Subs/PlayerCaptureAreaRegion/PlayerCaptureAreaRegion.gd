@@ -19,6 +19,10 @@ export(float) var ratio_duration_reduction_on_no_occupancy_per_sec : float = 0.5
 
 #
 
+var can_line_be_drawn_to_self_by_pca_line_dir_drawer : bool = true
+
+#
+
 var player_PCA_progress_drawer__outline_color : Color
 var player_PCA_progress_drawer__fill_color : Color
 

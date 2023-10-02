@@ -140,6 +140,9 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 
 ####
 
+func _apply_modification_to_game_elements():
+	pass
+
 func _on_before_game_start_init():
 	pass
 

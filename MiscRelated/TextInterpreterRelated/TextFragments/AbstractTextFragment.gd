@@ -18,6 +18,11 @@ enum DESCRIPTION_TYPE {
 	ENERGIZED_TILES = 202,
 	INSTANT_GROUNDED_TILES = 203,
 	
+	
+	BUTTON = 300,
+	CAPTURE_AREA = 301,
+	LAUNCH_BALL_AMMO__INFINITE = 302,
+	
 }
 
 # dark colored text
@@ -37,6 +42,11 @@ const type_to_for_light_color_map : Dictionary = {
 	DESCRIPTION_TYPE.BREAKABLE_TILES: "#507997",
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "#A67100",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "#9C2400",
+	
+	DESCRIPTION_TYPE.BUTTON : "#0E016D",
+	DESCRIPTION_TYPE.CAPTURE_AREA : "#284F01",
+	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "#5C2E00",
+	
 }
 
 # light colored text
@@ -56,6 +66,11 @@ const type_to_for_dark_color_map : Dictionary = {
 	DESCRIPTION_TYPE.BREAKABLE_TILES: "#93BCCB",
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "#EAB513",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "#CE6624",
+	
+	DESCRIPTION_TYPE.BUTTON : "#BBB3FF",
+	DESCRIPTION_TYPE.CAPTURE_AREA : "#7BFD68",
+	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "#FFC285",
+	
 }
 
 
@@ -75,6 +90,10 @@ const type_to_name_map : Dictionary = {
 	DESCRIPTION_TYPE.ENERGIZED_TILES: "Energized Tiles",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES: "Grounded Tiles",
 	
+	DESCRIPTION_TYPE.BUTTON : "Button",
+	DESCRIPTION_TYPE.CAPTURE_AREA : "Capture Area",
+	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "Launch Ball Ammo",
+	
 }
 
 const type_to_img_map__for_dark : Dictionary = {
@@ -88,6 +107,10 @@ const type_to_img_map__for_dark : Dictionary = {
 	DESCRIPTION_TYPE.ENERGIZED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_EnergizedTiles_ForDark.png",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_GroundTiles_ForDark.png",
 	
+	DESCRIPTION_TYPE.BUTTON : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Button_ForDark.png",
+	DESCRIPTION_TYPE.CAPTURE_AREA : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_CapturePoint_ForDark.png",
+	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForDark.png",
+	
 }
 
 const type_to_img_map__for_light : Dictionary  = {
@@ -100,6 +123,11 @@ const type_to_img_map__for_light : Dictionary  = {
 	DESCRIPTION_TYPE.BREAKABLE_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_BreakableTiles_ForLight.png",
 	DESCRIPTION_TYPE.ENERGIZED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_EnergizedTiles_ForLight.png",
 	DESCRIPTION_TYPE.INSTANT_GROUNDED_TILES : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_GroundTiles_ForLight.png",
+	
+	DESCRIPTION_TYPE.BUTTON : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Button_ForLight.png",
+	DESCRIPTION_TYPE.CAPTURE_AREA : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_CapturePoint_ForLight.png",
+	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForLight.png",
+	
 	
 }
 

@@ -46,7 +46,7 @@ func _draw():
 func _draw_lines_towards_all_uncaptured_player_capture_area_regions():
 	if is_show_lines_to_uncaptured_player_capture_regions:
 		for uncaptured_pca in world_manager.get_all_uncaptured_pca():
-			if uncaptured_pca.visible:
+			if uncaptured_pca.visible and uncaptured_pca.can_line_be_drawn_to_self_by_pca_line_dir_drawer:
 				var line_beginning = Vector2(-45, 0)
 				var line_ending = Vector2(-60, 0)
 				

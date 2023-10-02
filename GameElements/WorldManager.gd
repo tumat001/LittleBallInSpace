@@ -36,7 +36,6 @@ func add_world_slice(arg_world_slice_id, arg_glob_pos : Vector2):
 	add_child(world_slice)
 	_register_world_slice(world_slice)
 
-
 func _register_world_slice(arg_world_slice : AbstractWorldSlice):
 	_all_world_slices.append(arg_world_slice)
 	
@@ -66,6 +65,13 @@ func get_world_slice__can_spawn_player_when_no_current_player_in_GE() -> Abstrac
 			return world_slice
 	
 	return null
+
+#
+
+func apply_slices_modification_to_game_elements__from_ready():
+	for world_slice in _all_world_slices:
+		world_slice._apply_modification_to_game_elements()
+	
 
 ##
 

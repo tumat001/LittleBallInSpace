@@ -2,7 +2,6 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
 
-
 #
 
 var _speed_for_break
