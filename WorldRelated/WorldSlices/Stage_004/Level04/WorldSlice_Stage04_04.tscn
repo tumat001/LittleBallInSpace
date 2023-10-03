@@ -33,7 +33,7 @@ extents = Vector2( 291, 101.5 )
 extents = Vector2( 90, 43.5 )
 
 [sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 93.75, 83.5 )
+extents = Vector2( 93.75, 117.75 )
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 96, 16 )
@@ -121,7 +121,6 @@ position = Vector2( -46, -43 )
 shape = SubResource( 2 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="2" instance=ExtResource( 8 )]
-visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( 556, 6.25 )
@@ -140,7 +139,7 @@ position = Vector2( 878, 225 )
 shape = SubResource( 6 )
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="4"]
-position = Vector2( -92.75, 93 )
+position = Vector2( -92.75, 58.75 )
 shape = SubResource( 7 )
 
 [node name="PDAR_FogLifter" parent="AreaRegionContainer" index="3" instance=ExtResource( 11 )]

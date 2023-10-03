@@ -9,4 +9,5 @@ func _init():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	
+	GameSettingsManager.set_secondary_game_control_id__unlocked_status(GameSettingsManager.SecondaryControlId.MOUSE_SCROLL__LAUNCH_BALL, true)
+

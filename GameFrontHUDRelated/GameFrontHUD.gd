@@ -2,6 +2,7 @@ extends CanvasLayer
 
 
 onready var other_hosters = $OtherHosters
+onready var other_hud_non_screen_hosters = $OtherHUDNonScreenHosters
 
 onready var ability_panel = $ControlContainer/AbilityPanel
 onready var energy_panel = $ControlContainer/VBoxContainer/MarginContainer/EnergyPanel

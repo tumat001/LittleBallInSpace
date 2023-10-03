@@ -1,11 +1,12 @@
 extends Sprite
 
-const SmallStarPic_0000 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0000.png")
-const SmallStarPic_0001 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0001.png")
-const SmallStarPic_0002 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0002.png")
-const SmallStarPic_0003 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0003.png")
-const SmallStarPic_0004 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0004.png")
-const SmallStarPic_0005 = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/Particles/Assets/LevelUnlock_BeforeBurst_Stream/LevelUnlock_BeforeBurst_Stream_0005.png")
+const SmallStarPic_0000 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0000.png")
+const SmallStarPic_0001 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0001.png")
+const SmallStarPic_0002 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0002.png")
+const SmallStarPic_0003 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0003.png")
+const SmallStarPic_0004 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0004.png")
+const SmallStarPic_0005 = preload("res://GameBackgroundRelated/Subs/Star/Assets/SmallStar0005.png")
+
 
 const all_star_pics = [
 	SmallStarPic_0000,

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://GameFrontHUDRelated/NonGameSubs/OutOfMapBoundsWarningPanel/OutOfMapBoundsWarningPanel.tscn" type="PackedScene" id=14]
 [ext_resource path="res://GameFrontHUDRelated/GFH_ControlFocuserDrawer.gd" type="Script" id=15]
 [ext_resource path="res://GameFrontHUDRelated/Subs/PCARCapturedPanel/PCARCapturedPanel.tscn" type="PackedScene" id=16]
+[ext_resource path="res://GameFrontHUDRelated/OtherHUDNonScreenHosters.tscn" type="PackedScene" id=17]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 10 )
@@ -27,6 +28,8 @@ shader_param/shake_color_rate = 0.01
 [node name="GameFrontHUD" type="CanvasLayer"]
 pause_mode = 2
 script = ExtResource( 1 )
+
+[node name="OtherHUDNonScreenHosters" parent="." instance=ExtResource( 17 )]
 
 [node name="NonGUIScreenShaderSprite" type="Sprite" parent="."]
 material = SubResource( 1 )

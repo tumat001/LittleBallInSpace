@@ -202,128 +202,125 @@ triggerable_only_once = true
 position = Vector2( 28.75, 35.75 )
 shape = SubResource( 12 )
 
-[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
-position = Vector2( 217, 178 )
-
-[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 3 )]
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 184, 176 )
 launch_ball_type = 3
 
-[node name="Pickupable_Battery" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
 position = Vector2( 367, -41 )
 battery_type = 2
 
-[node name="Pickupable_Battery2" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery2" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
 position = Vector2( 1040, 66 )
 battery_type = 2
 
-[node name="Pickupable_Battery24" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery24" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( 1124, -1 )
 battery_type = 1
 
-[node name="Pickupable_Battery3" parent="ObjectContainer" index="5" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery3" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
 position = Vector2( 1199, -269 )
 battery_type = 2
 
-[node name="Portal_Blue01" parent="ObjectContainer" index="6" instance=ExtResource( 5 )]
+[node name="Portal_Blue01" parent="ObjectContainer" index="5" instance=ExtResource( 5 )]
 position = Vector2( 1876, 53 )
 portal_to_link_with__path = NodePath("../Portal_Blue02")
 
-[node name="Portal_Blue02" parent="ObjectContainer" index="7" instance=ExtResource( 5 )]
+[node name="Portal_Blue02" parent="ObjectContainer" index="6" instance=ExtResource( 5 )]
 position = Vector2( -2361, 1459 )
 portal_to_link_with__path = NodePath("../Portal_Blue01")
 
-[node name="Pickupable_Battery4" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery4" parent="ObjectContainer" index="7" instance=ExtResource( 7 )]
 position = Vector2( -2338, 1533 )
 battery_type = 2
 
-[node name="Pickupable_Battery10" parent="ObjectContainer" index="9" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery10" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
 position = Vector2( -2375, 1534 )
 battery_type = 2
 
-[node name="Pickupable_Battery5" parent="ObjectContainer" index="10" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery5" parent="ObjectContainer" index="9" instance=ExtResource( 7 )]
 position = Vector2( -2445, 1690 )
 battery_type = 1
 
-[node name="Pickupable_Battery6" parent="ObjectContainer" index="11" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery6" parent="ObjectContainer" index="10" instance=ExtResource( 7 )]
 position = Vector2( -2700, 1701 )
 battery_type = 1
 
-[node name="Pickupable_Battery7" parent="ObjectContainer" index="12" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery7" parent="ObjectContainer" index="11" instance=ExtResource( 7 )]
 position = Vector2( -2701, 1543 )
 battery_type = 1
 
-[node name="Pickupable_Battery8" parent="ObjectContainer" index="13" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery8" parent="ObjectContainer" index="12" instance=ExtResource( 7 )]
 position = Vector2( -2601, 1444 )
 battery_type = 1
 
-[node name="Pickupable_Battery9" parent="ObjectContainer" index="14" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery9" parent="ObjectContainer" index="13" instance=ExtResource( 7 )]
 position = Vector2( -2412, 1443 )
 battery_type = 2
 
-[node name="Pickupable_Battery11" parent="ObjectContainer" index="15" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery11" parent="ObjectContainer" index="14" instance=ExtResource( 7 )]
 position = Vector2( 2095, 39 )
 battery_type = 2
 
-[node name="Portal_Red01" parent="ObjectContainer" index="16" instance=ExtResource( 5 )]
+[node name="Portal_Red01" parent="ObjectContainer" index="15" instance=ExtResource( 5 )]
 position = Vector2( 2622, -176 )
 portal_color = 0
 portal_to_link_with__path = NodePath("../Portal_Red02")
 
-[node name="Portal_Red02" parent="ObjectContainer" index="17" instance=ExtResource( 5 )]
+[node name="Portal_Red02" parent="ObjectContainer" index="16" instance=ExtResource( 5 )]
 position = Vector2( -2525, -1297 )
 portal_color = 0
 portal_to_link_with__path = NodePath("../Portal_Red01")
 
-[node name="Pickupable_Battery12" parent="ObjectContainer" index="18" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery12" parent="ObjectContainer" index="17" instance=ExtResource( 7 )]
 position = Vector2( -2377, -1298 )
 battery_type = 2
 
-[node name="Pickupable_Battery21" parent="ObjectContainer" index="19" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery21" parent="ObjectContainer" index="18" instance=ExtResource( 7 )]
 position = Vector2( -2614, -1223 )
 battery_type = 2
 
-[node name="Pickupable_Battery13" parent="ObjectContainer" index="20" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery13" parent="ObjectContainer" index="19" instance=ExtResource( 7 )]
 position = Vector2( -2220, -1392 )
 battery_type = 1
 
-[node name="Pickupable_Battery14" parent="ObjectContainer" index="21" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery14" parent="ObjectContainer" index="20" instance=ExtResource( 7 )]
 position = Vector2( -2168, -1508 )
 battery_type = 2
 
-[node name="Pickupable_Battery15" parent="ObjectContainer" index="22" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery15" parent="ObjectContainer" index="21" instance=ExtResource( 7 )]
 position = Vector2( -2272, -1565 )
 battery_type = 1
 
-[node name="Pickupable_Battery16" parent="ObjectContainer" index="23" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery16" parent="ObjectContainer" index="22" instance=ExtResource( 7 )]
 position = Vector2( -2355, -1639 )
 battery_type = 2
 
-[node name="Pickupable_Battery17" parent="ObjectContainer" index="24" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery17" parent="ObjectContainer" index="23" instance=ExtResource( 7 )]
 position = Vector2( -2484, -1585 )
 battery_type = 1
 
-[node name="Pickupable_Battery18" parent="ObjectContainer" index="25" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery18" parent="ObjectContainer" index="24" instance=ExtResource( 7 )]
 position = Vector2( -2520, -1443 )
 battery_type = 2
 
-[node name="Pickupable_Battery19" parent="ObjectContainer" index="26" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery19" parent="ObjectContainer" index="25" instance=ExtResource( 7 )]
 position = Vector2( -2483, -1197 )
 battery_type = 1
 
-[node name="Pickupable_Battery20" parent="ObjectContainer" index="27" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery20" parent="ObjectContainer" index="26" instance=ExtResource( 7 )]
 position = Vector2( -2643, -1336 )
 battery_type = 1
 
-[node name="Pickupable_Battery22" parent="ObjectContainer" index="28" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery22" parent="ObjectContainer" index="27" instance=ExtResource( 7 )]
 position = Vector2( -2210, -1627 )
 battery_type = 1
 
-[node name="Pickupable_Battery23" parent="ObjectContainer" index="29" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery23" parent="ObjectContainer" index="28" instance=ExtResource( 7 )]
 position = Vector2( -2452, -1376 )
 battery_type = 2
 
-[node name="Object_InteractableButton" parent="ObjectContainer" index="30" instance=ExtResource( 9 )]
+[node name="Object_InteractableButton" parent="ObjectContainer" index="29" instance=ExtResource( 9 )]
 position = Vector2( -2328, -1432 )
 rotation = 3.14159
 body_mode_to_use = 1

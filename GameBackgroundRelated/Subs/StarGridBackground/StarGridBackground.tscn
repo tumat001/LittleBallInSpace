@@ -3,5 +3,5 @@
 [ext_resource path="res://GameBackgroundRelated/Subs/StarGridBackground/StarGridBackground.gd" type="Script" id=1]
 
 [node name="StarGridBackground" type="ParallaxLayer"]
-motion_mirroring = Vector2( 2, 2 )
+motion_mirroring = Vector2( 960, 540 )
 script = ExtResource( 1 )

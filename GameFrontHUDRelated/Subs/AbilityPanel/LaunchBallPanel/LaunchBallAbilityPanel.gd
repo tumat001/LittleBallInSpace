@@ -49,6 +49,8 @@ onready var aim_mode_swap_button = $FreeFormControl/ModeContainer/FreeFormContro
 
 onready var free_form_control = $FreeFormControl
 
+onready var pos_of_center_ball = $FreeFormControl/PosOfCenterBall
+
 #
 
 func set_player_modi_launch_ball(arg_modi):
@@ -227,4 +229,9 @@ func template__do_brief_glowup(arg_delay_for_func_call, arg_func_source, arg_fun
 	tween.tween_interval(0.5)
 	tween.tween_property(free_form_control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.5)
 	tween.tween_callback(arg_func_source, arg_func_name, [arg_func_params]).set_delay(arg_delay_for_func_call)
+
+#
+
+func get_pos_of_center_ball_hud_image() -> Vector2:
+	return pos_of_center_ball.global_position
 

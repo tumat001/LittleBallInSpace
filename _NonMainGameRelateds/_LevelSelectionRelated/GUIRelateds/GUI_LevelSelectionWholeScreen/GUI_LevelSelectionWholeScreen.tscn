@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_DialogPanel.png" type="Texture" id=2]
@@ -8,11 +8,18 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/LevelsCompletedPanel.tscn" type="PackedScene" id=6]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelDetailsPanel/GUI_LevelDetailsPanel.tscn" type="PackedScene" id=7]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelLayoutShortcutPanel/GUI_LevelLayoutShortcutPanel.tscn" type="PackedScene" id=8]
+[ext_resource path="res://GameBackgroundRelated/GameBackground.tscn" type="PackedScene" id=9]
 
 [node name="GUI_LevelSelectionLayout" type="Control"]
 margin_right = 960.0
 margin_bottom = 540.0
 script = ExtResource( 1 )
+
+[node name="GameBackground" parent="." instance=ExtResource( 9 )]
+background_tween_duration = 1.5
+
+[node name="StarGridBackground" parent="GameBackground" index="1"]
+delay_per_star_show_or_hide = 0.02
 
 [node name="AbstractLevelLayoutContainer" type="Control" parent="."]
 margin_right = 960.0
@@ -108,3 +115,5 @@ mouse_filter = 2
 
 [node name="CircularDrawNode_CircleBurst" type="Node2D" parent="."]
 script = ExtResource( 5 )
+
+[editable path="GameBackground"]

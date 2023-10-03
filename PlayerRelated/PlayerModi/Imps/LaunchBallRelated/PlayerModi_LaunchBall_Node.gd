@@ -38,6 +38,10 @@ var _has_reached_max_at_least_once : bool
 
 #
 
+var _can_auto_change_launch_force_by_waiting : bool
+
+#
+
 var _current_color_to_use_for_draw : Color
 
 #
@@ -117,45 +121,40 @@ func is_charging_launch():
 #
 
 func _process(delta):
-	var effective_delta = delta
-	if _current_delay_before_increase_launch > 0:
-		_current_delay_before_increase_launch -= delta
-		if _current_delay_before_increase_launch < 0:
-			effective_delta += _current_delay_before_increase_launch
-	
-	
-	#
-	
-	if _has_reached_max_at_least_once:
-		if current_launch_force == _starting_launch_force:
-			_current_launch_peak_wait_before_alternate -= delta
-			
-			if _current_launch_peak_wait_before_alternate <= 0:
-				_launch_neg_multiplier = 1
-				_current_launch_peak_wait_before_alternate = _launch_peak_wait_before_alternate
-			
-		elif current_launch_force == _max_launch_force:
-			_current_launch_peak_wait_before_alternate -= delta
-			
-			if _current_launch_peak_wait_before_alternate <= 0:
-				_launch_neg_multiplier = -1
-				_current_launch_peak_wait_before_alternate = _launch_peak_wait_before_alternate
-			
-	
-	#
-	
-	if _current_delay_before_increase_launch <= 0:
-		current_launch_force += _launch_force_per_sec * effective_delta * _launch_neg_multiplier
-		if current_launch_force > _max_launch_force:
-			current_launch_force = _max_launch_force
-			
-			_has_reached_max_at_least_once = true
-			
-		elif current_launch_force < _starting_launch_force:
-			current_launch_force = _starting_launch_force
-			
+	if _can_auto_change_launch_force_by_waiting:
+		var effective_delta = delta
+		if _current_delay_before_increase_launch > 0:
+			_current_delay_before_increase_launch -= delta
+			if _current_delay_before_increase_launch < 0:
+				effective_delta += _current_delay_before_increase_launch
 		
-		_set_current_launch_force(current_launch_force)
+		
+		#
+		
+		if _has_reached_max_at_least_once:
+			if current_launch_force == _starting_launch_force:
+				_current_launch_peak_wait_before_alternate -= delta
+				
+				if _current_launch_peak_wait_before_alternate <= 0:
+					_launch_neg_multiplier = 1
+					_current_launch_peak_wait_before_alternate = _launch_peak_wait_before_alternate
+				
+			elif current_launch_force == _max_launch_force:
+				_current_launch_peak_wait_before_alternate -= delta
+				
+				if _current_launch_peak_wait_before_alternate <= 0:
+					_launch_neg_multiplier = -1
+					_current_launch_peak_wait_before_alternate = _launch_peak_wait_before_alternate
+				
+		
+		#
+		
+		if _current_delay_before_increase_launch <= 0:
+			current_launch_force += _launch_force_per_sec * effective_delta * _launch_neg_multiplier
+			if current_launch_force > _max_launch_force:
+				_has_reached_max_at_least_once = true
+			
+			_set_current_launch_force(current_launch_force)
 	
 	#
 	
@@ -170,6 +169,11 @@ func _process(delta):
 func _set_current_launch_force(arg_val):
 	current_launch_force = arg_val
 	
+	if current_launch_force > _max_launch_force:
+		current_launch_force = _max_launch_force
+	elif current_launch_force < _starting_launch_force:
+		current_launch_force = _starting_launch_force
+	
 	var is_min = current_launch_force == _starting_launch_force
 	var is_max = current_launch_force == _max_launch_force
 	var strength_factor_from_0_to_2 = get_launch_force_as_range_from_0_to_2()
@@ -177,6 +181,12 @@ func _set_current_launch_force(arg_val):
 
 #
 
+func increment_current_launch__from_using_mouse_wheel(arg_increment):
+	_set_current_launch_force(current_launch_force + arg_increment)
+	_can_auto_change_launch_force_by_waiting = false
+
+
+#
 
 func set_node_to_follow(arg_node : Node2D):
 	_node_to_follow = arg_node
@@ -188,10 +198,10 @@ func begin_launch_charge(arg_starting_launch_force : float,
 		arg_launch_peak_wait_before_alternate : float):
 	
 	_starting_launch_force = arg_starting_launch_force
+	_max_launch_force = arg_max_launch_force
 	#current_launch_force = arg_starting_launch_force
 	_set_current_launch_force(arg_starting_launch_force)
 	_launch_force_per_sec = arg_launch_force_per_sec
-	_max_launch_force = arg_max_launch_force
 	_current_delay_before_increase_launch = arg_initial_launch_force_delay_before_gain
 	_launch_peak_wait_before_alternate = arg_launch_peak_wait_before_alternate
 	_current_launch_peak_wait_before_alternate = _launch_peak_wait_before_alternate
@@ -199,6 +209,7 @@ func begin_launch_charge(arg_starting_launch_force : float,
 	_launch_neg_multiplier = 1
 	#_is_reducing_launch_force = false
 	_has_reached_max_at_least_once = false
+	_can_auto_change_launch_force_by_waiting = true
 	
 	set_is_charging_launch(true)
 

@@ -35,6 +35,8 @@ onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel
 onready var particles_container = $ParticlesContainer
 onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
 
+onready var game_background = $GameBackground
+
 #
 
 #############
@@ -121,6 +123,12 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor):
 		
 		layout_scene.layout_ele_id_to_summon_cursor_to = arg_layout_element_id_of_cursor
 		_set_level_layout_as_current_and_active(layout_scene)
+		
+		
+		if StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id):
+			game_background.request_show_brightened_star_background__star_collectible_collected()
+		else:
+			game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
 
 
 func _set_level_layout_as_inactive(layout_scene : GUI_AbstractLevelLayout):

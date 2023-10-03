@@ -18,6 +18,8 @@ export(Vector2) var grid_cell_dist_count_consume_on_star_placed : Vector2
 export(int) var visible_star_count : int = 8 setget set_visible_star_count
 var _current_visible_stars : Array
 
+export(float) var delay_per_star_show_or_hide : float = 0.25
+
 #
 
 var _available_grid_cell_poses : Array
@@ -154,7 +156,7 @@ func _start_star_vis_setter_tweener__show_until():
 	_star_vis_setter_tweener = create_tween()
 	_star_vis_setter_tweener.set_loops()
 	_star_vis_setter_tweener.tween_callback(self, "_show_star__via_setter_tweener")
-	_star_vis_setter_tweener.tween_interval(0.25)
+	_star_vis_setter_tweener.tween_interval(delay_per_star_show_or_hide)
 
 func _show_star__via_setter_tweener():
 	var index = _current_visible_stars.size()
@@ -176,7 +178,7 @@ func _start_star_vis_setter_tweener__hide_until():
 	_star_vis_setter_tweener = create_tween()
 	_star_vis_setter_tweener.set_loops()
 	_star_vis_setter_tweener.tween_callback(self, "_hide_star__via_setter_tweener")
-	_star_vis_setter_tweener.tween_interval(0.25)
+	_star_vis_setter_tweener.tween_interval(delay_per_star_show_or_hide)
 
 func _hide_star__via_setter_tweener():
 	var star = _current_visible_stars.pop_back()

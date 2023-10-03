@@ -1,9 +1,6 @@
 ######################
 # NOTE:
 # WHEN ADDING ASSIST MODES or ids, check: AssistModeDetailsHelper Class
-
-
-#todo fix assist mode hud
 extends Node
 
 #
@@ -16,7 +13,7 @@ signal settings_manager_initialized()
 
 
 signal game_control_is_hidden_changed(arg_game_control_name, arg_is_hidden)
-
+signal secondary_game_control_is_unlocked_changed(arg_secondaty_game_control_id, arg_is_unlocked)
 
 signal game_control_hotkey_changed(arg_game_control_action, arg_old_hotkey, arg_new_hotkey)
 signal conflicting_game_controls_hotkey_changed(arg_last_calc_game_controls_in_conflicts)
@@ -85,7 +82,14 @@ const GAME_CONTROLS_TO_ALLOW_HOTKEY_SHARING_WITH_NO_WARNING = [
 
 ##
 
-#const hotkey_controls_file_path = "user://game_hotkey_controls.save"
+const SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER = "SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER"
+enum SecondaryControlId {
+	MOUSE_SCROLL__LAUNCH_BALL = 0,
+}
+
+var _secondary_game_control_id_to_is_unlocked_map : Dictionary
+
+var last_calc__unlocked_status__mouse_scroll_launch_ball
 
 ##########################
 ## general settings
@@ -292,6 +296,7 @@ func _notification(what):
 func _save_game_control_related_data():
 	var save_dict = {
 		GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER : _game_control_name_string_to_is_hidden_map,
+		SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER : _secondary_game_control_id_to_is_unlocked_map
 	}
 	
 	_save_using_dict(save_dict, game_control_settings_file_path, "SAVE ERROR: Control settings")
@@ -308,16 +313,16 @@ func _attempt_load_game_controls_related_data():
 			print("Loading error! -- Game control settings data")
 			return false
 		
-		_load_game_controls_related_data(load_file)
+		_load_main_and_secondary_game_controls_related_data(load_file)
 		
 		load_file.close()
 		return true
 		
 	else:
-		_load_game_controls_related_data(null)
+		_load_main_and_secondary_game_controls_related_data(null)
 		return false
 
-func _load_game_controls_related_data(arg_file : File):
+func _load_main_and_secondary_game_controls_related_data(arg_file : File):
 	var data : Dictionary
 	if arg_file != null:
 		data = parse_json(arg_file.get_line())
@@ -331,6 +336,14 @@ func _load_game_controls_related_data(arg_file : File):
 		_game_control_name_string_to_is_hidden_map = data[GAME_CONTROL_ID_TO_IS_HIDDEN_MAP__DIC_IDENTIFIER]
 	else:
 		_initialize_game_control_name_string_map__from_nothing()
+	
+	##
+	
+	if data.has(SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER):
+		#_secondary_game_control_id_to_is_unlocked_map = data[SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER]
+		_initialize_secondary_game_control_name_string_map__from_save_dict(data[SECONDARY_GAME_CONTROLS_ID_TO_IS_UNLOCKED_MAP__DIC_IDENTIFIER])
+	else:
+		_initialize_secondary_game_control_name_string_map__from_nothing()
 		
 	
 
@@ -367,6 +380,40 @@ func is_any_game_control_name_hidden() -> bool:
 			return true
 	
 	return false
+
+
+## secondary
+
+func _initialize_secondary_game_control_name_string_map__from_save_dict(arg_dict : Dictionary):
+	for control_id in arg_dict.keys():
+		set_secondary_game_control_id__unlocked_status(int(control_id), arg_dict[control_id])
+	
+	for control_id in SecondaryControlId.values():
+		if !_secondary_game_control_id_to_is_unlocked_map.has(control_id):
+			set_secondary_game_control_id__unlocked_status(control_id, false)
+
+
+func _initialize_secondary_game_control_name_string_map__from_nothing():
+	for control_id in SecondaryControlId.values():
+		#_secondary_game_control_id_to_is_unlocked_map[control_id] = false
+		set_secondary_game_control_id__unlocked_status(control_id, false)
+
+
+func set_secondary_game_control_id__unlocked_status(arg_control_id, arg_is_unlocked : bool):
+	_secondary_game_control_id_to_is_unlocked_map[arg_control_id] = arg_is_unlocked
+	
+	if arg_control_id == SecondaryControlId.MOUSE_SCROLL__LAUNCH_BALL:
+		last_calc__unlocked_status__mouse_scroll_launch_ball = arg_is_unlocked
+	
+	emit_signal("secondary_game_control_is_unlocked_changed", arg_control_id, arg_is_unlocked)
+
+func get_secondary_game_control_id__unlocked_status(arg_control_id):
+	return _secondary_game_control_id_to_is_unlocked_map[arg_control_id]
+
+
+func get_last_calc__unlocked_status__mouse_scroll_launch_ball():
+	return last_calc__unlocked_status__mouse_scroll_launch_ball
+
 
 ####################################
 ## GENERAL SETTINGS

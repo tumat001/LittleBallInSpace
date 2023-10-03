@@ -104,9 +104,12 @@ func _on_game_front_hud_initialized(arg_hud):
 
 #
 
-func inc_current_energy(arg_amount, arg_source_id = -1):
+# returns the applied effective increase
+func inc_current_energy(arg_amount, arg_source_id = -1) -> float:
+	var old_amount = _current_energy
 	set_current_energy(_current_energy + arg_amount, arg_source_id)
 	
+	return _current_energy - old_amount
 
 func dec_current_energy(arg_amount, arg_source_id = -1):
 	set_current_energy(_current_energy - arg_amount, arg_source_id)

@@ -109,120 +109,117 @@ is_hidden_and_silent = true
 position = Vector2( 2033, -988 )
 shape = SubResource( 4 )
 
-[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
-position = Vector2( 156, 143 )
-
-[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 3 )]
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 187, 143 )
 launch_ball_type = 3
 
-[node name="Portal_Blue01" parent="ObjectContainer" index="2" instance=ExtResource( 5 )]
+[node name="Portal_Blue01" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
 position = Vector2( 424, 64 )
 portal_to_link_with__path = NodePath("../Portal_Blue02")
 
-[node name="Portal_Blue02" parent="ObjectContainer" index="3" instance=ExtResource( 5 )]
+[node name="Portal_Blue02" parent="ObjectContainer" index="2" instance=ExtResource( 5 )]
 modulate = Color( 0.5, 0.5, 0.5, 0.85 )
 position = Vector2( 788, 28 )
 is_disabled = true
 portal_to_link_with__path = NodePath("../Portal_Blue01")
 
-[node name="Pickupable_Battery" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( 1105, 259 )
 battery_type = 2
 
-[node name="Pickupable_Battery2" parent="ObjectContainer" index="5" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery2" parent="ObjectContainer" index="4" instance=ExtResource( 7 )]
 position = Vector2( 1238, 169 )
 battery_type = 2
 
-[node name="Pickupable_Battery3" parent="ObjectContainer" index="6" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery3" parent="ObjectContainer" index="5" instance=ExtResource( 7 )]
 position = Vector2( 1301, 34 )
 battery_type = 2
 
-[node name="Pickupable_Battery4" parent="ObjectContainer" index="7" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery4" parent="ObjectContainer" index="6" instance=ExtResource( 7 )]
 position = Vector2( 1238, -66 )
 battery_type = 2
 
-[node name="Pickupable_Battery5" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery5" parent="ObjectContainer" index="7" instance=ExtResource( 7 )]
 position = Vector2( 1267, -210 )
 battery_type = 2
 
-[node name="Pickupable_Battery6" parent="ObjectContainer" index="9" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery6" parent="ObjectContainer" index="8" instance=ExtResource( 7 )]
 position = Vector2( 1191, -237 )
 battery_type = 2
 
-[node name="Portal_Green01" parent="ObjectContainer" index="10" instance=ExtResource( 5 )]
+[node name="Portal_Green01" parent="ObjectContainer" index="9" instance=ExtResource( 5 )]
 position = Vector2( 1189, -138 )
 portal_color = 1
 portal_to_link_with__path = NodePath("../Portal_Green02")
 
-[node name="Portal_Green02" parent="ObjectContainer" index="11" instance=ExtResource( 5 )]
+[node name="Portal_Green02" parent="ObjectContainer" index="10" instance=ExtResource( 5 )]
 modulate = Color( 0.5, 0.5, 0.5, 0.85 )
 position = Vector2( 1527, -178 )
 portal_color = 1
 is_disabled = true
 portal_to_link_with__path = NodePath("../Portal_Green01")
 
-[node name="Pickupable_Battery7" parent="ObjectContainer" index="12" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery7" parent="ObjectContainer" index="11" instance=ExtResource( 7 )]
 position = Vector2( 1928, -8 )
 battery_type = 2
 
-[node name="Pickupable_Battery8" parent="ObjectContainer" index="13" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery8" parent="ObjectContainer" index="12" instance=ExtResource( 7 )]
 position = Vector2( 2177, 33 )
 
-[node name="Pickupable_Battery9" parent="ObjectContainer" index="14" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery9" parent="ObjectContainer" index="13" instance=ExtResource( 7 )]
 position = Vector2( 2464, 63 )
 battery_type = 2
 
-[node name="Pickupable_Battery11" parent="ObjectContainer" index="15" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery11" parent="ObjectContainer" index="14" instance=ExtResource( 7 )]
 position = Vector2( 2956, -66 )
 battery_type = 2
 
-[node name="Pickupable_Battery12" parent="ObjectContainer" index="16" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery12" parent="ObjectContainer" index="15" instance=ExtResource( 7 )]
 position = Vector2( 3523, -124 )
 battery_type = 2
 
-[node name="Pickupable_Battery13" parent="ObjectContainer" index="17" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery13" parent="ObjectContainer" index="16" instance=ExtResource( 7 )]
 position = Vector2( 3861, -102 )
 battery_type = 2
 
-[node name="Pickupable_Battery14" parent="ObjectContainer" index="18" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery14" parent="ObjectContainer" index="17" instance=ExtResource( 7 )]
 position = Vector2( 4140, 36 )
 battery_type = 1
 
-[node name="Pickupable_Battery15" parent="ObjectContainer" index="19" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery15" parent="ObjectContainer" index="18" instance=ExtResource( 7 )]
 position = Vector2( 4607, 213 )
 battery_type = 2
 
-[node name="Pickupable_Battery16" parent="ObjectContainer" index="20" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery16" parent="ObjectContainer" index="19" instance=ExtResource( 7 )]
 position = Vector2( 5125, 149 )
 battery_type = 1
 
-[node name="Pickupable_Battery17" parent="ObjectContainer" index="21" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery17" parent="ObjectContainer" index="20" instance=ExtResource( 7 )]
 position = Vector2( 5564, 35 )
 battery_type = 1
 
-[node name="Pickupable_Battery18" parent="ObjectContainer" index="22" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery18" parent="ObjectContainer" index="21" instance=ExtResource( 7 )]
 position = Vector2( 4280, -203 )
 battery_type = 1
 
-[node name="Pickupable_Battery19" parent="ObjectContainer" index="23" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery19" parent="ObjectContainer" index="22" instance=ExtResource( 7 )]
 position = Vector2( 4741, -224 )
 battery_type = 1
 
-[node name="Pickupable_Battery20" parent="ObjectContainer" index="24" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery20" parent="ObjectContainer" index="23" instance=ExtResource( 7 )]
 position = Vector2( 5062, -207 )
 battery_type = 2
 
-[node name="Pickupable_Battery21" parent="ObjectContainer" index="25" instance=ExtResource( 7 )]
+[node name="Pickupable_Battery21" parent="ObjectContainer" index="24" instance=ExtResource( 7 )]
 position = Vector2( 5357, -123 )
 battery_type = 1
 
-[node name="Portal_Red01" parent="ObjectContainer" index="26" instance=ExtResource( 5 )]
+[node name="Portal_Red01" parent="ObjectContainer" index="25" instance=ExtResource( 5 )]
 position = Vector2( 5820, -65 )
 portal_color = 0
 portal_to_link_with__path = NodePath("../Portal_Red02")
 
-[node name="Portal_Red02" parent="ObjectContainer" index="27" instance=ExtResource( 5 )]
+[node name="Portal_Red02" parent="ObjectContainer" index="26" instance=ExtResource( 5 )]
 modulate = Color( 0.5, 0.5, 0.5, 0.85 )
 position = Vector2( 6116, 41 )
 portal_color = 0

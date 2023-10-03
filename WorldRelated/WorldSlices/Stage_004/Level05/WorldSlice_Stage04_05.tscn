@@ -165,15 +165,12 @@ body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
 button_color = 1
 
-[node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 8 )]
-position = Vector2( 337, 207 )
-
-[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="4" instance=ExtResource( 8 )]
+[node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="3" instance=ExtResource( 8 )]
 position = Vector2( 371, 207 )
 launch_ball_type = 3
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 11 )]
-position = Vector2( -302, 48 )
+position = Vector2( -14, 80 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 150, 208 )

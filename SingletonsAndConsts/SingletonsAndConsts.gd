@@ -29,6 +29,7 @@ var current_game_front_hud
 var current_game_background
 var current_rewind_manager setget set_current_rewind_manager
 var current_game_result_manager
+var current_game_front_hud__other_hud_non_screen_hoster
 
 #
 
@@ -44,6 +45,16 @@ var level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel
 var show_end_game_result_pre_hud : bool = false
 
 #
+
+var non_essential_rng : RandomNumberGenerator
+
+#
+
+func _ready():
+	non_essential_rng = StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL)
+
+#
+
 
 func set_current_master(arg_master):
 	current_master = arg_master

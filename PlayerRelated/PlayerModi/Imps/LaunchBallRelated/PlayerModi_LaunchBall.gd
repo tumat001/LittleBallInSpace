@@ -7,6 +7,7 @@ const PlayerModi_LaunchBall_Node_Scene = preload("res://PlayerRelated/PlayerModi
 
 const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.gd")
 
+##
 
 const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
 const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
@@ -27,6 +28,12 @@ var launch_strength_initial_delay : float = 0.75
 var max_launch_strength : float = 15000.0
 
 var launch_peak_wait_before_alternate : float = 2.0
+
+var button_factor_to_strength_gain_ratio : float = (max_launch_strength - starting_launch_strength) / 10.0
+
+#
+
+#const allow_mouse_scroll_to_modify_strength : bool = true
 
 #
 
@@ -168,7 +175,6 @@ func _initialize_player_modi_launch_ball_node():
 	player_modi_launch_ball_node.launch_ability = launch_ability
 	
 	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(player_modi_launch_ball_node)
-	#SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(player_modi_launch_ball_node)
 	
 	player_modi_launch_ball_node.show_player_trajectory_line = show_player_trajectory_line
 	player_modi_launch_ball_node.connect("can_change_aim_mode_changed", self, "_on_can_change_aim_mode_changed")
@@ -194,6 +200,20 @@ func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEve
 				_attempt_begin_charge_ball()
 			else:
 				_attempt_launch_ball()
+			
+			###
+		if GameSettingsManager.last_calc__unlocked_status__mouse_scroll_launch_ball and player_modi_launch_ball_node.is_charging_launch():
+			if event.button_index == BUTTON_WHEEL_UP:
+				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * 1)
+				
+			elif event.button_index == BUTTON_WHEEL_DOWN:
+				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * -1)
+
+
+func _calculate_increment_using_wheel_factor(arg_factor : float):
+	return button_factor_to_strength_gain_ratio * arg_factor
+
+#
 
 func _on_player_unhandled_key_input__for_modi(event):
 	if _is_launch_ability_ready:

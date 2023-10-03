@@ -1,6 +1,11 @@
 tool
 extends "res://ObjectsRelated/Pickupables/BasePickupables.gd"
 
+#
+
+const LaunchBallPickupableParticle = preload("res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Particles/LaunchBallPickupableParticle.gd")
+
+#
 
 enum LaunchBallType {
 	AMMO_01 = 0,
@@ -15,6 +20,15 @@ export(LaunchBallType) var launch_ball_type : int = LaunchBallType.AMMO_01 setge
 var ammo_refill : int
 var is_make_ammo_infinite : bool
 
+#
+
+const offset_from_center__red = Vector2(0, -8)
+const offset_from_center__green = Vector2(-8, 6)
+const offset_from_center__blue = Vector2(8, 6)
+
+const delay_per_ball : float = 0.1
+
+#
 
 func set_launch_ball_type(arg_type):
 	launch_ball_type = arg_type
@@ -66,6 +80,55 @@ func _on_player_entered_self(arg_player):
 		if is_make_ammo_infinite:
 			modi.is_infinite_ball_count = is_make_ammo_infinite
 		
-		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		_attempt_play_particle_and_sound_effects()
 		
 		_destroy_self__on_consume_by_player()
+
+
+func _attempt_play_particle_and_sound_effects():
+	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:
+		_play_pickup_particles_and_sfx()
+
+func _play_pickup_particles_and_sfx():
+	if launch_ball_type == LaunchBallType.AMMO_01:
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		_play_pickup_particle__randomized_offset__x_times(1, Vector2(5, 0), 32)
+		_play_orange_ring(5, 32, 0.4)
+		
+	elif launch_ball_type == LaunchBallType.AMMO_02:
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		_play_pickup_particle__randomized_offset__x_times(2, Vector2(5, 0), 32)
+		_play_orange_ring(5, 32, 0.4)
+		
+	elif launch_ball_type == LaunchBallType.AMMO_03:
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		_play_pickup_particle__randomized_offset__x_times(3, Vector2(5, 0), 32)
+		_play_orange_ring(5, 32, 0.5)
+		
+	elif launch_ball_type == LaunchBallType.INFINITE_AMMO:
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo, global_position, 1.0, null)
+		_play_pickup_particles__as_inf_ammo()
+		_play_orange_ring(offset_from_center__blue.length(), 46, 0.5)
+	
+
+func _play_pickup_particle__randomized_offset__x_times(arg_count : int, arg_initial_offset : Vector2, arg_dist_from_offset : float):
+	var total_delay = 0
+	for i in arg_count:
+		var initial_offset = _get_randomized_rotation_of_vector(arg_initial_offset)
+		SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, initial_offset, arg_dist_from_offset, LaunchBallPickupableParticle.anim_name__white, total_delay)
+		total_delay += delay_per_ball
+
+func _get_randomized_rotation_of_vector(arg_vec : Vector2):
+	return arg_vec.rotated(SingletonsAndConsts.non_essential_rng.randf_range(0, 2*PI))
+
+
+func _play_pickup_particles__as_inf_ammo():
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__red, 46, LaunchBallPickupableParticle.anim_name__red, delay_per_ball * 0)
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__green, 46, LaunchBallPickupableParticle.anim_name__green, delay_per_ball * 1)
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__blue, 46, LaunchBallPickupableParticle.anim_name__blue, delay_per_ball * 2)
+
+func _play_orange_ring(arg_initial_radius, arg_final_radius, mod_a):
+	var pos = get_global_transform_with_canvas().origin
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_orange_ring__pickup_of_launch_ball(pos, arg_initial_radius, arg_final_radius, LaunchBallPickupableParticle.DURATION__TO_FIRST_DEST, mod_a)
+
+

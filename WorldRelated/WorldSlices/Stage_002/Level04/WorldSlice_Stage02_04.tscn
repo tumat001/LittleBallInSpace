@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=8]
 [ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=10]
+[ext_resource path="res://MiscRelated/VisualsRelated/MouseWheelVisual/MouseWheelVisualPanel.tscn" type="PackedScene" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 68, 26 )
@@ -176,6 +177,24 @@ position = Vector2( 2770, 206 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -32, 80 )
+
+[node name="MiscContainer" type="Node" parent="." index="6"]
+
+[node name="MouseWheelVisualPanel" parent="MiscContainer" index="0" instance=ExtResource( 11 )]
+margin_left = -51.0
+margin_top = 140.0
+margin_right = 210.0
+margin_bottom = 209.0
+
+[node name="Label" type="Label" parent="MiscContainer/MouseWheelVisualPanel" index="0"]
+modulate = Color( 0.866667, 0.866667, 0.866667, 1 )
+margin_right = 261.0
+margin_bottom = 69.0
+text = "Tip:
+You can use your mouse scroll
+to manually adjust the
+ball launch strength"
+align = 1
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
