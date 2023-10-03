@@ -322,6 +322,11 @@ func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
 	ball.base_object_mass = ball_mass
 	
+	if !is_infinite_ball_count:
+		ball.randomize_color_modulate__except_red()
+	else:
+		ball.tween_rainbow_color()
+	
 	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
 	
 	if arg_add_child:
