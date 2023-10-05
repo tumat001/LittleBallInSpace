@@ -1178,6 +1178,13 @@ func _integrate_forces(state):
 			clear_all_inside_induced_forces()
 			clear_all_outside_induced_forces()
 		
+		#
+		
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			if GameStatsManager.is_started_GE_record_stats():
+				var rec_speed = GameStatsManager.current_GE__highest_speed
+				if rec_speed < linear_velocity.length():
+					GameStatsManager.current_GE__highest_speed = rec_speed
 		
 		#state : Physics2DDirectBodyState
 		emit_signal("on_integ_forces", state)
@@ -1318,6 +1325,9 @@ func _on_cam_manager_rotation_changed(arg_angle):
 		_current_player_left_right_move_speed = 0
 		_current_player_left_right_move_speed__from_last_integrate_forces = 0
 		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+		
+		if GameStatsManager.is_started_GE_record_stats():
+			GameStatsManager.current_GE__rotation_count += 1
 	
 	rotating_for_floor_area_2d.rotation = arg_angle
 

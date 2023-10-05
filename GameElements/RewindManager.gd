@@ -271,7 +271,6 @@ func _physics_process(delta):
 		
 	else:
 		
-		
 		var is_unskippable = _rewindable_is_unskippable_metadata.pop_back()
 		if !_is_a_save_state_frame_skipped_for_this_frame:
 			_is_a_save_state_frame_skipped_for_this_frame = true
@@ -324,6 +323,10 @@ func _physics_process(delta):
 		if _rewindable_datas.size() == 0:
 			_end_rewind_with_state_map(rewindable_obj_to_save_state_map)
 		
+		##
+		
+		if GameStatsManager.is_started_GE_record_stats():
+			GameStatsManager.current_GE__time_spent_in_rewind += delta
 		
 
 func _can_skip_rewind_save_state_frame_step():
@@ -476,9 +479,5 @@ func _end_rewind_audio_play_sequence():
 		_rewind_audio_player__mid_fill_loop = null
 	
 	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Rewind_Ending, 1.0, null)
-
-
-
-
 
 

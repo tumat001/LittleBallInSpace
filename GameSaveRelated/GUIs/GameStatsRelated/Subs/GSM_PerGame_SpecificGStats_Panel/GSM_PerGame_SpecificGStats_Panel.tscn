@@ -1,0 +1,162 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/Subs/GSM_PerGame_SpecificGStats_Panel/GSM_PerGame_SpecificGStats_Panel.gd" type="Script" id=2]
+
+[node name="GSM_PerGame_Panel" type="MarginContainer"]
+margin_right = 264.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 264.0
+margin_bottom = 205.0
+custom_constants/separation = 30
+
+[node name="LevelDetailsPanel" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 264.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/LevelDetailsPanel"]
+margin_right = 264.0
+
+[node name="LevelNameTooltipBody" parent="VBoxContainer/LevelDetailsPanel/VBoxContainer" instance=ExtResource( 1 )]
+margin_right = 264.0
+default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+bbcode_align_mode = 1
+
+[node name="StatsVBox" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 30.0
+margin_right = 264.0
+margin_bottom = 160.0
+custom_constants/separation = 8
+
+[node name="HBox_Time" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_right = 264.0
+margin_bottom = 15.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_Time"]
+margin_right = 90.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Game Time:"
+
+[node name="GameTimeValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_Time"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_TimeRewinded" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_top = 23.0
+margin_right = 264.0
+margin_bottom = 38.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_TimeRewinded"]
+margin_right = 126.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Time Rewinded:"
+
+[node name="TimeRewindedValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_TimeRewinded"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_RotationCount" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_top = 46.0
+margin_right = 264.0
+margin_bottom = 61.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_RotationCount"]
+margin_right = 90.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Rotations:"
+
+[node name="RotationsValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_RotationCount"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_HighestSpeed" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_top = 69.0
+margin_right = 264.0
+margin_bottom = 84.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_HighestSpeed"]
+margin_right = 126.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Highest Speed:"
+
+[node name="HighestSpeedValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_HighestSpeed"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_BallShotCount" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_top = 92.0
+margin_right = 264.0
+margin_bottom = 107.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_BallShotCount"]
+margin_right = 99.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Balls Shot:"
+
+[node name="BallsShotValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_BallShotCount"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_LowestEnergy" type="HBoxContainer" parent="VBoxContainer/StatsVBox"]
+margin_top = 115.0
+margin_right = 264.0
+margin_bottom = 130.0
+
+[node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_LowestEnergy"]
+margin_right = 126.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Lowest Energy:"
+
+[node name="LowestEnergyValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_LowestEnergy"]
+margin_left = 237.0
+margin_right = 264.0
+margin_bottom = 15.0
+size_flags_horizontal = 10
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "xxx"
+
+[node name="HBox_DateTime" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 22.0
+margin_top = 190.0
+margin_right = 242.0
+margin_bottom = 205.0
+size_flags_horizontal = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/HBox_DateTime"]
+margin_right = 135.0
+margin_bottom = 15.0
+text = "Date and Time: "
+
+[node name="DateAndTimeValLabel" type="Label" parent="VBoxContainer/HBox_DateTime"]
+margin_left = 139.0
+margin_right = 220.0
+margin_bottom = 15.0
+text = "xxx - xxx"

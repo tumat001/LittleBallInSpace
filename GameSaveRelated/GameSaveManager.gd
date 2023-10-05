@@ -165,6 +165,7 @@ func _ready():
 	#_attempt_load_game_controls_related_data()
 	
 	GameSettingsManager.load_all__from_ready_of_save_manager()
+	GameStatsManager.load_all__from_ready_of_save_manager()
 	
 	_is_manager_initialized = true
 	emit_signal("save_manager_initialized")

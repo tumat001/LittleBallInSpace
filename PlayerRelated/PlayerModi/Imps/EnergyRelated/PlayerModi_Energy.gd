@@ -190,7 +190,19 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	
 	_update_and_calculate_forecasted_energy_consumption()
 	
+	#
+	
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if GameStatsManager.is_started_GE_record_stats():
+			_attempt_set_lowest_energy_attained_in_stats_manager()
+	
 	emit_signal("current_energy_changed", arg_val)
+
+
+func _attempt_set_lowest_energy_attained_in_stats_manager():
+	var rec_energy = GameStatsManager.current_GE__lowest_energy
+	if rec_energy == GameStatsManager.current_GE_unsetted__lowest_energy or rec_energy > _current_energy:
+		GameStatsManager.current_GE__lowest_energy = _current_energy
 
 
 func get_current_energy():

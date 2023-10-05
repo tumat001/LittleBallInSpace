@@ -8,7 +8,7 @@ const Shader_RippleBackground = preload("res://MiscRelated/ShadersRelated/Shader
 const BackgroundColor_Normal = Color("#000000")
 const BackgroundColor_Normal_02 = Color("#080808")
 
-const BackgroundColor_Brightened = Color("#030011")
+const BackgroundColor_Brightened = Color("#030016")
 const BackgroundColor_Brightened_02 = Color("#110024")
 
 

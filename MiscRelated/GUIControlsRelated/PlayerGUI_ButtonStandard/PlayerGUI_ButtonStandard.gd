@@ -11,7 +11,7 @@ signal button_pressed()
 #const LABEL_MODULATE__HAS_FOCUS = Color(1, 1, 1, 1.0)
 
 const LABEL_MODULATE__DISABLED = Color(0.6, 0.6, 0.6, 0.75)
-const LABEL_MODULATE__NO_FOCUS = Color(1, 1, 1, 1.0)
+const LABEL_MODULATE__NO_FOCUS = Color("#DDDDDD")#Color(1, 1, 1, 1.0)
 const LABEL_MODULATE__HAS_FOCUS = Color("#FDD14D")
 
 #

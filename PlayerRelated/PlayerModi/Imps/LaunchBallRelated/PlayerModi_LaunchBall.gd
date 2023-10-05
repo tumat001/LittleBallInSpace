@@ -276,6 +276,10 @@ func _attempt_launch_ball():
 		
 		var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
 		AudioManager.helper__play_sound_effect__2d(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
+		
+		if GameStatsManager.is_started_GE_record_stats():
+			GameStatsManager.current_GE__balls_shot_count += 1
+
 
 func force_launch_ball_at_pos__min_speed(arg_pos):
 	var angle_to_use = _player.global_position.angle_to_point(arg_pos)

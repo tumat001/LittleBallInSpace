@@ -24,6 +24,11 @@ signal switching_from_game_elements__non_restart__transition_ended()
 
 #
 
+signal switch_from_GE__from_quit()
+signal switch_from_GE__from_restart()
+
+#
+
 const screen_size = Vector2(960, 540)
 
 #
@@ -223,6 +228,8 @@ func switch_to_level_selection_scene__from_game_elements__as_lose():
 	emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
+	emit_signal("switch_from_GE__from_quit")
+	
 	get_tree().paused = false
 	_is_in_game_or_loading_to_game = false
 	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
@@ -238,6 +245,8 @@ func switch_to_level_selection_scene__from_game_elements__from_quit():
 	emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_game_elements__from_game_elements__from_restart():
+	emit_signal("switch_from_GE__from_restart")
+	
 	get_tree().paused = false
 	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
 	GameSaveManager.clear_coin_ids_in_tentative()

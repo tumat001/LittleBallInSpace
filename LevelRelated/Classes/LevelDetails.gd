@@ -81,6 +81,10 @@ var BGM_playlist_id_to_use__on_level_start : int = StoreOfAudio.BGMPlaylistId.CA
 
 var ignore_assist_mode_modifications : bool = false
 
+#
+
+var immediately_start_stats_record_on_GE_ready : bool = true
+
 ##
 
 var zoom_normal_vec = CameraManager.DEFAULT_ZOOM_LEVEL

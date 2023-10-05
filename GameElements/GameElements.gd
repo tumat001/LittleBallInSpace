@@ -93,6 +93,8 @@ func _enter_tree():
 
 
 func _ready():
+	set_physics_process(false)
+	
 	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all()
 	
 	_initialize_game_background()
@@ -136,16 +138,36 @@ func _ready():
 	####
 	
 	emit_signal("before_game_start_init")
+	
 	call_deferred("_deferred__after_init")
-
 
 
 func _deferred__after_init():
 	is_game_after_init = true
 	emit_signal("after_game_start_init")
 	current_base_level.after_game_init()
+	
+	_attempt_start_GE_record_stats()
 
-#
+func _attempt_start_GE_record_stats():
+	GameStatsManager.connect("start_of_GE_record_stats", self, "_on_start_of_GE_record_stats", [], CONNECT_ONESHOT)
+	GameStatsManager.connect("before_end_of_GE_record_stats__for_last_chance_edits", self, "_on_before_end_of_GE_record_stats__for_last_chance_edits", [], CONNECT_ONESHOT)
+	
+	if SingletonsAndConsts.current_level_details.immediately_start_stats_record_on_GE_ready:
+		GameStatsManager.start_GE_record_stats()
+	
+
+func _on_start_of_GE_record_stats():
+	set_physics_process(true)
+
+func _physics_process(delta):
+	GameStatsManager.current_GE__time += delta
+
+func _on_before_end_of_GE_record_stats__for_last_chance_edits(arg_record_stats_as_win):
+	set_physics_process(false)
+
+
+###
 
 func _set_player__and_register_signals__at_ready(arg_player : Player):
 	_current_player = arg_player
