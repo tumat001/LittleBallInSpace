@@ -1183,8 +1183,9 @@ func _integrate_forces(state):
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 			if GameStatsManager.is_started_GE_record_stats():
 				var rec_speed = GameStatsManager.current_GE__highest_speed
-				if rec_speed < linear_velocity.length():
-					GameStatsManager.current_GE__highest_speed = rec_speed
+				var curr_speed = linear_velocity.length()
+				if rec_speed < curr_speed:
+					GameStatsManager.current_GE__highest_speed = curr_speed
 		
 		#state : Physics2DDirectBodyState
 		emit_signal("on_integ_forces", state)

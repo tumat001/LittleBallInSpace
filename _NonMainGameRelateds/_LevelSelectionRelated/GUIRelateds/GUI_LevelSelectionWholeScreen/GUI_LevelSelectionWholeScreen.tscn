@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_DialogPanel.png" type="Texture" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelDetailsPanel/GUI_LevelDetailsPanel.tscn" type="PackedScene" id=7]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelLayoutShortcutPanel/GUI_LevelLayoutShortcutPanel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://GameBackgroundRelated/GameBackground.tscn" type="PackedScene" id=9]
+[ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Normal.png" type="Texture" id=10]
+[ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Highlighted.png" type="Texture" id=11]
 
 [node name="GUI_LevelSelectionLayout" type="Control"]
 margin_right = 960.0
@@ -59,12 +61,26 @@ margin_left = 16.0
 margin_top = 16.0
 margin_right = 484.0
 margin_bottom = 134.0
+mouse_filter = 2
 
 [node name="LevelTitleTooltipBody" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer" instance=ExtResource( 3 )]
 margin_right = 468.0
 margin_bottom = 38.0
 size_flags_vertical = 3
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+
+[node name="StatsForLevelButton" type="TextureButton" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody"]
+margin_left = 438.0
+margin_right = 468.0
+margin_bottom = 30.0
+focus_mode = 0
+size_flags_horizontal = 10
+size_flags_vertical = 2
+texture_normal = ExtResource( 10 )
+texture_hover = ExtResource( 11 )
+
+[node name="RowContainer" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody" index="1"]
+margin_right = 468.0
 
 [node name="LevelDescTooltipBody" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 42.0
@@ -116,4 +132,7 @@ mouse_filter = 2
 [node name="CircularDrawNode_CircleBurst" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
+[connection signal="pressed" from="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton" to="." method="_on_StatsForLevelButton_pressed"]
+
 [editable path="GameBackground"]
+[editable path="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody"]

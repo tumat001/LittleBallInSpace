@@ -191,6 +191,9 @@ func _ready():
 	_initialize_rewind_cooldown_timer()
 	
 	set_physics_process(false)
+	
+	GameStatsManager.current_GE__time_spent_in_rewind = 0
+
 
 func _initialize_rewind_cooldown_timer():
 	rewind_cooldown_timer = Timer.new()

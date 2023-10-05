@@ -47,6 +47,9 @@ func set_visibility_of_level_name_panel(arg_val):
 	level_name_tooltip_body.visible = arg_val
 
 func set_per_game_details(arg_game_details : Dictionary, arg_level_id):
+	#todo
+	print(arg_game_details)
+	
 	# time
 	if arg_game_details.has(GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID):
 		var time_val = arg_game_details[GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID]
@@ -122,12 +125,18 @@ func set_per_game_details(arg_game_details : Dictionary, arg_level_id):
 	else:
 		date_and_time_val_label.text = LABEL_VAL_DISPLAY__NOT_PRESENT
 	
+	
 	# level id
-	var level_details = StoreOfLevels.generate_or_get_level_details_of_id(arg_level_id)
+	var level_details
+	if StoreOfLevels.is_level_id_exists(arg_level_id):
+		StoreOfLevels.generate_or_get_level_details_of_id(arg_level_id)
+	
 	if level_details != null:
 		level_name_tooltip_body.descriptions = level_details.level_full_name
 	else:
-		level_name_tooltip_body.descriptions = ["----", []]
+		level_name_tooltip_body.descriptions = [
+			["----", []]
+		]
 		
 	
 	level_name_tooltip_body.update_display()
@@ -136,13 +145,13 @@ func set_per_game_details(arg_game_details : Dictionary, arg_level_id):
 
 
 static func convert_delta_into_time_string(arg_delta):
-	var hours = fmod(arg_delta, 3600)
+	var hours = int(arg_delta) / 3600
 	arg_delta -= hours * 3600
 	
-	var mins = fmod(arg_delta, 60)
+	var mins = int(arg_delta) / 60
 	arg_delta -= mins * 60
 	
-	var sec = fmod(arg_delta, 1)
+	var sec = int(arg_delta) / 1
 	arg_delta -= sec * 1
 	
 	var msec = arg_delta
@@ -158,11 +167,11 @@ static func convert_delta_into_time_string(arg_delta):
 	
 
 static func convert_ISO_datetime_format_info_readable(arg_val : String):
-	var year = arg_val.substr(0, 3)
-	var month = arg_val.substr(5, 6)
-	var day = arg_val.substr(8, 9)
-	var hour = arg_val.substr(11, 12)
-	var minute = arg_val.substr(14, 15)
+	var year = int(arg_val.substr(0, 4))
+	var month = int(arg_val.substr(5, 2))
+	var day = int(arg_val.substr(8, 2))
+	var hour = int(arg_val.substr(11, 2))
+	var minute = int(arg_val.substr(14, 2))
 	
 	return "%02d/%02d/%04d - %02d:%02d" % [day, month, year, hour, minute]
 

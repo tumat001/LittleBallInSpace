@@ -1,6 +1,7 @@
 extends MarginContainer
 
 const GSM_PerGame_SpecificGStats_ListPanel = preload("res://GameSaveRelated/GUIs/GameStatsRelated/Subs/GSM_PerGame_SpecificGStats_ListPanel/GSM_PerGame_SpecificGStats_ListPanel.gd")
+const GSM_PerGame_SpecificGStats_Panel = preload("res://GameSaveRelated/GUIs/GameStatsRelated/Subs/GSM_PerGame_SpecificGStats_Panel/GSM_PerGame_SpecificGStats_Panel.gd")
 
 #
 
@@ -73,14 +74,25 @@ var current_display_list_mode : int = DisplayListMode.RECENT
 
 export(bool) var show_level_name_in_specific_stat_panels: bool = false setget set_show_level_name_in_specific_stat_panels
 
+var button_group_for_display_modes : ButtonGroup
+
 #
 
-onready var level_name_tooltip_body = $VBoxContainer/GameSpecificStatsHBox/GSM_PerGame_ListPanel/VBoxContainer/HBoxContainer/GSM_PerGame_Panel/VBoxContainer/LevelDetailsPanel/VBoxContainer/LevelNameTooltipBody
+onready var level_name_tooltip_body = $VBoxContainer/LevelDetailsPanel/VBoxContainer/LevelNameTooltipBody
 
-onready var gsm_per_game_list_panel = $HBoxContainer/GSM_PerGame_ListPanel
+onready var gsm_per_game_list_panel = $VBoxContainer/GameSpecificStatsHBox/GSM_PerGame_ListPanel
 
 onready var attempt_count_val_label = $VBoxContainer/MiscDetails/VBoxContainer/HBoxAttempt/AttemptCountValLabel
 onready var restart_or_quit_count_val_label = $VBoxContainer/MiscDetails/VBoxContainer/HBoxRestartOrQuit/RestartOrQuitCountValLabel
+
+onready var button_recent_history = $VBoxContainer/GameSpecificStatsHBox/VBoxContainer/Button_RecentHistory
+onready var button_high_scores = $VBoxContainer/GameSpecificStatsHBox/VBoxContainer/Button_HighScores
+
+onready var display_mode_to_display_option_buttons_map : Dictionary = {
+	DisplayListMode.RECENT: button_recent_history,
+	DisplayListMode.HIGH_SCORE: button_high_scores,
+}
+var display_option_button_inner_button__to_display_mode_id_map : Dictionary
 
 #
 
@@ -92,7 +104,23 @@ func set_show_level_name_in_specific_stat_panels(arg_val):
 
 func _ready():
 	set_show_level_name_in_specific_stat_panels(show_level_name_in_specific_stat_panels)
+	_configure_button_group_for_display_mode_buttons()
+	_configure_display_option_button_to_display_mode_id_map()
+
+func _configure_button_group_for_display_mode_buttons():
+	button_group_for_display_modes = ButtonGroup.new()
+	for button in display_mode_to_display_option_buttons_map.values():
+		#button.texture_button.group = button_group_for_display_modes
+		button.set_button_group(button_group_for_display_modes)
 	
+	button_group_for_display_modes.connect("pressed", self, "_on_display_mode_button_pressed")
+
+func _configure_display_option_button_to_display_mode_id_map():
+	for display_mode_id in display_mode_to_display_option_buttons_map.keys():
+		var button = display_mode_to_display_option_buttons_map[display_mode_id]
+		
+		display_option_button_inner_button__to_display_mode_id_map[button.texture_button] = display_mode_id
+
 
 #
 
@@ -120,7 +148,9 @@ func set_level_id_to_display_for(arg_lvl_id):
 	if level_details != null:
 		level_name_tooltip_body.descriptions = level_details.level_full_name
 	else:
-		level_name_tooltip_body.descriptions = ["----", []]
+		level_name_tooltip_body.descriptions = [
+			["----", []]
+		]
 		
 	
 	level_name_tooltip_body.update_display()
@@ -163,7 +193,7 @@ func _construct_per_game_list_item_arr__using_details_arr(game_details_arr : Arr
 func _get_button_label_for_data__for_recent_history(arg_game_details, arg_index_for_defaulting):
 	if arg_game_details.has(GameStatsManager.PER_LEVEL__PER_WIN_ARR__DATE_TIME_OF_PLAYTHRU__DIC_ID):
 		var val = arg_game_details[GameStatsManager.PER_LEVEL__PER_WIN_ARR__DATE_TIME_OF_PLAYTHRU__DIC_ID]
-		return GSM_PerGame_SpecificGStats_ListPanel.convert_ISO_datetime_format_info_readable(val)
+		return GSM_PerGame_SpecificGStats_Panel.convert_ISO_datetime_format_info_readable(val)
 		
 	else:
 		return str(arg_index_for_defaulting)
@@ -193,13 +223,16 @@ func _construct_per_game_list__high_scores():
 
 ######################
 
-func _on_Button_RecentHistory_button_pressed():
-	set_current_display_list_mode(DisplayListMode.RECENT)
+#func _on_Button_RecentHistory_button_pressed():
+#	set_current_display_list_mode(DisplayListMode.RECENT)
+#
+#func _on_Button_HighScores_button_pressed():
+#	set_current_display_list_mode(DisplayListMode.HIGH_SCORE)
 
-func _on_Button_HighScores_button_pressed():
-	set_current_display_list_mode(DisplayListMode.HIGH_SCORE)
-
-
+func _on_display_mode_button_pressed(arg_button):
+	var display_mode = display_option_button_inner_button__to_display_mode_id_map[arg_button]
+	set_current_display_list_mode(display_mode)
+	
 
 func set_current_display_list_mode(arg_mode : int):
 	var old_val = current_display_list_mode
@@ -211,14 +244,57 @@ func set_current_display_list_mode(arg_mode : int):
 
 func update_display_based_on_curr_display_list_mode():
 	if current_display_list_mode == DisplayListMode.RECENT:
-		gsm_per_game_list_panel.clear_per_game_list()
-		for item in _per_game_list_item_arr__recent_history:
-			gsm_per_game_list_panel.add_per_game_list_item(item)
+		_clear_and_display_item_list_in_gsm_list_panel(_per_game_list_item_arr__recent_history)
 		
 	elif current_display_list_mode == DisplayListMode.HIGH_SCORE:
-		gsm_per_game_list_panel.clear_per_game_list()
-		for item in _per_game_list_item_arr__high_scores:
-			gsm_per_game_list_panel.add_per_game_list_item(item)
+		_clear_and_display_item_list_in_gsm_list_panel(_per_game_list_item_arr__high_scores)
 		
-		
+	else:
+		print("err -- GSM_PerLevel_Panel -- invalid display mode")
+
+func _clear_and_display_item_list_in_gsm_list_panel(arg_list):
+	gsm_per_game_list_panel.clear_per_game_list(false)
+	var i = 0
+	for item in arg_list:
+		gsm_per_game_list_panel.add_per_game_list_item(item, i == 0)
+		i += 1
+
+#############
+
+
+#############################################
+# TREE ITEM Specific methods/vars
+
+var control_tree setget set_control_tree
+
+
+func on_control_received_focus():
+	pass
+	
+
+func on_control_fully_visible():
+	#button_resume.grab_focus()
+	var button_of_curr_mode = display_mode_to_display_option_buttons_map[current_display_list_mode]
+	#button_of_curr_mode.grab_focus()
+	button_of_curr_mode.set_is_toggled(true)
+	
+
+func on_control_lost_focus():
+	for button in display_mode_to_display_option_buttons_map.values():
+		button.lose_focus()
+	
+
+func on_control_fully_invisible():
+	pass
+	
+
+
+func set_control_tree(arg_tree):
+	control_tree = arg_tree
+	
+
+############
+# END OF TREE ITEM Specific methods/vars
+###########
+
 

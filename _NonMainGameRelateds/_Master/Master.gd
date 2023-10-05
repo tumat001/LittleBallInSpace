@@ -66,6 +66,8 @@ onready var above_transition_container = $AboveTransitionContainer
 
 onready var cutscene_container = $CutsceneContainer
 
+onready var gs_gui_control_tree = $GS_GUI_ControlTree
+
 #
 
 func _enter_tree():

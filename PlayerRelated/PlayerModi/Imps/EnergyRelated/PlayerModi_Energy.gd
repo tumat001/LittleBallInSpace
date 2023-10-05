@@ -76,6 +76,8 @@ var is_energy_deductable : bool = true setget set_is_energy_deductable
 var allow_display_of_energy_hud : bool = true setget set_allow_display_of_energy_hud
 var is_true_instant_drain_and_recharge : bool = false setget set_is_true_instant_drain_and_recharge
 
+var can_record_stats : bool = true
+
 #
 
 var _game_front_hud
@@ -95,7 +97,7 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	if is_zero_approx(_current_energy):
 		_player.can_capture_PCA_regions = false
-
+	
 
 func _on_game_front_hud_initialized(arg_hud):
 	_init_all_game_hud_relateds()
@@ -193,7 +195,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	#
 	
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		if GameStatsManager.is_started_GE_record_stats():
+		if GameStatsManager.is_started_GE_record_stats() and can_record_stats:
 			_attempt_set_lowest_energy_attained_in_stats_manager()
 	
 	emit_signal("current_energy_changed", arg_val)

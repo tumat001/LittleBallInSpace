@@ -105,6 +105,8 @@ func _add_energy_modi():
 	modi.is_energy_deductable = false
 	modi.allow_display_of_energy_hud = false
 	
+	modi.can_record_stats = false
+	
 	_player_modi_energy = modi
 	
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_Master/Master.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_Master/Menu/MasterMenuControlTree.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/ControlTree/GS_GUI_ControlTree.tscn" type="PackedScene" id=3]
 
 [node name="Master" type="Node"]
 script = ExtResource( 1 )
@@ -22,6 +23,8 @@ pause_mode = 2
 
 [node name="AboveTransitionContainer" type="CanvasLayer" parent="."]
 pause_mode = 2
+
+[node name="GS_GUI_ControlTree" parent="." instance=ExtResource( 3 )]
 
 [node name="MasterMenuControlTree" parent="." instance=ExtResource( 2 )]
 pause_mode = 2

@@ -63,6 +63,27 @@ var current_GE__lowest_energy : float
 var current_GE__highest_speed : float
 var current_GE__time_spent_in_rewind : float
 
+
+#var ALL_PER_LEVEL_PER_WIN_ARR_STAT_TO_UNSETTED_MAP = {
+#	PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID : current_GE_unsetted__time,
+#	PER_LEVEL__PER_WIN_ARR__ROTATION_COUNT__DIC_ID : current_GE_unsetted__rotation_count,
+#	PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : current_GE_unsetted__balls_shot_count,
+#	PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : current_GE_unsetted__lowest_energy,
+#	PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : current_GE_unsetted__highest_speed,
+#	PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : current_GE_unsetted__time_spent_in_rewind,
+#	PER_LEVEL__PER_WIN_ARR__DATE_TIME_OF_PLAYTHRU__DIC_ID : Time.get_datetime_string_from_system()
+#}
+
+const ALL_PER_LEVEL_PER_WIN_ARR_STAT_TO_NULL_MAP__FOR_HIGH_SCORES = {
+	PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID : {},
+	PER_LEVEL__PER_WIN_ARR__ROTATION_COUNT__DIC_ID : {},
+	PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : {},
+	PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {},
+	PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : {},
+	PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : {},
+	
+}
+
 #
 
 const per_level_per_win_recorded_limit : int = 10
@@ -196,8 +217,7 @@ func load_all__from_ready_of_save_manager():
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		pass
-		
+		_save_ALL__game_stats_data()
 
 
 
@@ -264,16 +284,18 @@ func _fill_per_level_data_map__with_defaults_and_preconstructeds():
 	for level_id in StoreOfLevels.get_all_level_ids__not_including_tests():
 		_per_level__all_data__map[level_id] = {
 			PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID : [],
-			PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID : {},
+			PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID : _get_filled_but_empty_high_score_stat_map(),
 			PER_LEVEL__RESTART_OR_QUIT_COUNT__DIC_ID : 0,
 			PER_LEVEL__ATTEMPT_COUNT__DIC_ID : 0,
 		}
-		
+
+func _get_filled_but_empty_high_score_stat_map():
+	return ALL_PER_LEVEL_PER_WIN_ARR_STAT_TO_NULL_MAP__FOR_HIGH_SCORES.duplicate()
 
 func _fill_per_level_data_map__with_save_dict(data : Dictionary):
 	for level_id_as_str in data.keys():
 		var level_id = int(level_id_as_str)
-		var all_data_of_level = data[level_id]
+		var all_data_of_level = data[level_id_as_str]
 		
 		if all_data_of_level.has(PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID):
 			_per_level__all_data__map[level_id][PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID] = all_data_of_level[PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID]

@@ -44,11 +44,7 @@ func _ready():
 
 #
 
-func add_per_game_list_item(arg_list_item : PerGameListItem):
-	_id_to_per_game_list_item_map[arg_list_item.id] = arg_list_item
-	
-	#
-	
+func add_per_game_list_item(arg_list_item : PerGameListItem, arg_set_and_update : bool):
 	if arg_list_item.button_icon != null:
 		option_button.add_item(arg_list_item.button_label, arg_list_item.id)
 	else:
@@ -58,14 +54,19 @@ func add_per_game_list_item(arg_list_item : PerGameListItem):
 	
 	var id = option_button.get_item_id(option_button.get_item_count() - 1)
 	arg_list_item.id = id
-	if _current_per_game_list_item_id == NO_PER_GAME_ID:
+	
+	_id_to_per_game_list_item_map[arg_list_item.id] = arg_list_item
+	
+	if _current_per_game_list_item_id == NO_PER_GAME_ID and arg_set_and_update:
 		set_curr_per_game_item_index__and_update_display(id)
 
 
-func clear_per_game_list():
+func clear_per_game_list(arg_update_disp : bool):
 	_id_to_per_game_list_item_map.clear()
 	option_button.clear()
-	_update_display()
+	
+	if arg_update_disp:
+		_update_display()
 
 func set_curr_per_game_item_index__and_update_display(arg_index):
 	_current_per_game_list_item_id = arg_index
@@ -77,9 +78,13 @@ func _update_display():
 	if _id_to_per_game_list_item_map.has(_current_per_game_list_item_id):
 		var per_game_item = _id_to_per_game_list_item_map[_current_per_game_list_item_id]
 		gsm_per_game_panel.set_per_game_details(per_game_item.per_game_data, per_game_item.level_id)
+		#todo
+		print("set_per_game_details -> %s" % _current_per_game_list_item_id)
 	else:
 		gsm_per_game_panel.set_per_game_details(_empty_per_game_list_item.per_game_data, _empty_per_game_list_item.level_id)
 		_current_per_game_list_item_id = NO_PER_GAME_ID 
+		#todo
+		print("set_per_game_details -> none %s" % _current_per_game_list_item_id)
 	
 	#
 	

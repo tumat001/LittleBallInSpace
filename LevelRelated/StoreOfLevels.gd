@@ -1207,36 +1207,36 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
 		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
-		level_details.level_full_name = [
-			["S-!3 You are Right", []]
-		]
-		level_details.level_name = [
-			["You are Right", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!3"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		
+#	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
+#		level_details.level_full_name = [
+#			["S-!3 You are Right", []]
+#		]
+#		level_details.level_name = [
+#			["You are Right", []]
+#		]
+#		level_details.level_desc = [
+#			["", []]
+#		]
+#
+#
+#		_set_details__transitions_to_usual_circle_types(level_details)
+#
+#		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+#		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+#
+#		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+#		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+#
+#		level_details.level_label_on_tile = "!3"
+#		level_details.level_label_text_color = Color("#dddddd")
+#		#level_details.level_label_outline_color = Color("#dddddd")
+#		level_details.has_outline_color = false
+#
+#		level_details.ignore_assist_mode_modifications = true
+#
+#		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+#
+#
 	
 	_level_id_to_level_details_map[arg_id] = level_details
 	

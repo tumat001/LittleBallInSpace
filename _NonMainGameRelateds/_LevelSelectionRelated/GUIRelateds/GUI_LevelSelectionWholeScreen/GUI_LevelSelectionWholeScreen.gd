@@ -37,6 +37,8 @@ onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
 
 onready var game_background = $GameBackground
 
+onready var stats_for_level_button = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton
+
 #
 
 #############
@@ -222,7 +224,7 @@ func play_victory_animation_on_level_ids__as_additonals(arg_level_ids) -> bool:
 func _on_layout_currently_hovered_layout_ele_changed(arg_id, arg_currently_hovered_tile):
 	_update_level_desc_tooltip_body(arg_currently_hovered_tile)
 	_update_level_details_panel(arg_currently_hovered_tile.level_details)
-	
+	_update_stats_button_visibility(arg_currently_hovered_tile.level_details)
 
 func _update_level_details_panel(arg_level_details):
 	if arg_level_details != null:
@@ -233,6 +235,11 @@ func _update_level_details_panel(arg_level_details):
 		
 	
 
+func _update_stats_button_visibility(arg_level_details):
+	if arg_level_details != null:
+		stats_for_level_button.visible = true
+	else:
+		stats_for_level_button.visible = false
 
 #
 
@@ -298,3 +305,11 @@ func _on_shortcut_panel_layout_tile_pressed(arg_tile, arg_id):
 
 func get_current_active_level_layout() -> GUI_AbstractLevelLayout:
 	return _current_active_level_layout
+
+#
+
+func _on_StatsForLevelButton_pressed():
+	SingletonsAndConsts.current_master.gs_gui_control_tree.show_gsm_level_panel(_current_active_level_layout.get_currently_hovered_tile().level_details.level_id)
+	
+
+

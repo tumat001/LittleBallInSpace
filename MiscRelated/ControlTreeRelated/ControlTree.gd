@@ -320,6 +320,12 @@ func _on_TextureRect_gui_input(event):
 			
 
 
+func is_control_first_in_current_hierarchy(arg_control):
+	if _current_hierarchy.size() != 0:
+		return _current_hierarchy[0] == arg_control
+	else:
+		return false
+
 ##############
 #
 ###############
