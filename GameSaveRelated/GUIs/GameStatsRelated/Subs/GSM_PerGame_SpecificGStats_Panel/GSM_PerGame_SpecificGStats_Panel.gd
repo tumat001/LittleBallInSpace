@@ -7,8 +7,13 @@ const StoreOfFonts = preload("res://MiscRelated/FontRelated/StoreOfFonts.gd")
 const LABEL_VAL_DISPLAY__UNSETTED = "N/A"
 const LABEL_VAL_DISPLAY__NOT_PRESENT = "N/A"
 
+const HBOX_MODULATE__IS_SELECTED_FOR_TYPE = Color("#9AFD8B")
+const HBOX_MODULATE__NORMAL = Color(1, 1, 1, 1)
+
+
 #
 
+onready var level_details_container = $VBoxContainer/LevelDetailsPanel
 onready var level_name_tooltip_body = $VBoxContainer/LevelDetailsPanel/VBoxContainer/LevelNameTooltipBody
 
 onready var game_time_val_label = $VBoxContainer/StatsVBox/HBox_Time/GameTimeValLabel
@@ -19,6 +24,23 @@ onready var ball_shot_val_label = $VBoxContainer/StatsVBox/HBox_BallShotCount/Ba
 onready var lowest_energy_val_label = $VBoxContainer/StatsVBox/HBox_LowestEnergy/LowestEnergyValLabel
 
 onready var date_and_time_val_label = $VBoxContainer/HBox_DateTime/DateAndTimeValLabel
+
+
+onready var hbox_time = $VBoxContainer/StatsVBox/HBox_Time
+onready var hbox_time_rewinded = $VBoxContainer/StatsVBox/HBox_TimeRewinded
+onready var hbox_rotation_count = $VBoxContainer/StatsVBox/HBox_RotationCount
+onready var hbox_highest_speed = $VBoxContainer/StatsVBox/HBox_HighestSpeed
+onready var hbox_ball_shot_count = $VBoxContainer/StatsVBox/HBox_BallShotCount
+onready var hbox_lowest_energy = $VBoxContainer/StatsVBox/HBox_LowestEnergy
+
+onready var GAME_STAT_DIC_ID_TO_HBOX_MAP : Dictionary = {
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID : hbox_time,
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : hbox_time_rewinded,
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__ROTATION_COUNT__DIC_ID : hbox_rotation_count,
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : hbox_highest_speed,
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : hbox_ball_shot_count,
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : hbox_lowest_energy,
+}
 
 #
 
@@ -44,12 +66,9 @@ func _ready():
 
 
 func set_visibility_of_level_name_panel(arg_val):
-	level_name_tooltip_body.visible = arg_val
+	level_details_container.visible = arg_val
 
 func set_per_game_details(arg_game_details : Dictionary, arg_level_id):
-	#todo
-	print(arg_game_details)
-	
 	# time
 	if arg_game_details.has(GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID):
 		var time_val = arg_game_details[GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID]
@@ -144,6 +163,22 @@ func set_per_game_details(arg_game_details : Dictionary, arg_level_id):
 	#
 
 
+func set_selected_highlight_hbox_with_stat_type(arg_stat_type):
+	for stat_type in GAME_STAT_DIC_ID_TO_HBOX_MAP.keys():
+		var hbox = GAME_STAT_DIC_ID_TO_HBOX_MAP[stat_type]
+		
+		if arg_stat_type == stat_type:
+			hbox.modulate = HBOX_MODULATE__IS_SELECTED_FOR_TYPE
+		else:
+			hbox.modulate = HBOX_MODULATE__NORMAL
+
+func set_selected_highlight_hbox_with_stat_type__none():
+	set_selected_highlight_hbox_with_stat_type(-1)
+
+
+
+######
+
 static func convert_delta_into_time_string(arg_delta):
 	var hours = int(arg_delta) / 3600
 	arg_delta -= hours * 3600
@@ -154,17 +189,23 @@ static func convert_delta_into_time_string(arg_delta):
 	var sec = int(arg_delta) / 1
 	arg_delta -= sec * 1
 	
-	var msec = arg_delta
+	var msec = arg_delta * 1000
 	
 	#####
 	
-	if hours != 0:
-		return "%02dh, %02dm, %02ds, %04dms" % [hours, mins, sec, msec]
-	elif mins != 0:
-		return "%02dm, %02ds, %04dms" % [mins, sec, msec]
-	else:
-		return "%02ds, %04dms" % [sec, msec]
+#	if hours != 0:
+#		return "%02dh, %02dm, %02ds, %04fms" % [hours, mins, sec, msec]
+#	elif mins != 0:
+#		return "%02dm, %02ds, %04fms" % [mins, sec, msec]
+#	else:
+#		return "%02ds, %04fms" % [sec, msec]
 	
+	if hours != 0:
+		return "%02dh, %02d:%02d.%04d" % [hours, mins, sec, msec]
+	elif mins != 0:
+		return "%02d:%02d.%04d" % [mins, sec, msec]
+	else:
+		return "%02d.%04d" % [sec, msec]
 
 static func convert_ISO_datetime_format_info_readable(arg_val : String):
 	var year = int(arg_val.substr(0, 4))

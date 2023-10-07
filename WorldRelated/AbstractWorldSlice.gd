@@ -83,6 +83,9 @@ var _shader_mat__capture_type_win : ShaderMaterial
 var star_pickup_particles_pool_component : AttackSpritePoolComponent
 var trail_compo_for_star_pickup_particle : MultipleTrailsForNodeComponent
 
+var module_x_pickup_particles_pool_component : AttackSpritePoolComponent
+var trail_compo_for_module_x_pickup_particle : MultipleTrailsForNodeComponent
+
 #
 
 onready var tile_container = $TileContainer
@@ -98,6 +101,7 @@ func set_game_elements(arg_elements):
 	game_elements = arg_elements
 	
 	game_elements.connect("before_game_start_init", self, "_on_before_game_start_init", [], CONNECT_ONESHOT)
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__base")
 	
 	if !game_elements.is_game_after_init:
 		game_elements.connect("after_game_start_init", self, "_on_after_game_start_init", [], CONNECT_ONESHOT)
@@ -550,6 +554,73 @@ func request_unshow_brightened_star_background__star_collectible_uncollected():
 
 #####
 
+func init_all_module_x_pickup_related():
+	if trail_compo_for_module_x_pickup_particle == null:
+		trail_compo_for_module_x_pickup_particle = MultipleTrailsForNodeComponent.new()
+		trail_compo_for_module_x_pickup_particle.node_to_host_trails = self
+		trail_compo_for_module_x_pickup_particle.trail_type_id = StoreOfTrailType.BASIC_TRAIL
+		trail_compo_for_module_x_pickup_particle.connect("on_trail_before_attached_to_node", self, "_trail_before_attached_to_module_x_pickup_particle")
+		
+		module_x_pickup_particles_pool_component = AttackSpritePoolComponent.new()
+		module_x_pickup_particles_pool_component.source_for_funcs_for_attk_sprite = self
+		module_x_pickup_particles_pool_component.func_name_for_creating_attack_sprite = "_create_module_x_particle_pickup_particle__for_pool_compo"
+		module_x_pickup_particles_pool_component.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
+		module_x_pickup_particles_pool_component.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
+
+func _trail_before_attached_to_module_x_pickup_particle(arg_trail, arg_particle_node):
+	arg_trail.max_trail_length = 15
+	arg_trail.trail_color = Color("#3D0179")
+	arg_trail.width = 7
+	
+	arg_trail.set_to_idle_and_available_if_node_is_not_visible = true
+	
+
+func _create_module_x_particle_pickup_particle__for_pool_compo():
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	particle.texture_to_use = preload("res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_Stats_PickupParticle.png")
+	particle.queue_free_at_end_of_lifetime = false
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.initial_speed_towards_center = -200
+	particle.speed_accel_towards_center = 200
+	
+	particle.lifetime_to_start_transparency = 0.7
+	particle.transparency_per_sec = 1 / (particle.lifetime - particle.lifetime_to_start_transparency)
+	
+	particle.reset_for_another_use_on_ready = false
+	
+	return particle
+	
+
+func create_and_show_module_x_particle_pickup_particles__and_do_relateds(arg_pos, arg_angle_rad_modifier = 0):
+	for i in 8:
+		var particle : CenterBasedAttackSprite = module_x_pickup_particles_pool_component.get_or_create_attack_sprite_from_pool()
+		
+		particle.center_pos_of_basis = arg_pos
+		
+		particle.lifetime = 1.3
+		
+		trail_compo_for_star_pickup_particle.create_trail_for_node(particle)
+		
+		var angle = ((45) * i) + arg_angle_rad_modifier
+		particle.min_starting_angle = angle
+		particle.max_starting_angle = angle
+		
+		particle.rotation = angle
+		
+		particle.min_starting_distance_from_center = 5
+		particle.max_starting_distance_from_center = 5
+		
+		
+		particle.reset_for_another_use()
+	
+	##
+	
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_ModuleX, 1.0, null)
+
+#
+
 func _init_all_star_pickup_related():
 	trail_compo_for_star_pickup_particle = MultipleTrailsForNodeComponent.new()
 	trail_compo_for_star_pickup_particle.node_to_host_trails = self
@@ -623,4 +694,15 @@ func _on_star_pickuped_by_player__for_particle_show(arg_star : Node2D):
 		
 		create_and_show_star_particle_pickup_particle(star_pos, edge_angle, edge_length)
 
+
+#######
+
+func _on_game_result_decided__base(arg_result):
+	if arg_result == game_elements.game_result_manager.GameResult.WIN:
+		pass
+		
+
+func _on_game_result_decided__win__base():
+	pass
+	
 

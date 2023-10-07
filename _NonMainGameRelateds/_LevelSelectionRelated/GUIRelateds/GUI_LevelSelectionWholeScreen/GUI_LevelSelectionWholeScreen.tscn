@@ -69,6 +69,9 @@ margin_bottom = 38.0
 size_flags_vertical = 3
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 
+[node name="RowContainer" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody" index="0"]
+margin_right = 468.0
+
 [node name="StatsForLevelButton" type="TextureButton" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody"]
 margin_left = 438.0
 margin_right = 468.0
@@ -78,9 +81,6 @@ size_flags_horizontal = 10
 size_flags_vertical = 2
 texture_normal = ExtResource( 10 )
 texture_hover = ExtResource( 11 )
-
-[node name="RowContainer" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody" index="1"]
-margin_right = 468.0
 
 [node name="LevelDescTooltipBody" parent="HUDContainer/DialogPanel/Marginer/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 42.0

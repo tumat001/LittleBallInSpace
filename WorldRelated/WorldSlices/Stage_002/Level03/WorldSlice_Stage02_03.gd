@@ -4,6 +4,8 @@ const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/Text
 
 #
 
+var _is_cdsu_module_stats_picked_up : bool
+
 var _is_in_special_cam_focus_mode : bool = false
 
 onready var special_cam_focus_pos_2d = $MiscContainer/SpecialCamFocusPos
@@ -13,10 +15,12 @@ onready var focus_pos_02 = $MiscContainer/FocusPos02
 
 onready var spawn_pos = $PlayerSpawnCoordsContainer/SpawnPosition2D
 
-#
 
 onready var pca_last = $AreaRegionContainer/PCA_Last
 onready var pca_semi_last = $AreaRegionContainer/PCA_SemiLast
+
+
+onready var pickup_cdsu_module_stats = $ObjectContainer/PickupCDSU_Module_Stats
 
 ##
 
@@ -68,6 +72,12 @@ func _on_after_game_start_init():
 	else:
 		do_start_of_game__or_end_of_tween__modifications()
 	
+	
+	if GameSaveManager.can_view_game_stats:
+		pickup_cdsu_module_stats.queue_free()
+	else:
+		init_all_module_x_pickup_related()
+
 #
 
 func _start_special_cam_sequence():
@@ -175,4 +185,23 @@ func _on_display_of_desc_finished__03(arg_metadata):
 func _on_pca_semilast_captured_after_wait__after_another_wait():
 	if CameraManager.is_at_default_zoom():
 		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+
+
+
+#####
+
+func _on_PickupCDSU_Module_Stats_player_entered_self__custom_defined():
+	#GameSaveManager.can_view_game_stats = true
+	_is_cdsu_module_stats_picked_up = true
+	
+	create_and_show_module_x_particle_pickup_particles__and_do_relateds(pickup_cdsu_module_stats.global_position)
+
+
+func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
+	_is_cdsu_module_stats_picked_up = false
+	
+
+func _on_game_result_decided__win__base():
+	if _is_cdsu_module_stats_picked_up:
+		GameSaveManager.can_view_game_stats = true
 

@@ -44,6 +44,8 @@ export(bool) var pause_tree_on_show : bool = true setget set_pause_tree_on_show
 
 export(bool) var consume_all_key_inputs : bool = true
 
+export(Color) var background_texture_rect_modulate : Color = Color("d1ffffff") setget set_background_texture_rect_modulate
+
 #
 
 var show_info_button : bool = false setget set_show_info_button
@@ -71,6 +73,19 @@ onready var back_button = $TopRightButtonMarginer/HBoxContainer/BackButton
 onready var settings_button = $TopRightButtonMarginer/HBoxContainer/SettingsButton
 
 onready var top_right_hbox_container = $TopRightButtonMarginer/HBoxContainer
+
+onready var background_texture_rect = $TextureRect
+
+#
+
+func set_background_texture_rect_modulate(arg_val):
+	background_texture_rect_modulate = arg_val
+	
+	if is_inside_tree():
+		background_texture_rect.modulate = arg_val
+
+func get_background_texture_rect_modulate():
+	return background_texture_rect_modulate
 
 #
 
@@ -111,7 +126,8 @@ func _ready():
 	set_show_info_button(show_info_button)
 	set_show_back_button(show_back_button)
 	set_can_show_settings_button_on_first_hierarchy(can_show_settings_button_on_first_hierarchy)
-
+	
+	set_background_texture_rect_modulate(background_texture_rect_modulate)
 
 func show_control__and_add_if_unadded(arg_control : Control, arg_use_tweeners_for_show : bool = use_mod_a_tweeners_for_traversing_hierarchy):
 	_show_control__and_add_if_unadded__internal(arg_control, arg_use_tweeners_for_show, true)
@@ -369,6 +385,7 @@ func add_custom_top_right_button__and_associate_with_control(arg_button : Textur
 		arg_button.focus_mode = Control.FOCUS_NONE
 		arg_button.visible = false
 		top_right_hbox_container.add_child(arg_button)
+		top_right_hbox_container.move_child(arg_button, 0)
 		
 		if !_control_to_associated_button_list_to_show.has(arg_control):
 			_control_to_associated_button_list_to_show[arg_control] = []

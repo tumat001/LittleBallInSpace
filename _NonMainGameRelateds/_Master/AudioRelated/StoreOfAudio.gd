@@ -100,6 +100,7 @@ enum AudioIds {
 	SFX_Pickupable_LaunchBallAmmo = 5182
 	SFX_Pickupable_Battery_01 = 5183
 	SFX_Pickupable_RemoteControl = 5184
+	SFX_Pickupable_ModuleX = 5185
 	
 	# TELEPORTER RELATED
 	SFX_Teleporter_EnteredTeleporter_Normal = 5190

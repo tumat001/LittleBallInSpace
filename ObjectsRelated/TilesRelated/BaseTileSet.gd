@@ -14,9 +14,9 @@ signal tile_broken_via_player_and_speed()
 
 ##
 
-const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
-const NORMAL_MODULATE := Color(1, 1, 1)
-const INSTANT_GROUND_MODULATE := Color(172/255.0, 68/255.0, 2/255.0)
+#const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
+#const NORMAL_MODULATE := Color(1, 1, 1)
+#const INSTANT_GROUND_MODULATE := Color(172/255.0, 68/255.0, 2/255.0)
 
 #
 
@@ -170,18 +170,25 @@ func _ready():
 	SingletonsAndConsts.current_rewind_manager.connect("rewinding_started", self, "_on_rewinding_started")
 	
 	_update_display_based_on_has_glowables()
+	
+	GameSettingsManager.connect("tile_color_config__tile_modulate__x_changed", self, "_on_GSM_tile_color_config__tile_modulate__x_changed")
 
 func _update_display_based_on_energy_mode():
 	if energy_mode == EnergyMode.ENERGIZED:
 		#tilemap.modulate = ENERGIZED_MODULATE
-		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, ENERGIZED_MODULATE)
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, GameSettingsManager.tile_color_config__tile_modulate__energized)#ENERGIZED_MODULATE)
 	elif energy_mode == EnergyMode.NORMAL:
 		#tilemap.modulate = NORMAL_MODULATE
-		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, NORMAL_MODULATE)
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, GameSettingsManager.tile_color_config__tile_modulate__normal)#NORMAL_MODULATE)
 	elif energy_mode == EnergyMode.INSTANT_GROUND:
 		#tilemap.modulate = INSTANT_GROUND_MODULATE
-		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, INSTANT_GROUND_MODULATE)
+		set_modulate_for_tilemap(TilemapModulateIds.ENERGY_MODE, GameSettingsManager.tile_color_config__tile_modulate__grounded)#INSTANT_GROUND_MODULATE)
 		
+
+func _on_GSM_tile_color_config__tile_modulate__x_changed(arg_energy_mode, arg_val):
+	_update_display_based_on_energy_mode()
+	
+
 
 #
 
@@ -195,15 +202,33 @@ func remove_modulate_from_tilemap(arg_id):
 	_update_tilemap_modulate()
 
 func _update_tilemap_modulate():
-	if _modulates_of_tilemap.size() > 0:
+	tilemap.modulate = calculate_final_modulate_to_use(_modulates_of_tilemap.values())
+#	if _modulates_of_tilemap.size() > 0:
+#		var color_total : Color = Color(0, 0, 0, 0)
+#		for id in _modulates_of_tilemap.keys():
+#			color_total += _modulates_of_tilemap[id]
+#	
+#		tilemap.modulate = color_total / _modulates_of_tilemap.size()
+#	
+#	else:
+#		tilemap.modulate = Color(1, 1, 1, 1)
+
+static func calculate_final_modulate_to_use(arg_modulates : Array):
+	if arg_modulates.size() > 0:
 		var color_total : Color = Color(0, 0, 0, 0)
-		for id in _modulates_of_tilemap.keys():
-			color_total += _modulates_of_tilemap[id]
+		var lowest_a = 1
+		for color in arg_modulates:
+			color_total += color
+			
+			if lowest_a > color.a:
+				lowest_a = color.a
 		
-		tilemap.modulate = color_total / _modulates_of_tilemap.size()
+		var final_color = color_total / arg_modulates.size()
+		#final_color.a = lowest_a
 		
+		return final_color
 	else:
-		tilemap.modulate = Color(1, 1, 1, 1)
+		return Color(1, 1, 1, 1)
 
 #
 

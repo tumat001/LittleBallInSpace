@@ -71,7 +71,7 @@ var current_GE__time_spent_in_rewind : float
 #	PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : current_GE_unsetted__lowest_energy,
 #	PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : current_GE_unsetted__highest_speed,
 #	PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : current_GE_unsetted__time_spent_in_rewind,
-#	PER_LEVEL__PER_WIN_ARR__DATE_TIME_OF_PLAYTHRU__DIC_ID : Time.get_datetime_string_from_system()
+#	#PER_LEVEL__PER_WIN_ARR__DATE_TIME_OF_PLAYTHRU__DIC_ID : Time.get_datetime_string_from_system()
 #}
 
 const ALL_PER_LEVEL_PER_WIN_ARR_STAT_TO_NULL_MAP__FOR_HIGH_SCORES = {
@@ -81,7 +81,6 @@ const ALL_PER_LEVEL_PER_WIN_ARR_STAT_TO_NULL_MAP__FOR_HIGH_SCORES = {
 	PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {},
 	PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : {},
 	PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : {},
-	
 }
 
 #
@@ -284,7 +283,7 @@ func _fill_per_level_data_map__with_defaults_and_preconstructeds():
 	for level_id in StoreOfLevels.get_all_level_ids__not_including_tests():
 		_per_level__all_data__map[level_id] = {
 			PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID : [],
-			PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID : _get_filled_but_empty_high_score_stat_map(),
+			PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID : {},#_get_filled_but_empty_high_score_stat_map(),
 			PER_LEVEL__RESTART_OR_QUIT_COUNT__DIC_ID : 0,
 			PER_LEVEL__ATTEMPT_COUNT__DIC_ID : 0,
 		}
@@ -350,13 +349,13 @@ func _record_stats__as_win():
 func _push_stats_in_last_x_played(arg_stats):
 	var level_stats_arr__last_x_played : Array = _per_level__all_data__map[SingletonsAndConsts.current_base_level_id][PER_LEVEL__PER_WIN_ARR_LAST_X_PLAYS__DIC_ID]
 	while level_stats_arr__last_x_played.size() > per_level_per_win_recorded_limit:
-		level_stats_arr__last_x_played.pop_front()
+		level_stats_arr__last_x_played.pop_back()
 	
-	level_stats_arr__last_x_played.append(arg_stats)
+	level_stats_arr__last_x_played.insert(0, arg_stats)
 
 
 func _attempt_push_stats_in_high_low_stats(arg_stats):
-	var level_stats_high_low_map : Dictionary = _per_level__all_data__map[SingletonsAndConsts.current_base_level_id]
+	var level_stats_high_low_map : Dictionary = _per_level__all_data__map[SingletonsAndConsts.current_base_level_id][PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID]
 	
 	#time
 	_attempt_push_stats__in_x_stat(arg_stats, level_stats_high_low_map,
@@ -401,10 +400,14 @@ func _attempt_push_stats__in_x_stat(arg_stats : Dictionary, level_stats_high_low
 		var recorded_x_stat = level_stats_high_low_map[X_DIC_ID]
 		
 		if arg_stats[X_DIC_ID] != arg_unsetted_x_stat_var:
-			if call(x_stat_comparator_func_name, recorded_x_stat):
+			if call(x_stat_comparator_func_name, recorded_x_stat[X_DIC_ID]):
 				level_stats_high_low_map[X_DIC_ID] = arg_stats
 			else:
 				pass
+				
+			
+		#else:
+		#	level_stats_high_low_map[X_DIC_ID] = arg_stats
 
 
 func _stat_comparator__not_unsetted__time(arg_recorded_stat):
@@ -417,7 +420,7 @@ func _stat_comparator__not_unsetted__balls_shot_count(arg_recorded_stat):
 	return arg_recorded_stat > current_GE__balls_shot_count
 
 func _stat_comparator__not_unsetted__lowest_energy(arg_recorded_stat):
-	return arg_recorded_stat > current_GE__lowest_energy
+	return arg_recorded_stat < current_GE__lowest_energy
 
 func _stat_comparator__not_unsetted__highest_speed(arg_recorded_stat):
 	return arg_recorded_stat < current_GE__highest_speed

@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/TileColorEditPanel/Subs/GUI_SingleTileColorEditPanel/GUI_SingleTileColorEditPanel.gd" type="Script" id=1]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/TileColorEditPanel/Assets/TestTileAssets_ForTileColorEditor.png" type="Texture" id=2]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ColorPickerButton/PlayerGUI_ColorPickerButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/TileColorEditPanel/Assets/TileColorEditPanel_ResetToDefaultButton_Normal.png" type="Texture" id=4]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/TileColorEditPanel/Assets/TileColorEditPanel_ResetToDefaultButton_Highlight.png" type="Texture" id=5]
+[ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=6]
+
+[node name="GUI_SingleTileColorEditPanel" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 250, 0 )
+script = ExtResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 250.0
+margin_bottom = 137.0
+custom_constants/separation = 10
+
+[node name="TitleTooltipBody" parent="VBoxContainer" instance=ExtResource( 6 )]
+margin_right = 250.0
+default_font_size = 32
+bbcode_align_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 10.0
+margin_right = 250.0
+margin_bottom = 31.0
+
+[node name="ResetToDefaultButton" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 21.0
+texture_normal = ExtResource( 4 )
+texture_hover = ExtResource( 5 )
+
+[node name="ColorPickerButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 24.0
+margin_right = 250.0
+size_flags_horizontal = 3
+
+[node name="TestTextureRect" type="TextureRect" parent="VBoxContainer"]
+margin_left = 13.0
+margin_top = 41.0
+margin_right = 237.0
+margin_bottom = 137.0
+size_flags_horizontal = 6
+texture = ExtResource( 2 )
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ResetToDefaultButton" to="." method="_on_ResetToDefaultButton_pressed"]
+[connection signal="color_changed" from="VBoxContainer/HBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="picker_created" from="VBoxContainer/HBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_picker_created"]
+[connection signal="popup_closed" from="VBoxContainer/HBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_popup_closed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_pressed"]

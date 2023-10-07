@@ -9,6 +9,8 @@ signal level_layout_id_completion_status_changed(arg_id, arg_status)
 signal level_id_completion_status_changed(arg_id, arg_status)
 signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_coin_id_collected, arg_level_id)
 signal tentative_coin_ids_collected_changed__for_curr_level(arg_tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, arg_is_all_collected)
+signal can_view_game_stats_changed(arg_val)
+signal can_edit_tile_colors_changed(arg_val)
 
 signal is_player_health_on_start_zero_changed()
 
@@ -33,6 +35,8 @@ const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
 const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
 const LEVEL_ID_DIED_IN__DIC_IDENTIFIER = "LEVEL_ID_DIED_IN__DIC_IDENTIFIER"
+const CAN_VIEW_GAME_STATS__DIC_IDENTIFIER = "CAN_VIEW_GAME_STATS__DIC_IDENTIFIER"
+const CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER = "CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER"
 
 
 const PLAYER_MAX_HEALTH = 100
@@ -53,9 +57,11 @@ enum AnimalChoiceId {
 }
 var animal_choice_id : int
 
-###
 
-#
+var can_view_game_stats : bool setget set_can_view_game_stats
+var can_edit_tile_colors : bool setget set_can_edit_tile_colors
+
+###
 
 const level_data_file_path = "user://level_layout_data.save"
 
@@ -244,6 +250,21 @@ func _load_player_related_data(arg_file : File):
 		level_id_died_in = data[LEVEL_ID_DIED_IN__DIC_IDENTIFIER]
 	else:
 		level_id_died_in = -1
+	
+	##
+	
+	if data.has(CAN_VIEW_GAME_STATS__DIC_IDENTIFIER):
+		set_can_view_game_stats(data[CAN_VIEW_GAME_STATS__DIC_IDENTIFIER])
+	else:
+		set_can_view_game_stats(false)
+	
+	##
+	
+	if data.has(CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER):
+		set_can_edit_tile_colors(data[CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER])
+	else:
+		set_can_edit_tile_colors(false)
+	
 
 #
 
@@ -472,7 +493,8 @@ func _save_player_data():
 		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
 		ANIMAL_CHOICE__DIC_IDENTIFIER : animal_choice_id,
 		LEVEL_ID_DIED_IN__DIC_IDENTIFIER : level_id_died_in,
-		
+		CAN_VIEW_GAME_STATS__DIC_IDENTIFIER : can_view_game_stats,
+		CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER : can_edit_tile_colors,
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -526,6 +548,21 @@ func _on_game_result_decided(arg_result, arg_game_result_manager):
 		
 		if is_zero_approx(player_health_on_start) and level_id_died_in == -1:
 			level_id_died_in = SingletonsAndConsts.current_base_level_id
+
+
+##
+
+func set_can_view_game_stats(arg_val):
+	can_view_game_stats = arg_val
+	
+	if _is_manager_initialized:
+		emit_signal("can_view_game_stats_changed", arg_val)
+
+func set_can_edit_tile_colors(arg_val):
+	can_edit_tile_colors = arg_val
+	
+	if _is_manager_initialized:
+		emit_signal("can_edit_tile_colors_changed", arg_val)
 
 
 #####################################

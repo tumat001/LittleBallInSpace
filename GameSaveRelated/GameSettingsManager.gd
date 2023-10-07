@@ -5,6 +5,7 @@ extends Node
 
 #
 
+const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
 const AssistModeDetailsHelper = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/AssistModePanel/Data/AssistModeDetailsHelper.gd")
 
 #
@@ -39,7 +40,20 @@ signal assist_mode__pause_at_esc_mode_changed(arg_val)
 signal settings_config__is_full_screen_changed(arg_val)
 signal settings_config__cam_rotation_duration_changed(arg_val)
 
-####
+
+signal tile_color_config__tile_modulate__normal_changed(arg_val)
+signal tile_color_config__tile_modulate__energized_changed(arg_val)
+signal tile_color_config__tile_modulate__grounded_changed(arg_val)
+signal tile_color_config__tile_modulate__x_changed(arg_tile_energy_type, arg_val)
+
+#signal tile_color_config__tile_presets__normal_changed(arg_presets)
+#signal tile_color_config__tile_presets__energized_changed(arg_presets)
+#signal tile_color_config__tile_presets__grounded_changed(arg_presets)
+
+signal tile_color_config__tile_presets__for_all_types_changed(arg_presets)
+
+
+##########
 
 const game_control_settings_file_path = "user://game_control_settings.save"
 
@@ -98,6 +112,8 @@ const general_game_settings_file_path = "user://general_game_settings.save"
 const CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER = "CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER"
 const ASSIST_MODE__CATEGORY__DIC_IDENTIFIER = "ASSIST_MODE_CATEGORY__DIC_IDENTFIER"
 const SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER = "SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER"
+const TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER"
+
 
 ### Hotkey
 var game_control_to_default_event : Dictionary
@@ -228,6 +244,38 @@ const settings_config__is_full_screen__default : bool = false
 const SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER = "SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER"
 var settings_config__cam_rotation_duration : float setget set_settings_config__cam_rotation_duration
 const settings_config__cam_rotation_duration__default = 0.5
+
+
+### Tile Color
+
+const TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER"
+var tile_color_config__tile_modulate__normal : Color setget set_tile_color_config__tile_modulate__normal
+const tile_color_config__tile_modulate__normal__default : Color = Color(1, 1, 1, 1)
+
+#const TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL_PRESETS_DIC_IDENTIFIER"
+#var tile_color_config__tile_modulate__normal_presets : Array setget set_tile_color_config__tile_modulate__normal_preset
+
+#
+
+const TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER"
+var tile_color_config__tile_modulate__energized : Color setget set_tile_color_config__tile_modulate__energized
+const tile_color_config__tile_modulate__energized__default : Color = Color(217/255.0, 164/255.0, 2/255.0)
+
+#const TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED_PRESETS_DIC_IDENTIFIER"
+#var tile_color_config__tile_modulate__energized_presets : Array setget set_tile_color_config__tile_modulate__energized_preset
+
+#
+
+const TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER"
+var tile_color_config__tile_modulate__grounded : Color setget set_tile_color_config__tile_modulate__grounded
+const tile_color_config__tile_modulate__grounded__default : Color = Color(172/255.0, 68/255.0, 2/255.0)
+
+#const TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED_PRESETS_DIC_IDENTIFIER"
+#var tile_color_config__tile_modulate__grounded_presets : Array setget set_tile_color_config__tile_modulate__grounded_preset
+
+
+const TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER"
+var tile_color_config__tile_modulate__for_all_types_presets : Array setget set_tile_color_config__tile_modulate__for_all_types_preset
 
 
 ####
@@ -491,6 +539,11 @@ func _load_general_game_settings_using_file(arg_file : File):
 		_load_settings_config_using_dic({})
 	
 	#
+	
+	if data.has(TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER):
+		_load_tile_color_config_using_dic(data[TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER])
+	else:
+		_load_tile_color_config_using_dic({})
 	
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ADDITIONAL_ENERGY_MODE, true)
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ENERGY_REDUC_MODE, true)
@@ -1063,7 +1116,6 @@ func _on_switching_from_game_elements__non_restart__transition_ended():
 
 ####################
 
-#tood save and load this
 func set_settings_config__is_full_screen(arg_val):
 	var old_val = settings_config__is_full_screen
 	settings_config__is_full_screen = arg_val
@@ -1108,4 +1160,110 @@ func _get_settings_as_save_dict():
 		SETTINGS_CONFIG__CAM_ROTATION_DURATION__DIC_IDENTIFIER : settings_config__cam_rotation_duration,
 		
 	}
+
+
+#########################################
+# TILE COLORS
+
+func _load_tile_color_config_using_dic(data : Dictionary):
+	## NORMAL
+	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER):
+		set_tile_color_config__tile_modulate__normal(data[TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER])
+	else:
+		set_tile_color_config__tile_modulate__normal(tile_color_config__tile_modulate__normal__default)
+	
+#	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL_PRESETS_DIC_IDENTIFIER):
+#		set_tile_color_config__tile_modulate__normal_preset(data[TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL_PRESETS_DIC_IDENTIFIER])
+#	else:
+#		pass
+	
+	
+	## ENERGIZED
+	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER):
+		set_tile_color_config__tile_modulate__energized(data[TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER])
+	else:
+		set_tile_color_config__tile_modulate__energized(tile_color_config__tile_modulate__energized__default)
+	
+#	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED_PRESETS_DIC_IDENTIFIER):
+#		set_tile_color_config__tile_modulate__energized_preset(data[TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED_PRESETS_DIC_IDENTIFIER])
+#	else:
+#		pass
+	
+	
+	## GROUNDED
+	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER):
+		set_tile_color_config__tile_modulate__grounded(data[TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER])
+	else:
+		set_tile_color_config__tile_modulate__grounded(tile_color_config__tile_modulate__grounded__default)
+	
+#	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED_PRESETS_DIC_IDENTIFIER):
+#		set_tile_color_config__tile_modulate__grounded_preset(data[TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED_PRESETS_DIC_IDENTIFIER])
+#	else:
+#		pass
+	
+	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER):
+		set_tile_color_config__tile_modulate__for_all_types_preset(data[TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER])
+	else:
+		pass
+	
+
+func set_tile_color_config__tile_modulate__normal(arg_color : Color):
+	var old_val = tile_color_config__tile_modulate__normal
+	tile_color_config__tile_modulate__normal = arg_color
+	
+	if old_val != arg_color:
+		if _is_manager_initialized:
+			emit_signal("tile_color_config__tile_modulate__normal_changed", arg_color)
+			emit_signal("tile_color_config__tile_modulate__x_changed", BaseTileSet.EnergyMode.NORMAL, arg_color)
+
+#func set_tile_color_config__tile_modulate__normal_preset(arg_presets : Array):
+#	tile_color_config__tile_modulate__normal_presets = arg_presets
+#
+#	emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
+
+
+func set_tile_color_config__tile_modulate__energized(arg_color : Color):
+	var old_val = tile_color_config__tile_modulate__energized
+	tile_color_config__tile_modulate__energized = arg_color
+	
+	if old_val != arg_color:
+		if _is_manager_initialized:
+			emit_signal("tile_color_config__tile_modulate__energized_changed", arg_color)
+			emit_signal("tile_color_config__tile_modulate__x_changed", BaseTileSet.EnergyMode.ENERGIZED, arg_color)
+
+#func set_tile_color_config__tile_modulate__energized_preset(arg_presets : Array):
+#	tile_color_config__tile_modulate__energized_presets = arg_presets
+#
+#	emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
+
+
+func set_tile_color_config__tile_modulate__grounded(arg_color : Color):
+	var old_val = tile_color_config__tile_modulate__grounded
+	tile_color_config__tile_modulate__grounded = arg_color
+	
+	if old_val != arg_color:
+		if _is_manager_initialized:
+			emit_signal("tile_color_config__tile_modulate__grounded_changed", arg_color)
+			emit_signal("tile_color_config__tile_modulate__x_changed", BaseTileSet.EnergyMode.INSTANT_GROUND, arg_color)
+
+#func set_tile_color_config__tile_modulate__grounded_preset(arg_presets : Array):
+#	tile_color_config__tile_modulate__grounded_presets = arg_presets
+#
+#	emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
+
+func set_tile_color_config__tile_modulate__for_all_types_preset(arg_presets : Array):
+	if tile_color_config__tile_modulate__for_all_types_presets != arg_presets:
+		tile_color_config__tile_modulate__for_all_types_presets = arg_presets
+		
+		#print("presets: %s" % [tile_color_config__tile_modulate__for_all_types_presets])
+		
+		emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
+
+
+#todo
+func _get_tile_color_config_as_save_dict():
+	return {
+		#todo
+	}
+
 

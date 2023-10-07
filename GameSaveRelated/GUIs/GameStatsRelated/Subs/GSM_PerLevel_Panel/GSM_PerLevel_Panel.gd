@@ -16,25 +16,19 @@ const GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID = "GAME_STAT_DISPLAY__OPTION_ICON_
 const GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP : Dictionary = {
 	# game time
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest time to win",
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Time to Win",
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+	},
+	
+	# time spent in rewind
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : {
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Rewind Duration",
 		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
 	},
 	
 	# rotation
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__ROTATION_COUNT__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest rotations",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
-	},
-	
-	# balls
-	GameStatsManager.PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest balls shot",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
-	},
-	
-	# lowest energy
-	GameStatsManager.PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest energy",
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Rotations",
 		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
 	},
 	
@@ -44,9 +38,15 @@ const GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP : Dictionary = {
 		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
 	},
 	
-	# time spent in rewind
-	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest rewind duration",
+	# balls
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : {
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Balls Shot",
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+	},
+	
+	# lowest energy
+	GameStatsManager.PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Highest Lowest Energy",
 		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
 	},
 	
@@ -106,6 +106,9 @@ func _ready():
 	set_show_level_name_in_specific_stat_panels(show_level_name_in_specific_stat_panels)
 	_configure_button_group_for_display_mode_buttons()
 	_configure_display_option_button_to_display_mode_id_map()
+	
+#	connect("visibility_changed", self, "_on_vis_changed", [], CONNECT_DEFERRED)
+#	_update_config_signals_to_listen_for_gui_input()
 
 func _configure_button_group_for_display_mode_buttons():
 	button_group_for_display_modes = ButtonGroup.new()
@@ -209,14 +212,20 @@ func _construct_per_game_list__high_scores():
 		var highest_stats_map = _current_all_details__from_GS[GameStatsManager.PER_LEVEL__PER_WIN_STAT_MAP_WITH_HIGH_LOW__DIC_ID]
 		for game_stat_dic_id in GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP.keys():
 			
-			var per_game_list_item = GSM_PerGame_SpecificGStats_ListPanel.PerGameListItem.new()
-			per_game_list_item.button_icon = GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP[game_stat_dic_id][GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID]
-			per_game_list_item.button_label = GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP[game_stat_dic_id][GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID]
-			per_game_list_item.level_id = _current_level_id
-			per_game_list_item.per_game_data = highest_stats_map[game_stat_dic_id]
-			
-			#
-			bucket.append(per_game_list_item)
+			if highest_stats_map.has(game_stat_dic_id):
+				var per_game_list_item = GSM_PerGame_SpecificGStats_ListPanel.PerGameListItem.new()
+				per_game_list_item.button_icon = GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP[game_stat_dic_id][GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID]
+				per_game_list_item.button_label = GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP[game_stat_dic_id][GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID]
+				per_game_list_item.level_id = _current_level_id
+				per_game_list_item.per_game_data = highest_stats_map[game_stat_dic_id]
+				
+				per_game_list_item.metadata = game_stat_dic_id
+				
+				#
+				bucket.append(per_game_list_item)
+				
+			else:
+				bucket.append(gsm_per_game_list_panel._empty_per_game_list_item)
 	
 	_per_game_list_item_arr__high_scores = bucket
 
@@ -258,8 +267,43 @@ func _clear_and_display_item_list_in_gsm_list_panel(arg_list):
 	for item in arg_list:
 		gsm_per_game_list_panel.add_per_game_list_item(item, i == 0)
 		i += 1
+	
+	# if none
+	if i == 0:
+		gsm_per_game_list_panel.set_curr_per_game_item_index__and_update_display(-1)
 
-#############
+##
+
+#func _on_vis_changed():
+#	#_update_config_signals_to_listen_for_gui_input()
+#	call_deferred("_update_config_signals_to_listen_for_gui_input")
+#
+#func _update_config_signals_to_listen_for_gui_input():
+#	if is_visible_in_tree():
+#		set_process_input(true)
+#	else:
+#		set_process_input(false)
+#
+#func _input(event):
+#	if event is InputEventKey:
+#		if event.is_action_pressed("ui_up"):
+#			pass
+#		elif event.is_action_pressed("ui_down"):
+#			pass
+#
+
+
+func _on_GSM_PerGame_ListPanel_item_changed(arg_per_game_list_item, arg_current_per_game_list_item_id):
+	if arg_per_game_list_item != null:
+		var game_stat_dic_id = arg_per_game_list_item.metadata
+		
+		gsm_per_game_list_panel.gsm_per_game_panel.set_selected_highlight_hbox_with_stat_type(game_stat_dic_id)
+		
+	else:
+		
+		gsm_per_game_list_panel.gsm_per_game_panel.set_selected_highlight_hbox_with_stat_type("")
+		
+
 
 
 #############################################

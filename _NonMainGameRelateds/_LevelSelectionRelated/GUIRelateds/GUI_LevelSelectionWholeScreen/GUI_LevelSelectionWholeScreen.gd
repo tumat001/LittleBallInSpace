@@ -237,7 +237,13 @@ func _update_level_details_panel(arg_level_details):
 
 func _update_stats_button_visibility(arg_level_details):
 	if arg_level_details != null:
-		stats_for_level_button.visible = true
+		_attempt_set_visibility_of_stats_for_level_button(true)
+	else:
+		_attempt_set_visibility_of_stats_for_level_button(false)
+
+func _attempt_set_visibility_of_stats_for_level_button(arg_val):
+	if GameSaveManager.can_view_game_stats:
+		stats_for_level_button.visible = arg_val
 	else:
 		stats_for_level_button.visible = false
 

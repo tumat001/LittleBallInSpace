@@ -6,11 +6,12 @@
 
 [node name="GS_GUI_ControlTree" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+background_texture_rect_modulate = Color( 1, 1, 1, 0.960784 )
 
 [node name="GSM_PerLevel_Panel" parent="ControlContainer" index="0" instance=ExtResource( 3 )]
-margin_left = 219.0
-margin_top = 102.0
-margin_right = 740.0
-margin_bottom = 437.0
+margin_left = 181.0
+margin_top = 77.0
+margin_right = 778.0
+margin_bottom = 463.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
