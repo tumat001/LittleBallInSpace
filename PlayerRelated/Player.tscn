@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png" type="Texture" id=1]
+[ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.tscn" type="PackedScene" id=1]
 [ext_resource path="res://PlayerRelated/Player.gd" type="Script" id=2]
 [ext_resource path="res://PlayerRelated/PlayerParticles/PCACaptured/PCACapturedDrawer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://PlayerRelated/PCAProgressDrawer.gd" type="Script" id=18]
@@ -29,8 +29,7 @@ script = ExtResource( 2 )
 
 [node name="SpriteLayer" type="Node2D" parent="."]
 
-[node name="MainBodySprite" type="Sprite" parent="SpriteLayer"]
-texture = ExtResource( 1 )
+[node name="PlayerMainBody" parent="SpriteLayer" instance=ExtResource( 1 )]
 
 [node name="PlayerFace" parent="SpriteLayer" instance=ExtResource( 20 )]
 

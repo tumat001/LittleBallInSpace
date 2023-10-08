@@ -15,9 +15,9 @@ class AdvParam:
 	var func_name__set__tile_color_config__tile_modulate__x : String
 	var var_name__get__tile_color_config__tile_modulate__x__default : String
 	
-	var var_name__TILE_COLOR_CONFIG__TILE_MODULATE__X_PRESETS_DIC_IDENTIFIER : String
-	var var_name__get__tile_color_config__tile_modulate__x_presets : String
-	var func_name__set__tile_color_config__tile_modulate__x_presets : String
+	var var_name__SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER : String
+	var var_name__get__shared_commnons__all_color_presets : String
+	var func_name__set__shared_commnons__all_color_presets : String
 	
 	var signal_name__tile_color_config__tile_modulate__x_changed : String
 	var signal_name__tile_color_config__tile_presets__x_changed : String
@@ -28,9 +28,9 @@ var var_name__get__tile_color_config__tile_modulate__x : String
 var func_name__set__tile_color_config__tile_modulate__x : String
 var var_name__get__tile_color_config__tile_modulate__x__default : String
 
-var var_name__TILE_COLOR_CONFIG__TILE_MODULATE__X_PRESETS_DIC_IDENTIFIER : String
-var var_name__get__tile_color_config__tile_modulate__x_presets : String
-var func_name__set__tile_color_config__tile_modulate__x_presets : String
+var var_name__SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER : String
+var var_name__get__shared_commnons__all_color_presets : String
+var func_name__set__shared_commnons__all_color_presets : String
 
 var signal_name__tile_color_config__tile_modulate__x_changed : String
 var signal_name__tile_color_config__tile_presets__x_changed : String
@@ -52,10 +52,6 @@ func _set_is_color_picker_open(arg_val):
 	_is_color_picker_open = arg_val
 	
 	set_process_input(_is_color_picker_open)
-	
-	#todo
-	print("set input: %s" % [arg_val])
-
 
 func _input(event):
 	if event is InputEventKey:
@@ -63,9 +59,6 @@ func _input(event):
 			color_picker_button.attempt_close_color_picker()
 			_on_close_of_color_picker_button_popup__any_means()
 			get_viewport().set_input_as_handled()
-	
-	#todo
-	print("input")
 
 #
 
@@ -81,9 +74,9 @@ func configure_tile_color_editor(arg_param : AdvParam):
 	func_name__set__tile_color_config__tile_modulate__x = arg_param.func_name__set__tile_color_config__tile_modulate__x
 	var_name__get__tile_color_config__tile_modulate__x__default = arg_param.var_name__get__tile_color_config__tile_modulate__x__default
 	
-	var_name__TILE_COLOR_CONFIG__TILE_MODULATE__X_PRESETS_DIC_IDENTIFIER = arg_param.var_name__TILE_COLOR_CONFIG__TILE_MODULATE__X_PRESETS_DIC_IDENTIFIER
-	var_name__get__tile_color_config__tile_modulate__x_presets = arg_param.var_name__get__tile_color_config__tile_modulate__x_presets
-	func_name__set__tile_color_config__tile_modulate__x_presets = arg_param.func_name__set__tile_color_config__tile_modulate__x_presets
+	var_name__SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER = arg_param.var_name__SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER
+	var_name__get__shared_commnons__all_color_presets = arg_param.var_name__get__shared_commnons__all_color_presets
+	func_name__set__shared_commnons__all_color_presets = arg_param.func_name__set__shared_commnons__all_color_presets
 	
 	signal_name__tile_color_config__tile_modulate__x_changed = arg_param.signal_name__tile_color_config__tile_modulate__x_changed
 	signal_name__tile_color_config__tile_presets__x_changed = arg_param.signal_name__tile_color_config__tile_presets__x_changed
@@ -127,9 +120,6 @@ func _on_ColorPickerButton_popup_closed():
 	_on_close_of_color_picker_button_popup__any_means()
 
 func _on_close_of_color_picker_button_popup__any_means():
-	#todo
-	print("closed")
-	
 	_set_is_color_picker_open(false)
 	_attempt_update_presets_of_GSettingsM()
 
@@ -177,7 +167,7 @@ func _on_ColorPickerButton_pressed():
 
 
 func _set_presets__of_color_picker__from_GSettingsM():
-	var presets = GameSettingsManager.get(var_name__get__tile_color_config__tile_modulate__x_presets)
+	var presets = GameSettingsManager.get(var_name__get__shared_commnons__all_color_presets)
 	
 	color_picker_button.set_presets(presets)
 
@@ -188,7 +178,7 @@ func _attempt_update_presets_of_GSettingsM():
 	for color_preset in presets_of_picker_button:
 		bucket.append(color_preset)
 	
-	GameSettingsManager.call(func_name__set__tile_color_config__tile_modulate__x_presets, bucket)
+	GameSettingsManager.call(func_name__set__shared_commnons__all_color_presets, bucket)
 
 
 ######

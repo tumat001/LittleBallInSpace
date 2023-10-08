@@ -11,6 +11,7 @@ signal coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_co
 signal tentative_coin_ids_collected_changed__for_curr_level(arg_tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, arg_is_all_collected)
 signal can_view_game_stats_changed(arg_val)
 signal can_edit_tile_colors_changed(arg_val)
+signal can_edit_player_aesth_changed(arg_val)
 
 signal is_player_health_on_start_zero_changed()
 
@@ -37,6 +38,7 @@ const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
 const LEVEL_ID_DIED_IN__DIC_IDENTIFIER = "LEVEL_ID_DIED_IN__DIC_IDENTIFIER"
 const CAN_VIEW_GAME_STATS__DIC_IDENTIFIER = "CAN_VIEW_GAME_STATS__DIC_IDENTIFIER"
 const CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER = "CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER"
+const CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER = "CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER"
 
 
 const PLAYER_MAX_HEALTH = 100
@@ -60,6 +62,7 @@ var animal_choice_id : int
 
 var can_view_game_stats : bool setget set_can_view_game_stats
 var can_edit_tile_colors : bool setget set_can_edit_tile_colors
+var can_edit_player_aesth : bool setget set_can_edit_player_aesth
 
 ###
 
@@ -264,6 +267,13 @@ func _load_player_related_data(arg_file : File):
 		set_can_edit_tile_colors(data[CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER])
 	else:
 		set_can_edit_tile_colors(false)
+	
+	##
+	
+	if data.has(CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER):
+		set_can_edit_player_aesth(data[CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER])
+	else:
+		set_can_edit_player_aesth(false)
 	
 
 #
@@ -495,6 +505,8 @@ func _save_player_data():
 		LEVEL_ID_DIED_IN__DIC_IDENTIFIER : level_id_died_in,
 		CAN_VIEW_GAME_STATS__DIC_IDENTIFIER : can_view_game_stats,
 		CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER : can_edit_tile_colors,
+		CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER : can_edit_player_aesth,
+		
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -564,6 +576,11 @@ func set_can_edit_tile_colors(arg_val):
 	if _is_manager_initialized:
 		emit_signal("can_edit_tile_colors_changed", arg_val)
 
+func set_can_edit_player_aesth(arg_val):
+	can_edit_player_aesth = arg_val
+	
+	if _is_manager_initialized:
+		emit_signal("can_edit_player_aesth_changed", arg_val)
 
 #####################################
 ## LEVEL RELATED

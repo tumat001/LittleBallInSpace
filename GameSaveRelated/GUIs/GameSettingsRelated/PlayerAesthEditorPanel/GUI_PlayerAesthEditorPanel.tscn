@@ -1,0 +1,115 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=3]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ColorPickerButton/PlayerGUI_ColorPickerButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_OptionButtonStandard/PlayerGUI_OptionButtonStandard.tscn" type="PackedScene" id=5]
+[ext_resource path="res://PlayerRelated/PlayerModel/PlayerFace/PlayerFace.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_PlayerAesth.png" type="Texture" id=7]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/PlayerAesthEditorPanel/GUI_PlayerAesthEditorPanel.gd" type="Script" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+extra_spacing_top = -4
+font_data = ExtResource( 1 )
+
+[node name="GUI_PlayerAesthEditorPanel" type="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 540.0
+custom_constants/margin_right = 30
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 30
+script = ExtResource( 8 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 930.0
+margin_bottom = 510.0
+
+[node name="HBoxLabel" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 281.0
+margin_right = 618.0
+margin_bottom = 30.0
+size_flags_horizontal = 6
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLabel"]
+margin_right = 33.0
+margin_bottom = 30.0
+texture = ExtResource( 7 )
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/HBoxLabel"]
+margin_left = 37.0
+margin_top = 1.0
+margin_right = 337.0
+margin_bottom = 29.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Player Visual Editor"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 34.0
+margin_right = 900.0
+margin_bottom = 480.0
+size_flags_vertical = 3
+
+[node name="BodySpecContianer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_top = 170.0
+margin_right = 356.0
+margin_bottom = 275.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/BodySpecContianer"]
+margin_right = 356.0
+margin_bottom = 105.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer"]
+margin_right = 356.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 3 )
+text = "Body Configs"
+align = 1
+
+[node name="BodyColor" type="MarginContainer" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer"]
+margin_top = 42.0
+margin_right = 356.0
+margin_bottom = 63.0
+
+[node name="Body_ColorPickerButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor" instance=ExtResource( 4 )]
+margin_right = 356.0
+color = Color( 0.443137, 0.337255, 0.337255, 1 )
+
+[node name="BodyTexture_OptionButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 83.0
+margin_right = 356.0
+margin_bottom = 105.0
+
+[node name="DisplayContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 360.0
+margin_top = 223.0
+margin_right = 539.0
+margin_bottom = 223.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.5
+
+[node name="PlayerMainBody" parent="VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 2 )]
+position = Vector2( 91.5, 0 )
+
+[node name="PlayerFace" parent="VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 6 )]
+position = Vector2( 91.5, 0 )
+
+[node name="FaceSpecContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 543.0
+margin_top = 223.0
+margin_right = 900.0
+margin_bottom = 223.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]

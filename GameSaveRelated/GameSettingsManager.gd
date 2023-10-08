@@ -7,11 +7,15 @@ extends Node
 
 const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
 const AssistModeDetailsHelper = preload("res://GameSaveRelated/GUIs/GameSettingsRelated/AssistModePanel/Data/AssistModeDetailsHelper.gd")
+const PlayerMainBody = preload("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.tscn")
 
 #
 
 signal settings_manager_initialized()
 
+
+
+signal shared_commons__all_color_presets__changed(arg_presets)
 
 signal game_control_is_hidden_changed(arg_game_control_name, arg_is_hidden)
 signal secondary_game_control_is_unlocked_changed(arg_secondaty_game_control_id, arg_is_unlocked)
@@ -51,6 +55,15 @@ signal tile_color_config__tile_modulate__x_changed(arg_tile_energy_type, arg_val
 #signal tile_color_config__tile_presets__grounded_changed(arg_presets)
 
 signal tile_color_config__tile_presets__for_all_types_changed(arg_presets)
+
+
+
+#signal player_aesth_config__body_modulate__changed(arg_modulate)
+signal player_aesth_config__body_texture_id__changed(arg_id)
+signal player_aesth_config__saved_modulate_for_body_texture_id__changed(arg_modulate, arg_id)
+
+#signal player_body_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
+#signal player_face_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 
 
 ##########
@@ -109,10 +122,18 @@ var last_calc__unlocked_status__mouse_scroll_launch_ball
 ## general settings
 
 const general_game_settings_file_path = "user://general_game_settings.save"
+
+const SHARED_COMMONS__CATEGORY__DIC_IDENTIFIER = "SHARED_COMMONS__CATEGORY__DIC_IDENTIFIER"
 const CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER = "CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER"
 const ASSIST_MODE__CATEGORY__DIC_IDENTIFIER = "ASSIST_MODE_CATEGORY__DIC_IDENTFIER"
 const SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER = "SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER"
 const TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER"
+const PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER"
+
+######### SHARED commons
+const SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER = "SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER"
+var shared_commnons__all_color_presets : Array setget set_shared_commnons__all_color_presets
+
 
 
 ### Hotkey
@@ -235,7 +256,8 @@ var assist_mode_id_to_no_effect_var_name_map : Dictionary
 var last_calc_is_any_difference_from_assist_mode_config_to_curr_GE_config : bool
 
 
-### Settings Config
+###########
+#Settings Config
 
 const SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER = "SETTINGS_CONFIG__IS_FULL_SCREEN__DIC_IDENTIFIER"
 var settings_config__is_full_screen : bool setget set_settings_config__is_full_screen
@@ -246,7 +268,8 @@ var settings_config__cam_rotation_duration : float setget set_settings_config__c
 const settings_config__cam_rotation_duration__default = 0.5
 
 
-### Tile Color
+#########
+# Tile Color
 
 const TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER"
 var tile_color_config__tile_modulate__normal : Color setget set_tile_color_config__tile_modulate__normal
@@ -274,8 +297,128 @@ const tile_color_config__tile_modulate__grounded__default : Color = Color(172/25
 #var tile_color_config__tile_modulate__grounded_presets : Array setget set_tile_color_config__tile_modulate__grounded_preset
 
 
-const TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER"
-var tile_color_config__tile_modulate__for_all_types_presets : Array setget set_tile_color_config__tile_modulate__for_all_types_preset
+#const TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER = "TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER"
+#var tile_color_config__tile_modulate__for_all_types_presets : Array setget set_tile_color_config__tile_modulate__for_all_types_preset
+
+
+##########
+#PLAYER AESTH
+
+#const PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER := "PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER"
+#var player_aesth_config__body_modulate : Color setget set_player_aesth_config__body_modulate
+#var player_aesth_config__body_modulate__default : Color
+
+enum PlayerAesthConfig_BodyTextureId {
+	NORMAL = 0,
+	
+	FLAG__AUSTRALIA = 100,
+	FLAG__BRAZIL = 101,
+	FLAG__CANADA = 102,
+	FLAG__CHINA = 103,
+	FLAG__FRANCE = 104,
+	FLAG__GERMANY = 105,
+	FLAG__INDIA = 106,
+	FLAG__ITALY = 107,
+	FLAG__JAPAN = 108,
+	FLAG__NETHERLANDS = 109,
+	FLAG__PHILIPPINES = 110,
+	FLAG__RUSSIA = 111,
+	FLAG__SPAIN = 112,
+	FLAG__UK = 113,
+	FLAG__USA = 114,
+	
+}
+
+const PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER := "PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER"
+var player_aesth_config__body_texture_id : int setget set_player_aesth_config__body_texture_id
+const player_aesth_config__body_texture_id__default : int = PlayerAesthConfig_BodyTextureId.NORMAL
+
+const PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER"
+var player_aesth_config__body_texture_id_to_saved_modulate_map : Dictionary
+const player_aesth_config__body_texture_id_to_saved_modulate_map__default : Dictionary = {
+	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#E2FD21"),
+	
+	# all undefineds are COLOR("ffffff")
+}
+
+const PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID = "name"
+const PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID = "icon"
+const player_aesth_config__body_texture_id_to_details_map : Dictionary = {
+	PlayerAesthConfig_BodyTextureId.NORMAL : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Plain",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	
+	
+	PlayerAesthConfig_BodyTextureId.FLAG__AUSTRALIA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Australia",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__BRAZIL : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Brazil",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__CANADA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Canada",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__CHINA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: China",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__FRANCE : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: France",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__GERMANY : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Germany",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__INDIA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: India",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__ITALY : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Italy",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__JAPAN : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Japan",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__NETHERLANDS : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Netherlands",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__PHILIPPINES : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Philippines",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__RUSSIA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Russia",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__SPAIN : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: Spain",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__UK : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: United Kingdom",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	PlayerAesthConfig_BodyTextureId.FLAG__USA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: USA",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+	
+}
+
+const OPTION_BUTTON__LINE_SEPA = -1
+const player_aesth_config__body_texture_ids_with_sepa_arr__as_displayed_in_ui : Array = [
+	PlayerAesthConfig_BodyTextureId.NORMAL,
+	OPTION_BUTTON__LINE_SEPA,
+	PlayerAesthConfig_BodyTextureId.FLAG__PHILIPPINES
+]
 
 
 ####
@@ -468,16 +611,21 @@ func get_last_calc__unlocked_status__mouse_scroll_launch_ball():
 #####################################
 
 func _save_general_game_settings_related_data():
+	var shared_commons_save_dict = _get_shared_commons_as_save_dict()
 	var assist_mode_save_dict = _generate_save_dict__for_assist_mode()
 	var hotkey_save_dict = _get_game_controls_as_dict()
 	var settings_save_dict = _get_settings_as_save_dict()
+	var tile_color_save_dict = _get_tile_color_config_as_save_dict()
 	
 	#
 	
 	var general_game_settings_save_dict = {
+		SHARED_COMMONS__CATEGORY__DIC_IDENTIFIER : shared_commons_save_dict,
 		ASSIST_MODE__CATEGORY__DIC_IDENTIFIER : assist_mode_save_dict,
 		CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER : hotkey_save_dict,
-		SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER : settings_save_dict
+		SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER : settings_save_dict,
+		TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER : tile_color_save_dict,
+		
 	}
 	
 	_save_using_dict(general_game_settings_save_dict, general_game_settings_file_path, "SAVE ERROR: general game settings")
@@ -512,6 +660,14 @@ func _load_general_game_settings_using_file(arg_file : File):
 	
 	###
 	
+	
+	if data.has(SHARED_COMMONS__CATEGORY__DIC_IDENTIFIER):
+		_load_shared_commons_using_dic(data[SHARED_COMMONS__CATEGORY__DIC_IDENTIFIER])
+	else:
+		_load_shared_commons_using_dic({})
+	
+	#
+	
 	_update_game_control_to_default_event_map()
 	if data.has(CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER):
 		_load_game_hotkey_using_dic(data[CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER])
@@ -545,11 +701,44 @@ func _load_general_game_settings_using_file(arg_file : File):
 	else:
 		_load_tile_color_config_using_dic({})
 	
+	#
+	
+	if data.has(PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER):
+		_load_player_aesth_config_using_dic(data[PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER])
+	else:
+		_load_player_aesth_config_using_dic({})
+	
+	
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ADDITIONAL_ENERGY_MODE, true)
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ENERGY_REDUC_MODE, true)
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.PAUSE_AT_ESC_MODE, true)
 
+############
+## SHARED COMMONS
+
+
+func _load_shared_commons_using_dic(data : Dictionary):
+	# COLOR PRESETS
+	if data.has(SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER):
+		var presets = _convert_color_html_string_arr__into_color_arr(data[SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER])
+		set_shared_commnons__all_color_presets(presets)
+	else:
+		pass
 	
+	
+
+func set_shared_commnons__all_color_presets(arg_presets):
+	shared_commnons__all_color_presets = arg_presets
+	
+	if _is_manager_initialized:
+		emit_signal("shared_commons__all_color_presets__changed", arg_presets)
+
+
+func _get_shared_commons_as_save_dict():
+	return {
+		#PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER : player_aesth_config__body_modulate.to_html(true),
+		SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER : _convert_color_arr_to_color_html_string_arr(shared_commnons__all_color_presets)
+	}
 
 #####################
 ## HOTKEY
@@ -1168,7 +1357,8 @@ func _get_settings_as_save_dict():
 func _load_tile_color_config_using_dic(data : Dictionary):
 	## NORMAL
 	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER):
-		set_tile_color_config__tile_modulate__normal(data[TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER])
+		var color = _convert_color_html_string__into_color(data[TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER])
+		set_tile_color_config__tile_modulate__normal(color)
 	else:
 		set_tile_color_config__tile_modulate__normal(tile_color_config__tile_modulate__normal__default)
 	
@@ -1180,7 +1370,8 @@ func _load_tile_color_config_using_dic(data : Dictionary):
 	
 	## ENERGIZED
 	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER):
-		set_tile_color_config__tile_modulate__energized(data[TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER])
+		var color = _convert_color_html_string__into_color(data[TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER])
+		set_tile_color_config__tile_modulate__energized(color)
 	else:
 		set_tile_color_config__tile_modulate__energized(tile_color_config__tile_modulate__energized__default)
 	
@@ -1192,7 +1383,8 @@ func _load_tile_color_config_using_dic(data : Dictionary):
 	
 	## GROUNDED
 	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER):
-		set_tile_color_config__tile_modulate__grounded(data[TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER])
+		var color = _convert_color_html_string__into_color(data[TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER])
+		set_tile_color_config__tile_modulate__grounded(color)
 	else:
 		set_tile_color_config__tile_modulate__grounded(tile_color_config__tile_modulate__grounded__default)
 	
@@ -1201,11 +1393,28 @@ func _load_tile_color_config_using_dic(data : Dictionary):
 #	else:
 #		pass
 	
-	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER):
-		set_tile_color_config__tile_modulate__for_all_types_preset(data[TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER])
-	else:
-		pass
+	#todo
+#	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER):
+#		var colors = _convert_color_html_string_arr__into_color_arr(data[TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER])
+#		set_tile_color_config__tile_modulate__for_all_types_preset(colors)
+#	else:
+#		pass
+
+#
+
+func _convert_color_html_string__into_color(arg_color_string : String):
+	return Color(arg_color_string)
 	
+
+func _convert_color_html_string_arr__into_color_arr(arg_arr):
+	var bucket = []
+	for color_html_string in arg_arr:
+		bucket.append(Color(color_html_string))
+	
+	return bucket
+
+
+#
 
 func set_tile_color_config__tile_modulate__normal(arg_color : Color):
 	var old_val = tile_color_config__tile_modulate__normal
@@ -1251,19 +1460,121 @@ func set_tile_color_config__tile_modulate__grounded(arg_color : Color):
 #
 #	emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
 
-func set_tile_color_config__tile_modulate__for_all_types_preset(arg_presets : Array):
-	if tile_color_config__tile_modulate__for_all_types_presets != arg_presets:
-		tile_color_config__tile_modulate__for_all_types_presets = arg_presets
-		
-		#print("presets: %s" % [tile_color_config__tile_modulate__for_all_types_presets])
-		
-		emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
+#func set_tile_color_config__tile_modulate__for_all_types_preset(arg_presets : Array):
+#	if tile_color_config__tile_modulate__for_all_types_presets != arg_presets:
+#		tile_color_config__tile_modulate__for_all_types_presets = arg_presets
+#
+#		#print("presets: %s" % [tile_color_config__tile_modulate__for_all_types_presets])
+#
+#		emit_signal("tile_color_config__tile_presets__for_all_types_changed", arg_presets)
 
 
-#todo
 func _get_tile_color_config_as_save_dict():
 	return {
-		#todo
+		TILE_COLOR_CONFIG__TILE_MODULATE__NORMAL__DIC_IDENTIFIER : tile_color_config__tile_modulate__normal.to_html(true),
+		TILE_COLOR_CONFIG__TILE_MODULATE__ENERGIZED__DIC_IDENTIFIER : tile_color_config__tile_modulate__energized.to_html(true),
+		TILE_COLOR_CONFIG__TILE_MODULATE__GROUNDED__DIC_IDENTIFIER : tile_color_config__tile_modulate__grounded.to_html(true),
+		
+		#TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER : _convert_color_arr_to_color_html_string_arr(tile_color_config__tile_modulate__for_all_types_presets),
 	}
+
+func _convert_color_arr_to_color_html_string_arr(arg_arr : Array):
+	var bucket = []
+	for color in arg_arr:
+		bucket.append(color.to_html(true))
+		
+	
+	return bucket
+
+
+####################################
+## PLAYER AESTH
+
+func player_aesth__get_texture_of_body_texture_id(arg_id):
+	if arg_id == PlayerAesthConfig_BodyTextureId.NORMAL:
+		return preload("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody.png")
+		#return preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
+	
+	return null
+
+
+
+func _load_player_aesth_config_using_dic(data : Dictionary):
+	## BODY
+	if data.has(PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER):
+		player_aesth_config__body_texture_id_to_saved_modulate_map = _convert_color_html_string_dict_to_color_dict(data[PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER])
+	else:
+		player_aesth_config__body_texture_id_to_saved_modulate_map = player_aesth_config__body_texture_id_to_saved_modulate_map__default.duplicate(true)
+	_fill_missing_player_aesth_config__body_texture_id_to_saved_modulate_map()
+	
+	if data.has(PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER):
+		var id_as_str = data[PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER]
+		set_player_aesth_config__body_texture_id(int(id_as_str))
+	else:
+		set_player_aesth_config__body_texture_id(player_aesth_config__body_texture_id__default)
+	
+#	if data.has(PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER):
+#		var color = _convert_color_html_string__into_color(data[PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER])
+#		set_player_aesth_config__body_modulate(color)
+#	else:
+#		set_player_aesth_config__body_modulate(player_aesth_config__body_modulate__default)
+	
+
+#func set_player_aesth_config__body_modulate(arg_modulate : Color):
+#	player_aesth_config__body_modulate = arg_modulate
+#
+#	if _is_manager_initialized:
+#		emit_signal("player_aesth_config__body_modulate__changed", arg_modulate)
+
+func set_player_aesth_config__body_texture_id(arg_id):
+	var old_val = player_aesth_config__body_texture_id
+	player_aesth_config__body_texture_id = arg_id
+	
+	if old_val != arg_id:
+		if _is_manager_initialized:
+			emit_signal("player_aesth_config__body_texture_id__changed", arg_id)
+
+func set_player_aesth_config__modulate_for_body_texture_id(arg_modulate, arg_id):
+	player_aesth_config__body_texture_id_to_saved_modulate_map[arg_id] = arg_modulate
+	
+	if _is_manager_initialized:
+		emit_signal("player_aesth_config__saved_modulate_for_body_texture_id__changed", arg_modulate, arg_id)
+
+func _fill_missing_player_aesth_config__body_texture_id_to_saved_modulate_map():
+	for id in PlayerAesthConfig_BodyTextureId.keys():
+		if !player_aesth_config__body_texture_id_to_saved_modulate_map.has(id):
+			var default_val = Color("#ffffff")
+			if player_aesth_config__body_texture_id_to_saved_modulate_map__default.has(id):
+				default_val = player_aesth_config__body_texture_id_to_saved_modulate_map__default[id]
+			
+			player_aesth_config__body_texture_id_to_saved_modulate_map[id] = default_val
+
+
+
+#todo add this to save soon
+func _get_player_aesth_config_as_save_dict():
+	return {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__body_texture_id_to_saved_modulate_map),
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER : player_aesth_config__body_texture_id,
+		
+	}
+
+
+
+func _convert_color_html_string_dict_to_color_dict(arg_dict : Dictionary):
+	var bucket = {}
+	for id_as_str in arg_dict.keys():
+		var id = int(id_as_str)
+		bucket[id] = _convert_color_html_string__into_color(arg_dict[id])
+	
+	return bucket
+
+func _convert_color_dict_to_color_html_string_dict(arg_dict : Dictionary):
+	var bucket = {}
+	for id in arg_dict.keys():
+		bucket[id] = arg_dict[id].to_html(true)
+	
+	return bucket
+
 
 

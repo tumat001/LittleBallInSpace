@@ -346,7 +346,7 @@ onready var rotating_for_floor_area_2d_coll_shape = $RotatingForFloorArea2D/Coll
 
 #onready var face_screen = $SpriteLayer/FaceScreen
 #onready var anim_on_screen = $SpriteLayer/AnimOnScreen
-onready var main_body_sprite = $SpriteLayer/MainBodySprite
+onready var main_body_sprite = $SpriteLayer/PlayerMainBody
 
 onready var pca_progress_drawer = $PCAProgressDrawer
 onready var pca_line_direction_drawer = $PCALineDirectionDrawer
@@ -1239,7 +1239,7 @@ func _process(delta):
 #############
 
 func _ready():
-	_base_player_size = main_body_sprite.texture.get_size()
+	_base_player_size = main_body_sprite.get_body_texture().get_size()
 	
 	#
 	
@@ -1554,8 +1554,12 @@ func _update_self_based_on_has_energy__no_energy():
 	block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
 	
 	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
-	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
+	#main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
 	#anim_on_screen.visible = false
+	
+	#main_body_sprite.tween_saturation_of_material(0.0, 0.35)
+	main_body_sprite.tween_modulate_of_basis(Color(0.4, 0.4, 0.4, 1), 0.35)
+	
 	player_face.on_energy_discharged_to_zero()
 	
 	set_light_energy_mod_a__gradual(0.0)
@@ -1564,8 +1568,12 @@ func _update_self_based_on_has_energy__has_energy():
 	block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
 	
 	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
-	main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
+	#main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
 	#anim_on_screen.visible = true
+	
+	#main_body_sprite.tween_saturation_of_material(1.0, 0.35)
+	main_body_sprite.tween_modulate_of_basis(Color(1, 1, 1, 1), 0.35)
+	
 	player_face.on_energy_restored_from_zero()
 	
 	set_light_energy_mod_a__gradual(1.0)
