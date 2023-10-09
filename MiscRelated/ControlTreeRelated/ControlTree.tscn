@@ -41,7 +41,7 @@ custom_constants/margin_top = 18
 margin_top = 18.0
 margin_right = 100.0
 margin_bottom = 48.0
-mouse_filter = 2
+mouse_filter = 0
 custom_constants/separation = 5
 
 [node name="InfoButton" type="TextureButton" parent="TopRightButtonMarginer/HBoxContainer"]

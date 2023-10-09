@@ -83,6 +83,7 @@ margin_bottom = 63.0
 [node name="Body_ColorPickerButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor" instance=ExtResource( 4 )]
 margin_right = 356.0
 color = Color( 0.443137, 0.337255, 0.337255, 1 )
+configure_to_eat_esc_on_open__at_ready = true
 
 [node name="BodyTexture_OptionButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer" instance=ExtResource( 5 )]
 margin_top = 83.0
@@ -106,10 +107,42 @@ position = Vector2( 91.5, 0 )
 
 [node name="FaceSpecContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 543.0
-margin_top = 223.0
+margin_top = 191.0
 margin_right = 900.0
-margin_bottom = 223.0
+margin_bottom = 254.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/FaceSpecContainer"]
+margin_right = 357.0
+margin_bottom = 63.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer"]
+margin_right = 357.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 3 )
+text = "Face Screen Configs"
+align = 1
+
+[node name="FaceScreenColor" type="MarginContainer" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer"]
+margin_top = 42.0
+margin_right = 357.0
+margin_bottom = 63.0
+
+[node name="FaceScreen_ColorPickerButton" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenColor" instance=ExtResource( 4 )]
+margin_right = 357.0
+focus_mode = 2
+color = Color( 0.443137, 0.337255, 0.337255, 1 )
+configure_to_eat_esc_on_open__at_ready = true
+
+[node name="FaceScreenTexture_OptionButton" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer" instance=ExtResource( 5 )]
+visible = false
+margin_top = 83.0
+margin_right = 357.0
+margin_bottom = 105.0
+
+[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor/Body_ColorPickerButton" to="." method="_on_Body_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]
+[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenColor/FaceScreen_ColorPickerButton" to="." method="_on_FaceScreen_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]

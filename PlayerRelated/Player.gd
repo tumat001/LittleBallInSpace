@@ -1558,7 +1558,7 @@ func _update_self_based_on_has_energy__no_energy():
 	#anim_on_screen.visible = false
 	
 	#main_body_sprite.tween_saturation_of_material(0.0, 0.35)
-	main_body_sprite.tween_modulate_of_basis(Color(0.4, 0.4, 0.4, 1), 0.35)
+	main_body_sprite.tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_OFF, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	
 	player_face.on_energy_discharged_to_zero()
 	
@@ -1572,7 +1572,7 @@ func _update_self_based_on_has_energy__has_energy():
 	#anim_on_screen.visible = true
 	
 	#main_body_sprite.tween_saturation_of_material(1.0, 0.35)
-	main_body_sprite.tween_modulate_of_basis(Color(1, 1, 1, 1), 0.35)
+	main_body_sprite.tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_ON, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	
 	player_face.on_energy_restored_from_zero()
 	

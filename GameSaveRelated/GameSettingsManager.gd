@@ -62,6 +62,9 @@ signal tile_color_config__tile_presets__for_all_types_changed(arg_presets)
 signal player_aesth_config__body_texture_id__changed(arg_id)
 signal player_aesth_config__saved_modulate_for_body_texture_id__changed(arg_modulate, arg_id)
 
+signal player_aesth_config__face_screen_texture_id__changed(arg_id)
+signal player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed(arg_modulate, arg_id)
+
 #signal player_body_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 #signal player_face_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 
@@ -326,6 +329,7 @@ enum PlayerAesthConfig_BodyTextureId {
 	FLAG__SPAIN = 112,
 	FLAG__UK = 113,
 	FLAG__USA = 114,
+	FLAG__SOUTH_KOREA = 115,
 	
 }
 
@@ -335,6 +339,7 @@ const player_aesth_config__body_texture_id__default : int = PlayerAesthConfig_Bo
 
 const PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER"
 var player_aesth_config__body_texture_id_to_saved_modulate_map : Dictionary
+var player_aesth_config__body_texture_id_to_saved_modulate_for_map__default_for_empty_field := Color("#ffffff")
 const player_aesth_config__body_texture_id_to_saved_modulate_map__default : Dictionary = {
 	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#E2FD21"),
 	
@@ -410,6 +415,10 @@ const player_aesth_config__body_texture_id_to_details_map : Dictionary = {
 		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: USA",
 		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
 	},
+	PlayerAesthConfig_BodyTextureId.FLAG__SOUTH_KOREA : {
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__NAME__DIC_ID : "Flag: South Korea",
+		PLAYER_AESTH_CONFIG__BODY_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
 	
 }
 
@@ -417,9 +426,60 @@ const OPTION_BUTTON__LINE_SEPA = -1
 const player_aesth_config__body_texture_ids_with_sepa_arr__as_displayed_in_ui : Array = [
 	PlayerAesthConfig_BodyTextureId.NORMAL,
 	OPTION_BUTTON__LINE_SEPA,
-	PlayerAesthConfig_BodyTextureId.FLAG__PHILIPPINES
+	
+	PlayerAesthConfig_BodyTextureId.FLAG__AUSTRALIA,
+	PlayerAesthConfig_BodyTextureId.FLAG__BRAZIL,
+	PlayerAesthConfig_BodyTextureId.FLAG__CANADA,
+	PlayerAesthConfig_BodyTextureId.FLAG__CHINA,
+	PlayerAesthConfig_BodyTextureId.FLAG__FRANCE,
+	PlayerAesthConfig_BodyTextureId.FLAG__GERMANY,
+	PlayerAesthConfig_BodyTextureId.FLAG__INDIA,
+	PlayerAesthConfig_BodyTextureId.FLAG__ITALY,
+	PlayerAesthConfig_BodyTextureId.FLAG__JAPAN,
+	PlayerAesthConfig_BodyTextureId.FLAG__NETHERLANDS,
+	PlayerAesthConfig_BodyTextureId.FLAG__PHILIPPINES,
+	PlayerAesthConfig_BodyTextureId.FLAG__RUSSIA,
+	PlayerAesthConfig_BodyTextureId.FLAG__SOUTH_KOREA,
+	PlayerAesthConfig_BodyTextureId.FLAG__SPAIN,
+	PlayerAesthConfig_BodyTextureId.FLAG__UK,
+	PlayerAesthConfig_BodyTextureId.FLAG__USA,
 ]
 
+
+enum PlayerAesthConfig_FaceScreenTextureId {
+	NORMAL = 0,
+	
+}
+
+
+const PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER := "PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER"
+var player_aesth_config__face_screen_texture_id : int setget set_player_aesth_config__face_screen_texture_id
+const player_aesth_config__face_screen_texture_id__default : int = PlayerAesthConfig_FaceScreenTextureId.NORMAL
+
+#todo
+const PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER"
+var player_aesth_config__BTId_to_saved_face_screen_modulate_map : Dictionary = {}
+const player_aesth_config__BTId_to_saved_face_screen_modulate_map__default_for_empty_field : Color = Color("#88000000")
+const player_aesth_config__BTId_to_saved_face_screen_modulate_map__default : Dictionary = {
+	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#2104EC"),
+	#todo
+	# all undefineds are COLOR(x)
+}
+
+
+const PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_DETAILS__NAME__DIC_ID = "name"
+const PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_DETAILS__ICON__DIC_ID = "icon"
+const player_aesth_config__face_screen_texture_id_to_details_map : Dictionary = {
+	PlayerAesthConfig_FaceScreenTextureId.NORMAL : {
+		PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_DETAILS__NAME__DIC_ID : "Plain",
+		PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_DETAILS__ICON__DIC_ID : null,
+	},
+}
+
+const player_aesth_config__face_screen_texture_ids_with_sepa_arr__as_displayed_in_ui : Array = [
+	PlayerAesthConfig_FaceScreenTextureId.NORMAL,
+	
+]
 
 ####
 
@@ -474,11 +534,14 @@ func load_all__from_ready_of_save_manager():
 	_is_manager_initialized = true
 	emit_signal("settings_manager_initialized")
 
-func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		_save_game_control_related_data()
-		_save_general_game_settings_related_data()
+#func _notification(what):
+#	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+#		_save_game_control_related_data()
+#		_save_general_game_settings_related_data()
 
+func save_all_related_datas():
+	_save_game_control_related_data()
+	_save_general_game_settings_related_data()
 
 #################
 ## CONTROLS RELATED
@@ -1492,7 +1555,46 @@ func _convert_color_arr_to_color_html_string_arr(arg_arr : Array):
 
 func player_aesth__get_texture_of_body_texture_id(arg_id):
 	if arg_id == PlayerAesthConfig_BodyTextureId.NORMAL:
-		return preload("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody.png")
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody.png")
+		#return preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__AUSTRALIA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Australia.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__BRAZIL:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Brazil.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__CANADA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Canada.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__CHINA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_China.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__FRANCE:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_France.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__GERMANY:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Germany.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__INDIA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_India.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__ITALY:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Italy.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__JAPAN:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Japan.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__NETHERLANDS:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Netherlands.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__PHILIPPINES:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Philippines.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__RUSSIA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Russia.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__SPAIN:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_Spain.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__UK:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_UK.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__USA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_USA.png")
+	elif arg_id == PlayerAesthConfig_BodyTextureId.FLAG__SOUTH_KOREA:
+		return load("res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody__Flag_SKorea.png")
+	
+	return null
+
+func player_aesth__get_texture_of_face_screen_texture_id(arg_id):
+	if arg_id == PlayerAesthConfig_FaceScreenTextureId.NORMAL:
+		return load("res://PlayerRelated/PlayerModel/PlayerFace/FaceScreenAssets/PlayerFaceScreen_Normal.png")
 		#return preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
 	
 	return null
@@ -1513,18 +1615,23 @@ func _load_player_aesth_config_using_dic(data : Dictionary):
 	else:
 		set_player_aesth_config__body_texture_id(player_aesth_config__body_texture_id__default)
 	
-#	if data.has(PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER):
-#		var color = _convert_color_html_string__into_color(data[PLAYER_AESTH_CONFIG__BODY_MODULATE__DIC_IDENTIFIER])
-#		set_player_aesth_config__body_modulate(color)
-#	else:
-#		set_player_aesth_config__body_modulate(player_aesth_config__body_modulate__default)
 	
+	## FACE SCREEN
+	if data.has(PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER):
+		player_aesth_config__BTId_to_saved_face_screen_modulate_map = _convert_color_html_string_dict_to_color_dict(data[PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER])
+	else:
+		player_aesth_config__BTId_to_saved_face_screen_modulate_map = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.duplicate(true)
+	_fill_missing_player_aesth_config__BTId_to_saved_face_screen_modulate_map()
+	
+	if data.has(PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER):
+		var id_as_str = data[PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER]
+		set_player_aesth_config__face_screen_texture_id(int(id_as_str))
+	else:
+		set_player_aesth_config__face_screen_texture_id(player_aesth_config__face_screen_texture_id__default)
+	
+	
+	##
 
-#func set_player_aesth_config__body_modulate(arg_modulate : Color):
-#	player_aesth_config__body_modulate = arg_modulate
-#
-#	if _is_manager_initialized:
-#		emit_signal("player_aesth_config__body_modulate__changed", arg_modulate)
 
 func set_player_aesth_config__body_texture_id(arg_id):
 	var old_val = player_aesth_config__body_texture_id
@@ -1541,13 +1648,41 @@ func set_player_aesth_config__modulate_for_body_texture_id(arg_modulate, arg_id)
 		emit_signal("player_aesth_config__saved_modulate_for_body_texture_id__changed", arg_modulate, arg_id)
 
 func _fill_missing_player_aesth_config__body_texture_id_to_saved_modulate_map():
-	for id in PlayerAesthConfig_BodyTextureId.keys():
+	for id in PlayerAesthConfig_BodyTextureId.values():
 		if !player_aesth_config__body_texture_id_to_saved_modulate_map.has(id):
-			var default_val = Color("#ffffff")
+			var default_val = player_aesth_config__body_texture_id_to_saved_modulate_for_map__default_for_empty_field#Color("#ffffff")
 			if player_aesth_config__body_texture_id_to_saved_modulate_map__default.has(id):
 				default_val = player_aesth_config__body_texture_id_to_saved_modulate_map__default[id]
 			
 			player_aesth_config__body_texture_id_to_saved_modulate_map[id] = default_val
+
+#
+
+func set_player_aesth_config__face_screen_texture_id(arg_id):
+	var old_val = player_aesth_config__face_screen_texture_id
+	player_aesth_config__face_screen_texture_id = arg_id
+	
+	if old_val != arg_id:
+		if _is_manager_initialized:
+			emit_signal("player_aesth_config__face_screen_texture_id__changed", arg_id)
+
+
+##
+
+func set_player_aesth_config__modulate_for_BTId_saved_face_screen(arg_modulate, arg_id):
+	player_aesth_config__BTId_to_saved_face_screen_modulate_map[arg_id] = arg_modulate
+	
+	if _is_manager_initialized:
+		emit_signal("player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed", arg_modulate, arg_id)
+
+func _fill_missing_player_aesth_config__BTId_to_saved_face_screen_modulate_map():
+	for id in PlayerAesthConfig_BodyTextureId.values():
+		if !player_aesth_config__BTId_to_saved_face_screen_modulate_map.has(id):
+			var default_val = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default_for_empty_field
+			if player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.has(id):
+				default_val = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default[id]
+			
+			player_aesth_config__BTId_to_saved_face_screen_modulate_map[id] = default_val
 
 
 
@@ -1557,6 +1692,8 @@ func _get_player_aesth_config_as_save_dict():
 		PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__body_texture_id_to_saved_modulate_map),
 		PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER : player_aesth_config__body_texture_id,
 		
+		PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__BTId_to_saved_face_screen_modulate_map),
+		PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER : player_aesth_config__face_screen_texture_id,
 	}
 
 

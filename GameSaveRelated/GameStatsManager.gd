@@ -214,13 +214,13 @@ func load_all__from_ready_of_save_manager():
 	_is_manager_initialized = true
 	emit_signal("stats_manager_initialized")
 
-func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		_save_ALL__game_stats_data()
+#func _notification(what):
+#	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+#		save_ALL__game_stats_data()
 
 
 
-func _save_ALL__game_stats_data():
+func save_ALL__game_stats_data():
 	var per_level_save_dict = _generate_save_dict__for_per_level()
 	
 	var save_dict = {

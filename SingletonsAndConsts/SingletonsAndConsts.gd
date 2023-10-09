@@ -13,6 +13,12 @@ const GROUP_NAME__OBJECT_TILE_FRAGMENT = "GroupName_ObjectTileFragment"
 
 #
 
+const PLAYER_MODULATE__ANY_PART__ENERGY_ON = Color(1, 1, 1, 1)
+const PLAYER_MODULATE__ANY_PART__ENERGY_OFF = Color(0.4, 0.4, 0.4, 1)
+const PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION : float = 0.35
+
+#
+
 var current_base_level
 var current_base_level_id
 var current_level_details

@@ -513,7 +513,8 @@ func _save_level_related_save_states():
 	_frames_to_wait_for_level_relateds_save = 0
 	set_process(false)
 	
-	GameSaveManager.save_level_and_layout_related_data()
+	#GameSaveManager.save_level_and_layout_related_data()
+	GameSaveManager.save_all_save_states__even_from_other_managers()
 
 ##
 

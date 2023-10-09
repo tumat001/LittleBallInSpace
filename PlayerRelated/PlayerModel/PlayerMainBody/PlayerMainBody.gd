@@ -65,7 +65,7 @@ func _on_player_aesth_config__saved_modulate_for_body_texture_id__changed(arg_mo
 ## for energy use
 func tween_modulate_of_basis(arg_target_modulate : Color, arg_duration):
 	if modulate_tweener != null and modulate_tweener.is_valid():
-		modulate_tweener.kill
+		modulate_tweener.kill()
 	
 	modulate_tweener = create_tween()
 	modulate_tweener.tween_property(self, "modulate", arg_target_modulate, arg_duration)

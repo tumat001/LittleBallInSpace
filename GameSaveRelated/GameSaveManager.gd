@@ -886,9 +886,15 @@ func get_absolute_path_of__user_dir__img_save_filepath():
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		_save_player_data()
-		save_level_and_layout_related_data()
-		#_save_game_control_related_data()
+		save_all_save_states__even_from_other_managers()
+
+
+func save_all_save_states__even_from_other_managers():
+	_save_player_data()
+	save_level_and_layout_related_data()
+	GameSettingsManager.save_all_related_datas()
+	GameStatsManager.save_ALL__game_stats_data()
+	save_settings__of_audio_manager()
 
 #func _exit_tree():
 #	_save_player_data()

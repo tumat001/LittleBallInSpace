@@ -635,11 +635,11 @@ func _initialize_sound_fx_relateds(arg_save_dict : Dictionary):
 		pass
 
 
-func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		GameSaveManager.save_settings__of_audio_manager()
-		
-		#get_tree().quit() # default behavior
+#func _notification(what):
+#	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+#		GameSaveManager.save_settings__of_audio_manager()
+#
+#		#get_tree().quit() # default behavior
 
 
 

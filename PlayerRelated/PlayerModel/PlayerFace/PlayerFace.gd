@@ -140,6 +140,10 @@ var FACE_ANIMATION_NAME__OUCH_TO_NORMAL__FRAME_COUNT : int
 
 #
 
+var modulate_tweener : SceneTreeTween
+
+#
+
 onready var left_eye = $LeftEye
 onready var right_eye = $RightEye
 onready var mouth_piece = $MouthPiece
@@ -159,6 +163,11 @@ func _ready():
 	
 	play_FE__normal(false, false, true)
 	mouth_piece.modulate.a = 0
+	
+	##
+	
+	_connect_signals_with_GSettingsM__and_configure_self()
+	
 
 
 func _init_all_non_screen_face_parts():
@@ -582,13 +591,15 @@ func _is_pos_id_a_node_offset_priority_higher_or_equal_to_pos_id_b(arg_pos_id__a
 # ENERGY
 
 func on_energy_discharged_to_zero():
-	screen_face.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
+	#screen_face.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
+	tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_OFF, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	for part in all_non_screen_face_parts:
 		part.visible = false
 	mouth_piece.visible = false
 
 func on_energy_restored_from_zero():
-	screen_face.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
+	#screen_face.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
+	tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_ON, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	for part in all_non_screen_face_parts:
 		part.visible = true
 	mouth_piece.visible = true
@@ -662,4 +673,46 @@ func play_FE__waking_up(arg_duration):
 	right_eye.play(EYE_ANIMATION_NAME__WAKING_UP)
 	
 	
+
+
+###################
+
+func tween_modulate_of_basis(arg_target_modulate : Color, arg_duration):
+	if modulate_tweener != null and modulate_tweener.is_valid():
+		modulate_tweener.kill
+	
+	modulate_tweener = create_tween()
+	modulate_tweener.tween_property(self, "modulate", arg_target_modulate, arg_duration)
+
+
+##
+
+func _connect_signals_with_GSettingsM__and_configure_self():
+	GameSettingsManager.connect("player_aesth_config__face_screen_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__face_screen_texture_id__changed")
+	GameSettingsManager.connect("player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed")
+	GameSettingsManager.connect("player_aesth_config__body_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__body_texture_id__changed")
+	
+	_update_face_screen_texture_based_on_GSettingsM()
+	_update_face_screen_modulate_based_on_GSettingsM()
+
+func _on_GSettingsM_player_aesth_config__face_screen_texture_id__changed(arg_id):
+	_update_face_screen_texture_based_on_GSettingsM()
+	_update_face_screen_modulate_based_on_GSettingsM()
+
+func _update_face_screen_texture_based_on_GSettingsM():
+	var texture_to_use = GameSettingsManager.player_aesth__get_texture_of_face_screen_texture_id(GameSettingsManager.player_aesth_config__face_screen_texture_id)
+	screen_face.texture = texture_to_use
+
+
+func _update_face_screen_modulate_based_on_GSettingsM():
+	var modulate_to_use = GameSettingsManager.player_aesth_config__BTId_to_saved_face_screen_modulate_map[GameSettingsManager.player_aesth_config__body_texture_id]
+	screen_face.modulate = modulate_to_use
+	
+
+func _on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed(arg_modulate, arg_id):
+	_update_face_screen_modulate_based_on_GSettingsM()
+	
+
+func _on_GSettingsM_player_aesth_config__body_texture_id__changed(arg_id):
+	_update_face_screen_modulate_based_on_GSettingsM()
 
