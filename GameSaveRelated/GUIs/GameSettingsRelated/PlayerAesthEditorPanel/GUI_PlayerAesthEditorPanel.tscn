@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.tscn" type="PackedScene" id=2]
@@ -8,9 +8,11 @@
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerFace/PlayerFace.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_PlayerAesth.png" type="Texture" id=7]
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/PlayerAesthEditorPanel/GUI_PlayerAesthEditorPanel.gd" type="Script" id=8]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/PlayerAesthEditorPanel/Assets/PlayerAesthEditPanel_ResetToDefaultButton_Highlight.png" type="Texture" id=9]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/PlayerAesthEditorPanel/Assets/PlayerAesthEditPanel_ResetToDefaultButton_Normal.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=1]
-size = 40
+size = 48
 extra_spacing_top = -4
 font_data = ExtResource( 1 )
 
@@ -28,121 +30,225 @@ margin_left = 30.0
 margin_top = 30.0
 margin_right = 930.0
 margin_bottom = 510.0
+custom_constants/separation = 30
 
 [node name="HBoxLabel" type="HBoxContainer" parent="VBoxContainer"]
-margin_left = 281.0
-margin_right = 618.0
-margin_bottom = 30.0
+margin_left = 242.0
+margin_right = 657.0
+margin_bottom = 34.0
 size_flags_horizontal = 6
+custom_constants/separation = 22
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLabel"]
+margin_top = 2.0
 margin_right = 33.0
-margin_bottom = 30.0
+margin_bottom = 32.0
+size_flags_vertical = 6
 texture = ExtResource( 7 )
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer/HBoxLabel"]
-margin_left = 37.0
-margin_top = 1.0
-margin_right = 337.0
-margin_bottom = 29.0
+margin_left = 55.0
+margin_right = 415.0
+margin_bottom = 34.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Player Visual Editor"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 34.0
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 117.0
 margin_right = 900.0
-margin_bottom = 480.0
-size_flags_vertical = 3
-
-[node name="BodySpecContianer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_top = 170.0
-margin_right = 356.0
-margin_bottom = 275.0
-size_flags_horizontal = 3
+margin_bottom = 427.0
 size_flags_vertical = 6
+custom_constants/separation = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/BodySpecContianer"]
-margin_right = 356.0
-margin_bottom = 105.0
-custom_constants/separation = 20
+[node name="BodyTextureContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_right = 900.0
+margin_bottom = 54.0
+custom_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer"]
-margin_right = 356.0
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/BodyTextureContainer"]
+margin_right = 900.0
 margin_bottom = 22.0
 custom_fonts/font = ExtResource( 3 )
-text = "Body Configs"
+text = "Body Type"
 align = 1
 
-[node name="BodyColor" type="MarginContainer" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer"]
-margin_top = 42.0
-margin_right = 356.0
-margin_bottom = 63.0
+[node name="BodyTexture_OptionButton" parent="VBoxContainer/VBoxContainer/BodyTextureContainer" instance=ExtResource( 5 )]
+margin_left = 300.0
+margin_top = 32.0
+margin_right = 600.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 300, 0 )
+size_flags_horizontal = 6
 
-[node name="Body_ColorPickerButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor" instance=ExtResource( 4 )]
-margin_right = 356.0
-color = Color( 0.443137, 0.337255, 0.337255, 1 )
-configure_to_eat_esc_on_open__at_ready = true
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 104.0
+margin_right = 900.0
+margin_bottom = 104.0
 
-[node name="BodyTexture_OptionButton" parent="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer" instance=ExtResource( 5 )]
-margin_top = 83.0
-margin_right = 356.0
-margin_bottom = 105.0
-
-[node name="DisplayContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 360.0
-margin_top = 223.0
-margin_right = 539.0
-margin_bottom = 223.0
-size_flags_horizontal = 3
+[node name="DisplayContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 450.0
+margin_right = 450.0
+size_flags_horizontal = 6
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.5
 
-[node name="PlayerMainBody" parent="VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 2 )]
-position = Vector2( 91.5, 0 )
+[node name="PlayerMainBody" parent="VBoxContainer/VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 2 )]
 
-[node name="PlayerFace" parent="VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 6 )]
-position = Vector2( 91.5, 0 )
+[node name="PlayerFace" parent="VBoxContainer/VBoxContainer/HBoxContainer/DisplayContainer" instance=ExtResource( 6 )]
 
-[node name="FaceSpecContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 543.0
-margin_top = 191.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 154.0
 margin_right = 900.0
-margin_bottom = 254.0
-size_flags_horizontal = 3
+margin_bottom = 207.0
+
+[node name="BodySpecContianer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 109.0
+margin_right = 339.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 230, 0 )
+size_flags_horizontal = 6
 size_flags_vertical = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/FaceSpecContainer"]
-margin_right = 357.0
-margin_bottom = 63.0
-custom_constants/separation = 20
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer"]
+margin_right = 230.0
+margin_bottom = 53.0
+custom_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer"]
-margin_right = 357.0
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer"]
+margin_right = 230.0
 margin_bottom = 22.0
 custom_fonts/font = ExtResource( 3 )
-text = "Face Screen Configs"
+text = "Body Color"
 align = 1
 
-[node name="FaceScreenColor" type="MarginContainer" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer"]
-margin_top = 42.0
-margin_right = 357.0
-margin_bottom = 63.0
+[node name="BodyColor" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 230.0
+margin_bottom = 53.0
 
-[node name="FaceScreen_ColorPickerButton" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenColor" instance=ExtResource( 4 )]
-margin_right = 357.0
-focus_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor"]
+margin_right = 230.0
+margin_bottom = 21.0
+
+[node name="Body_ResetColorButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor/HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 21.0
+focus_mode = 0
+texture_normal = ExtResource( 10 )
+texture_hover = ExtResource( 9 )
+
+[node name="Body_ColorPickerButton" parent="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 24.0
+margin_right = 230.0
+size_flags_horizontal = 3
 color = Color( 0.443137, 0.337255, 0.337255, 1 )
 configure_to_eat_esc_on_open__at_ready = true
 
-[node name="FaceScreenTexture_OptionButton" parent="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="FaceSpecContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 561.0
+margin_right = 791.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 230, 0 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer"]
+margin_right = 230.0
+margin_bottom = 53.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer"]
+margin_right = 230.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 3 )
+text = "Face Screen Color"
+align = 1
+
+[node name="FaceScreenColor" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 230.0
+margin_bottom = 53.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor"]
+margin_right = 230.0
+margin_bottom = 21.0
+
+[node name="FaceScreen_ResetColorButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor/HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 21.0
+focus_mode = 0
+texture_normal = ExtResource( 10 )
+texture_hover = ExtResource( 9 )
+
+[node name="FaceScreen_ColorPickerButton" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 24.0
+margin_right = 230.0
+focus_mode = 2
+size_flags_horizontal = 3
+color = Color( 0.443137, 0.337255, 0.337255, 1 )
+configure_to_eat_esc_on_open__at_ready = true
+
+[node name="FaceScreenTexture_OptionButton" parent="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer" instance=ExtResource( 5 )]
 visible = false
 margin_top = 83.0
-margin_right = 357.0
+margin_right = 230.0
 margin_bottom = 105.0
 
-[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor/Body_ColorPickerButton" to="." method="_on_Body_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]
-[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenColor/FaceScreen_ColorPickerButton" to="." method="_on_FaceScreen_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 257.0
+margin_right = 900.0
+margin_bottom = 310.0
+
+[node name="BodySpecContianer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 330.0
+margin_right = 570.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 230, 0 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer"]
+margin_right = 240.0
+margin_bottom = 53.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 3 )
+text = "Eye & Features Color"
+align = 1
+
+[node name="ExpressionColor" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 240.0
+margin_bottom = 53.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor"]
+margin_right = 240.0
+margin_bottom = 21.0
+
+[node name="Expression_ResetColorButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor/HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 21.0
+texture_normal = ExtResource( 10 )
+texture_hover = ExtResource( 9 )
+
+[node name="Expression_ColorPickerButton" parent="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 24.0
+margin_right = 240.0
+focus_mode = 2
+size_flags_horizontal = 3
+color = Color( 0.443137, 0.337255, 0.337255, 1 )
+configure_to_eat_esc_on_open__at_ready = true
+
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/BodyTextureContainer/BodyTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor/HBoxContainer/Body_ResetColorButton" to="." method="_on_Body_ResetColorButton_pressed"]
+[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor/HBoxContainer/Body_ColorPickerButton" to="." method="_on_Body_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor/HBoxContainer/FaceScreen_ResetColorButton" to="." method="_on_FaceScreen_ResetColorButton_pressed"]
+[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor/HBoxContainer/FaceScreen_ColorPickerButton" to="." method="_on_FaceScreen_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenTexture_OptionButton" to="." method="_on_BodyTexture_OptionButton_item_selected"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor/HBoxContainer/Expression_ResetColorButton" to="." method="_on_Expression_ResetColorButton_pressed"]
+[connection signal="color_changed__by_any_means__input_esc_eat" from="VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor/HBoxContainer/Expression_ColorPickerButton" to="." method="_on_Expression_ColorPickerButton_color_changed__by_any_means__input_esc_eat"]

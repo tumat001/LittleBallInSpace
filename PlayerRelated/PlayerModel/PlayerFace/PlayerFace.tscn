@@ -9,20 +9,22 @@ script = ExtResource( 1 )
 
 [node name="ScreenFace" type="Sprite" parent="."]
 
-[node name="LeftEye" type="AnimatedSprite" parent="."]
+[node name="ExpressionContainer" type="Node2D" parent="."]
+
+[node name="LeftEye" type="AnimatedSprite" parent="ExpressionContainer"]
 position = Vector2( -4, -1 )
 frames = ExtResource( 2 )
 animation = "normal"
 playing = true
 
-[node name="RightEye" type="AnimatedSprite" parent="."]
+[node name="RightEye" type="AnimatedSprite" parent="ExpressionContainer"]
 position = Vector2( 4, -1 )
 frames = ExtResource( 2 )
 animation = "normal"
 playing = true
 flip_h = true
 
-[node name="MouthPiece" type="AnimatedSprite" parent="."]
+[node name="MouthPiece" type="AnimatedSprite" parent="ExpressionContainer"]
 frames = ExtResource( 4 )
 animation = "normal"
 playing = true

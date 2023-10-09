@@ -144,11 +144,12 @@ var modulate_tweener : SceneTreeTween
 
 #
 
-onready var left_eye = $LeftEye
-onready var right_eye = $RightEye
-onready var mouth_piece = $MouthPiece
+onready var left_eye = $ExpressionContainer/LeftEye
+onready var right_eye = $ExpressionContainer/RightEye
+onready var mouth_piece = $ExpressionContainer/MouthPiece
 
 onready var screen_face = $ScreenFace
+onready var expression_container = $ExpressionContainer
 
 var all_non_screen_face_parts : Array
 
@@ -691,9 +692,11 @@ func _connect_signals_with_GSettingsM__and_configure_self():
 	GameSettingsManager.connect("player_aesth_config__face_screen_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__face_screen_texture_id__changed")
 	GameSettingsManager.connect("player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed")
 	GameSettingsManager.connect("player_aesth_config__body_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__body_texture_id__changed")
+	GameSettingsManager.connect("player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed")
 	
 	_update_face_screen_texture_based_on_GSettingsM()
 	_update_face_screen_modulate_based_on_GSettingsM()
+	_update_face_expression_modulate_based_on_GSettingsM()
 
 func _on_GSettingsM_player_aesth_config__face_screen_texture_id__changed(arg_id):
 	_update_face_screen_texture_based_on_GSettingsM()
@@ -715,4 +718,14 @@ func _on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_screen_
 
 func _on_GSettingsM_player_aesth_config__body_texture_id__changed(arg_id):
 	_update_face_screen_modulate_based_on_GSettingsM()
+	_update_face_expression_modulate_based_on_GSettingsM()
+
+func _on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed(arg_modulate, arg_id):
+	_update_face_expression_modulate_based_on_GSettingsM()
+	
+
+func _update_face_expression_modulate_based_on_GSettingsM():
+	var modulate_to_use = GameSettingsManager.player_aesth_config__BTId_to_saved_face_expression_modulate_map[GameSettingsManager.player_aesth_config__body_texture_id]
+	expression_container.modulate = modulate_to_use
+
 

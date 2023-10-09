@@ -1,11 +1,13 @@
 extends MarginContainer
 
 
-onready var body__color_picker_button = $VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyColor/Body_ColorPickerButton
-onready var body__texture_option_button = $VBoxContainer/HBoxContainer/BodySpecContianer/VBoxContainer/BodyTexture_OptionButton
+onready var body__color_picker_button = $VBoxContainer/VBoxContainer/HBoxContainer2/BodySpecContianer/VBoxContainer/BodyColor/HBoxContainer/Body_ColorPickerButton
+onready var body__texture_option_button = $VBoxContainer/VBoxContainer/BodyTextureContainer/BodyTexture_OptionButton
 
-onready var face_screen__color_picker_button = $VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenColor/FaceScreen_ColorPickerButton
-onready var face_screen__texture_option_button = $VBoxContainer/HBoxContainer/FaceSpecContainer/VBoxContainer/FaceScreenTexture_OptionButton
+onready var face_screen__color_picker_button = $VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenColor/HBoxContainer/FaceScreen_ColorPickerButton
+onready var face_screen__texture_option_button = $VBoxContainer/VBoxContainer/HBoxContainer2/FaceSpecContainer/VBoxContainer/FaceScreenTexture_OptionButton
+
+onready var face_expression__color_picker_button = $VBoxContainer/VBoxContainer/HBoxContainer3/BodySpecContianer/VBoxContainer/ExpressionColor/HBoxContainer/Expression_ColorPickerButton
 
 #
 
@@ -28,6 +30,10 @@ func _ready():
 	_connect_signals_with_GSettingsM__for_face_screen_modulate()
 	_update_face_screen_modulate_based_on_GSettingsM()
 	
+	
+	## FACE EXPRESSION MODULATE
+	_connect_signals_with_GSettingsM__for_face_expression_modulate()
+	_update_face_expression_modulate_based_on_GSettingsM()
 
 
 ######### Body Texture
@@ -96,6 +102,11 @@ func _on_GSettingsM__player_aesth_config__body_texture_id__changed__for_body_mod
 	_update_body_modulate_based_on_GSettingsM()
 
 
+func _on_Body_ResetColorButton_pressed():
+	GameSettingsManager.set_player_aesth_config__modulate_for_body_texture_id(GameSettingsManager.get_player_aesth_config__body_texture_id_to_saved_modulate_map__default(GameSettingsManager.player_aesth_config__body_texture_id), GameSettingsManager.player_aesth_config__body_texture_id)
+
+
+
 ############# Face screen texture
 
 func _connect_signals_with_GSettingsM__for_face_screen_texture():
@@ -156,6 +167,36 @@ func _on_FaceScreen_ColorPickerButton_color_changed__by_any_means__input_esc_eat
 	GameSettingsManager.set_player_aesth_config__modulate_for_BTId_saved_face_screen(arg_color, GameSettingsManager.player_aesth_config__body_texture_id)
 
 
+func _on_FaceScreen_ResetColorButton_pressed():
+	GameSettingsManager.set_player_aesth_config__modulate_for_BTId_saved_face_screen(GameSettingsManager.get_player_aesth_config__BTId_to_saved_face_screen_modulate_map__default(GameSettingsManager.player_aesth_config__body_texture_id), GameSettingsManager.player_aesth_config__body_texture_id)
+
+
+###### FACE EXPRESSION MODULATE
+
+func _connect_signals_with_GSettingsM__for_face_expression_modulate():
+	GameSettingsManager.connect("player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed")
+	GameSettingsManager.connect("player_aesth_config__body_texture_id__changed", self, "_on_GSettingsM_player_aesth_config__body_texture_id__changed__for_face_expression")
+
+func _on_GSettingsM_player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed(arg_modulate, arg_id):
+	_update_face_expression_modulate_based_on_GSettingsM()
+
+func _on_GSettingsM_player_aesth_config__body_texture_id__changed__for_face_expression(arg_id):
+	_update_face_expression_modulate_based_on_GSettingsM()
+
+
+func _update_face_expression_modulate_based_on_GSettingsM():
+	var selected_body_id = body__texture_option_button.get_selected_id()
+	#var selected_face_id = face_screen__texture_option_button.get_selected_id()
+	if selected_body_id == GameSettingsManager.player_aesth_config__body_texture_id:
+		face_expression__color_picker_button.color = GameSettingsManager.player_aesth_config__BTId_to_saved_face_expression_modulate_map[selected_body_id]
+
+
+func _on_Expression_ColorPickerButton_color_changed__by_any_means__input_esc_eat(arg_color):
+	GameSettingsManager.set_player_aesth_config__modulate_for_BTId_saved_face_expression(arg_color, GameSettingsManager.player_aesth_config__body_texture_id)
+
+func _on_Expression_ResetColorButton_pressed():
+	GameSettingsManager.set_player_aesth_config__modulate_for_BTId_saved_face_expression(GameSettingsManager.get_player_aesth_config__BTId_to_saved_face_expression_modulate_map__default(GameSettingsManager.player_aesth_config__body_texture_id), GameSettingsManager.player_aesth_config__body_texture_id)
+
 
 
 #############################################
@@ -188,3 +229,4 @@ func set_control_tree(arg_tree):
 ############
 # END OF TREE ITEM Specific methods/vars
 ###########
+

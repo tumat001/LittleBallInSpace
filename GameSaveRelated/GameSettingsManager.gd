@@ -65,6 +65,8 @@ signal player_aesth_config__saved_modulate_for_body_texture_id__changed(arg_modu
 signal player_aesth_config__face_screen_texture_id__changed(arg_id)
 signal player_aesth_config__BTId_to_saved_modulate_for_face_screen_texture_id__changed(arg_modulate, arg_id)
 
+signal player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed(arg_modulate, arg_id)
+
 #signal player_body_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 #signal player_face_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 
@@ -340,7 +342,7 @@ const player_aesth_config__body_texture_id__default : int = PlayerAesthConfig_Bo
 const PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER"
 var player_aesth_config__body_texture_id_to_saved_modulate_map : Dictionary
 var player_aesth_config__body_texture_id_to_saved_modulate_for_map__default_for_empty_field := Color("#ffffff")
-const player_aesth_config__body_texture_id_to_saved_modulate_map__default : Dictionary = {
+const _player_aesth_config__body_texture_id_to_saved_modulate_map__default : Dictionary = {
 	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#E2FD21"),
 	
 	# all undefineds are COLOR("ffffff")
@@ -446,24 +448,24 @@ const player_aesth_config__body_texture_ids_with_sepa_arr__as_displayed_in_ui : 
 ]
 
 
+#
+
 enum PlayerAesthConfig_FaceScreenTextureId {
 	NORMAL = 0,
 	
 }
 
-
 const PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER := "PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER"
 var player_aesth_config__face_screen_texture_id : int setget set_player_aesth_config__face_screen_texture_id
 const player_aesth_config__face_screen_texture_id__default : int = PlayerAesthConfig_FaceScreenTextureId.NORMAL
 
-#todo
+
 const PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER"
 var player_aesth_config__BTId_to_saved_face_screen_modulate_map : Dictionary = {}
 const player_aesth_config__BTId_to_saved_face_screen_modulate_map__default_for_empty_field : Color = Color("#88000000")
-const player_aesth_config__BTId_to_saved_face_screen_modulate_map__default : Dictionary = {
+const _player_aesth_config__BTId_to_saved_face_screen_modulate_map__default : Dictionary = {
 	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#2104EC"),
-	#todo
-	# all undefineds are COLOR(x)
+	
 }
 
 
@@ -480,6 +482,16 @@ const player_aesth_config__face_screen_texture_ids_with_sepa_arr__as_displayed_i
 	PlayerAesthConfig_FaceScreenTextureId.NORMAL,
 	
 ]
+
+#
+
+const PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_EXPRESSION_MODULATE_MAP__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_EXPRESSION_MODULATE_MAP__DIC_IDENTIFIER"
+var player_aesth_config__BTId_to_saved_face_expression_modulate_map : Dictionary = {}
+const player_aesth_config__BTId_to_saved_face_expression_modulate_map__default_for_empty_field : Color = Color("#90D6FE")
+const _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default : Dictionary = {
+	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#90D6FE"),
+}
+
 
 ####
 
@@ -679,6 +691,7 @@ func _save_general_game_settings_related_data():
 	var hotkey_save_dict = _get_game_controls_as_dict()
 	var settings_save_dict = _get_settings_as_save_dict()
 	var tile_color_save_dict = _get_tile_color_config_as_save_dict()
+	var player_aesth_save_dict = _get_player_aesth_config_as_save_dict()
 	
 	#
 	
@@ -688,7 +701,7 @@ func _save_general_game_settings_related_data():
 		CONTROL_HOTKEYS__CATEGORY__DIC_IDENTIFIER : hotkey_save_dict,
 		SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER : settings_save_dict,
 		TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER : tile_color_save_dict,
-		
+		PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER : player_aesth_save_dict,
 	}
 	
 	_save_using_dict(general_game_settings_save_dict, general_game_settings_file_path, "SAVE ERROR: general game settings")
@@ -1456,7 +1469,6 @@ func _load_tile_color_config_using_dic(data : Dictionary):
 #	else:
 #		pass
 	
-	#todo
 #	if data.has(TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER):
 #		var colors = _convert_color_html_string_arr__into_color_arr(data[TILE_COLOR_CONFIG__TILE_MODULATE__FOR_ALL_TYPES_PRESETS_DIC_IDENTIFIER])
 #		set_tile_color_config__tile_modulate__for_all_types_preset(colors)
@@ -1606,7 +1618,7 @@ func _load_player_aesth_config_using_dic(data : Dictionary):
 	if data.has(PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER):
 		player_aesth_config__body_texture_id_to_saved_modulate_map = _convert_color_html_string_dict_to_color_dict(data[PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER])
 	else:
-		player_aesth_config__body_texture_id_to_saved_modulate_map = player_aesth_config__body_texture_id_to_saved_modulate_map__default.duplicate(true)
+		player_aesth_config__body_texture_id_to_saved_modulate_map = _player_aesth_config__body_texture_id_to_saved_modulate_map__default.duplicate(true)
 	_fill_missing_player_aesth_config__body_texture_id_to_saved_modulate_map()
 	
 	if data.has(PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID__DIC_IDENTIFIER):
@@ -1620,7 +1632,7 @@ func _load_player_aesth_config_using_dic(data : Dictionary):
 	if data.has(PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER):
 		player_aesth_config__BTId_to_saved_face_screen_modulate_map = _convert_color_html_string_dict_to_color_dict(data[PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER])
 	else:
-		player_aesth_config__BTId_to_saved_face_screen_modulate_map = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.duplicate(true)
+		player_aesth_config__BTId_to_saved_face_screen_modulate_map = _player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.duplicate(true)
 	_fill_missing_player_aesth_config__BTId_to_saved_face_screen_modulate_map()
 	
 	if data.has(PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER):
@@ -1630,7 +1642,13 @@ func _load_player_aesth_config_using_dic(data : Dictionary):
 		set_player_aesth_config__face_screen_texture_id(player_aesth_config__face_screen_texture_id__default)
 	
 	
-	##
+	## FACE EXPRESSION
+	if data.has(PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_EXPRESSION_MODULATE_MAP__DIC_IDENTIFIER):
+		player_aesth_config__BTId_to_saved_face_expression_modulate_map = _convert_color_html_string_dict_to_color_dict(data[PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_EXPRESSION_MODULATE_MAP__DIC_IDENTIFIER])
+	else:
+		player_aesth_config__BTId_to_saved_face_expression_modulate_map = _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default.duplicate(true)
+	_fill_missing_player_aesth_config__BTId_to_saved_face_expression_modulate_map()
+	
 
 
 func set_player_aesth_config__body_texture_id(arg_id):
@@ -1650,11 +1668,16 @@ func set_player_aesth_config__modulate_for_body_texture_id(arg_modulate, arg_id)
 func _fill_missing_player_aesth_config__body_texture_id_to_saved_modulate_map():
 	for id in PlayerAesthConfig_BodyTextureId.values():
 		if !player_aesth_config__body_texture_id_to_saved_modulate_map.has(id):
-			var default_val = player_aesth_config__body_texture_id_to_saved_modulate_for_map__default_for_empty_field#Color("#ffffff")
-			if player_aesth_config__body_texture_id_to_saved_modulate_map__default.has(id):
-				default_val = player_aesth_config__body_texture_id_to_saved_modulate_map__default[id]
+			var default_val = get_player_aesth_config__body_texture_id_to_saved_modulate_map__default(id)
 			
 			player_aesth_config__body_texture_id_to_saved_modulate_map[id] = default_val
+
+func get_player_aesth_config__body_texture_id_to_saved_modulate_map__default(id):
+	var default_val = player_aesth_config__body_texture_id_to_saved_modulate_for_map__default_for_empty_field#Color("#ffffff")
+	if _player_aesth_config__body_texture_id_to_saved_modulate_map__default.has(id):
+		default_val = _player_aesth_config__body_texture_id_to_saved_modulate_map__default[id]
+	
+	return default_val
 
 #
 
@@ -1678,15 +1701,42 @@ func set_player_aesth_config__modulate_for_BTId_saved_face_screen(arg_modulate, 
 func _fill_missing_player_aesth_config__BTId_to_saved_face_screen_modulate_map():
 	for id in PlayerAesthConfig_BodyTextureId.values():
 		if !player_aesth_config__BTId_to_saved_face_screen_modulate_map.has(id):
-			var default_val = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default_for_empty_field
-			if player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.has(id):
-				default_val = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default[id]
+			var default_val = get_player_aesth_config__BTId_to_saved_face_screen_modulate_map__default(id)
 			
 			player_aesth_config__BTId_to_saved_face_screen_modulate_map[id] = default_val
 
+func get_player_aesth_config__BTId_to_saved_face_screen_modulate_map__default(id):
+	var default_val = player_aesth_config__BTId_to_saved_face_screen_modulate_map__default_for_empty_field
+	if _player_aesth_config__BTId_to_saved_face_screen_modulate_map__default.has(id):
+		default_val = _player_aesth_config__BTId_to_saved_face_screen_modulate_map__default[id]
+	
+	return default_val
+
+#
+
+func set_player_aesth_config__modulate_for_BTId_saved_face_expression(arg_modulate, arg_id):
+	player_aesth_config__BTId_to_saved_face_expression_modulate_map[arg_id] = arg_modulate
+	
+	if _is_manager_initialized:
+		emit_signal("player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_id__changed", arg_modulate, arg_id)
 
 
-#todo add this to save soon
+func _fill_missing_player_aesth_config__BTId_to_saved_face_expression_modulate_map():
+	for id in PlayerAesthConfig_BodyTextureId.values():
+		if !player_aesth_config__BTId_to_saved_face_expression_modulate_map.has(id):
+			var default_val = get_player_aesth_config__BTId_to_saved_face_expression_modulate_map__default(id)
+			
+			player_aesth_config__BTId_to_saved_face_expression_modulate_map[id] = default_val
+
+func get_player_aesth_config__BTId_to_saved_face_expression_modulate_map__default(id):
+	var default_val = player_aesth_config__BTId_to_saved_face_expression_modulate_map__default_for_empty_field
+	if _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default.has(id):
+		default_val = _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default[id]
+	
+	return default_val
+
+#
+
 func _get_player_aesth_config_as_save_dict():
 	return {
 		PLAYER_AESTH_CONFIG__BODY_TEXTURE_ID_TO_SAVED_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__body_texture_id_to_saved_modulate_map),
@@ -1694,6 +1744,9 @@ func _get_player_aesth_config_as_save_dict():
 		
 		PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_SCREEN_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__BTId_to_saved_face_screen_modulate_map),
 		PLAYER_AESTH_CONFIG__FACE_SCREEN_TEXTURE_ID__DIC_IDENTIFIER : player_aesth_config__face_screen_texture_id,
+		
+		PLAYER_AESTH_CONFIG__BTId_TO_SAVED_FACE_EXPRESSION_MODULATE_MAP__DIC_IDENTIFIER : _convert_color_dict_to_color_html_string_dict(player_aesth_config__BTId_to_saved_face_expression_modulate_map),
+		
 	}
 
 
@@ -1702,7 +1755,7 @@ func _convert_color_html_string_dict_to_color_dict(arg_dict : Dictionary):
 	var bucket = {}
 	for id_as_str in arg_dict.keys():
 		var id = int(id_as_str)
-		bucket[id] = _convert_color_html_string__into_color(arg_dict[id])
+		bucket[id] = _convert_color_html_string__into_color(arg_dict[id_as_str])
 	
 	return bucket
 

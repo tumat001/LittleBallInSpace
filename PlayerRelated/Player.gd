@@ -1257,6 +1257,7 @@ func _ready():
 	#_make_node_rotate_with_cam(anim_on_screen)
 	_make_node_rotate_with_cam(player_face)
 	_make_node_rotate_with_cam(pca_progress_drawer)
+	_make_node_rotate_with_cam(main_body_sprite)
 	
 	CameraManager.connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam", [], CONNECT_PERSIST)
 	
