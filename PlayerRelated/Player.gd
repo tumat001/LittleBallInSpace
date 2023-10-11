@@ -868,7 +868,8 @@ func stop_player_movement():
 func _physics_process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
-		if last_calc_can_player_move_left_and_right:
+		#var counter_dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
+		if last_calc_can_player_move_left_and_right: #and !_is_any_static_body_impeding_movement(linear_velocity):
 			if _is_moving_left:
 				#print("moving left: %s" % _current_player_left_right_move_speed)
 				
@@ -876,6 +877,11 @@ func _physics_process(delta):
 				#	var counter_dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
 				#	if _is_any_static_body_impeding_movement(counter_dir):
 				#		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+				
+				#var intent_mov = Vector2(-1, 0)
+				#var intent_mov = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
+				#if !_is_any_static_body_impeding_movement(intent_mov):
+				#print("building speed left")
 				
 				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
 				if _current_player_left_right_move_speed > 0:
@@ -918,6 +924,10 @@ func _physics_process(delta):
 					else:
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 					
+				#else:
+				#	#_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+				#	#pass
+				#	#_current_player_left_right_move_speed = 0
 				
 			elif _is_moving_right:
 				#print("moving right: %s" % _current_player_left_right_move_speed)
@@ -927,7 +937,11 @@ func _physics_process(delta):
 				#	if _is_any_static_body_impeding_movement(counter_dir):
 				#		_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 				
-				
+				#var intent_mov = Vector2(-1, 0).rotated(CameraManager.current_cam_rotation)
+				#if !_is_any_static_body_impeding_movement(intent_mov):
+				#	
+				#	print("building speed right")
+			
 				var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
 				if _current_player_left_right_move_speed < 0:
 					_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
@@ -955,6 +969,7 @@ func _physics_process(delta):
 						
 						var counter_mov = -mov_of_excess * excess_scale
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = counter_mov
+						
 						#if !_is_any_static_body_impeding_movement(counter_mov):
 						#	print("adding counter mov right")
 						#	_current_excess_player_left_right_move_speed_to_fight_counter_speed = counter_mov
@@ -966,6 +981,10 @@ func _physics_process(delta):
 						_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 					
 				
+				#else:
+				#	#pass
+				#	_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+				#	#_current_player_left_right_move_speed = 0
 				
 			elif _is_move_breaking:
 				
@@ -1074,11 +1093,12 @@ func _integrate_forces(state):
 		
 		#
 		
-		#var dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
-		#if _is_any_static_body_impeding_movement(dir):
-		#	#_current_player_left_right_move_speed = 0
-		#	#_current_player_left_right_move_speed__from_last_integrate_forces = 0
-		#	_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
+#		var dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
+#		if _is_any_static_body_impeding_movement(dir):
+#			#_current_player_left_right_move_speed = 0
+#			#_current_player_left_right_move_speed__from_last_integrate_forces = 0
+#			print("setted to zero")
+#			_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 		
 		
 		var mov_speed = _current_player_left_right_move_speed - _current_player_left_right_move_speed__from_last_integrate_forces
@@ -2081,19 +2101,26 @@ func attempt_remove_static_base_objects_in_contact_with(arg_obj):
 			arg_obj.disconnect("body_mode_changed__not_from_rewind", self, "_on_body_mode_changed__not_from_rewind")
 
 
-func _is_any_static_body_impeding_movement(arg_counter_mov : Vector2):
-	if is_zero_approx(linear_velocity.length()):
-		var direction_of_counter_mov : Vector2 = arg_counter_mov.rotated(PI).normalized()
-		
-		for body in _static_base_objects_in_contact_with:
-			var angle_to_body : float = global_position.angle_to_point(body.global_position)
-			
-			#print("angle to body: %s" % rad2deg(abs(direction_of_counter_mov.angle() - angle_to_body)))
-			if abs(direction_of_counter_mov.angle() - angle_to_body) <= PI/8:
-				return true
-	
-	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
-	return false
+#func _is_any_static_body_impeding_movement(arg_mov : Vector2):
+##	if linear_velocity.length() < 1.0:
+##		if _static_base_objects_in_contact_with.size() != 0:
+##			return true
+#
+#	if arg_mov.length() > 0.0:
+#		var direction_of_counter_mov : Vector2 = arg_mov#.rotated(PI)#.normalized()
+#
+#		for body in _static_base_objects_in_contact_with:
+#			var angle_to_body : float = global_position.angle_to_point(body.global_position)
+#
+#			print("angle to body: %s, %s, %s" % [(abs(direction_of_counter_mov.angle() - angle_to_body)), direction_of_counter_mov.angle(), angle_to_body])
+#
+#			var diff = abs(direction_of_counter_mov.angle() - angle_to_body)
+#			if diff <= PI/12 or diff >= 13*2*PI/14:
+#				print("true")
+#				return true
+#
+#	#print("ret false. lin_vel_is_zero: %s, length: %s" % [is_zero_approx(linear_velocity.length()), linear_velocity.length()])
+#	return false
 
 #
 

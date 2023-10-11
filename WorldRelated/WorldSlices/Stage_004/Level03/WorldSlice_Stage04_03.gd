@@ -9,9 +9,10 @@ const ModuleX_StatusIcon_X = preload("res://WorldRelated/WorldSlices/Stage_004/L
 
 const MOD_X_SCREEN_MODULATE__INACTIVE = Color("#C4C4C4")
 const MOD_X_SCREEN_MODULATE__ACTIVE = Color("#C48BFE")
-const MOD_X_SCREEN_MODULATE__DURATION_TRANSITION : float = 1.0
+const MOD_X_SCREEN_MODULATE__DURATION_TRANSITION : float = 1.4
 
-const MOD_X_SCREEN_MODULATE__DELAY_SMALL = 0.2
+const MOD_X_SCREEN_MODULATE__DELAY_SMALL__BETWEEN_ELE = 0.15
+const MOD_X_SCREEN_MODULATE__DELAY_SMALL__BETWEEN_CONTAINERS = 0.25
 const MOD_X_SCREEN_MODULATE__DELAY_LONG = 0.8
 
 #
@@ -28,9 +29,9 @@ onready var vision_fog = $MiscContainer/VisionFog
 onready var mod_x_screen = $MiscContainer/ModX_Screen
 onready var mod_x_all_vbox_container = $MiscContainer/ModX_AllContainer
 
-onready var mod_x_status__stats = $MiscContainer/ModX_AllContainer/ModX_StatsContainer/HBoxContainer/ModXStatus_Stats
-onready var mod_x_status__player_aesth = $MiscContainer/ModX_AllContainer/ModX_PlayerAesthContainer/HBoxContainer/ModXStatus_PlayerAesth
-onready var mod_x_status__tile_colors = $MiscContainer/ModX_AllContainer/ModX_TileColorsContainer/HBoxContainer/ModXStatus_TileColors
+onready var mod_x_status__stats = $MiscContainer/ModX_AllContainer/ModX_StatsContainer/ModXStatus_Stats
+onready var mod_x_status__player_aesth = $MiscContainer/ModX_AllContainer/ModX_PlayerAesthContainer/ModXStatus_PlayerAesth
+onready var mod_x_status__tile_colors = $MiscContainer/ModX_AllContainer/ModX_TileColorsContainer/ModXStatus_TileColors
 
 onready var base_tileset_simple_glass_for_mod_x = $TileContainer/BaseTileSet_SimpleGlassForModX
 
@@ -43,10 +44,6 @@ func _init():
 	
 
 #
-
-func _ready():
-	vision_fog.visible = true
-	
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
@@ -63,20 +60,28 @@ func _init__as_first_time_viewing_mod_x_statuses():
 	_init_and_config_mod_x_all_container_elements__as_hidden()
 	_config_mod_x_status_icons()
 	mod_x_screen.modulate = MOD_X_SCREEN_MODULATE__INACTIVE
+	vision_fog.visible = true
 
 func _init_and_config_mod_x_all_container_elements__as_hidden():
-	var children_list_of_list : Array = []
-	var child_count : int
+	#var children_list_of_list : Array = []
+	#var child_count : int
 	for mod_x_container in mod_x_all_vbox_container.get_children():
-		child_count = mod_x_container.get_child_count()
-		children_list_of_list.append(mod_x_container.get_chidren())
+		#child_count = mod_x_container.get_child_count()
+		#children_list_of_list.append(mod_x_container.get_children())
+		
+		for child in mod_x_container.get_children():
+			child.modulate.a = 0
+		_mod_x_vbox_container_elements.append(mod_x_container.get_children())
 	
 	#
 	
-	for i in child_count:
-		for list in children_list_of_list:
-			_mod_x_vbox_container_elements.append(list[i])
-	
+#	#for i in child_count:
+#	for list in children_list_of_list:
+#
+#		for ele in :
+#			ele.modulate.a = 0
+#		_mod_x_vbox_container_elements.append(container.get_children())
+
 
 
 func _config_mod_x_status_icons():
@@ -108,6 +113,7 @@ func _init__as_NOT_first_time_viewing_mod_x_statuses():
 	button_for_mod_x_screen.can_play_sound = false
 	button_for_mod_x_screen.set_is_pressed(true)
 	button_for_mod_x_screen.can_play_sound = true
+	vision_fog.visible = false
 
 ###################
 
@@ -133,24 +139,26 @@ func _on_fog_hide_finished():
 #
 
 func _on_Object_IB_ForModXScreen_pressed(arg_is_pressed):
-	if _is_displayed_fog__as_first_time:
-		_is_displayed_fog__as_first_time = false
-		game_elements.ban_rewind_manager_to_store_and_cast_rewind()
-		
-		_start_display_mod_x_statuses()
+	if arg_is_pressed:
+		if _is_displayed_fog__as_first_time:
+			_is_displayed_fog__as_first_time = false
+			game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+			
+			_start_display_mod_x_statuses()
 
 func _start_display_mod_x_statuses():
 	var tweener = create_tween()
 	
 	# screen
-	tweener.tween_property(mod_x_screen, "modulate", MOD_X_SCREEN_MODULATE__ACTIVE, MOD_X_SCREEN_MODULATE__DURATION_TRANSITION).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tweener.tween_property(mod_x_screen, "modulate", MOD_X_SCREEN_MODULATE__ACTIVE, MOD_X_SCREEN_MODULATE__DURATION_TRANSITION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tweener.tween_interval(0.2)
 	
-	for mod_container in _mod_x_vbox_container_elements:
-		for mod_ele in mod_container:
-			tweener.tween_property(mod_ele, "modulate.a", 1.0, MOD_X_SCREEN_MODULATE__DELAY_SMALL)
+	for mod_arr in _mod_x_vbox_container_elements:
+		for mod_ele in mod_arr:
+			tweener.tween_property(mod_ele, "modulate:a", 1.0, MOD_X_SCREEN_MODULATE__DELAY_SMALL__BETWEEN_ELE)
+			tweener.tween_interval(MOD_X_SCREEN_MODULATE__DELAY_SMALL__BETWEEN_CONTAINERS)
 		tweener.tween_interval(MOD_X_SCREEN_MODULATE__DELAY_LONG)
-		
+	
 	tweener.tween_callback(self, "_on_display_mod_x_statuses_finished")
 
 
