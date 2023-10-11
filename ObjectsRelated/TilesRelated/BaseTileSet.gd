@@ -542,6 +542,21 @@ func _set_tile_at_coords(arg_coords : Vector2, arg_tile_id : int, arg_autotile_c
 
 #
 
+func remove_tiles_at_all_coords(arg_update_dirty_quadrants : bool = false,
+		arg_save_tiles_data_next_frame__for_rewind_save : bool = true):
+	
+	var cell_coords_id_and_auto_coords : Array = []
+	for cell_coord in tilemap.get_used_cells():
+		var id = tilemap.get_cellv(cell_coord)
+		var auto_coord = tilemap.get_cell_autotile_coord(cell_coord.x, cell_coord.y)
+		cell_coords_id_and_auto_coords.append([cell_coord, id, auto_coord])
+	
+	var completed_data__cell_coords_id_auto_coords : Array = _create_default_arr_data_for_setting_tiles__in_one_arr(cell_coords_id_and_auto_coords)
+	_set_tiles_at_coords(completed_data__cell_coords_id_auto_coords, arg_update_dirty_quadrants, arg_save_tiles_data_next_frame__for_rewind_save)
+
+
+#
+
 func convert_all_filled_tiles_to_unfilled():
 	var at_least_one_changed : bool = false
 	var cell_coords_id_and_auto_coords : Array = []

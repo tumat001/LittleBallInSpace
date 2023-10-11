@@ -30,9 +30,10 @@ func after_game_init():
 	_add_launch_ball_modi()
 
 func _add_launch_ball_modi():
+	#todo
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 0
-	modi.is_infinite_ball_count = false
+	modi.starting_ball_count = 1#0
+	modi.is_infinite_ball_count = true#false
 	modi.show_player_trajectory_line = true
 	
 	game_elements.player_modi_manager.add_modi_to_player(modi)

@@ -110,7 +110,21 @@ tile_data = PoolIntArray( -851826, 14, 0, -196494, 14, 1, 327814, 14, 0, 327822,
 tile_set = ExtResource( 2 )
 tile_data = PoolIntArray( -1113976, 19, 65538, -1113975, 18, 262145, -1048467, 17, 3, -1048440, 19, 1, -982931, 17, 3, -982904, 19, 1, -917395, 17, 3, -917368, 19, 1, -917360, 29, 0, -917359, 29, 2, -851859, 17, 3, -851832, 19, 1, -851824, 29, 131072, -851823, 29, 131074, -786333, 17, 3, -786323, 17, 3, -786296, 19, 1, -720797, 17, 3, -720787, 17, 3, -720760, 19, 65536, -655261, 17, 3, -655251, 17, 3, -589725, 17, 3, -589715, 17, 3, -524189, 17, 3, -524179, 17, 3, -458653, 17, 3, -393117, 17, 3, -393116, 17, 0, -393079, 18, 262145, -327597, 17, 3, -327592, 17, 3, -327581, 17, 3, -262061, 17, 3, -262056, 17, 3, -262010, 17, 65538, -196525, 17, 3, -196474, 17, 65538, -130989, 17, 3, -130938, 17, 65538, 262280, 18, 196609, 262281, 18, 196609, 262282, 18, 196609, 327818, 13, 1, 327820, 31, 2, 327821, 31, 3, 327823, 31, 0, 327824, 31, 1, 393349, 31, 131072, 393350, 31, 131073, 393351, 31, 131074, 393354, 13, 1, 393356, 31, 65538, 393357, 31, 65539, 393359, 31, 65536, 393360, 31, 65537, 458880, 18, 196608, 458885, 31, 196608, 458886, 31, 196609, 458887, 31, 196610, 458890, 13, 1, 458894, 31, 196611, 524355, 18, 3, 524356, 13, 0, 524416, 18, 196608, 524417, 13, 0, 524418, 18, 65536, 524422, 31, 262144, 524423, 31, 262145, 524426, 18, 65536, 524429, 31, 262146, 524430, 31, 262147, 524431, 31, 262148, 589952, 18, 196608, 589958, 31, 327680, 589959, 31, 327681, 589965, 31, 327682, 589966, 31, 327683, 589967, 31, 327684, 720899, 13, 65536, 786435, 13, 3, 851971, 13, 1, 917507, 13, 1, 983043, 13, 1, 1048579, 13, 1, 1114115, 13, 1, 1114140, 13, 65539, 1179676, 13, 1, 1245212, 13, 1, 1310748, 13, 1, 1376284, 13, 1, 1441818, 13, 0, 1441819, 13, 2, 1441820, 13, 65537 )
 
-[node name="BaseTileSet_Blue" parent="TileContainer" index="7" instance=ExtResource( 4 )]
+[node name="BaseTileSet_UncolModX_01" parent="TileContainer" index="7" instance=ExtResource( 4 )]
+rotation = 4.71239
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_UncolModX_01" index="0"]
+tile_set = ExtResource( 2 )
+tile_data = PoolIntArray( 7602178, 32, 327682, 7602180, 32, 196611, 7602181, 32, 131072, 7602182, 32, 131072, 7667714, 32, 196610, 7667715, 32, 131072, 7667716, 32, 131072, 7667717, 32, 2 )
+
+[node name="BaseTileSet_UncolModX_02" parent="TileContainer" index="8" instance=ExtResource( 4 )]
+rotation = 4.71239
+
+[node name="TileMap" parent="TileContainer/BaseTileSet_UncolModX_02" index="0"]
+tile_set = ExtResource( 2 )
+tile_data = PoolIntArray( 7602179, 32, 0, 7602180, 32, 1, 7667715, 32, 65536, 7667716, 32, 65537 )
+
+[node name="BaseTileSet_Blue" parent="TileContainer" index="9" instance=ExtResource( 4 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
 modulate = Color( 0.0705882, 0.454902, 1, 1 )
@@ -234,7 +248,7 @@ body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
 
 [node name="PickupCDSU_Module_Stats" parent="ObjectContainer" index="8" instance=ExtResource( 13 )]
-position = Vector2( 3760, -144 )
+position = Vector2( 3761, -129 )
 
 [node name="Sprite" parent="ObjectContainer/PickupCDSU_Module_Stats" index="0"]
 material = SubResource( 14 )
@@ -273,6 +287,8 @@ position = Vector2( 4402, 217 )
 [editable path="TileContainer/BaseTileSet_UncollsWallDec"]
 [editable path="TileContainer/BaseTileSet_UncolGlow"]
 [editable path="TileContainer/BaseTileSet_Uncol02"]
+[editable path="TileContainer/BaseTileSet_UncolModX_01"]
+[editable path="TileContainer/BaseTileSet_UncolModX_02"]
 [editable path="TileContainer/BaseTileSet_Blue"]
 [editable path="AreaRegionContainer/PDAR_MapBounds"]
 [editable path="AreaRegionContainer/PCA_01"]

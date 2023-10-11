@@ -1,6 +1,11 @@
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
+
+signal pressed(arg_is_pressed)
+
+#
+
 const TILESET_COLOR__BLUE = Color(1/255.0, 1/255.0, 255/255.0) #Color(28/255.0, 18/255.0, 253/255.0)
 const TILESET_COLOR__RED = Color(253/255.0, 17/255.0, 19/255.0)
 const TILESET_COLOR__GREEN = Color(17/255.0, 253/255.0, 19/255.0)
@@ -73,6 +78,8 @@ var _coll_shape_tweener
 #
 
 var is_class_type_object_interactable_button : bool = true
+
+var can_play_sound : bool = true
 
 ##
 
@@ -153,8 +160,8 @@ func set_is_pressed(arg_val):
 						
 						_is_in_press_transition = true
 						
-						
-						AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
+						if can_play_sound:
+							AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_SwitchToggle_01, global_position, 1.0, null)
 						
 						
 					else:
@@ -189,6 +196,7 @@ func set_is_pressed(arg_val):
 		
 	
 	_update_button_display()
+	emit_signal("pressed", is_pressed)
 
 func _on_button_pos_change_finished():
 	_is_in_press_transition = false
