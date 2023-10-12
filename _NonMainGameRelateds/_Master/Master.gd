@@ -90,12 +90,14 @@ func _ready():
 		var game_elements = GameElements_Scene.instance()
 		game_elements_container.add_child(game_elements)
 		return
+	
 	#
 	
 	if GameSaveManager.first_time_opening_game:
 		_do_appropriate_action__for_first_time()
 		
 	else:
+		_show_boot_splash_away_transition()
 		load_and_show_layout_selection_whole_screen()
 		
 
@@ -108,6 +110,10 @@ func _do_appropriate_action__for_first_time():
 	
 	_show_first_time_question_ws_panel()
 
+
+
+func _show_boot_splash_away_transition():
+	play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION)
 
 func load_and_show_layout_selection_whole_screen():
 	gui__level_selection_whole_screen = GUI_LevelSelectionWholeScreen_Scene.instance()

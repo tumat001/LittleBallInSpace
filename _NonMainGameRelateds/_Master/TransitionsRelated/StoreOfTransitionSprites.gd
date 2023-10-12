@@ -1,6 +1,7 @@
 extends Reference
 
 const Transition_StandardFade = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/StandardFade/Transition_StandardFade.gd")
+#const BootSplashAwayTransition = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/BootSplashAwayTransition/BootSplashAwayTransition.tscn")
 
 #
 
@@ -18,6 +19,10 @@ enum TransitionSpriteIds {
 	
 	OUT__STANDARD_FADE__BLACK__LONG = 10,
 	#IN__STANDARD_FADE__BLACK = 11,
+	
+	#
+	
+	BOOT_SPLASH_AWAY_TRANSITION = 1000,
 	
 }
 
@@ -50,6 +55,9 @@ static func construct_transition_sprite(arg_id):
 		
 		#transition = _construct_transition__standard_circle()
 		#_configure_transition_circle__to_fade__out(transition, Color(0, 0, 0, 0), Color(0, 0, 0, 1))
+		
+	elif arg_id == TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION:
+		return load("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/BootSplashAwayTransition/BootSplashAwayTransition.tscn").instance()
 	
 	return transition
 
