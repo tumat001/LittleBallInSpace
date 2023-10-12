@@ -114,8 +114,23 @@ enum AudioIds {
 	SFX_Misc_GlassBreak_Hard = 5300
 	SFX_SpaceshipWall_Tile_Break = 5301
 	
+	### TILE FRAGMENTS
+	SFX_TileFragments_Metal_01 = 5310
+	SFX_TileFragments_Metal_02 = 5311
+	SFX_TileFragments_Metal_03 = 5312
+	SFX_TileFragments_Metal_04 = 5313
+	SFX_TileFragments_Metal_05 = 5314
+	SFX_TileFragments_Metal_06 = 5315
 	
-	## GUI
+	SFX_TileFragments_Glass_01 = 5316
+	SFX_TileFragments_Glass_02 = 5317
+	SFX_TileFragments_Glass_03 = 5318
+	SFX_TileFragments_Glass_04 = 5319
+	SFX_TileFragments_Glass_05 = 5320
+	SFX_TileFragments_Glass_06 = 5321
+	
+	
+	### GUI
 	SFX_GUI_Button_Hover = 5400
 	SFX_GUI_LevelTile_Hover = 5401
 	#SFX_GUI_LevelLayout_Enter = 5402

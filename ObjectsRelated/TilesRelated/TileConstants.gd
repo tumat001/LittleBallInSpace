@@ -10,7 +10,8 @@ const BREAKABLE_GLASS_TILE__MASS = 30
 const STRONG_BREAKABLE_GLASS_TILE__MASS = 40
 const SPACESHIP_WALL_BREAKABLE_TILE__MASS = 60
 
-# THESE are not custom defined. THESE are defined by tileset resource
+# THESE are not custom defined. THESE are defined by tileset resource.
+# if the res changes, so shall these
 const BREAKABLE_GLASS_TILE_ID__ATLAS_01 = 2
 const BREAKABLE_GLASS_TILE_ID__ATLAS_02 = 3
 const BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01 = 4
@@ -35,6 +36,26 @@ const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02 = 7
 
 const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_01 = 8
 const TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__UNFILLED_02 = 9
+
+
+const SIMPLE_METAL_TILE_01__MASS = 60
+const SIMPLE_METAL_TILE_02__MASS = 60
+const SPACESHIP_WALL_TILE_01__MASS = 60
+const SPACESHIP_WALL_TILE_02__MASS = 60
+const DARK_METAL_TILE_01__MASS = 60
+const SIMPLE_GLASS_TILE_ID__01__MASS = BREAKABLE_GLASS_TILE_ID__ATLAS_01
+const SIMPLE_GLASS_TILE_ID__02__MASS = BREAKABLE_GLASS_TILE_ID__ATLAS_02
+
+
+#
+
+const SIMPLE_METAL_TILE_ID__01 = 0
+const SIMPLE_METAL_TILE_ID__02 = 1
+const SIMPLE_GLASS_TILE_ID__01 = 2
+const SIMPLE_GLASS_TILE_ID__02 = 3
+const SPACESHIP_TILE_ID__01 = 10
+const SPACESHIP_TILE_ID__02 = 11
+const DARK_METAL_TILE_ID = 14
 
 
 #
@@ -185,10 +206,32 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 			return SPACESHIP_WALL_BREAKABLE_TILE__MASS
 		SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID:
 			return SPACESHIP_WALL_BREAKABLE_TILE__MASS
+			
+			
+		##
+		SIMPLE_METAL_TILE_ID__01:
+			return SIMPLE_METAL_TILE_01__MASS
+		SIMPLE_METAL_TILE_ID__02:
+			return SIMPLE_METAL_TILE_01__MASS
+			
+		SPACESHIP_TILE_ID__01:
+			return SPACESHIP_WALL_TILE_01__MASS
+		SPACESHIP_TILE_ID__02:
+			return SPACESHIP_WALL_TILE_02__MASS
+			
+		DARK_METAL_TILE_ID:
+			return DARK_METAL_TILE_01__MASS
+			
+		SIMPLE_GLASS_TILE_ID__01:
+			return SIMPLE_GLASS_TILE_ID__01__MASS
+		SIMPLE_GLASS_TILE_ID__02:
+			return SIMPLE_GLASS_TILE_ID__02__MASS
+			
+		
 
 ###############################
 
-func generate_object_tile_fragments(arg_global_pos : Vector2, arg_top_left_local_pos : Vector2,
+func generate_object_tile_fragments(arg_global_pos : Vector2,
 		arg_img : Texture, arg_segments : int,
 		arg_tile_id : int, arg_tile_coords : Vector2):
 	
@@ -202,6 +245,7 @@ func generate_object_tile_fragments(arg_global_pos : Vector2, arg_top_left_local
 		var tile_fragment_obj = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.TILE_FRAGMENT)
 		
 		tile_fragment_obj.texture_to_use__fragment = texture_and_top_left_pos[0]
+		tile_fragment_obj.tileset_id = arg_tile_id
 		var mid_mag = (length / 2.0)
 		tile_fragment_obj.position = texture_and_top_left_pos[1] + Vector2(mid_mag, mid_mag) + arg_global_pos
 		

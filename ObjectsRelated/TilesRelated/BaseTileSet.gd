@@ -32,6 +32,10 @@ export(EnergyMode) var energy_mode : int setget set_energy_mode
 
 ##################
 
+const TILE_FRAGMENT_COUNT : int = 9
+const TILE_MAP_CELL_SIZE_X : int = 32
+const TILE_MAP_CELL_SIZE_Y : int = 32
+
 # if this is changable beyond ready, make rewind system take it to account
 const MOMENTUM_FOR_BREAK__NEVER_BREAK = -1
 const MOMENTUM_FOR_BREAK__INSTANT_BREAKABLE_TILE = 0
@@ -161,6 +165,8 @@ func set_energy_mode(arg_val):
 #
 
 func _ready():
+	tilemap.cell_size = Vector2(TILE_MAP_CELL_SIZE_X, TILE_MAP_CELL_SIZE_Y)
+	
 	#set_momentum_breaking_point_standard(momentum_breaking_point_standard)
 	set_glass_breakable_type(glass_breakable_type)
 	
@@ -382,8 +388,8 @@ func _make_self_not_breakable_on_player_contact():
 func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	var tile_local_pos_top_left = tilemap.map_to_world(arg_tile_coord)
 	var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
-	var tile_global_pos = tilemap.to_global(tile_local_pos)
-
+	#var tile_global_pos = tilemap.to_global(tile_local_pos)
+	
 	var id = tilemap.get_cellv(arg_tile_coord)
 	var breakable_id_tentative = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(id)
 	if breakable_id_tentative != null:
@@ -400,8 +406,9 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 		TileConstants.generate_atlas_textures_for_tile_sheet(id, texture_in_region, tilemap.cell_size.x)
 	var tile_texture = TileConstants.get_atlas_texture_from_tile_sheet_id(id, auto_coords)
 	
-	#_create_fragments(tile_local_pos_top_left, tile_global_pos, tile_texture, id, auto_coords)
-	call_deferred("_create_fragments", tile_local_pos_top_left, tile_global_pos, tile_texture, id, auto_coords)
+	
+	call_deferred("_create_fragments", tile_local_pos_top_left, tile_texture, id, auto_coords)
+	#call_deferred("_create_fragments", tile_global_pos, tile_texture, id, auto_coords)
 	
 	####################
 	
@@ -414,8 +421,9 @@ func break_tile_coord__using_player(arg_tile_coord: Vector2, arg_player):
 	
 	emit_signal("tile_broken_via_player_and_speed")
 
-func _create_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, arg_tile_id, arg_auto_coords):
-	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_global_pos, arg_tile_texture, 9, arg_tile_id, arg_auto_coords)
+func _create_fragments(arg_tile_local_pos_top_left, arg_tile_texture, arg_tile_id, arg_auto_coords):
+	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
+	#var fragments = TileConstants.generate_object_tile_fragments(arg_tile_global_pos, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
 	for fragment in fragments:
 		SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 

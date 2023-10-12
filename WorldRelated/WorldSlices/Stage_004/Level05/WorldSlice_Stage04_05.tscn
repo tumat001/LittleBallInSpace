@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_004/Level05/WorldSlice_Stage04_05.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=10]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=11]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=12]
+[ext_resource path="res://MiscRelated/TileFragmentCloudsRelated/TileFragmentCloud.tscn" type="PackedScene" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 137.25, 63.5 )
@@ -177,6 +178,20 @@ position = Vector2( 150, 208 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }
+
+[node name="MiscContainer" type="Node" parent="." index="6"]
+
+[node name="TileFragmentCloud" parent="MiscContainer" index="0" instance=ExtResource( 13 )]
+position = Vector2( -349, -144 )
+radius_for_spawn = 120.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud2" parent="MiscContainer" index="1" instance=ExtResource( 13 )]
+position = Vector2( 635, 187 )
+radius_for_spawn = 240.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
 
 [connection signal="region_area_captured" from="AreaRegionContainer/PlayerCaptureAreaRegion" to="." method="_on_PlayerCaptureAreaRegion_region_area_captured"]
 

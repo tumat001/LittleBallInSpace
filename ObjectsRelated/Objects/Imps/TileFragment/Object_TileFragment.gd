@@ -3,7 +3,7 @@ extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
 var texture_to_use__fragment : AtlasTexture
-
+var tileset_id : int
 
 #var player
 #var _is_inside_player
@@ -22,6 +22,10 @@ var is_class_type_object_tile_fragment : bool = true
 #const DIST_FROM_PLAYER_TO_INCREMENT_WAIT_DURATION : float = 1500.0
 #var _curr_duration_of_wait_before_despawn : float
 
+#
+
+const PLAY_HIT_SOUND_COOLDOWN : float = 2.0
+var _player_hit_sound_cooldown : float
 
 #
 
@@ -80,7 +84,21 @@ func _on_PlayerSoftArea2D_body_entered(body):
 			lin_vel.limit_length(3.333 * last_calculated_object_mass)
 			
 			apply_central_impulse(force + lin_vel)
+			
+			#body.request_play_tile_fragment_sound(self)
+			_attempt_play_player_colliding_sound()
 
+
+func _attempt_play_player_colliding_sound():
+	if _player_hit_sound_cooldown < 0:
+		_player_hit_sound_cooldown = PLAY_HIT_SOUND_COOLDOWN
+		
+		var sound_id_to_play = _get_sound_id_to_play()
+		AudioManager.helper__play_sound_effect__2d(sound_id_to_play, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
+
+func _get_sound_id_to_play():
+	pass
+	
 
 #
 
@@ -101,7 +119,10 @@ func _physics_process(delta):
 		_is_from_rewind__frame_count -= 1
 	elif _is_from_rewind__frame_count < 0:
 		_is_from_rewind__frame_count = 0
-
+	
+	
+	if _player_hit_sound_cooldown > 0:
+		_player_hit_sound_cooldown -= delta
 
 
 #

@@ -99,7 +99,6 @@ func _ready():
 	else:
 		_show_boot_splash_away_transition()
 		load_and_show_layout_selection_whole_screen()
-		
 
 
 func _do_appropriate_action__for_first_time():

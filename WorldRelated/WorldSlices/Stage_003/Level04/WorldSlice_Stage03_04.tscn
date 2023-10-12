@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_003/Level04/WorldSlice_Stage03_04.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_TileColors.png" type="Texture" id=12]
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_PickupableOutline_Rainbow.tres" type="Shader" id=13]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_CustomDefinedSingleUse.tscn" type="PackedScene" id=14]
+[ext_resource path="res://MiscRelated/TileFragmentCloudsRelated/TileFragmentCloud.tscn" type="PackedScene" id=15]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 38, 34.5 )
@@ -297,6 +298,32 @@ position = Vector2( 82, 144 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }
+
+[node name="MiscContainer" type="Node" parent="." index="6"]
+
+[node name="TileFragmentCloud" parent="MiscContainer" index="0" instance=ExtResource( 15 )]
+position = Vector2( 3858, -111 )
+radius_for_spawn = 300.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud2" parent="MiscContainer" index="1" instance=ExtResource( 15 )]
+position = Vector2( 5300, -21 )
+radius_for_spawn = 280.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud3" parent="MiscContainer" index="2" instance=ExtResource( 15 )]
+position = Vector2( 4439, -104 )
+radius_for_spawn = 240.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud4" parent="MiscContainer" index="3" instance=ExtResource( 15 )]
+position = Vector2( 1934, 21 )
+radius_for_spawn = 220.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
 
 [connection signal="player_entered_self__custom_defined" from="ObjectContainer/PickupCDSU_Module_Stats" to="." method="_on_PickupCDSU_Module_Stats_player_entered_self__custom_defined"]
 [connection signal="restored_from_destroyed_from_rewind" from="ObjectContainer/PickupCDSU_Module_Stats" to="." method="_on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind"]

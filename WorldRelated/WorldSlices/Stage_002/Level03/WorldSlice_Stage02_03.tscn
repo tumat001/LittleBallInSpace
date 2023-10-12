@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_Stats.png" type="Texture" id=11]
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_PickupableOutline_Rainbow.tres" type="Shader" id=12]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_CustomDefinedSingleUse.tscn" type="PackedScene" id=13]
+[ext_resource path="res://MiscRelated/TileFragmentCloudsRelated/TileFragmentCloud.tscn" type="PackedScene" id=14]
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 601.375, 554.5 )
@@ -274,6 +275,26 @@ position = Vector2( 4560, 299 )
 
 [node name="FocusPos02" type="Position2D" parent="MiscContainer" index="2"]
 position = Vector2( 4402, 217 )
+
+[node name="TileFragmentGroup01" type="Node" parent="MiscContainer" index="3"]
+
+[node name="TileFragmentCloud1" parent="MiscContainer/TileFragmentGroup01" index="0" instance=ExtResource( 14 )]
+position = Vector2( 2805, 299 )
+radius_for_spawn = 240.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud2" parent="MiscContainer/TileFragmentGroup01" index="1" instance=ExtResource( 14 )]
+position = Vector2( 3035, -175 )
+radius_for_spawn = 240.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
+
+[node name="TileFragmentCloud3" parent="MiscContainer/TileFragmentGroup01" index="2" instance=ExtResource( 14 )]
+position = Vector2( 3413, 251 )
+radius_for_spawn = 240.0
+particle_count_multiplier = 1
+tile_set_template_id = 300
 
 [connection signal="region_area_captured" from="AreaRegionContainer/PCA_SemiLast" to="." method="_on_PCA_SemiLast_region_area_captured"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_EnteringSpecialArea" to="." method="_on_PDAR_EnteringSpecialArea_player_entered_in_area"]

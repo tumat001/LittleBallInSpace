@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=1]
+[ext_resource path="res://AreaRegionRelated/Subs/TileFragmentFromCloudAR/PDAR_TileFragmentFC_QueueAction.gd" type="Script" id=2]
+
+[node name="PDAR_TileFragmentFC_QueueAction" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+is_rewindable = true
+action_type = 0
+action_within_duration_sec = 0.0
+path_of_tile_cloud_container = NodePath("")
