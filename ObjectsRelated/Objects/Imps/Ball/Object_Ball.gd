@@ -39,7 +39,16 @@ var is_class_type_obj_ball : bool = true
 
 var _start_tween_rainbow_at_ready : bool
 
-##
+#
+
+const BASE_PLAY_SOUND_COOLDOWN_DURATION = 0.1
+var _play_sound_cooldown_duration : float = BASE_PLAY_SOUND_COOLDOWN_DURATION
+
+const SOUND_VOLUME_RATIO_DECREASE_PER_BALL : float = 0.05
+const SOUND_VOLUME_RATIO_PER_BALL_MIN : float = 0.5
+var sound_volume_ratio : float = 1.0
+
+###
 
 func _ready():
 	#randomize_color()
@@ -47,6 +56,7 @@ func _ready():
 	if _start_tween_rainbow_at_ready:
 		tween_rainbow_color()
 	emit_signal("after_ready")
+
 
 ##
 
@@ -71,4 +81,47 @@ func _tween_rainbow_color__in_tree():
 		tweener.tween_property(self, "modulate", color, 1.0)
 	
 
+###########
+
+func _process(delta):
+	_play_sound_cooldown_duration -= delta
+
+func _on_ForSoundArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		if _play_sound_cooldown_duration <= 0:
+			_play_sound_cooldown_duration = BASE_PLAY_SOUND_COOLDOWN_DURATION
+			
+			if body.get("is_class_type_base_tileset"):
+				_area_entered_tileset__play_sound(body_rid, body, body_shape_index, local_shape_index)
+			elif body.get("is_player"):
+				_area_entered_player__play_sound()
+			elif body.get("is_class_type_obj_ball"):
+				_area_entered_ball__play_sound()
+		
+
+func _area_entered_tileset__play_sound(body_rid, body, body_shape_index, local_shape_index):
+	var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+	
+	var tilemap : TileMap = body.tilemap
+	var cell_id = tilemap.get_cellv(coordinate)
+	
+	var sound_list_to_play = TileConstants.get_tile_id_to_ball_collision_sound_list(cell_id)
+	_play_sound_in_sound_list__from_collision(sound_list_to_play)
+
+
+func _area_entered_player__play_sound():
+	_play_sound_in_sound_list__from_collision(StoreOfObjects.get_ball_collision__with_player__sound_list())
+	
+
+func _area_entered_ball__play_sound():
+	_play_sound_in_sound_list__from_collision(StoreOfObjects.get_ball_collision__with_ball__sound_list())
+	
+
+#
+
+func _play_sound_in_sound_list__from_collision(sound_list_to_play : Array):
+	if sound_list_to_play.size() != 0:
+		var sound_id_to_play = StoreOfRNG.randomly_select_one_element(sound_list_to_play, SingletonsAndConsts.non_essential_rng)
+		AudioManager.helper__play_sound_effect__2d__lower_volume_based_on_dist(sound_id_to_play, global_position, sound_volume_ratio, null, AudioManager.MaskLevel.Minor_SoundFX)
+		
 

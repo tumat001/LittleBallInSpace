@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_ElecSparks/EnvEvent_ElecSparks.gd" type="Script" id=1]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/BaseEnvEventPlayer/BaseEnvEventPlayer_Looping.tscn" type="PackedScene" id=2]
+
+[node name="EnvEvent_ElecSparks" instance=ExtResource( 2 )]
+script = ExtResource( 1 )
+player_pos_checker_interval = 2.0
+loop_wait_min = 3.0
+loop_wait_max = 6.0
+spark_count_min = 2
+spark_count_max = 5
+angle_deg_start = 0.0
+angle_deg_end = 360.0
+dist_min = 26.0
+dist_max = 38.0

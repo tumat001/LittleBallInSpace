@@ -425,6 +425,7 @@ func _create_fragments(arg_tile_local_pos_top_left, arg_tile_texture, arg_tile_i
 	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
 	#var fragments = TileConstants.generate_object_tile_fragments(arg_tile_global_pos, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
 	for fragment in fragments:
+		fragment.current_lifespan = SingletonsAndConsts.current_game_elements.object_lifespan__tile_fragment__from_base_tile
 		SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 
 func _attempt_induce_speed_slowdown_on_player(arg_player):

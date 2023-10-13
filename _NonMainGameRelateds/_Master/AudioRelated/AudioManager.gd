@@ -121,6 +121,11 @@ var node_pause_mode_to_container_map : Dictionary
 
 #
 
+const DISTANCE_FROM_2D_WITH_NO_AUDIO_CHANGE : float = 300.0
+const DISTANCE_FROM_2D_TO_REACH_MINIMUM : float = 660.0 #+ DISTANCE_FROM_2D_WITH_NO_AUDIO_CHANGE
+
+#
+
 var game_elements
 
 #####
@@ -698,10 +703,54 @@ func helper__play_sound_effect__plain(arg_id, arg_volume_ratio : float, arg_adv_
 	return sound_player
 
 
+func helper__play_sound_effect__2d__lower_volume_based_on_dist(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null, arg_mask_level : int = MaskLevel.Major_SoundFX):
+	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.TWO_D, arg_adv_param)
+	var pause_mode_of_player = PAUSE_MODE_INHERIT
+	if arg_adv_param != null:
+		pause_mode_of_player = arg_adv_param.node_pause_mode
+	
+	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, pause_mode_of_player, arg_adv_param)
+	sound_player.global_position = arg_pos
+	var final_volume = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	
+	
+	var screen_pos = CameraManager.get_camera__screen_center_position()
+	var ratio_02 = _calculate_volume_ratio_based_on_dist(screen_pos, arg_pos)
+	
+	#print("ratio: %s, dist: %s" % [ratio_02, screen_pos.distance_to(arg_pos)])
+	final_volume = _convert_ratio_using_num_range(ratio_02, DECIBEL_VAL__INAUDIABLE, final_volume)
+	
+	sound_player.volume_db = final_volume
+	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
+	return sound_player
+
+
 func _convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
 	var diff = arg_max - arg_min
 	
 	return arg_min + (diff * arg_ratio)
+
+
+func _calculate_volume_ratio_based_on_dist(arg_pos_01 : Vector2, arg_pos_02 : Vector2):
+	var ratio = 1
+	
+	var dist = arg_pos_01.distance_to(arg_pos_02)
+	if dist <= 300:
+		return ratio
+	
+	dist -= 300
+	ratio = _convert_num_to_ratio_using_num_range(dist, DISTANCE_FROM_2D_TO_REACH_MINIMUM, 0, 0)
+	
+	return ratio
+
+
+#func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
+#	pass
+
+func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimum_ratio):
+	var diff = arg_max - arg_min
+	
+	return max((arg_num - arg_min) / diff, arg_minimum_ratio)
 
 
 #

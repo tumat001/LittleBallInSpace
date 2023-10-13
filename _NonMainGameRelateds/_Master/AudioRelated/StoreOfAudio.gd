@@ -114,21 +114,6 @@ enum AudioIds {
 	SFX_Misc_GlassBreak_Hard = 5300
 	SFX_SpaceshipWall_Tile_Break = 5301
 	
-	### TILE FRAGMENTS
-	SFX_TileFragments_Metal_01 = 5310
-	SFX_TileFragments_Metal_02 = 5311
-	SFX_TileFragments_Metal_03 = 5312
-	SFX_TileFragments_Metal_04 = 5313
-	SFX_TileFragments_Metal_05 = 5314
-	SFX_TileFragments_Metal_06 = 5315
-	
-	SFX_TileFragments_Glass_01 = 5316
-	SFX_TileFragments_Glass_02 = 5317
-	SFX_TileFragments_Glass_03 = 5318
-	SFX_TileFragments_Glass_04 = 5319
-	SFX_TileFragments_Glass_05 = 5320
-	SFX_TileFragments_Glass_06 = 5321
-	
 	
 	### GUI
 	SFX_GUI_Button_Hover = 5400
@@ -140,12 +125,53 @@ enum AudioIds {
 	
 	SFX_GUI_CharacterBlip_FTQ = 5406
 	
+	
+	# ENV
+	SFX_Environment_ElectricSpark_01 = 5500
+	
 	# SPECIAL
 	SFX_Special_ElectricGenerator = 6000
 	SFX_Special_Electrical_Shock = 6001
 	SFX_Special_Electrical_Explosion = 6002
 	SFX_Special_Electrical_SwitchFlip = 6003
 	SFX_Special_ImportantItemFound = 6004
+	
+	
+	#######
+	
+	
+	### COLLISION -- TILE FRAGMENTS
+	SFX_TileFragments_Metal_01 = 7000
+	SFX_TileFragments_Metal_02 = 7001
+	SFX_TileFragments_Metal_03 = 7002
+	SFX_TileFragments_Metal_04 = 7003
+	SFX_TileFragments_Metal_05 = 7004
+	SFX_TileFragments_Metal_06 = 7005
+	
+	SFX_TileFragments_Glass_01 = 7006
+	SFX_TileFragments_Glass_02 = 7007
+	SFX_TileFragments_Glass_03 = 7008
+	SFX_TileFragments_Glass_04 = 7009
+	SFX_TileFragments_Glass_05 = 7010
+	#SFX_TileFragments_Glass_06 = 7011
+	
+	### COLLISION -- BALL
+	SFX_BallCollision_Metal_01 = 7100
+	SFX_BallCollision_Metal_02 = 7101
+	SFX_BallCollision_Metal_03 = 7102
+	
+	SFX_BallCollision_ToggleableTiles_01 = 7110
+	SFX_BallCollision_ToggleableTiles_02 = 7111
+	
+	SFX_BallCollision_Ball_01 = 7120
+	SFX_BallCollision_Ball_02 = 7121
+	
+	SFX_BallCollision_Player_01 = 7130
+	SFX_BallCollision_Player_02 = 7131
+	
+	SFX_BallCollision_Glass_01 = 7140
+	SFX_BallCollision_Glass_02 = 7141
+	SFX_BallCollision_Glass_03 = 7142
 	
 }
 
@@ -189,6 +215,15 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.BGM_Calm01_01 : -4,
 	
 	AudioIds.SFX_Pickupable_Star_01 : -4,
+	
+	
+	AudioIds.SFX_BallCollision_Ball_01 : -6,
+	AudioIds.SFX_BallCollision_Ball_02 : -6,
+	
+	AudioIds.SFX_BallCollision_Glass_01 : -4,
+	AudioIds.SFX_BallCollision_Glass_02 : -4,
+	AudioIds.SFX_BallCollision_Glass_03 : -4,
+	
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false
 

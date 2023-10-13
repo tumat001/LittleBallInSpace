@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_ElecSparks/Assets/EnvEvent_ElecSparks_SparkImg.png" type="Texture" id=1]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_ElecSparks/Subs/EnvParticle_ElecSpark.gd" type="Script" id=2]
+
+[node name="EnvParticle_ElecSpark" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )

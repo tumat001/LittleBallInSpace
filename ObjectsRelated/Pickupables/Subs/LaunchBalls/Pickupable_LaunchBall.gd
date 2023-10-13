@@ -3,6 +3,10 @@ extends "res://ObjectsRelated/Pickupables/BasePickupables.gd"
 
 #
 
+signal ball_collected_by_player()
+
+#
+
 const LaunchBallPickupableParticle = preload("res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Particles/LaunchBallPickupableParticle.gd")
 
 #
@@ -81,9 +85,9 @@ func _on_player_entered_self(arg_player):
 			modi.is_infinite_ball_count = is_make_ammo_infinite
 		
 		_attempt_play_particle_and_sound_effects()
-		
 		_destroy_self__on_consume_by_player()
-
+		
+		emit_signal("ball_collected_by_player")
 
 func _attempt_play_particle_and_sound_effects():
 	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:

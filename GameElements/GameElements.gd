@@ -53,6 +53,7 @@ var pause_game_at_startup : bool = false
 #
 
 var object_lifespan__ball : float = -1
+var object_lifespan__tile_fragment__from_base_tile : float = 20.0
 
 #
 

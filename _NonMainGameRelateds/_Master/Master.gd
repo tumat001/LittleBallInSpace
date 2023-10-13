@@ -45,6 +45,8 @@ var _is_transitioning : bool
 var _is_in_game_or_loading_to_game : bool
 var _is_playing_victory_animations : bool
 
+var _is_transitioning__from_GE_scene_change : bool
+
 #
 
 var first_time_question_ws_panel : FirstTimeQuestionWSPanel
@@ -202,73 +204,91 @@ func start_play_music_playlist_of_curr_level():
 ###
 
 func switch_to_level_selection_scene__from_game_elements__as_win():
-	get_tree().paused = false
-	_is_in_game_or_loading_to_game = false
-	_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
-	_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on = SingletonsAndConsts.current_level_details.additional_level_ids_to_mark_as_complete.duplicate()
-	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
-	GameSaveManager.set_coin_id_as_collected__using_all_tentatives()
-	GameSaveManager.clear_coin_ids_in_tentative()
-	
-	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
-	var transition = play_transition__using_id(transition_id)
-	
-	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
-	
-	emit_signal("switching_from_game_elements__as_win", transition)
-	emit_signal("switching_from_game_elements__non_restart")
+	if !_is_transitioning__from_GE_scene_change:
+		_is_transitioning__from_GE_scene_change = true
+		
+		get_tree().paused = false
+		_is_in_game_or_loading_to_game = false
+		_level_id_to_mark_as_finish__and_display_win_vic_on = SingletonsAndConsts.current_base_level_id
+		_level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on = SingletonsAndConsts.current_level_details.additional_level_ids_to_mark_as_complete.duplicate()
+		SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
+		GameSaveManager.set_coin_id_as_collected__using_all_tentatives()
+		GameSaveManager.clear_coin_ids_in_tentative()
+		
+		var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out
+		var transition = play_transition__using_id(transition_id)
+		
+		var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, true])
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__any")
+		
+		emit_signal("switching_from_game_elements__as_win", transition)
+		emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_level_selection_scene__from_game_elements__as_lose():
-	get_tree().paused = false
-	_is_in_game_or_loading_to_game = false
-	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
-	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
-	GameSaveManager.clear_coin_ids_in_tentative()
-	
-	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
-	var transition = play_transition__using_id(transition_id)
-	
-	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_lose
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
-	
-	emit_signal("switching_from_game_elements__non_restart")
+	if !_is_transitioning__from_GE_scene_change:
+		_is_transitioning__from_GE_scene_change = true
+		
+		get_tree().paused = false
+		_is_in_game_or_loading_to_game = false
+		SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
+		#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+		GameSaveManager.clear_coin_ids_in_tentative()
+		
+		var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_lose
+		var transition = play_transition__using_id(transition_id)
+		
+		var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_lose
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__any")
+		
+		emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_level_selection_scene__from_game_elements__from_quit():
-	emit_signal("switch_from_GE__from_quit")
-	
-	get_tree().paused = false
-	_is_in_game_or_loading_to_game = false
-	SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
-	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
-	GameSaveManager.clear_coin_ids_in_tentative()
-	
-	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
-	var transition = play_transition__using_id(transition_id)
-	
-	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
-	
-	emit_signal("switching_from_game_elements__non_restart")
+	if !_is_transitioning__from_GE_scene_change:
+		_is_transitioning__from_GE_scene_change = true
+		emit_signal("switch_from_GE__from_quit")
+		
+		get_tree().paused = false
+		_is_in_game_or_loading_to_game = false
+		SingletonsAndConsts.attempt_remove_restart_only_persisting_data_of_level_id(SingletonsAndConsts.current_base_level_id)
+		#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+		GameSaveManager.clear_coin_ids_in_tentative()
+		
+		var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
+		var transition = play_transition__using_id(transition_id)
+		
+		var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished", [next_transition_id, transition, false])
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__any")
+		
+		emit_signal("switching_from_game_elements__non_restart")
 
 func switch_to_game_elements__from_game_elements__from_restart():
-	emit_signal("switch_from_GE__from_restart")
+	if !_is_transitioning__from_GE_scene_change:
+		_is_transitioning__from_GE_scene_change = true
+		emit_signal("switch_from_GE__from_restart")
+		
+		get_tree().paused = false
+		#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
+		GameSaveManager.clear_coin_ids_in_tentative()
+		
+		#_on_transition_out__from_GE__finished__for_restart()
+		
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Restart_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
+		
+		var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
+		var transition = play_transition__using_id(transition_id)
+		transition.queue_free_on_end_of_transition = true
+		
+		var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
+		transition.connect("transition_finished", self, "_on_transition_out__from_GE__any")
+
+func _on_transition_out__from_GE__any():
+	_is_transitioning__from_GE_scene_change = false
 	
-	get_tree().paused = false
-	#GameSaveManager.remove_official_coin_ids_collected_from_tentative()
-	GameSaveManager.clear_coin_ids_in_tentative()
-	
-	#_on_transition_out__from_GE__finished__for_restart()
-	
-	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Restart_01, 1.0, null, AudioManager.MaskLevel.UI_SoundFX)
-	
-	var transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__out__for_quit
-	var transition = play_transition__using_id(transition_id)
-	transition.queue_free_on_end_of_transition = true
-	
-	var next_transition_id = SingletonsAndConsts.current_level_details.transition_id__exiting_level__in__for_quit
-	transition.connect("transition_finished", self, "_on_transition_out__from_GE__finished__for_restart", [next_transition_id, transition])
-	
+
 
 # for all transition except for restart
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):

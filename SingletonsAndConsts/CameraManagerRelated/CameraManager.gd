@@ -313,6 +313,8 @@ func is_at_default_zoom():
 func get_camera__global_position():
 	return camera.global_position
 
+func get_camera__screen_center_position():
+	return camera.get_camera_screen_center()
 
 func disable_camera_smoothing():
 	camera.smoothing_enabled = false

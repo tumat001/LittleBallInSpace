@@ -80,6 +80,11 @@ var is_class_type_player_modi_launch_ball : bool = true
 
 #
 
+#var BALL_GROUP_ID = "Object_LaunchBallGroup"
+#var active_ball_count : int
+
+#
+
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
 	pass
 
@@ -332,11 +337,21 @@ func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 		ball.tween_rainbow_color()
 	
 	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
+	#ball.connect()
+	#ball.connect("restore_from_destroyed_from_rewind", self, "_on_ball_restore_from_destroyed_from_rewind", [ball])
 	
 	if arg_add_child:
 		SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
 	
+	#active_ball_count += 1
+	#ball.add_to_group(BALL_GROUP_ID)
+	#_adjust_balls_volume_ratio_based_on_balls_in_game()
+	
 	return ball
+
+#func _adjust_balls_volume_ratio_based_on_balls_in_game():
+#	pass
+#
 
 
 
@@ -344,7 +359,7 @@ func _on_ball_after_ready__give_vel(ball, arg_vec):
 	var body_state = Physics2DServer.body_get_direct_state(ball.get_rid())
 	body_state.linear_velocity = arg_vec
 	
-
+	
 
 
 #####
@@ -452,6 +467,11 @@ func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
 		
 		particle.lifetime = 0.4
 		particle.visible = true
+
+
+#func _on_ball_restore_from_destroyed_from_rewind(ball):
+#	_adjust_balls_volume_ratio_based_on_balls_in_game()
+#
 
 #######
 

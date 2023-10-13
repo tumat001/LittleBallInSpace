@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_001/Level05/WorldSlice_Stage01_05.gd" type="Script" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://MiscRelated/VisualsRelated/MousePressVisual/MousePressVisual_Img.png" type="Texture" id=22]
 [ext_resource path="res://MiscRelated/TileFragmentCloudsRelated/TileFragmentCloud.tscn" type="PackedScene" id=23]
 [ext_resource path="res://AreaRegionRelated/Subs/TileFragmentFromCloudAR/PDAR_TileFragmentFC_QueueAction.tscn" type="PackedScene" id=24]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_ElecSparks/EnvEvent_ElecSparks.tscn" type="PackedScene" id=25]
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 25.25, 272 )
@@ -561,6 +562,18 @@ radius_for_spawn = 240.0
 particle_count_multiplier = 1
 tile_set_template_id = 200
 spawn_fragments_at_ready = false
+
+[node name="EnvEvent_ElecSparks" parent="MiscContainer" index="4" instance=ExtResource( 25 )]
+position = Vector2( 1596, -845 )
+radius_for_event = 400.0
+angle_deg_start = 330.0
+angle_deg_end = 30.0
+
+[node name="EnvEvent_ElecSparks2" parent="MiscContainer" index="5" instance=ExtResource( 25 )]
+position = Vector2( 2497, -721 )
+radius_for_event = 400.0
+angle_deg_start = 330.0
+angle_deg_end = 30.0
 
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TeachAndEnableAimMode" to="." method="_on_PDAR_TeachAndEnableAimMode_player_entered_in_area"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_EndTeachAimMode" to="." method="_on_PDAR_EndTeachAimMode_player_entered_in_area"]

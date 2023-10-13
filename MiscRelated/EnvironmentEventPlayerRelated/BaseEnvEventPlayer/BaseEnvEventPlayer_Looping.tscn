@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/BaseEnvEventPlayer/BaseEnvEventPlayer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/BaseEnvEventPlayer/BaseEnvEventPlayer_Looping.gd" type="Script" id=2]
+
+[node name="BaseEnvEventPlayer_Looping" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+loop_wait_min = 0.0
+loop_wait_max = 1.0

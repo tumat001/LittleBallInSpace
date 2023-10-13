@@ -1698,7 +1698,6 @@ func _convert_num_to_ratio_using_num_range(arg_num, arg_min, arg_max, arg_minimu
 #	#anim_on_screen.frames.set_animation_speed(FACE_ANIMATION_NAME__OUCH_TO_NORMAL, fps)
 #	#anim_on_screen.play(FACE_ANIMATION_NAME__OUCH_TO_NORMAL)
 
-
 #
 
 func _play_tile_hit_sound__and_show_particles(diff):

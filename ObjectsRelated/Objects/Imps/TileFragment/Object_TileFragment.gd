@@ -29,6 +29,11 @@ var _player_hit_sound_cooldown : float
 
 #
 
+var _collision_sound_list_initialized : bool
+var _collision_sound_list
+
+#
+
 onready var player_soft_area_2d = $PlayerSoftArea2D
 onready var player_soft_coll_shape = $PlayerSoftArea2D/CollisionShape2D
 
@@ -36,6 +41,10 @@ onready var player_soft_coll_shape = $PlayerSoftArea2D/CollisionShape2D
 #var _can_collide_with_player__from_delay : bool = true  # leave it this way
 
 func _ready():
+	_player_hit_sound_cooldown = PLAY_HIT_SOUND_COOLDOWN
+	
+	#
+	
 	if texture_to_use__fragment != null:
 		var shape = set_texture_in_anim_sprite__first_time(texture_to_use__fragment, true)
 		
@@ -86,18 +95,28 @@ func _on_PlayerSoftArea2D_body_entered(body):
 			apply_central_impulse(force + lin_vel)
 			
 			#body.request_play_tile_fragment_sound(self)
-			_attempt_play_player_colliding_sound()
+			_attempt_play_colliding_sound()
 
 
-func _attempt_play_player_colliding_sound():
-	if _player_hit_sound_cooldown < 0:
+func _attempt_play_colliding_sound():
+	if _player_hit_sound_cooldown <= 0:
 		_player_hit_sound_cooldown = PLAY_HIT_SOUND_COOLDOWN
 		
-		var sound_id_to_play = _get_sound_id_to_play()
-		AudioManager.helper__play_sound_effect__2d(sound_id_to_play, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
+		_attempt_init_collision_sound_list()
+		
+		if _collision_sound_list.size() != 0:
+			var sound_id_to_play = _get_rand_sound_id_to_play()
+			AudioManager.helper__play_sound_effect__2d(sound_id_to_play, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 
-func _get_sound_id_to_play():
-	pass
+func _attempt_init_collision_sound_list():
+	if !_collision_sound_list_initialized:
+		_collision_sound_list_initialized = true
+		
+		_collision_sound_list = TileConstants.get_tile_id_to_fragment_collision_sound_list(tileset_id)
+
+func _get_rand_sound_id_to_play():
+	var rng = SingletonsAndConsts.non_essential_rng
+	return StoreOfRNG.randomly_select_one_element(_collision_sound_list, rng)
 	
 
 #

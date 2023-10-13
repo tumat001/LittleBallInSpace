@@ -52,6 +52,12 @@ func _on_after_game_start_init():
 		_init__as_NOT_first_time_viewing_mod_x_statuses()
 	else:
 		_init__as_first_time_viewing_mod_x_statuses()
+	
+	##
+	
+	if CameraManager.is_at_default_zoom():
+		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
+
 
 #####
 
@@ -166,4 +172,8 @@ func _on_display_mod_x_statuses_finished():
 	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
 	
+
+####
+
+
 

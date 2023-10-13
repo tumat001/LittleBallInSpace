@@ -51,11 +51,18 @@ const SIMPLE_GLASS_TILE_ID__02__MASS = BREAKABLE_GLASS_TILE_ID__ATLAS_02
 
 const SIMPLE_METAL_TILE_ID__01 = 0
 const SIMPLE_METAL_TILE_ID__02 = 1
+const SIMPLE_METAL_TILE_ID__01__V2 = 24
 const SIMPLE_GLASS_TILE_ID__01 = 2
 const SIMPLE_GLASS_TILE_ID__02 = 3
 const SPACESHIP_TILE_ID__01 = 10
 const SPACESHIP_TILE_ID__02 = 11
+const SPACESHIP_METAL_FRAME_TILE_ID = 12
+const SPACESHIP_SPECIAL_GLASS_TILE_ID = 13
+
 const DARK_METAL_TILE_ID = 14
+
+const DARK_METAL_FRAME_TILE_ID = 23
+const SIMPLE_METAL_FRAME_TILE_ID = 25
 
 
 #
@@ -87,11 +94,125 @@ class LightDetails:
 	func get_offset():
 		return offset.rotated(rotation)
 
+###########
+
+onready var METAL_FRAGMENT_COLLISION_SOUND_LIST : Array = [
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_01,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_02,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_03,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_04,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_05,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_06,
+]
+onready var GLASS_FRAGMENT_COLLISION_SOUND_LIST : Array = [
+	StoreOfAudio.AudioIds.SFX_TileFragments_Glass_01,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Glass_02,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Glass_03,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Glass_04,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Glass_05,
+	#StoreOfAudio.AudioIds.SFX_TileFragments_Glass_06,
+	
+]
+var NONE__ANY_COLLISION_SOUND_LIST : Array = []
+
+onready var _tile_id_to_fragment_collision_sound_list_map : Dictionary = {
+	SIMPLE_METAL_TILE_ID__01 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	SIMPLE_METAL_TILE_ID__02 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	SIMPLE_METAL_TILE_ID__01__V2 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	
+	SPACESHIP_TILE_ID__01 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	SPACESHIP_TILE_ID__02 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	
+	DARK_METAL_TILE_ID : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	
+	#
+	
+	BREAKABLE_GLASS_TILE_ID__ATLAS_01 : GLASS_FRAGMENT_COLLISION_SOUND_LIST,
+	BREAKABLE_GLASS_TILE_ID__ATLAS_02 : GLASS_FRAGMENT_COLLISION_SOUND_LIST,
+	INSTANT_BREAK_GLASS_TILE_ID : GLASS_FRAGMENT_COLLISION_SOUND_LIST,
+	FRAGILE_BREAK_GLASS_TILE_ID : GLASS_FRAGMENT_COLLISION_SOUND_LIST,
+	STRONG_BREAK_GLASS_TILE_ID : GLASS_FRAGMENT_COLLISION_SOUND_LIST,
+	
+	SPACESHIP_WALL_BREAKABLE_TILE_ID : METAL_FRAGMENT_COLLISION_SOUND_LIST,
+	
+}
+
+
+
+##
+
+onready var BALL__METAL_TILE_COLLISION_SOUND_LIST : Array = [
+	StoreOfAudio.AudioIds.SFX_BallCollision_Metal_01,
+	StoreOfAudio.AudioIds.SFX_BallCollision_Metal_02,
+	StoreOfAudio.AudioIds.SFX_BallCollision_Metal_03,
+	
+]
+onready var BALL__TOGGLEABLE_TILE_COLLISION_SOUND_LIST : Array = [
+	StoreOfAudio.AudioIds.SFX_BallCollision_ToggleableTiles_01,
+	StoreOfAudio.AudioIds.SFX_BallCollision_ToggleableTiles_02,
+	
+]
+onready var BALL__GLASS_TILE_COLLISION_SOUND_HIT : Array = [
+	StoreOfAudio.AudioIds.SFX_BallCollision_Glass_01,
+	StoreOfAudio.AudioIds.SFX_BallCollision_Glass_02,
+	StoreOfAudio.AudioIds.SFX_BallCollision_Glass_03,
+	
+]
+
+onready var _tile_id_to_ball_collision_sound_list_map : Dictionary = {
+	SIMPLE_METAL_TILE_ID__01 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SIMPLE_METAL_TILE_ID__02 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SIMPLE_METAL_TILE_ID__01__V2 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	
+	SPACESHIP_TILE_ID__01 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SPACESHIP_TILE_ID__02 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	
+	DARK_METAL_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	
+	#
+	
+	SPACESHIP_METAL_FRAME_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SPACESHIP_SPECIAL_GLASS_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	
+	DARK_METAL_FRAME_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SIMPLE_METAL_FRAME_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	
+	#
+	
+	BREAKABLE_GLASS_TILE_ID__ATLAS_01 : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	BREAKABLE_GLASS_TILE_ID__ATLAS_02 : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01 : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02 : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	
+	
+	INSTANT_BREAK_GLASS_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	INSTANT_BREAK_GLASS_GLOWING_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	
+	FRAGILE_BREAK_GLASS_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	FRAGILE_BREAK_GLASS_GLOWING_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	
+	STRONG_BREAK_GLASS_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	STRONG_BREAK_GLASS_GLOWING_TILE_ID : BALL__GLASS_TILE_COLLISION_SOUND_HIT,
+	
+	#
+	
+	SPACESHIP_WALL_BREAKABLE_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID : BALL__METAL_TILE_COLLISION_SOUND_LIST,
+	
+	#
+	
+	TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01 : BALL__TOGGLEABLE_TILE_COLLISION_SOUND_LIST,
+	TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02 : BALL__TOGGLEABLE_TILE_COLLISION_SOUND_LIST,
+	
+}
+
+
 #
 
 func _ready():
 	_initialize_all_tile_to_sound_id_map()
 	_initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map()
+	#_initialize_tile_fragment_to_sound_list()
 
 #
 
@@ -651,3 +772,24 @@ func get_light_details_of_tile_id(arg_tile_id, arg_auto_coords) -> LightDetails:
 	
 	
 	return null
+
+#############################
+# FRAGMENT SOUNDS RELATED
+
+
+#func _initialize_tile_fragment_to_sound_list():
+#
+
+
+func get_tile_id_to_fragment_collision_sound_list(arg_tile_id):
+	if _tile_id_to_fragment_collision_sound_list_map.has(arg_tile_id):
+		return _tile_id_to_fragment_collision_sound_list_map[arg_tile_id]
+	else:
+		return NONE__ANY_COLLISION_SOUND_LIST
+
+func get_tile_id_to_ball_collision_sound_list(arg_tile_id):
+	if _tile_id_to_ball_collision_sound_list_map.has(arg_tile_id):
+		return _tile_id_to_ball_collision_sound_list_map[arg_tile_id]
+	else:
+		return NONE__ANY_COLLISION_SOUND_LIST
+

@@ -143,12 +143,6 @@ func calculate_momentum():
 
 ####
 
-func _on_BaseObject_body_entered(body):
-	pass
-	
-
-####
-
 func destroy_self_caused_by_destroying_area_region(arg_region):
 	emit_signal("destroyed_self_caused_by_destroying_area_region", arg_region)
 	
