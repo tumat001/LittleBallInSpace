@@ -680,7 +680,7 @@ func play_FE__waking_up(arg_duration):
 
 func tween_modulate_of_basis(arg_target_modulate : Color, arg_duration):
 	if modulate_tweener != null and modulate_tweener.is_valid():
-		modulate_tweener.kill
+		modulate_tweener.kill()
 	
 	modulate_tweener = create_tween()
 	modulate_tweener.tween_property(self, "modulate", arg_target_modulate, arg_duration)

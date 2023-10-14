@@ -100,7 +100,7 @@ is_disabled = true
 is_rewindable = false
 
 [node name="Portal_Green01" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
-position = Vector2( 272, 109 )
+position = Vector2( 272, 112 )
 portal_color = 1
 portal_to_link_with__path = NodePath("../Portal_Green02")
 
