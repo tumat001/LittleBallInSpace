@@ -108,6 +108,7 @@ func summon_particles(arg_within_duration_sec : float = 0.0):
 				_randomize_fragment_positions(fragment, _rng_to_use)
 				SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 				
+				fragment.sleeping = true
 				_all_fragments.append(fragment)
 		
 	else:

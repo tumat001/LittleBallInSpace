@@ -46,7 +46,7 @@ const GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP : Dictionary = {
 	
 	# lowest energy
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {
-		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Highest Lowest Energy",
+		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Energy",
 		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
 	},
 	

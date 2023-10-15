@@ -130,10 +130,10 @@ margin_right = 264.0
 margin_bottom = 130.0
 
 [node name="Label" type="Label" parent="VBoxContainer/StatsVBox/HBox_LowestEnergy"]
-margin_right = 198.0
+margin_right = 126.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "Highest Lowest Energy:"
+text = "Lowest Energy:"
 
 [node name="LowestEnergyValLabel" type="Label" parent="VBoxContainer/StatsVBox/HBox_LowestEnergy"]
 margin_left = 237.0
