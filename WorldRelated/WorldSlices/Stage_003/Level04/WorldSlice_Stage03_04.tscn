@@ -277,16 +277,16 @@ portal_color = 0
 is_disabled = true
 portal_to_link_with__path = NodePath("../Portal_Red01")
 
-[node name="PickupCDSU_Module_Stats" parent="ObjectContainer" index="31" instance=ExtResource( 14 )]
+[node name="PickupCDSU_Module_TileColors" parent="ObjectContainer" index="31" instance=ExtResource( 14 )]
 position = Vector2( 2047, 399 )
 rotation = 3.14159
 is_rewindable = false
 
-[node name="Sprite" parent="ObjectContainer/PickupCDSU_Module_Stats" index="0"]
+[node name="Sprite" parent="ObjectContainer/PickupCDSU_Module_TileColors" index="0"]
 material = SubResource( 5 )
 texture = ExtResource( 12 )
 
-[node name="CollisionShape2D" parent="ObjectContainer/PickupCDSU_Module_Stats" index="1"]
+[node name="CollisionShape2D" parent="ObjectContainer/PickupCDSU_Module_TileColors" index="1"]
 position = Vector2( -0.999878, 2 )
 shape = SubResource( 6 )
 
@@ -325,8 +325,8 @@ radius_for_spawn = 220.0
 particle_count_multiplier = 1
 tile_set_template_id = 300
 
-[connection signal="player_entered_self__custom_defined" from="ObjectContainer/PickupCDSU_Module_Stats" to="." method="_on_PickupCDSU_Module_Stats_player_entered_self__custom_defined"]
-[connection signal="restored_from_destroyed_from_rewind" from="ObjectContainer/PickupCDSU_Module_Stats" to="." method="_on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind"]
+[connection signal="player_entered_self__custom_defined" from="ObjectContainer/PickupCDSU_Module_TileColors" to="." method="_on_PickupCDSU_Module_Stats_player_entered_self__custom_defined"]
+[connection signal="restored_from_destroyed_from_rewind" from="ObjectContainer/PickupCDSU_Module_TileColors" to="." method="_on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
@@ -343,4 +343,4 @@ tile_set_template_id = 300
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion3"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion4"]
-[editable path="ObjectContainer/PickupCDSU_Module_Stats"]
+[editable path="ObjectContainer/PickupCDSU_Module_TileColors"]

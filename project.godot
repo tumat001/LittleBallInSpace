@@ -26,7 +26,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="LittleBallInSpace"
+config/name="Little Ball In Space"
+config/description="Navigate through space, as a little ball"
 run/main_scene="res://_NonMainGameRelateds/_Master/Master.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="littleballinspace"

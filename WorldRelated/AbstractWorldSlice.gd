@@ -699,7 +699,7 @@ func _on_star_pickuped_by_player__for_particle_show(arg_star : Node2D):
 
 func _on_game_result_decided__base(arg_result):
 	if arg_result == game_elements.game_result_manager.GameResult.WIN:
-		pass
+		_on_game_result_decided__win__base()
 		
 
 func _on_game_result_decided__win__base():

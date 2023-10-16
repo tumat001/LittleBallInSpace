@@ -139,7 +139,9 @@ const PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__CATE
 const SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER = "SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER"
 var shared_commnons__all_color_presets : Array setget set_shared_commnons__all_color_presets
 
-
+const shared_commnons__all_color_presets__var_name : String = "shared_commnons__all_color_presets"
+const set_shared_commnons__all_color_presets__func_name : String = "set_shared_commnons__all_color_presets"
+const shared_commons__all_color_presets__changed__signal_name : String = "shared_commons__all_color_presets__changed"
 
 ### Hotkey
 var game_control_to_default_event : Dictionary
