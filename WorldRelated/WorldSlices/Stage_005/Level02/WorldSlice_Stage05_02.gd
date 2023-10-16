@@ -124,9 +124,13 @@ func _start_spaceship_tile_break_dialog__01():
 		
 		#game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 		
-		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
 		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__break_thru_wall", [], CONNECT_ONESHOT)
 
+func _on_display_of_desc_finished__break_thru_wall(arg_metadata):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	
 
 ##########
 
@@ -161,6 +165,8 @@ func _on_PDAR_Breakthru_player_entered_in_area():
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
 
-
-
+func _on_display_of_desc_finished__02(arg_metadata):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	

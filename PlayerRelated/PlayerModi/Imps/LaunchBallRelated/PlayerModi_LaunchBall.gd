@@ -399,6 +399,9 @@ func set_current_ball_count(arg_count):
 	
 	emit_signal("current_ball_count_changed", arg_count)
 
+func decrement_ball_count_by_one():
+	set_current_ball_count(_current_ball_count - 1)
+
 func get_current_ball_count():
 	return _current_ball_count
 	

@@ -49,11 +49,23 @@ var current_lifespan : float = -1
 
 #
 
+var _collision_shapes_to_monitor_for_rewind : Array
+
+#
+
 onready var anim_sprite = $AnimatedSprite
 
 onready var collision_shape = $CollisionShape2D
 
 ##
+
+func add_monitor_to_collision_shape_for_rewind(arg_shape):
+	_collision_shapes_to_monitor_for_rewind.append(arg_shape)
+
+func _set_disabled_state__of_monitored_collision_shapes_for_rewind(arg_val):
+	for coll_shape in _collision_shapes_to_monitor_for_rewind:
+		coll_shape.set_deferred("disabled", arg_val)
+
 
 func set_body_mode_to_use(arg_mode):
 	body_mode_to_use = arg_mode
@@ -122,6 +134,8 @@ func set_texture_in_anim_sprite__first_time(arg_texture : Texture, arg_create_sh
 	shape.extents = arg_texture.get_size() / 2
 	collision_shape.set_deferred("shape", shape)
 	
+	
+	
 	return shape
 
 #
@@ -181,6 +195,7 @@ func queue_free():
 			if !SingletonsAndConsts.current_rewind_manager.is_connected("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables"):
 				SingletonsAndConsts.current_rewind_manager.connect("obj_removed_from_rewindables", self, "_on_obj_removed_from_rewindables")
 			
+			_set_disabled_state__of_monitored_collision_shapes_for_rewind(true)
 			collision_shape.set_deferred("disabled", true)
 			visible = false
 			is_dead_but_reserved_for_rewind = true
@@ -229,6 +244,7 @@ func destroy_from_rewind_save_state():
 	
 
 func restore_from_destroyed_from_rewind():
+	#_set_disabled_state__of_monitored_collision_shapes_for_rewind(false)
 	#collision_shape.set_deferred("disabled", false)
 	visible = true
 	is_dead_but_reserved_for_rewind = false
@@ -236,6 +252,7 @@ func restore_from_destroyed_from_rewind():
 
 func started_rewind():
 	mode = RigidBody2D.MODE_STATIC
+	_set_disabled_state__of_monitored_collision_shapes_for_rewind(true)
 	collision_shape.set_deferred("disabled", true)
 	
 
@@ -245,6 +262,7 @@ func ended_rewind():
 		
 		block_can_collide_with_player_cond_clauses.load_into_rewind_save_state(_rewinded__block_can_collide_with_player_cond_clauses_save_state)
 		
+		_set_disabled_state__of_monitored_collision_shapes_for_rewind(false)
 		collision_shape.set_deferred("disabled", false)
 		
 		_use_integ_forces_new_vals = true

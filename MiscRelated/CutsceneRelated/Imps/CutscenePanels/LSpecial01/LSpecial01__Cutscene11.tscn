@@ -2,7 +2,7 @@
 
 [ext_resource path="res://MiscRelated/CutsceneRelated/Subs/GUI_CutscenePanel/GUI_CutscenePanel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_Image/FTQ_Image.tscn" type="PackedScene" id=2]
-[ext_resource path="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon_PNG_64x64.png" type="Texture" id=3]
+[ext_resource path="res://_NonMainGameRelateds/GameDetails/ALBIS_GameIcon_64x64.png" type="Texture" id=3]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_CustomLabel/FTQ_CustomLabel.tscn" type="PackedScene" id=5]
 
 [node name="Special01_02__Cutscene_11" instance=ExtResource( 1 )]

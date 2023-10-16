@@ -43,7 +43,7 @@ func _deferred_init():
 
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 0
+	modi.starting_ball_count = 1
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
 	
@@ -226,6 +226,7 @@ func _launch_ball_to_button_pos():
 	var button_pos = _button.global_position
 	
 	var ball = launch_ball_modi.force_launch_ball_at_pos__min_speed(button_pos)
+	launch_ball_modi.decrement_ball_count_by_one()
 	ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_destroyed_self_caused_by_destroying_area_region", [], CONNECT_ONESHOT)
 
 func _on_destroyed_self_caused_by_destroying_area_region(arg_area_region):

@@ -48,6 +48,11 @@ const SOUND_VOLUME_RATIO_DECREASE_PER_BALL : float = 0.05
 const SOUND_VOLUME_RATIO_PER_BALL_MIN : float = 0.5
 var sound_volume_ratio : float = 1.0
 
+#
+
+onready var for_sound_area_2d_coll_shape = $ForSoundArea2D/CollisionShape2D
+
+
 ###
 
 func _ready():
@@ -56,6 +61,8 @@ func _ready():
 	if _start_tween_rainbow_at_ready:
 		tween_rainbow_color()
 	emit_signal("after_ready")
+	
+	add_monitor_to_collision_shape_for_rewind(for_sound_area_2d_coll_shape)
 
 
 ##

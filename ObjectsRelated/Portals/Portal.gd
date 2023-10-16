@@ -388,9 +388,10 @@ static func angle_to_angle(from, to):
 func _on_Area2D_body_entered(body):
 	if !is_disabled:
 		if is_scene_transition_type_portal:
-			AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
-			emit_signal("player_entered__as_scene_transition", body)
-			return
+			if body.get("is_player"):
+				AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
+				emit_signal("player_entered__as_scene_transition", body)
+				return
 		
 		
 		if is_instance_valid(_portal_to_link_with):

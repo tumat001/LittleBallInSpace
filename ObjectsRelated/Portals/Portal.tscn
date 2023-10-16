@@ -19,7 +19,7 @@ material = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="PortalSprite" type="Sprite" parent="."]
-modulate = Color( 0, 0, 0.129412, 1 )
+modulate = Color( 0, 0, 0.384314, 1 )
 material = SubResource( 2 )
 texture = ExtResource( 1 )
 
