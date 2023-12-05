@@ -24,6 +24,9 @@ signal player_spawned(arg_player)
 signal game_front_hud_initialized(arg_game_front_hud)
 signal game_background_initialized(arg_game_background)
 
+signal process__sig(arg_delta)
+signal phy_process__sig(arg_delta)
+
 #
 
 var current_base_level : BaseLevel
@@ -94,6 +97,8 @@ func _enter_tree():
 
 
 func _ready():
+	#
+	
 	set_physics_process(false)
 	
 	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config__before_all()
@@ -163,10 +168,16 @@ func _on_start_of_GE_record_stats():
 
 func _physics_process(delta):
 	GameStatsManager.current_GE__time += delta
+	emit_signal("phy_process__sig", delta)
 
 func _on_before_end_of_GE_record_stats__for_last_chance_edits(arg_record_stats_as_win):
 	set_physics_process(false)
 
+
+#
+
+func _process(delta):
+	emit_signal("process__sig", delta)
 
 ###
 

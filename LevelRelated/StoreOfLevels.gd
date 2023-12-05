@@ -61,6 +61,9 @@ enum LevelIds {
 	LEVEL_01__STAGE_5 = 400
 	LEVEL_02__STAGE_5 = 401
 	
+	##
+	
+	LEVEL_01__STAGE_6 = 500
 	
 	
 	##
