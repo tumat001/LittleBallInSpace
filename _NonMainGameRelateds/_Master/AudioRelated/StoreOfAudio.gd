@@ -129,12 +129,25 @@ enum AudioIds {
 	# ENV
 	SFX_Environment_ElectricSpark_01 = 5500
 	
+	
+	
 	# SPECIAL
 	SFX_Special_ElectricGenerator = 6000
 	SFX_Special_Electrical_Shock = 6001
 	SFX_Special_Electrical_Explosion = 6002
 	SFX_Special_Electrical_SwitchFlip = 6003
 	SFX_Special_ImportantItemFound = 6004
+	
+	
+	# COMBAT
+	SFX_Laser_MainFire = 6500
+	SFX_Laser_ChargeUp = 6501
+	
+	SFX_Player_Damage_01 = 6510
+	SFX_Enemy_Damage_01 = 6520
+	
+	SFX_Enemy_DeathExplode = 6530
+	SFX_Player_DeathExplode = 6531
 	
 	
 	#######

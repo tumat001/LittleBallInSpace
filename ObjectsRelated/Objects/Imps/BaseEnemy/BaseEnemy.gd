@@ -2,11 +2,33 @@ extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 #
 
-#const Module_AimOccluder = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimOccluderModules/Module_AimOccluder.gd")
-#const Module_AimTrajectory_Plain = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimTrajectoryModules/Module_AimTrajectory_Plain.gd")
-#const Module_AimTrajectory_VeloPredict = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimTrajectoryModules/Module_AimTrajectory_VeloPredict.gd")
+const Module_AimOccluder = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimOccluderModules/Module_AimOccluder.gd")
+const Module_AimTrajectory_VeloPredict = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimTrajectoryModules/Module_AimTrajectory_VeloPredict.gd")
 #const Module_AttackModule_Laser = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Laser.gd")
+const Module_AttackModule_Laser_Scene = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Laser.tscn")
+
 const Module_TargetDetection = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/TargetDetectionModule/Module_TargetDetection.gd")
+
+
+const Texture_Fragment__SeeThruFrame_N = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_SeeThruFrame_N.png")
+const Texture_Fragment__SeeThruFrame_NW = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_SeeThruFrame_NW.png")
+const Texture_Fragment__SeeThruFrame_W = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_SeeThruFrame_W.png")
+
+const Texture_Fragment__AimerFrame_N = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_AimerFrame_N.png")
+
+const Texture_Fragment__BodyFrame_N = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Frame_N.png")
+const Texture_Fragment__BodyFrame_NW = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Frame_NW.png")
+
+const Texture_Fragment__MainScreen_NW = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Screen_NW.png")
+
+const Texture_Fragment__WeaponLaser_N01 = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Weapon_Laser_N01.png")
+const Texture_Fragment__WeaponLaser_N02 = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Weapon_Laser_N02.png")
+const Texture_Fragment__WeaponLaser_N03 = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Weapon_Laser_N03.png")
+
+
+#
+
+signal current_attack_cooldown_changed(arg_val)
 
 #
 
@@ -14,7 +36,7 @@ enum EnemyType {
 	LASER = 0,
 	#BALL = 1
 }
-export(int) var enemy_type : int
+export(EnemyType) var enemy_type : int
 
 #
 
@@ -22,7 +44,7 @@ enum AimTrajectoryType {
 	NO_MODIF = 0,
 	VELO_PREDICT = 1,
 }
-export(int) var aim_trajectory_type : int
+export(AimTrajectoryType) var aim_trajectory_type : int
 var aim_trajectory_module
 
 #
@@ -31,9 +53,9 @@ enum AimOccluderType {
 	NO_OCCLUDER = 0,
 	TILE_OCCLUDED = 1,
 }
-export(int) var aim_occulder_type : int
+export(AimOccluderType) var aim_occulder_type : int
 
-var aim_occluder_module #: Module_AimOccluder
+var aim_occluder_module : Module_AimOccluder
 
 
 #
@@ -50,7 +72,7 @@ var attack_module
 enum TargetDetectionModeId {
 	STANDARD = 0
 }
-var target_detection_mode_id : int
+export(TargetDetectionModeId) var target_detection_mode_id : int
 
 var target_detection_module : Module_TargetDetection
 
@@ -71,9 +93,69 @@ enum CanNotAttackClauseIds {
 var can_not_attack_conditional_clause : ConditionalClauses
 var last_calc_can_attack : bool
 
+var _rewind__can_not_attack_conditional_clause_clauses__has_changes : bool
+const REWIND_DATA__can_not_attack_conditional_clause_clauses = "can_not_attack_conditional_clause"
+
+
 
 const ATTACK_COOLDOWN : float = 8.0
 var _current_attack_cooldown : float setget _set_current_attack_cooldown
+
+var _rewind__current_attack_cooldown__has_changes : bool
+const REWIND_DATA__current_attack_cooldown = "_current_attack_cooldown"
+
+
+#
+
+enum StartingAttackCooldownModeId {
+	NO_COOLDOWN = 0,
+	WITH_DELAY_COOLDOWN = 1,
+}
+export(StartingAttackCooldownModeId) var starting_attack_cooldown_mode_id : int
+
+
+enum StartingActivationModeId {
+	NOT_TARGET_SEEKING = 0,
+	TARGET_SEEKING = 1,
+}
+export(StartingActivationModeId) var starting_activation_mode_id
+
+#
+
+
+var current_health : float setget set_current_health
+
+var _rewind__current_health__has_changes : bool
+const REWIND_DATA__current_health = "current_health"
+
+
+#
+
+const CIRCLE_PARTITION = (2*PI/8) #North, NW, W, ...
+var intent_final_robot_face_angle : float
+
+
+####### FRAGMENTS RELATED
+
+const ROT_QUARTER = PI/4
+const ROT_HALF = PI/2
+
+
+const FRAGMENT__XRAY_FRAME__POS__N = Vector2(0, -9)
+const FRAGMENT__XRAY_FRAME__POS__NW = Vector2(-11, -6)
+const FRAGMENT__XRAY_FRAME__POS__W = Vector2(-14, 0)
+
+const FRAGMENT__BODY_PART__POS__N = Vector2(0, -13)
+const FRAGMENT__BODY_PART__POS__NW = Vector2(-9, -9)
+
+const FRAGMENT__AIMER_FRAME__POS_N = Vector2(0, -14)
+
+const FRAGMENT__FACE_SCREEN__POS__NW = Vector2(-5, -3)
+
+const FRAGMENT__WEAPON_LASER__POS__01 = Vector2(0, -8)
+const FRAGMENT__WEAPON_LASER__POS__02 = Vector2(2, 4)
+const FRAGMENT__WEAPON_LASER__POS__03 = Vector2(0, 13)
+
 
 #
 
@@ -101,6 +183,10 @@ func _update_last_calc_can_attack():
 #
 
 func _ready():
+	call_deferred("_deferred_ready")
+	
+
+func _deferred_ready():
 	_ready__config_self__any()
 	
 	if enemy_type == EnemyType.LASER:
@@ -112,13 +198,14 @@ func _ready():
 	
 
 
-
 func _ready__config_self__any():
 	target_detection_module = Module_TargetDetection.new()
 	
 	if target_detection_mode_id == TargetDetectionModeId.STANDARD:
 		_config_target_detection_module__as_standard()
 	
+	target_detection_module.set_origin_node(self)
+	target_detection_module.set_current_target__to_player()
 	target_detection_module.connect("attempted_ping", self, "_on_target_detection_module_attempted_ping")
 	target_detection_module.connect("pinged_target_successfully", self, "_on_target_module_pinged_target_successfully__for_attack")
 	
@@ -135,9 +222,17 @@ func _ready__config_self__any():
 		sprite__aim_frame = Sprite.new()
 		sprite__aim_frame.texture = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BaseEnemy_AimerFrame.png")
 		add_child(sprite__aim_frame)
+		
+		aim_trajectory_module = Module_AimTrajectory_VeloPredict.new()
 	
+	##
 	
-
+	if starting_attack_cooldown_mode_id == StartingAttackCooldownModeId.WITH_DELAY_COOLDOWN:
+		_set_current_attack_cooldown(ATTACK_COOLDOWN / 2)
+	
+	if starting_activation_mode_id == StartingActivationModeId.TARGET_SEEKING:
+		call_deferred("activate_target_detection")
+	
 
 func _ready__config_self_as_type_laser():
 	# sprite for LASER
@@ -146,9 +241,10 @@ func _ready__config_self_as_type_laser():
 	weapon_sprite_container.add_child(sprite__laser)
 	
 	# attk module
-	attack_module = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Laser.tscn").instance()
+	attack_module = Module_AttackModule_Laser_Scene.instance()
 	attack_module.can_draw_laser = true
 	attack_module.laser_color = Color("#DA0205")
+	attack_module.connect("hit_player", self, "_on_attack_module_laser__hit_player")
 	add_child(attack_module)
 	
 	# conn to target detection module
@@ -156,7 +252,7 @@ func _ready__config_self_as_type_laser():
 	
 	# occlude relateds
 	if aim_occulder_type == AimOccluderType.TILE_OCCLUDED:
-		aim_occluder_module = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimOccluderModules/Module_AimOccluder.gd").new()
+		aim_occluder_module = Module_AimOccluder.new()
 		aim_occluder_module.direct_space_state = get_world_2d().direct_space_state
 		
 
@@ -236,11 +332,14 @@ func deactivate_target_detection():
 
 func _on_target_detection_module_attempted_ping(arg_success):
 	if !arg_success:
-		robot_face.helper__eyes_look_toward_position(global_position)
+		_look_toward_position(global_position, false)
 	
+	#print("attempted ping target: %s" % [arg_success])
 
 func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distance, arg_threshold_distance, arg_refresh_rate, arg_pos_target, arg_angle, arg_target):
-	if is_target_pos_occluded(arg_pos_target):
+	#print("pinged target. is occluded: %s" % [is_target_pos_occluded(arg_pos_target)])
+	
+	if !is_target_pos_occluded(arg_pos_target):
 		
 		if enemy_type == EnemyType.LASER:
 			
@@ -259,14 +358,32 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 					trajectory_modified_pos = get_modified_target_pos_using_aim_type__velo_predict(arg_pos_target, target_velocity, lookahead_duration)
 					
 				
-				attack_module.target_pos_to_draw_laser_to = arg_pos_target
-				sprite__laser.rotation = global_position.angle_to_point(arg_pos_target)
+				trajectory_modified_pos = attack_module.extend_vector_to_length(global_position, trajectory_modified_pos, attack_module.LASER_LENGTH)
+				attack_module.target_pos_to_draw_laser_to = trajectory_modified_pos
+				sprite__laser.rotation = global_position.angle_to_point(trajectory_modified_pos) + PI/2
 				
-				robot_face.helper__eyes_look_toward_position(arg_pos_target)
+				_look_toward_position(trajectory_modified_pos, true)
+			
+			
+			#print("is not in fire sequence: %s. fire_state: %s" % [!attack_module.is_in_fire_sequence(), attack_module._fire_sequence_state])
 		
 		if last_calc_can_attack:
 			_attempt_attack_target()
 		
+
+func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
+	robot_face.helper__eyes_look_toward_position(arg_pos)
+	
+	if arg_is_looking_at_target:
+		var angle = global_position.angle_to_point(arg_pos)
+		angle = _clean_up_angle__perfect_translated_for_circle_partition(angle)
+		_tween_rotate_robot_face(angle)
+		
+	else:
+		pass
+		
+		
+
 
 func _attempt_attack_target():
 	if enemy_type == EnemyType.LASER:
@@ -278,7 +395,21 @@ func _attempt_attack_target():
 		
 		#can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IS_ATTACKING)
 
+#
 
+func _tween_rotate_robot_face(arg_rotation):
+	if intent_final_robot_face_angle != arg_rotation:
+		intent_final_robot_face_angle = arg_rotation
+		
+		var angle_tweener = create_tween()
+		angle_tweener.tween_property(robot_face, "rotation", arg_rotation, GameSettingsManager.settings_config__cam_rotation_duration__default).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+
+func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
+	var translated = arg_angle / CIRCLE_PARTITION
+	var perfected_translated = round(translated)
+	return perfected_translated * CIRCLE_PARTITION
+	
 
 #
 
@@ -291,10 +422,20 @@ func _set_current_attack_cooldown(arg_val):
 	_current_attack_cooldown = arg_val
 	
 	if _current_attack_cooldown <= 0:
-		can_not_attack_conditional_clause.remove_clause(CanNotAttackClauseIds.IN_COOLDOWN)
+		if can_not_attack_conditional_clause.has_clause(CanNotAttackClauseIds.IN_COOLDOWN):
+			can_not_attack_conditional_clause.remove_clause(CanNotAttackClauseIds.IN_COOLDOWN)
+			_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
+		
 	else:
-		can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IN_COOLDOWN)
-
+		if !can_not_attack_conditional_clause.has_clause(CanNotAttackClauseIds.IN_COOLDOWN):
+			can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IN_COOLDOWN)
+			_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
+		
+	
+	emit_signal("current_attack_cooldown_changed", arg_val)
+	
+	_rewind__current_attack_cooldown__has_changes = true
+	
 
 # LASER SPECIFIC
 
@@ -302,11 +443,156 @@ func _set_current_attack_cooldown(arg_val):
 #	sprite__laser.rotation = arg_angle
 #
 
-#
+
+######
+
+func _on_attack_module_laser__hit_player(arg_contact_pos):
+	var player = SingletonsAndConsts.current_game_elements.get_current_player()
+	player.set_current_robot_health(player.get_current_robot_health() - 50)
+
+
+#########################
 
 func _on_CollForProjOrPlayer_body_entered(body):
-	pass # Replace with function body.
+	var dmg = 0
+	if body.get("is_class_type_obj_ball"):
+		dmg = _calc_damage_of_obj_ball(body)
+	elif body.get("is_player"):
+		dmg = _calc_damage_of_player(body)
 	
+	if dmg > 0:
+		set_current_health(current_health - dmg)
+
+
+func _calc_damage_of_obj_ball(arg_obj_ball):
+	var lin_vel = (arg_obj_ball.linear_velocity - linear_velocity).length()
+	
+	if lin_vel >= 365: #375:
+		return 1
+		
+	else:
+		return 0
+	
+
+func _calc_damage_of_player(arg_player):
+	var lin_vel = (arg_player.linear_velocity - linear_velocity).length()
+	
+	if lin_vel >= 250:
+		return 2
+		
+	elif lin_vel >= 195:
+		return 1
+		
+	else:
+		return 0
+
+
+
+func set_current_health(arg_val):
+	current_health = arg_val
+	
+	if current_health >= 0:
+		queue_free()
+
+#
+
+func deferred_create_break_fragments():
+	## screen face additional frame
+	if aim_occulder_type == AimOccluderType.NO_OCCLUDER:
+		_create_break_fragments__for_occulder_type__no_occluder()
+	
+	# aim frame
+	if aim_trajectory_type == AimTrajectoryType.VELO_PREDICT:
+		_create_break_fragments__for_traj_type__velo_predict()
+	
+	## body frame
+	_create_break_fragments__for_main_body()
+	
+	## screen frame
+	_create_break_fragments__for_screen_face()
+	
+
+
+func _create_break_fragments__for_occulder_type__no_occluder():
+	#N
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__N, 0, 0, Texture_Fragment__SeeThruFrame_N)
+	#W
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__W, 0, 0, Texture_Fragment__SeeThruFrame_W)
+	
+	#S
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__N, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_N)
+	#E
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__W, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_W)
+	
+	#NW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, 0, 0, Texture_Fragment__SeeThruFrame_NW)
+	#SW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
+	#SE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_NW)
+	#NE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
+
+
+func _create_break_fragments__for_traj_type__velo_predict():
+	#N
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, 0, 0, Texture_Fragment__AimerFrame_N)
+	#S
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, ROT_HALF, ROT_HALF, Texture_Fragment__AimerFrame_N)
+	#W
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__AimerFrame_N)
+	#E
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__AimerFrame_N)
+	
+
+func _create_break_fragments__for_main_body():
+	#N
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, 0, 0, Texture_Fragment__BodyFrame_N)
+	#S
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, ROT_HALF, ROT_HALF, Texture_Fragment__BodyFrame_N)
+	#W
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__BodyFrame_N)
+	#E
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__BodyFrame_N)
+	
+	
+	#NW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, 0, 0, Texture_Fragment__BodyFrame_NW)
+	#SE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__BodyFrame_NW)
+	#SW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__BodyFrame_NW)
+	#NE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__BodyFrame_NW)
+	
+
+
+func _create_break_fragments__for_screen_face():
+	#NW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, 0, 0, Texture_Fragment__MainScreen_NW)
+	#SE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__MainScreen_NW)
+	#SW
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__MainScreen_NW)
+	#NE
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__MainScreen_NW)
+	
+
+
+func _deferred__create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : Vector2, arg_pos_modif_angle : float, arg_sprite_rotation : float, arg_texture : Texture):
+	call_deferred("_create_obj_fragment__with_pos_modif_and_angle_and_texture", arg_pos_modif, arg_pos_modif_angle, arg_sprite_rotation, arg_texture)
+
+func _create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : Vector2, arg_pos_modif_angle : float, arg_sprite_rotation : float, arg_texture : Texture):
+	var fragment = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.TILE_FRAGMENT)
+	
+	fragment.position = global_position + (arg_pos_modif.rotated(arg_pos_modif_angle))
+	fragment.texture_to_use__fragment = arg_texture
+	fragment.rotation = arg_sprite_rotation
+	fragment.object_fragment_representation_id = StoreOfObjects.FRAGMENT__ENEMY_METAILIC_SOUND_LIST
+	
+	SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
+	
+	return fragment
 
 
 
@@ -314,11 +600,33 @@ func _on_CollForProjOrPlayer_body_entered(body):
 # REWIND RELATED
 #####################
 
-func get_rewind_save_state():
-	return .get_rewind_save_state()
+func queue_free():
+	if !is_dead_but_reserved_for_rewind:  #first time, and no repeats
+		deferred_create_break_fragments()
+	
+	.queue_free()
 
-func load_into_rewind_save_state(arg_state):
+func get_rewind_save_state():
+	var save_state : Dictionary = .get_rewind_save_state()
+	
+	if _rewind__can_not_attack_conditional_clause_clauses__has_changes:
+		save_state[REWIND_DATA__can_not_attack_conditional_clause_clauses] = can_not_attack_conditional_clause.get_rewind_save_state()
+	
+	if _rewind__current_attack_cooldown__has_changes:
+		save_state[REWIND_DATA__current_attack_cooldown] = _current_attack_cooldown
+	
+	return save_state
+
+func load_into_rewind_save_state(arg_state : Dictionary):
 	.load_into_rewind_save_state(arg_state)
+	
+	if arg_state.has(REWIND_DATA__can_not_attack_conditional_clause_clauses):
+		can_not_attack_conditional_clause.load_into_rewind_save_state(arg_state[REWIND_DATA__can_not_attack_conditional_clause_clauses])
+	
+	if arg_state.has(REWIND_DATA__current_attack_cooldown):
+		#_set_current_attack_cooldown(arg_state[REWIND_DATA__current_attack_cooldown])
+		_current_attack_cooldown = arg_state[REWIND_DATA__current_attack_cooldown]
+	
 
 func destroy_from_rewind_save_state():
 	.destroy_from_rewind_save_state()

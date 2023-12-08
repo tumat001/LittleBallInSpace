@@ -22,10 +22,11 @@ signal can_change_aim_mode_changed(arg_val)
 
 ##
 
-var starting_launch_strength : float = 5000.0
-var launch_strength_per_sec : float = 10000.0
+# if changing this, look at dmg calculation of BaseEnemy _calc_damage_of_obj_ball
+var starting_launch_strength : float = 5000.0  #125
+var launch_strength_per_sec : float = 10000.0    #250
 var launch_strength_initial_delay : float = 0.75
-var max_launch_strength : float = 15000.0
+var max_launch_strength : float = 15000.0   #375
 
 var launch_peak_wait_before_alternate : float = 2.0
 

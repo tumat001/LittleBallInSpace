@@ -4,7 +4,7 @@ extends MarginContainer
 const HEALTH_BAR_MODULATE__FULL = Color(98/255.0, 78/255.0, 253/255.0)
 const HEALTH_BAR_MODULATE__EMPTY = Color(78/255.0, 253/255.0, 252/255.0)
 
-const DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE = 7.5
+const DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE = 6.25
 
 #
 
@@ -55,7 +55,7 @@ func _update_curr_health_disp(arg_update_panel_vis : bool):
 		else:
 			modulate.a = 0
 			var tween = create_tween()
-			tween.tween_property(self, "modulate:a", 1.0, 0.5)
+			tween.tween_property(self, "modulate:a", 1.0, 0.15)
 			visible = true
 			
 			display_timer.start(DISPLAY_SELF_DURATION_ON_HEALTH_CHANGE)

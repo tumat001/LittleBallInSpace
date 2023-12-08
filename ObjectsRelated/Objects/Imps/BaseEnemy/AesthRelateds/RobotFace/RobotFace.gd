@@ -610,12 +610,11 @@ func on_energy_restored_from_zero():
 
 ############
 
-#todo
 func helper__eyes_look_toward_position(arg_pos : Vector2):
 	var dist = global_position.distance_to(arg_pos)
 	var curr_cam_angle = CameraManager.current_cam_rotation
 	var old_val = _current_x_perspective_axis_dist
-	_current_x_perspective_axis_dist = dist.rotated(curr_cam_angle).x
+	_current_x_perspective_axis_dist = Vector2(dist, 0).rotated(curr_cam_angle).x
 	if is_equal_approx(curr_cam_angle, PI/2) or is_equal_approx(curr_cam_angle, -PI/2):
 		_current_x_perspective_axis_dist = -_current_x_perspective_axis_dist
 	

@@ -10,13 +10,13 @@ signal attack_sequence_finished()
 
 #
 
-const LASER_WIDTH__BASE = 2
-const LASER_WIDTH__IN_FIRE__MIN = 2
-const LASER_WIDTH__IN_FIRE__MAX = 8
+const LASER_WIDTH__BASE = 2.0
+const LASER_WIDTH__IN_FIRE__MIN = 2.0
+const LASER_WIDTH__IN_FIRE__MAX = 8.0
 
-const LASER_DURATION__CHARGING = 0.5
-const LASER_DURATION__TO_MAX = 0.25
-const LASER_DURATION__TO_MIN = 0.75
+const LASER_DURATION__CHARGING = 1.0
+const LASER_DURATION__TO_MAX = 0.15
+const LASER_DURATION__TO_MIN = 0.85
 
 const LASER_LENGTH : float = 1400.0
 
@@ -37,13 +37,14 @@ var target_pos_to_draw_laser_to : Vector2
 var _rewind__target_pos_to_draw_laser_to__has_changes : bool
 const REWIND_DATA__target_pos_to_draw_laser_to = "target_pos_to_draw_laser_to"
 
+
 enum FireSequenceStateId {
 	NONE = 0,
 	CHARGING = 1,
 	FIRE__TO_MAX = 2,
 	FIRE__TO_MIN = 3,
 }
-var _fire_sequence_state : int
+var _fire_sequence_state : int = FireSequenceStateId.NONE
 var _rewind__fire_sequence_state__has_changes : bool
 const REWIND_DATA__fire_sequence_state = "_fire_sequence_state"
 
@@ -62,7 +63,7 @@ var _rewind__current_duration_of_laser_completon__to_any__has_changes : bool
 const REWIND_DATA__current_duration_of_laser_completon__to_any = "_current_duration_of_laser_completon__to_any"
 
 
-var _current_laser_width : float
+var _current_laser_width : float = 0
 var _rewind__current_laser_width__has_changes : bool
 const REWIND_DATA__current_laser_width = "_current_laser_width"
 
@@ -74,7 +75,7 @@ func _init():
 	pass
 
 func _ready():
-	_tweener_for_laser_length_to_use = create_tween()
+	_tweener_for_laser_length_to_use = SceneTreeTween.new() #create_tween()
 	
 
 #
@@ -83,12 +84,12 @@ func _calc_laser_width_to_currently_use():
 	if is_in_fire_sequence():
 		if _fire_sequence_state == FireSequenceStateId.FIRE__TO_MAX:
 			#start to max
-			var width_modifier = _tweener_for_laser_length_to_use.interpolate_value(LASER_WIDTH__BASE, (LASER_WIDTH__IN_FIRE__MAX - LASER_WIDTH__BASE), _current_duration_of_laser_completon__to_any, LASER_DURATION__TO_MAX, Tween.TRANS_CIRC, Tween.EASE_OUT)
+			var width_modifier = _tweener_for_laser_length_to_use.interpolate_value(LASER_WIDTH__IN_FIRE__MIN, (LASER_WIDTH__IN_FIRE__MAX - LASER_WIDTH__IN_FIRE__MIN), _current_duration_of_laser_completon__to_any, LASER_DURATION__TO_MAX, Tween.TRANS_CIRC, Tween.EASE_OUT)
 			return width_modifier
 			
 		elif _fire_sequence_state == FireSequenceStateId.FIRE__TO_MIN:
 			#start to min
-			var width_modifier = _tweener_for_laser_length_to_use.interpolate_value(LASER_WIDTH__IN_FIRE__MAX, (LASER_WIDTH__BASE - LASER_WIDTH__IN_FIRE__MAX), _current_duration_of_laser_completon__to_any, LASER_DURATION__TO_MIN, Tween.TRANS_CIRC, Tween.EASE_OUT)
+			var width_modifier = _tweener_for_laser_length_to_use.interpolate_value(LASER_WIDTH__IN_FIRE__MAX, (LASER_WIDTH__IN_FIRE__MIN - LASER_WIDTH__IN_FIRE__MAX), _current_duration_of_laser_completon__to_any, LASER_DURATION__TO_MIN, Tween.TRANS_CIRC, Tween.EASE_OUT)
 			return width_modifier
 			
 		elif _fire_sequence_state == FireSequenceStateId.CHARGING:
@@ -109,8 +110,7 @@ func start_fire_sequence():
 	
 	_current_duration_of_laser_completon__to_any = 0
 	
-	## todo play sound
-	
+	AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_ChargeUp, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 
 
 func _physics_process(delta):
@@ -124,8 +124,6 @@ func _physics_process(delta):
 					_fire_sequence_state = FireSequenceStateId.FIRE__TO_MIN
 					_rewind__fire_sequence_state__has_changes = true
 					
-					#check for player collision using DIRECTSPACE "tech~nology" hahahahaha
-					_cast_ray_and_check_for_player_collision()
 				
 			elif _fire_sequence_state == FireSequenceStateId.FIRE__TO_MIN:
 				if _current_duration_of_laser_completon__to_any > LASER_DURATION__TO_MIN:
@@ -134,14 +132,15 @@ func _physics_process(delta):
 					_rewind__fire_sequence_state__has_changes = true
 					#emit_signal("attack_sequence_finished")
 				
-			elif _fire_sequence_state == FireSequenceStateId.NONE:
+			elif _fire_sequence_state == FireSequenceStateId.CHARGING:
 				if _current_duration_of_laser_completon__to_any > LASER_DURATION__TO_MIN:
 					_current_duration_of_laser_completon__to_any = 0
 					_fire_sequence_state = FireSequenceStateId.FIRE__TO_MAX
 					_rewind__fire_sequence_state__has_changes = true
 					
-					#todo play sound for max charge
-				
+					AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_MainFire, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
+					#check for player collision using DIRECTSPACE "tech~nology" hahahahaha
+					_cast_ray_and_check_for_player_collision()
 			
 			var width = _calc_laser_width_to_currently_use()
 			_set_current_laser_width(width)
@@ -154,7 +153,7 @@ func _physics_process(delta):
 
 func _cast_ray_and_check_for_player_collision():
 	var direct_space_state = get_world_2d().direct_space_state
-	var result = direct_space_state.intersect_ray(global_position, target_pos_to_draw_laser_to, [], StoreOfPhysicsLayers.LAYER__PLAYER)
+	var result = direct_space_state.intersect_ray(global_position, target_pos_to_draw_laser_to, [], StoreOfPhysicsLayers.LAYER__PLAYER, true, false)
 	
 	if result.size() != 0:
 		emit_signal("hit_player", result["position"])
@@ -171,10 +170,16 @@ func _draw():
 	if can_draw_laser:
 		var origin_pos = Vector2.ZERO
 		var shifted_pos = (target_pos_to_draw_laser_to - global_position)
-		shifted_pos = origin_pos.move_toward(shifted_pos, LASER_LENGTH)
 		draw_line(origin_pos, shifted_pos, laser_color, _current_laser_width)
-		
 
+##
+
+func extend_vector_to_length(arg_origin : Vector2, arg_vec : Vector2, arg_length : float):
+	var norm_disp = arg_origin.direction_to(arg_vec)
+	norm_disp *= arg_length
+	norm_disp += arg_origin
+	
+	return norm_disp
 
 ###################### 
 # REWIND RELATED

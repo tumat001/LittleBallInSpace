@@ -1,7 +1,88 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_006/Level01/WorldSlice_Stage06_01.gd" type="Script" id=2]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=6]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=7]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 58, 32 )
 
 [node name="WorldSlice_Stage06_01" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+
+[node name="BTS_Normal" parent="TileContainer" index="0" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Normal" index="0"]
+tile_data = PoolIntArray( -458748, 10, 65540, -327684, 10, 65539, -327683, 10, 131075, -327682, 10, 131075, -327681, 10, 131075, -393216, 10, 65539, -393212, 10, 65540, -262156, 10, 65538, -262148, 10, 65540, -327680, 10, 65538, -327676, 10, 65540, -327661, 10, 65538, -196620, 10, 65538, -196612, 10, 65540, -262144, 10, 65538, -262140, 10, 65540, -262125, 10, 65538, -131084, 10, 131074, -131083, 10, 131075, -131082, 10, 131075, -131081, 10, 131075, -131080, 10, 131075, -131079, 10, 131075, -131078, 10, 131075, -131077, 10, 131075, -131076, 10, 131076, -196608, 10, 131074, -196607, 10, 131075, -196606, 10, 131075, -196605, 10, 131075, -196604, 10, 131076, -196589, 10, 131074, -196588, 10, 131075, -196587, 10, 131075, -196586, 10, 131075, -196585, 10, 65539, -131049, 10, 65538, -65513, 10, 65538, 23, 10, 65538, 65559, 10, 65538, 196603, 10, 2, 196604, 10, 3, 131082, 10, 3, 131083, 10, 3, 131084, 10, 3, 131085, 10, 3, 131086, 10, 3, 131087, 10, 3, 131088, 10, 3, 131089, 10, 3, 131090, 10, 3, 131091, 10, 3, 131092, 10, 3, 131093, 10, 3, 131094, 10, 3, 131095, 10, 65539, 262139, 10, 65538, 327671, 10, 2, 327672, 10, 3, 327673, 10, 3, 327674, 10, 3, 327675, 10, 65539, 393207, 10, 65538, 458743, 10, 65538, 524279, 10, 65538 )
+
+[node name="BTS_Energized" parent="TileContainer" index="1" instance=ExtResource( 5 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BTS_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( 196605, 10, 3, 196606, 10, 3, 196607, 10, 3, 131072, 10, 3, 131073, 10, 3, 131074, 10, 3, 131075, 10, 3, 131076, 10, 3, 131077, 10, 3, 131078, 10, 3, 131079, 10, 3, 131080, 10, 3, 131081, 10, 3 )
+
+[node name="BTS_Grounded" parent="TileContainer" index="2" instance=ExtResource( 5 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BTS_Grounded" index="0"]
+modulate = Color( 0.682353, 0.372549, 0, 1 )
+
+[node name="BTS_Uncolls01" parent="TileContainer" index="3" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Uncolls01" index="0"]
+tile_set = ExtResource( 6 )
+tile_data = PoolIntArray( -262147, 2, 0, -262146, 2, 0, -262145, 2, 0, -196611, 2, 0, -196610, 2, 0, -196609, 2, 0, -262139, 2, 0, -131075, 2, 0, -131074, 2, 0, -131073, 2, 0, -196603, 2, 0, -196602, 2, 0, -196590, 2, 0, -65546, 2, 0, -65545, 2, 0, -65544, 2, 0, -65543, 2, 0, -65542, 2, 0, -65541, 2, 0, -65540, 2, 0, -65539, 2, 0, -65538, 2, 0, -65537, 2, 0, -131072, 2, 0, -131071, 2, 0, -131070, 2, 0, -131069, 2, 0, -131068, 2, 0, -131067, 2, 0, -131066, 2, 0, -131065, 2, 0, -131064, 2, 0, -131056, 2, 0, -131055, 2, 0, -131054, 2, 0, -131053, 2, 0, -131052, 2, 0, -131051, 2, 0, -131050, 2, 0, -10, 2, 0, -9, 2, 0, -8, 2, 0, -7, 2, 0, -6, 2, 0, -5, 2, 0, -4, 2, 0, -3, 2, 0, -2, 2, 0, -1, 2, 0, -65536, 2, 0, -65535, 2, 0, -65534, 2, 0, -65533, 2, 0, -65532, 2, 0, -65531, 2, 0, -65530, 2, 0, -65529, 2, 0, -65528, 2, 0, -65527, 2, 0, -65526, 2, 0, -65525, 2, 0, -65524, 2, 0, -65523, 2, 0, -65522, 2, 0, -65521, 2, 0, -65520, 2, 0, -65519, 2, 0, -65518, 2, 0, -65517, 2, 0, -65516, 2, 0, -65515, 2, 0, -65514, 2, 0, 65526, 2, 0, 65527, 2, 0, 65528, 2, 0, 65529, 2, 0, 65530, 2, 0, 65531, 2, 0, 65532, 2, 0, 65533, 2, 0, 65534, 2, 0, 65535, 2, 0, 0, 2, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 6, 2, 0, 7, 2, 0, 8, 2, 0, 9, 2, 0, 10, 2, 0, 11, 2, 0, 12, 2, 0, 13, 2, 0, 14, 2, 0, 15, 2, 0, 16, 2, 0, 17, 2, 0, 18, 2, 0, 19, 2, 0, 20, 2, 0, 21, 2, 0, 22, 2, 0, 131062, 2, 0, 131063, 2, 0, 131064, 2, 0, 131065, 2, 0, 131066, 2, 0, 131067, 2, 0, 131068, 2, 0, 131069, 2, 0, 131070, 2, 0, 131071, 2, 0, 65536, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 65541, 2, 0, 65542, 2, 0, 65543, 2, 0, 65544, 2, 0, 65545, 2, 0, 65546, 2, 0, 65547, 2, 0, 65548, 2, 0, 65549, 2, 0, 65550, 2, 0, 65551, 2, 0, 65552, 2, 0, 65553, 2, 0, 65554, 2, 0, 65555, 2, 0, 65556, 2, 0, 65557, 2, 0, 65558, 2, 0, 196598, 2, 0, 196599, 2, 0, 196600, 2, 0, 196601, 2, 0, 196602, 2, 0, 262134, 2, 0, 262135, 2, 0, 262136, 2, 0, 262137, 2, 0, 262138, 2, 0 )
+
+[node name="BTS_UncollsWallDec" parent="TileContainer" index="4" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BTS_UncollsWallDec" index="0"]
+tile_set = ExtResource( 6 )
+
+[node name="BTS_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 5 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Uncolls02" index="0"]
+tile_set = ExtResource( 6 )
+
+[node name="BTS_UncollsGlowables" parent="TileContainer" index="6" instance=ExtResource( 5 )]
+has_glowables = true
+
+[node name="TileMap" parent="TileContainer/BTS_UncollsGlowables" index="0"]
+tile_set = ExtResource( 6 )
+
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 8 )]
+position = Vector2( -99, 220 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
+position = Vector2( 48, -22 )
+shape = SubResource( 1 )
+
+[node name="BaseEnemy" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
+position = Vector2( -191, 103 )
+starting_attack_cooldown_mode_id = 1
+starting_activation_mode_id = 1
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
+position = Vector2( -230, 192 )
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( 47, 48 )
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[editable path="TileContainer/BTS_Normal"]
+[editable path="TileContainer/BTS_Energized"]
+[editable path="TileContainer/BTS_Grounded"]
+[editable path="TileContainer/BTS_Uncolls01"]
+[editable path="TileContainer/BTS_UncollsWallDec"]
+[editable path="TileContainer/BTS_Uncolls02"]
+[editable path="TileContainer/BTS_UncollsGlowables"]
+[editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

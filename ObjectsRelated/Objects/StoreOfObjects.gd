@@ -4,6 +4,12 @@ enum ObjectTypeIds {
 	BALL = 0,
 	TILE_FRAGMENT = 1,
 	INTERACTABLE_BUTTON = 2,
+	
+	
+	#######
+	
+	FRAGMENT__ENEMY_METALLIC = 10000
+	
 }
 
 var _object_type_id_to_file_path_map : Dictionary
@@ -22,6 +28,26 @@ onready var BALL_COLLISION_SOUND_HIT : Array = [
 ]
 
 #onready var NONE_COLLISION_SOUND_HIT : Array = []
+
+
+#######
+
+onready var NONE__ANY_COLLISION_SOUND_LIST : Array = []
+
+onready var FRAGMENT__ENEMY_METAILIC_SOUND_LIST := [
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_01,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_02,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_03,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_04,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_05,
+	StoreOfAudio.AudioIds.SFX_TileFragments_Metal_06,
+]
+
+onready var _object_id_to_fragment_collision_sound_list_map : Dictionary = {
+	ObjectTypeIds.FRAGMENT__ENEMY_METALLIC : FRAGMENT__ENEMY_METAILIC_SOUND_LIST,
+	
+}
+
 
 ##
 
@@ -54,5 +80,15 @@ func get_ball_collision__with_player__sound_list():
 func get_ball_collision__with_ball__sound_list():
 	return BALL_COLLISION_SOUND_HIT
 
+
+
+
+func get_object_id_to_fragment_collision_sound_list(arg_id):
+	if _object_id_to_fragment_collision_sound_list_map.has(arg_id):
+		return _object_id_to_fragment_collision_sound_list_map[arg_id]
+	else:
+		return NONE__ANY_COLLISION_SOUND_LIST
+	
+	
 
 

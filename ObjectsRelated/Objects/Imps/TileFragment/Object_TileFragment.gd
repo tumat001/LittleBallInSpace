@@ -2,8 +2,10 @@ extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
 
-var texture_to_use__fragment : AtlasTexture
-var tileset_id : int
+var texture_to_use__fragment : Texture   #note: if err: this has been changed from atlastexture to texture
+
+var tileset_id : int = -1
+var object_fragment_representation_id : int = -1
 
 #var player
 #var _is_inside_player
@@ -112,7 +114,12 @@ func _attempt_init_collision_sound_list():
 	if !_collision_sound_list_initialized:
 		_collision_sound_list_initialized = true
 		
-		_collision_sound_list = TileConstants.get_tile_id_to_fragment_collision_sound_list(tileset_id)
+		if tileset_id != -1:
+			_collision_sound_list = TileConstants.get_tile_id_to_fragment_collision_sound_list(tileset_id)
+		elif object_fragment_representation_id != -1:
+			_collision_sound_list = StoreOfObjects.get_object_id_to_fragment_collision_sound_list(object_fragment_representation_id)
+		else:
+			_collision_sound_list = []
 
 func _get_rand_sound_id_to_play():
 	var rng = SingletonsAndConsts.non_essential_rng

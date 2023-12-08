@@ -82,16 +82,18 @@ func _ready():
 	set_process(false)
 	
 	#Temp for quick testing of lvls
-	if (false):
+	#temptodo
+	if (true):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
-		SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
+		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_6
 		
-		SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()
+		var level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
+		start_game_elements__with_level_details(level_details, screen_size/2)
 		
-		var game_elements = GameElements_Scene.instance()
-		game_elements_container.add_child(game_elements)
-		return
+#		var game_elements = GameElements_Scene.instance()
+#		game_elements_container.add_child(game_elements)
+#		return
 	
 	#
 	

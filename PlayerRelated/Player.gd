@@ -19,6 +19,9 @@ const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/M
 
 #
 
+signal break_all_player_game_actions()
+
+
 signal last_calculated_object_mass_changed(arg_val)
 
 signal unhandled_key_input_received(event)
@@ -66,6 +69,17 @@ enum BlockPlayerMoveLeftAndRightClauseIds {
 var block_player_move_left_and_right_cond_clauses : ConditionalClauses
 var last_calc_can_player_move_left_and_right : bool
 
+#
+
+enum BlockPlayerGameActionsClauseIds {
+	NO_ENERGY = 0,
+	NO_ROBOT_HEALTH = 1,
+}
+var block_player_game_actions_cond_clauses : ConditionalClauses
+var last_calc_block_player_game_actions : bool
+
+
+#
 
 var can_move_left__special_case : bool = true
 
@@ -363,10 +377,14 @@ onready var pca_captured_drawer = $PCACapturedDrawer
 
 func _init():
 	block_player_move_left_and_right_cond_clauses = ConditionalClauses.new()
-	block_player_move_left_and_right_cond_clauses.connect("clause_inserted", self, "_on_block_move_left_and_right_cond_clauses_updated", [], CONNECT_PERSIST)
-	block_player_move_left_and_right_cond_clauses.connect("clause_removed", self, "_on_block_move_left_and_right_cond_clauses_updated", [], CONNECT_PERSIST)
+	block_player_move_left_and_right_cond_clauses.connect("clause_inserted", self, "_on_block_move_left_and_right_cond_clauses_updated")
+	block_player_move_left_and_right_cond_clauses.connect("clause_removed", self, "_on_block_move_left_and_right_cond_clauses_updated")
 	block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NOT_ON_GROUND)
 	
+	block_player_game_actions_cond_clauses = ConditionalClauses.new()
+	block_player_game_actions_cond_clauses.connect("clause_inserted", self, "_on_block_player_game_actions_cond_clauses_updated")
+	block_player_game_actions_cond_clauses.connect("clause_removed", self, "_on_block_player_game_actions_cond_clauses_updated")
+	_update_last_calc_block_player_game_actions()
 	
 	block_rotate_cond_clause = ConditionalClauses.new()
 	block_rotate_cond_clause.connect("clause_inserted", self, "_on_block_rotate_cond_clause_updated", [], CONNECT_PERSIST)
@@ -415,6 +433,25 @@ func _on_block_move_left_and_right_cond_clauses_updated(arg_clause_id):
 func _update_last_calc_can_move_left_and_right():
 	last_calc_can_player_move_left_and_right = block_player_move_left_and_right_cond_clauses.is_passed
 
+
+#
+
+func _on_block_player_game_actions_cond_clauses_updated(arg_clause_id):
+	_update_last_calc_block_player_game_actions()
+
+func _update_last_calc_block_player_game_actions():
+	var old_val = last_calc_block_player_game_actions
+	last_calc_block_player_game_actions = !block_player_game_actions_cond_clauses.is_passed
+	
+	if last_calc_block_all_inputs and (old_val != last_calc_block_player_game_actions):
+		_break_all_player_game_actions()
+
+func _break_all_player_game_actions():
+	_is_moving_left = false
+	_is_moving_right = false
+	_is_move_breaking = false
+	
+	emit_signal("break_all_player_game_actions")
 
 #
 
@@ -810,12 +847,14 @@ func _unhandled_key_input(event):
 			
 		else:
 			if event.is_action("game_left"):
-				if can_move_left__special_case:
+				if can_move_left__special_case and !last_calc_block_player_game_actions:
 					_is_moving_left = true
 			elif event.is_action("game_right"):
-				_is_moving_right = true
+				if !last_calc_block_player_game_actions:
+					_is_moving_right = true
 			elif event.is_action("game_down") and !GameSettingsManager.get_game_control_name__is_hidden("game_down"):
-				_is_move_breaking = true
+				if !last_calc_block_player_game_actions:
+					_is_move_breaking = true
 				
 			
 		
@@ -1573,12 +1612,8 @@ func _update_self_based_on_has_energy():
 
 func _update_self_based_on_has_energy__no_energy():
 	block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+	block_player_game_actions_cond_clauses.attempt_insert_clause(BlockPlayerGameActionsClauseIds.NO_ENERGY)
 	
-	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen_NoEnergy.png")
-	#main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody_NoEnergy.png")
-	#anim_on_screen.visible = false
-	
-	#main_body_sprite.tween_saturation_of_material(0.0, 0.35)
 	main_body_sprite.tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_OFF, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	
 	player_face.on_energy_discharged_to_zero()
@@ -1587,12 +1622,8 @@ func _update_self_based_on_has_energy__no_energy():
 
 func _update_self_based_on_has_energy__has_energy():
 	block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ENERGY)
+	block_player_game_actions_cond_clauses.remove_clause(BlockPlayerGameActionsClauseIds.NO_ENERGY)
 	
-	#face_screen.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_FaceScreen.png")
-	#main_body_sprite.texture = preload("res://PlayerRelated/PlayerModel/Assets/PlayerModel_MainBody.png")
-	#anim_on_screen.visible = true
-	
-	#main_body_sprite.tween_saturation_of_material(1.0, 0.35)
 	main_body_sprite.tween_modulate_of_basis(SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__ENERGY_ON, SingletonsAndConsts.PLAYER_MODULATE__ANY_PART__TRANSITION_DURATION)
 	
 	player_face.on_energy_restored_from_zero()
@@ -1843,11 +1874,15 @@ func set_current_robot_health(arg_val):
 	if _current_robot_health <= 0:
 		_current_robot_health = 0
 		
-		_is_robot_dead = true
+		if !_is_robot_dead:
+			_is_robot_dead = true
+			_deferred_create_break_fragments()
+		
 	else:
 		_is_robot_dead = false
 	
 	if old_val != _current_robot_health:
+		_update_self_based_on_has_robot_health()
 		emit_signal("current_robot_health_changed", _current_robot_health)
 
 func get_current_robot_health() -> float:
@@ -1865,6 +1900,38 @@ func set_max_robot_health(arg_val):
 
 func get_max_robot_health() -> float:
 	return _max_robot_health
+
+
+#
+
+func _update_self_based_on_has_robot_health():
+	if _current_robot_health <= 0:
+		visible = false
+		
+		#todoimp
+		block_player_game_actions_cond_clauses.attempt_insert_clause(BlockPlayerGameActionsClauseIds.NO_ROBOT_HEALTH)
+		
+	else:
+		visible = true
+	
+
+
+#todoimp continue player break fragments. after testing for baseenemy
+func _deferred_create_break_fragments():
+	pass
+	
+	
+
+func _init_break_fragments__from_body():
+	pass
+	
+
+func _init_break_fragments__from_screen_face():
+	pass
+	
+	
+
+
 
 ##
 
@@ -2217,6 +2284,7 @@ var _rewinded__sleeping
 var _rewinded__transform : Transform2D
 
 var _rewinded__block_player_move_left_and_right_cond_clauses
+var _rewinded__block_player_game_actions_cond_clauses
 var _rewinded__block_rotate_cond_clause
 var _rewinded__ignore_outside_induced_forces_cond_clauses
 
@@ -2294,6 +2362,7 @@ func get_rewind_save_state():
 		###
 		
 		"block_player_move_left_and_right_cond_clauses" : block_player_move_left_and_right_cond_clauses.get_rewind_save_state(),
+		"block_player_game_actions_cond_clauses" : block_player_game_actions_cond_clauses.get_rewind_save_state(),
 		"block_rotate_cond_clause" : block_rotate_cond_clause.get_rewind_save_state(),
 		"ignore_outside_induced_forces_cond_clauses" : ignore_outside_induced_forces_cond_clauses.get_rewind_save_state(),
 		
@@ -2355,6 +2424,7 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded__transform = arg_state["transform"]
 	
 	_rewinded__block_player_move_left_and_right_cond_clauses = arg_state["block_player_move_left_and_right_cond_clauses"]
+	_rewinded__block_player_game_actions_cond_clauses = arg_state["block_player_game_actions_cond_clauses"]
 	_rewinded__block_rotate_cond_clause = arg_state["block_rotate_cond_clause"]
 	_rewinded__ignore_outside_induced_forces_cond_clauses = arg_state["ignore_outside_induced_forces_cond_clauses"]
 	
@@ -2475,6 +2545,7 @@ func ended_rewind():
 	#
 	
 	block_player_move_left_and_right_cond_clauses.load_into_rewind_save_state(_rewinded__block_player_move_left_and_right_cond_clauses)
+	block_player_game_actions_cond_clauses.load_into_rewind_save_state(_rewinded__block_player_game_actions_cond_clauses)
 	block_rotate_cond_clause.load_into_rewind_save_state(_rewinded__block_rotate_cond_clause)
 	ignore_outside_induced_forces_cond_clauses.load_into_rewind_save_state(_rewinded__ignore_outside_induced_forces_cond_clauses)
 	

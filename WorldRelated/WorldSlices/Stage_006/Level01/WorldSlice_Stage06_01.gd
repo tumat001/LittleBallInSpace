@@ -1,12 +1,14 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
+const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
+
 
 #
 
 var _is_first_time__do_cutscenes : bool
 
-
+#var _current_long_transition
 
 ###
 
@@ -17,6 +19,11 @@ func _init():
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
+	
+	## temptodo
+	return
+	
+	#
 	
 	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
 		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
@@ -29,6 +36,30 @@ func _on_after_game_start_init():
 	else:
 		_is_first_time__do_cutscenes = true
 	
+	if _is_first_time__do_cutscenes:
+		SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6, true)
+		
+		
+		var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
+		transition.initial_ratio = 0.2
+		transition.target_ratio = 1.0
+		transition.wait_at_start = 1.0
+		transition.duration = 1.5 #2.0
+		transition.trans_type = Tween.TRANS_BOUNCE
+		SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
+		transition.modulate.a = 0.6
+		
+		transition.connect("transition_finished", self, "_on_transition_finished", [], CONNECT_ONESHOT)
+		#transition.set_is_transition_paused(true)
+		#_current_long_transition = transition
+		
+		
+		game_elements.configure_game_state_for_cutscene_occurance(true, true)
+		
+		
+
+func _on_transition_finished():
+	_start_dialog__01()
 	
 
 
@@ -59,7 +90,9 @@ func _start_dialog__02():
 func _on_display_of_desc_finished__02():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
 	
+	game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
+	
 
-#todo continue this
+
 
 
