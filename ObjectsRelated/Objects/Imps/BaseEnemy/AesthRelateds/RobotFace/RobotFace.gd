@@ -101,9 +101,9 @@ var _current_FE_offset_id__for_right_eye: int
 
 var _current_x_perspective_axis_dist : float
 
-const MAX_OFFSET__SAME_SIDE_EYE : float = 3.0
-const MAX_OFFSET__DIFF_SIDE_EYE : float = 4.5
-const DIST_TO_REACH_MAX_OFFSET : float = 600.0
+const MAX_OFFSET__SAME_SIDE_EYE : float = 1.25
+const MAX_OFFSET__DIFF_SIDE_EYE : float = 2.25
+const DIST_TO_REACH_MAX_OFFSET : float = 900.0
 
 #
 
@@ -610,13 +610,17 @@ func on_energy_restored_from_zero():
 
 ############
 
-func helper__eyes_look_toward_position(arg_pos : Vector2):
-	var dist = global_position.distance_to(arg_pos)
-	var curr_cam_angle = CameraManager.current_cam_rotation
+func helper__eyes_look_toward_position(arg_pos : Vector2, arg_always_positive : bool):
+	var dist = arg_pos - global_position #global_position.distance_to(arg_pos)
+	var curr_cam_angle = 0 #CameraManager.current_cam_rotation
 	var old_val = _current_x_perspective_axis_dist
-	_current_x_perspective_axis_dist = Vector2(dist, 0).rotated(curr_cam_angle).x
+	_current_x_perspective_axis_dist = dist.rotated(-curr_cam_angle).x
+	if arg_always_positive:
+		_current_x_perspective_axis_dist = abs(_current_x_perspective_axis_dist)
 	if is_equal_approx(curr_cam_angle, PI/2) or is_equal_approx(curr_cam_angle, -PI/2):
 		_current_x_perspective_axis_dist = -_current_x_perspective_axis_dist
+	
+	#print("_current_x_perspective_axis_dist: %s" % [_current_x_perspective_axis_dist])
 	
 	var calced_offset_x__for_right = _calculate_offset_mag__for_right_eye()
 	var calced_offset_x__for_left = _calculate_offset_mag__for_left_eye()

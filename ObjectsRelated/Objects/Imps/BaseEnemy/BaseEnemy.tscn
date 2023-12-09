@@ -21,6 +21,7 @@ radius = 18.0278
 
 [node name="BaseEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+body_mode_to_use = 2
 enemy_type = 0
 aim_trajectory_type = 0
 aim_occulder_type = 0

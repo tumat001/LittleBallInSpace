@@ -22,31 +22,40 @@ var _detection_range_for_successful_ping : float
 var default_ping_rate_for_outside_most_outer_detection_range : float = 3.5
 
 #
+# must be set at ready ()
+var current_target_node_or_pos_changes_at_any_point : bool = false
+
 
 var _current_target_node : Node2D
-var _rewind__current_target_node__has_changes : bool
+#var _rewind__current_target_node__has_changes : bool
 const REWIND_DATA__current_target_node = "_current_target_node"
 
+var _current_target_node_is_player : bool
+
+
 var _current_target_pos : Vector2
-var _rewind__current_target_pos__has_changes : bool
+#var _rewind__current_target_pos__has_changes : bool
 const REWIND_DATA__current_target_pos = "_current_target_pos"
 
 var _current_target_func_to_use : String
-var _rewind__current_target_func_to_use__has_changes : bool
+#var _rewind__current_target_func_to_use__has_changes : bool
 const REWIND_DATA__current_target_func_to_use = "_current_target_func_to_use"
 
 #
+# must be set at ready ()
+var current_origin_node_or_pos_changes_at_any_point : bool = false
+
 
 var _origin_node : Node2D
-var _rewind__origin_node__has_changes : bool
+#var _rewind__origin_node__has_changes : bool
 const REWIND_DATA__origin_node = "_origin_node"
 
 var _origin : Vector2
-var _rewind__origin__has_changes : bool
+#var _rewind__origin__has_changes : bool
 const REWIND_DATA__origin = "_origin"
 
 var _origin_func_to_use : String
-var _rewind__origin_func_to_use__has_changes : bool
+#var _rewind__origin_func_to_use__has_changes : bool
 const REWIND_DATA__origin_func_to_use = "_origin_func_to_use"
 
 #
@@ -63,15 +72,15 @@ func set_origin_node(arg_node : Node2D):
 	_origin_node = arg_node
 	_origin_func_to_use = "_get_origin__from_node"
 	
-	_rewind__origin_node__has_changes = true
-	_rewind__origin_func_to_use__has_changes = true
+	#_rewind__origin_node__has_changes = true
+	#_rewind__origin_func_to_use__has_changes = true
 
 func set_origin(arg_vec : Vector2):
 	_origin = arg_vec
 	_origin_func_to_use = "_get_origin"
 	
-	_rewind__origin__has_changes = true
-	_rewind__origin_func_to_use__has_changes = true
+	#_rewind__origin__has_changes = true
+	#_rewind__origin_func_to_use__has_changes = true
 
 
 func _get_origin__from_node() -> Vector2:
@@ -126,15 +135,17 @@ func set_current_target__to_player():
 	_current_target_node = SingletonsAndConsts.current_game_elements.get_current_player()
 	_current_target_func_to_use = "_get_current_target_pos__from_node"
 	
-	_rewind__current_target_node__has_changes = true
-	_rewind__current_target_func_to_use__has_changes = true
+	_current_target_node_is_player = true
+	
+	#_rewind__current_target_node__has_changes = true
+	#_rewind__current_target_func_to_use__has_changes = true
 
 func set_current_target_pos(arg_pos):
 	_current_target_pos = arg_pos
 	_current_target_func_to_use = "_get_current_target_pos__from_pos"
 	
-	_rewind__current_target_pos__has_changes = true
-	_rewind__current_target_func_to_use__has_changes = true
+	#_rewind__current_target_pos__has_changes = true
+	#_rewind__current_target_func_to_use__has_changes = true
 
 
 func _get_current_target_pos__from_node() -> Vector2:
@@ -167,16 +178,24 @@ func _attempt_ping_curr_target():
 	var should_emit_signal : bool = false
 	var setted_delay_at_least_once : bool = false
 	
-	for test_dist in _detection_range_arr__HtoL:
-		if test_dist >= dist:
-			# note: NOT +=
-			_current_update_delay_before_ping_attempt = _detection_range_to_ping_rate_map[test_dist]
-			setted_delay_at_least_once = true
-			
-			if _detection_range_for_successful_ping >= test_dist:
-				should_emit_signal = true
-			
-			threshold_dist = test_dist
+	var do_threshold_test_dist : bool = true
+	
+	if _current_target_node_is_player:
+		if !_current_target_node.is_robot_alive():
+			do_threshold_test_dist = false
+			should_emit_signal = false
+	
+	if do_threshold_test_dist:
+		for test_dist in _detection_range_arr__HtoL:
+			if test_dist >= dist:
+				# note: NOT +=
+				_current_update_delay_before_ping_attempt = _detection_range_to_ping_rate_map[test_dist]
+				setted_delay_at_least_once = true
+				
+				if _detection_range_for_successful_ping >= test_dist:
+					should_emit_signal = true
+				
+				threshold_dist = test_dist
 	
 	if !setted_delay_at_least_once:
 		_current_update_delay_before_ping_attempt = default_ping_rate_for_outside_most_outer_detection_range
@@ -210,24 +229,26 @@ func get_rewind_save_state():
 	
 	#
 	
-	if _rewind__current_target_node__has_changes:
+	if current_target_node_or_pos_changes_at_any_point:
+		#if _rewind__current_target_node__has_changes:
 		save_dat[REWIND_DATA__current_target_node] = _current_target_node
-	
-	if _rewind__current_target_pos__has_changes:
+		
+		#if _rewind__current_target_pos__has_changes:
 		save_dat[REWIND_DATA__current_target_pos] = _current_target_pos
-	
-	if _rewind__current_target_func_to_use__has_changes:
+		
+		#if _rewind__current_target_func_to_use__has_changes:
 		save_dat[REWIND_DATA__current_target_func_to_use] = _current_target_func_to_use
 	
 	#
 	
-	if _rewind__origin_node__has_changes:
+	if current_origin_node_or_pos_changes_at_any_point:
+		#if _rewind__origin_node__has_changes:
 		save_dat[REWIND_DATA__origin_node] = _origin_node
-	
-	if _rewind__origin__has_changes:
+		
+		#if _rewind__origin__has_changes:
 		save_dat[REWIND_DATA__origin] = _origin
-	
-	if _rewind__origin_func_to_use__has_changes:
+		
+		#if _rewind__origin_func_to_use__has_changes:
 		save_dat[REWIND_DATA__origin_func_to_use] = _origin_func_to_use
 	
 	#

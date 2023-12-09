@@ -60,6 +60,7 @@ var _is_launch_ability_ready : bool
 
 const ACTIVATION_BLOCK_CLAUSE_ID__NO_BALLS_LEFT = -10
 const ACTIVATION_BLOCK_CLAUSE_ID__NOT_ENOUGH_ENERGY = -11
+const ACTIVATION_BLOCK_CLAUSE_ID__BLOCK_PLAYER_GAME_ACTIONS = -12
 
 #
 
@@ -101,6 +102,7 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	arg_player.connect("unhandled_key_input_received", self, "_on_player_unhandled_key_input__for_modi")
 	arg_player.connect("unhandled_mouse_button_input_received", self, "_on_player_unhandled_mouse_button_input_received__for_modi")
+	arg_player.connect("last_calc_block_player_game_actions_changed", self, "_on_player_last_calc_block_player_game_actions_changed")
 	
 	_construct_ability()
 	_initialize_player_modi_launch_ball_node()
@@ -123,6 +125,7 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	#_configure_to_player__with_energy_modi()
 	call_deferred("_configure_to_player__with_energy_modi")
+
 
 #
 
@@ -149,13 +152,31 @@ func _on_energy_modi_current_energy_changed(arg_val):
 func _update_self_based_on_current_energy_of_modi():
 	if energy_consume_on_launch > _player.player_modi__energy.get_current_energy():
 		launch_ability.activation_conditional_clauses.attempt_insert_clause(ACTIVATION_BLOCK_CLAUSE_ID__NOT_ENOUGH_ENERGY)
-		
-		if player_modi_launch_ball_node.is_charging_launch():
-			player_modi_launch_ball_node.end_launch_charge()
-			_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+		cancel_modi_launch_ball_charge()
 		
 	else:
 		launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__NOT_ENOUGH_ENERGY)
+
+
+
+func _on_player_last_calc_block_player_game_actions_changed(arg_val):
+	if arg_val:
+		launch_ability.activation_conditional_clauses.attempt_insert_clause(ACTIVATION_BLOCK_CLAUSE_ID__BLOCK_PLAYER_GAME_ACTIONS)
+		cancel_modi_launch_ball_charge()
+		
+	else:
+		launch_ability.activation_conditional_clauses.remove_clause(ACTIVATION_BLOCK_CLAUSE_ID__BLOCK_PLAYER_GAME_ACTIONS)
+		
+
+
+
+func cancel_modi_launch_ball_charge():
+	if player_modi_launch_ball_node.is_charging_launch():
+		player_modi_launch_ball_node.end_launch_charge()
+		_player.player_modi__energy.remove_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL)
+	
+	
+
 
 ####
 

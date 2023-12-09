@@ -32,11 +32,18 @@ signal current_attack_cooldown_changed(arg_val)
 
 #
 
+const SHOTS_TO_DESTROY_PLAYER = 1 #2 #temptodo
+
+#
+
 enum EnemyType {
 	LASER = 0,
 	#BALL = 1
 }
 export(EnemyType) var enemy_type : int
+var attack_module
+
+const REWIND_DATA__ATTACK_MODULE_REWIND_DATA = "attack_module_rewind_data"
 
 #
 
@@ -65,8 +72,6 @@ var sprite__ball : Sprite
 var sprite__aim_frame : Sprite
 var sprite__xray_frame : Sprite
 
-var attack_module
-
 #
 
 enum TargetDetectionModeId {
@@ -75,6 +80,7 @@ enum TargetDetectionModeId {
 export(TargetDetectionModeId) var target_detection_mode_id : int
 
 var target_detection_module : Module_TargetDetection
+const REWIND_DATA__TARGET_DETECTION_MODULE = "target_detection_module"
 
 ###
 
@@ -92,8 +98,7 @@ enum CanNotAttackClauseIds {
 }
 var can_not_attack_conditional_clause : ConditionalClauses
 var last_calc_can_attack : bool
-
-var _rewind__can_not_attack_conditional_clause_clauses__has_changes : bool
+#var _rewind__can_not_attack_conditional_clause_clauses__has_changes : bool
 const REWIND_DATA__can_not_attack_conditional_clause_clauses = "can_not_attack_conditional_clause"
 
 
@@ -101,7 +106,7 @@ const REWIND_DATA__can_not_attack_conditional_clause_clauses = "can_not_attack_c
 const ATTACK_COOLDOWN : float = 8.0
 var _current_attack_cooldown : float setget _set_current_attack_cooldown
 
-var _rewind__current_attack_cooldown__has_changes : bool
+#var _rewind__current_attack_cooldown__has_changes : bool
 const REWIND_DATA__current_attack_cooldown = "_current_attack_cooldown"
 
 
@@ -242,7 +247,7 @@ func _ready__config_self_as_type_laser():
 	
 	# attk module
 	attack_module = Module_AttackModule_Laser_Scene.instance()
-	attack_module.can_draw_laser = true
+	attack_module.can_draw_laser = false
 	attack_module.laser_color = Color("#DA0205")
 	attack_module.connect("hit_player", self, "_on_attack_module_laser__hit_player")
 	add_child(attack_module)
@@ -332,7 +337,15 @@ func deactivate_target_detection():
 
 func _on_target_detection_module_attempted_ping(arg_success):
 	if !arg_success:
+		if enemy_type == EnemyType.LASER:
+			attack_module.can_draw_laser = false
+		
 		_look_toward_position(global_position, false)
+		
+	else:
+		if enemy_type == EnemyType.LASER:
+			attack_module.can_draw_laser = true
+		
 	
 	#print("attempted ping target: %s" % [arg_success])
 
@@ -372,11 +385,15 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 		
 
 func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
-	robot_face.helper__eyes_look_toward_position(arg_pos)
+	robot_face.helper__eyes_look_toward_position(arg_pos, true)
 	
 	if arg_is_looking_at_target:
-		var angle = global_position.angle_to_point(arg_pos)
+		var angle = arg_pos.angle_to_point(global_position)
+		#var orig_angle = angle
 		angle = _clean_up_angle__perfect_translated_for_circle_partition(angle)
+		
+		#print("orig_angle: %s, angle: %s" % [orig_angle, angle])
+		
 		_tween_rotate_robot_face(angle)
 		
 	else:
@@ -384,6 +401,11 @@ func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
 		
 		
 
+func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
+	var translated = arg_angle / CIRCLE_PARTITION
+	var perfected_translated = round(translated)
+	return perfected_translated * CIRCLE_PARTITION
+	
 
 func _attempt_attack_target():
 	if enemy_type == EnemyType.LASER:
@@ -405,12 +427,6 @@ func _tween_rotate_robot_face(arg_rotation):
 		angle_tweener.tween_property(robot_face, "rotation", arg_rotation, GameSettingsManager.settings_config__cam_rotation_duration__default).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
 
-func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
-	var translated = arg_angle / CIRCLE_PARTITION
-	var perfected_translated = round(translated)
-	return perfected_translated * CIRCLE_PARTITION
-	
-
 #
 
 func _physics_process(delta):
@@ -424,17 +440,17 @@ func _set_current_attack_cooldown(arg_val):
 	if _current_attack_cooldown <= 0:
 		if can_not_attack_conditional_clause.has_clause(CanNotAttackClauseIds.IN_COOLDOWN):
 			can_not_attack_conditional_clause.remove_clause(CanNotAttackClauseIds.IN_COOLDOWN)
-			_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
+			#_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
 		
 	else:
 		if !can_not_attack_conditional_clause.has_clause(CanNotAttackClauseIds.IN_COOLDOWN):
 			can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IN_COOLDOWN)
-			_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
+			#_rewind__can_not_attack_conditional_clause_clauses__has_changes = true
 		
 	
 	emit_signal("current_attack_cooldown_changed", arg_val)
 	
-	_rewind__current_attack_cooldown__has_changes = true
+	#_rewind__current_attack_cooldown__has_changes = true
 	
 
 # LASER SPECIFIC
@@ -448,7 +464,7 @@ func _set_current_attack_cooldown(arg_val):
 
 func _on_attack_module_laser__hit_player(arg_contact_pos):
 	var player = SingletonsAndConsts.current_game_elements.get_current_player()
-	player.set_current_robot_health(player.get_current_robot_health() - 50)
+	player.set_current_robot_health(player.get_current_robot_health() - (player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
 
 
 #########################
@@ -609,11 +625,22 @@ func queue_free():
 func get_rewind_save_state():
 	var save_state : Dictionary = .get_rewind_save_state()
 	
-	if _rewind__can_not_attack_conditional_clause_clauses__has_changes:
-		save_state[REWIND_DATA__can_not_attack_conditional_clause_clauses] = can_not_attack_conditional_clause.get_rewind_save_state()
+	#if _rewind__can_not_attack_conditional_clause_clauses__has_changes:
+	save_state[REWIND_DATA__can_not_attack_conditional_clause_clauses] = can_not_attack_conditional_clause.get_rewind_save_state()
+	#	_rewind__can_not_attack_conditional_clause_clauses__has_changes = false
 	
-	if _rewind__current_attack_cooldown__has_changes:
-		save_state[REWIND_DATA__current_attack_cooldown] = _current_attack_cooldown
+	#if _rewind__current_attack_cooldown__has_changes:
+	save_state[REWIND_DATA__current_attack_cooldown] = _current_attack_cooldown
+	#	_rewind__current_attack_cooldown__has_changes = false
+	
+	#
+	
+	if is_instance_valid(attack_module):
+		save_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA] = attack_module.get_rewind_save_state()
+	
+	if target_detection_module != null:
+		save_state[REWIND_DATA__TARGET_DETECTION_MODULE] = target_detection_module.get_rewind_save_state()
+	
 	
 	return save_state
 
@@ -626,6 +653,12 @@ func load_into_rewind_save_state(arg_state : Dictionary):
 	if arg_state.has(REWIND_DATA__current_attack_cooldown):
 		#_set_current_attack_cooldown(arg_state[REWIND_DATA__current_attack_cooldown])
 		_current_attack_cooldown = arg_state[REWIND_DATA__current_attack_cooldown]
+	
+	if arg_state.has(REWIND_DATA__ATTACK_MODULE_REWIND_DATA):
+		attack_module.load_into_rewind_save_state(arg_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA])
+	
+	if arg_state.has(REWIND_DATA__TARGET_DETECTION_MODULE):
+		target_detection_module.load_into_rewind_save_state(arg_state[REWIND_DATA__TARGET_DETECTION_MODULE])
 	
 
 func destroy_from_rewind_save_state():
@@ -644,5 +677,6 @@ func ended_rewind():
 	.ended_rewind()
 	
 	robot_face.end_sequence__rewinding()
-
+	
+	#_set_current_attack_cooldown(_current_attack_cooldown)
 

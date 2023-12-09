@@ -19,8 +19,8 @@ const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/M
 
 #
 
-signal break_all_player_game_actions()
-
+signal break_all_player_game_actions__blocked_game_actions()
+signal last_calc_block_player_game_actions_changed(arg_val)
 
 signal last_calculated_object_mass_changed(arg_val)
 
@@ -64,6 +64,7 @@ var _base_player_size
 enum BlockPlayerMoveLeftAndRightClauseIds {
 	NOT_ON_GROUND = 0,
 	NO_ENERGY = 1,
+	NO_ROBOT_HEALTH = 2,
 }
 
 var block_player_move_left_and_right_cond_clauses : ConditionalClauses
@@ -347,6 +348,18 @@ var _light_energy : float = 1.0
 var _light_2d__target_mod_a : float = -1
 const LIGHT_2D_MOD_A_PER_SEC : float = 0.4
 
+
+#
+
+enum DisablePlayerCollisionMarkClauseIds {
+	REWINDING = 0,
+	IS_ROBOT_DEAD = 1,
+}
+var disable_player_collision_cond_clauses : ConditionalClauses
+var last_calc_is_player_collision_disabled : bool
+
+
+
 #
 
 onready var sprite_layer = $SpriteLayer
@@ -423,6 +436,12 @@ func _init():
 #	counterforce_blast_particle_compo_pool.source_of_create_resource = self
 	
 	_update_last_calculated_object_mass()
+	
+	
+	disable_player_collision_cond_clauses = ConditionalClauses.new()
+	disable_player_collision_cond_clauses.connect("clause_inserted", self, "_on_disable_player_collision_cond_clauses_updated")
+	disable_player_collision_cond_clauses.connect("clause_removed", self, "_on_disable_player_collision_cond_clauses_updated")
+	_update_last_calc_is_player_collision_disabled()
 
 #
 
@@ -443,15 +462,17 @@ func _update_last_calc_block_player_game_actions():
 	var old_val = last_calc_block_player_game_actions
 	last_calc_block_player_game_actions = !block_player_game_actions_cond_clauses.is_passed
 	
-	if last_calc_block_all_inputs and (old_val != last_calc_block_player_game_actions):
-		_break_all_player_game_actions()
+	if last_calc_block_player_game_actions and (old_val != last_calc_block_player_game_actions):
+		_break_all_player_game_actions__blocked_game_actions()
+	
+	emit_signal("last_calc_block_player_game_actions_changed", last_calc_block_player_game_actions)
 
-func _break_all_player_game_actions():
+func _break_all_player_game_actions__blocked_game_actions():
 	_is_moving_left = false
 	_is_moving_right = false
 	_is_move_breaking = false
 	
-	emit_signal("break_all_player_game_actions")
+	emit_signal("break_all_player_game_actions__blocked_game_actions")
 
 #
 
@@ -498,6 +519,20 @@ func _update_last_calculated_object_mass():
 	mass = last_calculated_object_mass
 	emit_signal("last_calculated_object_mass_changed", last_calculated_object_mass)
 
+#
+
+func _on_disable_player_collision_cond_clauses_updated(arg_clause_id):
+	_update_last_calc_is_player_collision_disabled()
+
+func _update_last_calc_is_player_collision_disabled():
+	var old_val = last_calc_is_player_collision_disabled
+	last_calc_is_player_collision_disabled = !disable_player_collision_cond_clauses.is_passed
+	
+	if old_val != last_calc_is_player_collision_disabled:
+		collision_shape.set_deferred("disabled", last_calc_is_player_collision_disabled)
+		floor_area_2d_coll_shape.set_deferred("disabled", last_calc_is_player_collision_disabled)
+		rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", last_calc_is_player_collision_disabled)
+	
 
 #######
 
@@ -1256,32 +1291,33 @@ func _integrate_forces(state):
 func _process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		if is_player_modi_energy_set:
-			if _is_on_ground__with_instant_ground:
-				player_modi__energy.dec_current_energy(player_modi__energy.get_max_energy() * OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__PERCENT__FROM_INSTANT_GROUND * delta)
-				player_modi__energy.set_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND, player_modi__energy.get_max_energy())
+			if is_robot_alive():
+				if _is_on_ground__with_instant_ground:
+					player_modi__energy.dec_current_energy(player_modi__energy.get_max_energy() * OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__PERCENT__FROM_INSTANT_GROUND * delta)
+					player_modi__energy.set_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND, player_modi__energy.get_max_energy())
+					
+				elif _is_on_ground__with_energy:
+					player_modi__energy.inc_current_energy(player_modi__energy.get_max_energy() * IN_ENERGY__ENERGY_CHARGE_PER_SEC__PERCENT * delta)
+					player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
+					
+				else:
+					player_modi__energy.dec_current_energy(OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__FLAT * delta)
+					player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
 				
-			elif _is_on_ground__with_energy:
-				player_modi__energy.inc_current_energy(player_modi__energy.get_max_energy() * IN_ENERGY__ENERGY_CHARGE_PER_SEC__PERCENT * delta)
-				player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
 				
-			else:
-				player_modi__energy.dec_current_energy(OUT_ENERGY__ENERGY_DISCHARGE_PER_SEC__FLAT * delta)
-				player_modi__energy.remove_forecasted_energy_consume(player_modi__energy.ForecastConsumeId.INSTANT_GROUND)
-			
-			
-			if player_modi__energy.is_no_energy():
-				_no_energy_consecutive_duration += delta
+				if player_modi__energy.is_no_energy():
+					_no_energy_consecutive_duration += delta
+					
+					var loss = NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC + (NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC * _no_energy_consecutive_duration)
+					if loss > NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC:
+						loss = NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC
+					loss *= delta
+					
+					set_current_health(_current_health - loss)
+					
+				else:
+					_no_energy_consecutive_duration = 0
 				
-				var loss = NO_ENERGY__INITIAL_HEALTH_LOSS_PER_SEC + (NO_ENERGY__HEALTH_LOSS_PER_SEC_PER_SEC * _no_energy_consecutive_duration)
-				if loss > NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC:
-					loss = NO_ENERGY__MAX_HEALTH_LOSS_PER_SEC
-				loss *= delta
-				
-				set_current_health(_current_health - loss)
-				
-			else:
-				_no_energy_consecutive_duration = 0
-		
 		
 		if !is_equal_approx(_light_2d__target_mod_a, -1):
 			var mod_a_per_sec = LIGHT_2D_MOD_A_PER_SEC * delta
@@ -1873,13 +1909,7 @@ func set_current_robot_health(arg_val):
 	
 	if _current_robot_health <= 0:
 		_current_robot_health = 0
-		
-		if !_is_robot_dead:
-			_is_robot_dead = true
-			_deferred_create_break_fragments()
-		
-	else:
-		_is_robot_dead = false
+	
 	
 	if old_val != _current_robot_health:
 		_update_self_based_on_has_robot_health()
@@ -1902,18 +1932,35 @@ func get_max_robot_health() -> float:
 	return _max_robot_health
 
 
+
+func is_robot_alive() -> bool:
+	return !_is_robot_dead #!is_zero_approx(_current_robot_health)
+
 #
 
 func _update_self_based_on_has_robot_health():
 	if _current_robot_health <= 0:
+		if !_is_robot_dead:
+			_is_robot_dead = true
+			stop_player_movement()
+			_deferred_create_break_fragments()
+		
 		visible = false
 		
-		#todoimp
+		block_player_move_left_and_right_cond_clauses.attempt_insert_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ROBOT_HEALTH)
 		block_player_game_actions_cond_clauses.attempt_insert_clause(BlockPlayerGameActionsClauseIds.NO_ROBOT_HEALTH)
 		
+		disable_player_collision_cond_clauses.attempt_insert_clause(DisablePlayerCollisionMarkClauseIds.IS_ROBOT_DEAD)
+		
 	else:
+		_is_robot_dead = false
 		visible = true
-	
+		
+		block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ROBOT_HEALTH)
+		block_player_game_actions_cond_clauses.remove_clause(BlockPlayerGameActionsClauseIds.NO_ROBOT_HEALTH)
+		
+		disable_player_collision_cond_clauses.remove_clause(DisablePlayerCollisionMarkClauseIds.IS_ROBOT_DEAD)
+		
 
 
 #todoimp continue player break fragments. after testing for baseenemy
@@ -2459,9 +2506,10 @@ func restore_from_destroyed_from_rewind():
 
 func started_rewind():
 	mode = RigidBody2D.MODE_STATIC
-	collision_shape.set_deferred("disabled", true)
-	floor_area_2d_coll_shape.set_deferred("disabled", true)
-	rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", true)
+	#collision_shape.set_deferred("disabled", true)
+	#floor_area_2d_coll_shape.set_deferred("disabled", true)
+	#rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", true)
+	disable_player_collision_cond_clauses.attempt_insert_clause(DisablePlayerCollisionMarkClauseIds.REWINDING)
 	
 	_attempt_destroy_current_speed_trail()
 
@@ -2471,9 +2519,10 @@ func ended_rewind():
 	#
 	
 	mode = RigidBody2D.MODE_CHARACTER
-	collision_shape.set_deferred("disabled", false)
-	floor_area_2d_coll_shape.set_deferred("disabled", false)
-	rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", false)
+	#collision_shape.set_deferred("disabled", false)
+	#floor_area_2d_coll_shape.set_deferred("disabled", false)
+	#rotating_for_floor_area_2d_coll_shape.set_deferred("disabled", false)
+	disable_player_collision_cond_clauses.remove_clause(DisablePlayerCollisionMarkClauseIds.REWINDING)
 	
 	_use_integ_forces_new_vals = true
 	
