@@ -18,6 +18,9 @@ const LASER_DURATION__CHARGING = 1.0
 const LASER_DURATION__TO_MAX = 0.15
 const LASER_DURATION__TO_MIN = 0.85
 
+const LASER_DURATION__LOOKAHEAD_PREDICT = LASER_DURATION__CHARGING - 0.1
+
+
 const LASER_LENGTH : float = 1400.0
 
 #
@@ -84,6 +87,7 @@ func set_can_draw_laser(arg_val):
 	can_draw_laser = arg_val
 	
 	#_rewind__can_draw_laser__has_changes = true
+	
 
 func set_target_pos_to_draw_to(arg_val):
 	target_pos_to_draw_laser_to = arg_val
@@ -142,16 +146,11 @@ func _physics_process(delta):
 				
 			elif _fire_sequence_state == FireSequenceStateId.FIRE__TO_MIN:
 				if _current_duration_of_laser_completon__to_any > LASER_DURATION__TO_MIN:
-					_current_duration_of_laser_completon__to_any -= LASER_DURATION__TO_MIN
-					#_rewind__current_duration_of_laser_completon__to_any__has_changes = true
-					
-					_fire_sequence_state = FireSequenceStateId.NONE
-					#_rewind__fire_sequence_state__has_changes = true
-					
+					_end_fire_sequence()
 				
 			elif _fire_sequence_state == FireSequenceStateId.CHARGING:
 				if _current_duration_of_laser_completon__to_any > LASER_DURATION__TO_MIN:
-					_current_duration_of_laser_completon__to_any = 0
+					_current_duration_of_laser_completon__to_any -= LASER_DURATION__TO_MIN
 					#_rewind__current_duration_of_laser_completon__to_any__has_changes = true
 					
 					_fire_sequence_state = FireSequenceStateId.FIRE__TO_MAX
@@ -177,6 +176,12 @@ func _cast_ray_and_check_for_player_collision():
 	if result.size() != 0:
 		emit_signal("hit_player", result["position"])
 
+func _end_fire_sequence():
+	_current_duration_of_laser_completon__to_any = 0
+	_fire_sequence_state = FireSequenceStateId.NONE
+	
+
+
 ##
 
 func _set_current_laser_width(arg_val):
@@ -200,6 +205,12 @@ func extend_vector_to_length(arg_origin : Vector2, arg_vec : Vector2, arg_length
 	norm_disp += arg_origin
 	
 	return norm_disp
+
+#
+
+func cancel_all_windups_and_charges__on_wielder_death():
+	_end_fire_sequence()
+	
 
 ###################### 
 # REWIND RELATED

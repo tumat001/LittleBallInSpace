@@ -66,6 +66,7 @@ shape = SubResource( 1 )
 
 [node name="BaseEnemy" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( -191, 103 )
+aim_occulder_type = 1
 starting_attack_cooldown_mode_id = 1
 starting_activation_mode_id = 1
 

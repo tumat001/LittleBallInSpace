@@ -31,7 +31,7 @@ func after_game_init():
 
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 1  #temptodo
+	modi.starting_ball_count = 3  #temptodo
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
 	

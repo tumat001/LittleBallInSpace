@@ -68,6 +68,10 @@ const REWIND_DATA__current_update_delay_before_ping_attempt = "_current_update_d
 
 #
 
+#var aim_occluder_module
+
+#
+
 func set_origin_node(arg_node : Node2D):
 	_origin_node = arg_node
 	_origin_func_to_use = "_get_origin__from_node"
@@ -184,6 +188,9 @@ func _attempt_ping_curr_target():
 		if !_current_target_node.is_robot_alive():
 			do_threshold_test_dist = false
 			should_emit_signal = false
+	
+	#if aim_occluder_module != null:
+	#	if aim_occluder_module
 	
 	if do_threshold_test_dist:
 		for test_dist in _detection_range_arr__HtoL:

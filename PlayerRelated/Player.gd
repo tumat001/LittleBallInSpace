@@ -2340,8 +2340,8 @@ var _rewinded__can_capture_PCA_regions
 var _most_recent_rewind_state
 
 
-# FOR stage02 special
-var _save_rewind_save_state_of_any_nodes : bool = true
+# FOR stage02 special -- no longer used
+#var _save_rewind_save_state_of_any_nodes : bool = true
 
 #var _override__all_nodes_to_rotate_with_cam : Array
 #var _override__objects_to_not_collide_with : Array
@@ -2427,42 +2427,42 @@ func get_rewind_save_state():
 		save_state["player_modi__energy_save_state"] = player_modi__energy.get_rewind_save_state()
 	
 	
-	save_state["_save_rewind_save_state_of_any_nodes"] = _save_rewind_save_state_of_any_nodes
+	#save_state["_save_rewind_save_state_of_any_nodes"] = _save_rewind_save_state_of_any_nodes
 	
-	if _save_rewind_save_state_of_any_nodes:
+	#if _save_rewind_save_state_of_any_nodes:
 		#"all_nodes_to_rotate_with_cam" : _all_nodes_to_rotate_with_cam.duplicate(true),
 		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
 		#"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
 		#"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
-		save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
-		save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
-		save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
-		save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
-		
-	else:
-		save_state["_all_nodes_to_rotate_with_cam"] = []
-		save_state["_objects_to_not_collide_with"] = []
-		save_state["_objects_to_collide_with_after_exit"] = []
-		save_state["_objects_to_add_mask_layer_collision_after_exit"] = []
-		
-	
-	return save_state
-
-# FOR Special01_02
-func __remove_nodes_from_save_state(save_state : Dictionary):
-	save_state["_all_nodes_to_rotate_with_cam"].clear()
-	save_state["_objects_to_not_collide_with"].clear()
-	save_state["_objects_to_collide_with_after_exit"].clear()
-	save_state["_objects_to_add_mask_layer_collision_after_exit"].clear()
-
-func __map_save_state_map_nodes_with_own_nodes(save_state : Dictionary):
 	save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
 	save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
 	save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
 	save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
+#
+#	else:
+#		save_state["_all_nodes_to_rotate_with_cam"] = []
+#		save_state["_objects_to_not_collide_with"] = []
+#		save_state["_objects_to_collide_with_after_exit"] = []
+#		save_state["_objects_to_add_mask_layer_collision_after_exit"] = []
+#
 	
+	return save_state
 
+## FOR Special01_02
+#func __remove_nodes_from_save_state(save_state : Dictionary):
+#	save_state["_all_nodes_to_rotate_with_cam"].clear()
+#	save_state["_objects_to_not_collide_with"].clear()
+#	save_state["_objects_to_collide_with_after_exit"].clear()
+#	save_state["_objects_to_add_mask_layer_collision_after_exit"].clear()
+#
+#func __map_save_state_map_nodes_with_own_nodes(save_state : Dictionary):
+#	save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
+#	save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
+#	save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
+#	save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
+#
 # END Of FOR Special01_02
+
 
 func load_into_rewind_save_state(arg_state):
 	_rewinded__angular_velocity = arg_state["angular_velocity"]
@@ -2550,7 +2550,7 @@ func ended_rewind():
 	
 	###
 	
-	var override_specific_nodes = _most_recent_rewind_state["_save_rewind_save_state_of_any_nodes"]
+	#var override_specific_nodes = _most_recent_rewind_state["_save_rewind_save_state_of_any_nodes"]
 	#if !override_specific_nodes:
 	_all_nodes_to_rotate_with_cam.clear()
 	_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["_all_nodes_to_rotate_with_cam"])

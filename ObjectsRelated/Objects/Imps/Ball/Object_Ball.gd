@@ -50,8 +50,18 @@ var sound_volume_ratio : float = 1.0
 
 #
 
-onready var for_sound_area_2d_coll_shape = $ForSoundArea2D/CollisionShape2D
+var player_dmg__enabled : bool
+var player_dmg__flat_damage = 0
+var player_dmg__give_bonus_dmg_based_on_lin_vel : bool = false
 
+
+const ANIM_NAME__DEFAULT = "default"
+const ANIM_NAME__ENEMY = "enemy"
+var anim_name_to_use : String setget set_anim_name_to_use
+
+#
+
+onready var for_sound_area_2d_coll_shape = $ForSoundArea2D/CollisionShape2D
 
 ###
 
@@ -63,6 +73,16 @@ func _ready():
 	emit_signal("after_ready")
 	
 	add_monitor_to_collision_shape_for_rewind(for_sound_area_2d_coll_shape)
+	
+	set_anim_name_to_use(anim_name_to_use)
+
+#
+
+func set_anim_name_to_use(arg_name):
+	anim_name_to_use = arg_name
+	
+	if is_inside_tree():
+		anim_sprite.play(arg_name)
 
 
 ##
@@ -131,4 +151,13 @@ func _play_sound_in_sound_list__from_collision(sound_list_to_play : Array):
 		var sound_id_to_play = StoreOfRNG.randomly_select_one_element(sound_list_to_play, SingletonsAndConsts.non_essential_rng)
 		AudioManager.helper__play_sound_effect__2d__lower_volume_based_on_dist(sound_id_to_play, global_position, sound_volume_ratio, null, AudioManager.MaskLevel.Minor_SoundFX)
 		
+
+#
+
+
+#func calculate_player_damage(arg_player_lin_vel : Vector2):
+#	pass
+#
+
+
 

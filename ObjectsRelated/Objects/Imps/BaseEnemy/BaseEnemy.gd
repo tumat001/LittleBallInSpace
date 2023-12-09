@@ -38,7 +38,7 @@ const SHOTS_TO_DESTROY_PLAYER = 1 #2 #temptodo
 
 enum EnemyType {
 	LASER = 0,
-	#BALL = 1
+	BALL = 1
 }
 export(EnemyType) var enemy_type : int
 var attack_module
@@ -127,17 +127,22 @@ export(StartingActivationModeId) var starting_activation_mode_id
 
 #
 
-
-var current_health : float setget set_current_health
-
-var _rewind__current_health__has_changes : bool
+const INITIAL_HEALTH = 2
+var current_health : float = INITIAL_HEALTH setget set_current_health
 const REWIND_DATA__current_health = "current_health"
 
+var _is_robot_dead : bool
 
 #
 
 const CIRCLE_PARTITION = (2*PI/8) #North, NW, W, ...
 var intent_final_robot_face_angle : float
+
+#
+
+var _objects_to_not_collide_with : Array
+var _objects_to_collide_with_after_exit : Array
+var _objects_to_add_mask_layer_collision_after_exit : Array
 
 
 ####### FRAGMENTS RELATED
@@ -344,15 +349,18 @@ func _on_target_detection_module_attempted_ping(arg_success):
 		
 	else:
 		if enemy_type == EnemyType.LASER:
-			attack_module.can_draw_laser = true
-		
+			#depends if occluded or not
+			#attack_module.can_draw_laser = true
+			pass
+			
 	
 	#print("attempted ping target: %s" % [arg_success])
 
 func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distance, arg_threshold_distance, arg_refresh_rate, arg_pos_target, arg_angle, arg_target):
 	#print("pinged target. is occluded: %s" % [is_target_pos_occluded(arg_pos_target)])
 	
-	if !is_target_pos_occluded(arg_pos_target):
+	if !is_target_pos_occluded(arg_pos_target) and !_is_robot_dead:
+		attack_module.can_draw_laser = true
 		
 		if enemy_type == EnemyType.LASER:
 			
@@ -367,9 +375,11 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 					if is_instance_valid(arg_target) and ("linear_velocity" in arg_target):
 						target_velocity = arg_target.linear_velocity
 					
-					var lookahead_duration = attack_module.LASER_DURATION__CHARGING + attack_module.LASER_DURATION__TO_MAX
+					var lookahead_duration = attack_module.LASER_DURATION__LOOKAHEAD_PREDICT
 					trajectory_modified_pos = get_modified_target_pos_using_aim_type__velo_predict(arg_pos_target, target_velocity, lookahead_duration)
 					
+				
+				#print("aim_traj_type: %s" % aim_trajectory_type)
 				
 				trajectory_modified_pos = attack_module.extend_vector_to_length(global_position, trajectory_modified_pos, attack_module.LASER_LENGTH)
 				attack_module.target_pos_to_draw_laser_to = trajectory_modified_pos
@@ -379,10 +389,19 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 			
 			
 			#print("is not in fire sequence: %s. fire_state: %s" % [!attack_module.is_in_fire_sequence(), attack_module._fire_sequence_state])
+			
+			
+		elif enemy_type == EnemyType.BALL:
+			pass
+			
 		
 		if last_calc_can_attack:
 			_attempt_attack_target()
 		
+		
+	else:
+		
+		attack_module.can_draw_laser = false
 
 func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
 	robot_face.helper__eyes_look_toward_position(arg_pos, true)
@@ -416,6 +435,12 @@ func _attempt_attack_target():
 		
 		
 		#can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IS_ATTACKING)
+		
+	elif enemy_type == EnemyType.BALL:
+		pass
+		
+	
+	
 
 #
 
@@ -430,7 +455,7 @@ func _tween_rotate_robot_face(arg_rotation):
 #
 
 func _physics_process(delta):
-	if _current_attack_cooldown > 0:
+	if _current_attack_cooldown > 0 and !_is_robot_dead:
 		_set_current_attack_cooldown(_current_attack_cooldown - delta)
 	
 
@@ -470,6 +495,31 @@ func _on_attack_module_laser__hit_player(arg_contact_pos):
 #########################
 
 func _on_CollForProjOrPlayer_body_entered(body):
+	if !has_object_to_not_collide_with(body):
+		_do_calc_damage_if_appropriate(body)
+	
+
+func _on_CollForProjOrPlayer_body_exited(body):
+	_on_body_exited__base_object(body)
+
+
+#
+
+func _on_body_exited__base_object(body):
+	if _objects_to_collide_with_after_exit.has(body):
+		remove_objects_to_not_collide_with(body)
+		remove_objects_to_collide_with_after_exit(body)
+	
+	if _objects_to_add_mask_layer_collision_after_exit.has(body):
+		remove_objects_to_add_mask_layer_collision_after_exit(body)
+	
+
+
+#
+
+
+
+func _do_calc_damage_if_appropriate(body):
 	var dmg = 0
 	if body.get("is_class_type_obj_ball"):
 		dmg = _calc_damage_of_obj_ball(body)
@@ -478,7 +528,6 @@ func _on_CollForProjOrPlayer_body_entered(body):
 	
 	if dmg > 0:
 		set_current_health(current_health - dmg)
-
 
 func _calc_damage_of_obj_ball(arg_obj_ball):
 	var lin_vel = (arg_obj_ball.linear_velocity - linear_velocity).length()
@@ -507,8 +556,26 @@ func _calc_damage_of_player(arg_player):
 func set_current_health(arg_val):
 	current_health = arg_val
 	
-	if current_health >= 0:
-		queue_free()
+	if current_health < 0:
+		current_health = 0
+	
+	if current_health <= 0:
+		if !_is_robot_dead:
+			_set_is_robot_dead__and_do_death_actions()
+		
+	else:
+		
+		_is_robot_dead = false
+
+func _set_is_robot_dead__and_do_death_actions():
+	_is_robot_dead = true
+	queue_free()
+	
+	if enemy_type == EnemyType.LASER:
+		attack_module.cancel_all_windups_and_charges__on_wielder_death()
+
+func is_robot_alive():
+	return !_is_robot_dead
 
 #
 
@@ -604,7 +671,7 @@ func _create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : 
 	fragment.position = global_position + (arg_pos_modif.rotated(arg_pos_modif_angle))
 	fragment.texture_to_use__fragment = arg_texture
 	fragment.rotation = arg_sprite_rotation
-	fragment.object_fragment_representation_id = StoreOfObjects.FRAGMENT__ENEMY_METAILIC_SOUND_LIST
+	fragment.object_fragment_representation_id = StoreOfObjects.ObjectTypeIds.FRAGMENT__ENEMY_METALLIC #StoreOfObjects.FRAGMENT__ENEMY_METAILIC_SOUND_LIST
 	
 	SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 	
@@ -612,9 +679,52 @@ func _create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : 
 
 
 
+#####
+
+
+func add_object_to_not_collide_with(arg_obj):
+	if !_objects_to_not_collide_with.has(arg_obj):
+		_objects_to_not_collide_with.append(arg_obj)
+	
+
+func remove_objects_to_not_collide_with(arg_obj):
+	if _objects_to_not_collide_with.has(arg_obj):
+		_objects_to_not_collide_with.erase(arg_obj)
+	
+
+func has_object_to_not_collide_with(arg_obj):
+	return _objects_to_not_collide_with.has(arg_obj)
+
+
+
+func add_objects_to_collide_with_after_exit(arg_obj):
+	if !_objects_to_collide_with_after_exit.has(arg_obj):
+		_objects_to_collide_with_after_exit.append(arg_obj)
+
+func remove_objects_to_collide_with_after_exit(arg_obj):
+	if _objects_to_collide_with_after_exit.has(arg_obj):
+		_objects_to_collide_with_after_exit.erase(arg_obj)
+
+
+func add_objects_to_add_mask_layer_collision_after_exit(arg_obj):
+	if !_objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
+		_objects_to_add_mask_layer_collision_after_exit.append(arg_obj)
+		
+		arg_obj.block_can_collide_with_player_cond_clauses.attempt_insert_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+
+func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
+	if _objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
+		_objects_to_add_mask_layer_collision_after_exit.erase(arg_obj)
+		
+		arg_obj.block_can_collide_with_player_cond_clauses.remove_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+		
+
+
 ###################### 
 # REWIND RELATED
 #####################
+
+var _most_recent_rewind_state
 
 func queue_free():
 	if !is_dead_but_reserved_for_rewind:  #first time, and no repeats
@@ -642,17 +752,25 @@ func get_rewind_save_state():
 		save_state[REWIND_DATA__TARGET_DETECTION_MODULE] = target_detection_module.get_rewind_save_state()
 	
 	
+	if enemy_type == EnemyType.BALL:
+		save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
+		save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
+		save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
+	
+	save_state[REWIND_DATA__current_health] = current_health
+	
 	return save_state
 
 func load_into_rewind_save_state(arg_state : Dictionary):
 	.load_into_rewind_save_state(arg_state)
 	
+	_most_recent_rewind_state = arg_state
+	
 	if arg_state.has(REWIND_DATA__can_not_attack_conditional_clause_clauses):
 		can_not_attack_conditional_clause.load_into_rewind_save_state(arg_state[REWIND_DATA__can_not_attack_conditional_clause_clauses])
 	
-	if arg_state.has(REWIND_DATA__current_attack_cooldown):
-		#_set_current_attack_cooldown(arg_state[REWIND_DATA__current_attack_cooldown])
-		_current_attack_cooldown = arg_state[REWIND_DATA__current_attack_cooldown]
+	#_set_current_attack_cooldown(arg_state[REWIND_DATA__current_attack_cooldown])
+	_current_attack_cooldown = arg_state[REWIND_DATA__current_attack_cooldown]
 	
 	if arg_state.has(REWIND_DATA__ATTACK_MODULE_REWIND_DATA):
 		attack_module.load_into_rewind_save_state(arg_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA])
@@ -660,6 +778,8 @@ func load_into_rewind_save_state(arg_state : Dictionary):
 	if arg_state.has(REWIND_DATA__TARGET_DETECTION_MODULE):
 		target_detection_module.load_into_rewind_save_state(arg_state[REWIND_DATA__TARGET_DETECTION_MODULE])
 	
+	current_health = arg_state[REWIND_DATA__current_health]
+
 
 func destroy_from_rewind_save_state():
 	.destroy_from_rewind_save_state()
@@ -678,5 +798,23 @@ func ended_rewind():
 	
 	robot_face.end_sequence__rewinding()
 	
-	#_set_current_attack_cooldown(_current_attack_cooldown)
+	_update_last_calc_can_attack()
+	
+	
+	if enemy_type == EnemyType.BALL:
+		_objects_to_not_collide_with.clear()
+		for obj in _most_recent_rewind_state["_objects_to_not_collide_with"]:
+			add_object_to_not_collide_with(obj)
+		
+		_objects_to_collide_with_after_exit.clear()
+		for obj in _most_recent_rewind_state["_objects_to_collide_with_after_exit"]:
+			add_objects_to_collide_with_after_exit(obj)
+		
+		_objects_to_add_mask_layer_collision_after_exit.clear()
+		for obj in _most_recent_rewind_state["_objects_to_add_mask_layer_collision_after_exit"]:
+			add_objects_to_add_mask_layer_collision_after_exit(obj)
+	
+	set_current_health(current_health)
+	_set_current_attack_cooldown(_current_attack_cooldown)
+
 

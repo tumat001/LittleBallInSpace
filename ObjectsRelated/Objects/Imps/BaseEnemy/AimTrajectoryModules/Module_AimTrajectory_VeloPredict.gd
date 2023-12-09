@@ -13,7 +13,7 @@ var projectile_velocity : Vector2
 var consider_projectile_velocity : bool = false
 
 
-func get_calculated_angle_of_aim():
+func get_calculated_angle_of_aim() -> float:
 	var predicted_target_pos = target_actual_position + (target_velocity * lookahead_duration)
 	var predicted_origin_pos = origin_position + (origin_velocity * lookahead_duration)
 	
@@ -31,12 +31,12 @@ func get_calculated_angle_of_aim():
 	return predicted_origin_pos.angle_to_point(predicted_target_pos) 
 	
 
-func get_calculated_position_of_aim():
+func get_calculated_position_of_aim() -> Vector2:
 	var predicted_target_pos = target_actual_position + (target_velocity * lookahead_duration)
 	var predicted_origin_pos = origin_position + (origin_velocity * lookahead_duration)
 	
 	if !consider_projectile_velocity:
-		return predicted_origin_pos.angle_to_point(predicted_target_pos)
+		return predicted_target_pos
 	
 	#
 	
