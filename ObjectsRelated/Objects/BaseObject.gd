@@ -2,6 +2,7 @@ extends RigidBody2D
 
 
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
+const StoreOfPhysicsLayers = preload("res://SingletonsAndConsts/StoreOfPhysicsLayers.gd")
 
 #
 
@@ -95,10 +96,9 @@ func _update_last_calculated_can_collide_with_player():
 	last_calculated_can_collide_with_player = block_can_collide_with_player_cond_clauses.is_passed
 	
 	if last_calculated_can_collide_with_player:
-		set_collision_mask_bit(0, true)
+		set_collision_mask_bit(StoreOfPhysicsLayers.LAYER__PLAYER__BIT, true)
 	else:
-		set_collision_mask_bit(0, false)
-
+		set_collision_mask_bit(StoreOfPhysicsLayers.LAYER__PLAYER__BIT, false)
 
 
 #

@@ -1599,6 +1599,11 @@ func _on_body_entered__base_object(body_rid, body, body_shape_index, local_shape
 	if base_object.mode == MODE_STATIC:
 		add_static_base_object_in_contact_with(base_object)
 	
+	if body.get("is_class_type_obj_ball"):
+		if body.player_dmg__enabled:
+			var dmg = body.calculate_damage_to__player(linear_velocity)
+			set_current_robot_health(get_current_robot_health() - dmg)
+	
 #	#var object_momentum : Vector2 = base_object.calculate_momentum() / last_calculated_object_mass
 #	#var self_momentum = get_player_linear_velocity() * last_calculated_object_mass
 #

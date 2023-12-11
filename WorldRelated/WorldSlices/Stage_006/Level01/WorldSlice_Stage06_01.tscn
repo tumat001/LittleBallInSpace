@@ -65,7 +65,8 @@ position = Vector2( 48, -22 )
 shape = SubResource( 1 )
 
 [node name="BaseEnemy" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
-position = Vector2( -191, 103 )
+position = Vector2( -71, -31 )
+enemy_type = 1
 aim_occulder_type = 1
 starting_attack_cooldown_mode_id = 1
 starting_activation_mode_id = 1

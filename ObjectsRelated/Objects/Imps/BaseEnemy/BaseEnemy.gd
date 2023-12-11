@@ -6,6 +6,7 @@ const Module_AimOccluder = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/
 const Module_AimTrajectory_VeloPredict = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimTrajectoryModules/Module_AimTrajectory_VeloPredict.gd")
 #const Module_AttackModule_Laser = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Laser.gd")
 const Module_AttackModule_Laser_Scene = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Laser.tscn")
+const Module_AttackModule_Ball_Scene = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/Module_AttackModule_Ball.tscn")
 
 const Module_TargetDetection = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/TargetDetectionModule/Module_TargetDetection.gd")
 
@@ -29,6 +30,13 @@ const Texture_Fragment__WeaponLaser_N03 = preload("res://ObjectsRelated/Objects/
 #
 
 signal current_attack_cooldown_changed(arg_val)
+
+#
+
+const PHY_OBJ_MASS = 140.0
+
+const LASER_COLOR__LASER = Color("#DA0205")
+const LASER_COLOR__BALL = Color("#DA0205")
 
 #
 
@@ -127,8 +135,7 @@ export(StartingActivationModeId) var starting_activation_mode_id
 
 #
 
-const INITIAL_HEALTH = 2
-var current_health : float = INITIAL_HEALTH setget set_current_health
+var current_health : float = GameSettingsManager.combat__current_max_enemy_health setget set_current_health
 const REWIND_DATA__current_health = "current_health"
 
 var _is_robot_dead : bool
@@ -193,6 +200,7 @@ func _update_last_calc_can_attack():
 #
 
 func _ready():
+	mass = PHY_OBJ_MASS
 	call_deferred("_deferred_ready")
 	
 
@@ -202,8 +210,8 @@ func _deferred_ready():
 	if enemy_type == EnemyType.LASER:
 		_ready__config_self_as_type_laser()
 		
-	else:
-		pass
+	elif enemy_type == EnemyType.BALL:
+		_ready__config_self_as_type_ball()
 		
 	
 
@@ -248,12 +256,13 @@ func _ready__config_self_as_type_laser():
 	# sprite for LASER
 	sprite__laser = Sprite.new()
 	sprite__laser.texture = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BaseEnemy_Weapon_Laser.png")
+	sprite__laser.offset.y = 20
 	weapon_sprite_container.add_child(sprite__laser)
 	
 	# attk module
 	attack_module = Module_AttackModule_Laser_Scene.instance()
 	attack_module.can_draw_laser = false
-	attack_module.laser_color = Color("#DA0205")
+	attack_module.laser_color = LASER_COLOR__LASER
 	attack_module.connect("hit_player", self, "_on_attack_module_laser__hit_player")
 	add_child(attack_module)
 	
@@ -266,7 +275,15 @@ func _ready__config_self_as_type_laser():
 		aim_occluder_module.direct_space_state = get_world_2d().direct_space_state
 		
 
-
+func _ready__config_self_as_type_ball():
+	#attk module
+	attack_module = Module_AttackModule_Ball_Scene.instance()
+	attack_module.can_draw_laser = false
+	attack_module.laser_color = LASER_COLOR__BALL
+	attack_module.body_to_ignore_on_ball_launch = self
+	attack_module.ball_flat_dmg = GameSettingsManager.combat__current_max_player_health / SHOTS_TO_DESTROY_PLAYER
+	attack_module.ball_dmg__max_bonus_dmg_based_on_lin_vel = GameSettingsManager.combat__current_max_player_health/2
+	add_child(attack_module)
 
 #
 
@@ -316,12 +333,14 @@ func is_target_pos_occluded(arg_pos : Vector2) -> bool:
 func get_modified_target_pos_using_aim_type__none(arg_pos : Vector2) -> Vector2:
 	return arg_pos
 
-func get_modified_target_pos_using_aim_type__velo_predict(arg_pos : Vector2, arg_target_velo : Vector2, arg_lookahead : float) -> Vector2:
+func get_modified_target_pos_using_aim_type__velo_predict(arg_pos : Vector2, arg_target_velo : Vector2, arg_lookahead : float, arg_consider_projectile_velocity = false, arg_proj_velocity : float = 1.0) -> Vector2:
 	aim_trajectory_module.target_actual_position = arg_pos
 	aim_trajectory_module.origin_position = global_position
 	aim_trajectory_module.target_velocity = arg_target_velo
 	aim_trajectory_module.origin_velocity = linear_velocity
 	aim_trajectory_module.lookahead_duration = arg_lookahead
+	aim_trajectory_module.consider_projectile_velocity = arg_consider_projectile_velocity
+	aim_trajectory_module.projectile_velocity = arg_proj_velocity
 	
 	return aim_trajectory_module.get_calculated_position_of_aim()
 
@@ -344,6 +363,10 @@ func _on_target_detection_module_attempted_ping(arg_success):
 	if !arg_success:
 		if enemy_type == EnemyType.LASER:
 			attack_module.can_draw_laser = false
+			
+		elif enemy_type == EnemyType.BALL:
+			attack_module.can_draw_laser = false
+			
 		
 		_look_toward_position(global_position, false)
 		
@@ -353,6 +376,8 @@ func _on_target_detection_module_attempted_ping(arg_success):
 			#attack_module.can_draw_laser = true
 			pass
 			
+		elif enemy_type == EnemyType.BALL:
+			pass
 	
 	#print("attempted ping target: %s" % [arg_success])
 
@@ -360,48 +385,79 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 	#print("pinged target. is occluded: %s" % [is_target_pos_occluded(arg_pos_target)])
 	
 	if !is_target_pos_occluded(arg_pos_target) and !_is_robot_dead:
-		attack_module.can_draw_laser = true
+		
+		
 		
 		if enemy_type == EnemyType.LASER:
+			attack_module.can_draw_laser = true
 			
 			#update target pos if not in fire sequence
 			if !attack_module.is_in_fire_sequence():
-				var trajectory_modified_pos = arg_pos_target
-				if aim_trajectory_type == AimTrajectoryType.NO_MODIF:
-					trajectory_modified_pos = get_modified_target_pos_using_aim_type__none(arg_pos_target)
-					
-				elif aim_trajectory_type == AimTrajectoryType.VELO_PREDICT:
-					var target_velocity = Vector2.ZERO
-					if is_instance_valid(arg_target) and ("linear_velocity" in arg_target):
-						target_velocity = arg_target.linear_velocity
-					
-					var lookahead_duration = attack_module.LASER_DURATION__LOOKAHEAD_PREDICT
-					trajectory_modified_pos = get_modified_target_pos_using_aim_type__velo_predict(arg_pos_target, target_velocity, lookahead_duration)
-					
-				
-				#print("aim_traj_type: %s" % aim_trajectory_type)
-				
-				trajectory_modified_pos = attack_module.extend_vector_to_length(global_position, trajectory_modified_pos, attack_module.LASER_LENGTH)
+				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT)
 				attack_module.target_pos_to_draw_laser_to = trajectory_modified_pos
 				sprite__laser.rotation = global_position.angle_to_point(trajectory_modified_pos) + PI/2
 				
 				_look_toward_position(trajectory_modified_pos, true)
 			
 			
+			if last_calc_can_attack:
+				_attempt_attack_target__as_laser()
 			#print("is not in fire sequence: %s. fire_state: %s" % [!attack_module.is_in_fire_sequence(), attack_module._fire_sequence_state])
 			
 			
 		elif enemy_type == EnemyType.BALL:
-			pass
+			attack_module.can_draw_laser = true
 			
-		
-		if last_calc_can_attack:
-			_attempt_attack_target()
+			#update target pos if not in fire sequence
+			if !attack_module.is_in_fire_sequence():
+				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT)
+				attack_module.target_pos_to_draw_laser_to = trajectory_modified_pos
+				
+				_look_toward_position(trajectory_modified_pos, true)
+			
+			
+			if last_calc_can_attack:
+				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT)
+				var ball_speed = attack_module.get_launch_strength_to_use(global_position, arg_pos_target)
+				
+				var angle_of_trajectory_modified_pos = global_position.angle_to_point(trajectory_modified_pos)
+				var final_lin_vel_of_ball : Vector2 = Vector2(ball_speed, 0).rotated(angle_of_trajectory_modified_pos + PI)
+				
+				_attempt_attack_target__as_ball(final_lin_vel_of_ball)
+			
+			
 		
 		
 	else:
 		
-		attack_module.can_draw_laser = false
+		if enemy_type == EnemyType.LASER:
+			attack_module.can_draw_laser = false
+			
+		elif enemy_type == EnemyType.BALL:
+			attack_module.can_draw_laser = false
+			
+		
+		
+
+#
+
+func _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, lookahead_duration, arg_consider_projectile_velocity = false, arg_proj_velocity : float = 1.0):
+	var trajectory_modified_pos = arg_pos_target
+	if aim_trajectory_type == AimTrajectoryType.NO_MODIF:
+		trajectory_modified_pos = get_modified_target_pos_using_aim_type__none(arg_pos_target)
+		
+	elif aim_trajectory_type == AimTrajectoryType.VELO_PREDICT:
+		var target_velocity = Vector2.ZERO
+		if is_instance_valid(arg_target) and ("linear_velocity" in arg_target):
+			target_velocity = arg_target.linear_velocity
+		
+		#var lookahead_duration = attack_module.LASER_DURATION__LOOKAHEAD_PREDICT
+		trajectory_modified_pos = get_modified_target_pos_using_aim_type__velo_predict(arg_pos_target, target_velocity, lookahead_duration, arg_consider_projectile_velocity, arg_proj_velocity)
+		
+	
+	trajectory_modified_pos = attack_module.extend_vector_to_length(global_position, trajectory_modified_pos, attack_module.LASER_LENGTH)
+	return trajectory_modified_pos
+
 
 func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
 	robot_face.helper__eyes_look_toward_position(arg_pos, true)
@@ -426,20 +482,21 @@ func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
 	return perfected_translated * CIRCLE_PARTITION
 	
 
-func _attempt_attack_target():
-	if enemy_type == EnemyType.LASER:
-		if !attack_module.is_in_fire_sequence():
-			attack_module.start_fire_sequence()
-			_current_attack_cooldown = ATTACK_COOLDOWN
-			
-		
-		
-		#can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.IS_ATTACKING)
-		
-	elif enemy_type == EnemyType.BALL:
-		pass
-		
+func _attempt_attack_target__as_laser():
+	if !attack_module.is_in_fire_sequence():
+		attack_module.start_fire_sequence()
+		_current_attack_cooldown = ATTACK_COOLDOWN
+
+func _attempt_attack_target__as_ball(arg_ball_lin_vel : Vector2):
+	attack_module.ball_lin_vel_to_use = arg_ball_lin_vel
 	
+	if !attack_module.is_in_fire_sequence():
+		attack_module.start_fire_sequence()
+		_current_attack_cooldown = ATTACK_COOLDOWN
+	
+	
+#	attack_module.fire_ball_toward_position(global_position, arg_ball_lin_vel)
+#	_current_attack_cooldown = ATTACK_COOLDOWN
 	
 
 #
@@ -490,7 +547,8 @@ func _set_current_attack_cooldown(arg_val):
 func _on_attack_module_laser__hit_player(arg_contact_pos):
 	var player = SingletonsAndConsts.current_game_elements.get_current_player()
 	player.set_current_robot_health(player.get_current_robot_health() - (player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
-
+	
+	
 
 #########################
 
@@ -522,7 +580,8 @@ func _on_body_exited__base_object(body):
 func _do_calc_damage_if_appropriate(body):
 	var dmg = 0
 	if body.get("is_class_type_obj_ball"):
-		dmg = _calc_damage_of_obj_ball(body)
+		if body.enemy_dmg__enabled:
+			dmg = _calc_damage_of_obj_ball(body)
 	elif body.get("is_player"):
 		dmg = _calc_damage_of_player(body)
 	
@@ -530,13 +589,7 @@ func _do_calc_damage_if_appropriate(body):
 		set_current_health(current_health - dmg)
 
 func _calc_damage_of_obj_ball(arg_obj_ball):
-	var lin_vel = (arg_obj_ball.linear_velocity - linear_velocity).length()
-	
-	if lin_vel >= 365: #375:
-		return 1
-		
-	else:
-		return 0
+	return arg_obj_ball.calculate_damage_to__enemy(linear_velocity)
 	
 
 func _calc_damage_of_player(arg_player):
@@ -572,6 +625,8 @@ func _set_is_robot_dead__and_do_death_actions():
 	queue_free()
 	
 	if enemy_type == EnemyType.LASER:
+		attack_module.cancel_all_windups_and_charges__on_wielder_death()
+	elif enemy_type == EnemyType.BALL:
 		attack_module.cancel_all_windups_and_charges__on_wielder_death()
 
 func is_robot_alive():
@@ -685,12 +740,14 @@ func _create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : 
 func add_object_to_not_collide_with(arg_obj):
 	if !_objects_to_not_collide_with.has(arg_obj):
 		_objects_to_not_collide_with.append(arg_obj)
-	
+		
+		add_collision_exception_with(arg_obj)
 
 func remove_objects_to_not_collide_with(arg_obj):
 	if _objects_to_not_collide_with.has(arg_obj):
 		_objects_to_not_collide_with.erase(arg_obj)
-	
+		
+		remove_collision_exception_with(arg_obj)
 
 func has_object_to_not_collide_with(arg_obj):
 	return _objects_to_not_collide_with.has(arg_obj)
@@ -710,13 +767,14 @@ func add_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 	if !_objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
 		_objects_to_add_mask_layer_collision_after_exit.append(arg_obj)
 		
-		arg_obj.block_can_collide_with_player_cond_clauses.attempt_insert_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+		#arg_obj.block_can_collide_with_player_cond_clauses.attempt_insert_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+		
 
 func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 	if _objects_to_add_mask_layer_collision_after_exit.has(arg_obj):
 		_objects_to_add_mask_layer_collision_after_exit.erase(arg_obj)
 		
-		arg_obj.block_can_collide_with_player_cond_clauses.remove_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
+		#arg_obj.block_can_collide_with_player_cond_clauses.remove_clause(arg_obj.BlockCollisionWithPlayerClauseIds.BLOCK_UNTIL_EXIT_PLAYER)
 		
 
 
@@ -745,7 +803,7 @@ func get_rewind_save_state():
 	
 	#
 	
-	if is_instance_valid(attack_module):
+	if is_instance_valid(attack_module) and attack_module.is_rewindable:
 		save_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA] = attack_module.get_rewind_save_state()
 	
 	if target_detection_module != null:

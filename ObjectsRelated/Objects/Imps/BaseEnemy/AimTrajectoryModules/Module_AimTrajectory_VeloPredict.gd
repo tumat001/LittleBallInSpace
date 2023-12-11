@@ -9,7 +9,7 @@ var origin_velocity : Vector2
 
 var lookahead_duration : float
 
-var projectile_velocity : Vector2
+var projectile_velocity : float #: Vector2
 var consider_projectile_velocity : bool = false
 
 

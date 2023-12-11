@@ -156,13 +156,24 @@ func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
 
 
 #
-func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg):
+func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel):
 	arg_ball.player_dmg__enabled = true
-	arg_ball.player_dmg__flat_damage = arg_flat_dmg
-	arg_ball.player_dmg__give_bonus_dmg_based_on_lin_vel = false
+	arg_ball.enemy_dmg__enabled = false
+	
+	arg_ball.x_dmg__flat_dmg = arg_flat_dmg
+	arg_ball.x_dmg__give_bonus_dmg_based_on_lin_vel = true
+	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = arg_x_dmg__max_bonus_dmg_based_on_lin_vel
 	arg_ball.anim_name_to_use = arg_ball.ANIM_NAME__ENEMY
 	
-	#todo make a trail for this
+	#todoimp make a trail for this
+
+func helper_ball__configure_as_player_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel):
+	arg_ball.player_dmg__enabled = false
+	arg_ball.enemy_dmg__enabled = true
+	
+	arg_ball.x_dmg__flat_dmg = arg_flat_dmg
+	arg_ball.x_dmg__give_bonus_dmg_based_on_lin_vel = true
+	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = arg_x_dmg__max_bonus_dmg_based_on_lin_vel
 
 #
 func helper_ball__launch_at_vec(arg_ball, arg_vec : Vector2):

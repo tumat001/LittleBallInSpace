@@ -51,9 +51,11 @@ var sound_volume_ratio : float = 1.0
 #
 
 var player_dmg__enabled : bool
-var player_dmg__flat_damage = 0
-var player_dmg__give_bonus_dmg_based_on_lin_vel : bool = false
+var enemy_dmg__enabled : bool
 
+var x_dmg__flat_dmg : float = 0
+var x_dmg__give_bonus_dmg_based_on_lin_vel : bool = false
+var x_dmg__max_bonus_dmg_based_on_lin_vel : float
 
 const ANIM_NAME__DEFAULT = "default"
 const ANIM_NAME__ENEMY = "enemy"
@@ -155,9 +157,30 @@ func _play_sound_in_sound_list__from_collision(sound_list_to_play : Array):
 #
 
 
-#func calculate_player_damage(arg_player_lin_vel : Vector2):
-#	pass
-#
+func calculate_damage_to__player(arg_player_lin_vel : Vector2):
+	var dmg = x_dmg__flat_dmg
+	
+	if x_dmg__give_bonus_dmg_based_on_lin_vel:
+		var final_lin_vel = (linear_velocity - arg_player_lin_vel).length()
+		if final_lin_vel >= 365 / 2: #375:
+			dmg += x_dmg__max_bonus_dmg_based_on_lin_vel
+			
+		else:
+			dmg += 0
+	
+	return dmg
 
+func calculate_damage_to__enemy(arg_enemy_lin_vel : Vector2):
+	var dmg = x_dmg__flat_dmg
+	
+	if x_dmg__give_bonus_dmg_based_on_lin_vel:
+		var final_lin_vel = (linear_velocity - arg_enemy_lin_vel).length()
+		if final_lin_vel >= 365 / 2: #375:
+			dmg += x_dmg__max_bonus_dmg_based_on_lin_vel
+			
+		else:
+			dmg += 0
+	
+	return dmg
 
 

@@ -7,6 +7,8 @@ const PlayerModi_LaunchBall_Node_Scene = preload("res://PlayerRelated/PlayerModi
 
 const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.gd")
 
+#const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.gd")
+
 ##
 
 #const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
@@ -354,6 +356,8 @@ func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 		ball.randomize_color_modulate__except_red()
 	else:
 		ball.tween_rainbow_color()
+	
+	StoreOfObjects.helper_ball__configure_as_player_ball_proj(ball, 0, GameSettingsManager.combat__current_max_enemy_health/2)
 	
 	#ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
 	#ball.connect()

@@ -497,6 +497,13 @@ const _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default 
 
 ####
 
+const COMBAT__DEFAULT_MAX_PLAYER_HEALTH : float = 100.0
+var combat__current_max_player_health = COMBAT__DEFAULT_MAX_PLAYER_HEALTH
+const COMBAT__DEFAULT_MAX_ENEMY_HEALTH : float = 100.0
+var combat__current_max_enemy_health = COMBAT__DEFAULT_MAX_ENEMY_HEALTH
+
+####
+
 var _is_manager_initialized : bool
 
 
