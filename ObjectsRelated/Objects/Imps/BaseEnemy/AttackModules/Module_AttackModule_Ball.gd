@@ -63,8 +63,7 @@ func _physics_process(delta):
 					_current_duration_of_laser_completon__to_any = 0
 					#_rewind__current_duration_of_laser_completon__to_any__has_changes = true
 					
-					#todoimp change laserfire to ballfire
-					AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_MainFire, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
+					AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Enemy_LaunchBall, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 					
 					_fire_ball_toward_position(global_position, ball_lin_vel_to_use)
 					

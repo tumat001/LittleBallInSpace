@@ -8,7 +8,9 @@ const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/Tra
 
 var _is_first_time__do_cutscenes : bool
 
-#var _current_long_transition
+#
+
+onready var fast_respawn_position_2d = $MiscContainer/FastRespawnPos2D
 
 ###
 
@@ -17,24 +19,41 @@ func _init():
 	
 
 
-func _on_after_game_start_init():
-	._on_after_game_start_init()
+func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
+	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
-	## temptodo
+	#temptodo
 	return
 	
-	#
 	
 	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
 		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
 		
 		if is_fast_respawn:
+			arg_player.global_position = fast_respawn_position_2d.global_position
 			_is_first_time__do_cutscenes = false
+			
 		else:
 			_is_first_time__do_cutscenes = true
 		
+		
 	else:
 		_is_first_time__do_cutscenes = true
+
+func _on_after_game_start_init():
+	._on_after_game_start_init()
+	
+	
+#	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
+#		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
+#
+#		if is_fast_respawn:
+#			_is_first_time__do_cutscenes = false
+#		else:
+#			_is_first_time__do_cutscenes = true
+#
+#	else:
+#		_is_first_time__do_cutscenes = true
 	
 	if _is_first_time__do_cutscenes:
 		SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6, true)

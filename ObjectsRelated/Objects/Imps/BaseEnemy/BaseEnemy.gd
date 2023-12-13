@@ -33,14 +33,29 @@ signal current_attack_cooldown_changed(arg_val)
 
 #
 
-const PHY_OBJ_MASS = 140.0
-
-const LASER_COLOR__LASER = Color("#DA0205")
-const LASER_COLOR__BALL = Color("#DA0205")
+var _base_enemy_size : Vector2
 
 #
 
-const SHOTS_TO_DESTROY_PLAYER = 1 #2 #temptodo
+const PHY_OBJ_MASS = 140.0
+
+const LASER_COLOR__LASER = Color("#DA0205")
+const LASER_COLOR__BALL = Color("#DAA402")
+
+#
+
+const SHOTS_TO_DESTROY_PLAYER = 2
+
+#
+
+enum EnemyTypeExportTemplate {
+	NONE = 0
+	LASER__PREDICT_XRAY = 1
+	LASER__NORMAL_XRAY = 2
+	BALL = 3
+}
+export(EnemyTypeExportTemplate) var enemy_type_template__for_export : int
+
 
 #
 
@@ -124,14 +139,14 @@ enum StartingAttackCooldownModeId {
 	NO_COOLDOWN = 0,
 	WITH_DELAY_COOLDOWN = 1,
 }
-export(StartingAttackCooldownModeId) var starting_attack_cooldown_mode_id : int
+export(StartingAttackCooldownModeId) var starting_attack_cooldown_mode_id : int = StartingAttackCooldownModeId.WITH_DELAY_COOLDOWN
 
 
 enum StartingActivationModeId {
 	NOT_TARGET_SEEKING = 0,
 	TARGET_SEEKING = 1,
 }
-export(StartingActivationModeId) var starting_activation_mode_id
+export(StartingActivationModeId) var starting_activation_mode_id #= #StartingActivationModeId.TARGET_SEEKING
 
 #
 
@@ -200,9 +215,39 @@ func _update_last_calc_can_attack():
 #
 
 func _ready():
+	_base_enemy_size = Vector2(16, 16)
+	
+	_config_self_based_on_enemy_type_template()
+	
 	mass = PHY_OBJ_MASS
 	call_deferred("_deferred_ready")
+
+#
+
+func _config_self_based_on_enemy_type_template():
+	if enemy_type_template__for_export == EnemyTypeExportTemplate.LASER__PREDICT_XRAY:
+		enemy_type = EnemyType.LASER
+		aim_trajectory_type = AimTrajectoryType.VELO_PREDICT
+		aim_occulder_type = AimOccluderType.NO_OCCLUDER
+		target_detection_mode_id = TargetDetectionModeId.STANDARD
+		
+	elif enemy_type_template__for_export == EnemyTypeExportTemplate.LASER__NORMAL_XRAY:
+		enemy_type = EnemyType.LASER
+		aim_trajectory_type = AimTrajectoryType.NO_MODIF
+		aim_occulder_type = AimOccluderType.NO_OCCLUDER
+		target_detection_mode_id = TargetDetectionModeId.STANDARD
+		
+		
+	elif enemy_type_template__for_export == EnemyTypeExportTemplate.BALL:
+		enemy_type = EnemyType.BALL
+		aim_trajectory_type = AimTrajectoryType.NO_MODIF
+		aim_occulder_type = AimOccluderType.TILE_OCCLUDED
+		target_detection_mode_id = TargetDetectionModeId.STANDARD
+		
 	
+	
+
+#
 
 func _deferred_ready():
 	_ready__config_self__any()
@@ -333,7 +378,7 @@ func is_target_pos_occluded(arg_pos : Vector2) -> bool:
 func get_modified_target_pos_using_aim_type__none(arg_pos : Vector2) -> Vector2:
 	return arg_pos
 
-func get_modified_target_pos_using_aim_type__velo_predict(arg_pos : Vector2, arg_target_velo : Vector2, arg_lookahead : float, arg_consider_projectile_velocity = false, arg_proj_velocity : float = 1.0) -> Vector2:
+func get_modified_target_pos_using_aim_type__velo_predict(arg_pos : Vector2, arg_target_velo : Vector2, arg_lookahead : float, arg_consider_projectile_velocity = false, arg_proj_velocity : Vector2 = Vector2.ONE) -> Vector2:
 	aim_trajectory_module.target_actual_position = arg_pos
 	aim_trajectory_module.origin_position = global_position
 	aim_trajectory_module.target_velocity = arg_target_velo
@@ -408,17 +453,19 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 		elif enemy_type == EnemyType.BALL:
 			attack_module.can_draw_laser = true
 			
+			var ball_speed = attack_module.get_launch_strength_to_use(global_position, arg_pos_target)
+			var ball_velocity_no_modi := Vector2(ball_speed, 0).rotated(arg_angle + PI)
+			
 			#update target pos if not in fire sequence
 			if !attack_module.is_in_fire_sequence():
-				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT)
+				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT, true, ball_velocity_no_modi)
 				attack_module.target_pos_to_draw_laser_to = trajectory_modified_pos
 				
 				_look_toward_position(trajectory_modified_pos, true)
 			
 			
 			if last_calc_can_attack:
-				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT)
-				var ball_speed = attack_module.get_launch_strength_to_use(global_position, arg_pos_target)
+				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT, true, ball_velocity_no_modi)
 				
 				var angle_of_trajectory_modified_pos = global_position.angle_to_point(trajectory_modified_pos)
 				var final_lin_vel_of_ball : Vector2 = Vector2(ball_speed, 0).rotated(angle_of_trajectory_modified_pos + PI)
@@ -441,7 +488,7 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 
 #
 
-func _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, lookahead_duration, arg_consider_projectile_velocity = false, arg_proj_velocity : float = 1.0):
+func _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, lookahead_duration, arg_consider_projectile_velocity = false, arg_proj_velocity : Vector2 = Vector2.ONE):
 	var trajectory_modified_pos = arg_pos_target
 	if aim_trajectory_type == AimTrajectoryType.NO_MODIF:
 		trajectory_modified_pos = get_modified_target_pos_using_aim_type__none(arg_pos_target)
@@ -485,6 +532,7 @@ func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
 func _attempt_attack_target__as_laser():
 	if !attack_module.is_in_fire_sequence():
 		attack_module.start_fire_sequence()
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_ChargeUp, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 		_current_attack_cooldown = ATTACK_COOLDOWN
 
 func _attempt_attack_target__as_ball(arg_ball_lin_vel : Vector2):
@@ -492,6 +540,7 @@ func _attempt_attack_target__as_ball(arg_ball_lin_vel : Vector2):
 	
 	if !attack_module.is_in_fire_sequence():
 		attack_module.start_fire_sequence()
+		AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Enemy_ChargeBall, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 		_current_attack_cooldown = ATTACK_COOLDOWN
 	
 	
@@ -546,9 +595,10 @@ func _set_current_attack_cooldown(arg_val):
 
 func _on_attack_module_laser__hit_player(arg_contact_pos):
 	var player = SingletonsAndConsts.current_game_elements.get_current_player()
-	player.set_current_robot_health(player.get_current_robot_health() - (player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
+	#player.set_current_robot_health(player.get_current_robot_health() - (player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
+	player.take_robot_health_damage((player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
 	
-	
+	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(arg_contact_pos, LASER_COLOR__LASER)
 
 #########################
 
@@ -586,7 +636,10 @@ func _do_calc_damage_if_appropriate(body):
 		dmg = _calc_damage_of_player(body)
 	
 	if dmg > 0:
-		set_current_health(current_health - dmg)
+		#set_current_health(current_health - dmg)
+		take_health_damage(dmg)
+		call_deferred("create_damage_fragment_particles_from_ball_collision", body.global_position, body.modulate)
+
 
 func _calc_damage_of_obj_ball(arg_obj_ball):
 	return arg_obj_ball.calculate_damage_to__enemy(linear_velocity)
@@ -595,16 +648,32 @@ func _calc_damage_of_obj_ball(arg_obj_ball):
 func _calc_damage_of_player(arg_player):
 	var lin_vel = (arg_player.linear_velocity - linear_velocity).length()
 	
-	if lin_vel >= 250:
-		return 2
+	if lin_vel >= 275:
+		return GameSettingsManager.combat__current_max_enemy_health
 		
 	elif lin_vel >= 195:
-		return 1
+		return GameSettingsManager.combat__current_max_enemy_health / 2
 		
 	else:
 		return 0
 
 
+
+func take_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_position):
+	set_current_health(current_health - arg_dmg)
+	
+	_play_damage_audio()
+
+
+func _play_damage_audio():
+	var audio_id_to_play : int
+	if _is_robot_dead:
+		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
+	else:
+		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_Damage_01
+	
+	AudioManager.helper__play_sound_effect__2d(audio_id_to_play, global_position, 1.0, null)
+	
 
 func set_current_health(arg_val):
 	current_health = arg_val
@@ -634,14 +703,24 @@ func is_robot_alive():
 
 #
 
+func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vector2, arg_modulate_to_use):
+	var pos_shift_center_of_particles = Vector2(_base_enemy_size.x, 0).rotated(arg_collider_pos.angle_to_point(global_position))
+	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(global_position + pos_shift_center_of_particles, arg_modulate_to_use)
+
+
+
 func deferred_create_break_fragments():
 	## screen face additional frame
 	if aim_occulder_type == AimOccluderType.NO_OCCLUDER:
 		_create_break_fragments__for_occulder_type__no_occluder()
 	
-	# aim frame
+	## aim frame
 	if aim_trajectory_type == AimTrajectoryType.VELO_PREDICT:
 		_create_break_fragments__for_traj_type__velo_predict()
+	
+	## laser
+	if enemy_type == EnemyType.LASER:
+		_create_break_fragments__for_laser()
 	
 	## body frame
 	_create_break_fragments__for_main_body()
@@ -715,6 +794,15 @@ func _create_break_fragments__for_screen_face():
 	#NE
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__MainScreen_NW)
 	
+
+func _create_break_fragments__for_laser():
+	#01
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__WEAPON_LASER__POS__01, 0, 0, Texture_Fragment__WeaponLaser_N01)
+	#01
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__WEAPON_LASER__POS__02, 0, 0, Texture_Fragment__WeaponLaser_N02)
+	#01
+	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__WEAPON_LASER__POS__03, 0, 0, Texture_Fragment__WeaponLaser_N03)
+
 
 
 func _deferred__create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : Vector2, arg_pos_modif_angle : float, arg_sprite_rotation : float, arg_texture : Texture):

@@ -47,6 +47,7 @@ const DARK_METAL_TILE_01__MASS = 60
 const SIMPLE_GLASS_TILE_ID__01__MASS = BREAKABLE_GLASS_TILE_ID__ATLAS_01
 const SIMPLE_GLASS_TILE_ID__02__MASS = BREAKABLE_GLASS_TILE_ID__ATLAS_02
 const HOSTILE_SHIP_METAL_TILE_01__MASS = 60
+const HOSTILE_SHIP_METAL_FRAME_TILE_01__MASS = 60
 
 #
 
@@ -139,7 +140,7 @@ onready var _tile_id_to_fragment_collision_sound_list_map : Dictionary = {
 	SPACESHIP_WALL_BREAKABLE_TILE_ID : METAL_FRAGMENT_COLLISION_SOUND_LIST,
 	
 	HOSTILE_SHIP_METAL_TILE_ID__01 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
-	#todoimp HOSTILE_SHIP_METAL_FRAME_TILE__01:
+	HOSTILE_SHIP_METAL_FRAME_TILE__01 : METAL_FRAGMENT_COLLISION_SOUND_LIST,
 	
 }
 
@@ -213,7 +214,7 @@ onready var _tile_id_to_ball_collision_sound_list_map : Dictionary = {
 	#
 	
 	HOSTILE_SHIP_METAL_TILE_ID__01 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
-	
+	HOSTILE_SHIP_METAL_FRAME_TILE__01 : BALL__METAL_TILE_COLLISION_SOUND_LIST,
 	
 }
 
@@ -361,7 +362,8 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 			
 		HOSTILE_SHIP_METAL_TILE_ID__01:
 			return HOSTILE_SHIP_METAL_TILE_01__MASS
-		
+		HOSTILE_SHIP_METAL_FRAME_TILE__01:
+			return HOSTILE_SHIP_METAL_FRAME_TILE_01__MASS
 
 ###############################
 
@@ -723,6 +725,14 @@ func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
 			Vector2(2, 1) : _construct_light_details__for_23__Vxx_01(),
 			Vector2(3, 1) : _construct_light_details__for_23__Vxx_01(),
 			
+		},
+		
+		43: {
+			Vector2(0, 0) : _construct_light_details__for_43__V00_00(),
+			Vector2(1, 0) : _construct_light_details__for_43__V01_00(),
+			Vector2(2, 0) : _construct_light_details__for_43__V02_00(),
+			Vector2(3, 0) : _construct_light_details__for_43__V03_00(),
+			
 		}
 		
 	}
@@ -769,6 +779,37 @@ func _construct_light_details__for_23__Vxx_01():
 	
 	return light_details
 	
+
+
+func _construct_light_details__for_43__V00_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(256, 196))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99E8FD00"), Color(0, 0, 0, 0))
+	
+	return light_details
+
+func _construct_light_details__for_43__V01_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(196, 256))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99E8FD00"), Color(0, 0, 0, 0))
+	
+	return light_details
+
+
+
+func _construct_light_details__for_43__V02_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(257, 197))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99FF8F1F"), Color(0, 0, 0, 0))
+	
+	return light_details
+
+func _construct_light_details__for_43__V03_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(197, 257))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99FF8F1F"), Color(0, 0, 0, 0))
+	
+	return light_details
 
 
 

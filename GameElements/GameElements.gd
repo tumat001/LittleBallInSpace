@@ -12,6 +12,15 @@ const GameBackground_Scene = preload("res://GameBackgroundRelated/GameBackground
 
 const BaseLevel = preload("res://LevelRelated/Classes/BaseLevel.gd")
 
+
+const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
+const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
+const AttackSpritePoolComponent = preload("res://MiscRelated/AttackSpriteRelated/GenerateRelated/AttackSpritePoolComponent.gd")
+
+const DamageParticle_Fragment_01 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
+const DamageParticle_Fragment_02 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
+const DamageParticle_Fragment_03 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
+
 #
 
 signal before_game_start_init()
@@ -65,6 +74,12 @@ var _is_in_cutscene : bool
 #
 
 var node_2d_to_receive_cam_focus__at_ready_start : Node2D
+
+#
+
+#todoimp continue this -- init if needed
+var damage_particle_component_pool__fragment : AttackSpritePoolComponent
+var damage_particle_texture_possibility_arr : Array
 
 #
 
@@ -140,6 +155,12 @@ func _ready():
 	GameSaveManager.set_game_elements(self)
 	game_result_manager.set_game_elements(self)
 	GameSettingsManager.attempt_make_game_modifications__based_on_curr_assist_mode_config()
+	
+	
+	#
+	
+	#todoimp init this only if level needs to (if there are enemies)
+	_initialize_damage_particle_component_pool__all()
 	
 	####
 	
@@ -358,5 +379,61 @@ func attempt_quit_game__by_queue_freeing():
 
 ###############
 
+func _initialize_damage_particle_component_pool__all():
+	var is_not_initted = damage_particle_component_pool__fragment == null
+	
+	if is_not_initted:
+		damage_particle_texture_possibility_arr = [
+			DamageParticle_Fragment_01,
+			DamageParticle_Fragment_02,
+			DamageParticle_Fragment_03,
+		]
+		
+		damage_particle_component_pool__fragment = AttackSpritePoolComponent.new()
+		damage_particle_component_pool__fragment.source_for_funcs_for_attk_sprite = self
+		damage_particle_component_pool__fragment.func_name_for_creating_attack_sprite = "_create_damage_particle__internal__fragment"
+		damage_particle_component_pool__fragment.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
+		damage_particle_component_pool__fragment.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
+	
+	
 
+func _create_damage_particle__internal__fragment():
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	#particle.center_pos_of_basis = arg_pos
+	particle.initial_speed_towards_center = -60
+	particle.speed_accel_towards_center = -40
+	particle.min_starting_distance_from_center = 0
+	particle.max_starting_distance_from_center = 2
+	#particle.texture_to_use = preload("res://PlayerRelated/PlayerModi/Imps/LaunchBallRelated/LaunchBall_DestroyedBallParticles_White.png")
+	particle.queue_free_at_end_of_lifetime = false
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.lifetime = 0.6
+	particle.lifetime_to_start_transparency = 0.3
+	particle.transparency_per_sec = 1 / (particle.lifetime - particle.lifetime_to_start_transparency)
+	#particle.visible = true
+	#particle.lifetime = 0.4
+	
+	return particle
+
+func request_play_damage_particles_on_pos__fragment(arg_pos : Vector2, arg_modulate_to_use : Color):
+	_play_damage_particles_on_pos__fragment(arg_pos, arg_modulate_to_use)
+
+func _play_damage_particles_on_pos__fragment(arg_pos, arg_modulate_to_use):
+	for i in 6:
+		var particle : CenterBasedAttackSprite = damage_particle_component_pool__fragment.get_or_create_attack_sprite_from_pool()
+		particle.center_pos_of_basis = arg_pos
+		particle.modulate = arg_modulate_to_use
+		#particle.texture = _get_random_texture_for_damage_particles__fragment()
+		particle.set_texture_to_use(_get_random_texture_for_damage_particles__fragment())
+		
+		particle.reset_for_another_use()
+		
+		particle.lifetime = 0.4
+		particle.visible = true
+
+
+func _get_random_texture_for_damage_particles__fragment():
+	return StoreOfRNG.randomly_select_one_element(damage_particle_texture_possibility_arr, SingletonsAndConsts.non_essential_rng)
 

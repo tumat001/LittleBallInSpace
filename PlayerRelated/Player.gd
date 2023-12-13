@@ -16,6 +16,7 @@ const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightT
 const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailType.gd")
 const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
 
+const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.gd")
 
 #
 
@@ -57,7 +58,7 @@ signal on_ground_state_changed(arg_val)
 
 #
 
-var _base_player_size
+var _base_player_size : Vector2
 
 #
 
@@ -1602,8 +1603,9 @@ func _on_body_entered__base_object(body_rid, body, body_shape_index, local_shape
 	if body.get("is_class_type_obj_ball"):
 		if body.player_dmg__enabled:
 			var dmg = body.calculate_damage_to__player(linear_velocity)
-			set_current_robot_health(get_current_robot_health() - dmg)
-	
+			take_robot_health_damage(dmg)
+			create_damage_fragment_particles_from_ball_collision(body.global_position)
+
 #	#var object_momentum : Vector2 = base_object.calculate_momentum() / last_calculated_object_mass
 #	#var self_momentum = get_player_linear_velocity() * last_calculated_object_mass
 #
@@ -1901,6 +1903,30 @@ func is_no_health():
 
 ##
 
+func take_robot_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_position):
+	set_current_robot_health(get_current_robot_health() - arg_dmg)
+	
+	_play_damage_audio()
+	
+	#call_deferred("create_damage_particles_centered_at_pos", arg_damage_contact_pos)
+
+func _play_damage_audio():
+	var audio_id_to_play : int
+	if _is_robot_dead:
+		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Player_DeathExplode
+	else:
+		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Player_Damage_01
+	
+	AudioManager.helper__play_sound_effect__2d(audio_id_to_play, global_position, 1.0, null)
+	
+
+
+func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vector2):
+	var pos_shift_center_of_particles = Vector2(_base_player_size.x, 0).rotated(arg_collider_pos.angle_to_point(global_position))
+	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(global_position + pos_shift_center_of_particles, BaseEnemy.LASER_COLOR__LASER)
+
+#
+
 func set_current_robot_health(arg_val):
 	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
 		return
@@ -1984,6 +2010,11 @@ func _init_break_fragments__from_screen_face():
 	
 
 
+
+
+#func create_damage_particles_centered_at_pos(arg_pos : Vector2, arg_count : int = 5):
+#	pass
+#
 
 ##
 

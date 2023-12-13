@@ -22,11 +22,12 @@ radius = 18.5
 [node name="BaseEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 body_mode_to_use = 2
+enemy_type_template__for_export = 0
 enemy_type = 0
 aim_trajectory_type = 0
 aim_occulder_type = 0
 target_detection_mode_id = 0
-starting_attack_cooldown_mode_id = 0
+starting_attack_cooldown_mode_id = 1
 starting_activation_mode_id = 0
 
 [node name="AnimatedSprite" parent="." index="0"]

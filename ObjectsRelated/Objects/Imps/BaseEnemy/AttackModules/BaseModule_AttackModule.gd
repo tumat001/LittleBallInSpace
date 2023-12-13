@@ -99,8 +99,7 @@ func start_fire_sequence():
 	_current_duration_of_laser_completon__to_any = 0
 	#_rewind__current_duration_of_laser_completon__to_any__has_changes = true
 	
-	#todoimp change if laser or ball, maybe
-	AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_ChargeUp, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
+	#AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Laser_ChargeUp, global_position, 1, null, AudioManager.MaskLevel.Minor_SoundFX)
 
 func _end_fire_sequence():
 	_current_duration_of_laser_completon__to_any = 0

@@ -154,7 +154,6 @@ func set_texture_in_anim_sprite__first_time(arg_texture : Texture, arg_create_sh
 func calculate_momentum():
 	return linear_velocity * last_calculated_object_mass
 
-
 ####
 
 func destroy_self_caused_by_destroying_area_region(arg_region):

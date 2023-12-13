@@ -149,6 +149,8 @@ enum AudioIds {
 	SFX_Enemy_DeathExplode = 6530
 	SFX_Player_DeathExplode = 6531
 	
+	SFX_Enemy_ChargeBall = 6540
+	SFX_Enemy_LaunchBall = 6541
 	
 	#######
 	
@@ -236,6 +238,18 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_BallCollision_Glass_01 : -4,
 	AudioIds.SFX_BallCollision_Glass_02 : -4,
 	AudioIds.SFX_BallCollision_Glass_03 : -4,
+	
+	
+	AudioIds.SFX_Laser_ChargeUp : 6,
+	AudioIds.SFX_Laser_MainFire : 6,
+	AudioIds.SFX_Enemy_ChargeBall : 2,
+	AudioIds.SFX_Enemy_LaunchBall : -2,
+	
+	AudioIds.SFX_Player_Damage_01 : 12,
+	AudioIds.SFX_Enemy_Damage_01 : 10,
+	
+	AudioIds.SFX_Player_DeathExplode : -9,
+	AudioIds.SFX_Enemy_DeathExplode : 10,
 	
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false
