@@ -1994,22 +1994,9 @@ func _update_self_based_on_has_robot_health():
 		
 
 
-#todoimp continue player break fragments. after testing for baseenemy
 func _deferred_create_break_fragments():
-	pass
+	SingletonsAndConsts.current_game_elements.deferred_generate_player_break_fragments(global_position - (_base_player_size / 2), global_position)
 	
-	
-
-func _init_break_fragments__from_body():
-	pass
-	
-
-func _init_break_fragments__from_screen_face():
-	pass
-	
-	
-
-
 
 
 #func create_damage_particles_centered_at_pos(arg_pos : Vector2, arg_count : int = 5):

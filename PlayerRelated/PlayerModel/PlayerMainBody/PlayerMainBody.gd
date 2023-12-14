@@ -22,6 +22,9 @@ func set_body_texture(arg_val):
 func get_body_texture():
 	return body_sprite.texture
 
+func get_body_modulate():
+	return body_sprite.modulate
+
 #
 
 func _ready():

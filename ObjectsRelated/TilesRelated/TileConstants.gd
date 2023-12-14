@@ -365,6 +365,7 @@ static func get_mass_of_tile_id(arg_id, arg_coords : Vector2):
 		HOSTILE_SHIP_METAL_FRAME_TILE__01:
 			return HOSTILE_SHIP_METAL_FRAME_TILE_01__MASS
 
+
 ###############################
 
 func generate_object_tile_fragments(arg_global_pos : Vector2,
@@ -592,6 +593,67 @@ func has_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region) -> bool:
 func get_atlas_img_for_tilesheet_on_region(arg_tile_id, arg_region) -> AtlasTexture:
 	return _tile_id_to_region_to_img_map[arg_tile_id][arg_region]
 
+
+###########
+# FRAGMENTS, BUT FOR ANY
+
+func generate_object_tile_fragments__for_any_no_save(arg_global_pos : Vector2,
+		atlasted_textures_and_poses__and_length : Array,
+		arg_fragment_mass : float):
+	
+	var fragments : Array = []
+	
+	#var atlasted_textures_and_poses__and_length = generate_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments__for_any_no_save(arg_img, arg_segments)
+	var length = atlasted_textures_and_poses__and_length[1]
+	for texture_and_top_left_pos in atlasted_textures_and_poses__and_length[0]:
+		var fragment_obj = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.TILE_FRAGMENT)
+		
+		fragment_obj.texture_to_use__fragment = texture_and_top_left_pos[0]
+		#fragment_obj.tileset_id = arg_tile_id
+		var mid_mag = (length / 2.0)
+		fragment_obj.position = texture_and_top_left_pos[1] + Vector2(mid_mag, mid_mag) + arg_global_pos
+		
+		fragment_obj.mass = arg_fragment_mass
+		
+		fragments.append(fragment_obj)
+	
+	return fragments
+
+# segment of 9 of 9x9 img = 9 3x3 imgs
+func generate_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments__for_any_no_save(arg_img : Texture, arg_segments : int) -> Array:
+	var img_size = arg_img.get_size()
+	
+	var rects : Array = generate_rects_for_size(img_size, arg_segments)
+	var atlased_textures_and_top_left_poses = []
+	var length : float
+	
+	for rect in rects:
+		var atlased_texture = AtlasTexture.new()
+		atlased_texture.region = rect
+		atlased_texture.atlas = arg_img
+		atlased_texture.filter_clip = true
+		
+		length = rect.size.x
+		
+		atlased_textures_and_top_left_poses.append([atlased_texture, rect.position])
+	
+	
+	return [atlased_textures_and_top_left_poses, length] #atlased_textures
+
+
+#func generate_atlas_textures_for__for_any_no_save(arg_texture : Texture, arg_fragment_length_and_width : float):
+#	var texture_size = arg_texture.get_size()
+#	var x_segment_count = (texture_size.x / arg_fragment_length_and_width)
+#	var y_segment_count = (texture_size.y / arg_fragment_length_and_width)
+#
+#	var rects_and_autocoords = generate_rects_for_size__and_autocoords(texture_size, x_segment_count, y_segment_count)
+#	for rect_and_autocoord in rects_and_autocoords:
+#		var atlas_texture = AtlasTexture.new()
+#		atlas_texture.atlas = arg_texture
+#		atlas_texture.region = rect_and_autocoord[0]
+#
+#
+#	return true
 
 
 ##################

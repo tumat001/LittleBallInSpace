@@ -942,6 +942,7 @@ func started_rewind():
 func ended_rewind():
 	.ended_rewind()
 	
+	
 	robot_face.end_sequence__rewinding()
 	
 	_update_last_calc_can_attack()

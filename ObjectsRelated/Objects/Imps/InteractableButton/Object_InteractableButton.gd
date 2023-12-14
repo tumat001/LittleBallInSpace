@@ -50,6 +50,19 @@ onready var portal_02_to_register_in_toggle = get_node_or_null(portal_02_to_regi
 
 ##
 
+var _ball_dispensers_to_toggle : Array
+
+# for convenience
+export(NodePath) var ball_dispenser_01_to_register_in_toggle__path
+onready var ball_dispenser_01_to_register_in_toggle = get_node_or_null(ball_dispenser_01_to_register_in_toggle__path)
+# for convenience
+export(NodePath) var ball_dispenser_02_to_register_in_toggle__path
+onready var ball_dispenser_02_to_register_in_toggle = get_node_or_null(ball_dispenser_02_to_register_in_toggle__path)
+
+
+
+##
+
 export(bool) var is_pressed : bool = false setget set_is_pressed
 var _is_in_press_transition : bool = false
 
@@ -124,6 +137,10 @@ func set_is_pressed(arg_val):
 					for portal in _portals_to_toggle:
 						if is_instance_valid(portal):
 							_press_on_portal(portal)
+					
+					for ball_dispenser in _ball_dispensers_to_toggle:
+						if is_instance_valid(ball_dispenser):
+							_press_on_ball_dispenser(ball_dispenser)
 					
 					if !(_is_in_ready or force_update_pressed_state):
 						set_pressable_count(pressable_count - 1)
@@ -225,6 +242,9 @@ func set_button_color(arg_color):
 	for portal in _portals_to_toggle:
 		portal.set_portal_color(color)
 	
+	for ball_dispenser in _ball_dispensers_to_toggle:
+		ball_dispenser.set_dispenser_color(color)
+	
 	#
 	
 	_update_button_display()
@@ -294,6 +314,13 @@ func _ready():
 		add_portal_to_toggle_on_press(portal_01_to_register_in_toggle)
 	if is_instance_valid(portal_02_to_register_in_toggle):
 		add_portal_to_toggle_on_press(portal_02_to_register_in_toggle)
+	
+	
+	if is_instance_valid(ball_dispenser_01_to_register_in_toggle):
+		add_ball_dispenser_to_toggle_on_press(ball_dispenser_01_to_register_in_toggle)
+	if is_instance_valid(ball_dispenser_02_to_register_in_toggle):
+		add_ball_dispenser_to_toggle_on_press(ball_dispenser_02_to_register_in_toggle)
+	
 	
 	_is_in_ready = false
 
@@ -396,6 +423,18 @@ func add_portal_to_toggle_on_press(arg_portal):
 
 func _press_on_portal(arg_portal):
 	arg_portal.toggle_is_disabled()
+
+
+##########
+
+func add_ball_dispenser_to_toggle_on_press(arg_dispenser):
+	if !_ball_dispensers_to_toggle.has(arg_dispenser):
+		_ball_dispensers_to_toggle.append(arg_dispenser)
+	
+	arg_dispenser.set_dispenser_color(button_color)
+
+func _press_on_ball_dispenser(arg_dispenser):
+	arg_dispenser.attempt_trigger_and_spawn_ball()
 
 
 #############################################

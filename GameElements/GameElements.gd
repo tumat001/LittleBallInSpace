@@ -77,9 +77,16 @@ var node_2d_to_receive_cam_focus__at_ready_start : Node2D
 
 #
 
-#todoimp continue this -- init if needed
 var damage_particle_component_pool__fragment : AttackSpritePoolComponent
 var damage_particle_texture_possibility_arr : Array
+
+var _current_player_body_texture_id : int
+var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments : Array
+
+
+#
+
+const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 55.0
 
 #
 
@@ -159,8 +166,8 @@ func _ready():
 	
 	#
 	
-	#todoimp init this only if level needs to (if there are enemies)
 	_initialize_damage_particle_component_pool__all()
+	_init_player_destroy_fragments_related()
 	
 	####
 	
@@ -436,4 +443,47 @@ func _play_damage_particles_on_pos__fragment(arg_pos, arg_modulate_to_use):
 
 func _get_random_texture_for_damage_particles__fragment():
 	return StoreOfRNG.randomly_select_one_element(damage_particle_texture_possibility_arr, SingletonsAndConsts.non_essential_rng)
+
+
+
+## player destroy fragments related
+
+func _init_player_destroy_fragments_related():
+	_update_player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments()
+	GameSettingsManager.connect("player_aesth_config__body_texture_id__changed", self, "_on_player_aesth_config__body_texture_id__changed")
+
+func _on_player_aesth_config__body_texture_id__changed(arg_id):
+	if _current_player_body_texture_id != GameSettingsManager.player_aesth_config__body_texture_id:
+		_update_player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments()
+	
+
+func _update_player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments():
+	_current_player_body_texture_id = GameSettingsManager.player_aesth_config__body_texture_id
+	
+	var player_body_texture = GameSettingsManager.player_aesth__get_texture_of_body_texture_id(_current_player_body_texture_id)#get_current_player().main_body_sprite.get_body_texture()
+	player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments = TileConstants.generate_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments__for_any_no_save(player_body_texture, 16)
+	
+
+
+func deferred_generate_player_break_fragments(arg_top_left_pos, arg_center_pos):
+	call_deferred("generate_player_break_fragments", arg_top_left_pos, arg_center_pos, get_current_player().main_body_sprite.get_body_modulate())
+
+func generate_player_break_fragments(arg_top_left_pos, arg_center_pos, arg_modulate : Color):
+	var fragments = TileConstants.generate_object_tile_fragments__for_any_no_save(arg_top_left_pos, player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments, 20)
+	for fragment in fragments:
+		fragment.modulate = arg_modulate
+		SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(fragment)
+		
+		_set_fragment_lin_vel_based_on_poses(fragment, arg_center_pos)
+	
+
+func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center_pos : Vector2):
+	var pos_of_frag = arg_fragment.global_position
+	var dist_from_center = arg_center_pos.distance_to(pos_of_frag)
+	var angle = arg_center_pos.angle_to_point(pos_of_frag)
+	var speed = LIN_SPEED_OF_FRAGMENT_PER_10 * dist_from_center / 10
+	
+	var lin_vel = Vector2(speed, 0).rotated(angle)
+	arg_fragment.linear_velocity = lin_vel
+
 

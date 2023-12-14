@@ -69,8 +69,8 @@ shape = SubResource( 1 )
 position = Vector2( -131, 33 )
 
 [node name="BaseEnemy" parent="ObjectContainer" index="1" instance=ExtResource( 9 )]
-position = Vector2( 414, -86 )
-enemy_type_template__for_export = 3
+position = Vector2( 312, -67 )
+enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]

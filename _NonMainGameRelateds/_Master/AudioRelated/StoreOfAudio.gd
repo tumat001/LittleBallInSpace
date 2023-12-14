@@ -69,6 +69,7 @@ enum AudioIds {
 	
 	# SWITCH/BUTTON
 	SFX_SwitchToggle_01 = 5120
+	SFX_BallDispenserLaunch_01 = 5121
 	
 	# ENERGY
 	SFX_EnergyModi_LowBatteryWarning = 5130
@@ -188,6 +189,7 @@ enum AudioIds {
 	SFX_BallCollision_Glass_02 = 7141
 	SFX_BallCollision_Glass_03 = 7142
 	
+	
 }
 
 const _all_audio_ids_sfx_launch_ball_variations = [
@@ -248,7 +250,7 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_Player_Damage_01 : 12,
 	AudioIds.SFX_Enemy_Damage_01 : 10,
 	
-	AudioIds.SFX_Player_DeathExplode : -9,
+	AudioIds.SFX_Player_DeathExplode : -2,
 	AudioIds.SFX_Enemy_DeathExplode : 10,
 	
 }
