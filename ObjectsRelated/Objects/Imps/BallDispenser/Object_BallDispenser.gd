@@ -17,7 +17,7 @@ const FLASH_GLOW_DURATION = 0.2
 
 #
 
-export(float) var ball_dispense_speed : float = 250
+export(float) var ball_dispense_speed : float = 125
 
 #
 
@@ -33,8 +33,16 @@ export(int) var triggerable_count : int setget set_triggerable_count
 
 #
 
+var _is_done_in_ready : bool = false
+
+#
+
 onready var ball_indicator_anim_sprite = $BallIndicatorAnimSprite
 onready var triggerable_count_label = $TriggerableCountLabel
+
+onready var coll_shape_2d__2 = $CollisionShape2D2
+onready var coll_shape_2d__3 = $CollisionShape2D3
+onready var coll_shape_2d__for_ball_absorb_area = $BallAbsorbArea2D/CollisionShape2D
 
 #
 
@@ -45,6 +53,12 @@ func _ready():
 	
 	set_dispenser_color(dispenser_color)
 	set_triggerable_count(triggerable_count)
+	
+	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__2)
+	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__3)
+	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__for_ball_absorb_area)
+	
+	_is_done_in_ready = true
 
 #
 
@@ -65,7 +79,8 @@ func _spawn_and_launch_ball():
 	
 	StoreOfObjects.helper_ball__launch_at_vec(ball, Vector2(ball_dispense_speed, 0).rotated(get_ball_spawn_face_rotation()))
 	
-	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
+	#SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
+	SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(ball)
 	
 	###
 	
@@ -102,7 +117,8 @@ func set_triggerable_count(arg_val):
 func set_dispenser_color(arg_color):
 	dispenser_color = arg_color
 	
-	if is_inside_tree() or Engine.editor_hint:
+	#yeah, use _is_done_in_ready instead of is_inside_tree()...
+	if _is_done_in_ready or Engine.editor_hint:
 		var anim_name = _get_anim_name_to_play_based_on_dispenser_color()
 		anim_sprite.play(anim_name)
 		ball_indicator_anim_sprite.play(anim_name)
@@ -120,8 +136,6 @@ func _get_anim_name_to_play_based_on_dispenser_color():
 
 #########
 
-var _rewinded__triggerable_count
-
 func get_rewind_save_state():
 	var state = .get_rewind_save_state()
 	
@@ -132,12 +146,35 @@ func get_rewind_save_state():
 func load_into_rewind_save_state(arg_state):
 	.load_into_rewind_save_state(arg_state)
 	
-	_rewinded__triggerable_count = arg_state["triggerable_count"]
-	
+	var count = arg_state["triggerable_count"]
+	if triggerable_count != count:
+		set_triggerable_count(count)
+
 
 func ended_rewind():
 	.ended_rewind()
 	
-	if _rewinded__triggerable_count != triggerable_count:
-		set_triggerable_count(_rewinded__triggerable_count)
+
+###
+
+func _on_BallAbsorbArea2D_body_entered(body):
+	if body.get("is_class_type_obj_ball"):
+		if _is_ball_is_considered_moving_toward_self(body):
+			_absorb_ball(body)
+			
+
+func _is_ball_is_considered_moving_toward_self(arg_ball : RigidBody2D):
+	var ball_pos = arg_ball.global_position
+	
+	var dist = ball_pos.distance_squared_to(global_position)
+	var telegraphed_dist = (ball_pos + (arg_ball.linear_velocity * 0.05)).distance_squared_to(global_position)
+	
+	return telegraphed_dist < dist
+
+
+func _absorb_ball(arg_ball):
+	arg_ball.queue_free()
+	set_triggerable_count(triggerable_count + 1)
+	
+	AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_BallDispenserAbsorb_01, global_position, 1.0, null)
 

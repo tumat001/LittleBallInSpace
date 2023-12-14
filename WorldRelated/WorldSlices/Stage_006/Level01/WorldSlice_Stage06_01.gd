@@ -23,8 +23,9 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
 	#temptodo
+	arg_player.global_position = fast_respawn_position_2d.global_position
 	return
-	
+	#end of temptodo
 	
 	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
 		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)

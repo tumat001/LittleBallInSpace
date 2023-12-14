@@ -70,6 +70,7 @@ enum AudioIds {
 	# SWITCH/BUTTON
 	SFX_SwitchToggle_01 = 5120
 	SFX_BallDispenserLaunch_01 = 5121
+	SFX_BallDispenserAbsorb_01 = 5122
 	
 	# ENERGY
 	SFX_EnergyModi_LowBatteryWarning = 5130
@@ -247,11 +248,13 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_Enemy_ChargeBall : 2,
 	AudioIds.SFX_Enemy_LaunchBall : -2,
 	
-	AudioIds.SFX_Player_Damage_01 : 12,
-	AudioIds.SFX_Enemy_Damage_01 : 10,
+	AudioIds.SFX_Player_Damage_01 : 10,
+	AudioIds.SFX_Enemy_Damage_01 : 8,
 	
 	AudioIds.SFX_Player_DeathExplode : -2,
-	AudioIds.SFX_Enemy_DeathExplode : 10,
+	AudioIds.SFX_Enemy_DeathExplode : 8,
+	
+	AudioIds.SFX_BallDispenserLaunch_01 : -4,
 	
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false

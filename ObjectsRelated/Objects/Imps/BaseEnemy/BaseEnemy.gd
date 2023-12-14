@@ -195,6 +195,8 @@ onready var weapon_sprite_container = $WeaponSpriteContainer
 
 onready var robot_face = $RobotFace
 
+onready var area_for_proj_or_player__coll_shape = $CollForProjOrPlayer/CollisionShape2D
+
 ##
 
 func _init():
@@ -218,6 +220,8 @@ func _ready():
 	_base_enemy_size = Vector2(16, 16)
 	
 	_config_self_based_on_enemy_type_template()
+	
+	add_monitor_to_collision_shape_for_rewind(area_for_proj_or_player__coll_shape)
 	
 	mass = PHY_OBJ_MASS
 	call_deferred("_deferred_ready")
@@ -417,8 +421,6 @@ func _on_target_detection_module_attempted_ping(arg_success):
 		
 	else:
 		if enemy_type == EnemyType.LASER:
-			#depends if occluded or not
-			#attack_module.can_draw_laser = true
 			pass
 			
 		elif enemy_type == EnemyType.BALL:
@@ -561,9 +563,9 @@ func _tween_rotate_robot_face(arg_rotation):
 #
 
 func _physics_process(delta):
-	if _current_attack_cooldown > 0 and !_is_robot_dead:
+	if _current_attack_cooldown > 0 and !_is_robot_dead and attack_module.can_draw_laser:
 		_set_current_attack_cooldown(_current_attack_cooldown - delta)
-	
+		
 
 func _set_current_attack_cooldown(arg_val):
 	_current_attack_cooldown = arg_val

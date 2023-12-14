@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://ObjectsRelated/Objects/BaseObject.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/BallDispenser/Assets/BallDispenser_Body_Blue.png" type="Texture" id=2]
@@ -28,7 +28,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 16 )
+extents = Vector2( 16, 10.5 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
@@ -48,12 +48,18 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 1.5, 5.5 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 13, 5.5 )
+
 [node name="Object_BallDispenser" instance=ExtResource( 1 )]
 collision_mask = 11
 mass = 20.0
 script = ExtResource( 5 )
 body_mode_to_use = 1
-ball_dispense_speed = 250.0
+ball_dispense_speed = 125.0
 dispenser_color = 2
 triggerable_count = 0
 
@@ -63,6 +69,7 @@ animation = "blue"
 playing = true
 
 [node name="CollisionShape2D" parent="." index="1"]
+position = Vector2( 0, 5.5 )
 shape = SubResource( 2 )
 
 [node name="BallIndicatorAnimSprite" type="AnimatedSprite" parent="." index="2"]
@@ -83,3 +90,21 @@ custom_constants/shadow_as_outline = 1
 text = "0"
 align = 1
 valign = 1
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." index="4"]
+position = Vector2( -14.5, -10.5 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." index="5"]
+position = Vector2( 14.5, -10.5 )
+shape = SubResource( 4 )
+
+[node name="BallAbsorbArea2D" type="Area2D" parent="." index="6"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallAbsorbArea2D" index="0"]
+position = Vector2( 0, -10.5 )
+shape = SubResource( 5 )
+
+[connection signal="body_entered" from="BallAbsorbArea2D" to="." method="_on_BallAbsorbArea2D_body_entered"]
