@@ -23,13 +23,15 @@ var ball_dmg__max_bonus_dmg_based_on_lin_vel
 
 var ball_lin_vel_to_use : Vector2
 
+var ball_modulate_to_use_for_hit_damage_particle : Color
+
 #
 
 func _fire_ball_toward_position(arg_origin : Vector2, arg_lin_vel : Vector2):
 	var ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
 	
 	ball.global_position = arg_origin
-	StoreOfObjects.helper_ball__configure_as_enemy_ball_proj(ball, ball_flat_dmg, ball_dmg__max_bonus_dmg_based_on_lin_vel)
+	StoreOfObjects.helper_ball__configure_as_enemy_ball_proj(ball, ball_flat_dmg, ball_dmg__max_bonus_dmg_based_on_lin_vel, ball_modulate_to_use_for_hit_damage_particle)
 	
 	StoreOfObjects.helper_ball__launch_at_vec(ball, arg_lin_vel)
 	

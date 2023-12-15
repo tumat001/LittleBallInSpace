@@ -332,6 +332,7 @@ func _ready__config_self_as_type_ball():
 	attack_module.body_to_ignore_on_ball_launch = self
 	attack_module.ball_flat_dmg = GameSettingsManager.combat__current_max_player_health / SHOTS_TO_DESTROY_PLAYER
 	attack_module.ball_dmg__max_bonus_dmg_based_on_lin_vel = GameSettingsManager.combat__current_max_player_health/2
+	attack_module.ball_modulate_to_use_for_hit_damage_particle = LASER_COLOR__LASER
 	add_child(attack_module)
 
 #

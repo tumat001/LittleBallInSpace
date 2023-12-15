@@ -224,6 +224,7 @@ shape = SubResource( 26 )
 
 [node name="PCA_01" parent="AreaRegionContainer" index="3" instance=ExtResource( 16 )]
 position = Vector2( 759, -174 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_01" index="0"]
 position = Vector2( 57, 39 )
@@ -231,6 +232,7 @@ shape = SubResource( 27 )
 
 [node name="PCA_02" parent="AreaRegionContainer" index="4" instance=ExtResource( 16 )]
 position = Vector2( 2009, -206 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_02" index="0"]
 position = Vector2( 5, 22 )
@@ -238,6 +240,7 @@ shape = SubResource( 28 )
 
 [node name="PCA_03" parent="AreaRegionContainer" index="5" instance=ExtResource( 16 )]
 position = Vector2( 1419, -650 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_03" index="0"]
 position = Vector2( -45, 19 )
@@ -245,6 +248,7 @@ shape = SubResource( 29 )
 
 [node name="PCA_04" parent="AreaRegionContainer" index="6" instance=ExtResource( 16 )]
 position = Vector2( 1105, -1032 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_04" index="0"]
 position = Vector2( -5, 27 )
@@ -252,6 +256,7 @@ shape = SubResource( 30 )
 
 [node name="PCA_05_1" parent="AreaRegionContainer" index="7" instance=ExtResource( 16 )]
 position = Vector2( 1497, -992 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_05_1" index="0"]
 position = Vector2( 57, -103.5 )
@@ -259,6 +264,7 @@ shape = SubResource( 31 )
 
 [node name="PCA_05_2" parent="AreaRegionContainer" index="8" instance=ExtResource( 16 )]
 position = Vector2( 1946, -1169 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_05_2" index="0"]
 position = Vector2( 57, -103.5 )
@@ -266,7 +272,7 @@ shape = SubResource( 31 )
 
 [node name="PCA_06" parent="AreaRegionContainer" index="9" instance=ExtResource( 16 )]
 position = Vector2( 3003, -890 )
-duration_for_capture = 1.5
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_06" index="0"]
 position = Vector2( 2, 27 )
@@ -274,6 +280,7 @@ shape = SubResource( 32 )
 
 [node name="PCA_07" parent="AreaRegionContainer" index="10" instance=ExtResource( 16 )]
 position = Vector2( 2849, -1348 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_07" index="0"]
 position = Vector2( 25, 29.5 )
@@ -281,6 +288,7 @@ shape = SubResource( 33 )
 
 [node name="PCA_08" parent="AreaRegionContainer" index="11" instance=ExtResource( 16 )]
 position = Vector2( 2222, -1881 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_08" index="0"]
 position = Vector2( -4, 31 )
@@ -288,6 +296,7 @@ shape = SubResource( 34 )
 
 [node name="PCA_09" parent="AreaRegionContainer" index="12" instance=ExtResource( 16 )]
 position = Vector2( 1990, -2148 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_09" index="0"]
 position = Vector2( 0, -2 )
@@ -295,6 +304,7 @@ shape = SubResource( 35 )
 
 [node name="PCA_09_2" parent="AreaRegionContainer" index="13" instance=ExtResource( 16 )]
 position = Vector2( 1985, -2634 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_09_2" index="0"]
 position = Vector2( 0, -58.25 )
@@ -302,6 +312,7 @@ shape = SubResource( 42 )
 
 [node name="PCA_10" parent="AreaRegionContainer" index="14" instance=ExtResource( 16 )]
 position = Vector2( 2323, -2589 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_10" index="0"]
 position = Vector2( 8, -6 )
@@ -309,6 +320,7 @@ shape = SubResource( 36 )
 
 [node name="PCA_11" parent="AreaRegionContainer" index="15" instance=ExtResource( 16 )]
 position = Vector2( 2670, -3469 )
+duration_for_capture = 0.05
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_11" index="0"]
 position = Vector2( -48.5, 43.25 )
@@ -332,6 +344,8 @@ shape = SubResource( 41 )
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 11 )]
 position = Vector2( 1920, -40 )
 body_mode_to_use = 1
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 is_pressed = true
 pressable_count = 0
 
@@ -339,6 +353,8 @@ pressable_count = 0
 position = Vector2( 1864, -720 )
 rotation = 1.5708
 body_mode_to_use = 1
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 is_pressed = true
 pressable_count = 0
 
@@ -346,6 +362,8 @@ pressable_count = 0
 position = Vector2( 1488, -984 )
 rotation = 3.14159
 body_mode_to_use = 1
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 is_pressed = true
 button_color = 1
 pressable_count = 0
@@ -364,6 +382,8 @@ shape = SubResource( 12 )
 position = Vector2( 2721, -1112 )
 rotation = 3.14159
 body_mode_to_use = 1
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 is_pressed = true
 button_color = 0
 pressable_count = 0
@@ -372,6 +392,8 @@ pressable_count = 0
 position = Vector2( 2440, -3056 )
 rotation = 1.5708
 body_mode_to_use = 1
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 is_pressed = true
 button_color = 0
 pressable_count = 0

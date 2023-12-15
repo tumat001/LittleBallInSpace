@@ -86,7 +86,7 @@ var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments :
 
 #
 
-const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 55.0
+const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 150.0
 
 #
 
@@ -485,5 +485,6 @@ func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center
 	
 	var lin_vel = Vector2(speed, 0).rotated(angle)
 	arg_fragment.linear_velocity = lin_vel
-
+	
+	print(lin_vel)
 

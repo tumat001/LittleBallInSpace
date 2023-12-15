@@ -146,7 +146,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 		if _has_no_energy:
 			
 			if !SingletonsAndConsts.current_rewind_manager.is_rewinding and is_instance_valid(_player):
-				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.38, null)
+				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.18, null) #1.38
 				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
 			

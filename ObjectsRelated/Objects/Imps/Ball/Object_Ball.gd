@@ -63,6 +63,10 @@ var anim_name_to_use : String setget set_anim_name_to_use
 
 #
 
+var modulate_to_use_for_hit_damage_particle : Color
+
+#
+
 onready var for_sound_area_2d_coll_shape = $ForSoundArea2D/CollisionShape2D
 
 ###

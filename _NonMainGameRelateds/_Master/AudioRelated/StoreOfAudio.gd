@@ -104,13 +104,21 @@ enum AudioIds {
 	SFX_Pickupable_RemoteControl = 5184
 	SFX_Pickupable_ModuleX = 5185
 	
-	# TELEPORTER RELATED
+	# TELEPORTER/PORTAL RELATED
 	SFX_Teleporter_EnteredTeleporter_Normal = 5190
 	SFX_Teleporter_EnteredTeleporter_TransitionLong = 5191
 	
 	
 	# GAME RELATED
 	SFX_Restart_01 = 5200
+	
+	# PLAYER SPECIFIC
+	#todoimp continue these sfx
+	SFX_Player_HealthThresholdCrossed_Shatter_01 = 5210
+	SFX_Player_AllHealthLost_Shatter_01 = 5211
+	
+	SFX_Player_HealthThresholdCrossed_Grunt_01 = 5212
+	SFX_Player_AllHealthLost_Grunt_01 = 5213
 	
 	# TILE BREAK
 	SFX_Misc_GlassBreak_Hard = 5300
@@ -228,11 +236,9 @@ var _audio_id_to_custom_standard_db_map := {
 	
 	AudioIds.SFX_GUI_Button_Click_Confirmed : -16,
 	
-	AudioIds.SFX_Pickupable_Star_01 : 0,
-	
 	AudioIds.BGM_Calm01_01 : -4,
 	
-	AudioIds.SFX_Pickupable_Star_01 : -4,
+	AudioIds.SFX_Pickupable_Star_01 : -6,
 	
 	
 	AudioIds.SFX_BallCollision_Ball_01 : -6,
@@ -255,6 +261,11 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_Enemy_DeathExplode : 8,
 	
 	AudioIds.SFX_BallDispenserLaunch_01 : -4,
+	
+	
+	AudioIds.SFX_Player_HealthThresholdCrossed_Shatter_01 : -13,
+	AudioIds.SFX_Player_AllHealthLost_Shatter_01 : -13,
+	
 	
 }
 var mute_all_game_sfx_unaffecting_volume_settings : bool = false

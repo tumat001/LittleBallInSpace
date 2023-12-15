@@ -156,7 +156,7 @@ func _play_particles_on_pos(arg_pos, arg_modulate_to_use):
 
 
 #
-func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel):
+func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel, arg_modulate_to_use_for_hit_damage_particle):
 	arg_ball.player_dmg__enabled = true
 	arg_ball.enemy_dmg__enabled = false
 	
@@ -165,14 +165,34 @@ func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg
 	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = arg_x_dmg__max_bonus_dmg_based_on_lin_vel
 	arg_ball.anim_name_to_use = arg_ball.ANIM_NAME__ENEMY
 	
+	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
 
-func helper_ball__configure_as_player_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel):
+
+func helper_ball__configure_as_player_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel, arg_modulate_to_use_for_hit_damage_particle):
 	arg_ball.player_dmg__enabled = false
 	arg_ball.enemy_dmg__enabled = true
 	
 	arg_ball.x_dmg__flat_dmg = arg_flat_dmg
 	arg_ball.x_dmg__give_bonus_dmg_based_on_lin_vel = true
 	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = arg_x_dmg__max_bonus_dmg_based_on_lin_vel
+	
+	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
+
+
+func helper_ball__configure_as_ball_dispenser_proj(arg_ball, arg_anim_name_to_use : String, arg_modulate_to_use_for_hit_damage_particle : Color):
+	arg_ball.player_dmg__enabled = false
+	arg_ball.enemy_dmg__enabled = false
+	
+	arg_ball.x_dmg__flat_dmg = 0
+	arg_ball.x_dmg__give_bonus_dmg_based_on_lin_vel = false
+	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = 0
+	
+	arg_ball.anim_name_to_use = arg_anim_name_to_use
+	
+	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
+
+
+
 
 #
 func helper_ball__launch_at_vec(arg_ball, arg_vec : Vector2):

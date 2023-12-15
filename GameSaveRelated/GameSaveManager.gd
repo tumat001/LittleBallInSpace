@@ -32,6 +32,8 @@ const player_data_file_path = "user://player_data.save"
 
 
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
+#todoimp continue making is_invul -- icon and save func
+const IS_PLAYER_HEALTH_INVUL__DIC_IDENTIFIER = "is_player_health_invulnerable"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
 const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
@@ -46,6 +48,7 @@ const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
+var is_player_health_invulnerable : bool = false
 var tentative_player_health_on_start
 var level_id_died_in
 

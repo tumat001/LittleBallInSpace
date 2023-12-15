@@ -132,6 +132,24 @@ func _on_display_of_desc_finished__break_thru_wall(arg_metadata):
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
 	
 
+
+
+func _on_PDAR_Breakthru_player_entered_in_area():
+	var plain_fragment__energized_tiles = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "energized tiles")
+	
+	var dialog_desc = [
+		["Nice work!", []],
+		["The next |0| are in the escape pod, so preserve your energy!", [plain_fragment__energized_tiles]]
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
+
+func _on_display_of_desc_finished__02(arg_metadata):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	
+
 ##########
 
 func _on_PCA_Last_region_area_captured():
@@ -155,18 +173,3 @@ func _deferred_last_region_captured():
 
 #
 
-func _on_PDAR_Breakthru_player_entered_in_area():
-	var plain_fragment__energized_tiles = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENERGIZED_TILES, "energized tiles")
-	
-	var dialog_desc = [
-		["Nice work!", []],
-		["The next |0| are in the escape pod, so preserve your energy!", [plain_fragment__energized_tiles]]
-	]
-	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
-
-func _on_display_of_desc_finished__02(arg_metadata):
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
-	

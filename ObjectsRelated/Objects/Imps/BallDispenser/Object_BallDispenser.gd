@@ -10,6 +10,15 @@ const ANIM__BLUE = "blue"
 const ANIM__GREEN = "green"
 const ANIM__RED = "red"
 
+const BALL_ANIM__BLUE = "dispensed_blue"
+const BALL_ANIM__GREEN = "dispensed_green"
+const BALL_ANIM__RED = "dispensed_red"
+
+const BALL_HIT_PARTICLE_MOD__BLUE = Color("#614DFD")
+const BALL_HIT_PARTICLE_MOD__GREEN = Color("#4DFD78")
+const BALL_HIT_PARTICLE_MOD__RED = Color("#FD4D4F")
+
+
 
 const MODULATE_NORMAL = Color(1, 1, 1, 1)
 const MODULATE_HYPER_BRIGHT = Color(2, 2, 2, 1)
@@ -18,6 +27,8 @@ const FLASH_GLOW_DURATION = 0.2
 #
 
 export(float) var ball_dispense_speed : float = 125
+var _current_ball_anim_to_use : String
+var _current_ball_modulate_to_use_for_hit_damage_particle : Color
 
 #
 
@@ -51,14 +62,15 @@ func _ready():
 	#8 = radius of ball
 	BALL_SPAWN_POINT_OFFSET = Vector2(16 + 8, 0)
 	
-	set_dispenser_color(dispenser_color)
-	set_triggerable_count(triggerable_count)
-	
 	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__2)
 	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__3)
 	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__for_ball_absorb_area)
 	
 	_is_done_in_ready = true
+	
+	set_dispenser_color(dispenser_color)
+	set_triggerable_count(triggerable_count)
+	
 
 #
 
@@ -75,7 +87,7 @@ func _spawn_and_launch_ball():
 	var ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)
 	
 	ball.global_position = get_ball_spawn_point()
-	StoreOfObjects.helper_ball__configure_as_player_ball_proj(ball, 0, 0)
+	StoreOfObjects.helper_ball__configure_as_ball_dispenser_proj(ball, _current_ball_anim_to_use, _current_ball_modulate_to_use_for_hit_damage_particle)
 	
 	StoreOfObjects.helper_ball__launch_at_vec(ball, Vector2(ball_dispense_speed, 0).rotated(get_ball_spawn_face_rotation()))
 	
@@ -122,6 +134,17 @@ func set_dispenser_color(arg_color):
 		var anim_name = _get_anim_name_to_play_based_on_dispenser_color()
 		anim_sprite.play(anim_name)
 		ball_indicator_anim_sprite.play(anim_name)
+	
+	if dispenser_color == DispenserColor.BLUE:
+		_current_ball_anim_to_use = BALL_ANIM__BLUE
+		_current_ball_modulate_to_use_for_hit_damage_particle = BALL_HIT_PARTICLE_MOD__BLUE
+	elif dispenser_color == DispenserColor.GREEN:
+		_current_ball_anim_to_use = BALL_ANIM__GREEN
+		_current_ball_modulate_to_use_for_hit_damage_particle = BALL_HIT_PARTICLE_MOD__GREEN
+	elif dispenser_color == DispenserColor.RED:
+		_current_ball_anim_to_use = BALL_ANIM__RED
+		_current_ball_modulate_to_use_for_hit_damage_particle = BALL_HIT_PARTICLE_MOD__RED
+	
 
 func _get_anim_name_to_play_based_on_dispenser_color():
 	match dispenser_color:

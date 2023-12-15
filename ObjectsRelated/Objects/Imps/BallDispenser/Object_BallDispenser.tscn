@@ -61,7 +61,7 @@ script = ExtResource( 5 )
 body_mode_to_use = 1
 ball_dispense_speed = 125.0
 dispenser_color = 2
-triggerable_count = 0
+triggerable_count = 1
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 1 )

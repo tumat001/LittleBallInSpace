@@ -357,7 +357,7 @@ func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 	else:
 		ball.tween_rainbow_color()
 	
-	StoreOfObjects.helper_ball__configure_as_player_ball_proj(ball, 0, GameSettingsManager.combat__current_max_enemy_health/2)
+	StoreOfObjects.helper_ball__configure_as_player_ball_proj(ball, 0, GameSettingsManager.combat__current_max_enemy_health/2, ball.modulate_to_use_for_hit_damage_particle)
 	
 	#ball.connect("destroyed_self_caused_by_destroying_area_region", self, "_on_ball_destroyed_self_caused_by_destroying_area_region", [ball])
 	#ball.connect()

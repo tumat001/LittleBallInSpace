@@ -249,6 +249,7 @@ var _no_energy_consecutive_duration : float
 enum BlockHealthChangeClauseIds {
 	IS_GAME_RESULT_DECIDED = 0,
 	IN_CUTSCENE = 1,
+	IS_HEALTH_INVUL = 2,
 	
 	CUSTOM_DEFINED__01 = 10,
 }
@@ -272,6 +273,8 @@ var _health_breakpoints_emitted : Array = []
 var _max_health : float    # not meant to be changed, but if it is, then update HealthPanel's separator positioning
 var _current_health : float
 var _is_dead : bool
+
+var is_player_health_invulnerable setget set_is_player_health_invulnerable
 
 ###
 
@@ -1604,7 +1607,7 @@ func _on_body_entered__base_object(body_rid, body, body_shape_index, local_shape
 		if body.player_dmg__enabled:
 			var dmg = body.calculate_damage_to__player(linear_velocity)
 			take_robot_health_damage(dmg)
-			create_damage_fragment_particles_from_ball_collision(body.global_position)
+			create_damage_fragment_particles_from_ball_collision(body.global_position, body)
 
 #	#var object_momentum : Vector2 = base_object.calculate_momentum() / last_calculated_object_mass
 #	#var self_momentum = get_player_linear_velocity() * last_calculated_object_mass
@@ -1844,6 +1847,7 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 	if last_calculated_is_block_health_change:
 		return
 	
+	
 	var old_val = _current_health
 	_current_health = arg_val
 	
@@ -1859,6 +1863,9 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 		if !_is_dead:
 			_is_dead = true
 			emit_signal("all_health_lost")
+			
+			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+				do_effects__all_health_lost()
 		
 	else:
 		if _is_dead:
@@ -1869,13 +1876,19 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 			var percent = _current_health * 100 / _max_health
 			for hp_breakpoint in health_breakpoints:
 				if old_val > _current_health:
+					# decreasing
 					if percent <= hp_breakpoint:
 						if !_health_breakpoints_emitted.has(hp_breakpoint):
 							_health_breakpoints_emitted.append(hp_breakpoint)
 							emit_signal("health_reached_breakpoint", hp_breakpoint, hp_breakpoint * _max_health / 100)
+							
+							if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+								do_effects__health_threshold_crossed_decreased()
+							
 							break
 					
 				elif old_val < _current_health:
+					# increasing
 					if percent > hp_breakpoint:
 						if _health_breakpoints_emitted.has(hp_breakpoint):
 							_health_breakpoints_emitted.erase(hp_breakpoint)
@@ -1901,6 +1914,32 @@ func get_max_health():
 func is_no_health():
 	return _is_dead
 
+
+#
+
+func do_effects__all_health_lost():
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Player_AllHealthLost_Shatter_01, 1.0, null)
+	CameraManager.camera.add_stress(1)
+
+func do_effects__health_threshold_crossed_decreased():
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Player_HealthThresholdCrossed_Shatter_01, 1.0, null)
+	CameraManager.camera.add_stress(0.6)
+
+
+#
+
+func set_is_player_health_invulnerable(arg_val):
+	#if _current_health != _max_health and arg_val:
+	#	set_current_health(_current_health)
+	
+	is_player_health_invulnerable = arg_val
+	
+	if is_player_health_invulnerable:
+		block_health_change_cond_clauses.attempt_insert_clause(BlockHealthChangeClauseIds.IS_HEALTH_INVUL)
+	else:
+		block_health_change_cond_clauses.remove_clause(BlockHealthChangeClauseIds.IS_HEALTH_INVUL)
+
+
 ##
 
 func take_robot_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_position):
@@ -1921,9 +1960,9 @@ func _play_damage_audio():
 	
 
 
-func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vector2):
+func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vector2, arg_ball):
 	var pos_shift_center_of_particles = Vector2(_base_player_size.x, 0).rotated(arg_collider_pos.angle_to_point(global_position))
-	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(global_position + pos_shift_center_of_particles, BaseEnemy.LASER_COLOR__LASER)
+	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(global_position + pos_shift_center_of_particles, arg_ball.modulate_to_use_for_hit_damage_particle)
 
 #
 
