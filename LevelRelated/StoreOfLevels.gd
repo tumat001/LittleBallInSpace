@@ -1622,7 +1622,9 @@ func unlock_relateds_after_winning_stage_05_level_02():
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 		
 		##todoimp  make layout id to STAGE 06 not invisible
-
+		
+		#
+		GameSaveManager.set_is_player_health_invulnerable__to_true()
 
 func unlock_and_goto_stage_05_level_02_on_win():
 	if !GameSaveManager.is_level_id_finished(LevelIds.LEVEL_01__STAGE_5):

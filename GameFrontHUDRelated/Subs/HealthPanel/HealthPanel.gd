@@ -117,11 +117,12 @@ func configure_update_to_param(arg_param : DisplayParams):
 	
 	_player = arg_param.player
 	
-	_update_display_based_on_player_is_dead_state()
+	_update_display_based_on_player_is_dead_and_invul_state()
 	
 	_player.connect("current_health_changed", self, "_on_player_current_health_changed")
 	_player.connect("all_health_lost", self, "_on_player_all_health_lost")
 	_player.connect("health_restored_from_zero", self, "_on_player_health_restored_from_zero")
+	_player.connect("is_player_health_invulnerable_changed", self, "_on_is_player_health_invulnerable_changed")
 
 func _on_player_current_health_changed(arg_val):
 	health_texture_progress.value = arg_val
@@ -155,19 +156,24 @@ func _on_player_current_health_changed(arg_val):
 
 
 func _on_player_all_health_lost():
-	_update_display_based_on_player_is_dead_state()
+	_update_display_based_on_player_is_dead_and_invul_state()
 
 func _on_player_health_restored_from_zero():
-	_update_display_based_on_player_is_dead_state()
-	
+	_update_display_based_on_player_is_dead_and_invul_state()
+
+func _on_is_player_health_invulnerable_changed():
+	_update_display_based_on_player_is_dead_and_invul_state()
 
 
-func _update_display_based_on_player_is_dead_state():
+func _update_display_based_on_player_is_dead_and_invul_state():
 	if _player.is_no_health():
 		health_icon.texture = preload("res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Dead.png")
 		
 	else:
-		health_icon.texture = preload("res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Alive.png")
+		if _player.is_player_health_invulnerable:
+			health_icon.texture = preload("res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Invul.png")
+		else:
+			health_icon.texture = preload("res://GameFrontHUDRelated/Subs/HealthPanel/Assets/HealthPanel_Heart_Alive.png")
 		
 	
 

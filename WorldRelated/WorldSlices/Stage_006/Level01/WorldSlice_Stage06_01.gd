@@ -12,20 +12,19 @@ var _is_first_time__do_cutscenes : bool
 
 onready var fast_respawn_position_2d = $MiscContainer/FastRespawnPos2D
 
+onready var frag_cloud_group__hostile_ship_01 = $MiscContainer/FragCloudGroup_Hostile01
+
 ###
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	
 
-
 func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
-	#temptodo
-	arg_player.global_position = fast_respawn_position_2d.global_position
+	#arg_player.global_position = fast_respawn_position_2d.global_position
 	return
-	#end of temptodo
 	
 	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
 		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
@@ -41,20 +40,10 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	else:
 		_is_first_time__do_cutscenes = true
 
+
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	
-#	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
-#		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
-#
-#		if is_fast_respawn:
-#			_is_first_time__do_cutscenes = false
-#		else:
-#			_is_first_time__do_cutscenes = true
-#
-#	else:
-#		_is_first_time__do_cutscenes = true
 	
 	if _is_first_time__do_cutscenes:
 		SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6, true)
@@ -67,11 +56,9 @@ func _on_after_game_start_init():
 		transition.duration = 1.5 #2.0
 		transition.trans_type = Tween.TRANS_BOUNCE
 		SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
-		transition.modulate.a = 0.6
+		transition.modulate.a = 0.8
 		
 		transition.connect("transition_finished", self, "_on_transition_finished", [], CONNECT_ONESHOT)
-		#transition.set_is_transition_paused(true)
-		#_current_long_transition = transition
 		
 		
 		game_elements.configure_game_state_for_cutscene_occurance(true, true)
@@ -95,7 +82,7 @@ func _start_dialog__01():
 
 
 
-func _on_display_of_desc_finished__01():
+func _on_display_of_desc_finished__01(arg_val):
 	_start_dialog__02()
 
 func _start_dialog__02():
@@ -107,12 +94,21 @@ func _start_dialog__02():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
-func _on_display_of_desc_finished__02():
+func _on_display_of_desc_finished__02(arg_val):
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
 	
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	
 
 
+
+
+####
+
+func _on_PCAR_03_region_area_captured():
+	SingletonsAndConsts.queue_free_all_glass_fragments()
+	
+	for frag_cloud in frag_cloud_group__hostile_ship_01.get_children():
+		frag_cloud.summon_particles(3.0)
 
 

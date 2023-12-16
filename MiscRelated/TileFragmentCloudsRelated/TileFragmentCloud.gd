@@ -18,6 +18,7 @@ enum TileSetTemplateId {
 	SIMPLE_METAL_V01 = 100,
 	SPACESHIP_METAL_V01 = 200,
 	DARK_METAL_V01 = 300,
+	HOSTILE_SHIP_METAL_V01 = 400,
 }
 export(TileSetTemplateId) var tile_set_template_id
 export(bool) var spawn_fragments_at_ready : bool = true
@@ -50,6 +51,9 @@ func _ready():
 				config_particles__to_spaceship_metal()
 			elif tile_set_template_id == TileSetTemplateId.DARK_METAL_V01:
 				config_particles__to_dark_metal()
+			elif tile_set_template_id == TileSetTemplateId.HOSTILE_SHIP_METAL_V01:
+				config_particles__to_hostile_ship_metal()
+			
 		
 		if spawn_fragments_at_ready:
 			summon_particles()
@@ -81,6 +85,10 @@ func config_particles__to_spaceship_metal(auto_coords : Vector2 = Vector2(0, 0))
 
 func config_particles__to_dark_metal(auto_coords : Vector2 = Vector2(0, 0)):
 	tileset_id = TileConstants.DARK_METAL_TILE_ID
+	tileset_autocoords = auto_coords
+
+func config_particles__to_hostile_ship_metal(auto_coords : Vector2 = Vector2(0, 0)):
+	tileset_id = TileConstants.HOSTILE_SHIP_METAL_TILE_ID__01
 	tileset_autocoords = auto_coords
 
 #

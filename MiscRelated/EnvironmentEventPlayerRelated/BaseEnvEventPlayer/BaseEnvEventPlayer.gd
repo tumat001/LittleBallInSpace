@@ -28,11 +28,12 @@ func _ready():
 	
 
 func _process(delta):
-	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		_curr_checker_interval_wait_sec -= delta
-		if _curr_checker_interval_wait_sec < 0:
-			_curr_checker_interval_wait_sec += player_pos_checker_interval
-			_check_for_player_dist()
+	if !Engine.editor_hint:
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			_curr_checker_interval_wait_sec -= delta
+			if _curr_checker_interval_wait_sec < 0:
+				_curr_checker_interval_wait_sec += player_pos_checker_interval
+				_check_for_player_dist()
 
 #
 

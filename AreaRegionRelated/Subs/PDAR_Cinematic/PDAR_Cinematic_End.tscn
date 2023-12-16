@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=1]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_Cinematic/PDAR_Cinematic_End.gd" type="Script" id=2]
+
+[node name="PDAR_Cinematic_End" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+triggerable_only_once = true
+unhide_game_control_hud = true
+unhide_game_control_hud__use_tween = true
+unhide_game_control_hud__duration = true
+delete_rewind_history = true
+
+[connection signal="player_entered_in_area" from="." to="." method="_on_PDAR_Cinematic_player_entered_in_area"]

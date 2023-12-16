@@ -18,6 +18,9 @@ const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/M
 
 const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.gd")
 
+const MathHelper = preload("res://MiscRelated/HelperRelated/MathHelper.gd")
+
+
 #
 
 signal break_all_player_game_actions__blocked_game_actions()
@@ -36,6 +39,7 @@ signal all_health_lost()
 signal health_restored_from_zero()
 signal health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoint)
 signal health_fully_restored()
+signal is_player_health_invulnerable_changed(arg_val)
 
 
 signal current_robot_health_changed(arg_val)
@@ -80,6 +84,16 @@ enum BlockPlayerGameActionsClauseIds {
 var block_player_game_actions_cond_clauses : ConditionalClauses
 var last_calc_block_player_game_actions : bool
 
+
+#
+
+# NOTE: NOT SAVED in rewind
+enum ForceActionFlagIds {
+	LEFT = 1 << 0,
+	RIGHT = 1 << 1,
+}
+var _force_actions_flag_ids : int
+var has_any_force_actions : bool
 
 #
 
@@ -947,8 +961,8 @@ func _physics_process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
 		#var counter_dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
-		if last_calc_can_player_move_left_and_right: #and !_is_any_static_body_impeding_movement(linear_velocity):
-			if _is_moving_left:
+		if last_calc_can_player_move_left_and_right or has_any_force_actions: #and !_is_any_static_body_impeding_movement(linear_velocity):
+			if _is_moving_left or has_force_action_id(ForceActionFlagIds.LEFT):
 				#print("moving left: %s" % _current_player_left_right_move_speed)
 				
 				#if is_zero_approx(linear_velocity.x) and is_zero_approx(linear_velocity.y):
@@ -1007,7 +1021,7 @@ func _physics_process(delta):
 				#	#pass
 				#	#_current_player_left_right_move_speed = 0
 				
-			elif _is_moving_right:
+			elif _is_moving_right or has_force_action_id(ForceActionFlagIds.RIGHT):
 				#print("moving right: %s" % _current_player_left_right_move_speed)
 				
 				#if is_zero_approx(linear_velocity.x) and is_zero_approx(linear_velocity.y):
@@ -1938,7 +1952,8 @@ func set_is_player_health_invulnerable(arg_val):
 		block_health_change_cond_clauses.attempt_insert_clause(BlockHealthChangeClauseIds.IS_HEALTH_INVUL)
 	else:
 		block_health_change_cond_clauses.remove_clause(BlockHealthChangeClauseIds.IS_HEALTH_INVUL)
-
+	
+	emit_signal("is_player_health_invulnerable_changed", arg_val)
 
 ##
 
@@ -2376,6 +2391,30 @@ func _attempt_destroy_current_speed_trail():
 #func request_play_tile_fragment_sound(arg_tile_fragment : Node2D):
 #	pass
 #
+
+
+###########
+# FORCE ACTIONS related
+
+func add_force_actions_flag_id(arg_id):
+	_force_actions_flag_ids = MathHelper.add_flag(_force_actions_flag_ids, arg_id)
+	has_any_force_actions = true
+
+func remove_force_actions_flag_id(arg_id):
+	_force_actions_flag_ids = MathHelper.remove_flag(_force_actions_flag_ids, arg_id)
+	if _force_actions_flag_ids == 0:
+		has_any_force_actions = false
+
+func has_force_action_id(arg_id):
+	return MathHelper.has_flag(_force_actions_flag_ids, arg_id)
+
+
+
+func is_curr_mov_velocity__left():
+	return _current_player_left_right_move_speed < 0
+
+func is_curr_mov_velocity__right():
+	return _current_player_left_right_move_speed > 0
 
 
 ###################### 

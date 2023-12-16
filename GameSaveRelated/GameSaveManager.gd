@@ -14,11 +14,12 @@ signal can_edit_tile_colors_changed(arg_val)
 signal can_edit_player_aesth_changed(arg_val)
 
 signal is_player_health_on_start_zero_changed()
-
+signal is_player_health_invulnerable__state_changed(arg_val)
 
 signal first_time_play()
 
 signal save_manager_initialized()
+signal before_save_manager_initialized()
 
 #
 
@@ -32,8 +33,7 @@ const player_data_file_path = "user://player_data.save"
 
 
 const PLAYER_HEALTH__DIC_IDENTIFIER = "PlayerHealthOnStart"
-#todoimp continue making is_invul -- icon and save func
-const IS_PLAYER_HEALTH_INVUL__DIC_IDENTIFIER = "is_player_health_invulnerable"
+const IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER = "is_player_health_invulnerable"
 const PLAYER_NAME__DIC_IDENTIFIER = "PlayerName"
 const FIRST_TIME_OPENING__DIC_IDENTIFIER = "FirstTimeOpening"
 const ANIMAL_CHOICE__DIC_IDENTIFIER = "AnimalChoice"
@@ -46,9 +46,7 @@ const CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER = "CAN_EDIT_PLAYER_AESTH__DIC_IDENTI
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
-
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
-var is_player_health_invulnerable : bool = false
 var tentative_player_health_on_start
 var level_id_died_in
 
@@ -61,6 +59,15 @@ enum AnimalChoiceId {
 	CAT = 1,
 }
 var animal_choice_id : int
+
+
+enum IsPlayerHealthInvulTypeId {
+	IS_NOT_INVUL = -1,
+	UNINIT = 0,
+	IS_INVUL = 1,
+}
+const IS_PLAYER_HEALTH_INVULNERABLE__INITIAL_VAL = IsPlayerHealthInvulTypeId.UNINIT
+var is_player_health_invulnerable__state : int = IS_PLAYER_HEALTH_INVULNERABLE__INITIAL_VAL setget set_is_player_health_invulnerable__state
 
 
 var can_view_game_stats : bool setget set_can_view_game_stats
@@ -179,6 +186,8 @@ func _ready():
 	GameSettingsManager.load_all__from_ready_of_save_manager()
 	GameStatsManager.load_all__from_ready_of_save_manager()
 	
+	
+	emit_signal("before_save_manager_initialized")
 	_is_manager_initialized = true
 	emit_signal("save_manager_initialized")
 	
@@ -228,6 +237,15 @@ func _load_player_related_data(arg_file : File):
 		player_health_on_start = float(data[PLAYER_HEALTH__DIC_IDENTIFIER])
 	else:
 		player_health_on_start = INITIAL_PLAYER_HEALTH_AT_START
+	
+	##
+	
+	if data.has(IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER):
+		is_player_health_invulnerable__state = int(data[IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER])
+	else:
+		is_player_health_invulnerable__state = IS_PLAYER_HEALTH_INVULNERABLE__INITIAL_VAL
+	if is_player_health_invulnerable__state == IsPlayerHealthInvulTypeId.UNINIT:
+		_init_is_player_health_invulnerable__state__based_on_curr_game_state__on_load_finish()
 	
 	##
 	
@@ -489,6 +507,11 @@ func is_level_layout_id_playable(arg_id):
 	
 	return status != LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED
 
+func is_level_layout_id_finished(arg_id):
+	var status = _level_layout_id_to_completion_status[arg_id]
+	
+	return status == LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED
+
 func set_level_layout_id_status_completion(arg_id, arg_status):
 	var old_val = _level_layout_id_to_completion_status[arg_id]
 	_level_layout_id_to_completion_status[arg_id] = arg_status
@@ -502,6 +525,7 @@ func set_level_layout_id_status_completion(arg_id, arg_status):
 func _save_player_data():
 	var save_dict = {
 		PLAYER_HEALTH__DIC_IDENTIFIER : player_health_on_start,
+		IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER : is_player_health_invulnerable__state,
 		PLAYER_NAME__DIC_IDENTIFIER : player_name,
 		FIRST_TIME_OPENING__DIC_IDENTIFIER : first_time_opening_game,
 		ANIMAL_CHOICE__DIC_IDENTIFIER : animal_choice_id,
@@ -514,6 +538,32 @@ func _save_player_data():
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
 
+#
+
+func _init_is_player_health_invulnerable__state__based_on_curr_game_state__on_load_finish():
+	connect("before_save_manager_initialized", self, "_on_before_save_manager_initialized__init_is_player_health_invulnerable", [], CONNECT_ONESHOT)
+
+func _on_before_save_manager_initialized__init_is_player_health_invulnerable():
+	if is_level_layout_id_finished(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05):
+		is_player_health_invulnerable__state = IsPlayerHealthInvulTypeId.IS_INVUL
+	else:
+		is_player_health_invulnerable__state = IsPlayerHealthInvulTypeId.IS_NOT_INVUL
+	
+
+func is_player_health_invul():
+	return is_player_health_invulnerable__state == IsPlayerHealthInvulTypeId.IS_INVUL
+
+
+
+func set_is_player_health_invulnerable__state(arg_val):
+	is_player_health_invulnerable__state = arg_val
+	
+	emit_signal("is_player_health_invulnerable__state_changed", arg_val)
+
+func set_is_player_health_invulnerable__to_true():
+	set_is_player_health_invulnerable__state(IsPlayerHealthInvulTypeId.IS_INVUL)
+
+
 ##################
 
 func set_player(arg_player):
@@ -524,6 +574,8 @@ func set_player(arg_player):
 	else:
 		arg_player.set_current_health(0, false)
 		tentative_player_health_on_start = 0
+	
+	arg_player.set_is_player_health_invulnerable(is_player_health_invul())
 	
 	arg_player.connect("health_reached_breakpoint", self, "_on_player_health_reached_breakpoint", [], CONNECT_PERSIST)
 	arg_player.connect("all_health_lost", self, "_on_player_all_health_lost", [], CONNECT_PERSIST)

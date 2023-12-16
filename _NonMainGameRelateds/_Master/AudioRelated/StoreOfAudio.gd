@@ -113,7 +113,6 @@ enum AudioIds {
 	SFX_Restart_01 = 5200
 	
 	# PLAYER SPECIFIC
-	#todoimp continue these sfx
 	SFX_Player_HealthThresholdCrossed_Shatter_01 = 5210
 	SFX_Player_AllHealthLost_Shatter_01 = 5211
 	

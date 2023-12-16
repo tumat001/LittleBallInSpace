@@ -157,16 +157,46 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 
 ############
 
-func set_control_container_visibility(arg_val : bool):
-	control_container.visible = arg_val
+func set_control_container_visibility(arg_val : bool, arg_use_tween : bool = false, arg_duration : float = 1.0):
+	#control_container.visible = arg_val
+	_set_control_container_vis__internal(arg_val, arg_use_tween, arg_duration)
 	
 	if arg_val:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
+func toggle_control_container_visibility(arg_use_tween : bool = false, arg_duration : float = 1.0):
+	set_control_container_visibility(!control_container.visible, arg_use_tween, arg_duration)
+
+
+
+func _set_control_container_vis__internal(arg_val, arg_use_tween, arg_duration):
+	if arg_use_tween:
+		_set_control_container_vis__via_tween(arg_val, arg_duration)
 		
+	else:
+		control_container.visible = arg_val
+		control_container.modulate.a = 1
+	
 
-func toggle_control_container_visibility():
-	set_control_container_visibility(!control_container.visible)
+func _set_control_container_vis__via_tween(arg_vis, arg_duration):
+	if arg_vis:
+		if !control_container.visible:
+			control_container.modulate.a = 0
+		control_container.visible = arg_vis
+		
+		var tweener = create_tween()
+		tweener.tween_property(control_container, "modulate:a", 1.0, arg_duration)
+		###
+		
+	else: # going invis
+		var tweener = create_tween()
+		tweener.connect("finished", self, "_on_mod_a_tweener_finished__going_to_0", [], CONNECT_ONESHOT)
+		tweener.tween_property(control_container, "modulate:a", 0.0, arg_duration)
+		
+	
 
+func _on_mod_a_tweener_finished__going_to_0():
+	control_container.visible = false
 

@@ -3,7 +3,7 @@ extends "res://LevelRelated/Classes/BaseLevel.gd"
 
 
 func _init():
-	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.NONE
+	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
 	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
@@ -31,7 +31,7 @@ func after_game_init():
 
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 3  #temptodo
+	modi.starting_ball_count = 0
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
 	

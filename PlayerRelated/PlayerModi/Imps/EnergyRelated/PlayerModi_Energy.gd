@@ -1,6 +1,7 @@
 extends "res://PlayerRelated/PlayerModi/AbstractPlayerModi.gd"
 
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
+const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
 ##
 
@@ -16,17 +17,11 @@ signal forecasted_or_current_energy_changed(arg_curr_energy, arg_forecasted_ener
 
 signal battery_visual_type_id_changed(arg_id)
 
-signal is_energy_deductable_changed(arg_val)
+signal last_calc_is_energy_deductable_changed(arg_val)
 
 
 signal allow_display_of_energy_hud_changed(arg_val)
 signal is_true_instant_drain_and_recharge_changed(arg_val)
-
-#
-
-
-func _init().(StoreOfPlayerModi.PlayerModiIds.ENERGY):
-	pass
 
 #
 
@@ -71,7 +66,16 @@ var battery_visual_type_id : int setget set_battery_visual_type_id
 
 
 # NOTE: These are not made to be rewindable...
-var is_energy_deductable : bool = true setget set_is_energy_deductable
+#var is_energy_deductable : bool = true setget set_is_energy_deductable
+enum IsEnergyNotDeductableClauseIds {
+	ASSIST_MODE = 0,
+	CUSTOM_FROM_WORLD_SLICE = 1,
+	PDAR_CINEMATIC = 2,
+}
+var is_energy_not_deductable_cond_clauses : ConditionalClauses
+var last_calc_is_energy_deductable : bool
+
+#
 
 var allow_display_of_energy_hud : bool = true setget set_allow_display_of_energy_hud
 var is_true_instant_drain_and_recharge : bool = false setget set_is_true_instant_drain_and_recharge
@@ -84,6 +88,41 @@ var _game_front_hud
 var _blackout_hud_sprite : Sprite
 
 #
+
+
+func _init().(StoreOfPlayerModi.PlayerModiIds.ENERGY):
+	is_energy_not_deductable_cond_clauses = ConditionalClauses.new()
+	is_energy_not_deductable_cond_clauses.connect("clause_inserted", self, "_on_is_energy_deductable_cond_clauses_updated")
+	is_energy_not_deductable_cond_clauses.connect("clause_removed", self, "_on_is_energy_deductable_cond_clauses_updated")
+	_update_last_calc_is_energy_deductable()
+	
+
+func _on_is_energy_deductable_cond_clauses_updated(arg_id):
+	_update_last_calc_is_energy_deductable()
+	
+
+func _update_last_calc_is_energy_deductable():
+	last_calc_is_energy_deductable = is_energy_not_deductable_cond_clauses.is_passed
+	
+	emit_signal("last_calc_is_energy_deductable_changed", last_calc_is_energy_deductable)
+
+
+func helper__set_clause_to_is_energy_not_deductable__CUSTOM_FROM_WORLD_SLICE(arg_is_add : bool):
+	helper__set_clause_to_is_energy_not_deductable__xxxany_clause_id(arg_is_add, IsEnergyNotDeductableClauseIds.CUSTOM_FROM_WORLD_SLICE)
+
+func helper__set_clause_to_is_energy_not_deductable__PDAR_CINEMATIC(arg_is_add : bool):
+	helper__set_clause_to_is_energy_not_deductable__xxxany_clause_id(arg_is_add, IsEnergyNotDeductableClauseIds.PDAR_CINEMATIC)
+
+
+func helper__set_clause_to_is_energy_not_deductable__xxxany_clause_id(arg_is_add : bool, arg_xxxany_clause_id):
+	if arg_is_add:
+		is_energy_not_deductable_cond_clauses.attempt_insert_clause(arg_xxxany_clause_id)
+	else:
+		is_energy_not_deductable_cond_clauses.remove_clause(arg_xxxany_clause_id)
+
+
+
+##
 
 func apply_modification_to_player_and_game_elements(arg_player, arg_game_elements):
 	.apply_modification_to_player_and_game_elements(arg_player, arg_game_elements)
@@ -122,7 +161,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 	_current_energy = arg_val
 	
 	
-	if !is_energy_deductable and _current_energy < old_val:
+	if !last_calc_is_energy_deductable and _current_energy < old_val:
 		_current_energy = old_val
 	
 	
@@ -300,12 +339,12 @@ func set_properties__as_mega_battery(arg_start_with_full_battery : bool = true):
 
 #
 
-func set_is_energy_deductable(arg_val):
-	var old_val = is_energy_deductable
-	is_energy_deductable = arg_val
-	
-	if old_val != arg_val:
-		emit_signal("is_energy_deductable_changed", is_energy_deductable)
+#func set_is_energy_deductable(arg_val):
+#	var old_val = is_energy_deductable
+#	is_energy_deductable = arg_val
+#
+#	if old_val != arg_val:
+#		emit_signal("last_calc_is_energy_deductable_changed", is_energy_deductable)
 
 ########
 
@@ -317,9 +356,11 @@ func make_assist_mode_modification__additional_energy():
 func make_assist_mode_modification__energy_reduction_mode():
 	var reduc_id = GameSettingsManager.assist_mode__energy_reduction_mode_id
 	if reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.REDUCABLE__NORMAL:
-		set_is_energy_deductable(true)
+		#set_is_energy_deductable(true)
+		is_energy_not_deductable_cond_clauses.attempt_insert_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
 	elif reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.INFINITE:
-		set_is_energy_deductable(false)
+		#set_is_energy_deductable(false)
+		is_energy_not_deductable_cond_clauses.remove_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
 
 
 #
@@ -376,6 +417,8 @@ func custom_event__tween_blackout_hud_sprite(arg_val, arg_duration):
 	var tween : SceneTreeTween = _player.create_tween()
 	tween.tween_property(_blackout_hud_sprite, "modulate:a", arg_val, arg_duration)
 	
+
+
 
 ###################### 
 # REWIND RELATED

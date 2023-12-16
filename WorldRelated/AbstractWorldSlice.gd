@@ -12,7 +12,6 @@ const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailTyp
 const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
 const AttackSpritePoolComponent = preload("res://MiscRelated/AttackSpriteRelated/GenerateRelated/AttackSpritePoolComponent.gd")
 
-
 const TextureMethodHelper = preload("res://MiscRelated/TextureRelated/TextureMethodHelper.gd")
 
 
