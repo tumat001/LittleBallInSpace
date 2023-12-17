@@ -30,6 +30,7 @@ func _ready():
 	scale = screen_size
 	position = screen_size
 
+
 func start_transition():
 	.start_transition()
 	
@@ -37,7 +38,8 @@ func start_transition():
 	
 	modulate.a = 0
 	
-	_construct_tweener_using_curr_fade_instructions()
+	if !is_custom_controlled__avoid_auto_tweens:
+		_construct_tweener_using_curr_fade_instructions()
 
 
 func _construct_tweener_using_curr_fade_instructions():

@@ -1958,7 +1958,8 @@ func set_is_player_health_invulnerable(arg_val):
 ##
 
 func take_robot_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_position):
-	set_current_robot_health(get_current_robot_health() - arg_dmg)
+	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
+		set_current_robot_health(get_current_robot_health() - arg_dmg)
 	
 	_play_damage_audio()
 	

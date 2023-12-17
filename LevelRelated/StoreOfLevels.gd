@@ -71,7 +71,7 @@ enum LevelIds {
 	##
 	
 	LEVEL_01__STAGE_6 = 500
-	
+	LEVEL_02__STAGE_6 = 501
 	
 }
 # dont change this in runtime(useless). 
@@ -134,6 +134,7 @@ func _initialize_levels_in_level_layout():
 		
 		"STAGE_SPECIAL_1" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01,
 		
+		"STAGE_6" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06,
 	}
 	
 	##
@@ -1558,7 +1559,8 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		##
 		
-		LevelIds.LEVEL_01__STAGE_6 : [LevelIds.LEVEL_02__STAGE_5]
+		LevelIds.LEVEL_01__STAGE_6 : [LevelIds.LEVEL_01__STAGE_6],
+		LevelIds.LEVEL_02__STAGE_6 : [LevelIds.LEVEL_02__STAGE_5],
 		
 		
 	}
@@ -1613,6 +1615,11 @@ func unlock_relateds_after_winning_stage_05_level_02():
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05, 14, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05, 15, false)
 		
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05, 16, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05, 17, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05, 18, false)
+		
+		
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, 11, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, 12, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, 13, false)
@@ -1621,7 +1628,7 @@ func unlock_relateds_after_winning_stage_05_level_02():
 		# done this only now to make it unlocked in shortcut panel
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 		
-		##todoimp  make layout id to STAGE 06 not invisible
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 		
 		#
 		GameSaveManager.set_is_player_health_invulnerable__to_true()

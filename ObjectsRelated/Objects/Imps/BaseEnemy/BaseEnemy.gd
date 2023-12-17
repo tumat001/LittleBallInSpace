@@ -1,6 +1,9 @@
+tool
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 #
+
+#const BaseModule_AttackModule = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AttackModules/BaseModule_AttackModule.gd")
 
 const Module_AimOccluder = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimOccluderModules/Module_AimOccluder.gd")
 const Module_AimTrajectory_VeloPredict = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AimTrajectoryModules/Module_AimTrajectory_VeloPredict.gd")
@@ -45,6 +48,10 @@ const LASER_COLOR__BALL = Color("#DAA402")
 #
 
 const SHOTS_TO_DESTROY_PLAYER = 2
+
+#
+
+const RANGE_FOR_TRUE_AGGRO = 600.0
 
 #
 
@@ -116,6 +123,7 @@ const REWIND_DATA__TARGET_DETECTION_MODULE = "target_detection_module"
 
 enum CanNotAttackClauseIds {
 	IN_COOLDOWN = 0,
+	GAME_RESULT_DECIDED = 1,
 	#IS_ATTACKING = 1,
 	#WEAPON_ROTATING = 1,
 }
@@ -127,6 +135,7 @@ const REWIND_DATA__can_not_attack_conditional_clause_clauses = "can_not_attack_c
 
 
 const ATTACK_COOLDOWN : float = 8.0
+const ATTACK_COOLDOWN__AS_STARTING_DELAY : float = 3.0
 var _current_attack_cooldown : float setget _set_current_attack_cooldown
 
 #var _rewind__current_attack_cooldown__has_changes : bool
@@ -217,6 +226,9 @@ func _update_last_calc_can_attack():
 #
 
 func _ready():
+	if Engine.editor_hint:
+		return
+	
 	_base_enemy_size = Vector2(16, 16)
 	
 	_config_self_based_on_enemy_type_template()
@@ -263,6 +275,10 @@ func _deferred_ready():
 		_ready__config_self_as_type_ball()
 		
 	
+	SingletonsAndConsts.current_game_result_manager.connect("game_result_decided", self, "_on_game_result_decided")
+
+func _on_game_result_decided(arg_result):
+	can_not_attack_conditional_clause.attempt_insert_clause(CanNotAttackClauseIds.GAME_RESULT_DECIDED)
 
 
 func _ready__config_self__any():
@@ -295,7 +311,7 @@ func _ready__config_self__any():
 	##
 	
 	if starting_attack_cooldown_mode_id == StartingAttackCooldownModeId.WITH_DELAY_COOLDOWN:
-		_set_current_attack_cooldown(ATTACK_COOLDOWN / 2)
+		_set_current_attack_cooldown(ATTACK_COOLDOWN__AS_STARTING_DELAY)
 	
 	if starting_activation_mode_id == StartingActivationModeId.TARGET_SEEKING:
 		call_deferred("activate_target_detection")
@@ -343,7 +359,7 @@ func _config_target_detection_module__as_standard():
 	target_detection_module.add_detection_range_to_ping_rate_entry(1200, 0.75, false, false)
 	target_detection_module.add_detection_range_to_ping_rate_entry(900, 0.2, false, false)
 	#last
-	target_detection_module.add_detection_range_to_ping_rate_entry(600, 0, true, true)
+	target_detection_module.add_detection_range_to_ping_rate_entry(RANGE_FOR_TRUE_AGGRO, 0, true, true)
 	
 
 # occlude related
@@ -564,6 +580,9 @@ func _tween_rotate_robot_face(arg_rotation):
 #
 
 func _physics_process(delta):
+	if Engine.editor_hint:
+		return
+	
 	if _current_attack_cooldown > 0 and !_is_robot_dead and attack_module.can_draw_laser:
 		_set_current_attack_cooldown(_current_attack_cooldown - delta)
 		
@@ -966,5 +985,12 @@ func ended_rewind():
 	
 	set_current_health(current_health)
 	_set_current_attack_cooldown(_current_attack_cooldown)
+
+
+####
+
+func _draw():
+	if Engine.editor_hint:
+		draw_arc(Vector2(0, 0), RANGE_FOR_TRUE_AGGRO, 0, PI*2, 64, Color(1, 0.6, 0.6), 3)
 
 

@@ -5,6 +5,10 @@ signal transition_finished()
 
 var queue_free_on_end_of_transition : bool = false
 
+
+var is_custom_controlled__avoid_auto_tweens : bool = false
+
+
 #
 
 func _ready():

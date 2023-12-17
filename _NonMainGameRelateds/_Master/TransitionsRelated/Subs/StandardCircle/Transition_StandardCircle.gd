@@ -53,11 +53,12 @@ func _configure_properties_for_shader():
 	material.set_shader_param("screen_height", total_vec.y)
 	material.set_shader_param("circle_size", initial_ratio)
 	
-	var tweener = create_tween()
-	tweener.set_parallel(false)
-	tweener.tween_method(self, "_tween_circle_size_of_shader", initial_ratio, target_ratio, duration).set_trans(trans_type).set_ease(ease_type).set_delay(wait_at_start)
-	tweener.tween_callback(self, "_finished_tween").set_delay(wait_at_end)
-	_curr_tweener = tweener
+	if !is_custom_controlled__avoid_auto_tweens:
+		var tweener = create_tween()
+		tweener.set_parallel(false)
+		tweener.tween_method(self, "_tween_circle_size_of_shader", initial_ratio, target_ratio, duration).set_trans(trans_type).set_ease(ease_type).set_delay(wait_at_start)
+		tweener.tween_callback(self, "_finished_tween").set_delay(wait_at_end)
+		_curr_tweener = tweener
 
 func _get_distance_vec_of_screen_center_from_circle_center():
 	var dist_vec = circle_center - (screen_size / 2)
@@ -70,8 +71,11 @@ func _get_distance_vec_of_screen_center_from_circle_center__with_dir():
 
 
 func _tween_circle_size_of_shader(arg_ratio):
+	#material.set_shader_param("circle_size", arg_ratio)
+	set_circle_ratio(arg_ratio)
+
+func set_circle_ratio(arg_ratio):
 	material.set_shader_param("circle_size", arg_ratio)
-	
 
 func _finished_tween():
 	_on_end_of_transition()
@@ -91,7 +95,7 @@ func set_is_transition_paused(arg_val):
 
 func _configure_modulate_tweener():
 	
-	if modulate != modulate_at_end:
+	if modulate != modulate_at_end and !is_custom_controlled__avoid_auto_tweens:
 		var tweener = create_tween()
 		tweener.set_parallel(true)
 		

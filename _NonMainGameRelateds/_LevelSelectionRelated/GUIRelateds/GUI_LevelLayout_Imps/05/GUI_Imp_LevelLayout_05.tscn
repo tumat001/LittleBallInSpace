@@ -118,3 +118,26 @@ margin_top = 46.0
 margin_right = 552.0
 margin_bottom = 92.0
 is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Path_13" parent="LayoutElesContainer" index="16" instance=ExtResource( 2 )]
+margin_left = 690.0
+margin_top = 46.0
+margin_right = 736.0
+margin_bottom = 92.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Path_14" parent="LayoutElesContainer" index="17" instance=ExtResource( 2 )]
+margin_left = 736.0
+margin_top = 46.0
+margin_right = 782.0
+margin_bottom = 92.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Layout_To06" parent="LayoutElesContainer" index="18" instance=ExtResource( 2 )]
+margin_left = 782.0
+margin_top = 46.0
+margin_right = 828.0
+margin_bottom = 92.0
+is_layout_element_invis_by_default = true
