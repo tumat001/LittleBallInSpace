@@ -1240,6 +1240,33 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
+	elif arg_id == LevelIds.LEVEL_02__STAGE_6:
+		level_details.level_full_name = [
+			["6-2 First Contact", []]
+		]
+		level_details.level_name = [
+			["First Contact", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "02"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		
 	
 #	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
 #		level_details.level_full_name = [
@@ -1377,6 +1404,8 @@ func generate_base_level_imp_new(arg_id):
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_01__L6.gd").new()
+	elif arg_id == LevelIds.LEVEL_02__STAGE_6:
+		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_02__L6.gd").new()
 	
 	
 
@@ -1452,6 +1481,7 @@ func _initialize_coin_details():
 		#
 		
 		LevelIds.LEVEL_01__STAGE_6 : 1,
+		LevelIds.LEVEL_02__STAGE_6 : 1,
 		
 	}
 	
@@ -1559,8 +1589,8 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		##
 		
-		LevelIds.LEVEL_01__STAGE_6 : [LevelIds.LEVEL_01__STAGE_6],
-		LevelIds.LEVEL_02__STAGE_6 : [LevelIds.LEVEL_02__STAGE_5],
+		LevelIds.LEVEL_01__STAGE_6 : [LevelIds.LEVEL_02__STAGE_5],
+		LevelIds.LEVEL_02__STAGE_6 : [LevelIds.LEVEL_01__STAGE_6],
 		
 		
 	}

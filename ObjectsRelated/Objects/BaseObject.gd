@@ -104,9 +104,10 @@ func _update_last_calculated_can_collide_with_player():
 #
 
 func _ready():
-	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
-	
-	set_body_mode_to_use(body_mode_to_use)
+	if !Engine.editor_hint:
+		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+		
+		set_body_mode_to_use(body_mode_to_use)
 
 #
 
@@ -163,13 +164,14 @@ func destroy_self_caused_by_destroying_area_region(arg_region):
 
 
 func _process(delta):
-	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-		if has_finite_lifespan:
-			current_lifespan -= delta
+	if !Engine.editor_hint:
+		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+			if has_finite_lifespan:
+				current_lifespan -= delta
+				
+				if current_lifespan <= 0 and !is_dead_but_reserved_for_rewind:
+					queue_free()
 			
-			if current_lifespan <= 0 and !is_dead_but_reserved_for_rewind:
-				queue_free()
-		
 
 ###################### 
 # REWIND RELATED

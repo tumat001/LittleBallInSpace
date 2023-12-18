@@ -59,6 +59,7 @@ var is_rewinding : bool
 #
 enum CanStoreRewindDataClauseIds {
 	IN_CUTSCENE = 0
+	CUSTOM_FROM_WORLD_SLICE = 1
 }
 var can_store_rewind_data_cond_clause : ConditionalClauses
 var last_calculated_can_store_rewind_data : bool
@@ -72,6 +73,7 @@ enum CanCastRewindClauseIds {
 	IS_GAME_RESULT_DECIDED = 2,
 	IN_CUTSCENE = 3,
 	HAS_NODES_TO_BLOCK_REWIND = 4,
+	CUSTOM_FROM_WORLD_SLICE = 5,
 }
 var can_cast_rewind_cond_clause : ConditionalClauses
 var last_calculated_can_cast_rewind : bool

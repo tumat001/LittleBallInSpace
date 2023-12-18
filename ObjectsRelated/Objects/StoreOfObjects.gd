@@ -175,6 +175,7 @@ func helper_ball__configure_as_player_ball_proj(arg_ball, arg_flat_dmg, arg_x_dm
 	arg_ball.x_dmg__flat_dmg = arg_flat_dmg
 	arg_ball.x_dmg__give_bonus_dmg_based_on_lin_vel = true
 	arg_ball.x_dmg__max_bonus_dmg_based_on_lin_vel = arg_x_dmg__max_bonus_dmg_based_on_lin_vel
+	arg_ball.anim_name_to_use = arg_ball.ANIM_NAME__DEFAULT
 	
 	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
 

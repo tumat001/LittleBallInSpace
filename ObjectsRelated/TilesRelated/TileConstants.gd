@@ -64,6 +64,7 @@ const SPACESHIP_SPECIAL_GLASS_TILE_ID = 13
 const DARK_METAL_TILE_ID = 14
 
 const DARK_METAL_FRAME_TILE_ID = 23
+#24 is above
 const SIMPLE_METAL_FRAME_TILE_ID = 25
 
 const HOSTILE_SHIP_METAL_TILE_ID__01 = 26
@@ -700,6 +701,10 @@ func _initialize_all_tile_to_sound_id_map():
 		
 		23 : _standard_tile_metal_hit__ping,
 		24 : _standard_tile_metal_hit__ping,
+		25 : _standard_tile_metal_hit__ping,
+		
+		HOSTILE_SHIP_METAL_TILE_ID__01 : _standard_tile_metal_hit__ping,
+		HOSTILE_SHIP_METAL_FRAME_TILE__01 : _standard_tile_metal_hit__ping
 		
 	}
 	

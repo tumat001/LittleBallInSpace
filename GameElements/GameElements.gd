@@ -485,6 +485,5 @@ func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center
 	
 	var lin_vel = Vector2(speed, 0).rotated(angle)
 	arg_fragment.linear_velocity = lin_vel
-	
-	print(lin_vel)
+
 

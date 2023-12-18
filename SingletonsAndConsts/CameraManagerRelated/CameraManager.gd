@@ -274,7 +274,9 @@ func set_current_default_zoom_normal_vec(arg_zoom,
 
 func set_current_default_zoom_out_vec(arg_zoom):
 	_current_default_zoom_out_vec = arg_zoom
-
+	
+	if !_is_at_default_zoom:
+		reset_camera_zoom_level()
 
 
 func set_current_default_zoom_normal_vec__to_default_zoom_normal_val(arg_use_ease_for_change : bool, arg_duration_for_ease_of_change = ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION):
@@ -286,6 +288,7 @@ func set_current_default_zoom_normal_vec__to_default_zoom_out_val(arg_use_ease_f
 
 #
 
+#zoom out to curr default zoom out vec
 func start_camera_zoom_change__with_default_player_initialized_vals():
 	start_camera_zoom_change(_current_default_zoom_out_vec, ZOOM_OUT__DEFAULT__DURATION_OF_TRANSITION)
 	
