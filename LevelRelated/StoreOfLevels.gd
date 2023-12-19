@@ -72,6 +72,8 @@ enum LevelIds {
 	
 	LEVEL_01__STAGE_6 = 500
 	LEVEL_02__STAGE_6 = 501
+	LEVEL_03__STAGE_6 = 502
+	
 	
 }
 # dont change this in runtime(useless). 
@@ -1246,6 +1248,33 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		]
 		level_details.level_name = [
 			["First Contact", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "02"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		
+	elif arg_id == LevelIds.LEVEL_03__STAGE_6:
+		level_details.level_full_name = [
+			["6-3 ", []]
+		]
+		level_details.level_name = [
+			["", []]
 		]
 		level_details.level_desc = [
 			["", []]

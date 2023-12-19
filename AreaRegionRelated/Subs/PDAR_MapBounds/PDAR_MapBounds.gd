@@ -28,12 +28,17 @@ func _deferred_ready():
 	SingletonsAndConsts.current_rewind_manager.connect("rewinding_started", self, "_on_rewinding_started__pdar_map_bounds")
 	SingletonsAndConsts.current_rewind_manager.connect("done_ending_rewind", self, "_on_done_ending_rewind__pdar_map_bounds")
 	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__pdar_map_bounds")
-	#SingletonsAndConsts.current_game_front_hud
 	
+	_init_with_game_front_hud()
+
+
+
+func _init_with_game_front_hud():
 	if !is_instance_valid(SingletonsAndConsts.current_game_front_hud):
 		game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized")
 	else:
 		game_front_hud = SingletonsAndConsts.current_game_front_hud
+
 
 func _on_game_front_hud_initialized(arg_front_hud):
 	game_front_hud = arg_front_hud
@@ -59,9 +64,14 @@ func _on_player_exited_in_area__map_bounds():
 		#game_front_hud.show_warning_out_of_map_bounds()
 		_start_check_for_out_of_map_bounds__after_frames()
 
+
+
+
 func _can_show_out_of_bounds_warning():
-	if is_instance_valid(SingletonsAndConsts.current_rewind_manager):
-		return !SingletonsAndConsts.current_rewind_manager.is_rewinding and !SingletonsAndConsts.current_game_elements.game_result_manager.is_game_result_decided
+	var player = SingletonsAndConsts.current_game_elements.get_current_player()
+	
+	if is_instance_valid(SingletonsAndConsts.current_rewind_manager) and is_instance_valid(player):
+		return !SingletonsAndConsts.current_rewind_manager.is_rewinding and !SingletonsAndConsts.current_game_elements.game_result_manager.is_game_result_decided and player.is_robot_alive()
 	else:
 		return false
 

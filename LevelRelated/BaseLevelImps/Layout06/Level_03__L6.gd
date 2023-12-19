@@ -16,9 +16,10 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_02, Vector2(0, 0))
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_03, Vector2(0, 0))
 	
-	arg_elements.object_lifespan__ball = 8.0
+	#todoimp decide about this
+	#arg_elements.object_lifespan__ball = 8.0
 
 
 ######
@@ -30,10 +31,9 @@ func after_game_init():
 	
 	_add_launch_ball_modi()
 
-#temptodo REMOVE baseneemytemp from 06_02
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 99 #0 #temptodo
+	modi.starting_ball_count = 0
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
 	

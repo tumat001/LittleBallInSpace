@@ -419,6 +419,7 @@ func _remove_obj_from_all_registered_rewindables(arg_obj):
 	
 	emit_signal("obj_removed_from_rewindables", arg_obj)
 
+
 func is_obj_registered_in_rewindables(arg_obj):
 	return _all_registered_rewindables.has(arg_obj)
 

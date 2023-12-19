@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_006/Level02/WorldSlice_Stage06_02.gd" type="Script" id=13]
 [ext_resource path="res://MiscRelated/VisualsRelated/MouseWheelVisual/MouseWheelVisualPanel.tscn" type="PackedScene" id=14]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=15]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 256 )
@@ -24,6 +25,15 @@ extents = Vector2( 45.5, 80 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 36, 10 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 339, 145.5 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 210.75, 519.75 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 592.5, 941.5 )
 
 [node name="WorldSlice_Stage06_02" instance=ExtResource( 1 )]
 script = ExtResource( 13 )
@@ -118,6 +128,20 @@ position = Vector2( 447, -1315 )
 position = Vector2( -35, -7 )
 shape = SubResource( 5 )
 
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="3" instance=ExtResource( 16 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 207, 52.5 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( 329.75, -600.25 )
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="2"]
+position = Vector2( 115.5, -1964.5 )
+shape = SubResource( 8 )
+
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
 position = Vector2( 530, -48 )
 rotation = 4.71239
@@ -175,6 +199,11 @@ body_mode_to_use = 1
 ball_dispenser_01_to_register_in_toggle__path = NodePath("")
 ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
+
+[node name="BaseEnemyTEMP" parent="ObjectContainer" index="10" instance=ExtResource( 9 )]
+position = Vector2( 202, -30 )
+enemy_type_template__for_export = 1
+starting_activation_mode_id = 1
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 324, -1072 )
@@ -252,3 +281,4 @@ __meta__ = {
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
 [editable path="AreaRegionContainer/PDAR_ForFastRespawn"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

@@ -41,9 +41,10 @@ signal health_reached_breakpoint(arg_breakpoint_val, arg_health_val_at_breakpoin
 signal health_fully_restored()
 signal is_player_health_invulnerable_changed(arg_val)
 
-
 signal current_robot_health_changed(arg_val)
 signal max_robot_health_changed(arg_val)
+signal all_robot_health_lost()
+signal robot_health_restored_from_zero()
 
 signal player_body_shape_exited(body_rid, body, body_shape_index, local_shape_index)
 signal player_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
@@ -2026,6 +2027,8 @@ func is_robot_alive() -> bool:
 
 func _update_self_based_on_has_robot_health():
 	if _current_robot_health <= 0:
+		var emit_robot_dead_signal : bool = false
+		
 		if !_is_robot_dead:
 			_is_robot_dead = true
 			stop_player_movement()
@@ -2033,6 +2036,7 @@ func _update_self_based_on_has_robot_health():
 			_deferred_create_break_fragments()
 			#note: dunno why its needed...
 			linear_velocity = Vector2(0, 0)
+			emit_robot_dead_signal = true
 		
 		visible = false
 		
@@ -2041,8 +2045,15 @@ func _update_self_based_on_has_robot_health():
 		
 		disable_player_collision_cond_clauses.attempt_insert_clause(DisablePlayerCollisionMarkClauseIds.IS_ROBOT_DEAD)
 		
+		if emit_robot_dead_signal:
+			emit_signal("all_robot_health_lost")
+		
 	else:
-		_is_robot_dead = false
+		var emit_robot_not_dead_signal : bool = false
+		if _is_robot_dead:
+			_is_robot_dead = false
+			emit_robot_not_dead_signal = true
+		
 		visible = true
 		
 		block_player_move_left_and_right_cond_clauses.remove_clause(BlockPlayerMoveLeftAndRightClauseIds.NO_ROBOT_HEALTH)
@@ -2050,6 +2061,8 @@ func _update_self_based_on_has_robot_health():
 		
 		disable_player_collision_cond_clauses.remove_clause(DisablePlayerCollisionMarkClauseIds.IS_ROBOT_DEAD)
 		
+		if emit_robot_not_dead_signal:
+			emit_signal("robot_health_restored_from_zero")
 
 
 func _deferred_create_break_fragments():

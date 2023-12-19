@@ -57,7 +57,8 @@ func _ready():
 	#set_current_delay_before_collidable_with_player(_current_delay_before_collidable_with_player)
 	
 	add_to_group(SingletonsAndConsts.GROUP_NAME__OBJECT_TILE_FRAGMENT)
-
+	
+	#_ready__setup_for_rewind()
 
 #func _process(delta):
 #	set_current_delay_before_collidable_with_player(_current_delay_before_collidable_with_player - delta)
@@ -177,7 +178,34 @@ func _on_PlayerSoftArea2D_body_exited(body):
 
 #var _rewinded__curr_duration_of_wait_before_despawn
 
+#var _lin_vel_on_rewind_started : Vector2
+#var _rotation_on_rewind_started : float
+#
+#func _init():
+#	is_rewindable = false
+#
+#func _ready__setup_for_rewind():
+#	var rewind_manager = SingletonsAndConsts.current_rewind_manager
+#	rewind_manager.connect("rewinding_started", self, "_on_rewinding_started__tf")
+#	rewind_manager.connect("done_ending_rewind", self, "_on_done_ending_rewind__tf")
+#
+#
+#func _on_rewinding_started__tf():
+#	player_soft_coll_shape.set_deferred("disabled", true)
+#
+#	_lin_vel_on_rewind_started = linear_velocity
+#	_rotation_on_rewind_started = rotation
+#
+#func _on_done_ending_rewind__tf():
+#	collision_shape.set_deferred("disabled", false)
+#
+#	linear_velocity = _lin_vel_on_rewind_started
+#	rotation = _rotation_on_rewind_started
+
+
+
 func queue_free():
+	#force_queue_free_past_rewind_rules()
 	.queue_free()
 	
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
@@ -187,25 +215,25 @@ func queue_free():
 
 func started_rewind():
 	.started_rewind()
-	
+
 	player_soft_coll_shape.set_deferred("disabled", true)
 
 
 func ended_rewind():
 	if !is_dead_but_reserved_for_rewind:
 		mode = body_mode_to_use
-		
+
 		collision_shape.set_deferred("disabled", false)
-		
+
 		#_use_integ_forces_new_vals = true
-	
-	
+
+
 	if !is_dead_but_reserved_for_rewind:
 		player_soft_coll_shape.set_deferred("disabled", false)
-	
+
 	_is_from_rewind__frame_count = 2
-	
-	
+
+
 
 
 
@@ -214,21 +242,6 @@ func get_rewind_save_state():
 
 func load_into_rewind_save_state(arg_state):
 	pass
-
-
-#func get_rewind_save_state():
-#	var state = .get_rewind_save_state()
-#
-#	state["_curr_duration_of_wait_before_despawn"] = _curr_duration_of_wait_before_despawn
-#
-#	return state
-#
-#func load_into_rewind_save_state(arg_state):
-#	.load_into_rewind_save_state(arg_state)
-#
-#	_rewinded__curr_duration_of_wait_before_despawn = arg_state["_curr_duration_of_wait_before_despawn"]
-
-
 
 
 

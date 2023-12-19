@@ -204,7 +204,10 @@ func queue_free():
 	else:
 		if !is_queued_for_deletion():
 			.queue_free()
-		
+
+func force_queue_free_past_rewind_rules():
+	if !is_queued_for_deletion():
+		.queue_free()
 
 func _on_obj_removed_from_rewindables(arg_obj):
 	if arg_obj == self:
