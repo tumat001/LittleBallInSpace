@@ -577,6 +577,7 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 
 
 func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_index):
+	#print("body entered__tilemap -- player")
 	
 	if body.break_on_player_contact:
 		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
@@ -1426,7 +1427,6 @@ func _request_rotate(arg_angle, arg_ground_identif, arg_tileset_energy_mode):
 	
 	
 	_attempt_add_on_ground_count__with_any_indentif(arg_ground_identif, arg_tileset_energy_mode)
-	
 	
 	emit_signal("request_rotate", data)
 

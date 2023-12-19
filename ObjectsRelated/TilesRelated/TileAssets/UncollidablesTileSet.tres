@@ -996,7 +996,7 @@
 45/texture = ExtResource( 43 )
 45/tex_offset = Vector2( 0, 0 )
 45/modulate = Color( 1, 1, 1, 1 )
-45/region = Rect2( 0, 0, 128, 96 )
+45/region = Rect2( 0, 0, 128, 128 )
 45/tile_mode = 2
 45/autotile/icon_coordinate = Vector2( 0, 0 )
 45/autotile/tile_size = Vector2( 32, 32 )

@@ -42,8 +42,13 @@ var _base_enemy_size : Vector2
 
 const PHY_OBJ_MASS = 140.0
 
-const LASER_COLOR__LASER = Color("#DA0205")
-const LASER_COLOR__BALL = Color("#DAA402")
+#
+
+const LASER_COLOR__PREDICTIVE_LASER = Color("#DA0205")
+const LASER_COLOR__NON_PREDICTIVE_LASER = Color("#FF8000")
+const LASER_COLOR__BALL = Color("#D9D602")
+
+var associated_proj_or_laser_color__based_on_type_template : Color
 
 #
 
@@ -134,8 +139,8 @@ const REWIND_DATA__can_not_attack_conditional_clause_clauses = "can_not_attack_c
 
 
 
-const ATTACK_COOLDOWN : float = 8.0
-const ATTACK_COOLDOWN__AS_STARTING_DELAY : float = 3.0
+const ATTACK_COOLDOWN : float = 6.0
+const ATTACK_COOLDOWN__AS_STARTING_DELAY : float = 2.5
 var _current_attack_cooldown : float setget _set_current_attack_cooldown
 
 #var _rewind__current_attack_cooldown__has_changes : bool
@@ -168,6 +173,15 @@ var _is_robot_dead : bool
 
 const CIRCLE_PARTITION = (2*PI/8) #North, NW, W, ...
 var intent_final_robot_face_angle : float
+
+#
+
+enum PreventDrawEnemyRangeClauseId {
+	NOT_YET_ENTERED_RANGE_ONCE = 0,
+	CUSTOM_WORLD_SLICE = 1,
+}
+var prevent_draw_enemy_range_cond_clause : ConditionalClauses
+var last_calc_draw_enemy_range : bool
 
 #
 
@@ -214,6 +228,13 @@ func _init():
 	can_not_attack_conditional_clause.connect("clause_removed", self, "_on_can_not_attack_conditional_clause_updated")
 	_update_last_calc_can_attack()
 	
+	prevent_draw_enemy_range_cond_clause = ConditionalClauses.new()
+	prevent_draw_enemy_range_cond_clause.attempt_insert_clause(PreventDrawEnemyRangeClauseId.NOT_YET_ENTERED_RANGE_ONCE)
+	prevent_draw_enemy_range_cond_clause.connect("clause_inserted", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
+	prevent_draw_enemy_range_cond_clause.connect("clause_removed", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
+	_update_can_draw_enemy_range()
+
+#
 
 func _on_can_not_attack_conditional_clause_updated(arg_clause):
 	_update_last_calc_can_attack()
@@ -224,6 +245,22 @@ func _update_last_calc_can_attack():
 
 
 #
+
+func _on_prevent_draw_enemy_range_cond_clause_updated(arg_clause_id):
+	_update_can_draw_enemy_range()
+
+func _update_can_draw_enemy_range():
+	last_calc_draw_enemy_range = prevent_draw_enemy_range_cond_clause.is_passed
+	
+	update()
+
+func _draw():
+	if Engine.editor_hint:
+		draw_arc(Vector2(0, 0), RANGE_FOR_TRUE_AGGRO, 0, PI*2, 64, Color(1, 0.6, 0.6), 3)
+	elif last_calc_draw_enemy_range:
+		draw_arc(Vector2(0, 0), RANGE_FOR_TRUE_AGGRO, 0, PI*2, 64, Color(1, 0.6, 0.6, 0.2), 3)
+
+#####
 
 func _ready():
 	if Engine.editor_hint:
@@ -246,20 +283,21 @@ func _config_self_based_on_enemy_type_template():
 		aim_trajectory_type = AimTrajectoryType.VELO_PREDICT
 		aim_occulder_type = AimOccluderType.NO_OCCLUDER
 		target_detection_mode_id = TargetDetectionModeId.STANDARD
+		associated_proj_or_laser_color__based_on_type_template = LASER_COLOR__PREDICTIVE_LASER
 		
 	elif enemy_type_template__for_export == EnemyTypeExportTemplate.LASER__NORMAL_XRAY:
 		enemy_type = EnemyType.LASER
 		aim_trajectory_type = AimTrajectoryType.NO_MODIF
 		aim_occulder_type = AimOccluderType.NO_OCCLUDER
 		target_detection_mode_id = TargetDetectionModeId.STANDARD
-		
+		associated_proj_or_laser_color__based_on_type_template = LASER_COLOR__NON_PREDICTIVE_LASER
 		
 	elif enemy_type_template__for_export == EnemyTypeExportTemplate.BALL:
 		enemy_type = EnemyType.BALL
 		aim_trajectory_type = AimTrajectoryType.NO_MODIF
 		aim_occulder_type = AimOccluderType.TILE_OCCLUDED
 		target_detection_mode_id = TargetDetectionModeId.STANDARD
-		
+		associated_proj_or_laser_color__based_on_type_template = LASER_COLOR__BALL
 	
 	
 
@@ -327,7 +365,7 @@ func _ready__config_self_as_type_laser():
 	# attk module
 	attack_module = Module_AttackModule_Laser_Scene.instance()
 	attack_module.can_draw_laser = false
-	attack_module.laser_color = LASER_COLOR__LASER
+	attack_module.laser_color = associated_proj_or_laser_color__based_on_type_template
 	attack_module.connect("hit_player", self, "_on_attack_module_laser__hit_player")
 	add_child(attack_module)
 	
@@ -344,11 +382,11 @@ func _ready__config_self_as_type_ball():
 	#attk module
 	attack_module = Module_AttackModule_Ball_Scene.instance()
 	attack_module.can_draw_laser = false
-	attack_module.laser_color = LASER_COLOR__BALL
+	attack_module.laser_color = associated_proj_or_laser_color__based_on_type_template
 	attack_module.body_to_ignore_on_ball_launch = self
 	attack_module.ball_flat_dmg = GameSettingsManager.combat__current_max_player_health / SHOTS_TO_DESTROY_PLAYER
 	attack_module.ball_dmg__max_bonus_dmg_based_on_lin_vel = GameSettingsManager.combat__current_max_player_health/2
-	attack_module.ball_modulate_to_use_for_hit_damage_particle = LASER_COLOR__LASER
+	attack_module.ball_modulate_to_use_for_hit_damage_particle = associated_proj_or_laser_color__based_on_type_template
 	add_child(attack_module)
 
 #
@@ -442,6 +480,10 @@ func _on_target_detection_module_attempted_ping(arg_success):
 			
 		elif enemy_type == EnemyType.BALL:
 			pass
+		
+		##
+		if !last_calc_draw_enemy_range:
+			prevent_draw_enemy_range_cond_clause.remove_clause(PreventDrawEnemyRangeClauseId.NOT_YET_ENTERED_RANGE_ONCE)
 	
 	#print("attempted ping target: %s" % [arg_success])
 
@@ -620,7 +662,7 @@ func _on_attack_module_laser__hit_player(arg_contact_pos):
 	#player.set_current_robot_health(player.get_current_robot_health() - (player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
 	player.take_robot_health_damage((player.get_max_robot_health() / SHOTS_TO_DESTROY_PLAYER))
 	
-	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(arg_contact_pos, LASER_COLOR__LASER)
+	SingletonsAndConsts.current_game_elements.request_play_damage_particles_on_pos__fragment(arg_contact_pos, associated_proj_or_laser_color__based_on_type_template)
 
 #########################
 
@@ -764,20 +806,20 @@ func _create_break_fragments__for_occulder_type__no_occluder():
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__W, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_W)
 	
 	#NW
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, 0, 0, Texture_Fragment__SeeThruFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, 0, 0, Texture_Fragment__SeeThruFrame_NW)
 	#SW
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
 	#SE
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__SeeThruFrame_NW)
 	#NE
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__XRAY_FRAME__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__SeeThruFrame_NW)
 
 
 func _create_break_fragments__for_traj_type__velo_predict():
 	#N
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, 0, 0, Texture_Fragment__AimerFrame_N)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, 0, 0, Texture_Fragment__AimerFrame_N)
 	#S
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, ROT_HALF, ROT_HALF, Texture_Fragment__AimerFrame_N)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, ROT_HALF, ROT_HALF, Texture_Fragment__AimerFrame_N)
 	#W
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__AIMER_FRAME__POS_N, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__AimerFrame_N)
 	#E
@@ -790,15 +832,15 @@ func _create_break_fragments__for_main_body():
 	#S
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, ROT_HALF, ROT_HALF, Texture_Fragment__BodyFrame_N)
 	#W
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__BodyFrame_N)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__BodyFrame_N)
 	#E
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__BodyFrame_N)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__N, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__BodyFrame_N)
 	
 	
 	#NW
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, 0, 0, Texture_Fragment__BodyFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, 0, 0, Texture_Fragment__BodyFrame_NW)
 	#SE
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__BodyFrame_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__BodyFrame_NW)
 	#SW
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__BODY_PART__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__BodyFrame_NW)
 	#NE
@@ -812,9 +854,9 @@ func _create_break_fragments__for_screen_face():
 	#SE
 	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_HALF, ROT_HALF, Texture_Fragment__MainScreen_NW)
 	#SW
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__MainScreen_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, -ROT_QUARTER, -ROT_QUARTER, Texture_Fragment__MainScreen_NW)
 	#NE
-	_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__MainScreen_NW)
+	#_create_obj_fragment__with_pos_modif_and_angle_and_texture(FRAGMENT__FACE_SCREEN__POS__NW, ROT_QUARTER, ROT_QUARTER, Texture_Fragment__MainScreen_NW)
 	
 
 func _create_break_fragments__for_laser():
@@ -839,6 +881,9 @@ func _create_obj_fragment__with_pos_modif_and_angle_and_texture(arg_pos_modif : 
 	fragment.object_fragment_representation_id = StoreOfObjects.ObjectTypeIds.FRAGMENT__ENEMY_METALLIC #StoreOfObjects.FRAGMENT__ENEMY_METAILIC_SOUND_LIST
 	
 	SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
+	
+	fragment.current_lifespan = SingletonsAndConsts.non_essential_rng.randi_range(5, 9)
+	fragment.has_finite_lifespan = true
 	
 	return fragment
 
@@ -985,12 +1030,5 @@ func ended_rewind():
 	
 	set_current_health(current_health)
 	_set_current_attack_cooldown(_current_attack_cooldown)
-
-
-####
-
-func _draw():
-	if Engine.editor_hint:
-		draw_arc(Vector2(0, 0), RANGE_FOR_TRUE_AGGRO, 0, PI*2, 64, Color(1, 0.6, 0.6), 3)
 
 

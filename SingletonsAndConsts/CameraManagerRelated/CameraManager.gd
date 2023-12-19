@@ -90,7 +90,7 @@ func _attempt_connect_self_to_game_elements():
 func _on_before_game_quit__game_elements():
 	if is_instance_valid(camera) and !camera.is_queued_for_deletion():
 		camera.queue_free()
-
+		reset_cam_states()
 
 #
 
@@ -130,14 +130,17 @@ func set_camera_to_follow_node_2d(arg_node_2d : Node2D):
 
 ###
 
-func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true):
+func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true, arg_emit_signal : bool = true):
 	var old_rotation = current_cam_rotation
 	
-	current_cam_rotation = arg_rotation
-	emit_signal("current_cam_rotation_changed", current_cam_rotation)
-	
-	if rotate_visually:
-		_start_rotate_cam_visually_to_rad(arg_rotation, old_rotation)
+	if old_rotation != arg_rotation:
+		current_cam_rotation = arg_rotation
+		
+		if arg_emit_signal:
+			emit_signal("current_cam_rotation_changed", current_cam_rotation)
+		
+		if rotate_visually:
+			_start_rotate_cam_visually_to_rad(arg_rotation, old_rotation)
 
 
 ##
@@ -334,9 +337,12 @@ func make_camera_immediatelty_catch_up_to_node():
 func set_camera_glob_pos(arg_pos):
 	camera.global_position = arg_pos
 
-#
 
+###########
 
+func reset_cam_states():
+	rotate_cam_to_rad(0, false, false)
+	_set_actual_rotation_of_cam(0)
 
 ###################### 
 # REWIND RELATED

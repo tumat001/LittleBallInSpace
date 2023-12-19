@@ -53,3 +53,8 @@ func restore_from_destroyed_from_rewind():
 
 #
 
+func collect_by_player():
+	_on_player_entered_self(SingletonsAndConsts.current_game_elements.get_current_player())
+
+#
+

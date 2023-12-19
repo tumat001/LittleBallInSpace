@@ -200,9 +200,9 @@ margin_right = 210.0
 margin_bottom = 209.0
 
 [node name="Label" type="Label" parent="MiscContainer/MouseWheelVisualPanel" index="0"]
-modulate = Color( 0.866667, 0.866667, 0.866667, 1 )
 margin_right = 261.0
 margin_bottom = 69.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Tip:
 You can use your mouse scroll
 to manually adjust the

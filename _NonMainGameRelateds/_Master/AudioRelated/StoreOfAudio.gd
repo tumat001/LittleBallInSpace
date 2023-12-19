@@ -248,9 +248,9 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_BallCollision_Glass_03 : -4,
 	
 	
-	AudioIds.SFX_Laser_ChargeUp : 6,
-	AudioIds.SFX_Laser_MainFire : 6,
-	AudioIds.SFX_Enemy_ChargeBall : 2,
+	AudioIds.SFX_Laser_ChargeUp : 8,
+	AudioIds.SFX_Laser_MainFire : 8,
+	AudioIds.SFX_Enemy_ChargeBall : 3,
 	AudioIds.SFX_Enemy_LaunchBall : -2,
 	
 	AudioIds.SFX_Player_Damage_01 : 10,

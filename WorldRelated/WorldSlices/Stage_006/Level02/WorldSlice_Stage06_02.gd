@@ -3,7 +3,18 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 onready var vis_transition_fog_circ = $MiscContainer/VisTransitionFog_Circ
 
+onready var base_enemy_01 = $ObjectContainer/BaseEnemy1
+onready var base_enemy_02 = $ObjectContainer/BaseEnemy2
+
+onready var fast_respawn_position_2d = $MiscContainer/FastRespawnPosition2D
+
+
+onready var pickupable_star = $CoinsContainer/Pickupables_Coin
+
+#
+
 var _lifted_fog : bool = false
+onready var base_enemies = [base_enemy_01, base_enemy_02]
 
 #
 
@@ -16,8 +27,49 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	CameraManager.set_current_default_zoom_out_vec(Vector2(1, 1))
+	
+	for enemy in base_enemies:
+		if is_instance_valid(enemy):
+			enemy.prevent_draw_enemy_range_cond_clause.attempt_insert_clause(enemy.PreventDrawEnemyRangeClauseId.CUSTOM_WORLD_SLICE)
+	
+	
 
 
+#######
+
+#note: can be triggered more than once
+func _on_PDAR_ForFastRespawn_player_entered_in_area():
+	var data := []
+	data.append(true)
+	data.append(GameSaveManager.is_all_coins_collected_in_curr_level__tentative())
+	
+	SingletonsAndConsts.set_restart_only_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_02__STAGE_6, data)
+
+
+func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
+	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
+	
+	if SingletonsAndConsts.if_level_id_has_restart_only_persisting_data(StoreOfLevels.LevelIds.LEVEL_02__STAGE_6):
+		var data : Array = SingletonsAndConsts.get_restart_only_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_02__STAGE_6)
+		var is_fast_respawn : bool = data[0]
+		var is_star_collected : bool = data[1]
+		
+		if is_fast_respawn:
+			arg_player.global_position = fast_respawn_position_2d.global_position
+			
+		else:
+			pass
+			
+		
+		if is_star_collected:
+			pickupable_star.collect_by_player()
+			
+		else:
+			pass
+			
+		
+	else:
+		pass
 
 #####
 
@@ -32,6 +84,10 @@ func _on_Button_AntiFog_pressed(arg_is_pressed):
 		SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 		
 		CameraManager.set_current_default_zoom_out_vec(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL)
+		
+		for enemy in base_enemies:
+			if is_instance_valid(enemy):
+				enemy.prevent_draw_enemy_range_cond_clause.remove_clause(enemy.PreventDrawEnemyRangeClauseId.CUSTOM_WORLD_SLICE)
 
 
 #func _on_Button_AntiFog_pressed(arg_is_pressed):
@@ -53,4 +109,6 @@ func _on_Button_AntiFog_pressed(arg_is_pressed):
 #
 #	SingletonsAndConsts.current_rewind_manager.can_cast_rewind_cond_clause.remove_clause(SingletonsAndConsts.current_rewind_manager.CanCastRewindClauseIds.CUSTOM_FROM_WORLD_SLICE)
 #
+
+
 
