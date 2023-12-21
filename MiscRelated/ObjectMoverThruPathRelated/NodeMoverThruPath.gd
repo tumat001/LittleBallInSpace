@@ -40,6 +40,8 @@ func _process(delta):
 # REWIND RELATED
 #####################
 
+#NOTE: NOT UPDATED.. Update when u actually gonna use this...
+
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 

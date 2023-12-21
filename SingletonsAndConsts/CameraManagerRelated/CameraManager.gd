@@ -2,6 +2,9 @@ extends Node
 
 #const CAM_ANGLE_TURN_DURATION : float = 0.5
 
+const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
+
 #
 
 signal current_cam_rotation_changed(arg_val)
@@ -49,6 +52,10 @@ var _is_at_default_zoom : bool
 
 
 ##########
+
+func _init():
+	_init_rewind_variable_history()
+
 
 func _ready():
 	#print("cam rot: %s" % fmod((-3*PI/2), (2*PI)))
@@ -343,6 +350,8 @@ func set_camera_glob_pos(arg_pos):
 func reset_cam_states():
 	rotate_cam_to_rad(0, false, false)
 	_set_actual_rotation_of_cam(0)
+	
+	rewind_variable_history.reset()
 
 ###################### 
 # REWIND RELATED
@@ -351,15 +360,45 @@ func reset_cam_states():
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind
 
+var rewind_variable_history : VariableHistory
+var rewind_frame_index_of_last_get_save_state_by_RM
+
 var _rewinded_current_cam_rotation
+
+
+
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	rewind_variable_history = VariableHistory.new(self)
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
+	
+	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_get_cam_rotation__for_rewind")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("current_cam_rotation")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_camera_rotating")
+	
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+	
 
 func get_rewind_save_state():
 	return {
-		"camera.rotation" : camera.rotation,
+		"camera.rotation" : _get_cam_rotation__for_rewind(),
 		"current_cam_rotation" : current_cam_rotation,
 		"is_camera_rotating" : is_camera_rotating,
 	}
 	
+
+func _get_cam_rotation__for_rewind():
+	if is_instance_valid(camera):
+		return camera.rotation
+	
+
 
 func load_into_rewind_save_state(arg_state):
 	_set_actual_rotation_of_cam(arg_state["camera.rotation"])

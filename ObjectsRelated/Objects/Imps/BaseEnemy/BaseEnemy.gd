@@ -30,6 +30,8 @@ const Texture_Fragment__WeaponLaser_N02 = preload("res://ObjectsRelated/Objects/
 const Texture_Fragment__WeaponLaser_N03 = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BreakFragments/BaseEnemy_BreakFragments_Weapon_Laser_N03.png")
 
 
+#const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
 #
 
 signal current_attack_cooldown_changed(arg_val)
@@ -115,7 +117,7 @@ enum TargetDetectionModeId {
 export(TargetDetectionModeId) var target_detection_mode_id : int
 
 var target_detection_module : Module_TargetDetection
-const REWIND_DATA__TARGET_DETECTION_MODULE = "target_detection_module"
+#const REWIND_DATA__TARGET_DETECTION_MODULE = "target_detection_module"
 
 ###
 
@@ -233,6 +235,8 @@ func _init():
 	prevent_draw_enemy_range_cond_clause.connect("clause_inserted", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
 	prevent_draw_enemy_range_cond_clause.connect("clause_removed", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
 	_update_can_draw_enemy_range()
+	
+	
 
 #
 
@@ -937,7 +941,39 @@ func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 # REWIND RELATED
 #####################
 
+#var rewind_variable_history : VariableHistory
+#var rewind_frame_index_of_last_get_save_state_by_RM
+
 var _most_recent_rewind_state
+
+#
+
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	#rewind_variable_history = VariableHistory.new(self)
+	._init_rewind_variable_history()
+	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_can_not_attack_conditional_clause__get_rewind_save_state")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_current_attack_cooldown")
+	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_attack_module__get_rewind_save_state")
+	
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_objects_to_not_collide_with")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_objects_to_collide_with_after_exit")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_objects_to_add_mask_layer_collision_after_exit")
+	
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("current_health")
+	
+	
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+
+
+
 
 func queue_free():
 	if !is_dead_but_reserved_for_rewind:  #first time, and no repeats
@@ -949,7 +985,7 @@ func get_rewind_save_state():
 	var save_state : Dictionary = .get_rewind_save_state()
 	
 	#if _rewind__can_not_attack_conditional_clause_clauses__has_changes:
-	save_state[REWIND_DATA__can_not_attack_conditional_clause_clauses] = can_not_attack_conditional_clause.get_rewind_save_state()
+	save_state[REWIND_DATA__can_not_attack_conditional_clause_clauses] = _can_not_attack_conditional_clause__get_rewind_save_state()
 	#	_rewind__can_not_attack_conditional_clause_clauses__has_changes = false
 	
 	#if _rewind__current_attack_cooldown__has_changes:
@@ -959,10 +995,10 @@ func get_rewind_save_state():
 	#
 	
 	if is_instance_valid(attack_module) and attack_module.is_rewindable:
-		save_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA] = attack_module.get_rewind_save_state()
+		save_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA] = _attack_module__get_rewind_save_state()
 	
-	if target_detection_module != null:
-		save_state[REWIND_DATA__TARGET_DETECTION_MODULE] = target_detection_module.get_rewind_save_state()
+#	if target_detection_module != null:
+#		save_state[REWIND_DATA__TARGET_DETECTION_MODULE] = target_detection_module.get_rewind_save_state()
 	
 	
 	if enemy_type == EnemyType.BALL:
@@ -973,6 +1009,14 @@ func get_rewind_save_state():
 	save_state[REWIND_DATA__current_health] = current_health
 	
 	return save_state
+
+func _can_not_attack_conditional_clause__get_rewind_save_state():
+	return can_not_attack_conditional_clause.get_rewind_save_state()
+
+func _attack_module__get_rewind_save_state():
+	if is_instance_valid(attack_module):
+		return attack_module.get_rewind_save_state()
+
 
 func load_into_rewind_save_state(arg_state : Dictionary):
 	.load_into_rewind_save_state(arg_state)
@@ -988,8 +1032,8 @@ func load_into_rewind_save_state(arg_state : Dictionary):
 	if arg_state.has(REWIND_DATA__ATTACK_MODULE_REWIND_DATA):
 		attack_module.load_into_rewind_save_state(arg_state[REWIND_DATA__ATTACK_MODULE_REWIND_DATA])
 	
-	if arg_state.has(REWIND_DATA__TARGET_DETECTION_MODULE):
-		target_detection_module.load_into_rewind_save_state(arg_state[REWIND_DATA__TARGET_DETECTION_MODULE])
+#	if arg_state.has(REWIND_DATA__TARGET_DETECTION_MODULE):
+#		target_detection_module.load_into_rewind_save_state(arg_state[REWIND_DATA__TARGET_DETECTION_MODULE])
 	
 	current_health = arg_state[REWIND_DATA__current_health]
 

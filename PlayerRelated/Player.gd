@@ -2441,6 +2441,10 @@ func is_curr_mov_velocity__right():
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
+#var rewind_variable_history : VariableHistory
+var rewind_frame_index_of_last_get_save_state_by_RM
+
+
 var _use_integ_forces_new_vals : bool
 
 var _rewinded__angular_velocity
@@ -2480,6 +2484,15 @@ var _most_recent_rewind_state
 #	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(arg_obj)
 #
 
+
+func is_any_state_changed() -> bool:
+	return true
+#	rewind_variable_history.update_based_on_obj_to_track()
+#	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+#	rewind_variable_history.reset()
+#
+#	return is_any_changed
+	
 
 func get_rewind_save_state():
 	var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())

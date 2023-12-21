@@ -1,3 +1,9 @@
+extends Reference
+
+
+const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
+#
 
 signal clause_inserted(clause)
 signal clause_removed(clause)
@@ -10,11 +16,12 @@ var _composite_clauses : Array = []
 var is_passed : bool
 
 
-#######
+########
 
 func _init():
 	is_passed = true
-
+	
+	_init_rewind_variable_history()
 
 func is_passed_clauses() -> bool:
 	var no_normal_clause : bool = _clauses.size() == 0
@@ -155,9 +162,31 @@ func copy_clauses_of_condtional_clause(other_conditional_clause):
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
+var rewind_variable_history : VariableHistory
+var rewind_frame_index_of_last_get_save_state_by_RM
+
+
 var _rewinded_clauses : Array
 var _rewinded_blacklisted_clauses
 var _rewinded_composite_clauses : Array
+
+#
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	rewind_variable_history = VariableHistory.new(self)
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_clauses")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("blacklisted_clauses")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_composite_clauses")
+
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+
 
 
 func get_rewind_save_state():

@@ -78,7 +78,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/SingletonScriptsShortcut/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg" )
 
 [global]
 

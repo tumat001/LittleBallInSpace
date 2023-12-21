@@ -5,6 +5,9 @@ extends Node2D
 
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
+const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
+
 #
 
 signal player_entered(arg_player)
@@ -95,6 +98,7 @@ func _init():
 	disabled_collision_cond_clauses.connect("clause_removed", self, "_on_disabled_collision_cond_clauses_updated")
 	_update_last_calculated_is_collision_disabled()
 	
+	_init_rewind_variable_history()
 
 func _on_disabled_collision_cond_clauses_updated(arg_clause_id):
 	_update_last_calculated_is_collision_disabled()
@@ -458,11 +462,34 @@ func _on_Area2D_body_exited(body):
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
+var rewind_variable_history : VariableHistory
+var rewind_frame_index_of_last_get_save_state_by_RM
+
 #var _rewind_save__nodes_to_not_teleport_on_first_enter
 #var _rewind_save__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed
 
 var _rewind_most_recent_load__nodes_to_not_teleport_on_first_enter
 var _rewind_most_recent_load__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed
+
+#
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	rewind_variable_history = VariableHistory.new(self)
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_disabled")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_nodes_to_not_teleport_on_first_enter")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed")
+	
+	
+	
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
 
 #
 

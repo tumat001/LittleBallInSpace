@@ -1,6 +1,8 @@
 
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 
+const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
 
 signal ability_activated()
 
@@ -47,7 +49,8 @@ func _init():
 	counter_decrease_clauses = ConditionalClauses.new()
 	#counter_decrease_clauses.blacklisted_clauses.append(CounterDecreaseClauses.ROUND_ONGOING_STATE)
 	
-	
+	_init_rewind_variable_history()
+
 
 # Activation related
 
@@ -133,19 +136,45 @@ func emit_updated_is_ready_for_activation(clause):
 # REWIND RELATED
 #####################
 
-export(bool) var is_rewindable : bool = true
-var is_dead_but_reserved_for_rewind : bool
+#note: not added directly to rewind manager
+#export(bool) var is_rewindable : bool = false  
+#var is_dead_but_reserved_for_rewind : bool
 
 var _rewind_state
 
+var rewind_variable_history : VariableHistory
+#var rewind_frame_index_of_last_get_save_state_by_RM
+
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	rewind_variable_history = VariableHistory.new(self)
+	#rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
+	#rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_timebound")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_time_max_cooldown")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_time_current_cooldown")
+	
+	#rewind_variable_history.add_var_name__for_tracker__based_on_obj("activation_conditional_clauses")
+	#rewind_variable_history.add_var_name__for_tracker__based_on_obj("counter_decrease_clauses")
+	
+
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+
+
 func get_rewind_save_state():
 	return {
-		"is_timebound" : is_timebound,
+		#"is_timebound" : is_timebound,
 		"time_max_cooldown" : _time_max_cooldown,
 		"time_current_cooldown" : _time_current_cooldown,
 		
-		"activation_conditional_clauses_save_state" : activation_conditional_clauses.get_rewind_save_state(),
-		"counter_decrease_clauses_save_state" : counter_decrease_clauses.get_rewind_save_state()
+		#"activation_conditional_clauses_save_state" : activation_conditional_clauses.get_rewind_save_state(),
+		#"counter_decrease_clauses_save_state" : counter_decrease_clauses.get_rewind_save_state()
 		
 	}
 	
@@ -157,22 +186,22 @@ func load_into_rewind_save_state(arg_state):
 	_time_current_cooldown = arg_state["time_current_cooldown"]
 	
 
-func destroy_from_rewind_save_state():
-	pass
-	
+#func destroy_from_rewind_save_state():
+#	pass
+#
+#
+#func restore_from_destroyed_from_rewind():
+#	pass
+#
 
-func restore_from_destroyed_from_rewind():
-	pass
-	
 
-
-func started_rewind():
-	pass
-
-func ended_rewind():
-	activation_conditional_clauses.load_into_rewind_save_state(_rewind_state["activation_conditional_clauses_save_state"])
-	counter_decrease_clauses.load_into_rewind_save_state(_rewind_state["counter_decrease_clauses_save_state"])
-	
-	emit_updated_is_ready_for_activation(0)
+#func started_rewind():
+#	pass
+#
+#func ended_rewind():
+#	activation_conditional_clauses.load_into_rewind_save_state(_rewind_state["activation_conditional_clauses_save_state"])
+#	counter_decrease_clauses.load_into_rewind_save_state(_rewind_state["counter_decrease_clauses_save_state"])
+#
+#	emit_updated_is_ready_for_activation(0)
 
 

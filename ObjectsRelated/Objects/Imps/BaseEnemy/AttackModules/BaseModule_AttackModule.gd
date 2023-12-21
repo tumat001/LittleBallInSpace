@@ -1,6 +1,10 @@
 extends Node2D
 
 
+const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
+
+
+
 const LASER_WIDTH__BASE = 2.0
 const LASER_WIDTH__IN_FIRE__MIN = 2.0
 const LASER_WIDTH__IN_FIRE__MAX = 8.0
@@ -55,6 +59,11 @@ var laser_color : Color
 var can_draw_laser : bool setget set_can_draw_laser
 #var _rewind__can_draw_laser__has_changes : bool = true
 const REWIND_DATA__can_draw_laser = "can_draw_laser"
+
+#
+
+func _init():
+	_init_rewind_variable_history()
 
 #
 
@@ -151,6 +160,30 @@ func cancel_all_windups_and_charges__on_wielder_death():
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
+var rewind_variable_history : VariableHistory
+var rewind_frame_index_of_last_get_save_state_by_RM
+
+
+#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
+func _init_rewind_variable_history():
+	rewind_variable_history = VariableHistory.new(self)
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("can_draw_laser")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("target_pos_to_draw_laser_to")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_fire_sequence_state")
+	
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_current_duration_of_laser_completon__to_any")
+	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_current_laser_width")
+	
+
+
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+
+#
 
 func get_rewind_save_state():
 	var save_dat = {}
