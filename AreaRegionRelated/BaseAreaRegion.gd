@@ -4,9 +4,6 @@ extends Area2D
 const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
 const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
 
-const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
-
-#
 
 signal region__body_entered_in_area(body)
 signal region__body_exited_from_area(body)
@@ -43,15 +40,12 @@ var _rect_used_for_region : Rect2
 
 var sprite_for_shader : Sprite
 
+
 #
 
 onready var collision_shape = $CollisionShape2D
 
 #
-
-func _init():
-	_init_rewind_variable_history()
-
 
 func set_monitor_entities_remaining_in_area(arg_val):
 	monitor_entities_remaining_in_area = arg_val
@@ -225,27 +219,7 @@ func add_shader_to_collshape(arg_material : ShaderMaterial):
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
-var rewind_variable_history : VariableHistory
-var rewind_frame_index_of_last_get_save_state_by_RM
-
 #
-
-#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
-func _init_rewind_variable_history():
-	rewind_variable_history = VariableHistory.new(self)
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_entities_in_area_to_delta_map")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("transform")
-
-
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-	rewind_variable_history.reset()
-	
-	return is_any_changed
-
-
 
 func queue_free():
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):

@@ -4,8 +4,6 @@ extends StaticBody2D
 const ObjectDetailsPanel = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.gd")
 const ObjectDetailsPanel_Scene = preload("res://GameFrontHUDRelated/Subs/TooltipRelateds/ObjectDetails/ObjectDetailsPanel.tscn")
 
-const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
-
 #const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
 
 ##
@@ -145,11 +143,6 @@ var is_responsible_for_own_movement__for_rewind : bool = true setget set_is_resp
 #
 
 onready var tilemap = $TileMap
-
-#
-
-func _init():
-	_init_rewind_variable_history()
 
 #
 
@@ -896,33 +889,6 @@ func has_tile_by_body_shape_index(arg_idx : int):
 export(bool) var is_rewindable : bool
 var is_dead_but_reserved_for_rewind : bool
 
-var rewind_variable_history : VariableHistory
-var rewind_frame_index_of_last_get_save_state_by_RM
-
-#
-
-
-#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
-func _init_rewind_variable_history():
-	rewind_variable_history = VariableHistory.new(self)
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_responsible_for_own_movement__for_rewind")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("energy_mode")
-	
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("rotation")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("transform")
-	
-	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_saved_cell_data_queue__get_front")
-	
-	
-
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes or _is_save_rewind_frame_unskippable()
-	rewind_variable_history.reset()
-	
-	return is_any_changed
-	
 
 #
 
@@ -959,7 +925,7 @@ func get_rewind_save_state():
 		
 	
 	#if _save_tiles_data_next_frame__for_rewind_save:
-	if _is_save_rewind_frame_unskippable():
+	if _save_tiles_data_next_frame__for_rewind_save__count > 0:
 		#_save_tiles_data_next_frame__for_rewind_save = false
 		_save_tiles_data_next_frame__for_rewind_save__count -= 1
 		save_state["cell_save_data"] = _saved_cell_data_queue.pop_front()#_saved_cell_data
@@ -967,18 +933,6 @@ func get_rewind_save_state():
 		#print(save_state["cell_save_data"])
 	
 	return save_state
-
-func _is_save_rewind_frame_unskippable() -> bool:
-	return _save_tiles_data_next_frame__for_rewind_save__count > 0
-
-
-func _saved_cell_data_queue__get_front():
-	if _saved_cell_data_queue.size() != 0:
-		return _saved_cell_data_queue.front()
-	else:
-		return null
-
-
 
 func load_into_rewind_save_state(arg_state):
 	var _is_responsible = arg_state["is_responsible_for_own_movement__for_rewind"]

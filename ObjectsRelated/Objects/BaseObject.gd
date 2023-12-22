@@ -4,9 +4,6 @@ extends RigidBody2D
 const ConditionalClauses = preload("res://MiscRelated/ClauseRelated/ConditionalClauses.gd")
 const StoreOfPhysicsLayers = preload("res://SingletonsAndConsts/StoreOfPhysicsLayers.gd")
 
-const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
-
-
 #
 
 signal destroyed_self_caused_by_destroying_area_region(arg_area_region)
@@ -84,8 +81,6 @@ func set_body_mode_to_use(arg_mode):
 func _init():
 	_update_last_calculated_object_mass()
 	_init_block_can_collide_with_player_cond_clauses()
-	
-	#_init_rewind_variable_history()
 
 func _init_block_can_collide_with_player_cond_clauses():
 	block_can_collide_with_player_cond_clauses = ConditionalClauses.new()
@@ -110,12 +105,9 @@ func _update_last_calculated_can_collide_with_player():
 
 func _ready():
 	if !Engine.editor_hint:
-		set_body_mode_to_use(body_mode_to_use)
-		
-		_init_rewind_variable_history()
 		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 		
-		#set_body_mode_to_use(body_mode_to_use)
+		set_body_mode_to_use(body_mode_to_use)
 
 #
 
@@ -188,11 +180,6 @@ func _process(delta):
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
-var rewind_variable_history : VariableHistory
-var rewind_frame_index_of_last_get_save_state_by_RM
-
-
-
 var _use_integ_forces_new_vals : bool
 
 var _rewinded__angular_velocity
@@ -202,25 +189,6 @@ var _rewinded__transform : Transform2D
 var _rewinded__block_can_collide_with_player_cond_clauses_save_state
 
 #
-
-#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
-func _init_rewind_variable_history():
-	rewind_variable_history = VariableHistory.new(self)
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("linear_velocity")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("sleeping")
-	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_block_can_collide_with_player_cond_clauses__get_rewind_save_state")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("current_lifespan")
-	
-
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-	rewind_variable_history.reset()
-	
-	return is_any_changed
-
-
 
 func queue_free():
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
@@ -249,34 +217,18 @@ func _on_obj_removed_from_rewindables(arg_obj):
 
 
 func get_rewind_save_state():
+	var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
 	return {
-		"angular_velocity" : angular_velocity,
-		"linear_velocity" : linear_velocity,
-		"sleeping" : sleeping,
-		"transform" : transform,
+		"angular_velocity" : state.angular_velocity,
+		"linear_velocity" : state.linear_velocity,
+		"sleeping" : state.sleeping,
+		"transform" : state.transform,
 		
-		"block_can_collide_with_player_cond_clauses_save_state" : _block_can_collide_with_player_cond_clauses__get_rewind_save_state(), #block_can_collide_with_player_cond_clauses.get_rewind_save_state(),
+		"block_can_collide_with_player_cond_clauses_save_state" : block_can_collide_with_player_cond_clauses.get_rewind_save_state(),
 		
 		"current_lifespan" : current_lifespan,
 	}
 	
-#	var state : Physics2DDirectBodyState = Physics2DServer.body_get_direct_state(get_rid())
-#	return {
-#		"angular_velocity" : state.angular_velocity,
-#		"linear_velocity" : state.linear_velocity,
-#		"sleeping" : state.sleeping,
-#		"transform" : state.transform,
-#
-#		"block_can_collide_with_player_cond_clauses_save_state" : block_can_collide_with_player_cond_clauses.get_rewind_save_state(),
-#
-#		"current_lifespan" : current_lifespan,
-#	}
-	
-	
-
-func _block_can_collide_with_player_cond_clauses__get_rewind_save_state():
-	return block_can_collide_with_player_cond_clauses.get_rewind_save_state()
-
 
 func load_into_rewind_save_state(arg_state):
 	_rewinded__angular_velocity = arg_state["angular_velocity"]

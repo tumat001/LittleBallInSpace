@@ -438,27 +438,6 @@ func _press_on_ball_dispenser(arg_dispenser):
 
 
 #############################################
-# REWIND RELATED
-##############################
-
-
-func _init_rewind_variable_history():
-	._init_rewind_variable_history()
-	
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("pressable_count")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_pressed")
-	
-
-#temptodo obj func override
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	if button_color == ButtonColor.BLUE:
-		print("func: %s, var: %s" % [rewind_variable_history.func_name_with_changes_to_val_map, rewind_variable_history.var_name_with_changes_to_val_map])
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-	rewind_variable_history.reset()
-	
-	return is_any_changed
-#end of temptodo
 
 
 func get_rewind_save_state():

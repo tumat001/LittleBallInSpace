@@ -7,9 +7,6 @@ const PlayerModi_LaunchBall_Node_Scene = preload("res://PlayerRelated/PlayerModi
 
 const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.gd")
 
-const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
-
-
 #const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.gd")
 
 ##
@@ -122,7 +119,6 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	#
 	
-	_init_rewind_variable_history()
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	
 	#
@@ -130,7 +126,6 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	#_initialize_destroyed_ball_particles_pool_component()
 	
 	#_configure_to_player__with_energy_modi()
-	
 	call_deferred("_configure_to_player__with_energy_modi")
 
 
@@ -492,31 +487,6 @@ func make_assist_mode_modification__additional_launch_ball():
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
 
-var rewind_variable_history : VariableHistory
-var rewind_frame_index_of_last_get_save_state_by_RM
-
-
-
-#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
-func _init_rewind_variable_history():
-	rewind_variable_history = VariableHistory.new(self)
-	#no need for is_dead_but_reserved_for_rewind
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("_current_ball_count")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_infinite_ball_count")
-	
-	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_launch_ability__get_rewind_save_state")
-	
-	#
-
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-	rewind_variable_history.reset()
-	
-	return is_any_changed
-	
-
-#
 
 func get_rewind_save_state():
 	return {
@@ -525,10 +495,6 @@ func get_rewind_save_state():
 		
 		"launch_ability_save_state" : launch_ability.get_rewind_save_state(),
 	}
-
-func _launch_ability__get_rewind_save_state():
-	return launch_ability.get_rewind_save_state()
-
 
 
 func load_into_rewind_save_state(arg_state):

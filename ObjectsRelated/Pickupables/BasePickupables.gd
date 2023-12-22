@@ -2,9 +2,6 @@ extends Area2D
 
 const Player = preload("res://PlayerRelated/Player.gd")
 
-const VariableHistory = preload("res://MiscRelated/RewindHelperRelated/VariableHistory.gd")
-
-
 #
 
 const ALPHA_BORDER_MARGIN : int = 3
@@ -13,10 +10,6 @@ onready var sprite = $Sprite
 onready var collision_shape = $CollisionShape2D
 
 #
-
-func _init():
-	_init_rewind_variable_history()
-
 
 func _ready():
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
@@ -73,26 +66,6 @@ func set_collidable_with_player(arg_val):
 
 export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind : bool
-
-var rewind_variable_history : VariableHistory
-var rewind_frame_index_of_last_get_save_state_by_RM
-
-#
-
-#NOTE: add vars found in get/load, plus "is_dead_but_..._rewind"
-func _init_rewind_variable_history():
-	rewind_variable_history = VariableHistory.new(self)
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("transform")
-	
-	
-
-func is_any_state_changed() -> bool:
-	rewind_variable_history.update_based_on_obj_to_track()
-	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-	rewind_variable_history.reset()
-	
-	return is_any_changed
 
 #
 

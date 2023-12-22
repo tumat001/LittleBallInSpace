@@ -23,7 +23,7 @@ var default_ping_rate_for_outside_most_outer_detection_range : float = 3.5
 
 #
 # must be set at ready ()
-#var current_target_node_or_pos_changes_at_any_point : bool = false
+var current_target_node_or_pos_changes_at_any_point : bool = false
 
 
 var _current_target_node : Node2D
@@ -214,114 +214,113 @@ func _attempt_ping_curr_target():
 		emit_signal("attempted_ping", false)
 
 
-#NOTE: NOT USED
 ###################### 
 # REWIND RELATED
 #####################
 
-#export(bool) var is_rewindable : bool = false
-#var is_dead_but_reserved_for_rewind : bool
+export(bool) var is_rewindable : bool = false
+var is_dead_but_reserved_for_rewind : bool
+
+
+func get_rewind_save_state():
+	var save_dat = {}
+	
+#	if _rewind__detection_range_arr__HtoL__has_changes:
+#		save_dat[REWIND_DATA__detection_range_arr__HtoL] = _detection_range_arr__HtoL.duplicate(true)
 #
+#	if _rewind__detection_range_to_ping_rate_map__has_changes:
+#		save_dat[REWIND_DATA__detection_range_to_ping_rate_map] = _detection_range_to_ping_rate_map.duplicate(true)
 #
-#func get_rewind_save_state():
-#	var save_dat = {}
+#	if _rewind__detection_range_for_successful_ping__has_changes:
+#		save_dat[REWIND_DATA__detection_range_for_successful_ping] = _detection_range_for_successful_ping
+	
+	#
+	
+	if current_target_node_or_pos_changes_at_any_point:
+		#if _rewind__current_target_node__has_changes:
+		save_dat[REWIND_DATA__current_target_node] = _current_target_node
+		
+		#if _rewind__current_target_pos__has_changes:
+		save_dat[REWIND_DATA__current_target_pos] = _current_target_pos
+		
+		#if _rewind__current_target_func_to_use__has_changes:
+		save_dat[REWIND_DATA__current_target_func_to_use] = _current_target_func_to_use
+	
+	#
+	
+	if current_origin_node_or_pos_changes_at_any_point:
+		#if _rewind__origin_node__has_changes:
+		save_dat[REWIND_DATA__origin_node] = _origin_node
+		
+		#if _rewind__origin__has_changes:
+		save_dat[REWIND_DATA__origin] = _origin
+		
+		#if _rewind__origin_func_to_use__has_changes:
+		save_dat[REWIND_DATA__origin_func_to_use] = _origin_func_to_use
+	
+	#
+	
+	save_dat[REWIND_DATA__current_update_delay_before_ping_attempt] = _current_update_delay_before_ping_attempt
+	
+	return save_dat
+
+func load_into_rewind_save_state(arg_state : Dictionary):
+#	if arg_state.has(REWIND_DATA__detection_range_arr__HtoL):
+#		_detection_range_arr__HtoL.clear()
+#		_detection_range_arr__HtoL.append_array(arg_state[REWIND_DATA__detection_range_arr__HtoL])
 #
-##	if _rewind__detection_range_arr__HtoL__has_changes:
-##		save_dat[REWIND_DATA__detection_range_arr__HtoL] = _detection_range_arr__HtoL.duplicate(true)
-##
-##	if _rewind__detection_range_to_ping_rate_map__has_changes:
-##		save_dat[REWIND_DATA__detection_range_to_ping_rate_map] = _detection_range_to_ping_rate_map.duplicate(true)
-##
-##	if _rewind__detection_range_for_successful_ping__has_changes:
-##		save_dat[REWIND_DATA__detection_range_for_successful_ping] = _detection_range_for_successful_ping
+#	if arg_state.has(REWIND_DATA__detection_range_to_ping_rate_map):
+#		_detection_range_to_ping_rate_map.clear()
+#		var map_to_copy_from : Dictionary = arg_state[REWIND_DATA__detection_range_to_ping_rate_map]
+#		for key in map_to_copy_from.keys():
+#			var val = map_to_copy_from[key]
 #
-#	#
+#			_detection_range_to_ping_rate_map[key] = val
 #
-##	if current_target_node_or_pos_changes_at_any_point:
-##		#if _rewind__current_target_node__has_changes:
-##		save_dat[REWIND_DATA__current_target_node] = _current_target_node
-##
-##		#if _rewind__current_target_pos__has_changes:
-##		save_dat[REWIND_DATA__current_target_pos] = _current_target_pos
-##
-##		#if _rewind__current_target_func_to_use__has_changes:
-##		save_dat[REWIND_DATA__current_target_func_to_use] = _current_target_func_to_use
-##
-##	#
-##
-##	if current_origin_node_or_pos_changes_at_any_point:
-##		#if _rewind__origin_node__has_changes:
-##		save_dat[REWIND_DATA__origin_node] = _origin_node
-##
-##		#if _rewind__origin__has_changes:
-##		save_dat[REWIND_DATA__origin] = _origin
-##
-##		#if _rewind__origin_func_to_use__has_changes:
-##		save_dat[REWIND_DATA__origin_func_to_use] = _origin_func_to_use
-#
-#	#
-#
-#	save_dat[REWIND_DATA__current_update_delay_before_ping_attempt] = _current_update_delay_before_ping_attempt
-#
-#	return save_dat
-#
-#func load_into_rewind_save_state(arg_state : Dictionary):
-##	if arg_state.has(REWIND_DATA__detection_range_arr__HtoL):
-##		_detection_range_arr__HtoL.clear()
-##		_detection_range_arr__HtoL.append_array(arg_state[REWIND_DATA__detection_range_arr__HtoL])
-##
-##	if arg_state.has(REWIND_DATA__detection_range_to_ping_rate_map):
-##		_detection_range_to_ping_rate_map.clear()
-##		var map_to_copy_from : Dictionary = arg_state[REWIND_DATA__detection_range_to_ping_rate_map]
-##		for key in map_to_copy_from.keys():
-##			var val = map_to_copy_from[key]
-##
-##			_detection_range_to_ping_rate_map[key] = val
-##
-##	if arg_state.has(REWIND_DATA__detection_range_for_successful_ping):
-##		_detection_range_for_successful_ping = arg_state[REWIND_DATA__detection_range_for_successful_ping]
-#
-#	#
-#
-##	if arg_state.has(REWIND_DATA__current_target_node):
-##		_current_target_node = arg_state[REWIND_DATA__current_target_node]
-##
-##	if arg_state.has(REWIND_DATA__current_target_pos):
-##		_current_target_pos = arg_state[REWIND_DATA__current_target_pos]
-##
-##	if arg_state.has(REWIND_DATA__current_target_func_to_use):
-##		_current_target_func_to_use = arg_state[REWIND_DATA__current_target_func_to_use]
-##
-##	#
-##
-##	if arg_state.has(REWIND_DATA__origin_node):
-##		_origin_node = arg_state[REWIND_DATA__origin_node]
-##
-##	if arg_state.has(REWIND_DATA__origin):
-##		_origin = arg_state[REWIND_DATA__origin]
-##
-##	if arg_state.has(REWIND_DATA__origin_func_to_use):
-##		_origin_func_to_use = arg_state[REWIND_DATA__origin_func_to_use]
-#
-#	#
-#
-#	_current_update_delay_before_ping_attempt = arg_state[REWIND_DATA__current_update_delay_before_ping_attempt]
-#
-#
-#
-#func destroy_from_rewind_save_state():
-#	pass
-#
-#
-#func restore_from_destroyed_from_rewind():
-#	pass
-#
-#
-#func started_rewind():
-#	pass
-#
-#func ended_rewind():
-#	pass
+#	if arg_state.has(REWIND_DATA__detection_range_for_successful_ping):
+#		_detection_range_for_successful_ping = arg_state[REWIND_DATA__detection_range_for_successful_ping]
+	
+	#
+	
+	if arg_state.has(REWIND_DATA__current_target_node):
+		_current_target_node = arg_state[REWIND_DATA__current_target_node]
+	
+	if arg_state.has(REWIND_DATA__current_target_pos):
+		_current_target_pos = arg_state[REWIND_DATA__current_target_pos]
+	
+	if arg_state.has(REWIND_DATA__current_target_func_to_use):
+		_current_target_func_to_use = arg_state[REWIND_DATA__current_target_func_to_use]
+	
+	#
+	
+	if arg_state.has(REWIND_DATA__origin_node):
+		_origin_node = arg_state[REWIND_DATA__origin_node]
+	
+	if arg_state.has(REWIND_DATA__origin):
+		_origin = arg_state[REWIND_DATA__origin]
+	
+	if arg_state.has(REWIND_DATA__origin_func_to_use):
+		_origin_func_to_use = arg_state[REWIND_DATA__origin_func_to_use]
+	
+	#
+	
+	_current_update_delay_before_ping_attempt = arg_state[REWIND_DATA__current_update_delay_before_ping_attempt]
+	
+
+
+func destroy_from_rewind_save_state():
+	pass
+	
+
+func restore_from_destroyed_from_rewind():
+	pass
+
+
+func started_rewind():
+	pass
+
+func ended_rewind():
+	pass
 
 
 
