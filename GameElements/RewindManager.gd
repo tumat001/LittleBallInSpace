@@ -51,7 +51,7 @@ var remove_non_existing_objs_in_traversal : bool = true
 
 #
 
-var rewind_duration : float = 35.0
+const REWIND_DURATION : float = 3.0 #35.0 #temptodo
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -94,7 +94,8 @@ enum RewindMarkerData {
 	LAUNCH_BALL = 1,
 	
 }
-var _rewindable_datas : Array
+#var _rewindable_datas : Array
+var _rewind_frame_count_to_rewindable_datas_map : Dictionary
 var _rewindable_marker_datas : Array
 var _rewindable_is_unskippable_metadata : Array
 
@@ -102,7 +103,10 @@ var _current_rewindable_duration_length : float
 
 var _current_rewindable_frame : int = -1
 const NO_LAST_REWIND_FRAME_INDEX = -1
-var _last_frame__rewindable_obj_to_save_state_map : Dictionary
+#var _last_frame__rewindable_obj_to_save_state_map : Dictionary
+
+var _is_last_frame_a_rewind_frame : bool
+
 
 #
 
@@ -122,8 +126,10 @@ var game_elements setget set_game_elements
 
 ##
 
-var _rewindable_objs_in_prev_load_step : Array
+#var _rewindable_objs_in_prev_load_step : Array
 var _rewindable_objs_that_are_dead_but_reserved : Array
+
+var _all_rewindable_objs_in_rewind_with_states_changed : Array
 
 ##
 
@@ -229,7 +235,7 @@ func _on_game_ele_after_game_start_init():
 ##########################
 
 func add_to_rewindables(arg_obj):
-	if arg_obj.get("is_rewindable"):
+	if arg_obj.get(REWINDABLE_PROPERTY_NAME__CAN_BE_REWINDABLE):
 		if !_all_registered_rewindables.has(arg_obj):
 			if !arg_obj.has_method(REWINDABLE_METHOD_NAME__GET_SAVE_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__LOAD_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__DESTROY_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__STARTED_REWIND) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__ENDED_REWIND) or !(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED in arg_obj) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE) or !arg_obj.has_method(REWINDABLE_METHOD_NAME__IS_ANY_STATE_CHANGED) and !(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE in arg_obj):
 				print("RewindManager: ERR: obj %s does not have all required methods" % arg_obj)
@@ -247,24 +253,57 @@ func add_to_rewindables(arg_obj):
 #		_remove_obj_from_all_registered_rewindables(arg_obj)
 #
 
+###
 
+func _rewind_frame_count_to_rewindable_datas_map__pop_back():
+	var front_key = _rewind_frame_count_to_rewindable_datas_map__key_back()
+	var val = _rewind_frame_count_to_rewindable_datas_map[front_key]
+	
+	_rewind_frame_count_to_rewindable_datas_map.erase(front_key)
+	return val
+
+func _rewind_frame_count_to_rewindable_datas_map__key_back():
+	return _rewind_frame_count_to_rewindable_datas_map.keys().back()
+
+func _rewind_frame_count_to_rewindable_datas_map__values_back():
+	return _rewind_frame_count_to_rewindable_datas_map.values().back()
+
+
+
+func _rewind_frame_count_to_rewindable_datas_map__pop_front():
+	var front_key = _rewind_frame_count_to_rewindable_datas_map__key_front()
+	var val = _rewind_frame_count_to_rewindable_datas_map[front_key]
+	
+	_rewind_frame_count_to_rewindable_datas_map.erase(front_key)
+	return val
+
+func _rewind_frame_count_to_rewindable_datas_map__key_front():
+	return _rewind_frame_count_to_rewindable_datas_map.keys().front()
+
+func _rewind_frame_count_to_rewindable_datas_map__values_front():
+	return _rewind_frame_count_to_rewindable_datas_map.values().front()
+
+
+######
 
 func _physics_process(delta):
 	if !is_rewinding:
 		if last_calculated_can_store_rewind_data:
 			_current_rewindable_frame += 1
 			
-			_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
-			if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
-				_rewindable_datas.pop_front()
+			_current_rewindable_duration_length = _rewind_frame_count_to_rewindable_datas_map.size() / float(Engine.iterations_per_second)
+			if REWIND_DURATION <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
+				#_rewindable_datas.pop_front()
+				_rewind_frame_count_to_rewindable_datas_map__pop_front()
 				_rewindable_marker_datas.pop_front()
 				_rewindable_is_unskippable_metadata.pop_front()
-			
+				
+				#_rewind_frame_count_to_rewindable_datas_map__update_index_reference()
 			
 			var is_unskippable = false
 			var rewindable_obj_to_save_state_map = {}
 			for obj in _all_registered_rewindables:
-				if obj.call(REWINDABLE_METHOD_NAME__IS_ANY_STATE_CHANGED):
+				if obj.call(REWINDABLE_METHOD_NAME__IS_ANY_STATE_CHANGED):  #or _is_last_frame_a_rewind_frame: (note: try to find another solution not involving this)
 					
 					var save_state = obj.call(REWINDABLE_METHOD_NAME__GET_SAVE_STATE)
 					save_state[SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED] = obj.get(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED)
@@ -277,29 +316,41 @@ func _physics_process(delta):
 								is_unskippable = true
 					
 					
-					#####
+					########
 					
 					
 					var last_save_index = obj.get(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE)
 					obj.set(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE, _current_rewindable_frame)
 					
-					if last_save_index != _current_rewindable_frame - 1 and last_save_index != NO_LAST_REWIND_FRAME_INDEX and _rewindable_datas.size() > last_save_index:
+					
+					#if (last_save_index != _current_rewindable_frame - 1 and last_save_index != NO_LAST_REWIND_FRAME_INDEX and _rewind_frame_count_to_rewindable_datas_map.size() > last_save_index and _rewind_frame_count_to_rewindable_datas_map.has(last_save_index)):
+					if (last_save_index != _current_rewindable_frame - 1 and last_save_index != NO_LAST_REWIND_FRAME_INDEX and _rewind_frame_count_to_rewindable_datas_map.has(last_save_index)):
 						#ex: A 0 0 0 0 B
 						#turns into:
 						#ex: A 0 0 0 A(2) B
-						var rewindable_obj_to_save_state_map__at_last_save_index_frame = _rewindable_datas[last_save_index]
+						#
+						#DOES NOT TRIGGER at this scenario ... A B ... where B is just directly after A
 						
-						var obj__save_state_map__at_last_save_index_frame__clone = rewindable_obj_to_save_state_map__at_last_save_index_frame[obj].duplicate(true)
-						#reassign last save state index. A(2) points at A
+						#get all obj arr where A is
+						var rewindable_obj_to_save_state_map__at_last_save_index_frame = _rewind_frame_count_to_rewindable_datas_map[last_save_index]
+						
+						#get A
+						var obj__save_state_map__at_last_save_index_frame = rewindable_obj_to_save_state_map__at_last_save_index_frame[obj]
+						#clone of A -- aka -- A(2)
+						var obj__save_state_map__at_last_save_index_frame__clone = obj__save_state_map__at_last_save_index_frame.duplicate(true)
+						#reassign. B point to A(2)
+						#obj__save_state_map__at_last_save_index_frame[SAVE_STATE_KEY__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE] = _current_rewindable_frame - 1
+						save_state[SAVE_STATE_KEY__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE] = _current_rewindable_frame - 1
+						#reassign. A(2) point to A
 						obj__save_state_map__at_last_save_index_frame__clone[SAVE_STATE_KEY__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE] = last_save_index
-						_rewindable_datas[_current_rewindable_frame - 1][obj] = obj__save_state_map__at_last_save_index_frame__clone
+						_rewind_frame_count_to_rewindable_datas_map[_current_rewindable_frame - 1][obj] = obj__save_state_map__at_last_save_index_frame__clone
 						#rewindable_obj_to_save_state_map__at_last_save_index_frame.erase(obj)
+						
 					
-					#temptodo is_class_type_object_interactable_button
-					if obj.get("is_class_type_object_interactable_button"):
-						if obj.button_color == obj.ButtonColor.BLUE:
-							print("last_save_index: %s, _curr_save_index: %s" % [last_save_index, _current_rewindable_frame])
-					#end of temptodo
+					
+#					if obj.get("is_class_type_base_tileset"):
+#						if obj.name == "BTS_Blue":
+#							print("last_save_index: %s, _curr_save_index: %s" % [last_save_index, _current_rewindable_frame])
 					
 					
 				else:
@@ -308,10 +359,10 @@ func _physics_process(delta):
 					
 			
 			_rewindable_is_unskippable_metadata.append(is_unskippable)
-			_rewindable_datas.append(rewindable_obj_to_save_state_map)
+			#_rewindable_datas.append(rewindable_obj_to_save_state_map)
+			_rewind_frame_count_to_rewindable_datas_map[_current_rewindable_frame] = rewindable_obj_to_save_state_map
 			
-			
-			_last_frame__rewindable_obj_to_save_state_map = rewindable_obj_to_save_state_map
+			#_last_frame__rewindable_obj_to_save_state_map = rewindable_obj_to_save_state_map
 			
 			#
 			
@@ -328,6 +379,7 @@ func _physics_process(delta):
 				print("FATAL ERROR: _current_rewindable_frame: %s" % _current_rewindable_frame)
 			
 			
+			_is_last_frame_a_rewind_frame = false
 		
 	else:  ############# IS REWINDING
 		
@@ -339,7 +391,7 @@ func _physics_process(delta):
 			
 			if !is_unskippable and _can_skip_rewind_save_state_frame_step():
 				### SKIP STEP
-				skipped_rewindable_obj_to_save_state_map = _rewindable_datas.pop_back()
+				skipped_rewindable_obj_to_save_state_map = _rewind_frame_count_to_rewindable_datas_map__pop_back() #_rewindable_datas.pop_back()
 				_rewindable_marker_datas.pop_back()
 				_rewindable_is_unskippable_metadata.pop_back()
 				_current_rewindable_frame -= 1
@@ -350,7 +402,10 @@ func _physics_process(delta):
 			_is_a_save_state_frame_skipped_for_this_frame = false
 			
 		
-		var rewindable_obj_to_save_state_map = _rewindable_datas.pop_back()
+		#var rewindable_obj_to_save_state_map = _rewindable_datas.pop_back()
+		var rewindable_obj_to_save_state_map = {}
+		if _current_rewindable_frame != 0:
+			rewindable_obj_to_save_state_map = _rewind_frame_count_to_rewindable_datas_map__pop_back()
 		
 		if _is_a_save_state_frame_skipped_for_this_frame:
 			for skipped_obj in skipped_rewindable_obj_to_save_state_map.keys():
@@ -359,33 +414,37 @@ func _physics_process(delta):
 		
 		#
 		
-		var objs_for_traversal = _rewindable_objs_in_prev_load_step.duplicate(false)
+		#var objs_for_traversal = _rewindable_objs_in_prev_load_step.duplicate(false)
 		var objs_with_no_prev_rewind_frame_index : Array = []
 		for obj in rewindable_obj_to_save_state_map.keys():
+			if !_all_rewindable_objs_in_rewind_with_states_changed.has(obj):
+				_all_rewindable_objs_in_rewind_with_states_changed.append(obj)
+			
 			obj.call(REWINDABLE_METHOD_NAME__LOAD_STATE, rewindable_obj_to_save_state_map[obj])
-			objs_for_traversal.erase(obj)
+			#objs_for_traversal.erase(obj)
 			
 			var save_state = rewindable_obj_to_save_state_map[obj]
 			var is_dead_but_reseved_from_rewind = save_state[SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED]
-			if is_dead_but_reseved_from_rewind:
-				if !_rewindable_objs_that_are_dead_but_reserved.has(obj):
-					_rewindable_objs_that_are_dead_but_reserved.append(obj)
-				
-			else:
-				if _rewindable_objs_that_are_dead_but_reserved.has(obj):
-					obj.call(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE)
-					
+			if obj.get(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED) and !is_dead_but_reseved_from_rewind:
+				obj.call(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE)
+#			if is_dead_but_reseved_from_rewind:
+#				if !_rewindable_objs_that_are_dead_but_reserved.has(obj):
+#					_rewindable_objs_that_are_dead_but_reserved.append(obj)
+#
+#			else:
+#				if _rewindable_objs_that_are_dead_but_reserved.has(obj):
+#					obj.call(REWINDABLE_METHOD_NAME__RESTORE_FROM_DESTROYED_STATE)
+#					_rewindable_objs_that_are_dead_but_reserved.erase(obj)
 			
 			var last_save_frame_index__from_save_state = save_state[SAVE_STATE_KEY__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE]
-			#var last_save_frame_index__of_obj = obj.get(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE)
+			var last_save_frame_index__of_obj = obj.get(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE)
 			obj.set(REWINDABLE_PROPERTY_NAME__REWIND_FRAME_INDEX_OF_LAST_GET_SAVE_STATE, last_save_frame_index__from_save_state)
 			
 			if last_save_frame_index__from_save_state == NO_LAST_REWIND_FRAME_INDEX and _current_rewindable_frame != 0:
 				objs_with_no_prev_rewind_frame_index.append(obj)
 			
-			
 		
-		_rewindable_objs_in_prev_load_step = rewindable_obj_to_save_state_map.keys()
+		#_rewindable_objs_in_prev_load_step = rewindable_obj_to_save_state_map.keys()
 		
 #		# remove permanently since the timeline of spawn has been passed (backwards)
 #		if remove_non_existing_objs_in_traversal:
@@ -404,13 +463,14 @@ func _physics_process(delta):
 		#
 		
 		_rewindable_marker_datas.pop_back()
-		_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
+		_current_rewindable_duration_length = _rewind_frame_count_to_rewindable_datas_map.size() / float(Engine.iterations_per_second)
 		
 		emit_signal("rewindable_datas_pop_back", _rewindable_marker_datas.size())
 		
 		var deduct_curr_rewindable_frame : bool = false
-		if _rewindable_datas.size() == 0:
-			_end_rewind_with_state_map(rewindable_obj_to_save_state_map)
+		if _rewind_frame_count_to_rewindable_datas_map.size() == 1:
+			#_end_rewind_with_state_map(rewindable_obj_to_save_state_map)
+			_end_rewind_with_state_map()
 		else:
 			deduct_curr_rewindable_frame = true
 		
@@ -424,19 +484,19 @@ func _physics_process(delta):
 		#if deduct_curr_rewindable_frame:
 		_current_rewindable_frame -= 1
 		
-		if _rewindable_datas.size() < _current_rewindable_frame:
-			_last_frame__rewindable_obj_to_save_state_map = _rewindable_datas[_current_rewindable_frame]
-		else:
-			_last_frame__rewindable_obj_to_save_state_map = {}
+#		if _rewindable_datas.size() < _current_rewindable_frame:
+#			_last_frame__rewindable_obj_to_save_state_map = _rewindable_datas[_current_rewindable_frame]
+#		else:
+#			_last_frame__rewindable_obj_to_save_state_map = {}
+		
+		
+		_is_last_frame_a_rewind_frame = true
 	
-	
-	#temptodo
-	print(_current_rewindable_frame)
+	#print(_current_rewindable_frame)
 
 func _can_skip_rewind_save_state_frame_step():
-	return _rewindable_datas.size() > 1 and _rewindable_marker_datas.back() == RewindMarkerData.NONE
-
-
+	#return _rewindable_datas.size() > 1 and _rewindable_marker_datas.back() == RewindMarkerData.NONE
+	return _rewind_frame_count_to_rewindable_datas_map.size() > 2 and _rewindable_marker_datas.back() == RewindMarkerData.NONE
 
 ## for use in Special01_02 -- UNUSED NOW
 ## arg_reuse__rewind_save_datas_list is the curr dict to add the (arg_obj and save_state) to
@@ -456,15 +516,14 @@ func _can_skip_rewind_save_state_frame_step():
 
 func attempt_start_rewind():
 	if last_calculated_can_cast_rewind:
-		#temptodo
-		print("###### START #######")
-		print("")
-		
 		
 		#CameraManager.reset_camera_zoom_level()
 		
-		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
-		for obj in rewindable_obj_to_save_state_map:
+#		var rewindable_obj_to_save_state_map = _rewind_frame_count_to_rewindable_datas_map__values_back()
+#		for obj in rewindable_obj_to_save_state_map:
+#			obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)
+		
+		for obj in _all_registered_rewindables:
 			obj.call(REWINDABLE_METHOD_NAME__STARTED_REWIND)
 		
 		can_cast_rewind_cond_clause.attempt_insert_clause(CanCastRewindClauseIds.IS_REWINDING)
@@ -481,24 +540,25 @@ func attempt_start_rewind():
 #NOTE: dont put code here unless you want player input end rewind specific codes
 func end_rewind():
 	if is_rewinding:
-		_end_rewind_with_state_map(_rewindable_datas.back())
+		#_end_rewind_with_state_map(_rewindable_datas.back())
+		_end_rewind_with_state_map()
 
 
-func _end_rewind_with_state_map(arg_state_map):
-	#temptodo
-	print("--- END ----")
-	print("")
-	
+func _end_rewind_with_state_map():
 	
 	_is_a_save_state_frame_skipped_for_this_frame = false
 	
-	var rewindable_obj_to_save_state_map = arg_state_map
-	for obj in rewindable_obj_to_save_state_map:
+	for obj in _all_rewindable_objs_in_rewind_with_states_changed:
 		obj.call(REWINDABLE_METHOD_NAME__ENDED_REWIND)
 	
+	_all_rewindable_objs_in_rewind_with_states_changed.clear()
 	
-	_rewindable_objs_in_prev_load_step.clear()
-	_rewindable_objs_that_are_dead_but_reserved.clear()
+#	var rewindable_obj_to_save_state_map = arg_state_map
+#	for obj in rewindable_obj_to_save_state_map:
+#		obj.call(REWINDABLE_METHOD_NAME__ENDED_REWIND)
+	
+	#_rewindable_objs_in_prev_load_step.clear()
+	#_rewindable_objs_that_are_dead_but_reserved.clear()
 	
 	_end_rewind_audio_play_sequence()
 	
@@ -526,6 +586,7 @@ func _end_rewind_with_state_map(arg_state_map):
 
 func _remove_obj_from_all_registered_rewindables(arg_obj):
 	_all_registered_rewindables.erase(arg_obj)
+	_all_rewindable_objs_in_rewind_with_states_changed.erase(arg_obj)
 	
 	emit_signal("obj_removed_from_rewindables", arg_obj)
 
@@ -536,9 +597,12 @@ func is_obj_registered_in_rewindables(arg_obj):
 #
 
 func prevent_rewind_up_to_this_time_point():
-	_rewindable_datas.clear()
+	#_rewindable_datas.clear()
+	_rewind_frame_count_to_rewindable_datas_map.clear()
 	_rewindable_marker_datas.clear()
 	_rewindable_is_unskippable_metadata.clear()
+	
+	#_rewind_frame_count_to_rewindable_datas_map__update_index_reference()
 
 ##
 
@@ -560,6 +624,13 @@ func get_texture_for_mark_type(arg_marker_id):
 func get_current_rewindable_duration_length():
 	return _current_rewindable_duration_length
 
+
+#
+
+#func _rewind_frame_count_to_rewindable_datas_map__update_index_reference():
+#	if _rewind_frame_count_to_rewindable_datas_map.size() == 0:
+#		return
+#
 
 ###############################
 

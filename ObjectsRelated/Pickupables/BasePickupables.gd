@@ -14,11 +14,9 @@ onready var collision_shape = $CollisionShape2D
 
 #
 
-func _init():
-	_init_rewind_variable_history()
-
-
 func _ready():
+	_init_rewind_variable_history()
+	
 	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	
 
@@ -56,9 +54,8 @@ func _on_player_entered_self(arg_player):
 
 
 func _destroy_self__on_consume_by_player():
-	collision_shape.set_deferred("disabled", true)
+	#collision_shape.set_deferred("disabled", true)
 	queue_free()
-	
 
 #
 
@@ -83,6 +80,7 @@ var rewind_frame_index_of_last_get_save_state_by_RM
 func _init_rewind_variable_history():
 	rewind_variable_history = VariableHistory.new(self)
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
+	
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("transform")
 	
 	
@@ -133,6 +131,7 @@ func restore_from_destroyed_from_rewind():
 	#collision_shape.set_deferred("disabled", false)
 	visible = true
 	is_dead_but_reserved_for_rewind = false
+	
 
 func started_rewind():
 	collision_shape.set_deferred("disabled", true)
@@ -142,4 +141,3 @@ func ended_rewind():
 	if !is_dead_but_reserved_for_rewind:
 		collision_shape.set_deferred("disabled", false)
 	
-

@@ -204,16 +204,16 @@ func load_into_rewind_save_state(arg_state):
 	_rewinded_composite_clauses = arg_state["composite_clauses"]
 	
 
-func destroy_from_rewind_save_state():
-	pass
-	
-
-func restore_from_destroyed_from_rewind():
-	pass
-
-
-func started_rewind():
-	pass
+#func destroy_from_rewind_save_state():
+#	pass
+#
+#
+#func restore_from_destroyed_from_rewind():
+#	pass
+#
+#
+#func started_rewind():
+#	pass
 
 func ended_rewind():
 	_clauses.clear()

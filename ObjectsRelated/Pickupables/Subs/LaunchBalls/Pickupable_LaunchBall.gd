@@ -88,6 +88,7 @@ func _on_player_entered_self(arg_player):
 		_destroy_self__on_consume_by_player()
 		
 		emit_signal("ball_collected_by_player")
+	
 
 func _attempt_play_particle_and_sound_effects():
 	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:

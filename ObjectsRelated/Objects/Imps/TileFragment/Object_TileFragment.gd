@@ -1,6 +1,7 @@
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
+#
 
 var texture_to_use__fragment : Texture   #note: if err: this has been changed from atlastexture to texture
 
@@ -41,6 +42,7 @@ onready var player_soft_coll_shape = $PlayerSoftArea2D/CollisionShape2D
 
 #var _current_delay_before_collidable_with_player : float = 2.5
 #var _can_collide_with_player__from_delay : bool = true  # leave it this way
+
 
 func _ready():
 	_player_hit_sound_cooldown = PLAY_HIT_SOUND_COOLDOWN
@@ -178,11 +180,18 @@ func _on_PlayerSoftArea2D_body_exited(body):
 
 #var _rewinded__curr_duration_of_wait_before_despawn
 
+# we need to listen for queue free of this thing so no
+
 #var _lin_vel_on_rewind_started : Vector2
 #var _rotation_on_rewind_started : float
 #
 #func _init():
 #	is_rewindable = false
+#
+#func _init_rewind_variable_history():
+#	is_rewindable = false
+#
+#
 #
 #func _ready__setup_for_rewind():
 #	var rewind_manager = SingletonsAndConsts.current_rewind_manager
@@ -195,6 +204,8 @@ func _on_PlayerSoftArea2D_body_exited(body):
 #
 #	_lin_vel_on_rewind_started = linear_velocity
 #	_rotation_on_rewind_started = rotation
+#
+#	linear_velocity = Vector2(0, 0)
 #
 #func _on_done_ending_rewind__tf():
 #	collision_shape.set_deferred("disabled", false)
@@ -220,17 +231,16 @@ func started_rewind():
 
 
 func ended_rewind():
+	#.ended_rewind()
 	if !is_dead_but_reserved_for_rewind:
 		mode = body_mode_to_use
-
+		
 		collision_shape.set_deferred("disabled", false)
-
+		
 		#_use_integ_forces_new_vals = true
-
-
-	if !is_dead_but_reserved_for_rewind:
+		
 		player_soft_coll_shape.set_deferred("disabled", false)
-
+	
 	_is_from_rewind__frame_count = 2
 
 
@@ -238,10 +248,13 @@ func ended_rewind():
 
 
 func get_rewind_save_state():
-	return {}
+	return {
+		"current_lifespan" : current_lifespan,
+	}
+
 
 func load_into_rewind_save_state(arg_state):
-	pass
+	current_lifespan = arg_state["current_lifespan"]
 
 
 

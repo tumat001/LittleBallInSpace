@@ -424,7 +424,7 @@ func custom_event__tween_blackout_hud_sprite(arg_val, arg_duration):
 # REWIND RELATED
 #####################
 
-#export(bool) var is_rewindable : bool = true
+export(bool) var is_rewindable : bool = false
 
 func get_rewind_save_state():
 	return {

@@ -65,7 +65,8 @@ var pause_game_at_startup : bool = false
 #
 
 var object_lifespan__ball : float = -1
-var object_lifespan__tile_fragment__from_base_tile : float = 20.0
+var object_lifespan__tile_fragment__from_base_tile__min : float = 5.0
+var object_lifespan__tile_fragment__from_base_tile__max : float = 12.0
 
 #
 
@@ -486,4 +487,7 @@ func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center
 	var lin_vel = Vector2(speed, 0).rotated(angle)
 	arg_fragment.linear_velocity = lin_vel
 
+#
 
+func generate_random_object_lifespan__tile_fragment__from_base_tile():
+	return SingletonsAndConsts.non_essential_rng.randi_range(object_lifespan__tile_fragment__from_base_tile__min, object_lifespan__tile_fragment__from_base_tile__max)

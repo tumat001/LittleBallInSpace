@@ -38,7 +38,7 @@ func add_func_name__for_tracker(arg_func_name : String, arg_val):
 func set_var_name_val(arg_var_name, arg_val, arg_update_last_calc_has_changes : bool = true):
 	var old_val = var_name_to_last_val_map[arg_var_name]
 	
-	if old_val != arg_val:
+	if !if_vals_are_equal(old_val, arg_val): #old_val != arg_val:
 		var_name_with_changes_to_val_map[arg_var_name] = arg_val
 		var_name_to_last_val_map[arg_var_name] = arg_val
 		
@@ -48,7 +48,7 @@ func set_var_name_val(arg_var_name, arg_val, arg_update_last_calc_has_changes : 
 func set_func_name_val(arg_func_name, arg_val, arg_update_last_calc_has_changes : bool = true):
 	var old_val = func_name_to_last_val_map[arg_func_name]
 	
-	if old_val != arg_val:
+	if !if_vals_are_equal(old_val, arg_val): #old_val != arg_val:
 		func_name_with_changes_to_val_map[arg_func_name] = arg_val
 		func_name_to_last_val_map[arg_func_name] = arg_val
 		
@@ -56,10 +56,11 @@ func set_func_name_val(arg_func_name, arg_val, arg_update_last_calc_has_changes 
 			force_set_last_calc_has_changes()
 
 
-func if_vals_are_unequal(arg_A_val : Dictionary, arg_B_val):
+func if_vals_are_equal(arg_A_val, arg_B_val):
 	if arg_A_val is Dictionary and arg_B_val is Dictionary:
-		return arg_A_val.
-	
+		return arg_A_val.hash() == arg_B_val.hash()
+	else:
+		return arg_A_val == arg_B_val
 
 func force_set_last_calc_has_changes():
 	last_calc_has_last_val_changes = true
