@@ -191,9 +191,6 @@ var _objects_to_not_collide_with : Array
 var _objects_to_collide_with_after_exit : Array
 var _objects_to_add_mask_layer_collision_after_exit : Array
 
-#
-
-var is_class_type_enemy : bool = true
 
 ####### FRAGMENTS RELATED
 

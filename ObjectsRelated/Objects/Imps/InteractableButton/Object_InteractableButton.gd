@@ -449,16 +449,16 @@ func _init_rewind_variable_history():
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_pressed")
 	
 
-
-#func is_any_state_changed() -> bool:
-#	rewind_variable_history.update_based_on_obj_to_track()
-#	if button_color == ButtonColor.BLUE:
-#		print("func: %s, var: %s. has_changes: %s" % [rewind_variable_history.func_name_with_changes_to_val_map, rewind_variable_history.var_name_with_changes_to_val_map, rewind_variable_history.last_calc_has_last_val_changes])
-#	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
-#	rewind_variable_history.reset()
-#
-#	return is_any_changed
-
+#temptodo obj func override
+func is_any_state_changed() -> bool:
+	rewind_variable_history.update_based_on_obj_to_track()
+	if button_color == ButtonColor.BLUE:
+		print("func: %s, var: %s" % [rewind_variable_history.func_name_with_changes_to_val_map, rewind_variable_history.var_name_with_changes_to_val_map])
+	var is_any_changed = rewind_variable_history.last_calc_has_last_val_changes
+	rewind_variable_history.reset()
+	
+	return is_any_changed
+#end of temptodo
 
 
 func get_rewind_save_state():
@@ -487,7 +487,6 @@ func started_rewind():
 func ended_rewind():
 	.ended_rewind()
 	
-	if !is_dead_but_reserved_for_rewind:
-		collision_shape_2d_02.set_deferred("disabled", false)
-		button_collision_shape_2d.set_deferred("disabled", false)
+	collision_shape_2d_02.set_deferred("disabled", false)
+	button_collision_shape_2d.set_deferred("disabled", false)
 

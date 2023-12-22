@@ -16,12 +16,6 @@ signal tile_broken_via_player_and_speed()
 
 ##
 
-const FRAGMENT_LIFESPAN__FROM_BASE_TILESET__MIN = 5
-const FRAGMENT_LIFESPAN__FROM_BASE_TILESET__MAX = 12
-
-
-#
-
 #const ENERGIZED_MODULATE := Color(217/255.0, 164/255.0, 2/255.0)
 #const NORMAL_MODULATE := Color(1, 1, 1)
 #const INSTANT_GROUND_MODULATE := Color(172/255.0, 68/255.0, 2/255.0)
@@ -438,8 +432,7 @@ func _create_fragments(arg_tile_local_pos_top_left, arg_tile_texture, arg_tile_i
 	var fragments = TileConstants.generate_object_tile_fragments(arg_tile_local_pos_top_left, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
 	#var fragments = TileConstants.generate_object_tile_fragments(arg_tile_global_pos, arg_tile_texture, TILE_FRAGMENT_COUNT, arg_tile_id, arg_auto_coords)
 	for fragment in fragments:
-		fragment.current_lifespan = SingletonsAndConsts.current_game_elements.generate_random_object_lifespan__tile_fragment__from_base_tile() #SingletonsAndConsts.current_game_elements.object_lifespan__tile_fragment__from_base_tile
-		fragment.has_finite_lifespan = true
+		fragment.current_lifespan = SingletonsAndConsts.current_game_elements.object_lifespan__tile_fragment__from_base_tile
 		SingletonsAndConsts.deferred_add_child_to_game_elements__other_node_hoster(fragment)
 
 func _attempt_induce_speed_slowdown_on_player(arg_player):
@@ -913,7 +906,6 @@ var rewind_frame_index_of_last_get_save_state_by_RM
 func _init_rewind_variable_history():
 	rewind_variable_history = VariableHistory.new(self)
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
-	
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_responsible_for_own_movement__for_rewind")
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("energy_mode")
 	

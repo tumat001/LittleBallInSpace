@@ -200,6 +200,11 @@ ball_dispenser_01_to_register_in_toggle__path = NodePath("")
 ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
+[node name="BaseEnemyTEMP" parent="ObjectContainer" index="10" instance=ExtResource( 9 )]
+position = Vector2( 202, -30 )
+enemy_type_template__for_export = 1
+starting_activation_mode_id = 1
+
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 324, -1072 )
 rotation = 4.71239

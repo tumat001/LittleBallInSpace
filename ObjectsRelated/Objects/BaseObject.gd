@@ -209,7 +209,6 @@ func _init_rewind_variable_history():
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("is_dead_but_reserved_for_rewind")
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("linear_velocity")
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("sleeping")
-	rewind_variable_history.add_var_name__for_tracker__based_on_obj("transform")
 	rewind_variable_history.add_func_name__for_tracker__based_on_obj("_block_can_collide_with_player_cond_clauses__get_rewind_save_state")
 	rewind_variable_history.add_var_name__for_tracker__based_on_obj("current_lifespan")
 	
@@ -290,7 +289,6 @@ func load_into_rewind_save_state(arg_state):
 	
 	#
 	global_position = _rewinded__transform.origin
-
 
 
 func destroy_from_rewind_save_state():

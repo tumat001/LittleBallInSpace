@@ -30,10 +30,10 @@ func after_game_init():
 	
 	_add_launch_ball_modi()
 
-
+#temptodo REMOVE baseneemytemp from 06_02
 func _add_launch_ball_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
-	modi.starting_ball_count = 0
+	modi.starting_ball_count = 99 #0 #temptodo
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
 	
