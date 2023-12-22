@@ -47,7 +47,7 @@ var remove_non_existing_objs_in_traversal : bool = true
 
 #
 
-var rewind_duration : float = 35.0
+const REWIND_DURATION : float = 35.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -243,7 +243,7 @@ func _physics_process(delta):
 	if !is_rewinding:
 		if last_calculated_can_store_rewind_data:
 			_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
-			if rewind_duration <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
+			if REWIND_DURATION <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
 				_rewindable_datas.pop_front()
 				_rewindable_marker_datas.pop_front()
 				_rewindable_is_unskippable_metadata.pop_front()

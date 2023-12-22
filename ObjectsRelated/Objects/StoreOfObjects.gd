@@ -191,7 +191,9 @@ func helper_ball__configure_as_ball_dispenser_proj(arg_ball, arg_anim_name_to_us
 	arg_ball.anim_name_to_use = arg_anim_name_to_use
 	
 	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
-
+	
+	#
+	arg_ball.has_finite_lifespan = false
 
 
 

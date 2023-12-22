@@ -238,10 +238,12 @@ func ended_rewind():
 
 
 func get_rewind_save_state():
-	return {}
+	return {
+		"current_lifespan" : current_lifespan
+	}
 
 func load_into_rewind_save_state(arg_state):
-	pass
+	current_lifespan = arg_state["current_lifespan"]
 
 
 
