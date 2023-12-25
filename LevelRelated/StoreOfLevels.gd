@@ -959,10 +959,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_4__HARD:
 		level_details.level_full_name = [
-			["4-!3 Six Pointer", []]
+			["4-!3 Speed Control", []]
 		]
 		level_details.level_name = [
-			["Six Pointer", []]
+			["Speed Control", []]
 		]
 		level_details.level_desc = [
 			["", []]
