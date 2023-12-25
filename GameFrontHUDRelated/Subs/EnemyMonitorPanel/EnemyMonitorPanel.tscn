@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GameFrontHUDRelated/Subs/EnemyMonitorPanel/EnemyMonitorPanel.gd" type="Script" id=2]
+[ext_resource path="res://GameFrontHUDRelated/Subs/EnemyMonitorPanel/Assets/EnemyMonitorPanel_EnemyIcon.png" type="Texture" id=3]
+[ext_resource path="res://GameFrontHUDRelated/Subs/EnemyMonitorPanel/Assets/EnemyMonitorPanel_Background.png" type="Texture" id=4]
+[ext_resource path="res://GameFrontHUDRelated/Subs/EnemyMonitorPanel/Assets/EnemyMonitorPanel_GlowSideBorderBackground.png" type="Texture" id=5]
+
+[node name="EnemyMonitorPanel" type="MarginContainer"]
+margin_right = 80.0
+margin_bottom = 24.0
+mouse_filter = 2
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 80.0
+margin_bottom = 24.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+
+[node name="GlowBorder" type="TextureRect" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 22.0
+mouse_filter = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture = ExtResource( 5 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 80.0
+margin_bottom = 24.0
+mouse_filter = 2
+
+[node name="EnemyIcon" type="TextureRect" parent="Control"]
+margin_left = 60.0
+margin_top = 4.0
+margin_right = 76.0
+margin_bottom = 20.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+
+[node name="EnemyCountLabel" type="Label" parent="Control"]
+margin_left = 3.0
+margin_top = 6.0
+margin_right = 56.0
+margin_bottom = 20.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "20 / 20"
+align = 1
+valign = 1

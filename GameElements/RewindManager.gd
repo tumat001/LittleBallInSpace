@@ -295,22 +295,6 @@ func _physics_process(delta):
 		
 	else:
 		
-		#todoimp remove-relocate this
-#		var is_unskippable = _rewindable_is_unskippable_metadata.pop_back()
-#		if !_is_a_save_state_frame_skipped_for_this_frame:
-#			_is_a_save_state_frame_skipped_for_this_frame = true
-#
-#			if !is_unskippable and _can_skip_rewind_save_state_frame_step():
-#				_rewindable_datas.pop_back()
-#				_rewindable_marker_datas.pop_back()
-#				_rewindable_is_unskippable_metadata.pop_back()
-#
-#
-#		else:
-#			_is_a_save_state_frame_skipped_for_this_frame = false
-#
-		
-		
 		var rewindable_obj_to_save_state_map = _rewindable_datas.pop_back()
 		
 		var objs_for_traversal = _rewindable_objs_in_prev_load_step.duplicate(false)

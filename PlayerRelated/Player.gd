@@ -642,6 +642,21 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 			if body.can_induce_rotation_change__due_to_cell_v_changes():
 				var old_cam_rotation = CameraManager.current_cam_rotation
 				
+				#var is_curr_cam_angle_opposite_of_tile_perpend_angle = (is_equal_approx(perpend_angle_with_lowest_distance + PI, CameraManager.current_cam_rotation)) or (is_equal_approx(perpend_angle_with_lowest_distance - PI, CameraManager.current_cam_rotation)) 
+				#if is_curr_cam_angle_opposite_of_tile_perpend_angle:
+				# info:: snaps position. mainly relevant for rotating to opposite angle (0 to 180). applied to all angles so that the always snapped state will make a non-snapped state impossible
+				if is_equal_approx(old_cam_rotation, 0) or is_equal_approx(abs(old_cam_rotation), PI):
+					global_position.y = round(global_position.y)
+					#print("snapped y: %s" % global_position)
+				elif is_equal_approx(abs(old_cam_rotation), 3*PI/2) or is_equal_approx(abs(old_cam_rotation), PI/2):
+					global_position.x = round(global_position.x)
+					#print("snapped x: %s" % global_position)
+				
+				#print("angle: %s, cam_angle: %s. pos: %s" % [rad2deg(perpend_angle_with_lowest_distance), rad2deg(CameraManager.current_cam_rotation), global_position])
+				_cancel_next_apply_ground_repelling_force = false
+				
+				#
+				
 				_attempt_remove_on_ground_count__with_any_identif(coordinate)
 				_request_rotate(perpend_angle_with_lowest_distance, coordinate, tileset_energy_mode)
 				
@@ -671,7 +686,8 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				
 				clear_all_inside_induced_forces()
 				clear_all_outside_induced_forces()
-				_cancel_next_apply_ground_repelling_force = false
+				
+				#_cancel_next_apply_ground_repelling_force = false
 				
 				_pos_change_caused_by_tile = true
 				

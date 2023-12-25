@@ -1,5 +1,8 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
+const EnemyAliveStatusMonitor = preload("res://ObjectsRelated/Objects/ObjectBehaviorCompos/EnemyRelated/EnemyAliveStatusMonitor.gd")
+
+
 
 onready var vis_transition_fog_circ = $MiscContainer/VisTransitionFog_Circ
 
@@ -11,10 +14,17 @@ onready var fast_respawn_position_2d = $MiscContainer/FastRespawnPosition2D
 
 onready var pickupable_star = $CoinsContainer/Pickupables_Coin
 
+onready var bts_hostile_toggleable = $TileContainer/BTS_HostileToggleable
+
 #
 
 var _lifted_fog : bool = false
 onready var base_enemies = [base_enemy_01, base_enemy_02]
+
+
+var enemy_alive_status_monitor_01 : EnemyAliveStatusMonitor
+
+var _enemy_monitor_panel
 
 #
 
@@ -33,6 +43,15 @@ func _on_after_game_start_init():
 			enemy.prevent_draw_enemy_range_cond_clause.attempt_insert_clause(enemy.PreventDrawEnemyRangeClauseId.CUSTOM_WORLD_SLICE)
 	
 	
+	_init_enemy_alive_status_monitor_01()
+
+
+func _init_enemy_alive_status_monitor_01():
+	enemy_alive_status_monitor_01 = EnemyAliveStatusMonitor.new()
+	enemy_alive_status_monitor_01.add_enemy_to_monitor(base_enemy_01)
+	enemy_alive_status_monitor_01.add_enemy_to_monitor(base_enemy_02)
+	enemy_alive_status_monitor_01.connect("all_enemies_defeated", self, "_on_all_enemies_defeated")
+	enemy_alive_status_monitor_01.connect("all_enemies_undefeated", self, "_on_all_enemies_undefeated")
 
 
 #######
@@ -71,8 +90,8 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	else:
 		pass
 
-#####
 
+############
 
 func _on_Button_AntiFog_pressed(arg_is_pressed):
 	if !_lifted_fog and arg_is_pressed:
@@ -88,6 +107,26 @@ func _on_Button_AntiFog_pressed(arg_is_pressed):
 		for enemy in base_enemies:
 			if is_instance_valid(enemy):
 				enemy.prevent_draw_enemy_range_cond_clause.remove_clause(enemy.PreventDrawEnemyRangeClauseId.CUSTOM_WORLD_SLICE)
+		
+		_register_enemy_status_monitor_to_game_front_hud()
+
+
+
+func _register_enemy_status_monitor_to_game_front_hud():
+	_enemy_monitor_panel = SingletonsAndConsts.current_game_front_hud.enemy_monitor_panel
+	_enemy_monitor_panel.register_enemy_alive_status_monitor(enemy_alive_status_monitor_01)
+	_enemy_monitor_panel.make_self_visible__using_tween(_enemy_monitor_panel.VIS_TWEEN_DURATION__LONG)
+
+
+func _on_all_enemies_defeated():
+	_enemy_monitor_panel.make_self_invisible__using_tween(_enemy_monitor_panel.VIS_TWEEN_DURATION__LONG)
+	bts_hostile_toggleable.convert_all_filled_tiles_to_unfilled()
+	
+
+func _on_all_enemies_undefeated():
+	_enemy_monitor_panel.make_self_visible__using_tween(_enemy_monitor_panel.VIS_TWEEN_DURATION__SHORT)
+	bts_hostile_toggleable.convert_all_unfilled_tiles_to_filled()
+	
 
 
 #func _on_Button_AntiFog_pressed(arg_is_pressed):

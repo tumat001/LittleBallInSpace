@@ -34,6 +34,9 @@ const Texture_Fragment__WeaponLaser_N03 = preload("res://ObjectsRelated/Objects/
 
 signal current_attack_cooldown_changed(arg_val)
 
+signal current_health_changed(arg_val)
+signal alive_status_changed(arg_is_alive)
+
 #
 
 var _base_enemy_size : Vector2
@@ -188,6 +191,11 @@ var last_calc_draw_enemy_range : bool
 var _objects_to_not_collide_with : Array
 var _objects_to_collide_with_after_exit : Array
 var _objects_to_add_mask_layer_collision_after_exit : Array
+
+#
+
+var on_death__audio_id_to_play : int = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
+var on_death__audio_id_to_play__override : int = -1
 
 
 ####### FRAGMENTS RELATED
@@ -732,12 +740,12 @@ func take_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_posit
 func _play_damage_audio():
 	var audio_id_to_play : int
 	if _is_robot_dead:
-		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
+		audio_id_to_play = get_on_death__audio_id_to_play()
 	else:
 		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_Damage_01
 	
 	AudioManager.helper__play_sound_effect__2d(audio_id_to_play, global_position, 1.0, null)
-	
+
 
 func set_current_health(arg_val):
 	current_health = arg_val
@@ -748,10 +756,17 @@ func set_current_health(arg_val):
 	if current_health <= 0:
 		if !_is_robot_dead:
 			_set_is_robot_dead__and_do_death_actions()
+			emit_signal("alive_status_changed", !_is_robot_dead)
 		
 	else:
+		if _is_robot_dead:
+			_is_robot_dead = false
+			emit_signal("alive_status_changed", !_is_robot_dead)
 		
-		_is_robot_dead = false
+	
+	
+	emit_signal("current_health_changed", arg_val)
+	
 
 func _set_is_robot_dead__and_do_death_actions():
 	_is_robot_dead = true
@@ -766,6 +781,15 @@ func is_robot_alive():
 	return !_is_robot_dead
 
 #
+
+func get_on_death__audio_id_to_play():
+	if on_death__audio_id_to_play__override != -1:
+		return on_death__audio_id_to_play__override
+	else:
+		return on_death__audio_id_to_play
+
+
+##########
 
 func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vector2, arg_modulate_to_use):
 	var pos_shift_center_of_particles = Vector2(_base_enemy_size.x, 0).rotated(arg_collider_pos.angle_to_point(global_position))

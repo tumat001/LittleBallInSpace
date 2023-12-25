@@ -11,6 +11,8 @@ onready var health_panel = $ControlContainer/VBoxContainer/HealthPanel
 onready var speed_panel = $ControlContainer/SpeedPanel
 onready var trophy_panel = $ControlContainer/TopRightPanel/VBox/TrophyPanel
 onready var robot_health_panel = $ControlContainer/VBoxContainer/RobotHealthPanel
+onready var enemy_monitor_panel = $ControlContainer/TopRightPanel/VBox/EnemyMonitorPanel
+
 onready var game_dialog_panel = $ControlContainer/GameDialogPanel
 
 onready var tooltip_container = $TooltipContainer

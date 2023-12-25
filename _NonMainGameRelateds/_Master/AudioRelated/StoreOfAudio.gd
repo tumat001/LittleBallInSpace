@@ -157,6 +157,7 @@ enum AudioIds {
 	
 	SFX_Enemy_DeathExplode = 6530
 	SFX_Player_DeathExplode = 6531
+	SFX_Enemy_Last_DeathExplode = 6532
 	
 	SFX_Enemy_ChargeBall = 6540
 	SFX_Enemy_LaunchBall = 6541

@@ -94,11 +94,10 @@ tile_data = PoolIntArray( -1966082, 45, 131074, -1835010, 45, 131073, -1703921, 
 modulate = Color( 0.0705882, 0.454902, 1, 1 )
 tile_data = PoolIntArray( -196596, 7, 65538, -196595, 7, 65539, -196594, 7, 65539, -196593, 7, 65540 )
 
-[node name="BTS_Green" parent="TileContainer" index="9" instance=ExtResource( 2 )]
+[node name="BTS_HostileToggleable" parent="TileContainer" index="9" instance=ExtResource( 2 )]
 
-[node name="TileMap" parent="TileContainer/BTS_Green" index="0"]
-modulate = Color( 0.109804, 1, 0.0352941, 1 )
-tile_data = PoolIntArray( -4390920, 6, 2, -4390919, 6, 4, -4325384, 6, 65538, -4325383, 6, 65540, -4259848, 6, 65538, -4259847, 6, 65540, -4194312, 6, 65538, -4194311, 6, 65540, -4128776, 6, 131074, -4128775, 6, 131076 )
+[node name="TileMap" parent="TileContainer/BTS_HostileToggleable" index="0"]
+tile_data = PoolIntArray( -4390920, 28, 2, -4390919, 28, 4, -4325384, 28, 65538, -4325383, 28, 65540, -4259848, 28, 65538, -4259847, 28, 65540, -4194312, 28, 65538, -4194311, 28, 65540, -4128776, 28, 131074, -4128775, 28, 131076 )
 
 [node name="BTS_Glowing" parent="TileContainer" index="10" instance=ExtResource( 2 )]
 has_glowables = true
@@ -183,27 +182,13 @@ position = Vector2( 512, -2694 )
 rotation = 3.14159
 launch_ball_type = 3
 
-[node name="Object_InteractableButton2" parent="ObjectContainer" index="8" instance=ExtResource( 5 )]
-position = Vector2( 32, -1784 )
-rotation = 3.14159
-body_mode_to_use = 1
-tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Green")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
-button_color = 1
-
-[node name="Button_AntiFog" parent="ObjectContainer" index="9" instance=ExtResource( 5 )]
+[node name="Button_AntiFog" parent="ObjectContainer" index="8" instance=ExtResource( 5 )]
 position = Vector2( 689, -2575 )
 rotation = 4.71239
 body_mode_to_use = 1
 ball_dispenser_01_to_register_in_toggle__path = NodePath("")
 ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
-
-[node name="BaseEnemyTEMP" parent="ObjectContainer" index="10" instance=ExtResource( 9 )]
-position = Vector2( 202, -30 )
-enemy_type_template__for_export = 1
-starting_activation_mode_id = 1
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 324, -1072 )
@@ -276,7 +261,7 @@ __meta__ = {
 [editable path="TileContainer/BTS_Uncolls02"]
 [editable path="TileContainer/BTS_UncollsBrown"]
 [editable path="TileContainer/BTS_Blue"]
-[editable path="TileContainer/BTS_Green"]
+[editable path="TileContainer/BTS_HostileToggleable"]
 [editable path="TileContainer/BTS_Glowing"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]

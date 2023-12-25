@@ -9,5 +9,5 @@ func _init():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	#game_elements.get_current_player().is_show_lines_to_uncaptured_player_capture_regions = true
+	game_elements.get_current_player().is_show_lines_to_uncaptured_player_capture_regions = true
 
