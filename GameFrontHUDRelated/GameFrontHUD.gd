@@ -4,22 +4,22 @@ extends CanvasLayer
 onready var other_hosters = $OtherHosters
 onready var other_hud_non_screen_hosters = $OtherHUDNonScreenHosters
 
-onready var ability_panel = $ControlContainer/AbilityPanel
-onready var energy_panel = $ControlContainer/VBoxContainer/MarginContainer/EnergyPanel
+onready var ability_panel = $ControlContainer/HUDCMH_AbilityPanel/AbilityPanel
+onready var energy_panel = $ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/MarginContainer/EnergyPanel
 onready var rewind_panel = $ControlContainer/RewindPanel
-onready var health_panel = $ControlContainer/VBoxContainer/HealthPanel
-onready var speed_panel = $ControlContainer/SpeedPanel
-onready var trophy_panel = $ControlContainer/TopRightPanel/VBox/TrophyPanel
-onready var robot_health_panel = $ControlContainer/VBoxContainer/RobotHealthPanel
-onready var enemy_monitor_panel = $ControlContainer/TopRightPanel/VBox/EnemyMonitorPanel
+onready var health_panel = $ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/HealthPanel
+onready var speed_panel = $ControlContainer/HUDCMH_SpeedPanel/SpeedPanel
+onready var trophy_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/TrophyPanel
+onready var robot_health_panel = $ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/RobotHealthPanel
+onready var enemy_monitor_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/EnemyMonitorPanel
 
-onready var game_dialog_panel = $ControlContainer/GameDialogPanel
+onready var game_dialog_panel = $ControlContainer/HUDCMH_GameDialogPanel/GameDialogPanel
 
 onready var tooltip_container = $TooltipContainer
 
 onready var vic_def_anim_container = $VicDefAnimContainer
-onready var coins_panel = $ControlContainer/TopRightPanel/VBox/CoinsPanel
-onready var pcar_captured_panel = $ControlContainer/TopRightPanel/VBox/PCARCapturedPanel
+onready var coins_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/CoinsPanel
+onready var pcar_captured_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/PCARCapturedPanel
 
 onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 
@@ -27,6 +27,23 @@ onready var non_gui_screen_sprite = $NonGUIScreenShaderSprite
 onready var in_game_pause_panel_tree = $InGamePausePanelTree
 
 onready var out_of_map_bounds_warning_panel = $OutOfMapBoundsWarningPanel
+
+#
+
+onready var HUDCMH_speed_panel = $ControlContainer/HUDCMH_SpeedPanel
+onready var HUDCMH_top_right_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel
+onready var HUDCMH_ability_panel = $ControlContainer/HUDCMH_AbilityPanel
+onready var HUDCMH_top_mid_panel = $ControlContainer/HUDCMH_TopMidPanel
+onready var HUDCMH_game_dialog_panel = $ControlContainer/HUDCMH_GameDialogPanel
+
+onready var all_HUDCMH = [
+	HUDCMH_speed_panel,
+	HUDCMH_top_right_panel,
+	HUDCMH_ability_panel,
+	HUDCMH_top_mid_panel,
+	HUDCMH_game_dialog_panel,
+	
+]
 
 #
 
@@ -41,6 +58,20 @@ onready var gfh_control_focuser = $GFH_ControlFocuserDrawer
 onready var control_container = $ControlContainer
 
 ####
+
+func add__is_activated__clause_for_all_HUDCMH(arg_clause_id):
+	for hudcmh in all_HUDCMH:
+		hudcmh.is_activated_cond_clause.attempt_insert_clause(arg_clause_id)
+	
+
+func remove__is_activated__clause_for_all_HUDCMH(arg_clause_id):
+	for hudcmh in all_HUDCMH:
+		hudcmh.is_activated_cond_clause.remove_clause(arg_clause_id)
+	
+
+
+
+#
 
 func add_node_to_other_hosters(arg_node : Node):
 	other_hosters.add_child(arg_node)

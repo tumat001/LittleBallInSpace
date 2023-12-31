@@ -23,6 +23,9 @@ enum DESCRIPTION_TYPE {
 	CAPTURE_AREA = 301,
 	LAUNCH_BALL_AMMO__INFINITE = 302,
 	
+	
+	ENEMY = 400,
+	
 }
 
 # dark colored text
@@ -46,6 +49,9 @@ const type_to_for_light_color_map : Dictionary = {
 	DESCRIPTION_TYPE.BUTTON : "#0E016D",
 	DESCRIPTION_TYPE.CAPTURE_AREA : "#284F01",
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "#5C2E00",
+	
+	DESCRIPTION_TYPE.ENEMY : "#620F10",
+	
 	
 }
 
@@ -71,6 +77,9 @@ const type_to_for_dark_color_map : Dictionary = {
 	DESCRIPTION_TYPE.CAPTURE_AREA : "#7BFD68",
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "#FFC285",
 	
+	
+	DESCRIPTION_TYPE.ENEMY : "#E65659",
+	
 }
 
 
@@ -94,8 +103,13 @@ const type_to_name_map : Dictionary = {
 	DESCRIPTION_TYPE.CAPTURE_AREA : "Capture Area",
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "Launch Ball Ammo",
 	
+	
+	DESCRIPTION_TYPE.ENEMY : "Enemy",
+	
 }
 
+
+# light colored
 const type_to_img_map__for_dark : Dictionary = {
 	
 	DESCRIPTION_TYPE.SPEED : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Speed_Right_ForDark.png",
@@ -111,8 +125,12 @@ const type_to_img_map__for_dark : Dictionary = {
 	DESCRIPTION_TYPE.CAPTURE_AREA : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_CapturePoint_ForDark.png",
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForDark.png",
 	
+	DESCRIPTION_TYPE.ENEMY : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Enemy_ForDark.png",
+	
 }
 
+
+# dark colored
 const type_to_img_map__for_light : Dictionary  = {
 	
 	DESCRIPTION_TYPE.SPEED : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Speed_Right_ForLight.png",
@@ -128,6 +146,7 @@ const type_to_img_map__for_light : Dictionary  = {
 	DESCRIPTION_TYPE.CAPTURE_AREA : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_CapturePoint_ForLight.png",
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForLight.png",
 	
+	DESCRIPTION_TYPE.ENEMY : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Enemy_ForLight.png",
 	
 }
 

@@ -6,7 +6,7 @@ func _init():
 	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
-	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
+	win_message_type = AbstractVicDefAnim.WinMessageType.CONGRATULATIONS
 	lose_messege_type = AbstractVicDefAnim.LoseMessageType.DEFEAT
 	
 	
@@ -16,9 +16,9 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_03, Vector2(0, 0))
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_04__HARD, Vector2(0, 0))
 	
-	arg_elements.object_lifespan__ball = 8.0
+	arg_elements.object_lifespan__ball = 12.0
 
 
 ######

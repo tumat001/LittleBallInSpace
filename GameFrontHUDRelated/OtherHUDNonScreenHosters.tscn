@@ -11,3 +11,6 @@ script = ExtResource( 2 )
 
 [node name="BatteryCircleDraw" type="Node2D" parent="."]
 script = ExtResource( 2 )
+
+[node name="WrenchCircleDraw" type="Node2D" parent="."]
+script = ExtResource( 2 )

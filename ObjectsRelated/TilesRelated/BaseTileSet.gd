@@ -221,18 +221,23 @@ func _update_tilemap_modulate():
 
 static func calculate_final_modulate_to_use(arg_modulates : Array):
 	if arg_modulates.size() > 0:
-		var color_total : Color = Color(0, 0, 0, 0)
-		var lowest_a = 1
+		var final_color = Color(1, 1, 1, 1)
 		for color in arg_modulates:
-			color_total += color
-			
-			if lowest_a > color.a:
-				lowest_a = color.a
-		
-		var final_color = color_total / arg_modulates.size()
-		#final_color.a = lowest_a
+			final_color *= color
 		
 		return final_color
+		
+#		var color_total : Color = Color(0, 0, 0, 0)
+#		var lowest_a = 1
+#		for color in arg_modulates:
+#			color_total += color
+#
+#			if lowest_a > color.a:
+#				lowest_a = color.a
+#
+#		var final_color = color_total / arg_modulates.size()
+#
+#		return final_color
 	else:
 		return Color(1, 1, 1, 1)
 

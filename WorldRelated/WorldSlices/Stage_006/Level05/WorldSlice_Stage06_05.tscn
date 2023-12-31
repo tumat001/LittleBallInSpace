@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=3]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_006/Level05/WorldSlice_Stage06_05.gd" type="Script" id=5]
 
-[node name="WorldSlice_Stagexx_xx" instance=ExtResource( 2 )]
+[node name="WorldSlice_Stage06_05" instance=ExtResource( 2 )]
+script = ExtResource( 5 )
 
 [node name="BTS_Normal" parent="TileContainer" index="0" instance=ExtResource( 1 )]
 

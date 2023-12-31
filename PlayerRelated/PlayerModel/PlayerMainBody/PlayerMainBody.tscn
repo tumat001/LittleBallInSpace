@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.gd" type="Script" id=1]
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerModel_MainBody.png" type="Texture" id=2]
+[ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/OtherBodyFeatures/PlayerModel_BodyFeatures_Cracks_PureWhite.png" type="Texture" id=3]
 
 [node name="PlayerMainBody" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,3 +11,6 @@ script = ExtResource( 1 )
 light_mask = 0
 use_parent_material = true
 texture = ExtResource( 2 )
+
+[node name="CrackSprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )

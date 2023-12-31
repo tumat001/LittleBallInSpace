@@ -166,7 +166,8 @@ func helper_ball__configure_as_enemy_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg
 	arg_ball.anim_name_to_use = arg_ball.ANIM_NAME__ENEMY
 	
 	arg_ball.modulate_to_use_for_hit_damage_particle = arg_modulate_to_use_for_hit_damage_particle
-
+	
+	arg_ball.is_ball_from_enemy = true
 
 func helper_ball__configure_as_player_ball_proj(arg_ball, arg_flat_dmg, arg_x_dmg__max_bonus_dmg_based_on_lin_vel, arg_modulate_to_use_for_hit_damage_particle):
 	arg_ball.player_dmg__enabled = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/GameFrontHUD.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/AbilityPanel.tscn" type="PackedScene" id=2]
@@ -18,6 +18,8 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/PCARCapturedPanel/PCARCapturedPanel.tscn" type="PackedScene" id=16]
 [ext_resource path="res://GameFrontHUDRelated/OtherHUDNonScreenHosters.tscn" type="PackedScene" id=17]
 [ext_resource path="res://GameFrontHUDRelated/Subs/EnemyMonitorPanel/EnemyMonitorPanel.tscn" type="PackedScene" id=18]
+[ext_resource path="res://MiscRelated/MouseHiddenRelated/ControlHUD_MouseHidden_Relateds/HUD_Control_MouseHidden.tscn" type="PackedScene" id=19]
+[ext_resource path="res://MiscRelated/MouseHiddenRelated/ControlHUD_MouseHidden_Relateds/HUD_MarginCont_MouseHidden.tscn" type="PackedScene" id=20]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 10 )
@@ -48,7 +50,7 @@ margin_right = 960.0
 margin_bottom = 540.0
 mouse_filter = 2
 
-[node name="GameDialogPanel" parent="ControlContainer" instance=ExtResource( 12 )]
+[node name="HUDCMH_GameDialogPanel" parent="ControlContainer" instance=ExtResource( 20 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -57,43 +59,58 @@ margin_left = -250.0
 margin_top = -150.0
 margin_right = 250.0
 margin_bottom = 0.0
+auto_assign_poses_of_mouse_detection_mode_id = 4
+outer_ring__radius_start_of_reveal = 180.0
+inner_ring__radius_max_reveal = 90.0
 
-[node name="AbilityPanel" parent="ControlContainer" instance=ExtResource( 2 )]
+[node name="GameDialogPanel" parent="ControlContainer/HUDCMH_GameDialogPanel" instance=ExtResource( 12 )]
+margin_right = 500.0
+margin_bottom = 150.0
+mouse_filter = 1
+
+[node name="HUDCMH_AbilityPanel" parent="ControlContainer" instance=ExtResource( 20 )]
 margin_left = 18.0
 margin_top = 442.0
 margin_right = 173.0
 margin_bottom = 522.0
+
+[node name="AbilityPanel" parent="ControlContainer/HUDCMH_AbilityPanel" instance=ExtResource( 2 )]
+margin_right = 155.0
+margin_bottom = 80.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ControlContainer"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -132.0
+[node name="HUDCMH_TopMidPanel" parent="ControlContainer" instance=ExtResource( 20 )]
+margin_left = 348.0
 margin_top = 18.0
-margin_right = 132.0
-margin_bottom = 107.0
+margin_right = 612.0
+margin_bottom = 135.0
+auto_assign_poses_of_mouse_detection_mode_id = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlContainer/HUDCMH_TopMidPanel"]
+margin_right = 264.0
+margin_bottom = 117.0
 mouse_filter = 2
 custom_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ControlContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ControlContainer/HUDCMH_TopMidPanel/VBoxContainer"]
 margin_right = 264.0
 margin_bottom = 59.0
 rect_min_size = Vector2( 264, 59 )
 mouse_filter = 2
 size_flags_horizontal = 6
 
-[node name="EnergyPanel" parent="ControlContainer/VBoxContainer/MarginContainer" instance=ExtResource( 3 )]
+[node name="EnergyPanel" parent="ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/MarginContainer" instance=ExtResource( 3 )]
 margin_bottom = 59.0
 grow_horizontal = 0
 
-[node name="HealthPanel" parent="ControlContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="HealthPanel" parent="ControlContainer/HUDCMH_TopMidPanel/VBoxContainer" instance=ExtResource( 5 )]
 margin_left = 17.0
 margin_top = 59.0
 margin_right = 247.0
 margin_bottom = 88.0
 size_flags_horizontal = 6
 
-[node name="RobotHealthPanel" parent="ControlContainer/VBoxContainer" instance=ExtResource( 8 )]
+[node name="RobotHealthPanel" parent="ControlContainer/HUDCMH_TopMidPanel/VBoxContainer" instance=ExtResource( 8 )]
 margin_left = 30.0
 margin_top = 88.0
 margin_right = 234.0
@@ -108,40 +125,47 @@ margin_top = 470.0
 margin_right = 166.0
 margin_bottom = 506.0
 
-[node name="SpeedPanel" parent="ControlContainer" instance=ExtResource( 6 )]
-margin_left = 835.0
-margin_top = 438.0
-margin_right = 875.0
-margin_bottom = 478.0
+[node name="HUDCMH_SpeedPanel" parent="ControlContainer" instance=ExtResource( 19 )]
+margin_left = 821.0
+margin_top = 427.0
+
+[node name="SpeedPanel" parent="ControlContainer/HUDCMH_SpeedPanel" instance=ExtResource( 6 )]
+margin_left = 14.0
+margin_top = 11.0
+margin_right = 134.0
+margin_bottom = 106.0
 
 [node name="TopRightPanel" type="MarginContainer" parent="ControlContainer"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -103.0
+margin_left = 857.0
 margin_top = 30.0
-margin_right = -23.0
-margin_bottom = 73.0
+margin_right = 937.0
+margin_bottom = 129.0
+mouse_filter = 2
 
-[node name="VBox" type="VBoxContainer" parent="ControlContainer/TopRightPanel"]
+[node name="HUDCMH_TopRightPanel" parent="ControlContainer/TopRightPanel" instance=ExtResource( 20 )]
 margin_right = 80.0
 margin_bottom = 99.0
 
-[node name="CoinsPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 9 )]
+[node name="VBox" type="VBoxContainer" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel"]
+margin_right = 80.0
+margin_bottom = 99.0
+
+[node name="CoinsPanel" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox" instance=ExtResource( 9 )]
 margin_right = 80.0
 margin_bottom = 24.0
 
-[node name="PCARCapturedPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 16 )]
+[node name="PCARCapturedPanel" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox" instance=ExtResource( 16 )]
 margin_top = 28.0
 margin_bottom = 52.0
 
-[node name="TrophyPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 7 )]
+[node name="TrophyPanel" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox" instance=ExtResource( 7 )]
 margin_left = 44.0
 margin_top = 56.0
 margin_right = 80.0
 margin_bottom = 71.0
 size_flags_horizontal = 10
 
-[node name="EnemyMonitorPanel" parent="ControlContainer/TopRightPanel/VBox" instance=ExtResource( 18 )]
+[node name="EnemyMonitorPanel" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox" instance=ExtResource( 18 )]
 margin_top = 75.0
 margin_bottom = 99.0
 

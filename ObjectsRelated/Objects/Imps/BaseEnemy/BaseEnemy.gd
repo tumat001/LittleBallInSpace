@@ -676,6 +676,10 @@ func _on_attack_module_laser__hit_player(arg_contact_pos):
 
 func _on_CollForProjOrPlayer_body_entered(body):
 	if !has_object_to_not_collide_with(body):
+		if body.get("is_class_type_obj_ball"):
+			if body.is_ball_from_enemy:
+				body.queue_free()
+		
 		_do_calc_damage_if_appropriate(body)
 	
 

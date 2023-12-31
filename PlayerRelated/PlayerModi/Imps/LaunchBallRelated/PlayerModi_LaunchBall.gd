@@ -7,6 +7,10 @@ const PlayerModi_LaunchBall_Node_Scene = preload("res://PlayerRelated/PlayerModi
 
 const Object_Ball = preload("res://ObjectsRelated/Objects/Imps/Ball/Object_Ball.gd")
 
+#
+
+const HUD_Control_MouseHidden = preload("res://MiscRelated/MouseHiddenRelated/ControlHUD_MouseHidden_Relateds/HUD_Control_MouseHidden.gd")
+
 #const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.gd")
 
 ##
@@ -218,6 +222,8 @@ func _on_can_change_aim_mode_changed(arg_val):
 
 func _on_modi_launch_ball_node__ended_launch_charge():
 	MouseManager.remove_request_change_mouse_normal_id(self)
+	
+	SingletonsAndConsts.current_game_front_hud.remove__is_activated__clause_for_all_HUDCMH(HUD_Control_MouseHidden.IsActivatedCondClauseIds.IS_BALL_FIRE_CHARGING)
 
 ######
 
@@ -264,7 +270,8 @@ func _attempt_begin_charge_ball():
 		_player.player_face.play_sequence__charging_launch_ball()
 		
 		MouseManager.request_change_mouse_normal_id(self, MouseManager.MouseNormalSpriteTypeId.TARGET_RETICLE)
-
+		
+		SingletonsAndConsts.current_game_front_hud.add__is_activated__clause_for_all_HUDCMH(HUD_Control_MouseHidden.IsActivatedCondClauseIds.IS_BALL_FIRE_CHARGING)
 
 func _attempt_launch_ball():
 	if player_modi_launch_ball_node.is_charging_launch():

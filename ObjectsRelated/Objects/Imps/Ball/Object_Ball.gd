@@ -63,6 +63,10 @@ var anim_name_to_use : String setget set_anim_name_to_use
 
 #
 
+var is_ball_from_enemy : bool = false
+
+#
+
 var modulate_to_use_for_hit_damage_particle : Color
 
 #

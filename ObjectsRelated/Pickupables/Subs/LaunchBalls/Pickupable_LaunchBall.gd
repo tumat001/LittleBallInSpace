@@ -30,7 +30,7 @@ const offset_from_center__red = Vector2(0, -8)
 const offset_from_center__green = Vector2(-8, 6)
 const offset_from_center__blue = Vector2(8, 6)
 
-const delay_per_ball : float = 0.1
+const delay_per_ball_particle : float = 0.1
 
 #
 
@@ -120,16 +120,16 @@ func _play_pickup_particle__randomized_offset__x_times(arg_count : int, arg_init
 	for i in arg_count:
 		var initial_offset = _get_randomized_rotation_of_vector(arg_initial_offset)
 		SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, initial_offset, arg_dist_from_offset, LaunchBallPickupableParticle.anim_name__white, total_delay)
-		total_delay += delay_per_ball
+		total_delay += delay_per_ball_particle
 
 func _get_randomized_rotation_of_vector(arg_vec : Vector2):
 	return arg_vec.rotated(SingletonsAndConsts.non_essential_rng.randf_range(0, 2*PI))
 
 
 func _play_pickup_particles__as_inf_ammo():
-	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__red, 46, LaunchBallPickupableParticle.anim_name__red, delay_per_ball * 0)
-	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__green, 46, LaunchBallPickupableParticle.anim_name__green, delay_per_ball * 1)
-	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__blue, 46, LaunchBallPickupableParticle.anim_name__blue, delay_per_ball * 2)
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__red, 46, LaunchBallPickupableParticle.anim_name__red, delay_per_ball_particle * 0)
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__green, 46, LaunchBallPickupableParticle.anim_name__green, delay_per_ball_particle * 1)
+	SingletonsAndConsts.current_game_front_hud__other_hud_non_screen_hoster.play_launch_ball_pickup_particle_effects(self, offset_from_center__blue, 46, LaunchBallPickupableParticle.anim_name__blue, delay_per_ball_particle * 2)
 
 func _play_orange_ring(arg_initial_radius, arg_final_radius, mod_a):
 	var pos = get_global_transform_with_canvas().origin

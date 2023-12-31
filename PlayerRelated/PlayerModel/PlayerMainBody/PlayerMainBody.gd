@@ -12,7 +12,14 @@ const SHADER_PARAM_NAME__SATURATION = "saturation"
 #var material_saturation_tweener : SceneTreeTween
 var modulate_tweener : SceneTreeTween
 
+#
+
+var crack_base_modulate : Color setget set_crack_base_modulate
+
+#
+
 onready var body_sprite = $BodySprite
+onready var crack_sprite = $CrackSprite
 
 #
 
@@ -27,6 +34,29 @@ func get_body_modulate():
 
 #
 
+
+func _update_crack_base_modulate__based_on_GSettingsM():
+	var details_map = GameSettingsManager.player_aesth_config__body_texture_id_to_details_map[GameSettingsManager.player_aesth_config__body_texture_id]
+	var modulate = details_map[GameSettingsManager.PLAYER_AESTH_CONFIG__BODY_CRACK_MODULATE__DIC_ID]
+	set_crack_base_modulate(modulate)
+
+func set_crack_base_modulate(arg_val):
+	crack_base_modulate = arg_val
+	
+	_update_crack_sprite_modulate()
+
+func _update_crack_sprite_modulate():
+	var final_color = body_sprite.modulate * crack_base_modulate
+	crack_sprite.modulate = final_color
+
+#
+
+func set_crack_sprite_visibility(arg_val):
+	crack_sprite.visible = arg_val
+	
+
+#
+
 func _ready():
 	#_initialize_saturation_shader()
 	
@@ -34,7 +64,7 @@ func _ready():
 	GameSettingsManager.connect("player_aesth_config__saved_modulate_for_body_texture_id__changed", self, "_on_player_aesth_config__saved_modulate_for_body_texture_id__changed")
 	_update_body_texture__based_on_GSettingsM()
 	
-
+	crack_sprite.visible = false
 
 #func _initialize_saturation_shader():
 #	var shader_mat = ShaderMaterial.new()
@@ -54,11 +84,14 @@ func _update_body_texture__based_on_GSettingsM():
 	body_sprite.texture = texture_to_use
 	
 	_update_body_modulate__based_on_GSettingsM()
+	_update_crack_base_modulate__based_on_GSettingsM()
 
 func _update_body_modulate__based_on_GSettingsM():
 	var modulate_to_use = GameSettingsManager.player_aesth_config__body_texture_id_to_saved_modulate_map[GameSettingsManager.player_aesth_config__body_texture_id]
 	body_sprite.modulate = modulate_to_use
 	
+	#
+	_update_crack_sprite_modulate()
 
 func _on_player_aesth_config__saved_modulate_for_body_texture_id__changed(arg_modulate, arg_id):
 	_update_body_modulate__based_on_GSettingsM()

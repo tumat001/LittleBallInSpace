@@ -6,9 +6,10 @@ signal pressed(arg_is_pressed)
 
 #
 
-const TILESET_COLOR__BLUE = Color(1/255.0, 1/255.0, 255/255.0) #Color(28/255.0, 18/255.0, 253/255.0)
-const TILESET_COLOR__RED = Color(253/255.0, 17/255.0, 19/255.0)
-const TILESET_COLOR__GREEN = Color(17/255.0, 253/255.0, 19/255.0)
+#const TILESET_COLOR__BLUE = Color(1/255.0, 1/255.0, 255/255.0) #Color(28/255.0, 18/255.0, 253/255.0)
+const TILESET_COLOR__BLUE = Color("#1274ff")
+const TILESET_COLOR__RED = Color("#ff2424") #Color(253/255.0, 17/255.0, 19/255.0)
+const TILESET_COLOR__GREEN = Color("#1cff09") #Color(17/255.0, 253/255.0, 19/255.0)
 
 
 const BUTTON_CONTAINER_Y_CHANGE_DURATION : float = 0.5

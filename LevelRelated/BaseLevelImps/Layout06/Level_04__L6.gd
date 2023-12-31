@@ -16,9 +16,9 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_03, Vector2(0, 0))
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_06_04, Vector2(0, 0))
 	
-	arg_elements.object_lifespan__ball = 8.0
+	arg_elements.object_lifespan__ball = 12.0
 
 
 ######

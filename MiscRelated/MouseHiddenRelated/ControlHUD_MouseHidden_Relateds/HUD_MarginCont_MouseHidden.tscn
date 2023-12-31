@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MiscRelated/MouseHiddenRelated/ControlHUD_MouseHidden_Relateds/HUD_Control_MouseHidden.gd" type="Script" id=1]
+
+[node name="HUD_MarginCont_MouseHidden" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 1
+script = ExtResource( 1 )

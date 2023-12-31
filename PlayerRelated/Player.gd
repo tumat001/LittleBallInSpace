@@ -2012,6 +2012,11 @@ func create_damage_fragment_particles_from_ball_collision(arg_collider_pos : Vec
 
 #
 
+func heal_robot_health(arg_inc):
+	if !SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
+		set_current_robot_health(_current_robot_health + arg_inc)
+	
+
 func set_current_robot_health(arg_val):
 	if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
 		return
@@ -2092,6 +2097,12 @@ func _update_self_based_on_has_robot_health():
 		
 		if emit_robot_not_dead_signal:
 			emit_signal("robot_health_restored_from_zero")
+	
+	
+	if _current_robot_health <= _max_robot_health / 2:
+		main_body_sprite.set_crack_sprite_visibility(true)
+	else:
+		main_body_sprite.set_crack_sprite_visibility(false)
 
 
 func _deferred_create_break_fragments():

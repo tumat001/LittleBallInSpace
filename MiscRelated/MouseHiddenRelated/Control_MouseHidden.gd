@@ -1,3 +1,4 @@
+# DEFAULT: Hidden when mouse is far
 extends Control
 
 
