@@ -16,6 +16,7 @@ energy_mode = 1
 modulate = Color( 1, 0.968627, 0.172549, 1 )
 
 [node name="BTS_Grounded" parent="TileContainer" index="2" instance=ExtResource( 1 )]
+energy_mode = 2
 
 [node name="TileMap" parent="TileContainer/BTS_Grounded" index="0"]
 modulate = Color( 0.682353, 0.372549, 0, 1 )

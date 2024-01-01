@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=46 format=2]
+[gd_resource type="TileSet" load_steps=47 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -45,6 +45,7 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__SolidsCornerPieces.png" type="Texture" id=43]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc04.png" type="Texture" id=44]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc06.png" type="Texture" id=45]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc07.png" type="Texture" id=46]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1034,3 +1035,24 @@
 46/shape_one_way_margin = 0.0
 46/shapes = [  ]
 46/z_index = 0
+47/name = "Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc07.png 47"
+47/texture = ExtResource( 46 )
+47/tex_offset = Vector2( 0, 0 )
+47/modulate = Color( 1, 1, 1, 1 )
+47/region = Rect2( 0, 0, 128, 64 )
+47/tile_mode = 2
+47/autotile/icon_coordinate = Vector2( 0, 0 )
+47/autotile/tile_size = Vector2( 32, 32 )
+47/autotile/spacing = 0
+47/autotile/occluder_map = [  ]
+47/autotile/navpoly_map = [  ]
+47/autotile/priority_map = [  ]
+47/autotile/z_index_map = [  ]
+47/occluder_offset = Vector2( 0, 0 )
+47/navigation_offset = Vector2( 0, 0 )
+47/shape_offset = Vector2( 0, 0 )
+47/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+47/shape_one_way = false
+47/shape_one_way_margin = 0.0
+47/shapes = [  ]
+47/z_index = 0

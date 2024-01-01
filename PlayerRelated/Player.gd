@@ -30,6 +30,7 @@ signal last_calculated_object_mass_changed(arg_val)
 
 signal unhandled_key_input_received(event)
 signal unhandled_mouse_button_input_received(event)
+signal mouse_button_input_received(event)
 
 signal request_rotate(arg_data)
 
@@ -969,7 +970,11 @@ func _unhandled_input(event):
 		if !is_consumed:
 			emit_signal("unhandled_mouse_button_input_received", event)
 
+func _input(event):
+	if event is InputEventMouseButton:
+		emit_signal("mouse_button_input_received", event)
 
+#
 
 func stop_all_persisting_actions():
 	if _is_moving_left:

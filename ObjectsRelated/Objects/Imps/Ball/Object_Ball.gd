@@ -123,6 +123,7 @@ func _tween_rainbow_color__in_tree():
 func _process(delta):
 	_play_sound_cooldown_duration -= delta
 
+
 func _on_ForSoundArea2D_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		if _play_sound_cooldown_duration <= 0:
@@ -170,7 +171,7 @@ func calculate_damage_to__player(arg_player_lin_vel : Vector2):
 	
 	if x_dmg__give_bonus_dmg_based_on_lin_vel:
 		var final_lin_vel = (linear_velocity - arg_player_lin_vel).length()
-		if final_lin_vel >= 365 / 2: #375:
+		if final_lin_vel >= 205: #365 / 2:
 			dmg += x_dmg__max_bonus_dmg_based_on_lin_vel
 			
 		else:
@@ -183,7 +184,7 @@ func calculate_damage_to__enemy(arg_enemy_lin_vel : Vector2):
 	
 	if x_dmg__give_bonus_dmg_based_on_lin_vel:
 		var final_lin_vel = (linear_velocity - arg_enemy_lin_vel).length()
-		if final_lin_vel >= 365 / 2: #375:
+		if final_lin_vel >= 205: #365 / 2: #375:
 			dmg += x_dmg__max_bonus_dmg_based_on_lin_vel
 			
 		else:

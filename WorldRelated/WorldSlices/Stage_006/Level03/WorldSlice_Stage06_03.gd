@@ -43,6 +43,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	else:
 		_is_first_time__do_cutscenes = true
 
+#todoimp think how to make enemies target seeking at the right time (checkpoints?)
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()

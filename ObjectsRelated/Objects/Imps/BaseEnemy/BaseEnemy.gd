@@ -241,6 +241,8 @@ func _init():
 	prevent_draw_enemy_range_cond_clause.connect("clause_inserted", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
 	prevent_draw_enemy_range_cond_clause.connect("clause_removed", self, "_on_prevent_draw_enemy_range_cond_clause_updated")
 	_update_can_draw_enemy_range()
+	
+	ignore_object_destroying_region = true
 
 #
 
@@ -345,6 +347,11 @@ func _ready__config_self__any():
 		sprite__xray_frame.texture = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BaseEnemy_SeeThruFrame.png")
 		add_child(sprite__xray_frame)
 	
+	if aim_occulder_type == AimOccluderType.TILE_OCCLUDED:
+		aim_occluder_module = Module_AimOccluder.new()
+		aim_occluder_module.direct_space_state = get_world_2d().direct_space_state
+		
+	
 	##
 	
 	if aim_trajectory_type == AimTrajectoryType.VELO_PREDICT:
@@ -379,12 +386,6 @@ func _ready__config_self_as_type_laser():
 	
 	# conn to target detection module
 	#target_detection_module.connect("pinged_target_successfully", self, "_on_target_module_pinged_target_successfully__for_laser")
-	
-	# occlude relateds
-	if aim_occulder_type == AimOccluderType.TILE_OCCLUDED:
-		aim_occluder_module = Module_AimOccluder.new()
-		aim_occluder_module.direct_space_state = get_world_2d().direct_space_state
-		
 
 func _ready__config_self_as_type_ball():
 	#attk module
@@ -536,7 +537,11 @@ func _on_target_module_pinged_target_successfully__for_attack(arg_actual_distanc
 			if last_calc_can_attack:
 				var trajectory_modified_pos = _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, attack_module.LASER_DURATION__LOOKAHEAD_PREDICT, true, ball_velocity_no_modi)
 				
+				#trajectory_modified_pos = _clean_up_targeted_pos__when_near_90_deg_intervals(trajectory_modified_pos, global_position)
+				
 				var angle_of_trajectory_modified_pos = global_position.angle_to_point(trajectory_modified_pos)
+				#angle_of_trajectory_modified_pos = _clean_up_angle__when_near_90_deg_interval(angle_of_trajectory_modified_pos)
+				
 				var final_lin_vel_of_ball : Vector2 = Vector2(ball_speed, 0).rotated(angle_of_trajectory_modified_pos + PI)
 				
 				_attempt_attack_target__as_ball(final_lin_vel_of_ball)
@@ -575,6 +580,34 @@ func _get_calc_trajectory_modified_pos(arg_pos_target, arg_target, lookahead_dur
 	return trajectory_modified_pos
 
 
+func _clean_up_angle__when_near_90_deg_interval(arg_angle):
+	var excess = abs(fmod(arg_angle, PI/2))
+	
+	if excess > PI/4:
+		excess -= PI/2
+	excess = abs(excess)
+	
+	if excess <= PI/32:
+		return _clean_up_angle__perfect_translated_for_param(arg_angle, PI/2)
+	
+	return arg_angle
+
+#func _clean_up_targeted_pos__when_near_90_deg_intervals(arg_target_pos : Vector2, arg_ref_pos : Vector2):
+#	var angle = arg_target_pos.angle_to_point(arg_ref_pos)
+#	var excess = abs(fmod(angle, PI/2))
+#	if excess > PI/4:
+#		excess -= PI/2
+#	#var excess = abs(angle / (PI/2))
+#	excess = abs(excess)
+#	if excess <= PI/32:
+#		var cleaned_angle = _clean_up_angle__perfect_translated_for_param(angle, PI/2)
+#		var dist = arg_target_pos.distance_to(arg_ref_pos)
+#
+#		return Vector2(dist, 0).rotated(cleaned_angle)
+#
+#	return arg_target_pos
+
+
 func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
 	robot_face.helper__eyes_look_toward_position(arg_pos, true)
 	
@@ -592,11 +625,15 @@ func _look_toward_position(arg_pos : Vector2, arg_is_looking_at_target):
 		
 		
 
-func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
-	var translated = arg_angle / CIRCLE_PARTITION
+
+func _clean_up_angle__perfect_translated_for_param(arg_angle, arg_circle_partition_param):
+	var translated = arg_angle / arg_circle_partition_param
 	var perfected_translated = round(translated)
-	return perfected_translated * CIRCLE_PARTITION
-	
+	return perfected_translated * arg_circle_partition_param
+
+func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
+	return _clean_up_angle__perfect_translated_for_param(arg_angle, CIRCLE_PARTITION)
+
 
 func _attempt_attack_target__as_laser():
 	if !attack_module.is_in_fire_sequence():

@@ -49,7 +49,7 @@ func get_launch_strength_to_use(arg_origin : Vector2, arg_target_pos : Vector2):
 		return 250
 		
 	else:
-		return 125
+		return 165
 
 #
 

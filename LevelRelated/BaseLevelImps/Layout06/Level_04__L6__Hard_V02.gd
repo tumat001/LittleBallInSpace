@@ -13,7 +13,6 @@ func _init():
 
 #
 
-#todoimp make a v02 where the ball is in curr pos, and a v01 where the ball is near the button side (bottom)
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	

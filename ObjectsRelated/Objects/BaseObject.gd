@@ -43,6 +43,9 @@ var is_class_type_base_object : bool = true
 
 #
 
+var ignore_object_destroying_region : bool = false
+
+#
 
 var has_finite_lifespan : bool = false
 # determined at start (before ready)

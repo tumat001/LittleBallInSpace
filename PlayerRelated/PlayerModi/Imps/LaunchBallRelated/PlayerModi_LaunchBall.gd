@@ -107,7 +107,8 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	_game_elements = arg_game_elements
 	
 	arg_player.connect("unhandled_key_input_received", self, "_on_player_unhandled_key_input__for_modi")
-	arg_player.connect("unhandled_mouse_button_input_received", self, "_on_player_unhandled_mouse_button_input_received__for_modi")
+	#arg_player.connect("unhandled_mouse_button_input_received", self, "_on_player_unhandled_mouse_button_input_received__for_modi")
+	arg_player.connect("mouse_button_input_received", self, "_on_player_mouse_button_input_received")
 	arg_player.connect("last_calc_block_player_game_actions_changed", self, "_on_player_last_calc_block_player_game_actions_changed")
 	
 	_construct_ability()
@@ -228,6 +229,16 @@ func _on_modi_launch_ball_node__ended_launch_charge():
 ######
 
 
+func _on_player_mouse_button_input_received(event):
+	if _is_launch_ability_ready:
+		if GameSettingsManager.last_calc__unlocked_status__mouse_scroll_launch_ball and player_modi_launch_ball_node.is_charging_launch():
+			if event.button_index == BUTTON_WHEEL_UP:
+				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * 1)
+				
+			elif event.button_index == BUTTON_WHEEL_DOWN:
+				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * -1)
+
+
 func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEventMouseButton):
 	if _is_launch_ability_ready:
 		if event.button_index == BUTTON_LEFT and !event.is_echo() and !event.doubleclick:
@@ -237,12 +248,14 @@ func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEve
 				_attempt_launch_ball()
 			
 			###
-		if GameSettingsManager.last_calc__unlocked_status__mouse_scroll_launch_ball and player_modi_launch_ball_node.is_charging_launch():
-			if event.button_index == BUTTON_WHEEL_UP:
-				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * 1)
-				
-			elif event.button_index == BUTTON_WHEEL_DOWN:
-				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * -1)
+#		if GameSettingsManager.last_calc__unlocked_status__mouse_scroll_launch_ball and player_modi_launch_ball_node.is_charging_launch():
+#			if event.button_index == BUTTON_WHEEL_UP:
+#				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * 1)
+#
+#			elif event.button_index == BUTTON_WHEEL_DOWN:
+#				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * -1)
+
+
 
 
 func _calculate_increment_using_wheel_factor(arg_factor : float):

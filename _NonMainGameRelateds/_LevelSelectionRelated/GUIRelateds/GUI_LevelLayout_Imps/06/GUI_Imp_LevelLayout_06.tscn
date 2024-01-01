@@ -88,21 +88,40 @@ margin_right = 276.0
 margin_bottom = 184.0
 is_path = true
 
-[node name="GUI_LevelLayoutEle_Path_09" parent="LayoutElesContainer" index="12" instance=ExtResource( 3 )]
-margin_left = 230.0
-margin_top = 92.0
-margin_right = 276.0
-margin_bottom = 138.0
-is_path = true
+[node name="GUI_LevelLayoutEle_Tile_04" parent="LayoutElesContainer" index="12" instance=ExtResource( 3 )]
+margin_left = 276.0
+margin_top = 138.0
+margin_right = 322.0
+margin_bottom = 184.0
 
-[node name="GUI_LevelLayoutEle_Tile_04" parent="LayoutElesContainer" index="13" instance=ExtResource( 3 )]
+[node name="GUI_LevelLayoutEle_Tile_04H" parent="LayoutElesContainer" index="13" instance=ExtResource( 3 )]
 margin_left = 276.0
 margin_top = 92.0
 margin_right = 322.0
 margin_bottom = 138.0
 
-[node name="GUI_LevelLayoutEle_Tile_04H" parent="LayoutElesContainer" index="14" instance=ExtResource( 3 )]
+[node name="GUI_LevelLayoutEle_Tile_04H_V02" parent="LayoutElesContainer" index="14" instance=ExtResource( 3 )]
 margin_left = 276.0
 margin_top = 46.0
 margin_right = 322.0
 margin_bottom = 92.0
+
+[node name="GUI_LevelLayoutEle_Path_09" parent="LayoutElesContainer" index="15" instance=ExtResource( 3 )]
+margin_left = 322.0
+margin_top = 138.0
+margin_right = 368.0
+margin_bottom = 184.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Tile_05" parent="LayoutElesContainer" index="16" instance=ExtResource( 3 )]
+margin_left = 368.0
+margin_top = 138.0
+margin_right = 414.0
+margin_bottom = 184.0
+
+[node name="GUI_LevelLayoutEle_Path_10" parent="LayoutElesContainer" index="17" instance=ExtResource( 3 )]
+margin_left = 414.0
+margin_top = 138.0
+margin_right = 460.0
+margin_bottom = 184.0
+is_path = true

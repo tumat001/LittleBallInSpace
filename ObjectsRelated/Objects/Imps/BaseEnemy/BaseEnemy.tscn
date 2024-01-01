@@ -20,6 +20,7 @@ radius = 16.0
 radius = 18.5
 
 [node name="BaseEnemy" instance=ExtResource( 1 )]
+mode = 2
 script = ExtResource( 3 )
 body_mode_to_use = 2
 enemy_type_template__for_export = 0
