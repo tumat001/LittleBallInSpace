@@ -5,6 +5,11 @@ signal duration_for_capture_left_changed(arg_base_duration, arg_curr_val_left, d
 signal region_area_captured()
 signal region_area_uncaptured()
 
+#
+
+const PCA_Drawer_Progress__Color_Outline = Color(186/255.0, 254/255.0, 202/255.0, 0.6)
+
+#
 
 export(float) var duration_for_capture : float = 0.75 setget set_duration_for_capture
 var _is_instant_capture : bool
@@ -48,6 +53,11 @@ var is_player_capture_area_region : bool = true
 
 #
 
+#note: when changed, does not update immediately, hence no setter
+export(float) var mod_a_for_uncaptured : float = 1.0
+
+#
+
 onready var main_collision_shape_2d = $CollisionShape2D
 
 ##
@@ -74,7 +84,7 @@ func set_capture_type(arg_val):
 		color_outline_of_region_to_use = Color(55/255.0, 109/255.0, 1/255.0, 0.2)
 		outine_width_of_region_to_use = 3
 		
-		player_PCA_progress_drawer__outline_color = Color(186/255.0, 254/255.0, 202/255.0, 0.6)
+		player_PCA_progress_drawer__outline_color = PCA_Drawer_Progress__Color_Outline
 		player_PCA_progress_drawer__fill_color = Color(78/255.0, 253/255.0, 120/255.0, 0.6)
 		
 		is_capture_type_win = true
@@ -117,7 +127,7 @@ func _on_region_area_captured__p_base():
 func _on_region_area_uncaptured__p_base():
 	if is_instance_valid(_active_draw_node):
 		var tweener = create_tween()
-		tweener.tween_property(_active_draw_node, "modulate:a", 1.0, 0.5)
+		tweener.tween_property(_active_draw_node, "modulate:a", mod_a_for_uncaptured, 0.5)
 
 
 
@@ -137,8 +147,11 @@ func _ready():
 	connect("region__body_remained_in_area", self, "_on_region__body_remained_in_area__e")
 	connect("region__body_entered_in_area", self, "_on_region__body_entered_in_area__e")
 	connect("region__body_exited_from_area", self, "_on_region__body_exited_from_area__e")
+	
 
 func _pre_ready():
+	modulate.a = mod_a_for_uncaptured
+	
 	._pre_ready()
 	
 	

@@ -6,6 +6,8 @@ extends Node
 
 signal current_cam_rotation_changed(arg_val)
 
+
+signal cam_visual_rotation_finished()
 signal cam_visual_rotation_changed(arg_val)
 
 #
@@ -33,7 +35,8 @@ var _current_cam_zoom_tweener : SceneTreeTween
 var _screen_size_half : Vector2
 var _nodes_to_follow_camera : Array = []
 
-var _nodes_to_rotate_on_camera_rotate : Array = []
+var _node_2ds_to_rotate_on_camera_rotate : Array = []
+var _node_controls_to_rotate_on_camera_rotate : Array = []
 
 #
 
@@ -218,6 +221,7 @@ func _set_actual_rotation_of_cam(arg_rotation):
 	
 	if is_equal_approx(arg_rotation, current_cam_rotation):
 		is_camera_rotating = false
+		emit_signal("cam_visual_rotation_finished")
 	
 	emit_signal("cam_visual_rotation_changed", arg_rotation)
 
@@ -249,16 +253,32 @@ func make_node_rotate_with_camera(arg_node_2d):
 	if !arg_node_2d.is_connected("tree_exiting", self, "_on_node_rotating_with_camera_tree_exiting"):
 		arg_node_2d.connect("tree_exiting", self, "_on_node_rotating_with_camera_tree_exiting", [arg_node_2d])
 	
-	if !_nodes_to_rotate_on_camera_rotate.has(arg_node_2d):
-		_nodes_to_rotate_on_camera_rotate.append(arg_node_2d)
+	if !_node_2ds_to_rotate_on_camera_rotate.has(arg_node_2d):
+		_node_2ds_to_rotate_on_camera_rotate.append(arg_node_2d)
 
 func _on_node_rotating_with_camera_tree_exiting(arg_node_2d):
-	_nodes_to_rotate_on_camera_rotate.erase(arg_node_2d)
+	_node_2ds_to_rotate_on_camera_rotate.erase(arg_node_2d)
+
+
+
+func make_control_node_rotate_with_camera(arg_control_node):
+	if !arg_control_node.is_connected("tree_exiting", self, "_on_control_node_rotating_with_camera_tree_exiting"):
+		arg_control_node.connect("tree_exiting", self, "_on_control_node_rotating_with_camera_tree_exiting", [arg_control_node])
+	
+	if !_node_controls_to_rotate_on_camera_rotate.has(arg_control_node):
+		_node_controls_to_rotate_on_camera_rotate.append(arg_control_node)
+
+func _on_control_node_rotating_with_camera_tree_exiting(arg_control_node):
+	_node_controls_to_rotate_on_camera_rotate.erase(arg_control_node)
+
 
 
 func _rotate_nodes_to_rotate_with_cam(arg_angle):
-	for node in _nodes_to_rotate_on_camera_rotate:
+	for node in _node_2ds_to_rotate_on_camera_rotate:
 		node.rotation = camera.rotation
+	
+	for node in _node_controls_to_rotate_on_camera_rotate:
+		node.rect_rotation = rad2deg(camera.rotation)
 
 ######################
 

@@ -10,6 +10,8 @@ signal current_master_setted(arg_master)
 #
 
 const GROUP_NAME__OBJECT_TILE_FRAGMENT = "GroupName_ObjectTileFragment"
+const GROUP_NAME__BASE_ENEMY = "GroupName_ObjectBaseEnemy"
+
 
 #
 

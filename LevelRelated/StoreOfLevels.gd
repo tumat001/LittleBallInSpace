@@ -75,6 +75,8 @@ enum LevelIds {
 	LEVEL_03__STAGE_6 = 502
 	LEVEL_04__STAGE_6 = 503
 	LEVEL_05__STAGE_6 = 504
+	LEVEL_06__STAGE_6 = 505
+	LEVEL_07__STAGE_6 = 506
 	
 	LEVEL_04__STAGE_6__HARD = 550
 	LEVEL_04__STAGE_6__HARD_V02 = 551
@@ -1374,7 +1376,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
 		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
 		
-		level_details.level_label_on_tile = "!4!"
+		level_details.level_label_on_tile = "?4"
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
@@ -1388,7 +1390,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["6-5 Intercept", []]
 		]
 		level_details.level_name = [
-			["", []]
+			["Intercept", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -1407,6 +1409,61 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		
+		
+	elif arg_id == LevelIds.LEVEL_06__STAGE_6:
+		level_details.level_full_name = [
+			["6-6 Happy Feet", []]
+		]
+		level_details.level_name = [
+			["Happy Feet", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "06"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+	elif arg_id == LevelIds.LEVEL_07__STAGE_6:
+		level_details.level_full_name = [
+			["6-7 Range", []]
+		]
+		level_details.level_name = [
+			["", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "07"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
 		
@@ -1555,6 +1612,11 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6.gd").new()
 	elif arg_id == LevelIds.LEVEL_05__STAGE_6:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_05__L6.gd").new()
+	elif arg_id == LevelIds.LEVEL_06__STAGE_6:
+		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6.gd").new()
+	elif arg_id == LevelIds.LEVEL_07__STAGE_6:
+		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6.gd").new()
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard.gd").new()
@@ -1639,6 +1701,8 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_03__STAGE_6 : 1,
 		LevelIds.LEVEL_04__STAGE_6 : 1,
 		LevelIds.LEVEL_05__STAGE_6 : 1,
+		LevelIds.LEVEL_06__STAGE_6 : 1,
+		LevelIds.LEVEL_07__STAGE_6 : 1,
 		
 		LevelIds.LEVEL_04__STAGE_6__HARD : 1,
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : 1,
@@ -1754,6 +1818,8 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_03__STAGE_6 : [LevelIds.LEVEL_02__STAGE_6],
 		LevelIds.LEVEL_04__STAGE_6 : [LevelIds.LEVEL_03__STAGE_6],
 		LevelIds.LEVEL_05__STAGE_6 : [LevelIds.LEVEL_04__STAGE_6],
+		LevelIds.LEVEL_06__STAGE_6 : [LevelIds.LEVEL_05__STAGE_6],
+		LevelIds.LEVEL_07__STAGE_6 : [LevelIds.LEVEL_06__STAGE_6],
 		
 		LevelIds.LEVEL_04__STAGE_6__HARD : [LevelIds.LEVEL_04__STAGE_6],
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : [LevelIds.LEVEL_04__STAGE_6__HARD],
@@ -1918,5 +1984,5 @@ func _set_details__transitions_to_usual_circle_types(arg_details : LevelDetails)
 	arg_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 
 
-
+#todoimp make stage6+ levels hidden even after 1-5, but not after 5-2
 

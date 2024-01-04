@@ -119,6 +119,7 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 11 )]
 position = Vector2( -410, -1987 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 39.5, -109 )
@@ -179,6 +180,8 @@ launch_ball_type = 1
 position = Vector2( 25, -1979 )
 mass = 140.0
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 starting_activation_mode_id = 1
 
 [node name="BaseEnemy2" parent="ObjectContainer" index="6" instance=ExtResource( 9 )]
@@ -186,6 +189,8 @@ position = Vector2( 26, -2123 )
 mass = 140.0
 enemy_type_template__for_export = 1
 aim_trajectory_type = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 starting_activation_mode_id = 1
 
 [node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="7" instance=ExtResource( 4 )]
@@ -215,7 +220,7 @@ position = Vector2( 324, -1072 )
 rotation = 4.71239
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 38, 80 )
+position = Vector2( 656, -2491 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }

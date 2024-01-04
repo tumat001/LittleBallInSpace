@@ -43,6 +43,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	else:
 		_is_first_time__do_cutscenes = true
 
+
 #todoimp think how to make enemies target seeking at the right time (checkpoints?)
 
 func _on_after_game_start_init():
@@ -74,12 +75,16 @@ func _on_after_game_start_init():
 
 
 func _on_transition_finished():
-	_start_dialog__01()
-	
+	pass
+	#_start_dialog__01()
 	#game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	
 
 
+
+
+func _on_PDAR_DialogTrigger_player_entered_in_area():
+	_start_dialog__01()
 
 
 func _start_dialog__01():
@@ -96,7 +101,5 @@ func _start_dialog__01():
 
 
 ####
-
-
 
 

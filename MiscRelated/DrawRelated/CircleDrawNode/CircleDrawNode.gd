@@ -5,8 +5,13 @@ signal all_draw_params_finished()
 
 class DrawParams:
 	
+	signal current_radius_changed(arg_val)
+	
+	
+	var can_emit_signal__current_radius_changed : bool = false
+	
 	var center_pos : Vector2
-	var current_radius : float
+	var current_radius : float setget set_current_radius
 	var radius_per_sec : float
 	var fill_color : Color
 	
@@ -27,6 +32,12 @@ class DrawParams:
 	
 	#
 	
+	func set_current_radius(arg_val):
+		current_radius = arg_val
+		
+		if can_emit_signal__current_radius_changed:
+			emit_signal("current_radius_changed")
+	
 	func configure_properties():
 		if (lifetime_of_draw - lifetime_to_start_transparency) != 0:
 			_outline_transparency_per_sec = outline_color.a / (lifetime_of_draw - lifetime_to_start_transparency)
@@ -37,6 +48,26 @@ class DrawParams:
 		
 		_current_lifetime = 0
 	
+
+
+class UpdateTickingDrawParams:
+	extends DrawParams
+	
+	signal update_tick()
+	
+	
+	
+	var tick_amount_per_reset : int = 2  #default
+	var ticks_left_before_update_request : int = 0
+	
+	func set_current_radius(arg_val):
+		.set_current_radius(arg_val)
+		
+		ticks_left_before_update_request -= 1
+		if ticks_left_before_update_request <= 0:
+			ticks_left_before_update_request = tick_amount_per_reset
+			emit_signal("update_tick")
+		
 	
 
 

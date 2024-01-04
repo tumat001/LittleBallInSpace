@@ -155,9 +155,14 @@ const REWIND_DATA__current_attack_cooldown = "_current_attack_cooldown"
 enum StartingAttackCooldownModeId {
 	NO_COOLDOWN = 0,
 	WITH_DELAY_COOLDOWN = 1,
+	RANDOM_COOLDOWN_FROM_EXPORT = 2,
 }
 export(StartingAttackCooldownModeId) var starting_attack_cooldown_mode_id : int = StartingAttackCooldownModeId.WITH_DELAY_COOLDOWN
 
+export(float) var starting_random_cooldown_export__min : float
+export(float) var starting_random_cooldown_export__max : float
+
+#
 
 enum StartingActivationModeId {
 	NOT_TARGET_SEEKING = 0,
@@ -284,6 +289,8 @@ func _ready():
 	
 	mass = PHY_OBJ_MASS
 	call_deferred("_deferred_ready")
+	
+	add_to_group(SingletonsAndConsts.GROUP_NAME__BASE_ENEMY)
 
 #
 
@@ -365,6 +372,8 @@ func _ready__config_self__any():
 	
 	if starting_attack_cooldown_mode_id == StartingAttackCooldownModeId.WITH_DELAY_COOLDOWN:
 		_set_current_attack_cooldown(ATTACK_COOLDOWN__AS_STARTING_DELAY)
+	elif starting_attack_cooldown_mode_id == StartingAttackCooldownModeId.RANDOM_COOLDOWN_FROM_EXPORT:
+		_set_current_attack_cooldown__using_random(starting_random_cooldown_export__min, starting_random_cooldown_export__max)
 	
 	if starting_activation_mode_id == StartingActivationModeId.TARGET_SEEKING:
 		call_deferred("activate_target_detection")
@@ -693,6 +702,12 @@ func _set_current_attack_cooldown(arg_val):
 	#_rewind__current_attack_cooldown__has_changes = true
 	
 
+func _set_current_attack_cooldown__using_random(arg_min, arg_max):
+	var attk_cooldown = SingletonsAndConsts.non_essential_rng.randf_range(arg_min, arg_max)
+	_set_current_attack_cooldown(attk_cooldown)
+
+
+
 # LASER SPECIFIC
 
 #func _on_target_module_pinged_target_successfully__for_laser(arg_actual_distance, arg_threshold_distance, arg_refresh_rate, arg_pos_target, arg_angle, arg_target):
@@ -775,17 +790,24 @@ func _calc_damage_of_player(arg_player):
 func take_health_damage(arg_dmg, arg_damage_contact_pos : Vector2 = global_position):
 	set_current_health(current_health - arg_dmg)
 	
-	_play_damage_audio()
+	play_damage_audio__based_on_states()
 
-
-func _play_damage_audio():
-	var audio_id_to_play : int
+func play_damage_audio__based_on_states():
+	#var audio_id_to_play : int
 	if _is_robot_dead:
-		audio_id_to_play = get_on_death__audio_id_to_play()
+		play_damage_audio__on_death()
 	else:
-		audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_Damage_01
+		play_damage_audio__on_non_death()
 	
-	AudioManager.helper__play_sound_effect__2d(audio_id_to_play, global_position, 1.0, null)
+
+func play_damage_audio__on_death():
+	var id = get_on_death__audio_id_to_play()
+	AudioManager.helper__play_sound_effect__2d(id, global_position, 1.0, null)
+
+func play_damage_audio__on_non_death():
+	var id = StoreOfAudio.AudioIds.SFX_Enemy_Damage_01
+	AudioManager.helper__play_sound_effect__2d(id, global_position, 1.0, null)
+
 
 
 func set_current_health(arg_val):

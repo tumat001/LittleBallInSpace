@@ -125,3 +125,29 @@ margin_top = 138.0
 margin_right = 460.0
 margin_bottom = 184.0
 is_path = true
+
+[node name="GUI_LevelLayoutEle_Tile_06" parent="LayoutElesContainer" index="18" instance=ExtResource( 3 )]
+margin_left = 460.0
+margin_top = 138.0
+margin_right = 506.0
+margin_bottom = 184.0
+
+[node name="GUI_LevelLayoutEle_Path_11" parent="LayoutElesContainer" index="19" instance=ExtResource( 3 )]
+margin_left = 506.0
+margin_top = 138.0
+margin_right = 552.0
+margin_bottom = 184.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Path_12" parent="LayoutElesContainer" index="20" instance=ExtResource( 3 )]
+margin_left = 552.0
+margin_top = 138.0
+margin_right = 598.0
+margin_bottom = 184.0
+is_path = true
+
+[node name="GUI_LevelLayoutEle_Tile_07" parent="LayoutElesContainer" index="21" instance=ExtResource( 3 )]
+margin_left = 552.0
+margin_top = 184.0
+margin_right = 598.0
+margin_bottom = 230.0

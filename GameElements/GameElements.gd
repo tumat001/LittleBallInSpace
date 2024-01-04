@@ -21,6 +21,8 @@ const DamageParticle_Fragment_01 = preload("res://MiscRelated/CommonParticlesRel
 const DamageParticle_Fragment_02 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
 const DamageParticle_Fragment_03 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
 
+const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
+
 #
 
 signal before_game_start_init()
@@ -84,6 +86,9 @@ var damage_particle_texture_possibility_arr : Array
 var _current_player_body_texture_id : int
 var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments : Array
 
+
+var initialized_enemy_killing_shockwave_relateds : bool
+var _enemy_killing_shockwave_draw_node : Node2D
 
 #
 
@@ -493,4 +498,76 @@ func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center
 func generate_random_object_lifespan__tile_fragment__from_base_tile():
 	return SingletonsAndConsts.non_essential_rng.randi_range(object_lifespan__tile_fragment__from_base_tile__min, object_lifespan__tile_fragment__from_base_tile__max)
 
+
+##########
+
+func initialize_all_enemy_killing_shockwave_relateds():
+	if !initialized_enemy_killing_shockwave_relateds:
+		initialized_enemy_killing_shockwave_relateds = true
+		
+		_enemy_killing_shockwave_draw_node = Node2D.new()
+		_enemy_killing_shockwave_draw_node.set_script(CircleDrawNode)
+		add_child(_enemy_killing_shockwave_draw_node)
+	
+	
+
+
+func play_enemy_killing_shockwave_ring__custom_params(arg_origin, arg_initial_radius : float, arg_final_radius : float, arg_duration_to_full_radius : float, arg_color : Color):
+	var arg_additional_lifetime = 0.2
+	
+	var draw_param = _enemy_killing_shockwave_draw_node.UpdateTickingDrawParams.new()
+	
+	draw_param.center_pos = arg_origin
+	draw_param.current_radius = arg_initial_radius
+	draw_param.max_radius = 9999
+	draw_param.radius_per_sec = 0
+	draw_param.fill_color = Color(0, 0, 0, 0)
+	
+	draw_param.outline_color = arg_color#Color(95/255.0, 131/255.0, 236/255.0, arg_mod_a)
+	draw_param.outline_width = 4
+	
+	draw_param.lifetime_of_draw = arg_duration_to_full_radius + arg_additional_lifetime
+	draw_param.has_lifetime = true
+	
+	draw_param.lifetime_to_start_transparency = arg_duration_to_full_radius
+	
+	#note: remove this if copypasting to others
+	draw_param.can_emit_signal__current_radius_changed = true
+	draw_param.tick_amount_per_reset = 6
+	
+	_enemy_killing_shockwave_draw_node.add_draw_param(draw_param)
+	
+	#
+	
+	#draw_param.connect("current_radius_changed", self, "_on_enemy_killing_shockwave_draw_param__curr_radius_changed", [draw_param])
+	draw_param.connect("update_tick", self, "_on_enemy_killing_shockwave_draw_param__update_tick", [draw_param])
+	
+	var tweener = create_tween()
+	tweener.tween_property(draw_param, "current_radius", arg_final_radius, arg_duration_to_full_radius).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tweener.tween_property(draw_param, "current_radius", arg_final_radius + (arg_final_radius / 3.0), arg_additional_lifetime)
+	tweener.tween_callback(self, "_on_enemy_killing_draw_param_finished_draw", [draw_param])
+
+
+#func _on_enemy_killing_shockwave_draw_param__curr_radius_changed(arg_radius, arg_draw_param):
+#	pass
+#
+
+func _on_enemy_killing_shockwave_draw_param__update_tick(arg_draw_param):
+	_destory_enemies_based_on_draw_param(arg_draw_param)
+
+func _on_enemy_killing_draw_param_finished_draw(arg_draw_param):
+	_destory_enemies_based_on_draw_param(arg_draw_param)
+	
+
+
+func _destory_enemies_based_on_draw_param(arg_draw_param):
+	var radius = arg_draw_param.current_radius
+	var center_pos = arg_draw_param.center_pos
+	
+	for enemy in get_tree().get_nodes_in_group(SingletonsAndConsts.GROUP_NAME__BASE_ENEMY):
+		var dist_from_center = enemy.global_position.distance_to(center_pos)
+		if dist_from_center < radius:
+			
+			enemy.queue_free()
+			enemy.play_damage_audio__on_death()
 

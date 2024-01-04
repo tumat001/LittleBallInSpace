@@ -164,7 +164,7 @@ func _assign_poses_of_mouse_distance_detection__based_on_mode():
 #	update()
 #
 #
-##temptodo
+
 #func _draw():
 #	if true: #allow_debug_draw:
 #		print("rectpos center: %s" % [rect_global_position + (rect_size / 2)])
