@@ -14,7 +14,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 64, 16.5 )
+extents = Vector2( 23.5, 62.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 48, 48 )
@@ -100,14 +100,16 @@ glass_breakable_type = 2
 tile_data = PoolIntArray( -3669909, 3, 65538, -3669908, 3, 65539, -3669907, 3, 65539, -3669906, 3, 65540, -2817914, 2, 2, -2817913, 2, 3, -2817912, 2, 3, -2817911, 2, 3, -2817910, 2, 3, -2817909, 2, 3, -2817908, 2, 3, -2817907, 2, 3, -2817906, 2, 3, -2817905, 2, 4, -2752378, 2, 131074, -2752377, 2, 131075, -2752376, 2, 131075, -2752375, 2, 131075, -2752374, 2, 131075, -2752373, 2, 131075, -2752372, 2, 131075, -2752371, 2, 131075, -2752370, 2, 131075, -2752369, 2, 131076 )
 
 [node name="PCAR_01" parent="AreaRegionContainer" index="0" instance=ExtResource( 6 )]
-position = Vector2( 1136, -812 )
+position = Vector2( 2492, -38 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_01" index="0"]
-position = Vector2( 57, 12.5 )
+position = Vector2( 76, 25 )
 shape = SubResource( 1 )
 
 [node name="PCAR_02" parent="AreaRegionContainer" index="1" instance=ExtResource( 6 )]
 position = Vector2( 2503, -636 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_02" index="0"]
 position = Vector2( 41, -20 )
@@ -115,6 +117,7 @@ shape = SubResource( 2 )
 
 [node name="PCAR_03" parent="AreaRegionContainer" index="2" instance=ExtResource( 6 )]
 position = Vector2( 4364, -810 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_03" index="0"]
 position = Vector2( 52, -12.5 )
@@ -122,6 +125,7 @@ shape = SubResource( 3 )
 
 [node name="PCAR_04" parent="AreaRegionContainer" index="3" instance=ExtResource( 6 )]
 position = Vector2( 4395, -1757 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_04" index="0"]
 position = Vector2( 53, -12.5 )
@@ -129,6 +133,7 @@ shape = SubResource( 4 )
 
 [node name="PCAR_05" parent="AreaRegionContainer" index="4" instance=ExtResource( 6 )]
 position = Vector2( 4415, -2313 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_05" index="0"]
 position = Vector2( 49.5, -13 )
@@ -136,6 +141,7 @@ shape = SubResource( 5 )
 
 [node name="PCAR_06" parent="AreaRegionContainer" index="5" instance=ExtResource( 6 )]
 position = Vector2( 5273, -1641 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_06" index="0"]
 position = Vector2( 45, -71 )
@@ -143,6 +149,7 @@ shape = SubResource( 6 )
 
 [node name="PCAR_07" parent="AreaRegionContainer" index="6" instance=ExtResource( 6 )]
 position = Vector2( 7458, -1865 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_07" index="0"]
 position = Vector2( 94.25, -87 )
@@ -178,14 +185,20 @@ shape = SubResource( 12 )
 [node name="BaseEnemy10" parent="ObjectContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 1320, 103 )
 enemy_type_template__for_export = 2
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 2458, 64 )
 enemy_type_template__for_export = 2
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy2" parent="ObjectContainer" index="2" instance=ExtResource( 8 )]
 position = Vector2( 3020, -800 )
 enemy_type_template__for_export = 3
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( 933, 145 )
@@ -194,30 +207,44 @@ launch_ball_type = 3
 [node name="BaseEnemy3" parent="ObjectContainer" index="4" instance=ExtResource( 8 )]
 position = Vector2( 4893, -1405 )
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy4" parent="ObjectContainer" index="5" instance=ExtResource( 8 )]
 position = Vector2( 4169, -2213 )
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy5" parent="ObjectContainer" index="6" instance=ExtResource( 8 )]
 position = Vector2( 3491, -1477 )
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy6" parent="ObjectContainer" index="7" instance=ExtResource( 8 )]
 position = Vector2( 5470, -2017 )
 enemy_type_template__for_export = 2
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy8" parent="ObjectContainer" index="8" instance=ExtResource( 8 )]
 position = Vector2( 5691, -1920 )
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy7" parent="ObjectContainer" index="9" instance=ExtResource( 8 )]
 position = Vector2( 4682, -2553 )
 enemy_type_template__for_export = 3
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="BaseEnemy9" parent="ObjectContainer" index="10" instance=ExtResource( 8 )]
 position = Vector2( 6601, -1501 )
 enemy_type_template__for_export = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 
 [node name="Pickupable_Wrench" parent="ObjectContainer" index="11" instance=ExtResource( 9 )]
 position = Vector2( 3608, -1096 )

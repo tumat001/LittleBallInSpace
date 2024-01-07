@@ -2,6 +2,8 @@ extends MarginContainer
 
 
 
+var _credits_page
+
 #############################################
 # TREE ITEM Specific methods/vars
 
@@ -25,3 +27,17 @@ func on_control_fully_invisible():
 ############
 # END OF TREE ITEM Specific methods/vars
 ###########
+
+
+func _on_Button_Credits_button_pressed():
+	_init_credits_page()
+	control_tree.show_control__and_add_if_unadded(_credits_page)
+
+func _init_credits_page():
+	if !is_instance_valid(_credits_page):
+		_credits_page = preload("res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_CreditsPage/MasterMenu_CreditsPage.tscn").instance()
+		control_tree.add_control__but_dont_show(_credits_page)
+		
+
+
+

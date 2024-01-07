@@ -29,8 +29,8 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	#arg_player.global_position = fast_respawn_position_2d.global_position
 	#return
 	
-	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
-		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
+	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_03__STAGE_6):
+		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_03__STAGE_6)
 		
 		if is_fast_respawn:
 			arg_player.global_position = fast_respawn_position_2d.global_position
@@ -42,7 +42,8 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 		
 	else:
 		_is_first_time__do_cutscenes = true
-
+	
+	SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_03__STAGE_6, true)
 
 #todoimp think how to make enemies target seeking at the right time (checkpoints?)
 

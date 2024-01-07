@@ -202,6 +202,20 @@ var _objects_to_add_mask_layer_collision_after_exit : Array
 var on_death__audio_id_to_play : int = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
 var on_death__audio_id_to_play__override : int = -1
 
+#
+
+#const REWIND_DATA__IS_PLAYER_IN_CONTACT = "is_player_in_contact"
+#var is_player_in_contact : bool
+
+const REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER = "last_non_tile_body_in_contact_is_player"
+var last_non_tile_body_in_contact_is_player : bool
+
+const REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT = "cam_rotation_on_player_contact"
+var cam_rotation_on_player_contact : float
+
+
+#const REWIND_DATA__IS_ON_GROUND = "is_on_ground"
+#var is_on_ground : bool
 
 ####### FRAGMENTS RELATED
 
@@ -681,7 +695,19 @@ func _physics_process(delta):
 	
 	if _current_attack_cooldown > 0 and !_is_robot_dead and attack_module.can_draw_laser:
 		_set_current_attack_cooldown(_current_attack_cooldown - delta)
-		
+	
+
+#
+
+func _integrate_forces(state):
+	var old__use_integ_forces_new_vals = _use_integ_forces_new_vals
+	._integrate_forces(state)
+	
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding and !old__use_integ_forces_new_vals:
+		_adjust_curr_velocities_based_on_conditions()
+
+
+#
 
 func _set_current_attack_cooldown(arg_val):
 	_current_attack_cooldown = arg_val
@@ -728,9 +754,21 @@ func _on_attack_module_laser__hit_player(arg_contact_pos):
 
 func _on_CollForProjOrPlayer_body_entered(body):
 	if !has_object_to_not_collide_with(body):
+		var is_considered_non_collision : bool = false
 		if body.get("is_class_type_obj_ball"):
 			if body.is_ball_from_enemy:
 				body.queue_free()
+				is_considered_non_collision = true
+		
+		
+		if body.get("is_player"):
+			if body.is_on_ground(): #and is_on_ground:
+				last_non_tile_body_in_contact_is_player = true
+				cam_rotation_on_player_contact = CameraManager.current_cam_rotation
+			
+		else:
+			if !is_considered_non_collision:
+				last_non_tile_body_in_contact_is_player = false
 		
 		_do_calc_damage_if_appropriate(body)
 	
@@ -1020,6 +1058,37 @@ func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 		
 
 
+#
+
+func _adjust_curr_velocities_based_on_conditions():
+	if last_non_tile_body_in_contact_is_player:
+		var player = SingletonsAndConsts.current_game_elements.get_current_player()
+		
+		_snap_velocities_based_on_last_contact_cam_manager_rotation()
+
+
+func _snap_velocities_based_on_last_contact_cam_manager_rotation():
+	var cam_rotation = cam_rotation_on_player_contact
+	if is_equal_approx(cam_rotation, 0) or is_equal_approx(abs(cam_rotation), PI):
+		linear_velocity.y = round(linear_velocity.y)
+		global_position.y = round(global_position.y)
+		
+	elif is_equal_approx(abs(cam_rotation), 3*PI/2) or is_equal_approx(abs(cam_rotation), PI/2):
+		linear_velocity.x = round(linear_velocity.x)
+		global_position.x = round(global_position.x)
+	
+
+#
+
+#func _on_CollForTileset_area_entered(area):
+#	pass # Replace with function body.
+#
+#
+#func _on_CollForTileset_area_exited(area):
+#	pass # Replace with function body.
+
+
+
 ###################### 
 # REWIND RELATED
 #####################
@@ -1059,6 +1128,9 @@ func get_rewind_save_state():
 	
 	save_state[REWIND_DATA__current_health] = current_health
 	
+	save_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER] = last_non_tile_body_in_contact_is_player
+	save_state[REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT] = cam_rotation_on_player_contact
+	
 	return save_state
 
 func load_into_rewind_save_state(arg_state : Dictionary):
@@ -1079,6 +1151,10 @@ func load_into_rewind_save_state(arg_state : Dictionary):
 		target_detection_module.load_into_rewind_save_state(arg_state[REWIND_DATA__TARGET_DETECTION_MODULE])
 	
 	current_health = arg_state[REWIND_DATA__current_health]
+	
+	last_non_tile_body_in_contact_is_player = arg_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER]
+	cam_rotation_on_player_contact = arg_state[REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT]
+	
 
 
 func destroy_from_rewind_save_state():

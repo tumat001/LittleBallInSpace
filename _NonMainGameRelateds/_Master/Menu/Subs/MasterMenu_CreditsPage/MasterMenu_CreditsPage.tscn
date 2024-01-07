@@ -1,0 +1,237 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_CBM.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_CreditsPage/MasterMenu_CreditsPage.gd" type="Script" id=4]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_HeaderBackground.png" type="Texture" id=5]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_Border_Left.png" type="Texture" id=6]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_CornerPiece_TopLeft.png" type="Texture" id=7]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_BackgroundFill.png" type="Texture" id=8]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_Border_Top.png" type="Texture" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 18
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 15
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 22
+outline_size = 2
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[node name="MasterMenu_CreditsPage" type="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 2 )]
+margin_left = 330.0
+margin_top = 90.0
+margin_right = 630.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 300, 360 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
+corner_piece_texture__top_left = ExtResource( 7 )
+border_piece_texture__top = ExtResource( 9 )
+border_piece_texture__left = ExtResource( 6 )
+mid_fill_texture = ExtResource( 8 )
+
+[node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
+margin_right = 300.0
+margin_bottom = 360.0
+
+[node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
+margin_right = 10.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
+margin_left = 10.0
+margin_right = 290.0
+margin_bottom = 10.0
+texture = ExtResource( 9 )
+
+[node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
+margin_left = 290.0
+margin_right = 300.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Left" parent="DialogTemplate_Body_CBM/GridContainer" index="3"]
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = 350.0
+texture = ExtResource( 6 )
+
+[node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 290.0
+margin_bottom = 350.0
+
+[node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
+margin_right = 280.0
+margin_bottom = 340.0
+texture = ExtResource( 8 )
+
+[node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
+margin_right = 280.0
+margin_bottom = 340.0
+
+[node name="Control" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
+margin_right = 280.0
+margin_bottom = 340.0
+
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.5
+margin_top = -141.5
+margin_right = 71.5
+margin_bottom = -122.5
+custom_fonts/font = SubResource( 1 )
+text = "Music & Audio"
+align = 1
+
+[node name="Label_MusicDesc" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = -107.0
+margin_right = 148.0
+margin_bottom = -72.0
+custom_fonts/font = SubResource( 2 )
+text = "All music is sourced 
+from Pixabay"
+align = 1
+
+[node name="Music_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -50.0
+margin_right = 150.0
+margin_bottom = -10.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control/Music_VBox"]
+margin_right = 300.0
+margin_bottom = 81.0
+custom_fonts/font = ExtResource( 1 )
+text = "reflected-light-147979 by SergePavkinMusic
+Space Trip by Playsound
+light-and-darkness-110414 by AmarantaMusic
+Piano Moment by Daddy_s_Music
+Space by Music_Unlimited
+Space Chillout by penguinmusic
+One Last Time by ADMfreenocopyrightmusic"
+align = 1
+
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.5
+margin_top = 59.5
+margin_right = 148.5
+margin_bottom = 113.5
+custom_fonts/font = SubResource( 2 )
+text = "All audios and musics
+are sourced
+from Pixabay and Freesound.org"
+align = 1
+
+[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = 127.0
+margin_right = 151.0
+margin_bottom = 172.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/Control/Sfx_VBox"]
+margin_right = 300.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 1 )
+text = "Small Laser, by Sustainededed
+Charge Up Shot, by spoonsandlessspoons
+
+(non exhaustive)"
+align = 1
+
+[node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
+margin_left = 290.0
+margin_top = 10.0
+margin_right = 300.0
+margin_bottom = 350.0
+texture = ExtResource( 6 )
+
+[node name="CornerP_BotLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="6"]
+margin_top = 350.0
+margin_right = 10.0
+margin_bottom = 360.0
+texture = ExtResource( 7 )
+
+[node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
+margin_left = 10.0
+margin_top = 350.0
+margin_right = 290.0
+margin_bottom = 360.0
+texture = ExtResource( 9 )
+
+[node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
+margin_left = 290.0
+margin_top = 350.0
+margin_right = 300.0
+margin_bottom = 360.0
+texture = ExtResource( 7 )
+
+[node name="AboutHeader" type="Control" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AboutHeader"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -66.0
+margin_top = 70.0
+margin_right = 66.0
+margin_bottom = 118.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="AboutHeader/MarginContainer"]
+margin_right = 132.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="AboutHeader/MarginContainer"]
+margin_top = 12.0
+margin_right = 132.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 3 )
+text = "Credits"
+align = 1
+valign = 1
+
+[editable path="DialogTemplate_Body_CBM"]

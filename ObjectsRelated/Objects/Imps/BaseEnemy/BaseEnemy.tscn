@@ -29,6 +29,8 @@ aim_trajectory_type = 0
 aim_occulder_type = 0
 target_detection_mode_id = 0
 starting_attack_cooldown_mode_id = 1
+starting_random_cooldown_export__min = 0.0
+starting_random_cooldown_export__max = 0.0
 starting_activation_mode_id = 0
 
 [node name="AnimatedSprite" parent="." index="0"]

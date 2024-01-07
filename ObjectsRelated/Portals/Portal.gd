@@ -360,7 +360,7 @@ func _physics_process(delta):
 				var curr_direction = body.linear_velocity.normalized()
 				var entry_direction = _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[body]
 				
-				if entry_direction == Vector2(0, 0):
+				if entry_direction == Vector2.ZERO:
 					entry_direction = curr_direction
 				
 				if _is_directions_significantly_different(curr_direction, entry_direction):
@@ -379,6 +379,23 @@ func _is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : V
 		else:
 			return false
 
+#	if (is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)):
+#		if !(is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
+#			return true
+#
+#		return false
+#
+#	elif (is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
+#		if !(is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)):
+#			return true
+#
+#		return false
+#
+#	else:
+#		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > PI/2:
+#			return true
+#		else:
+#			return false
 
 static func angle_to_angle(from, to):
 	return fposmod(to-from + PI, PI*2) - PI
@@ -419,6 +436,8 @@ func _teleport_node_to_other_linked_portal(body):
 	if body.get("is_player"):
 		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
 		body.ignore_effect_based_on_pos_change__next_frame_count = 2
+		
+		body.clear_points_of_current_speed_trail()
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		#CameraManager.disable_camera_smoothing()
 	

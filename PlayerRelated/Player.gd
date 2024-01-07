@@ -1549,18 +1549,6 @@ func is_on_ground():
 
 func apply_inside_induced_force__with_counterforce_speed_if_applicable(arg_vector : Vector2):
 	apply_inside_induced_force(arg_vector)
-	
-#	if _is_directions_significantly_different(linear_velocity, arg_vector):
-#		var new_vector = _increase_multiply_counterforce_vector(arg_vector)
-#		apply_inside_induced_force(new_vector)
-#
-#		#_play_particle_effect__counter_force_from_any_source(arg_vector)
-#
-#		print("applid new vec counter: %s, orig: %s" % [new_vector, arg_vector])
-#
-#	else:
-#		apply_inside_induced_force(arg_vector)
-#
 
 # also used in Portal class. 
 # DO NOT COPY PASTE as values are different
@@ -2440,6 +2428,11 @@ func _play_or_kill_speed_trail_based_on_curr_state(delta):
 			_current_speed_trail.max_trail_length = 0
 			_current_speed_trail.can_add_points = false
 		#_attempt_destroy_current_speed_trail()
+
+func clear_points_of_current_speed_trail():
+	if is_instance_valid(_current_speed_trail):
+		_current_speed_trail.clear_points()
+
 
 func _attempt_destroy_current_speed_trail():
 	if is_instance_valid(_current_speed_trail):

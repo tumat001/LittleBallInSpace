@@ -6,7 +6,7 @@ func _init():
 	anim_type_to_use_on_vic = StoreOfVicDefAnim.AnimTypes.ACTION
 	anim_type_to_use_on_def = StoreOfVicDefAnim.AnimTypes.ACTION
 	
-	win_message_type = AbstractVicDefAnim.WinMessageType.CONGRATULATIONS
+	win_message_type = AbstractVicDefAnim.WinMessageType.VICTORY
 	lose_messege_type = AbstractVicDefAnim.LoseMessageType.DEFEAT
 	
 	

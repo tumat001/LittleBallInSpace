@@ -9,6 +9,7 @@ onready var level_04_hard__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_0
 onready var level_04_hard_v02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_04H_V02
 onready var level_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_05
 onready var level_06__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_06
+onready var level_07__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_07
 
 
 onready var layout_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To05

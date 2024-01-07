@@ -80,6 +80,7 @@ enum LevelIds {
 	
 	LEVEL_04__STAGE_6__HARD = 550
 	LEVEL_04__STAGE_6__HARD_V02 = 551
+	LEVEL_07__STAGE_6__HARD = 552
 	
 }
 # dont change this in runtime(useless). 
@@ -1467,6 +1468,37 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		
+	elif arg_id == LevelIds.LEVEL_07__STAGE_6__HARD:
+		level_details.level_full_name = [
+			["6-!7 Slider", []]
+		]
+		level_details.level_name = [
+			["", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!7"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_07__STAGE_6)
+		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+		
+		
 	
 #	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
 #		level_details.level_full_name = [
@@ -1622,6 +1654,8 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard.gd").new()
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD_V02:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard_V02.gd").new()
+	elif arg_id == LevelIds.LEVEL_07__STAGE_6__HARD:
+		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6__Hard.gd").new()
 	
 	
 
@@ -1706,6 +1740,7 @@ func _initialize_coin_details():
 		
 		LevelIds.LEVEL_04__STAGE_6__HARD : 1,
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : 1,
+		LevelIds.LEVEL_07__STAGE_6__HARD : 1,
 		
 	}
 	
@@ -1823,6 +1858,7 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		LevelIds.LEVEL_04__STAGE_6__HARD : [LevelIds.LEVEL_04__STAGE_6],
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : [LevelIds.LEVEL_04__STAGE_6__HARD],
+		LevelIds.LEVEL_07__STAGE_6__HARD : [LevelIds.LEVEL_06__STAGE_6],
 		
 	}
 

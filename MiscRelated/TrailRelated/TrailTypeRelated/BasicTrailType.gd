@@ -93,3 +93,6 @@ func enable_one_time__set_by_trail_compo():
 func disable_one_time():
 	_one_time_enable_per_use = false
 
+
+func clear_points():
+	.clear_points()
