@@ -705,3 +705,19 @@ func _on_game_result_decided__win__base():
 	pass
 	
 
+
+####
+
+func as_test__override__do_insta_win():
+	print("WorldSlice does not implement -- as_test__override__do_insta_win. %s" % [name])
+	assert(false)
+	
+
+func as_test__override__do_insta_win__template_capture_all_points():
+	for pca in get_all_win_type_player_capture_area_region_to_is_captured_map():
+		if !pca.is_area_captured():
+			pca.set_is_area_captured__external(true)
+	
+
+
+

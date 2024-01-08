@@ -104,11 +104,10 @@ func _on_end_of_anim():
 
 func end_game__as_win():
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
-	
 
 func end_game__as_lose():
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_lose()
-	
+
 
 ##
 

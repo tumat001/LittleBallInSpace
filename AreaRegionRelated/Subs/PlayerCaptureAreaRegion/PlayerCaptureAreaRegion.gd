@@ -103,6 +103,9 @@ func get_baseline_duration_for_capture() -> float:
 
 #
 
+func set_is_area_captured__external(arg_val):
+	_set_is_area_captured(arg_val)
+
 func _set_is_area_captured(arg_val):
 	var old_val = _is_area_captured
 	_is_area_captured = arg_val

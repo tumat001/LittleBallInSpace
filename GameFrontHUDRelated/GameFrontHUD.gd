@@ -187,6 +187,28 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 	func_source.call(func_name, func_params)
 	
 
+#
+
+#func template__start_focus_on_launch_ball_panel__with_glow_up(arg_delay_for_func_call, arg_func_source, arg_func_name, arg_func_params):
+#	var ending_metadata = [arg_delay_for_func_call, arg_func_source, arg_func_name, arg_func_params]
+#
+#	gfh_control_focuser.modulate.a = 0
+#	gfh_control_focuser.focus_draw_on_control(ability_panel.launch_ball_ability_panel, 15)
+#	gfh_control_focuser.start_mod_a_tween(1.0, 0.7, 0.4, self, "_on_ghf_mod_a_to_1_finished__focus_on_launch_ball_panel", ending_metadata)
+#
+#func _on_ghf_mod_a_to_1_finished__focus_on_launch_ball_panel(arg_ending_metadata):
+#	ability_panel.launch_ball_ability_panel.template__do_brief_glowup(0.6, self, "_on_launch_ball_panel__done_glowup__focus_on_launch_ball_panel", arg_ending_metadata)
+#
+#func _on_launch_ball_panel__done_glowup__focus_on_launch_ball_panel(arg_ending_metadata):
+#	gfh_control_focuser.start_mod_a_tween(0.0, 0.7, 0.4 + arg_ending_metadata[0], self, "_on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel", arg_ending_metadata)
+#
+#func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata):
+#	var func_source = arg_ending_metadata[1]
+#	var func_name = arg_ending_metadata[2]
+#	var func_params = arg_ending_metadata[3]
+#
+#	func_source.call(func_name, func_params)
+#
 
 ############
 

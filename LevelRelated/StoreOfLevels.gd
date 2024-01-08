@@ -9,6 +9,17 @@ signal hidden_levels_state_changed()
 
 #####
 
+
+const ALL_LEVEL_ID_NAMES__STAGE_X_FOR_BEFORE_POSTGAME = [
+	"STAGE_1",
+	"STAGE_2",
+	"STAGE_3",
+	"STAGE_4",
+	"STAGE_5",
+	"STAGE_SPECIAL_1",
+	
+]
+
 enum LevelIds {
 	TEST = -10,
 	
@@ -82,6 +93,10 @@ enum LevelIds {
 	LEVEL_04__STAGE_6__HARD_V02 = 551
 	LEVEL_07__STAGE_6__HARD = 552
 	
+	##
+	
+	LEVEL_01__STAGE_7 = 600
+	
 }
 # dont change this in runtime(useless). 
 # This determines which levels are not hidden at the very start, before any save states. i.e. not hidden by default
@@ -118,7 +133,8 @@ var _level_id_to_level_ids_required_for_unlock : Dictionary
 
 enum AllLevelsHiddenState {
 	FIRST_STAGE_ONLY = 0,
-	ALL_EXCEPT_FOR_TEST = 1,
+	BEFORE_POSTGAME_STAGE_05 = 1,
+	AFTER_POSTGAME_STAGE_05 = 2,
 }
 var current_level_hidden_state : int setget set_current_level_hidden_state, get_current_levels_hidden_state
 
@@ -144,6 +160,8 @@ func _initialize_levels_in_level_layout():
 		"STAGE_SPECIAL_1" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01,
 		
 		"STAGE_6" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06,
+		"STAGE_7" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07,
+		
 	}
 	
 	##
@@ -214,7 +232,8 @@ func _add_level_id_as_non_hidden__internal(arg_id, arg_emit_signal : bool):
 	if !_all_non_hidden_level_ids.has(arg_id):
 		_all_non_hidden_level_ids.append(arg_id)
 		
-		emit_signal("hidden_levels_state_changed")
+		if arg_emit_signal:
+			emit_signal("hidden_levels_state_changed")
 		
 		return true
 	
@@ -239,7 +258,27 @@ func get_all_level_ids__not_including_tests() -> Array:
 	
 	return bucket
 
+#
 
+func get_level_ids__before_postgame():
+	var bucket = []
+	
+	for level_id_key in LevelIds.keys():
+		var find_index__for_test = level_id_key.findn("TEST")
+		var find_index__for_before_postgame_name_str = -1
+		for name_str in ALL_LEVEL_ID_NAMES__STAGE_X_FOR_BEFORE_POSTGAME:
+			var find_index = level_id_key.findn(name_str)
+			if find_index != -1:
+				find_index__for_before_postgame_name_str = find_index
+		
+		
+		if find_index__for_test == -1 and find_index__for_before_postgame_name_str != -1:
+			
+			bucket.append(LevelIds[level_id_key])
+	
+	return bucket
+
+#
 
 
 func get_current_levels_hidden_state():
@@ -251,9 +290,11 @@ func set_current_level_hidden_state(arg_val):
 	if current_level_hidden_state == AllLevelsHiddenState.FIRST_STAGE_ONLY:
 		pass
 		
-	elif current_level_hidden_state == AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST:
-		_add_level_ids_as_non_hidden(get_all_level_ids__not_including_tests())
+	elif current_level_hidden_state == AllLevelsHiddenState.BEFORE_POSTGAME_STAGE_05:
+		_add_level_ids_as_non_hidden(get_level_ids__before_postgame())
 		
+	elif current_level_hidden_state == AllLevelsHiddenState.AFTER_POSTGAME_STAGE_05:
+		_add_level_ids_as_non_hidden(get_all_level_ids__not_including_tests())
 	
 	
 
@@ -1499,6 +1540,34 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
 		
+		
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_7:
+		level_details.level_full_name = [
+			["7-1 New Tool", []]
+		]
+		level_details.level_name = [
+			["New Tool", []]
+		]
+		level_details.level_desc = [
+			["Future content", []]
+		]
+		#todoimp continue this
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "01"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
 	
 #	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
 #		level_details.level_full_name = [
@@ -1649,14 +1718,16 @@ func generate_base_level_imp_new(arg_id):
 	elif arg_id == LevelIds.LEVEL_07__STAGE_6:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6.gd").new()
 		
-		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard.gd").new()
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD_V02:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard_V02.gd").new()
 	elif arg_id == LevelIds.LEVEL_07__STAGE_6__HARD:
 		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6__Hard.gd").new()
-	
+		
+		
+	elif arg_id == LevelIds.LEVEL_01__STAGE_7:
+		return load("res://LevelRelated/BaseLevelImps/Layout07/Level_01__L7.gd").new()
 	
 
 ###### COINS
@@ -1741,6 +1812,10 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_04__STAGE_6__HARD : 1,
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : 1,
 		LevelIds.LEVEL_07__STAGE_6__HARD : 1,
+		
+		##
+		
+		LevelIds.LEVEL_01__STAGE_7 : 1,
 		
 	}
 	
@@ -1860,6 +1935,11 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02 : [LevelIds.LEVEL_04__STAGE_6__HARD],
 		LevelIds.LEVEL_07__STAGE_6__HARD : [LevelIds.LEVEL_06__STAGE_6],
 		
+		##
+		
+		LevelIds.LEVEL_01__STAGE_7 : [LevelIds.LEVEL_07__STAGE_6, LevelIds.LEVEL_07__STAGE_6__HARD]
+		
+		
 	}
 
 func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_status):
@@ -1886,6 +1966,24 @@ func _attempt_unlock_levels_based_on_level_status_changed(arg_level_id, arg_stat
 ###########################
 #
 ###########################
+
+func unlock_stage_07__and_unhide_eles_to_layout_07():
+	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07):
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+		
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 23, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 24, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 25, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 26, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 27, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 28, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 29, false)
+		
+		
+		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.AFTER_POSTGAME_STAGE_05)
+
+
 
 func unlock_stage_special_01__and_unhide_eles_to_layout_special_01():
 	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01):
@@ -1995,7 +2093,7 @@ func unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 		GameSaveManager.last_hovered_over_level_layout_element_id = 0 # the first one
 		GameSaveManager.last_opened_level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02
 		
-		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.ALL_EXCEPT_FOR_TEST)
+		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.BEFORE_POSTGAME_STAGE_05)
 		
 		# do not do this yet, so that it does not show up in shortcuts
 		#GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
@@ -2018,7 +2116,4 @@ func _set_details__transitions_to_usual_circle_types(arg_details : LevelDetails)
 	arg_details.transition_id__entering_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK
 	arg_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK
-
-
-#todoimp make stage6+ levels hidden even after 1-5, but not after 5-2
 
