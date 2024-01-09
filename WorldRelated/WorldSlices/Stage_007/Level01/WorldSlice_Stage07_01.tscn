@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
@@ -11,6 +11,11 @@
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_GodRays.tres" type="Shader" id=9]
 [ext_resource path="res://MiscRelated/ShadersRelated/Shader_PickupableOutline_Rainbow.tres" type="Shader" id=10]
 [ext_resource path="res://MiscRelated/VisionTransitionSpriteCamFogRelated/Imps/VisionTransitionSpriteCamFogNode2D_Circular.gd" type="Script" id=11]
+[ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=12]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=13]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 1071, 272 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 10 )
@@ -96,6 +101,16 @@ modulate = Color( 0.109804, 1, 0.0352941, 1 )
 [node name="TileMap" parent="TileContainer/BTS_Red" index="0"]
 modulate = Color( 1, 0.141176, 0.141176, 1 )
 
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 12 )]
+position = Vector2( 170, -356 )
+mod_a_for_uncaptured = 1.0
+
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 13 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 777, 42 )
+shape = SubResource( 5 )
+
 [node name="CDSU_AnchorHook" parent="ObjectContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 1684, 60 )
 is_rewindable = false
@@ -147,4 +162,5 @@ circle_ratio__inside_of_inner_ring = 0.4
 [editable path="TileContainer/BTS_Blue"]
 [editable path="TileContainer/BTS_Green"]
 [editable path="TileContainer/BTS_Red"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]
 [editable path="ObjectContainer/CDSU_AnchorHook"]

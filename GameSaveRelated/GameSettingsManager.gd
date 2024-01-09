@@ -101,6 +101,7 @@ const KEY_PRESS_ACTION_BAN_FOR_GAME_CONTROLS = [
 const MISC_CONTROLS_TO_NAME_MAP = {
 	"toggle_hide_hud" : "Toggle Hide/Show HUD",
 	"printscreen" : "Screen Shot",
+	"toggle_focus_mode" : "Toggle Focus Mode"
 }
 
 #

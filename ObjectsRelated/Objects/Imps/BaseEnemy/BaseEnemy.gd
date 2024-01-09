@@ -207,15 +207,15 @@ var on_death__audio_id_to_play__override : int = -1
 #const REWIND_DATA__IS_PLAYER_IN_CONTACT = "is_player_in_contact"
 #var is_player_in_contact : bool
 
-const REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER = "last_non_tile_body_in_contact_is_player"
-var last_non_tile_body_in_contact_is_player : bool
+const REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER = "last_non_tile_body_in_contact_is_player_on_ground"
+var last_non_tile_body_in_contact_is_player_on_ground : bool
 
 const REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT = "cam_rotation_on_player_contact"
 var cam_rotation_on_player_contact : float
 
 
-#const REWIND_DATA__IS_ON_GROUND = "is_on_ground"
-#var is_on_ground : bool
+const REWIND_DATA__IS_ON_GROUND = "is_on_ground"
+var is_on_ground : bool
 
 ####### FRAGMENTS RELATED
 
@@ -246,6 +246,7 @@ onready var weapon_sprite_container = $WeaponSpriteContainer
 onready var robot_face = $RobotFace
 
 onready var area_for_proj_or_player__coll_shape = $CollForProjOrPlayer/CollisionShape2D
+onready var area_for_tileset__coll_shape = $CollForTileset/CollisionShape2D
 
 ##
 
@@ -300,6 +301,7 @@ func _ready():
 	_config_self_based_on_enemy_type_template()
 	
 	add_monitor_to_collision_shape_for_rewind(area_for_proj_or_player__coll_shape)
+	add_monitor_to_collision_shape_for_rewind(area_for_tileset__coll_shape)
 	
 	mass = PHY_OBJ_MASS
 	call_deferred("_deferred_ready")
@@ -762,13 +764,15 @@ func _on_CollForProjOrPlayer_body_entered(body):
 		
 		
 		if body.get("is_player"):
-			if body.is_on_ground(): #and is_on_ground:
-				last_non_tile_body_in_contact_is_player = true
+			if body.is_on_ground() and is_on_ground:
+				last_non_tile_body_in_contact_is_player_on_ground = true
 				cam_rotation_on_player_contact = CameraManager.current_cam_rotation
+			else:
+				last_non_tile_body_in_contact_is_player_on_ground = false
 			
 		else:
 			if !is_considered_non_collision:
-				last_non_tile_body_in_contact_is_player = false
+				last_non_tile_body_in_contact_is_player_on_ground = false
 		
 		_do_calc_damage_if_appropriate(body)
 	
@@ -1061,7 +1065,7 @@ func remove_objects_to_add_mask_layer_collision_after_exit(arg_obj):
 #
 
 func _adjust_curr_velocities_based_on_conditions():
-	if last_non_tile_body_in_contact_is_player:
+	if last_non_tile_body_in_contact_is_player_on_ground:
 		var player = SingletonsAndConsts.current_game_elements.get_current_player()
 		
 		_snap_velocities_based_on_last_contact_cam_manager_rotation()
@@ -1070,24 +1074,32 @@ func _adjust_curr_velocities_based_on_conditions():
 func _snap_velocities_based_on_last_contact_cam_manager_rotation():
 	var cam_rotation = cam_rotation_on_player_contact
 	if is_equal_approx(cam_rotation, 0) or is_equal_approx(abs(cam_rotation), PI):
-		linear_velocity.y = round(linear_velocity.y)
-		global_position.y = round(global_position.y)
+		linear_velocity.y = _round_with_larger_margins(linear_velocity.y)
+		global_position.y = _round_with_larger_margins(global_position.y)
 		
 	elif is_equal_approx(abs(cam_rotation), 3*PI/2) or is_equal_approx(abs(cam_rotation), PI/2):
-		linear_velocity.x = round(linear_velocity.x)
-		global_position.x = round(global_position.x)
+		linear_velocity.x = _round_with_larger_margins(linear_velocity.x)
+		global_position.x = _round_with_larger_margins(global_position.x)
 	
 
+#preserve sign??/direction of rounding
+func _round_with_larger_margins(arg_val):
+	var rounded_val = round(arg_val)
+	if rounded_val > arg_val:
+		return (rounded_val / 3) * 3
+	elif rounded_val < arg_val:
+		return (rounded_val * 3) / 3
+	else:
+		return rounded_val
+
 #
 
-#func _on_CollForTileset_area_entered(area):
-#	pass # Replace with function body.
-#
-#
-#func _on_CollForTileset_area_exited(area):
-#	pass # Replace with function body.
 
+func _on_CollForTileset_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	is_on_ground = true
 
+func _on_CollForTileset_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+	is_on_ground = false
 
 ###################### 
 # REWIND RELATED
@@ -1128,10 +1140,13 @@ func get_rewind_save_state():
 	
 	save_state[REWIND_DATA__current_health] = current_health
 	
-	save_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER] = last_non_tile_body_in_contact_is_player
+	save_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER] = last_non_tile_body_in_contact_is_player_on_ground
 	save_state[REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT] = cam_rotation_on_player_contact
 	
+	save_state[REWIND_DATA__IS_ON_GROUND] = is_on_ground
+	
 	return save_state
+
 
 func load_into_rewind_save_state(arg_state : Dictionary):
 	.load_into_rewind_save_state(arg_state)
@@ -1152,9 +1167,10 @@ func load_into_rewind_save_state(arg_state : Dictionary):
 	
 	current_health = arg_state[REWIND_DATA__current_health]
 	
-	last_non_tile_body_in_contact_is_player = arg_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER]
+	last_non_tile_body_in_contact_is_player_on_ground = arg_state[REWIND_DATA__LAST_NON_TILE_BODY_IN_CONTACT_IS_PLAYER]
 	cam_rotation_on_player_contact = arg_state[REWIND_DATA__CAM_ROTATION_ON_PLAYER_CONTACT]
 	
+	is_on_ground = arg_state[REWIND_DATA__IS_ON_GROUND]
 
 
 func destroy_from_rewind_save_state():
@@ -1193,5 +1209,6 @@ func ended_rewind():
 	
 	set_current_health(current_health)
 	_set_current_attack_cooldown(_current_attack_cooldown)
+
 
 

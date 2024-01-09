@@ -212,14 +212,22 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 
 ############
 
-func set_control_container_visibility(arg_val : bool, arg_use_tween : bool = false, arg_duration : float = 1.0):
+func set_control_container_visibility(arg_val : bool, arg_use_tween : bool = false, arg_duration : float = 1.0, arg_hide_mouse_if_appropriate : bool = true):
 	#control_container.visible = arg_val
 	_set_control_container_vis__internal(arg_val, arg_use_tween, arg_duration)
 	
 	if arg_val:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		if arg_hide_mouse_if_appropriate:
+			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func toggle_control_container_visibility__not_hides_mouse(arg_use_tween : bool = false, arg_duration : float = 1.0):
+	set_control_container_visibility(!control_container.visible, arg_use_tween, arg_duration, false)
+
 
 func toggle_control_container_visibility(arg_use_tween : bool = false, arg_duration : float = 1.0):
 	set_control_container_visibility(!control_container.visible, arg_use_tween, arg_duration)

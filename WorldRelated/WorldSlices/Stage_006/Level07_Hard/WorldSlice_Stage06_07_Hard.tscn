@@ -164,6 +164,8 @@ position = Vector2( 583, -204 )
 position = Vector2( 728, -203 )
 rotation = 4.71239
 body_mode_to_use = 1
+portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
+portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
 ball_dispenser_01_to_register_in_toggle__path = NodePath("")
 ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://ObjectsRelated/Objects/BaseObject.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/BaseEnemy/AesthRelateds/_Assets/BaseEnemy_Frame.png" type="Texture" id=2]
@@ -16,8 +16,11 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=2]
 radius = 16.0
 
+[sub_resource type="CircleShape2D" id=4]
+radius = 18.0
+
 [sub_resource type="CircleShape2D" id=3]
-radius = 18.5
+radius = 18.0
 
 [node name="BaseEnemy" instance=ExtResource( 1 )]
 mode = 2
@@ -39,16 +42,26 @@ frames = SubResource( 1 )
 [node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource( 2 )
 
-[node name="CollForProjOrPlayer" type="Area2D" parent="." index="2"]
+[node name="CollForTileset" type="Area2D" parent="." index="2"]
+collision_layer = 0
+collision_mask = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollForTileset" index="0"]
+shape = SubResource( 4 )
+
+[node name="CollForProjOrPlayer" type="Area2D" parent="." index="3"]
+collision_layer = 0
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollForProjOrPlayer" index="0"]
 shape = SubResource( 3 )
 
-[node name="WeaponSpriteContainer" type="Node2D" parent="." index="3"]
+[node name="WeaponSpriteContainer" type="Node2D" parent="." index="4"]
 
-[node name="RobotFace" parent="." index="4" instance=ExtResource( 4 )]
+[node name="RobotFace" parent="." index="5" instance=ExtResource( 4 )]
 modulate = Color( 1, 1, 1, 0.627451 )
 
+[connection signal="body_shape_entered" from="CollForTileset" to="." method="_on_CollForTileset_body_shape_entered"]
+[connection signal="body_shape_exited" from="CollForTileset" to="." method="_on_CollForTileset_body_shape_exited"]
 [connection signal="body_entered" from="CollForProjOrPlayer" to="." method="_on_CollForProjOrPlayer_body_entered"]
 [connection signal="body_exited" from="CollForProjOrPlayer" to="." method="_on_CollForProjOrPlayer_body_exited"]

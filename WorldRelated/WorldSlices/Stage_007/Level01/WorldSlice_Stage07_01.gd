@@ -14,6 +14,13 @@ func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	
 
+func as_test__override__do_insta_win():
+	SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+	
+	start_fade_out()
+
+
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
@@ -39,7 +46,7 @@ func _on_item_cutscene_end(arg_params):
 	SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(true, true)
 	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 	
-	
+	start_fade_out()
 
 
 func start_fade_out():

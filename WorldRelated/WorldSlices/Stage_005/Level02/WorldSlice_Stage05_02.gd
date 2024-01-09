@@ -23,6 +23,10 @@ func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	is_player_capture_area_style_one_at_a_time__in_node_order = true
 
+func as_test__override__do_insta_win():
+	_on_PCA_Last_region_area_captured()
+
+
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()

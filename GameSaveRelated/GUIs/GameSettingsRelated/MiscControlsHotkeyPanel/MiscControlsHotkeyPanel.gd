@@ -8,6 +8,7 @@ onready var controls_vbox = $VBoxContainer
 
 onready var CCSP_SC__ToggleHideHud = $VBoxContainer/CCSP_SingleControl__ToggleHideHud
 onready var CCSP_SC__Screenshot = $VBoxContainer/VBoxContainer/CCSP_SingleControl__ScreenShot
+onready var CCSP_SC__ToggleFocusMode = $VBoxContainer/ToggleFocusMode_VBox/CCSP_SingleControl__ToggleFocusMode
 
 onready var screen_shot_label = $VBoxContainer/VBoxContainer/ScreenShotLabel
 
@@ -16,9 +17,11 @@ onready var screen_shot_label = $VBoxContainer/VBoxContainer/ScreenShotLabel
 func _ready():
 	_configure_ccsp_sc__common_template(CCSP_SC__ToggleHideHud)
 	_configure_ccsp_sc__common_template(CCSP_SC__Screenshot)
+	_configure_ccsp_sc__common_template(CCSP_SC__ToggleFocusMode)
 	
 	CCSP_SC__ToggleHideHud.control_identifier_string = "toggle_hide_hud"
 	CCSP_SC__Screenshot.control_identifier_string = "printscreen"
+	CCSP_SC__ToggleFocusMode.control_identifier_string = "toggle_focus_mode"
 	
 	#
 	

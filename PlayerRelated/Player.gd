@@ -1138,6 +1138,8 @@ func _physics_process(delta):
 						elif _current_player_left_right_move_speed < 0:
 							_current_player_left_right_move_speed = 0
 						
+					
+					
 				
 			
 			#var final_mov = Vector2(_current_player_left_right_move_speed, 0)
@@ -1228,6 +1230,12 @@ func _integrate_forces(state):
 #			print("setted to zero")
 #			_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 		
+		if _is_move_breaking and _is_on_ground:
+			if is_zero_approx(_current_player_left_right_move_speed) and !is_zero_approx(linear_velocity.length_squared()):
+				linear_velocity = linear_velocity.move_toward(Vector2.ZERO, COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE * ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC /Engine.iterations_per_second)
+			
+		
+		#
 		
 		var mov_speed = _current_player_left_right_move_speed - _current_player_left_right_move_speed__from_last_integrate_forces
 		_current_player_left_right_move_speed__from_last_integrate_forces = _current_player_left_right_move_speed

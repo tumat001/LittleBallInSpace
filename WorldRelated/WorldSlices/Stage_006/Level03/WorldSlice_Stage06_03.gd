@@ -20,7 +20,9 @@ func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	is_player_capture_area_style_one_at_a_time__in_node_order = true
 
-
+func as_test__override__do_insta_win():
+	as_test__override__do_insta_win__template_capture_all_points()
+	
 
 
 func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):

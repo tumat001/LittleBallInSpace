@@ -42,6 +42,21 @@ func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
 	
 
+func as_test__override__do_insta_win():
+	#as_test__override__do_insta_win__template_capture_all_points()
+	
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
+	game_elements.game_result_manager.attempt_set_current_game_result(game_elements.game_result_manager.GameResult.WIN)
+	_do_game_state_modifying_actions__setup_for_layout_02()
+	
+	
+	StoreOfLevels.unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
+	call_deferred("_deferred_do_insta_win")
+
+func _deferred_do_insta_win():
+	game_elements.game_result_manager.end_game__as_win()
+
+
 func _ready():
 	vbox_container_01__launch_ball_tut_panel.modulate.a = 0
 	vbox_container_02__rewind_reminder_panel.modulate.a = 0
