@@ -312,6 +312,7 @@ var is_player : bool = true
 ##
 
 var _audio_player__capturing_point : AudioStreamPlayer
+var _frames_for_prevent_audio_capture_point_play : int = 0
 
 ##
 
@@ -1392,6 +1393,11 @@ func _process(delta):
 			
 			if is_equal_approx(final_val, _light_2d__target_mod_a):
 				_light_2d__target_mod_a = -1
+		
+		
+		_frames_for_prevent_audio_capture_point_play -= 1
+		if _frames_for_prevent_audio_capture_point_play > 0:
+			_attempt_end_audio_player__capturing_point()
 
 #############
 
@@ -2170,6 +2176,10 @@ func set_current_player_capture_area_region(arg_area_region):
 				
 		
 	else:
+		#temptodo
+		_stop_pca_progress_drawer()
+		
+		
 		_attempt_end_audio_player__capturing_point()
 
 func _disconnect_curr_area_region_signals():
@@ -2213,8 +2223,10 @@ func _update_PCA_values_and_display():
 
 func _on_PCA_region__body_exited_from_area(body):
 	if body == self:
-		_stop_pca_progress_drawer()
-		_attempt_end_audio_player__capturing_point()
+		#temptodo
+		set_current_player_capture_area_region(null)
+#		_stop_pca_progress_drawer()
+#		_attempt_end_audio_player__capturing_point()
 
 func _stop_pca_progress_drawer():
 	pca_progress_drawer.visible = false
@@ -2239,18 +2251,22 @@ func _on_PCA_region_area_captured():
 ##
 
 func _start_audio_player__capturing_point():
-	var play_adv_param = AudioManager.construct_play_adv_params()
-	play_adv_param.is_audio_looping = true
-	
-	_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
-	if !can_capture_PCA_regions:
-		_audio_player__capturing_point.volume_db = AudioManager.DECIBEL_VAL__INAUDIABLE
+	if _frames_for_prevent_audio_capture_point_play <= 0:
+		var play_adv_param = AudioManager.construct_play_adv_params()
+		play_adv_param.is_audio_looping = true
+		
+		_audio_player__capturing_point = AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_CapturePoint_Capturing, 1.0, play_adv_param)
+		if !can_capture_PCA_regions:
+			_audio_player__capturing_point.volume_db = AudioManager.DECIBEL_VAL__INAUDIABLE
 
 func _attempt_end_audio_player__capturing_point():
 	if _audio_player__capturing_point != null and _audio_player__capturing_point.playing:
 		AudioManager.stop_stream_player_and_mark_as_inactive(_audio_player__capturing_point)
 		_audio_player__capturing_point = null
-
+		_frames_for_prevent_audio_capture_point_play = 0
+		
+	else:
+		_frames_for_prevent_audio_capture_point_play = 4
 
 
 func _attempt_linear_mute_capture_pca_region_audio_player():

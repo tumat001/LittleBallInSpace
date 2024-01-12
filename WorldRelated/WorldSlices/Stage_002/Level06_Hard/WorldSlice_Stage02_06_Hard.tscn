@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.tscn" type="PackedScene" id=9]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=10]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=11]
+[ext_resource path="res://MiscRelated/VisualsRelated/KeyPressVisual/Visual_KeyPress.tscn" type="PackedScene" id=12]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 48, 14 )
@@ -25,7 +27,7 @@ extents = Vector2( 75, 9.5 )
 extents = Vector2( 769, 214 )
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 265.5, 198.5 )
+extents = Vector2( 271, 196 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 518, 479.5 )
@@ -90,6 +92,7 @@ tile_data = PoolIntArray( -851992, 14, 0, -851986, 14, 0, -589848, 14, 0, -58984
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( -431, -422 )
+mod_a_for_uncaptured = 1.0
 
 [node name="PlayerDetectionAreaRegion_FastCheckpoint" parent="AreaRegionContainer" index="1" instance=ExtResource( 9 )]
 position = Vector2( 578, -466 )
@@ -120,7 +123,7 @@ position = Vector2( -81, -418 )
 shape = SubResource( 4 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
-position = Vector2( 152.5, -26.5 )
+position = Vector2( 158, -24 )
 shape = SubResource( 5 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="2"]
@@ -132,6 +135,8 @@ position = Vector2( 1284, -408 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 2
 
 [node name="Pickupable_Battery" parent="ObjectContainer" index="1" instance=ExtResource( 4 )]
@@ -150,6 +155,8 @@ position = Vector2( 1247, 168 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_GreenN")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 pressable_count = 2
 
@@ -158,6 +165,8 @@ position = Vector2( 1008, -536 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_RedN")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Portal" parent="ObjectContainer" index="6" instance=ExtResource( 7 )]
@@ -181,6 +190,40 @@ position = Vector2( 624, 80 )
 
 [node name="SpecialCamPos2D" type="Position2D" parent="MiscContainer" index="1"]
 position = Vector2( 943, -156 )
+
+[node name="FocusModeInsContainer" type="VBoxContainer" parent="MiscContainer" index="2"]
+margin_left = 557.0
+margin_top = -87.0
+margin_right = 764.0
+margin_bottom = 27.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="MiscContainer/FocusModeInsContainer" index="0"]
+margin_left = 25.0
+margin_right = 181.0
+margin_bottom = 22.0
+size_flags_horizontal = 6
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 13 )
+text = "You can press"
+
+[node name="VKP_ToggleFocusMode" parent="MiscContainer/FocusModeInsContainer" index="1" instance=ExtResource( 12 )]
+modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
+margin_left = 80.0
+margin_top = 26.0
+margin_right = 126.0
+margin_bottom = 63.0
+size_flags_horizontal = 6
+
+[node name="Label2" type="Label" parent="MiscContainer/FocusModeInsContainer" index="2"]
+margin_top = 67.0
+margin_right = 207.0
+margin_bottom = 114.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 13 )
+text = "To toggle the
+HUD's visibility"
+align = 1
 
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PlayerDetectionAreaRegion_FastCheckpoint" to="." method="_on_PlayerDetectionAreaRegion_FastCheckpoint_player_entered_in_area"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_SpecialCamAngleActiveArea" to="." method="_on_PDAR_SpecialCamAngleActiveArea_player_entered_in_area"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_Cinematic/PDAR_Cinematic_Start.tscn" type="PackedScene" id=12]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_Cinematic/PDAR_Cinematic_End.tscn" type="PackedScene" id=13]
 [ext_resource path="res://MiscRelated/VisionTransitionSpriteCamFogRelated/Imps/VisionTransitionSpriteCamFogNode2D_Circular.gd" type="Script" id=14]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=15]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 272.5, 272 )
@@ -22,7 +23,16 @@ extents = Vector2( 272.5, 272 )
 extents = Vector2( 50, 24 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 160.5, 1 )
+extents = Vector2( 160.5, 6 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 413.25, 159.25 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 195, 471.5 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 508, 471.5 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 80
@@ -73,29 +83,13 @@ has_glowables = true
 [node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
 tile_set = ExtResource( 3 )
 
-[node name="BTS_Blue" parent="TileContainer" index="7" instance=ExtResource( 1 )]
-
-[node name="TileMap" parent="TileContainer/BTS_Blue" index="0"]
-modulate = Color( 0.0705882, 0.454902, 1, 1 )
-
-[node name="BTS_Green" parent="TileContainer" index="8" instance=ExtResource( 1 )]
-
-[node name="TileMap" parent="TileContainer/BTS_Green" index="0"]
-modulate = Color( 0.109804, 1, 0.0352941, 1 )
-
-[node name="BTS_Red" parent="TileContainer" index="9" instance=ExtResource( 1 )]
+[node name="BTS_Red" parent="TileContainer" index="7" instance=ExtResource( 1 )]
 
 [node name="TileMap" parent="TileContainer/BTS_Red" index="0"]
 modulate = Color( 1, 0.141176, 0.141176, 1 )
 tile_data = PoolIntArray( 196615, 9, 0, 262151, 9, 65536, 327687, 9, 131072 )
 
-[node name="BTS_InstaBreak" parent="TileContainer" index="10" instance=ExtResource( 1 )]
-glass_breakable_type = 1
-
-[node name="TileMap" parent="TileContainer/BTS_InstaBreak" index="0"]
-tile_data = PoolIntArray( 524371, 16, 262146, 524372, 16, 262147, 524373, 16, 262148 )
-
-[node name="BTS_Fragile" parent="TileContainer" index="11" instance=ExtResource( 1 )]
+[node name="BTS_Fragile" parent="TileContainer" index="8" instance=ExtResource( 1 )]
 glass_breakable_type = 3
 
 [node name="TileMap" parent="TileContainer/BTS_Fragile" index="0"]
@@ -122,8 +116,22 @@ shape = SubResource( 3 )
 position = Vector2( 2674, 385 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Cinematic_End" index="0"]
-position = Vector2( 39, -2 )
+position = Vector2( 39, -7 )
 shape = SubResource( 4 )
+
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="3" instance=ExtResource( 15 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( 353.75, 94.25 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( 609, 697.5 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="2"]
+position = Vector2( 2703, 125 )
+shape = SubResource( 7 )
 
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( -24, 176 )
@@ -148,38 +156,32 @@ is_disabled = true
 [node name="BaseEnemy_Lp01" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 2704, 560 )
 enemy_type_template__for_export = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy_Lp02" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="1" instance=ExtResource( 6 )]
 position = Vector2( 2704, -336 )
 enemy_type_template__for_export = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy_Lp03" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="2" instance=ExtResource( 6 )]
 position = Vector2( 2256, 112 )
 enemy_type_template__for_export = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy_Lp04" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="3" instance=ExtResource( 6 )]
 position = Vector2( 3152, 112 )
 enemy_type_template__for_export = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy_Bn01" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="4" instance=ExtResource( 6 )]
 position = Vector2( 2560, 256 )
 enemy_type_template__for_export = 3
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy_Bn02" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="5" instance=ExtResource( 6 )]
 position = Vector2( 2848, -32 )
 enemy_type_template__for_export = 3
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
+is_immovable_and_invulnerable = null
 
 [node name="Pickupable_Wrench" parent="ObjectContainer" index="4" instance=ExtResource( 11 )]
 position = Vector2( 2576, 184 )
@@ -254,11 +256,9 @@ circle_ratio__inside_of_inner_ring = 0.2
 [editable path="TileContainer/BTS_UncollsWallDecs"]
 [editable path="TileContainer/BTS_Uncolls02"]
 [editable path="TileContainer/BTS_Glowing"]
-[editable path="TileContainer/BTS_Blue"]
-[editable path="TileContainer/BTS_Green"]
 [editable path="TileContainer/BTS_Red"]
-[editable path="TileContainer/BTS_InstaBreak"]
 [editable path="TileContainer/BTS_Fragile"]
 [editable path="AreaRegionContainer/PlayerCaptureAreaRegion"]
 [editable path="AreaRegionContainer/PDAR_Cinematic_Start"]
 [editable path="AreaRegionContainer/PDAR_Cinematic_End"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

@@ -89,7 +89,7 @@ func _ready():
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_6
 		
-		var level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_07__STAGE_6)
+		var level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_06__STAGE_6__HARD_V02)
 		start_game_elements__with_level_details(level_details, screen_size/2)
 		
 #		var game_elements = GameElements_Scene.instance()

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_006/Level06_Hard/Subs/PositionLink2D.gd" type="Script" id=1]
+
+[node name="PositionLink2D" type="Position2D"]
+script = ExtResource( 1 )

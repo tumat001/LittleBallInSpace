@@ -191,6 +191,12 @@ enum PreventDrawEnemyRangeClauseId {
 var prevent_draw_enemy_range_cond_clause : ConditionalClauses
 var last_calc_draw_enemy_range : bool
 
+
+#
+
+export(bool) var is_immovable_and_invulnerable : bool = false setget set_is_immovable_and_invulnerable
+var _old_body_mode_val_before_is_immovable_and_invulnerable_is_set : int = -1
+
 #
 
 var _objects_to_not_collide_with : Array
@@ -299,6 +305,7 @@ func _ready():
 	_base_enemy_size = Vector2(16, 16)
 	
 	_config_self_based_on_enemy_type_template()
+	set_is_immovable_and_invulnerable(is_immovable_and_invulnerable)
 	
 	add_monitor_to_collision_shape_for_rewind(area_for_proj_or_player__coll_shape)
 	add_monitor_to_collision_shape_for_rewind(area_for_tileset__coll_shape)
@@ -333,6 +340,20 @@ func _config_self_based_on_enemy_type_template():
 		associated_proj_or_laser_color__based_on_type_template = LASER_COLOR__BALL
 	
 	
+
+
+func set_is_immovable_and_invulnerable(arg_val : bool):
+	is_immovable_and_invulnerable = arg_val
+	
+	if is_immovable_and_invulnerable:
+		_old_body_mode_val_before_is_immovable_and_invulnerable_is_set = body_mode_to_use
+		set_body_mode_to_use(BodyMode.STATIC)
+		
+	else:
+		if _old_body_mode_val_before_is_immovable_and_invulnerable_is_set != -1:
+			set_body_mode_to_use(_old_body_mode_val_before_is_immovable_and_invulnerable_is_set)
+		
+
 
 #
 
@@ -799,11 +820,12 @@ func _on_body_exited__base_object(body):
 
 func _do_calc_damage_if_appropriate(body):
 	var dmg = 0
-	if body.get("is_class_type_obj_ball"):
-		if body.enemy_dmg__enabled:
-			dmg = _calc_damage_of_obj_ball(body)
-	elif body.get("is_player"):
-		dmg = _calc_damage_of_player(body)
+	if !is_immovable_and_invulnerable:
+		if body.get("is_class_type_obj_ball"):
+			if body.enemy_dmg__enabled:
+				dmg = _calc_damage_of_obj_ball(body)
+		elif body.get("is_player"):
+			dmg = _calc_damage_of_player(body)
 	
 	if dmg > 0:
 		#set_current_health(current_health - dmg)

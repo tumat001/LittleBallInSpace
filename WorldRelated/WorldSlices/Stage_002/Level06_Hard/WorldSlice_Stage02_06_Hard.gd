@@ -8,7 +8,13 @@ onready var PDAR_fast_checkpoint = $AreaRegionContainer/PlayerDetectionAreaRegio
 onready var fast_spawn_pos_2d = $MiscContainer/FastSpawnPos2D
 onready var spawn_position_2d = $PlayerSpawnCoordsContainer/SpawnPosition2D
 
+onready var focus_mode_ins_container = $MiscContainer/FocusModeInsContainer
+onready var vkp_toggle_focus_mode = $MiscContainer/FocusModeInsContainer/VKP_ToggleFocusMode
+
 #
+
+var _is_first_time_playing_level__in_session
+
 
 var triggered_cam_area : bool = false
 
@@ -28,6 +34,7 @@ func as_test__override__do_insta_win():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
+	focus_mode_ins_container.modulate.a = 0
 	portal_for_transition.connect("player_entered__as_scene_transition", self, "_on_player_entered__as_scene_transition")
 
 
@@ -39,7 +46,11 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 		
 		if is_fast_respawn:
 			arg_player.global_position = fast_spawn_pos_2d.global_position
-	
+		
+		_is_first_time_playing_level__in_session = false
+		
+	else:
+		_is_first_time_playing_level__in_session = true
 
 ###################
 
@@ -77,6 +88,15 @@ func _on_PDAR_SpecialCamGiver_player_entered_in_area():
 			CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
 		
 		triggered_cam_area = true
+		
+		
+		if _is_first_time_playing_level__in_session:
+			vkp_toggle_focus_mode.any_control_action_name = "toggle_focus_mode"
+			
+			var vis_tweener = create_tween()
+			vis_tweener.tween_property(focus_mode_ins_container, "modulate:a", 1.0, 0.75)
+			vis_tweener.tween_interval(6.0)
+			vis_tweener.tween_property(focus_mode_ins_container, "modulate:a", 0.0, 1.25)
 
 #
 

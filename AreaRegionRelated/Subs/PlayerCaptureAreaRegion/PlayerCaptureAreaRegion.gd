@@ -5,6 +5,8 @@ signal duration_for_capture_left_changed(arg_base_duration, arg_curr_val_left, d
 signal region_area_captured()
 signal region_area_uncaptured()
 
+signal player_entered_area_while_activated()
+
 #
 
 const PCA_Drawer_Progress__Color_Outline = Color(186/255.0, 254/255.0, 202/255.0, 0.6)
@@ -166,7 +168,8 @@ func _on_region__body_entered_in_area__e(body):
 		if visible:
 			_is_player_inside = true
 			body.set_current_player_capture_area_region(self)
-
+			
+			emit_signal("player_entered_area_while_activated")
 
 func _on_region__body_exited_from_area__e(body):
 	if body.get("is_player"):

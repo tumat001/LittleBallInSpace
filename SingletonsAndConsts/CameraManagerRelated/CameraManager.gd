@@ -133,10 +133,10 @@ func set_camera_to_follow_node_2d(arg_node_2d : Node2D):
 
 ###
 
-func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true, arg_emit_signal : bool = true):
+func rotate_cam_to_rad(arg_rotation : float, rotate_visually : bool = true, arg_emit_signal : bool = true, arg_force_update : bool = false):
 	var old_rotation = current_cam_rotation
 	
-	if old_rotation != arg_rotation:
+	if old_rotation != arg_rotation or arg_force_update:
 		current_cam_rotation = arg_rotation
 		
 		if arg_emit_signal:
@@ -372,6 +372,7 @@ export(bool) var is_rewindable : bool = true
 var is_dead_but_reserved_for_rewind
 
 var _rewinded_current_cam_rotation
+var _rewinded_actual_cam_rotation
 
 func get_rewind_save_state():
 	return {
@@ -382,7 +383,8 @@ func get_rewind_save_state():
 	
 
 func load_into_rewind_save_state(arg_state):
-	_set_actual_rotation_of_cam(arg_state["camera.rotation"])
+	_rewinded_actual_cam_rotation = arg_state["camera.rotation"] 
+	_set_actual_rotation_of_cam(_rewinded_actual_cam_rotation)
 	
 	_rewinded_current_cam_rotation = arg_state["current_cam_rotation"]
 	rotate_cam_to_rad(_rewinded_current_cam_rotation, false)
@@ -403,7 +405,7 @@ func started_rewind():
 
 func ended_rewind():
 	if is_camera_rotating:
-		rotate_cam_to_rad(_rewinded_current_cam_rotation)
+		rotate_cam_to_rad(_rewinded_current_cam_rotation, true, true, true)
 	
 
 
