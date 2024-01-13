@@ -314,10 +314,10 @@ func _unhandled_key_input(event):
 		
 		
 		
-	#temptodo TEST action inputs
-	elif event.is_action_pressed("TEST_game_insta_win"):
-		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
-		main_world_slice.as_test__override__do_insta_win()
+	#TEST action inputs
+#	elif event.is_action_pressed("TEST_game_insta_win"):
+#		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
+#		main_world_slice.as_test__override__do_insta_win()
 
 
 #######

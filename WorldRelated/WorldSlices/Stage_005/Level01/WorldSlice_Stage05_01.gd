@@ -110,7 +110,7 @@ func _on_PDAR_TriggerDialog04_player_entered_in_area():
 func _start_dialog__04():
 	var dialog_desc = [
 		["Congratulations! You've made it in!", []],
-		["Through a portal, you can go back to the escape pod.", []]
+		["Explore the area.", []]
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__04", [], CONNECT_ONESHOT)

@@ -291,7 +291,7 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 				player = player_node
 				break
 		
-		if player == null:
+		if player == null or !_is_player_of_correct_type(player, player_construction_type):
 			player = _construct_new_audio_stream_player__based_on_cons_type(player_construction_type, arg_pause_mode)
 		
 	else:
@@ -317,6 +317,14 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 	
 	return player
 
+
+func _is_player_of_correct_type(arg_player, arg_constr_type : int):
+	if arg_constr_type == PlayerConstructionType.PLAIN and arg_player is AudioStreamPlayer:
+		return true
+	elif arg_constr_type == PlayerConstructionType.TWO_D and arg_player is AudioStreamPlayer2D:
+		return true
+	
+	return false
 
 func _construct_new_audio_stream_player__based_on_cons_type(arg_cons_type : int, arg_pause_mode):
 	if arg_cons_type == PlayerConstructionType.PLAIN:

@@ -2176,9 +2176,7 @@ func set_current_player_capture_area_region(arg_area_region):
 				
 		
 	else:
-		#temptodo
-		_stop_pca_progress_drawer()
-		
+		_stop_pca_progress_drawer()  #if err, this didnt used to be here
 		
 		_attempt_end_audio_player__capturing_point()
 
@@ -2223,7 +2221,6 @@ func _update_PCA_values_and_display():
 
 func _on_PCA_region__body_exited_from_area(body):
 	if body == self:
-		#temptodo
 		set_current_player_capture_area_region(null)
 #		_stop_pca_progress_drawer()
 #		_attempt_end_audio_player__capturing_point()

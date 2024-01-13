@@ -51,8 +51,13 @@ func _on_item_cutscene_end(arg_params):
 
 func start_fade_out():
 	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_FADE__BLACK__LONG)
+	transition.queue_free_on_end_of_transition = false
 	
-	SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
+	#SingletonsAndConsts.current_master.play_transition__alter_no_states(transition, false)
+	
+	SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(transition)
+	transition.start_transition()
+	transition.modulate.a = 0.0
 	
 	transition.connect("transition_finished", self, "_on_transition_finished", [], CONNECT_ONESHOT)
 	
@@ -68,12 +73,11 @@ func _start_dialog__01():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 5.0, 0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
 
-
-func _on_display_of_desc_finished__01():
+func _on_display_of_desc_finished__01(arg):
 	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
 
 #game_elements.game_result_manager.end_game__as_win()

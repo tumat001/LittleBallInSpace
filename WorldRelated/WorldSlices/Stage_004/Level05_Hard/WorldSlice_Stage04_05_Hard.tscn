@@ -37,7 +37,7 @@ energy_mode = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Energized" index="0"]
 modulate = Color( 1, 0.968627, 0.172549, 1 )
-tile_data = PoolIntArray( -458751, 14, 196608, -458748, 14, 262146, -458747, 14, 4, -393215, 14, 262144, -393211, 14, 262144, -327679, 14, 327680, -327675, 14, 327680, -327653, 14, 196608, -262117, 14, 262144, -262109, 14, 2, -262108, 14, 262147, -262107, 14, 262147, -262106, 14, 4, -131074, 14, 2, -131073, 14, 262147, -196608, 14, 262147, -196607, 14, 262148, -196581, 14, 131074, -196580, 14, 262147, -196579, 14, 262147, -196578, 14, 4, -196573, 14, 262144, -196570, 14, 262144, -131042, 14, 262144, -131037, 14, 262144, -131034, 14, 262144, -65506, 14, 262144, -65501, 14, 262144, -65498, 14, 262144, 26, 14, 262146, 27, 14, 262147, 28, 14, 262147, 29, 14, 262147, 30, 14, 131076, 35, 14, 262144, 38, 14, 262144, 65571, 14, 262144, 65574, 14, 262144, 393212, 14, 262146, 393213, 14, 262147, 393214, 14, 262147, 393215, 14, 262147, 327680, 14, 262147, 327681, 14, 262147, 327682, 14, 262147, 327683, 14, 262147, 327684, 14, 262148, 327692, 14, 262146, 327693, 14, 262147, 327694, 14, 262147, 327695, 14, 262147, 327696, 14, 262148, 589822, 14, 262146, 589823, 14, 262147, 524288, 14, 262147, 524289, 14, 262148, 524295, 14, 262146, 524296, 14, 262148, 589855, 14, 196608, 655391, 14, 262144, 720914, 14, 0, 720915, 14, 262148, 720927, 14, 262144, 786463, 14, 327680, 851992, 14, 262146, 851993, 14, 262148, 983069, 14, 262146, 983070, 14, 262147, 983071, 14, 262147, 983072, 14, 262147, 983073, 14, 262148 )
+tile_data = PoolIntArray( -458751, 14, 196608, -458748, 14, 262146, -458747, 14, 4, -393215, 14, 262144, -393211, 14, 262144, -327679, 14, 327680, -327675, 14, 327680, -327653, 14, 196608, -262117, 14, 262144, -262109, 14, 2, -262108, 14, 262147, -262107, 14, 262147, -262106, 14, 4, -131074, 14, 2, -131073, 14, 262147, -196608, 14, 262147, -196607, 14, 262148, -196581, 14, 131074, -196580, 14, 262147, -196579, 14, 262147, -196578, 14, 4, -196573, 14, 262144, -196570, 14, 262144, -131042, 14, 262144, -131037, 14, 262144, -131034, 14, 262144, -65506, 14, 262144, -65501, 14, 262144, -65498, 14, 262144, 26, 14, 262146, 27, 14, 262147, 28, 14, 262147, 29, 14, 262147, 30, 14, 131076, 35, 14, 262144, 38, 14, 262144, 65571, 14, 262144, 65574, 14, 262144, 393212, 14, 262146, 393213, 14, 262147, 393214, 14, 262147, 393215, 14, 262147, 327680, 14, 262147, 327681, 14, 262147, 327682, 14, 262147, 327683, 14, 262147, 327684, 14, 262148, 327692, 14, 262146, 327693, 14, 262147, 327694, 14, 262147, 327695, 14, 262147, 327696, 14, 262148, 589822, 14, 262146, 589823, 14, 262147, 524288, 14, 262147, 524289, 14, 262148, 524295, 14, 262146, 524296, 14, 262148, 589855, 14, 196608, 655391, 14, 262144, 720914, 14, 262146, 720915, 14, 262148, 720927, 14, 262144, 786463, 14, 327680, 851992, 14, 262146, 851993, 14, 262148, 983069, 14, 262146, 983070, 14, 262147, 983071, 14, 262147, 983072, 14, 262147, 983073, 14, 262148 )
 
 [node name="BaseTileSet_Grounded" parent="TileContainer" index="2" instance=ExtResource( 3 )]
 energy_mode = 2
@@ -98,6 +98,7 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 9 )]
 position = Vector2( 1242, 117 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( -58, -181 )
@@ -141,6 +142,8 @@ body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Red01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Red02")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 pressable_count = 99
 
@@ -170,6 +173,8 @@ position = Vector2( -8, 203 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="10" instance=ExtResource( 8 )]
@@ -181,6 +186,8 @@ rotation = 1.5708
 body_mode_to_use = 1
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 99
 
 [node name="Object_InteractableButton4" parent="ObjectContainer" index="12" instance=ExtResource( 6 )]
@@ -189,6 +196,8 @@ rotation = 1.5708
 body_mode_to_use = 1
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 11 )]
 position = Vector2( 671, 146 )

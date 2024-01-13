@@ -1267,10 +1267,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
 		level_details.level_full_name = [
-			["6-1 Return", []]
+			["6-1 Prelude", []]
 		]
 		level_details.level_name = [
-			["Return", []]
+			["Prelude", []]
 		]
 		level_details.level_desc = [
 			["The adventure's ain't over, yet", []]
@@ -1545,7 +1545,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["6-7 Range", []]
 		]
 		level_details.level_name = [
-			["", []]
+			["Range", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -1574,7 +1574,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			["6-!7 Slider", []]
 		]
 		level_details.level_name = [
-			["", []]
+			["Slider", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -1612,7 +1612,6 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_desc = [
 			["Future content", []]
 		]
-		#todoimp continue this
 		
 		_set_details__transitions_to_usual_circle_types(level_details)
 		
@@ -1979,6 +1978,7 @@ func _initialize_level_id_unlock_requirmenets():
 		LevelIds.LEVEL_05__STAGE_4 : [LevelIds.LEVEL_04__STAGE_4],
 		
 		LevelIds.LEVEL_03__STAGE_4__HARD : [LevelIds.LEVEL_03__STAGE_4],
+		LevelIds.LEVEL_04__STAGE_4__HARD : [LevelIds.LEVEL_04__STAGE_4],
 		LevelIds.LEVEL_05__STAGE_4__HARD : [LevelIds.LEVEL_04__STAGE_4],
 		
 		
@@ -2040,17 +2040,14 @@ func unlock_stage_07__and_unhide_eles_to_layout_07():
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 		
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 23, false)
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 24, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 25, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 26, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 27, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 28, false)
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 29, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 30, false)
+		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, 31, false)
 		
-		
-		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.AFTER_POSTGAME_STAGE_05)
-
 
 
 func unlock_stage_special_01__and_unhide_eles_to_layout_special_01():
@@ -2095,6 +2092,8 @@ func unlock_relateds_after_winning_stage_05_level_02():
 		
 		#
 		GameSaveManager.set_is_player_health_invulnerable__to_true()
+		
+		StoreOfLevels.set_current_level_hidden_state(StoreOfLevels.AllLevelsHiddenState.AFTER_POSTGAME_STAGE_05)
 
 func unlock_and_goto_stage_05_level_02_on_win():
 	if !GameSaveManager.is_level_id_finished(LevelIds.LEVEL_01__STAGE_5):

@@ -47,6 +47,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	
 	SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_03__STAGE_6, true)
 
+
 #todoimp think how to make enemies target seeking at the right time (checkpoints?)
 
 func _on_after_game_start_init():
@@ -75,7 +76,8 @@ func _on_after_game_start_init():
 	
 	var player = SingletonsAndConsts.current_game_elements.get_current_player()
 	player.is_show_lines_to_uncaptured_player_capture_regions = true
-
+	
+	make_first_pca_region_visible()
 
 func _on_transition_finished():
 	pass
@@ -99,9 +101,12 @@ func _start_dialog__01():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 1.0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 5.0, 1.0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
+func _on_display_of_desc_finished__01(arg_params):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	
 
 ####
 

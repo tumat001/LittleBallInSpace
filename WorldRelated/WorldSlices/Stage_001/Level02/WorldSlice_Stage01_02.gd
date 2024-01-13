@@ -128,7 +128,8 @@ func _deferred_add_player_modi_energy():
 	modi.set_current_energy(1)
 	modi.is_true_instant_drain_and_recharge = true
 	modi.allow_display_of_energy_hud = false
-	modi.is_energy_deductable = false
+	#modi.is_energy_deductable = false
+	modi.is_energy_not_deductable_cond_clauses.attempt_insert_clause(modi.IsEnergyNotDeductableClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	
 	_player_modi_energy = modi
 	
@@ -303,7 +304,8 @@ func _hide_base_tileset_electrical_equi__normal():
 
 func _modify_player_electric_modi__after_explosion():
 	_player_modi_energy.is_true_instant_drain_and_recharge = true
-	_player_modi_energy.is_energy_deductable = true
+	#_player_modi_energy.is_energy_deductable = true
+	_player_modi_energy.is_energy_not_deductable_cond_clauses.remove_clause(_player_modi_energy.IsEnergyNotDeductableClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	_player_modi_energy.allow_display_of_energy_hud = true
 	
 	_broken_energy_panel_frame_texture_rect.visible = true

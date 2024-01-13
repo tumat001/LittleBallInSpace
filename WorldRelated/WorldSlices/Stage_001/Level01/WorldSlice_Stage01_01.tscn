@@ -67,12 +67,14 @@ tile_data = PoolIntArray( -3538983, 23, 65538, -3145776, 23, 65538, -196597, 23,
 
 [node name="BaseTileSet_InstaGlass" parent="TileContainer" index="7" instance=ExtResource( 3 )]
 glass_breakable_type = 1
+tile_fragments_has_standard_defined_limited_lifetime = false
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_InstaGlass" index="0"]
 tile_data = PoolIntArray( -1310736, 16, 2, -1310732, 16, 3, -1310731, 16, 3, -1310730, 16, 3, -1310728, 16, 3, -1310727, 16, 4, -1245200, 16, 131074, -1245199, 16, 262147, -1245198, 16, 262147, -1245197, 16, 131075, -1245196, 16, 131075, -1245191, 16, 131076 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 1600, 57 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 48.5, 28.25 )

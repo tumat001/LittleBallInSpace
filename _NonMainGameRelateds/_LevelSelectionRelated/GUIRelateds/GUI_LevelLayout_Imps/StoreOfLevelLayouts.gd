@@ -187,7 +187,6 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		]
 		details.level_layout_desc = [
 			["The true challenges, series A", []],
-			["Also has other levels that don't fit anywhere", []]
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)

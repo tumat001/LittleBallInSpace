@@ -83,8 +83,7 @@ func _ready():
 	
 	#Temp for quick testing of lvls
 	# fast level
-	#temptodo
-	if (true):
+	if (false):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_6

@@ -139,18 +139,23 @@ func end_GE_record_stats(arg_record_stats_as_win : bool):
 #
 
 func _connect_signals__for_ending_of_GE_recording_stats():
-	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_GE_result_decided")
 	SingletonsAndConsts.current_master.connect("switch_from_GE__from_quit", self, "_on_master_switch_scene_GE_quit")
 	SingletonsAndConsts.current_master.connect("switch_from_GE__from_restart", self, "_on_master_swtich_scene_GE_restart")
+	SingletonsAndConsts.current_game_elements.game_result_manager.connect("game_result_decided", self, "_on_GE_result_decided")
 	SingletonsAndConsts.current_game_elements.connect("quiting_game_by_queue_free__on_game_quit", self, "_on_GE_quiting_game_by_queue_free__on_game_quit")
 
 func _disconnect_signals__for_ending_of_GE_recording_stats():
-	SingletonsAndConsts.current_game_elements.game_result_manager.disconnect("game_result_decided", self, "_on_GE_result_decided")
 	SingletonsAndConsts.current_master.disconnect("switch_from_GE__from_quit", self, "_on_master_switch_scene_GE_quit")
 	SingletonsAndConsts.current_master.disconnect("switch_from_GE__from_restart", self, "_on_master_swtich_scene_GE_restart")
-	SingletonsAndConsts.current_game_elements.disconnect("quiting_game_by_queue_free__on_game_quit", self, "_on_GE_quiting_game_by_queue_free__on_game_quit")
-
 	
+	if is_instance_valid(SingletonsAndConsts.current_game_elements):
+		if is_instance_valid(SingletonsAndConsts.current_game_elements.game_result_manager):
+			if SingletonsAndConsts.current_game_elements.game_result_manager.is_connected("game_result_decided", self, "_on_GE_result_decided"):
+				SingletonsAndConsts.current_game_elements.game_result_manager.disconnect("game_result_decided", self, "_on_GE_result_decided")
+		
+		if SingletonsAndConsts.current_game_elements.is_connected("quiting_game_by_queue_free__on_game_quit", self, "_on_GE_quiting_game_by_queue_free__on_game_quit"):
+			SingletonsAndConsts.current_game_elements.disconnect("quiting_game_by_queue_free__on_game_quit", self, "_on_GE_quiting_game_by_queue_free__on_game_quit")
+
 
 #
 

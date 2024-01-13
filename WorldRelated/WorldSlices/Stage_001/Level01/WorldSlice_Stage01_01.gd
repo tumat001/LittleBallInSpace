@@ -106,7 +106,8 @@ func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
 	modi.set_max_energy(15)
 	modi.set_current_energy(0)
-	modi.is_energy_deductable = false
+	#modi.is_energy_deductable = false
+	modi.is_energy_not_deductable_cond_clauses.attempt_insert_clause(modi.IsEnergyNotDeductableClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	modi.allow_display_of_energy_hud = false
 	
 	modi.can_record_stats = false

@@ -128,6 +128,7 @@ shape = SubResource( 3 )
 position = Vector2( 778, -243 )
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+position = Vector2( -16, 208 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }

@@ -72,24 +72,24 @@ tile_data = PoolIntArray( -5898241, 45, 131075, -5963756, 45, 131074, -5832713, 
 tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( -3211270, 35, 131072, -3211269, 35, 131073, -3211268, 35, 131072, -3211267, 35, 131073, -3211266, 35, 131072, -3211265, 35, 131073, -3276800, 35, 131072, -3276799, 35, 131073 )
 
-[node name="BTS_NormalAboveUncolls" parent="TileContainer" index="5" instance=ExtResource( 2 )]
-
-[node name="TileMap" parent="TileContainer/BTS_NormalAboveUncolls" index="0"]
-tile_data = PoolIntArray( -2228218, 27, 196608, -2162682, 27, 196608, -2097146, 27, 196608, -2097135, 27, 196608, -2031599, 27, 196608, -1966063, 27, 196608, 65532, 27, 1, 65535, 27, 1, 131068, 27, 1, 196604, 27, 1, 196605, 27, 1 )
-
-[node name="BTS_Uncolls02" parent="TileContainer" index="6" instance=ExtResource( 2 )]
+[node name="BTS_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 2 )]
 
 [node name="TileMap" parent="TileContainer/BTS_Uncolls02" index="0"]
 tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( -5832695, 40, 131073, -5832694, 40, 131072, -5832692, 42, 131072, -5832691, 42, 131073, -5767159, 40, 196609, -5767158, 40, 196608, -5767156, 42, 196608, -5767155, 42, 196609, -5636088, 35, 3, -5636087, 35, 3, -5636086, 35, 3, -5636085, 35, 3, -5636084, 35, 3, -5636083, 35, 3, -5636082, 35, 3, -5439494, 46, 1, -5439493, 46, 1, -5439492, 46, 1, -5439491, 46, 1, -5439490, 46, 1, -5439489, 46, 1, -5505024, 46, 1, -5505023, 46, 1, -5505022, 46, 1, -5505021, 46, 1, -5505020, 46, 1, -5505019, 46, 1, -5505018, 46, 1, -5505017, 46, 1, -5505016, 46, 1, -5505015, 46, 1, -5505014, 46, 1, -5505013, 46, 1, -5505012, 46, 1, -5505011, 46, 1, -5505010, 46, 1, -5505009, 46, 1, -5505008, 46, 1, -5505007, 46, 1, -5505006, 46, 1, -5505005, 46, 1, -5505004, 46, 1, -5177333, 46, 196610, -5046281, 46, 1, -5046280, 46, 1, -5046279, 46, 1, -5046278, 46, 1, -5046277, 46, 1, -5046276, 46, 1, -5046275, 46, 1, -5046274, 46, 1, -5046273, 46, 1, -5111808, 46, 1, -5111807, 46, 1, -5111806, 46, 3, -5111805, 46, 1, -5111804, 46, 1, -5111797, 46, 196610, -5046261, 46, 196610, -4980725, 46, 196610, -4915189, 46, 196610, -4784134, 35, 3, -4784133, 35, 3, -4784132, 35, 3, -4784131, 35, 3, -4784130, 35, 3, -4849653, 46, 196610, -4784117, 46, 196610, -4718581, 46, 196610, -4587526, 35, 131074, -4587525, 35, 131075, -4587524, 35, 131074, -4587523, 35, 131075, -4587522, 35, 131074, -4587521, 35, 131075, -4653056, 35, 131074, -4653055, 35, 131075, -4653054, 35, 131074, -4653053, 35, 131075, -4653052, 35, 131074, -4653051, 35, 131075, -4653045, 46, 196610, -4587509, 46, 196610, -4521973, 46, 196610, -4456437, 46, 196610, -4390901, 46, 196610, -4325365, 46, 196610, -4259829, 46, 196610, -4194293, 46, 196610, -4128757, 46, 196610, -4063221, 46, 196610, -3932166, 35, 131074, -3932165, 35, 131075, -3932164, 35, 131074, -3932163, 35, 131075, -3932162, 35, 131074, -3932161, 35, 131075, -3997696, 35, 131074, -3997695, 35, 131075, -3997694, 35, 131074, -3997693, 35, 131075, -3997692, 35, 131074, -3997691, 35, 131075, -3997685, 46, 196610, -3932149, 46, 196610, -3866613, 46, 196610, -3735559, 35, 65539, -3801077, 46, 196610, -3670026, 40, 65538, -3670025, 40, 65539, -3670023, 35, 65539, -3735541, 46, 196610, -3604490, 42, 2, -3604489, 42, 3, -3604487, 35, 65539, -3670005, 46, 196610, -3538954, 42, 65538, -3538953, 42, 65539, -3538951, 35, 65539, -3604469, 46, 196610, -3473415, 35, 65539, -3538944, 35, 3, -3538943, 35, 3, -3538933, 46, 196610, -3473408, 38, 1, -3473397, 46, 196610, -3342337, 35, 196611, -3407872, 38, 65537, -3407861, 46, 196610, -3342325, 46, 196610, -3276789, 46, 196610, -3211253, 46, 196610, -3145717, 46, 196610, -3080181, 46, 196610, -3014645, 46, 196610, -2949109, 46, 196610, -2883573, 46, 196610, -2818037, 46, 196610, -2752501, 46, 196610, -2686964, 35, 3, -2686963, 35, 3, -2621428, 35, 3, -2621427, 35, 3, -2555893, 46, 196610, -2490357, 46, 196610, -2424821, 46, 196610, -2359285, 46, 196610, -2097141, 46, 196610, -2031605, 46, 196610, -1966069, 46, 196610, -1900533, 46, 196610, -1834997, 46, 196610, -1769461, 46, 196610, -1507317, 46, 196610, -1441781, 46, 196610, -1376245, 46, 196610, -1310709, 46, 196610, -1245173, 46, 196610, -1179637, 46, 196610, -1114101, 46, 196610, -524275, 46, 196610, -458739, 46, 196610, -393203, 46, 196610, -327667, 46, 196610, -262131, 46, 196610, -196595, 46, 196610, -131059, 46, 196610, -65523, 46, 196610, 13, 46, 196610, 65549, 46, 196610, 131085, 46, 196610, 196621, 46, 196610, 262157, 46, 196610 )
 
-[node name="BTS_UncollsBrown" parent="TileContainer" index="7" instance=ExtResource( 2 )]
+[node name="BTS_UncollsBrown" parent="TileContainer" index="6" instance=ExtResource( 2 )]
 energy_mode = 2
 
 [node name="TileMap" parent="TileContainer/BTS_UncollsBrown" index="0"]
 modulate = Color( 0.682353, 0.372549, 0, 1 )
 tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( -1966082, 45, 131074, -1835010, 45, 131073, -1703921, 45, 131075, -1638378, 45, 131074, -1638374, 45, 131075, -1179632, 45, 196609, -1179627, 45, 196609 )
+
+[node name="BTS_NormalAboveUncolls" parent="TileContainer" index="7" instance=ExtResource( 2 )]
+
+[node name="TileMap" parent="TileContainer/BTS_NormalAboveUncolls" index="0"]
+tile_data = PoolIntArray( -3080183, 27, 196609, -3080182, 27, 196609, -3080181, 27, 65537, -2883573, 27, 65539, -2883572, 27, 196609, -2883571, 27, 196609, -2228218, 27, 196608, -2162682, 27, 196608, -2097146, 27, 196608, -2097135, 27, 196608, -2031599, 27, 196608, -1966063, 27, 196608, 65532, 27, 1, 65535, 27, 1, 131068, 27, 1, 196604, 27, 1, 196605, 27, 1 )
 
 [node name="BTS_Blue" parent="TileContainer" index="8" instance=ExtResource( 2 )]
 
@@ -177,21 +177,19 @@ rotation = 1.5708
 launch_ball_type = 1
 
 [node name="BaseEnemy1" parent="ObjectContainer" index="5" instance=ExtResource( 9 )]
-position = Vector2( 25, -1979 )
+position = Vector2( 25, -1997 )
 mass = 140.0
 enemy_type_template__for_export = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
 starting_activation_mode_id = 1
+is_immovable_and_invulnerable = null
 
 [node name="BaseEnemy2" parent="ObjectContainer" index="6" instance=ExtResource( 9 )]
 position = Vector2( 26, -2123 )
 mass = 140.0
 enemy_type_template__for_export = 1
 aim_trajectory_type = 1
-starting_random_cooldown_export__min = 0.0
-starting_random_cooldown_export__max = 0.0
 starting_activation_mode_id = 1
+is_immovable_and_invulnerable = null
 
 [node name="Pickupable_LaunchBall4" parent="ObjectContainer" index="7" instance=ExtResource( 4 )]
 position = Vector2( 512, -2694 )
@@ -220,7 +218,7 @@ position = Vector2( 324, -1072 )
 rotation = 4.71239
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 656, -2491 )
+position = Vector2( 48, 80 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }
@@ -282,9 +280,9 @@ __meta__ = {
 [editable path="TileContainer/BTS_Grounded"]
 [editable path="TileContainer/BTS_Uncolls01"]
 [editable path="TileContainer/BTS_UncollsWallDec"]
-[editable path="TileContainer/BTS_NormalAboveUncolls"]
 [editable path="TileContainer/BTS_Uncolls02"]
 [editable path="TileContainer/BTS_UncollsBrown"]
+[editable path="TileContainer/BTS_NormalAboveUncolls"]
 [editable path="TileContainer/BTS_Blue"]
 [editable path="TileContainer/BTS_Green"]
 [editable path="TileContainer/BTS_Glowing"]

@@ -175,7 +175,7 @@ func _on_pca_semilast_captured_after_wait():
 	]
 	
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__03", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 2.0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 5.0, 2.0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 	
 	var wait_tween = create_tween()

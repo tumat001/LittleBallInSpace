@@ -10,6 +10,7 @@ onready var level_04_hard_v02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Ti
 onready var level_05__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_05
 onready var level_06__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_06
 onready var level_06_hard__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_06H
+onready var level_06_hard_v02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_06H_V02
 onready var level_07__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_07
 onready var level_07_hard__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_07H
 
@@ -34,6 +35,7 @@ func _ready():
 	level_05__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_05__STAGE_6)
 	level_06__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_06__STAGE_6)
 	level_06_hard__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_06__STAGE_6__HARD)
+	level_06_hard_v02__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_06__STAGE_6__HARD_V02)
 	level_07__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_07__STAGE_6)
 	level_07_hard__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_07__STAGE_6__HARD)
 	

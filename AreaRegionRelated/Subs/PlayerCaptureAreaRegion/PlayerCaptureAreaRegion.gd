@@ -177,6 +177,9 @@ func _on_region__body_exited_from_area__e(body):
 		
 
 
+func is_player_inside():
+	return _is_player_inside
+
 ##
 
 func _process(delta):
