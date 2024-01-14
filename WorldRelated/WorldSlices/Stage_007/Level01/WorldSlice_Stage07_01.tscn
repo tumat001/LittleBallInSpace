@@ -106,6 +106,7 @@ position = Vector2( 170, -356 )
 mod_a_for_uncaptured = 1.0
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 13 )]
+visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( 777, 42 )

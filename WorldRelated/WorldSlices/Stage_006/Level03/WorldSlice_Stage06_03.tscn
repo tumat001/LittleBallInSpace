@@ -194,7 +194,7 @@ position = Vector2( -213.5, 12 )
 shape = SubResource( 12 )
 
 [node name="BaseEnemy10" parent="ObjectContainer" index="0" instance=ExtResource( 8 )]
-position = Vector2( 1320, 103 )
+position = Vector2( 1321, 139 )
 enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
 is_immovable_and_invulnerable = null

@@ -133,6 +133,7 @@ tile_data = PoolIntArray( -13172633, 10, 131073, -13172617, 10, 131072, -1310717
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 38, -821 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 41, 5 )
@@ -154,6 +155,7 @@ shape = SubResource( 13 )
 
 [node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="2" instance=ExtResource( 3 )]
 position = Vector2( 18, -1172 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
 position = Vector2( 62, 68 )
@@ -161,6 +163,7 @@ shape = SubResource( 4 )
 
 [node name="PlayerCaptureAreaRegion3" parent="AreaRegionContainer" index="3" instance=ExtResource( 3 )]
 position = Vector2( 33, -2141 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion3" index="0"]
 position = Vector2( 47, -67.5 )
@@ -168,6 +171,7 @@ shape = SubResource( 5 )
 
 [node name="PlayerCaptureAreaRegion4" parent="AreaRegionContainer" index="4" instance=ExtResource( 3 )]
 position = Vector2( 129, -3171 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion4" index="0"]
 position = Vector2( 47, -61.5 )
@@ -175,6 +179,7 @@ shape = SubResource( 6 )
 
 [node name="PCAR_First" parent="AreaRegionContainer" index="5" instance=ExtResource( 3 )]
 position = Vector2( -137, -4025 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_First" index="0"]
 position = Vector2( 121, -110 )
@@ -182,6 +187,7 @@ shape = SubResource( 7 )
 
 [node name="PCAR_LastStuck" parent="AreaRegionContainer" index="6" instance=ExtResource( 3 )]
 position = Vector2( 180, -4026 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_LastStuck" index="0"]
 position = Vector2( 124, -109 )
@@ -204,6 +210,7 @@ shape = SubResource( 11 )
 
 [node name="PCAR_NearBatt" parent="AreaRegionContainer" index="9" instance=ExtResource( 3 )]
 position = Vector2( 2849, -6048 )
+mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_NearBatt" index="0"]
 position = Vector2( 79, 16 )
