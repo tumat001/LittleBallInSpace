@@ -75,7 +75,8 @@ var _ICIP_func_param
 #
 
 var _shader_mat__capture_type_win : ShaderMaterial
-
+var _shader_mat__clear_player : ShaderMaterial
+var _shader_mat__obj_destroying : ShaderMaterial
 
 #
 
@@ -171,26 +172,78 @@ func _add_and_register_area_region(arg_region):
 	
 	if arg_region.get("is_player_capture_area_region"):
 		if arg_region.is_capture_type_win:
-			_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = false
-			
-			arg_region.connect("region_area_captured", self, "_on_PCA_region_area_captured", [arg_region])
-			arg_region.connect("region_area_uncaptured", self, "_on_PCA_region_area_uncaptured", [arg_region])
-			
-			###
-			
-			_add_shine_shader_material_to_region__capture_type_win(arg_region)
+			_config_area_region__PCAR_of_win_type(arg_region)
+		
+		
+	elif arg_region.get("is_player_clear_area_region"):
+		_config_area_region__player_clear(arg_region)
+		
+	elif arg_region.get("is_object_destroying_area_region"):
+		_config_area_region__object_destroying(arg_region)
+		
+	
+
+#
+
+func _config_area_region__PCAR_of_win_type(arg_region):
+	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = false
+	
+	arg_region.connect("region_area_captured", self, "_on_PCA_region_area_captured", [arg_region])
+	arg_region.connect("region_area_uncaptured", self, "_on_PCA_region_area_uncaptured", [arg_region])
+	
+	###
+	
+	_add_shine_shader_material_to_region__capture_type_win(arg_region)
+
 
 func _add_shine_shader_material_to_region__capture_type_win(arg_region):
-	if _shader_mat__capture_type_win == null:
-		_shader_mat__capture_type_win = ShaderMaterial.new()
-		_shader_mat__capture_type_win.shader = load("res://MiscRelated/ShadersRelated/Shader_Shine.tres")
-		
+	_attempt_init_shader_mat__capture_type_win()
 	
 	#arg_region.construct_and_add_sprite_for_shader(_shader_mat__capture_type_win)
 	arg_region.add_shader_to_collshape(_shader_mat__capture_type_win)
 
+func _attempt_init_shader_mat__capture_type_win():
+	if _shader_mat__capture_type_win == null:
+		_shader_mat__capture_type_win = ShaderMaterial.new()
+		_shader_mat__capture_type_win.shader = load("res://MiscRelated/ShadersRelated/Shader_Shine.tres")
 
-##
+#
+
+func _config_area_region__player_clear(arg_region):
+	_add_clear_shockwave_shader_material_to_region(arg_region)
+
+func _add_clear_shockwave_shader_material_to_region(arg_region):
+	_attempt_init_shader_mat__player_clear_region()
+	
+	arg_region.construct_and_add_sprite_for_shader(_shader_mat__clear_player)
+	#arg_region.add_shader_to_collshape(_shader_mat__clear_player)
+	
+
+func _attempt_init_shader_mat__player_clear_region():
+	if _shader_mat__clear_player == null:
+		_shader_mat__clear_player = ShaderMaterial.new()
+		_shader_mat__clear_player.shader = load("res://MiscRelated/ShadersRelated/Shader_ShockwaveForClear.tres")
+	
+
+#
+
+func _config_area_region__object_destroying(arg_region):
+	_add_obj_destroying_shader_material_to_region(arg_region)
+
+func _add_obj_destroying_shader_material_to_region(arg_region):
+	_attempt_init_shader_mat__obj_destroying_region()
+	
+	arg_region.construct_and_add_sprite_for_shader(_shader_mat__obj_destroying)
+	#arg_region.add_shader_to_collshape(_shader_mat__obj_destroying)
+
+func _attempt_init_shader_mat__obj_destroying_region():
+	if _shader_mat__obj_destroying == null:
+		_shader_mat__obj_destroying = ShaderMaterial.new()
+		_shader_mat__obj_destroying.shader = load("res://MiscRelated/ShadersRelated/Shader_SpeedlinesForObjDestrRegion.tres")
+	
+
+
+##########
 
 func _on_PCA_region_area_captured(arg_region):
 	_all_win_type_player_capture_area_region_to_is_captured_map[arg_region] = true

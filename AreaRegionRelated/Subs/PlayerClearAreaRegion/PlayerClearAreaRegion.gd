@@ -1,6 +1,11 @@
 extends "res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.gd"
 
 
+
+var is_player_clear_area_region : bool = true
+
+#
+
 func _ready():
 	color_of_region_to_use = Color(1, 1, 1, 0.15)
 	color_outline_of_region_to_use = Color(1, 1, 1, 0.3)

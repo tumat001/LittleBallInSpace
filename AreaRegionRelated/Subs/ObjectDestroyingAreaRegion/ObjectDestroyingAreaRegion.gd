@@ -1,5 +1,8 @@
 extends "res://AreaRegionRelated/BaseAreaRegion.gd"
 
+#vec4(0.99, 0.69, 0.3, 0.2)
+
+var is_object_destroying_area_region : bool = true
 
 #
 
@@ -26,3 +29,6 @@ func _on_region__body_entered_in_area_o(body):
 			
 			#body.queue_free()
 			body.destroy_self_caused_by_destroying_area_region(self)
+
+
+

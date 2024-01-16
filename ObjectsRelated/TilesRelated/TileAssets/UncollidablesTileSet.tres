@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=47 format=2]
+[gd_resource type="TileSet" load_steps=49 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -46,6 +46,8 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc04.png" type="Texture" id=44]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc06.png" type="Texture" id=45]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc07.png" type="Texture" id=46]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileSpaceship_Uncollidables__EventDecor_AnchorGrappleHook_01.png" type="Texture" id=47]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileSpaceship_Uncollidables__EventDecor_AnchorGrappleHook_02.png" type="Texture" id=48]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1056,3 +1058,45 @@
 47/shape_one_way_margin = 0.0
 47/shapes = [  ]
 47/z_index = 0
+48/name = "Tileset_HostileSpaceship_Uncollidables__EventDecor_AnchorGrappleHook_01.png 48"
+48/texture = ExtResource( 47 )
+48/tex_offset = Vector2( 0, 0 )
+48/modulate = Color( 1, 1, 1, 1 )
+48/region = Rect2( 0, 0, 160, 96 )
+48/tile_mode = 2
+48/autotile/icon_coordinate = Vector2( 0, 0 )
+48/autotile/tile_size = Vector2( 32, 32 )
+48/autotile/spacing = 0
+48/autotile/occluder_map = [  ]
+48/autotile/navpoly_map = [  ]
+48/autotile/priority_map = [  ]
+48/autotile/z_index_map = [  ]
+48/occluder_offset = Vector2( 0, 0 )
+48/navigation_offset = Vector2( 0, 0 )
+48/shape_offset = Vector2( 0, 0 )
+48/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+48/shape_one_way = false
+48/shape_one_way_margin = 0.0
+48/shapes = [  ]
+48/z_index = 0
+49/name = "Tileset_HostileSpaceship_Uncollidables__EventDecor_AnchorGrappleHook_02.png 49"
+49/texture = ExtResource( 48 )
+49/tex_offset = Vector2( 0, 0 )
+49/modulate = Color( 1, 1, 1, 1 )
+49/region = Rect2( 0, 0, 128, 96 )
+49/tile_mode = 2
+49/autotile/icon_coordinate = Vector2( 0, 0 )
+49/autotile/tile_size = Vector2( 32, 32 )
+49/autotile/spacing = 0
+49/autotile/occluder_map = [  ]
+49/autotile/navpoly_map = [  ]
+49/autotile/priority_map = [  ]
+49/autotile/z_index_map = [  ]
+49/occluder_offset = Vector2( 0, 0 )
+49/navigation_offset = Vector2( 0, 0 )
+49/shape_offset = Vector2( 0, 0 )
+49/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+49/shape_one_way = false
+49/shape_one_way_margin = 0.0
+49/shapes = [  ]
+49/z_index = 0

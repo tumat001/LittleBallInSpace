@@ -8,3 +8,4 @@ script = ExtResource( 2 )
 duration_for_capture = 0.75
 ratio_duration_reduction_on_no_occupancy_per_sec = 0.5
 capture_type = 0
+mod_a_for_uncaptured = 1.0

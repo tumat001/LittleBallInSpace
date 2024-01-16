@@ -48,7 +48,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_03__STAGE_6, true)
 
 
-#todoimp think how to make enemies target seeking at the right time (checkpoints?)
+# think how to make enemies target seeking at the right time (checkpoints?), for effiency -- prob dont do this no more since there is no clean breakpoint
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
