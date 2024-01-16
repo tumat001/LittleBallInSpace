@@ -132,7 +132,6 @@ func unregister_to_GE__and_deactivate():
 	if SingletonsAndConsts.current_game_elements.is_connected("phy_process__sig", self, "_on_GE_phy_process__sig"):
 		SingletonsAndConsts.current_game_elements.disconnect("phy_process__sig", self, "_on_GE_phy_process__sig")
 
-
 #
 
 func set_current_target__to_player():
@@ -169,7 +168,6 @@ func _on_GE_phy_process__sig(delta):
 		if _current_update_delay_before_ping_attempt <= 0:
 			_attempt_ping_curr_target()
 		
-	
 
 
 func _attempt_ping_curr_target():

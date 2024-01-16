@@ -210,7 +210,7 @@ func queue_free():
 	
 	if SingletonsAndConsts.current_rewind_manager.is_obj_registered_in_rewindables(self):
 		player_soft_coll_shape.set_deferred("disabled", true)
-
+		
 
 
 func started_rewind():
@@ -222,19 +222,17 @@ func started_rewind():
 func ended_rewind():
 	if !is_dead_but_reserved_for_rewind:
 		mode = body_mode_to_use
-
 		collision_shape.set_deferred("disabled", false)
-
 		#_use_integ_forces_new_vals = true
-
-
+	
 	if !is_dead_but_reserved_for_rewind:
 		player_soft_coll_shape.set_deferred("disabled", false)
 
 	_is_from_rewind__frame_count = 2
 
 
-
+func destroy_from_rewind_save_state():
+	.destroy_from_rewind_save_state()
 
 
 func get_rewind_save_state():

@@ -174,7 +174,7 @@ func _process(delta):
 				
 				if current_lifespan <= 0 and !is_dead_but_reserved_for_rewind:
 					queue_free()
-			
+					
 
 ###################### 
 # REWIND RELATED

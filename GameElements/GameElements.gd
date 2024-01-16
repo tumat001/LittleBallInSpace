@@ -485,13 +485,14 @@ func deferred_generate_player_break_fragments(arg_top_left_pos, arg_center_pos):
 	call_deferred("generate_player_break_fragments", arg_top_left_pos, arg_center_pos, get_current_player().main_body_sprite.get_body_modulate())
 
 func generate_player_break_fragments(arg_top_left_pos, arg_center_pos, arg_modulate : Color):
-	var fragments = TileConstants.generate_object_tile_fragments__for_any_no_save(arg_top_left_pos, player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments, 20)
-	for fragment in fragments:
-		fragment.modulate = arg_modulate
-		SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(fragment)
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		var fragments = TileConstants.generate_object_tile_fragments__for_any_no_save(arg_top_left_pos, player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments, 20)
+		for fragment in fragments:
+			fragment.modulate = arg_modulate
+			SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(fragment)
+			
+			_set_fragment_lin_vel_based_on_poses(fragment, arg_center_pos)
 		
-		_set_fragment_lin_vel_based_on_poses(fragment, arg_center_pos)
-	
 
 func _set_fragment_lin_vel_based_on_poses(arg_fragment : RigidBody2D, arg_center_pos : Vector2):
 	var pos_of_frag = arg_fragment.global_position

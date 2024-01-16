@@ -47,7 +47,8 @@ var remove_non_existing_objs_in_traversal : bool = true
 
 #
 
-const REWIND_DURATION : float = 35.0
+#technically double since we skip every other
+const REWIND_DURATION : float = 30.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -93,6 +94,8 @@ enum RewindMarkerData {
 var _rewindable_datas : Array
 var _rewindable_marker_datas : Array
 #var _rewindable_is_unskippable_metadata : Array
+
+var _rewindable_datas_popped_in_last_frame_from_overflow
 
 var _current_rewindable_duration_length : float
 
@@ -232,12 +235,6 @@ func add_to_rewindables(arg_obj):
 			#arg_obj.add_to_group(REWINDABLE_GROUP_NAME)
 			_all_registered_rewindables.append(arg_obj)
 
-#func remove_from_rewindables(arg_obj):
-#	if _all_registered_rewindables.has(arg_obj):
-#		arg_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
-#		_remove_obj_from_all_registered_rewindables(arg_obj)
-#
-
 
 
 func _physics_process(delta):
@@ -247,10 +244,15 @@ func _physics_process(delta):
 			# cut out overflow
 			_current_rewindable_duration_length = _rewindable_datas.size() / float(Engine.iterations_per_second)
 			if REWIND_DURATION <= _current_rewindable_duration_length: #* Engine.iterations_per_second == _rewindable_datas.size():
-				_rewindable_datas.pop_front()
+				var rewindable_data_in_frame = _rewindable_datas.pop_front()
 				_rewindable_marker_datas.pop_front()
 				#_rewindable_is_unskippable_metadata.pop_front()
-			
+				
+				#var second_rewindable_data_in_frame = _rewindable_datas.front()
+				#_remove_potential_unused_rewindables(rewindable_data_in_frame, second_rewindable_data_in_frame)
+				
+				_remove_potential_unused_rewindables(rewindable_data_in_frame)
+				_rewindable_datas_popped_in_last_frame_from_overflow = rewindable_data_in_frame
 			
 			###
 			
@@ -299,6 +301,12 @@ func _physics_process(delta):
 		
 		var objs_for_traversal = _rewindable_objs_in_prev_load_step.duplicate(false)
 		for obj in rewindable_obj_to_save_state_map.keys():
+			#this is possible now
+			if !is_instance_valid(obj):
+				continue
+			
+			#
+			
 			obj.call(REWINDABLE_METHOD_NAME__LOAD_STATE, rewindable_obj_to_save_state_map[obj])
 			objs_for_traversal.erase(obj)
 			
@@ -320,8 +328,10 @@ func _physics_process(delta):
 			for non_existing_obj in objs_for_traversal:
 				#if !obj_to_not_remove_in_removal_traversal.has(non_existing_obj):
 				#remove_from_rewindables(non_existing_obj)
-				non_existing_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
-				_remove_obj_from_all_registered_rewindables(non_existing_obj)
+				if !is_instance_valid(non_existing_obj):
+					continue
+				
+				_destroy_obj__and_remove_obj_from_all_registered_rewindables(non_existing_obj)
 		
 		#
 		
@@ -364,6 +374,8 @@ func attempt_start_rewind():
 	if last_calculated_can_cast_rewind:
 		#CameraManager.reset_camera_zoom_level()
 		
+		_rewindable_datas_popped_in_last_frame_from_overflow = null
+		
 		_is_a_save_state_frame_skipped_for_past_save_frame = false
 		
 		var rewindable_obj_to_save_state_map = _rewindable_datas.back()
@@ -391,6 +403,9 @@ func _end_rewind_with_state_map(arg_state_map):
 	
 	var rewindable_obj_to_save_state_map = arg_state_map
 	for obj in rewindable_obj_to_save_state_map:
+		if !is_instance_valid(obj):
+			continue
+		
 		obj.call(REWINDABLE_METHOD_NAME__ENDED_REWIND)
 	
 	
@@ -420,6 +435,39 @@ func _end_rewind_with_state_map(arg_state_map):
 
 
 ######
+
+#func _remove_potential_unused_rewindables(arg_rewindable_data_in_frame_for_removal : Dictionary, arg_second_last_rewindable_data_in_frame_for_removal : Dictionary):
+#	for obj in arg_rewindable_data_in_frame_for_removal.keys():
+#		if !is_instance_valid(obj):
+#			continue
+#
+#		if arg_second_last_rewindable_data_in_frame_for_removal.has(obj):
+#			var is_dead_but_reserved__for_rem = obj.calll(REWINDABLE_PROPERTY_NAME__IS_DEAD_BUT_RESERVED)
+#
+
+
+#arg_rewindable_data_in_frame = rewindable_obj_to_save_state_map
+func _remove_potential_unused_rewindables(arg_rewindable_data_in_frame_for_removal : Dictionary):
+	if _rewindable_datas_popped_in_last_frame_from_overflow == null:
+		return
+	
+	for obj in arg_rewindable_data_in_frame_for_removal.keys():
+		if !is_instance_valid(obj):
+			continue
+		
+		if _rewindable_datas_popped_in_last_frame_from_overflow.has(obj):
+			var is_dead_but_reserved__in_rem_frame = arg_rewindable_data_in_frame_for_removal[obj][SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED]
+			
+			if is_dead_but_reserved__in_rem_frame:
+				var is_dead_but_reserved__in_last_frame = _rewindable_datas_popped_in_last_frame_from_overflow[obj][SAVE_STATE_KEY__IS_DEAD_BUT_RESERVED]
+				if is_dead_but_reserved__in_last_frame:
+					
+					_destroy_obj__and_remove_obj_from_all_registered_rewindables(obj)
+
+
+func _destroy_obj__and_remove_obj_from_all_registered_rewindables(arg_obj):
+	arg_obj.call(REWINDABLE_METHOD_NAME__DESTROY_STATE)
+	_remove_obj_from_all_registered_rewindables(arg_obj)
 
 func _remove_obj_from_all_registered_rewindables(arg_obj):
 	_all_registered_rewindables.erase(arg_obj)

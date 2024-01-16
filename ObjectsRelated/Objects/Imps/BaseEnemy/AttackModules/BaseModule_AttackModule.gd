@@ -105,7 +105,6 @@ func _end_fire_sequence():
 	_current_duration_of_laser_completon__to_any = 0
 	_fire_sequence_state = FireSequenceStateId.NONE
 
-
 #
 
 func _calc_laser_width_to_currently_use():
