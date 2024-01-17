@@ -37,5 +37,5 @@ void fragment() {
     value += squareDist * 0.1;
 
     COLOR = mix(vec4(1.0, 1.0, 1.0, 1.0), vec4(0.99, 0.69, 0.3, 0.1), value);
-    COLOR.a = 0.05 * clamp(value, 0.0, 1.0);
+    COLOR.a = 0.085 * clamp(value, 0.0, 1.0);
 }"

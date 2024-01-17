@@ -215,7 +215,7 @@ var last_calculated_object_mass : float
 
 #
 
-var _all_nodes_to_rotate_with_cam : Array
+#var _all_nodes_to_rotate_with_cam : Array
 
 
 #
@@ -396,7 +396,8 @@ onready var rotating_for_floor_area_2d_coll_shape = $RotatingForFloorArea2D/Coll
 #onready var anim_on_screen = $SpriteLayer/AnimOnScreen
 onready var main_body_sprite = $SpriteLayer/PlayerMainBody
 
-onready var pca_progress_drawer = $PCAProgressDrawer
+#onready var pca_progress_drawer = $PCAProgressDrawer
+onready var pca_progress_drawer_v02 = $PCAProgressDrawer_V02
 onready var pca_line_direction_drawer = $PCALineDirectionDrawer
 
 onready var light_2d = $Light2D
@@ -1415,14 +1416,13 @@ func _ready():
 	
 	player_face.player = self
 	
-	#_make_node_rotate_with_cam(sprite_layer)
-	#_make_node_rotate_with_cam(face_screen)
-	#_make_node_rotate_with_cam(anim_on_screen)
-	_make_node_rotate_with_cam(player_face)
-	_make_node_rotate_with_cam(pca_progress_drawer)
-	_make_node_rotate_with_cam(main_body_sprite)
+	#_make_node_rotate_with_cam(player_face)
+	#_make_node_rotate_with_cam(pca_progress_drawer_v02)
+	#_make_node_rotate_with_cam(main_body_sprite)
 	
-	CameraManager.connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam", [], CONNECT_PERSIST)
+	#CameraManager.connect("cam_visual_rotation_changed", self, "_rotate_nodes_to_rotate_with_cam", [], CONNECT_PERSIST)
+	
+	_config_nodes_to_rotate_with_cam_manager()
 	
 	mode = RigidBody2D.MODE_CHARACTER
 	
@@ -1440,11 +1440,18 @@ func _ready():
 	_initialize_player_light()
 	_initialize_speed_trail_component()
 
+
+func _config_nodes_to_rotate_with_cam_manager():
+	CameraManager.make_node_rotate_with_camera(player_face)
+	CameraManager.make_control_node_rotate_with_camera(pca_progress_drawer_v02)
+	CameraManager.make_node_rotate_with_camera(main_body_sprite)
+	
+
 #
 
-func _make_node_rotate_with_cam(arg_node):
-	_all_nodes_to_rotate_with_cam.append(arg_node)
-	
+#func _make_node_rotate_with_cam(arg_node):
+#	_all_nodes_to_rotate_with_cam.append(arg_node)
+#
 
 #
 
@@ -1751,10 +1758,10 @@ func _on_RotatingForFloorArea2D_body_exited(body):
 
 #######################
 
-func _rotate_nodes_to_rotate_with_cam(arg_angle):
-	for node in _all_nodes_to_rotate_with_cam:
-		node.rotation = arg_angle
-		
+#func _rotate_nodes_to_rotate_with_cam(arg_angle):
+#	for node in _all_nodes_to_rotate_with_cam:
+#		node.rotation = arg_angle
+#
 	
 
 ########
@@ -2150,9 +2157,9 @@ func set_current_player_capture_area_region(arg_area_region):
 	if is_instance_valid(_current_player_capture_area_region):
 		if !arg_area_region.is_area_captured():
 			if !arg_area_region.is_instant_capture():
-				pca_progress_drawer.color_edge_to_use = arg_area_region.player_PCA_progress_drawer__outline_color
-				pca_progress_drawer.color_fill_to_use = arg_area_region.player_PCA_progress_drawer__fill_color
-				pca_progress_drawer.is_enabled = true
+				#pca_progress_drawer.color_edge_to_use = arg_area_region.player_PCA_progress_drawer__outline_color
+				#pca_progress_drawer.color_fill_to_use = arg_area_region.player_PCA_progress_drawer__fill_color
+				#pca_progress_drawer.is_enabled = true
 				_update_PCA_values_and_display()
 				
 				_start_draw_pca_progress_drawer()
@@ -2194,18 +2201,20 @@ func _disconnect_curr_area_region_signals():
 
 
 func _start_draw_pca_progress_drawer():
-	if !pca_progress_drawer.visible:
+	if !pca_progress_drawer_v02.visible:
+		
 		var baseline_duration = _current_player_capture_area_region.get_baseline_duration_for_capture()
 		var show_duration = 0.25
 		if show_duration > baseline_duration:
 			show_duration = baseline_duration
 		
-		pca_progress_drawer.modulate.a = 0
-		pca_progress_drawer.visible = true
+		pca_progress_drawer_v02.modulate.a = 0
+		pca_progress_drawer_v02.visible = true
+		
 		
 		var tweener = create_tween()
-		tweener.tween_property(pca_progress_drawer, "modulate:a", 1.0, show_duration)
-		
+		tweener.tween_property(pca_progress_drawer_v02, "modulate:a", 0.4, show_duration)
+
 
 func _on_PCA_duration_for_capture_left_changed(arg_base_duration, arg_curr_val_left, delta, arg_is_from_rewind):
 	_update_PCA_values_and_display()
@@ -2217,7 +2226,7 @@ func _update_PCA_values_and_display():
 	
 	var ratio = curr_val / max_val
 	
-	pca_progress_drawer.set_ratio_filled(ratio)
+	pca_progress_drawer_v02.set_ratio_filled(ratio)
 
 func _on_PCA_region__body_exited_from_area(body):
 	if body == self:
@@ -2226,8 +2235,8 @@ func _on_PCA_region__body_exited_from_area(body):
 #		_attempt_end_audio_player__capturing_point()
 
 func _stop_pca_progress_drawer():
-	pca_progress_drawer.visible = false
-	pca_progress_drawer.set_is_enabled(false)
+	pca_progress_drawer_v02.visible = false
+	#pca_progress_drawer_v02.set_is_enabled(false)
 #
 #	if is_instance_valid(_current_player_capture_area_region):
 #		_disconnect_curr_area_region_signals()
@@ -2611,7 +2620,7 @@ func get_rewind_save_state():
 		#"objects_to_not_collide_with" : _objects_to_not_collide_with.duplicate(true),
 		#"objects_to_collide_with_after_exit" : _objects_to_collide_with_after_exit.duplicate(true),
 		#"objects_to_add_mask_layer_collision_after_exit" : _objects_to_add_mask_layer_collision_after_exit.duplicate(true),
-	save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
+	#save_state["_all_nodes_to_rotate_with_cam"] = _all_nodes_to_rotate_with_cam.duplicate(true)
 	save_state["_objects_to_not_collide_with"] = _objects_to_not_collide_with.duplicate(true)
 	save_state["_objects_to_collide_with_after_exit"] = _objects_to_collide_with_after_exit.duplicate(true)
 	save_state["_objects_to_add_mask_layer_collision_after_exit"] = _objects_to_add_mask_layer_collision_after_exit.duplicate(true)
@@ -2729,8 +2738,8 @@ func ended_rewind():
 	
 	#var override_specific_nodes = _most_recent_rewind_state["_save_rewind_save_state_of_any_nodes"]
 	#if !override_specific_nodes:
-	_all_nodes_to_rotate_with_cam.clear()
-	_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["_all_nodes_to_rotate_with_cam"])
+	#_all_nodes_to_rotate_with_cam.clear()
+	#_all_nodes_to_rotate_with_cam.append_array(_most_recent_rewind_state["_all_nodes_to_rotate_with_cam"])
 	
 	_objects_to_not_collide_with.clear()
 	for obj in _most_recent_rewind_state["_objects_to_not_collide_with"]:

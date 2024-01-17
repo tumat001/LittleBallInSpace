@@ -96,7 +96,6 @@ shape = SubResource( 3 )
 [node name="PCA_Moving" parent="AreaRegionContainer" index="2" instance=ExtResource( 11 )]
 position = Vector2( 4256, 320 )
 ratio_duration_reduction_on_no_occupancy_per_sec = 0.0
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_Moving" index="0"]
 shape = SubResource( 2 )
@@ -104,6 +103,7 @@ shape = SubResource( 2 )
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
 position = Vector2( -216, 144 )
 rotation = 1.5708
+body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Red")
 ball_dispenser_01_to_register_in_toggle__path = NodePath("")
 ball_dispenser_02_to_register_in_toggle__path = NodePath("")

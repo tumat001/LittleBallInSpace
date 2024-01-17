@@ -9,6 +9,7 @@ signal player_entered_area_while_activated()
 
 #
 
+#used by shockwave, but not by texture, so useless
 const PCA_Drawer_Progress__Color_Outline = Color(186/255.0, 254/255.0, 202/255.0, 0.6)
 
 #
@@ -30,8 +31,8 @@ var can_line_be_drawn_to_self_by_pca_line_dir_drawer : bool = true
 
 #
 
-var player_PCA_progress_drawer__outline_color : Color
-var player_PCA_progress_drawer__fill_color : Color
+#var player_PCA_progress_drawer__outline_color : Color
+#var player_PCA_progress_drawer__fill_color : Color
 
 #
 
@@ -86,8 +87,8 @@ func set_capture_type(arg_val):
 		color_outline_of_region_to_use = Color(55/255.0, 109/255.0, 1/255.0, 0.2)
 		outine_width_of_region_to_use = 3
 		
-		player_PCA_progress_drawer__outline_color = PCA_Drawer_Progress__Color_Outline
-		player_PCA_progress_drawer__fill_color = Color(78/255.0, 253/255.0, 120/255.0, 0.6)
+#		player_PCA_progress_drawer__outline_color = PCA_Drawer_Progress__Color_Outline
+#		player_PCA_progress_drawer__fill_color = Color(78/255.0, 253/255.0, 120/255.0, 0.6)
 		
 		is_capture_type_win = true
 

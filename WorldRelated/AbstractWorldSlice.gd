@@ -228,7 +228,8 @@ func _attempt_init_shader_mat__player_clear_region():
 #
 
 func _config_area_region__object_destroying(arg_region):
-	_add_obj_destroying_shader_material_to_region(arg_region)
+	if !arg_region.is_hidden_and_silent:
+		_add_obj_destroying_shader_material_to_region(arg_region)
 
 func _add_obj_destroying_shader_material_to_region(arg_region):
 	_attempt_init_shader_mat__obj_destroying_region()

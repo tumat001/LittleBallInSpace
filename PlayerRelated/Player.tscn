@@ -3,7 +3,7 @@
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerMainBody/PlayerMainBody.tscn" type="PackedScene" id=1]
 [ext_resource path="res://PlayerRelated/Player.gd" type="Script" id=2]
 [ext_resource path="res://PlayerRelated/PlayerParticles/PCACaptured/PCACapturedDrawer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://PlayerRelated/PCAProgressDrawer.gd" type="Script" id=18]
+[ext_resource path="res://PlayerRelated/PCAProgressDrawer_V02/PCAProgressDrawer_V02.tscn" type="PackedScene" id=4]
 [ext_resource path="res://PlayerRelated/PCALineDirectionDrawer.gd" type="Script" id=19]
 [ext_resource path="res://PlayerRelated/PlayerModel/PlayerFace/PlayerFace.tscn" type="PackedScene" id=20]
 
@@ -53,8 +53,12 @@ shape = SubResource( 5 )
 [node name="PCALineDirectionDrawer" type="Node2D" parent="."]
 script = ExtResource( 19 )
 
-[node name="PCAProgressDrawer" type="Node2D" parent="."]
-script = ExtResource( 18 )
+[node name="PCAProgressDrawer_V02" parent="." instance=ExtResource( 4 )]
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 32.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( 32, 32 )
 
 [node name="Light2D" type="Light2D" parent="."]
 

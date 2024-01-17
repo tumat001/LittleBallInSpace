@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://PlayerRelated/PCAProgressDrawer_V02/PCAProgressDrawer_V02.gd" type="Script" id=1]
+[ext_resource path="res://PlayerRelated/PCAProgressDrawer_V02/Assets/PCAProgressDrawerV02_Progress_Fill.png" type="Texture" id=2]
+
+[node name="PCAProgressDrawer_V02" type="TextureProgress"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+step = 0.001
+allow_greater = true
+allow_lesser = true
+texture_progress = ExtResource( 2 )
+fill_mode = 4
+script = ExtResource( 1 )
