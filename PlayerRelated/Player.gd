@@ -124,6 +124,8 @@ var _is_moving_left : bool
 var _is_moving_right : bool
 var _is_move_breaking : bool
 
+var is_prevent_effects_of_move_change__by_portal__delta_count : float = 0.0
+
 #
 
 var _player_prev_global_position : Vector2
@@ -992,15 +994,24 @@ func stop_all_persisting_actions():
 func stop_player_movement():
 	_is_stop_player_movement_at_next_frame = true
 
+
+func is_prevent_effects_of_move_change__by_portal():
+	return is_prevent_effects_of_move_change__by_portal__delta_count > 0.0
+
+func is_move_breaking_and_can_do_move_changing_effects():
+	return _is_move_breaking and !is_prevent_effects_of_move_change__by_portal()
+
 ##########################################
 
 # note: after phy, it is followed by integ, never by another phy.
 func _physics_process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 		
+		is_prevent_effects_of_move_change__by_portal__delta_count -= delta
+		
 		#var counter_dir = Vector2(1, 0).rotated(CameraManager.current_cam_rotation)
 		if last_calc_can_player_move_left_and_right or has_any_force_actions: #and !_is_any_static_body_impeding_movement(linear_velocity):
-			if _is_moving_left or has_force_action_id(ForceActionFlagIds.LEFT):
+			if (_is_moving_left and !is_prevent_effects_of_move_change__by_portal()) or has_force_action_id(ForceActionFlagIds.LEFT):
 				#print("moving left: %s" % _current_player_left_right_move_speed)
 				
 				#if is_zero_approx(linear_velocity.x) and is_zero_approx(linear_velocity.y):
@@ -1059,7 +1070,7 @@ func _physics_process(delta):
 				#	#pass
 				#	#_current_player_left_right_move_speed = 0
 				
-			elif _is_moving_right or has_force_action_id(ForceActionFlagIds.RIGHT):
+			elif (_is_moving_right and !is_prevent_effects_of_move_change__by_portal()) or has_force_action_id(ForceActionFlagIds.RIGHT):
 				#print("moving right: %s" % _current_player_left_right_move_speed)
 				
 				#if is_zero_approx(linear_velocity.x) and is_zero_approx(linear_velocity.y):
@@ -1116,7 +1127,7 @@ func _physics_process(delta):
 				#	_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 				#	#_current_player_left_right_move_speed = 0
 				
-			elif _is_move_breaking:
+			elif is_move_breaking_and_can_do_move_changing_effects():
 				
 				if !is_zero_approx(linear_velocity.x) or !is_zero_approx(linear_velocity.y):
 					var speed_modi = ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC * delta
@@ -1232,7 +1243,7 @@ func _integrate_forces(state):
 #			print("setted to zero")
 #			_current_excess_player_left_right_move_speed_to_fight_counter_speed = Vector2(0, 0)
 		
-		if _is_move_breaking and _is_on_ground:
+		if is_move_breaking_and_can_do_move_changing_effects() and _is_on_ground:
 			if is_zero_approx(_current_player_left_right_move_speed) and !is_zero_approx(linear_velocity.length_squared()):
 				linear_velocity = linear_velocity.move_toward(Vector2.ZERO, COUNTER_FORCE_MULTIPLER__FOR_ANY_PURPOSE * ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC /Engine.iterations_per_second)
 			
@@ -1510,6 +1521,15 @@ func _calculate_and_store_ground_attracting_velocity_at_cam_angle(arg_angle):
 	_cam_angle_to_ground_attracting_velocity_map[arg_angle] = cleaned_velocity
 	
 
+func get_lin_vel__reduced_by_ground_attracting_velocity__if_on_ground():
+	var curr_lin_vel_of_ground_attr = _cam_angle_to_ground_attracting_velocity_map[CameraManager.current_cam_rotation]
+	var curr_lin_vel = linear_velocity
+	
+	if !_is_on_ground:
+		curr_lin_vel_of_ground_attr *= 0
+	
+	return curr_lin_vel - curr_lin_vel_of_ground_attr
+
 #
 
 
@@ -1566,6 +1586,8 @@ func cancel_next_apply_ground_repelling_force__from_portal():
 func is_on_ground():
 	return _is_on_ground
 
+func is_directly_on_ground():
+	return _is_directly_below_ground
 
 
 func apply_inside_induced_force__with_counterforce_speed_if_applicable(arg_vector : Vector2):
@@ -2566,8 +2588,9 @@ func get_rewind_save_state():
 		#"current_player_left_right_move_speed__from_last_integrate_forces" : 0,
 		
 		
-		"is_moving_left" : _is_moving_left,
-		"is_moving_right" : _is_moving_right,
+		#"is_moving_left" : _is_moving_left,
+		#"is_moving_right" : _is_moving_right,
+		"is_prevent_effects_of_move_change__by_portal__delta_count" : is_prevent_effects_of_move_change__by_portal__delta_count,
 		
 		"player_prev_global_position" : _player_prev_global_position__for_rewind, 
 		"player_pos_change_from_last_frame" : _player_pos_change_from_last_frame,
@@ -2718,6 +2741,8 @@ func ended_rewind():
 	
 	#_is_moving_left = false #_most_recent_rewind_state["is_moving_left"]
 	#_is_moving_right = false #_most_recent_rewind_state["is_moving_right"]
+	
+	is_prevent_effects_of_move_change__by_portal__delta_count = _most_recent_rewind_state["is_prevent_effects_of_move_change__by_portal__delta_count"]
 	
 	_player_prev_global_position = _most_recent_rewind_state["player_prev_global_position"]
 	_player_pos_change_from_last_frame = _most_recent_rewind_state["player_pos_change_from_last_frame"]

@@ -80,6 +80,10 @@ enum DisableCollisionClauseId {
 var disabled_collision_cond_clauses : ConditionalClauses
 var last_calculated_is_collision_disabled : bool
 
+#
+
+var enable_player_move_change_on_area_exit : bool
+
 ######
 
 onready var portal_sprite = $PortalSprite
@@ -306,10 +310,19 @@ func set_nodes_to_not_teleport_on_first_enter(arg_arr : Array):
 
 func add_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidBody2D):
 	if is_instance_valid(arg_node):
-		if !_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(arg_node):
-			var dir = arg_node.linear_velocity.normalized()
+		#if !_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.has(arg_node):
+			
+			var lin_vel = arg_node.linear_velocity
+			
+			if arg_node.get("is_player"):
+				lin_vel = arg_node.get_lin_vel__reduced_by_ground_attracting_velocity__if_on_ground()
+			
+			var dir = lin_vel.normalized()
 			_add_node_inside_portal__to_return_on_velocity_reversed__using_dir(arg_node, dir)
 			#_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[arg_node] = dir
+			
+			#temptodo
+			print("lin_vel: %s, dir: %s" % [lin_vel, dir])
 			
 			#if !arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
 			#	arg_node.connect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker", [arg_node])
@@ -357,24 +370,55 @@ func _physics_process(delta):
 	if !Engine.editor_hint and !is_scene_transition_type_portal:
 		if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
 			for body in _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed:
-				var curr_direction = body.linear_velocity.normalized()
+				var curr_direction : Vector2
+				if body.get("is_player"):
+					curr_direction = body.get_lin_vel__reduced_by_ground_attracting_velocity__if_on_ground().normalized()
+				else:
+					curr_direction = body.linear_velocity.normalized()
+				
+				#
+				
 				var entry_direction = _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[body]
 				
 				if entry_direction == Vector2.ZERO:
 					entry_direction = curr_direction
 				
-				if _is_directions_significantly_different(curr_direction, entry_direction):
+				#
+				
+				var _is_directions_significantly_different__based_on_body_conditions : bool
+				if body.get("is_player"):
+					if body.is_on_ground():
+						_is_directions_significantly_different__based_on_body_conditions = _calc_is_directions_greatly_significantly_different(curr_direction, entry_direction)
+					else:
+						_is_directions_significantly_different__based_on_body_conditions = _calc_is_directions_significantly_different(curr_direction, entry_direction)
+					
+				else:
+					_is_directions_significantly_different__based_on_body_conditions = _calc_is_directions_significantly_different(curr_direction, entry_direction)
+				
+				if _is_directions_significantly_different__based_on_body_conditions:
+					#temptodo
+					print("TP DUE TO big dir changes -- 01. curr: %s, orig entry dir: %s" % [curr_direction, entry_direction])
 					_teleport_node_to_other_linked_portal(body)
 		
 
 # also used in Player class
 # DO NOT COPY PASTE as values are different
-func _is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : Vector2):
+func _calc_is_directions_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : Vector2):
 	if (is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)) or (is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
 		return false
 		
 	else:
 		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > PI/2:
+			return true
+		else:
+			return false
+
+func _calc_is_directions_greatly_significantly_different(arg_dir_01 : Vector2, arg_dir_02 : Vector2):
+	if (is_zero_approx(arg_dir_01.x) and is_zero_approx(arg_dir_01.y)) or (is_zero_approx(arg_dir_02.x) and is_zero_approx(arg_dir_02.y)):
+		return false
+		
+	else:
+		if abs(angle_to_angle(arg_dir_01.angle(), arg_dir_02.angle())) > 3*PI/4:
 			return true
 		else:
 			return false
@@ -415,6 +459,8 @@ func _on_Area2D_body_entered(body):
 			if !_nodes_to_not_teleport_on_first_enter.has(body):
 				#print(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
 				
+				#temptodo
+				print("TP DUE TO entered area -- 02")
 				_teleport_node_to_other_linked_portal(body)
 				
 			else:
@@ -433,17 +479,23 @@ func _teleport_node_to_other_linked_portal(body):
 	_portal_to_link_with.global_position
 	# END OF DO NOT REMOVE
 	
-	if body.get("is_player"):
+	var is_body_player = body.get("is_player")
+	
+	if is_body_player:
 		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
 		body.ignore_effect_based_on_pos_change__next_frame_count = 2
 		
 		body.clear_points_of_current_speed_trail()
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		#CameraManager.disable_camera_smoothing()
+		
+		_set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit()
+		_set_player__is_prevent_effects_of_move_breaking__by_portal(body)
+	
 	
 	body.global_position = _portal_to_link_with.global_position
 	
-	if body.get("is_player"):
+	if is_body_player:
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		var dist = _portal_to_link_with.global_position.distance_to(global_position)
 		var speed : Vector2 = body.linear_velocity
@@ -467,8 +519,28 @@ func _on_Area2D_body_exited(body):
 	remove_node_to_not_teleport_on_first_enter(body)
 	remove_node_inside_portal__to_return_on_velocity_reversed(body)
 	
+	if enable_player_move_change_on_area_exit:
+		if body.get("is_player"):
+			_set_player__is_prevent_effects_of_move_breaking__by_portal__false(body)
+			enable_player_move_change_on_area_exit = false
+
+#
+
+func _set_player__is_prevent_effects_of_move_breaking__by_portal(arg_player):
+	arg_player.is_prevent_effects_of_move_change__by_portal__delta_count = 3.0
+	
+	#temptodo
+	print("prevented mov change")
+
+func _set_player__is_prevent_effects_of_move_breaking__by_portal__false(arg_player):
+	arg_player.is_prevent_effects_of_move_change__by_portal__delta_count = 0.0
+	
+	#temptodo
+	print("UNprevented mov change")
 
 
+func _set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit():
+	_portal_to_link_with.enable_player_move_change_on_area_exit = true
 
 ###################### 
 # REWIND RELATED
@@ -510,8 +582,8 @@ func get_rewind_save_state():
 	
 	save_dic["_nodes_to_not_teleport_on_first_enter"] = _nodes_to_not_teleport_on_first_enter.duplicate(true)
 	save_dic["_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed"] = _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed.duplicate(true)
-	#if portal_color == PortalColor.BLUE:
-	#	print("saved state: %s" % save_dic)
+	
+	save_dic["enable_player_move_change_on_area_exit"] = enable_player_move_change_on_area_exit
 	
 	
 	#if _rewind_save__nodes_to_not_teleport_on_first_enter != null:
@@ -528,6 +600,9 @@ func load_into_rewind_save_state(arg_state):
 	
 	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_nodes_to_not_teleport_on_first_enter"]
 	_rewind_most_recent_load__bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed = arg_state["_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed"]
+	
+	enable_player_move_change_on_area_exit = arg_state["enable_player_move_change_on_area_exit"]
+	
 	#if arg_state.has("_rewind_save__nodes_to_not_teleport_on_first_enter"):
 	#	_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter = arg_state["_rewind_save__nodes_to_not_teleport_on_first_enter"]
 	#	print("loaded from most recent load: %s" % [_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter])

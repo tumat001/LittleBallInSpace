@@ -43,10 +43,7 @@ func _ready():
 	
 	##
 	
-	level_name_tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.PIXEL_EMULATOR
-	level_name_tooltip_body.bbcode_align_mode = level_name_tooltip_body.BBCodeAlignMode.CENTER
-	level_name_tooltip_body.descriptions = SingletonsAndConsts.current_level_details.level_full_name
-	level_name_tooltip_body.update_display()
+	_config_level_name_tooltip_body_based_on_curr_level_details()
 	
 	#
 	
@@ -55,6 +52,17 @@ func _ready():
 	#
 	
 	assist_mode_mini_summary_panel.is_in_game = true
+
+
+func _config_level_name_tooltip_body_based_on_curr_level_details():
+	var curr_level_details = SingletonsAndConsts.current_level_details
+	
+	level_name_tooltip_body.font_id_to_use = StoreOfFonts.FontTypes.PIXEL_EMULATOR
+	level_name_tooltip_body.bbcode_align_mode = level_name_tooltip_body.BBCodeAlignMode.CENTER
+	level_name_tooltip_body.descriptions = curr_level_details.level_full_name
+	level_name_tooltip_body.default_font_color = curr_level_details.get_title_color_based_on_level_type()
+	level_name_tooltip_body.update_display()
+	
 
 #
 

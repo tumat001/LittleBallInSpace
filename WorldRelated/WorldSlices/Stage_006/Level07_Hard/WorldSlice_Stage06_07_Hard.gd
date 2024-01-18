@@ -45,7 +45,7 @@ func _on_after_game_start_init():
 	
 	###
 	
-	_show_lines_to_pca()
+	_show_lines_to_pca__temporarily()
 	
 	###
 	
@@ -59,7 +59,7 @@ func _on_game_result_decided(arg_result):
 
 #
 
-func _show_lines_to_pca():
+func _show_lines_to_pca__temporarily():
 	var player = game_elements.get_current_player()
 	player.is_show_lines_to_uncaptured_player_capture_regions = true
 	

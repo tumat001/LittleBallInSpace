@@ -74,7 +74,6 @@ tile_data = PoolIntArray( -1310736, 16, 2, -1310732, 16, 3, -1310731, 16, 3, -13
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 1600, 57 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 48.5, 28.25 )
