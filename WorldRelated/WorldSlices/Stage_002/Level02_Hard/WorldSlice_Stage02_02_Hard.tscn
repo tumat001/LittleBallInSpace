@@ -68,13 +68,13 @@ tile_data = PoolIntArray( -4063225, 12, 0, -3997695, 12, 0, -3997694, 12, 0, -39
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_UncollsWallDec" index="0"]
 tile_set = ExtResource( 4 )
-tile_data = PoolIntArray( -1179665, 27, 1, -1114129, 27, 1, -1179645, 27, 1, -1048595, 27, 0, -1048594, 27, 0, -1048593, 27, 131074, -1114109, 27, 65538, -1114108, 27, 0, -1114107, 27, 0, -1114106, 27, 131073, -1114105, 27, 0, -1114104, 27, 0, -983057, 27, 1, -1048570, 27, 1, -917521, 27, 1, -851985, 27, 65538, -851984, 27, 0, -131075, 27, 0, -131074, 27, 131073, -131073, 27, 0, -65538, 27, 1, -2, 27, 1, 65534, 27, 131072, 65535, 27, 0, 0, 27, 0, 1, 27, 0, 2, 27, 0, 3, 27, 65536, 131070, 27, 1, 65539, 27, 1 )
+tile_data = PoolIntArray( -3997695, 32, 65538, -3997688, 27, 1, -3932159, 32, 131073, -3932157, 32, 196611, -3932156, 32, 327680, -3932152, 27, 1, -3866620, 32, 196608, -3866616, 27, 131072, -3866615, 27, 65537, -3801080, 27, 1, -3735544, 27, 1, -3604482, 27, 1, -3670014, 27, 65538, -3670013, 27, 0, -3670012, 27, 0, -3670011, 27, 0, -3670010, 27, 0, -3670009, 27, 0, -3538948, 27, 0, -3538947, 27, 0, -3538946, 27, 131074, -3473410, 27, 65538, -3473409, 27, 0, -3538944, 27, 0, -3538943, 27, 0, -3538942, 27, 0, -3538941, 27, 65536, -1179665, 27, 1, -1114129, 27, 1, -1179645, 27, 1, -1048595, 27, 0, -1048594, 27, 0, -1048593, 27, 131074, -1114109, 27, 65538, -1114108, 27, 0, -1114107, 27, 0, -1114106, 27, 131073, -1114105, 27, 0, -1114104, 27, 0, -983057, 27, 1, -1048570, 27, 1, -917521, 27, 1, -851985, 27, 65538, -851984, 27, 0, -131075, 27, 0, -131074, 27, 131073, -131073, 27, 0, -65538, 27, 1, -2, 27, 1, 65534, 27, 131072, 65535, 27, 0, 0, 27, 0, 1, 27, 0, 2, 27, 0, 3, 27, 65536, 131070, 27, 1, 65539, 27, 1 )
 
 [node name="BaseTileSet_Uncols02" parent="TileContainer" index="5" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncols02" index="0"]
 tile_set = ExtResource( 4 )
-tile_data = PoolIntArray( -3997691, 18, 196608, -3932156, 18, 65538, -3932155, 18, 196608, -3866619, 18, 196608, -1048586, 18, 262146, -1048581, 18, 262146, -1114111, 18, 262146, -917500, 17, 2, -851964, 17, 2, -786428, 17, 2, -720892, 17, 2, -655356, 17, 2 )
+tile_data = PoolIntArray( -3997691, 18, 196608, -3932159, 50, 0, -3932158, 50, 1, -3932157, 50, 2, -3932155, 18, 196608, -3866623, 50, 65536, -3866622, 50, 65537, -3866621, 50, 65538, -3866619, 18, 196608, -1048586, 18, 262146, -1048581, 18, 262146, -1114111, 18, 262146, -917500, 17, 2, -851964, 17, 2, -786428, 17, 2, -720892, 17, 2, -655356, 17, 2 )
 
 [node name="BaseTileSet_Green" parent="TileContainer" index="6" instance=ExtResource( 3 )]
 
@@ -85,7 +85,7 @@ tile_data = PoolIntArray( -1048592, 7, 0, -983056, 7, 65536, -917520, 7, 131072 
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Glowables" index="0"]
 tile_set = ExtResource( 4 )
-tile_data = PoolIntArray( -3932158, 14, 0, -1179666, 14, 1, -1048589, 14, 0, -1048584, 14, 0, -1048579, 14, 0, -983053, 14, 0, -983048, 14, 0, -983043, 14, 0, -786450, 14, 1 )
+tile_data = PoolIntArray( -3997694, 14, 0, -1179666, 14, 1, -1048589, 14, 0, -1048584, 14, 0, -1048579, 14, 0, -983053, 14, 0, -983048, 14, 0, -983043, 14, 0, -786450, 14, 1 )
 
 [node name="BaseTileSet_SimpleGlass" parent="TileContainer" index="8" instance=ExtResource( 3 )]
 glass_breakable_type = 2
@@ -108,7 +108,6 @@ shape = SubResource( 1 )
 
 [node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 124, -106 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
 position = Vector2( -16, -53.25 )
@@ -116,13 +115,13 @@ shape = SubResource( 8 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 8 )]
 position = Vector2( -603, -559 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 24, 63.75 )
 shape = SubResource( 2 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
+visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( -163, -516 )

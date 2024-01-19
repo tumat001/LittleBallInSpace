@@ -183,10 +183,10 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_01:
 		details.level_layout_name = [
-			["Specials", []]
+			["Specials - A", []]
 		]
 		details.level_layout_desc = [
-			["The true challenges, series A", []],
+			["Challenges with a bit of rule breaking!", []],
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)

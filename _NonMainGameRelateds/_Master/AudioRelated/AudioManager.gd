@@ -45,7 +45,7 @@ var mask_level_to_max_active_count_available_map : Dictionary = {
 	MaskLevel.UI_SoundFX : 40,
 }
 
-
+#NOTE: NEVER LINK sound path name to sound id
 var sound_path_name_to__stream_player_node_to_is_active_map : Dictionary
 var stream_player_node_to_mask_level_map : Dictionary
 var mask_level_to_active_count_map : Dictionary

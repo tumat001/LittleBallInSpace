@@ -166,6 +166,10 @@ func _on_transition_out__to_level_finished(arg_level_details, arg_old_transition
 
 
 func instant_start_game_elements__with_level_details(level_details, arg_circle_pos = screen_size/2):
+	GameSettingsManager.custom_audio_config__refresh_list_files_in_filesys__all()
+	
+	#
+	
 	SingletonsAndConsts.current_base_level_id = level_details.level_id
 	_is_in_game_or_loading_to_game = true
 	SingletonsAndConsts.initialize_current_level_configs_based_on_current_id()

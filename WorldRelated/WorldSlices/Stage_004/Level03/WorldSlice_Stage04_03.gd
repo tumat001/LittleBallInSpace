@@ -149,7 +149,7 @@ func _on_fog_hide_finished():
 #
 
 func _on_Object_IB_ForModXScreen_pressed(arg_is_pressed):
-	if arg_is_pressed:
+	if !SingletonsAndConsts.current_rewind_manager.is_rewinding and arg_is_pressed:
 		if _is_displayed_fog__as_first_time:
 			_is_displayed_fog__as_first_time = false
 			game_elements.ban_rewind_manager_to_store_and_cast_rewind()

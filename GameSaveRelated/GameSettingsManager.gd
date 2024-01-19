@@ -71,6 +71,8 @@ signal player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_i
 #signal player_face_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 
 
+
+
 ##########
 
 const game_control_settings_file_path = "user://game_control_settings.save"
@@ -135,6 +137,7 @@ const ASSIST_MODE__CATEGORY__DIC_IDENTIFIER = "ASSIST_MODE_CATEGORY__DIC_IDENTFI
 const SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER = "SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER"
 const TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER = "TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER"
 const PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER = "PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER"
+const CUSTOM_AUDIO_CONFIG__CATEGORY__DIC_IDENTIFIER = "CUSTOM_AUDIO_CONFIG__CATEGORY__DIC_IDENTIFIER"
 
 ######### SHARED commons
 const SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER = "SHARED_COMMONS__ALL_COLOR_PRESETS__DIC_IDENTIFIER"
@@ -514,13 +517,94 @@ const _player_aesth_config__BTId_to_saved_face_expression_modulate_map__default 
 	PlayerAesthConfig_BodyTextureId.NORMAL : Color("#90D6FE"),
 }
 
-
 ####
 
 const COMBAT__DEFAULT_MAX_PLAYER_HEALTH : float = 100.0
 var combat__current_max_player_health = COMBAT__DEFAULT_MAX_PLAYER_HEALTH
 const COMBAT__DEFAULT_MAX_ENEMY_HEALTH : float = 100.0
 var combat__current_max_enemy_health = COMBAT__DEFAULT_MAX_ENEMY_HEALTH
+
+
+############
+#const USER_DIR__IMG_SAVE_FilePath = "ScrnShots/"
+
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR = "CustomAudioDir"
+
+
+enum CustomAudioIds {
+	PLAYER__COMMON_METAL__NORMAL_HIT = 0,
+	PLAYER__COMMON_METAL__LOUD_BANG_HIT = 2,
+	PLAYER__TOGGLEABLE_METAL__NORMAL_HIT = 10,
+	PLAYER__COMMON_GLASS__NORMAL_HIT = 20,
+	
+}
+
+const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR = "FileDir"
+const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES = "CustomFilesInFileSys"
+const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS = "CustomFilesInFileSysFullPath"
+
+#todoimp make more, for ball hitting stuffs (and self), and enemy hits
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT = "Player_CommonMetal_NormalHit"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__LOUD_HIT = "Player_CommonMetal_LoudBangHit"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__TOGGLEABLE_METAL__NORMAL_HIT = "Player_ToggleableMetal_NormalHit"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__NORMAL_HIT = "Player_CommonGlass_NormalHit"
+
+
+#todoimp continue this when making more of audio ids
+var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
+	CustomAudioIds.PLAYER__COMMON_METAL__NORMAL_HIT : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		
+	},
+	CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__LOUD_HIT,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		
+	},
+	CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		
+	},
+	CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__NORMAL_HIT,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		
+	},
+	
+}
+
+var _store_of_audio_id_to_custom_audio_id_map : Dictionary = {
+	StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion : CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT,
+	StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull : CustomAudioIds.PLAYER__COMMON_METAL__NORMAL_HIT,
+	StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
+	StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass : CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT,
+	
+	#
+}
+
+
+const CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER = "CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER"
+var custom_audio_config__is_enabled : bool
+const custom_audio_config__is_enabled__default_val : bool = false
+
+
+const CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER = "CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER"
+var _custom_audio_config__audio_id_to_is_unlocked_map : Dictionary
+const custom_audio_config__audio_ids_default_unlocked : Array = [
+	CustomAudioIds.PLAYER__COMMON_METAL__NORMAL_HIT,
+	CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT,
+	CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
+	CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT,
+	
+]
+
+
 
 ####
 
@@ -721,6 +805,7 @@ func _save_general_game_settings_related_data():
 	var settings_save_dict = _get_settings_as_save_dict()
 	var tile_color_save_dict = _get_tile_color_config_as_save_dict()
 	var player_aesth_save_dict = _get_player_aesth_config_as_save_dict()
+	var custom_audio_save_dict = _get_custom_audio_config_as_save_dict()
 	
 	#
 	
@@ -731,6 +816,8 @@ func _save_general_game_settings_related_data():
 		SETTINGS_CONFIG__CATEGORY__DIC_IDENTIFIER : settings_save_dict,
 		TILE_COLOR_CONFIG__CATEGORY__DIC_IDENTIFIER : tile_color_save_dict,
 		PLAYER_AESTH_CONFIG__CATEGORY__DIC_IDENTIFIER : player_aesth_save_dict,
+		CUSTOM_AUDIO_CONFIG__CATEGORY__DIC_IDENTIFIER : custom_audio_save_dict,
+		
 	}
 	
 	_save_using_dict(general_game_settings_save_dict, general_game_settings_file_path, "SAVE ERROR: general game settings")
@@ -813,6 +900,14 @@ func _load_general_game_settings_using_file(arg_file : File):
 	else:
 		_load_player_aesth_config_using_dic({})
 	
+	#
+	
+	_init_custom_audio_functionality__before_any_data_init()
+	if data.has(CUSTOM_AUDIO_CONFIG__CATEGORY__DIC_IDENTIFIER):
+		_load_custom_audio_config_using_dic(data[CUSTOM_AUDIO_CONFIG__CATEGORY__DIC_IDENTIFIER])
+	else:
+		_load_custom_audio_config_using_dic({})
+	_init_custom_audio_functionality__after_data_init()
 	
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ADDITIONAL_ENERGY_MODE, true)
 #	GameSettingsManager.set_assist_mode_id_unlocked_status(GameSettingsManager.AssistModeId.ENERGY_REDUC_MODE, true)
@@ -1794,6 +1889,228 @@ func _convert_color_dict_to_color_html_string_dict(arg_dict : Dictionary):
 		bucket[id] = arg_dict[id].to_html(true)
 	
 	return bucket
+
+
+################# 
+###   CUSTOM AUDIO CONFIG
+###############
+
+func _init_custom_audio_functionality__before_any_data_init():
+	if !GameSaveManager.can_config_custom_audio:
+		GameSaveManager.connect("can_config_custom_audio_changed", self, "_GSM__can_config_custom_audio_changed", [], CONNECT_DEFERRED)
+		
+	
+
+func _GSM__can_config_custom_audio_changed(arg_val):
+	if arg_val:
+		GameSaveManager.disconnect("can_config_custom_audio_changed", self, "_GSM__can_config_custom_audio_changed")
+		_unlocked_config_custom_audio__do_inits()
+
+# can be called from at start of app, or from when it is unlockedddd
+func _unlocked_config_custom_audio__do_inits():
+	_attempt_create_dir__at_dir(CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, GameSaveManager.USER_DIR)
+	#
+	for audio_id in _custom_audio_config__audio_id_to_is_unlocked_map.keys():
+		var is_unlocked = _custom_audio_config__audio_id_to_is_unlocked_map[audio_id]
+		if is_unlocked:
+			set_custom_audio_id__unlocked_status(audio_id, true)
+	#
+	custom_audio_config__refresh_list_files_in_filesys__all()
+
+func _attempt_create_dir__at_dir(arg_dir_to_create, arg_dir_to_insert_to):
+	var dir = Directory.new()
+	dir.open(arg_dir_to_insert_to)
+	
+	var dir_string = "%s/" % arg_dir_to_create
+	if !dir.dir_exists(dir_string):
+		dir.make_dir(dir_string)
+
+#
+
+func _init_custom_audio_functionality__after_data_init():
+	custom_audio_config__refresh_list_files_in_filesys__all()
+	
+	if GameSaveManager.can_config_custom_audio:
+		_unlocked_config_custom_audio__do_inits()
+
+
+# helper
+func _attempt_create_dir_of_custom_audio_id(arg_audio_dir):
+	_attempt_create_dir__at_dir(arg_audio_dir, get_main_audio_dir())
+
+func get_main_audio_dir():
+	return "%s%s/" % [GameSaveManager.USER_DIR, CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR]
+
+
+# helper02
+func _is_custom_audio_config_dir_exists(arg_audio_dir_name):
+	var full_dir = _get_full_dir_of_custom_audio_id__NOT_incl_GSM_user_path(arg_audio_dir_name)
+	return _is_full_dir_exists__from_GSM_user_path(full_dir)
+
+
+
+func _get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(arg_audio_dir : String, arg_audio_file_name : String):
+	return "%s%s/%s/%s" % [GameSaveManager.USER_DIR, CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, arg_audio_dir, arg_audio_file_name]
+
+func _get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_dir : String):
+	return "%s%s/%s/" % [GameSaveManager.USER_DIR, CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, arg_audio_dir]
+
+func _get_full_dir_of_custom_audio_id__NOT_incl_GSM_user_path(arg_audio_dir : String):
+	return "%s/%s/" % [CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, arg_audio_dir]
+
+
+func _is_full_dir_exists__from_GSM_user_path(arg_dir_path):
+	var dir = Directory.new()
+	dir.open(GameSaveManager.USER_DIR)
+	
+	return dir.dir_exists(arg_dir_path)
+
+
+
+#
+
+func _get_custom_audio_config_as_save_dict():
+	return {
+		CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER : _custom_audio_config__audio_id_to_is_unlocked_map,
+		CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER : custom_audio_config__is_enabled,
+		
+	}
+	
+
+func _load_custom_audio_config_using_dic(data : Dictionary):
+	# IS ENABLED
+	if data.has(CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER):
+		custom_audio_config__is_enabled = data[CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER]
+	else:
+		custom_audio_config__is_enabled = custom_audio_config__is_enabled__default_val
+	
+	# UNLOCKED audio ids
+	if data.has(CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER):
+		_initialize_custom_audio_config_ids_unlocked__from_save_dict(data[CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER])
+	else:
+		_initialize_custom_audio_config_ids_unlocked__from_save_dict({})
+	
+	
+
+func _initialize_custom_audio_config_ids_unlocked__from_save_dict(arg_dict : Dictionary):
+	for audio_id in arg_dict.keys():
+		set_custom_audio_id__unlocked_status(int(audio_id), arg_dict[audio_id])
+	
+	for audio_id in CustomAudioIds.values():
+		if !_custom_audio_config__audio_id_to_is_unlocked_map.has(audio_id):
+			var is_available_by_default = custom_audio_config__audio_ids_default_unlocked.has(audio_id)
+			set_custom_audio_id__unlocked_status(audio_id, is_available_by_default)
+		
+
+
+func set_custom_audio_id__unlocked_status(arg_id, arg_val):
+	var old_val = false
+	if _custom_audio_config__audio_id_to_is_unlocked_map.has(arg_id):
+		old_val = _custom_audio_config__audio_id_to_is_unlocked_map[arg_id]
+	
+	#
+	_custom_audio_config__audio_id_to_is_unlocked_map[arg_id] = arg_val
+	
+	if arg_val:
+		if GameSaveManager.can_config_custom_audio:
+			_attempt_create_dir_of_custom_audio_id(_custom_audio_config__audio_id_to_details_map_map[arg_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR])
+			#_custom_audio_config__refresh_list_files_in_filesys__in_dir__of_audio_id(arg_id)
+		
+	else:
+		#note: never remove a dir
+		pass
+	
+	#todoimp maybe make this emit a signal
+	if old_val != arg_val:
+		pass
+	
+
+
+func custom_audio_config__refresh_list_files_in_filesys__all():
+	for audio_id in CustomAudioIds.values():
+		if is_custom_audio_unlocked(audio_id):
+			_custom_audio_config__refresh_list_files_in_filesys__in_dir__of_audio_id(audio_id)
+
+func _custom_audio_config__refresh_list_files_in_filesys__in_dir__of_audio_id(arg_audio_id):
+	var dir = Directory.new()
+	dir.open(get_main_audio_dir())
+	
+	_custom_audio_config__refresh_list_files_in_filesys__in_dir__of_dir_instance_of_audio_id(arg_audio_id, dir)
+
+
+func _custom_audio_config__refresh_list_files_in_filesys__in_dir__of_dir_instance_of_audio_id(arg_audio_id, arg_audio_main_dir_instance : Directory):
+	var audio_id_specific_dir = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR]
+	
+	var all_file_names_found_in_audio_specific_dir = _get_all_file_names_found_in_audio_specific_dir(arg_audio_id, audio_id_specific_dir, arg_audio_main_dir_instance)
+	#temptodo print
+	print(all_file_names_found_in_audio_specific_dir)
+	
+	_update_custom_files_in_custom_audio_map_map(arg_audio_id, all_file_names_found_in_audio_specific_dir)
+
+
+func _get_all_file_names_found_in_audio_specific_dir(arg_audio_id, arg_audio_id_specific_dir : String, arg_audio_main_dir_instance : Directory) -> Array:
+	var all_file_names_found_in_audio_specific_dir : Array = []
+	if arg_audio_main_dir_instance.dir_exists(arg_audio_id_specific_dir):
+		var audio_specific_dir = Directory.new()
+		var dir_path = _get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_id_specific_dir)
+		audio_specific_dir.open(dir_path)
+		
+		audio_specific_dir.list_dir_begin(true)
+		var file_name = audio_specific_dir.get_next()
+		
+		while file_name != "":
+			if !audio_specific_dir.current_is_dir() and (".wav" in file_name or ".mp3" in file_name):
+				all_file_names_found_in_audio_specific_dir.append(file_name)
+			
+			file_name = audio_specific_dir.get_next()
+		
+		audio_specific_dir.list_dir_end()
+	
+	return all_file_names_found_in_audio_specific_dir
+
+func _update_custom_files_in_custom_audio_map_map(arg_audio_id, arg_file_name_list : Array):
+	var arr_of_custom_files : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
+	arr_of_custom_files.clear()
+	arr_of_custom_files.append_array(arg_file_name_list)
+	
+	var calced_arr_of_custom_file_full_paths : Array = get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id)
+	var arr_of_custom_file_full_paths : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS]
+	arr_of_custom_file_full_paths.clear()
+	arr_of_custom_file_full_paths.append_array(calced_arr_of_custom_file_full_paths)
+
+#
+
+func get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id):
+	var audio_specific_dir = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR]
+	var arr_of_custom_files : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
+	var arr_of_full_paths : Array = []
+	for custom_file_name in arr_of_custom_files:
+		#todoimp this is where its wrong
+		arr_of_full_paths.append(_get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(audio_specific_dir, custom_file_name))
+	
+	return arr_of_full_paths
+
+
+
+func is_custom_audio_unlocked(arg_audio_id):
+	return _custom_audio_config__audio_id_to_is_unlocked_map[arg_audio_id]
+
+func get_random_custom_audio_full_file_path_of_audio_id__in_precalced_map(arg_audio_id):
+	var arr_of_custom_file_full_paths : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS]
+	
+	return StoreOfRNG.randomly_select_one_element(arr_of_custom_file_full_paths, SingletonsAndConsts.non_essential_rng)
+
+func if_custom_audio_id_has_files_in_file_sys__in_precalced_map(arg_audio_id):
+	var arr_of_custom_files : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
+	
+	return arr_of_custom_files.size() != 0
+
+
+func get_custom_audio_id_associated_with_store_of_audio_id(arg_store_of_audio_id):
+	return _store_of_audio_id_to_custom_audio_id_map[arg_store_of_audio_id]
+
+func if_store_of_audio_id_is_associated_with_custom_audio_id(arg_store_of_audio_id):
+	return _store_of_audio_id_to_custom_audio_id_map.has(arg_store_of_audio_id)
 
 
 

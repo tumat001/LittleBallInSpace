@@ -679,15 +679,19 @@ func generate_atlased_textures_and_top_left_pos__and_length_of_img__for_fragment
 #################
 
 func _initialize_all_tile_to_sound_id_map():
+	#used by common/most surfaces
 	var _standard_tile_metal_hit__ping = {
 		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
 	}
+	#used by glass
 	var _standard_tile_glass_hit = {
 		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass, StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass]
 	}
+	#used by toggleable
 	var _standard_tile_metal_hit__tin = {
 		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
 	}
+	#not used yet
 	var _standard_tile_metal_hit__hollow = {
 		ANY_AUTO_COORD : [StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftHollow, StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion]
 	}
@@ -751,7 +755,6 @@ func _initialize_all_tile_to_sound_id_map():
 		
 	}
 	
-
 
 func get_sound_id_to_play_for_tile_hit(arg_tile_id, arg_auto_coords, arg_is_loud : bool):
 	if _tile_id_to_auto_coord_to_sound_id_map__normal_and_loud.has(arg_tile_id):

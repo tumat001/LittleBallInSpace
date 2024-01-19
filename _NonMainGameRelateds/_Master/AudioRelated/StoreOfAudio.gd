@@ -57,7 +57,6 @@ enum AudioIds {
 	SFX_TileHit_MetalHitGlass = 5005
 	
 	
-	
 	# ROTATE
 	SFX_Rotate_Standard_01 = 5100
 	
@@ -405,7 +404,16 @@ func _initialize_bgm_stages_playlist():
 
 #######
 
+#todoimp continue work here.
 func get_audio_file_path_of_id(arg_id):
+	if GameSettingsManager.custom_audio_config__is_enabled and GameSettingsManager.if_store_of_audio_id_is_associated_with_custom_audio_id(arg_id):
+		var custom_audio_id = GameSettingsManager.get_custom_audio_id_associated_with_store_of_audio_id(arg_id)
+		
+		if GameSettingsManager.if_custom_audio_id_has_files_in_file_sys__in_precalced_map(custom_audio_id):
+			return GameSettingsManager.get_random_custom_audio_full_file_path_of_audio_id__in_precalced_map(custom_audio_id)
+	
+	##
+	
 	if _audio_id_to_file_path_map.has(arg_id):
 		return _audio_id_to_file_path_map[arg_id]
 	else:
@@ -419,19 +427,17 @@ func get_audio_id_custom_standard_db(arg_id):
 		return AudioManager.DECIBEL_VAL__STANDARD
 
 
-func get_audio_id_from_file_path(arg_path):
-	if _file_path_to_audio_id_map.has(arg_path):
-		return _file_path_to_audio_id_map[arg_path]
-	else:
-		print("StoreOfAudio error: audio id of file path not found: %s" % [arg_path])
-	
+#func get_audio_id_from_file_path(arg_path):
+#	if _file_path_to_audio_id_map.has(arg_path):
+#		return _file_path_to_audio_id_map[arg_path]
+#	else:
+#		print("StoreOfAudio error: audio id of file path not found: %s" % [arg_path])
 
 
 ########################################
 
 func is_BGM_playlist_id_playing(arg_playlist_id):
 	return BGM_playlist_catalog.is_playlist_id_playing(arg_playlist_id)
-
 
 #
 

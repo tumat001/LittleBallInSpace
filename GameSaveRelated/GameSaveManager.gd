@@ -12,6 +12,7 @@ signal tentative_coin_ids_collected_changed__for_curr_level(arg_tentative_coin_i
 signal can_view_game_stats_changed(arg_val)
 signal can_edit_tile_colors_changed(arg_val)
 signal can_edit_player_aesth_changed(arg_val)
+signal can_config_custom_audio_changed(arg_val)
 
 signal is_player_health_on_start_zero_changed()
 signal is_player_health_invulnerable__state_changed(arg_val)
@@ -41,6 +42,7 @@ const LEVEL_ID_DIED_IN__DIC_IDENTIFIER = "LEVEL_ID_DIED_IN__DIC_IDENTIFIER"
 const CAN_VIEW_GAME_STATS__DIC_IDENTIFIER = "CAN_VIEW_GAME_STATS__DIC_IDENTIFIER"
 const CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER = "CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER"
 const CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER = "CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER"
+const CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER = "CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER"
 
 
 const PLAYER_MAX_HEALTH = 100
@@ -73,6 +75,7 @@ var is_player_health_invulnerable__state : int = IS_PLAYER_HEALTH_INVULNERABLE__
 var can_view_game_stats : bool setget set_can_view_game_stats
 var can_edit_tile_colors : bool setget set_can_edit_tile_colors
 var can_edit_player_aesth : bool setget set_can_edit_player_aesth
+var can_config_custom_audio : bool setget set_can_config_custom_audio
 
 ###
 
@@ -296,6 +299,12 @@ func _load_player_related_data(arg_file : File):
 	else:
 		set_can_edit_player_aesth(false)
 	
+	##
+	
+	if data.has(CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER):
+		set_can_config_custom_audio(data[CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER])
+	else:
+		set_can_config_custom_audio(false)
 
 #
 
@@ -533,6 +542,7 @@ func _save_player_data():
 		CAN_VIEW_GAME_STATS__DIC_IDENTIFIER : can_view_game_stats,
 		CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER : can_edit_tile_colors,
 		CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER : can_edit_player_aesth,
+		CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER : can_config_custom_audio,
 		
 	}
 	
@@ -636,6 +646,12 @@ func set_can_edit_player_aesth(arg_val):
 	
 	if _is_manager_initialized:
 		emit_signal("can_edit_player_aesth_changed", arg_val)
+
+func set_can_config_custom_audio(arg_val):
+	can_config_custom_audio = arg_val
+	
+	if _is_manager_initialized:
+		emit_signal("can_config_custom_audio_changed", arg_val)
 
 #####################################
 ## LEVEL RELATED
@@ -901,7 +917,7 @@ func save_viewport_img_in_scrnshot_folder():
 	image.flip_y()
 	
 	var dir = Directory.new()
-	dir.open("user://")
+	dir.open(USER_DIR)
 	if !dir.dir_exists(USER_DIR__IMG_SAVE_FilePath):
 		dir.make_dir(USER_DIR__IMG_SAVE_FilePath)
 	
@@ -913,6 +929,7 @@ func save_viewport_img_in_scrnshot_folder():
 	
 	
 	image.save_png(USER_DIR + USER_DIR__IMG_SAVE_FilePath + final_file_name)
+	
 
 func _get_file_count_in_dir(dir : Directory) -> int:
 	var file_count = 0
@@ -950,6 +967,7 @@ func save_all_save_states__even_from_other_managers():
 	GameSettingsManager.save_all_related_datas()
 	GameStatsManager.save_ALL__game_stats_data()
 	save_settings__of_audio_manager()
+	
 
 #func _exit_tree():
 #	_save_player_data()

@@ -321,8 +321,7 @@ func add_node_inside_portal__to_return_on_velocity_reversed(arg_node : RigidBody
 			_add_node_inside_portal__to_return_on_velocity_reversed__using_dir(arg_node, dir)
 			#_bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed[arg_node] = dir
 			
-			#temptodo
-			print("lin_vel: %s, dir: %s" % [lin_vel, dir])
+			#print("lin_vel: %s, dir: %s" % [lin_vel, dir])
 			
 			#if !arg_node.is_connected("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker"):
 			#	arg_node.connect("tree_exiting", self, "_on_node_tree_exiting__remove_from_inside_portal_tracker", [arg_node])
@@ -396,8 +395,7 @@ func _physics_process(delta):
 					_is_directions_significantly_different__based_on_body_conditions = _calc_is_directions_significantly_different(curr_direction, entry_direction)
 				
 				if _is_directions_significantly_different__based_on_body_conditions:
-					#temptodo
-					print("TP DUE TO big dir changes -- 01. curr: %s, orig entry dir: %s" % [curr_direction, entry_direction])
+					#print("TP DUE TO big dir changes -- 01. curr: %s, orig entry dir: %s" % [curr_direction, entry_direction])
 					_teleport_node_to_other_linked_portal(body)
 		
 
@@ -459,8 +457,7 @@ func _on_Area2D_body_entered(body):
 			if !_nodes_to_not_teleport_on_first_enter.has(body):
 				#print(_rewind_most_recent_load__nodes_to_not_teleport_on_first_enter)
 				
-				#temptodo
-				print("TP DUE TO entered area -- 02")
+				#print("TP DUE TO entered area -- 02")
 				_teleport_node_to_other_linked_portal(body)
 				
 			else:
@@ -528,15 +525,9 @@ func _on_Area2D_body_exited(body):
 
 func _set_player__is_prevent_effects_of_move_breaking__by_portal(arg_player):
 	arg_player.is_prevent_effects_of_move_change__by_portal__delta_count = 3.0
-	
-	#temptodo
-	print("prevented mov change")
 
 func _set_player__is_prevent_effects_of_move_breaking__by_portal__false(arg_player):
 	arg_player.is_prevent_effects_of_move_change__by_portal__delta_count = 0.0
-	
-	#temptodo
-	print("UNprevented mov change")
 
 
 func _set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit():
