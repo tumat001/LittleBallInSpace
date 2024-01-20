@@ -542,6 +542,7 @@ enum CustomAudioIds {
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR = "FileDir"
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES = "CustomFilesInFileSys"
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS = "CustomFilesInFileSysFullPath"
+#const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE = "LoadedAStream"
 
 #todoimp make more, for ball hitting stuffs (and self), and enemy hits
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT = "Player_CommonMetal_NormalHit"
@@ -556,24 +557,28 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT,
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
 		
 	},
 	CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT : {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__LOUD_HIT,
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
 		
 	},
 	CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT : {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
 		
 	},
 	CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT : {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__NORMAL_HIT,
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
 		
 	},
 	
@@ -604,7 +609,7 @@ const custom_audio_config__audio_ids_default_unlocked : Array = [
 	
 ]
 
-
+var custom_audio_config__path_name_to_loaded_stream_file_map : Dictionary
 
 ####
 
@@ -2077,6 +2082,9 @@ func _update_custom_files_in_custom_audio_map_map(arg_audio_id, arg_file_name_li
 	var arr_of_custom_file_full_paths : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS]
 	arr_of_custom_file_full_paths.clear()
 	arr_of_custom_file_full_paths.append_array(calced_arr_of_custom_file_full_paths)
+	
+	for path in arr_of_custom_file_full_paths:
+		deferred_generate_custom_audio_steam_file_from_path(path, false)
 
 #
 
@@ -2085,8 +2093,8 @@ func get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id):
 	var arr_of_custom_files : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
 	var arr_of_full_paths : Array = []
 	for custom_file_name in arr_of_custom_files:
-		#todoimp this is where its wrong
-		arr_of_full_paths.append(_get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(audio_specific_dir, custom_file_name))
+		var path = _get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(audio_specific_dir, custom_file_name)
+		arr_of_full_paths.append(path)
 	
 	return arr_of_full_paths
 
@@ -2112,5 +2120,44 @@ func get_custom_audio_id_associated_with_store_of_audio_id(arg_store_of_audio_id
 func if_store_of_audio_id_is_associated_with_custom_audio_id(arg_store_of_audio_id):
 	return _store_of_audio_id_to_custom_audio_id_map.has(arg_store_of_audio_id)
 
+
+func get_custom_audio_path_generated_steam_file(arg_audio_path : String):
+	#return _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE]
+	return custom_audio_config__path_name_to_loaded_stream_file_map[arg_audio_path]
+
+func if_custom_audio_path_has_generated_stream_file(arg_audio_path : String):
+	return custom_audio_config__path_name_to_loaded_stream_file_map.has(arg_audio_path)
+
+
+func deferred_generate_custom_audio_steam_file_from_path(arg_audio_path : String, arg_replace_existing : bool):
+	call("generate_custom_audio_steam_file_from_path", arg_audio_path, arg_replace_existing)
+
+func generate_custom_audio_steam_file_from_path(arg_audio_path : String, arg_replace_existing : bool):
+	if if_custom_audio_path_has_generated_stream_file(arg_audio_path) and !arg_replace_existing:
+		return get_custom_audio_path_generated_steam_file(arg_audio_path)
+	
+	##
+	
+#	var file = File.new()
+#	file.open(arg_audio_path, File.READ)
+#
+#	var buffer = file.get_buffer(file.get_len())
+#	file.close()
+	
+#	var stream = AudioStreamSample.new()
+#	stream.format = AudioStreamSample.FORMAT_16_BITS
+#	stream.data = buffer
+#	stream.mix_rate = 44100
+#	stream.stereo = true
+	
+	var audio_loader = AudioLoader.new()
+	var stream = audio_loader.loadfile(arg_audio_path)
+	
+	stream.resource_path = arg_audio_path
+	
+	custom_audio_config__path_name_to_loaded_stream_file_map[arg_audio_path] = stream
+	
+	
+	return stream
 
 

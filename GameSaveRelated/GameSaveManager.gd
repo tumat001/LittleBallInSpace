@@ -873,41 +873,41 @@ func _load_stats__of_audio_manager():
 ###
 
 
-func attempt_load_special_stage_01_02_data():
-	var load_file = File.new()
-	
-	if load_file.file_exists(stage_special_01_02__data_arr_file_path):
-		var err_stat = load_file.open(stage_special_01_02__data_arr_file_path, File.READ)
-		
-		if err_stat != OK:
-			print("Loading error! -- stage_special_01_02__data")
-			return false
-		
-		var result = _load_stage_special_01_02_data(load_file)
-		
-		load_file.close()
-		return result
-		
-	else:
-		#_load_game_controls_related_data(null)
-		return null
-
-func _load_stage_special_01_02_data(arg_file : File):
-	var data : Array
-	if arg_file != null:
-		data = parse_json(arg_file.get_line())
-		
-		#while !arg_file.eof_reached():
-		#	var line = parse_json(arg_file.get_line())
-		#	data.append(line)
-	
-	return data
-
-
-# special case use.
-func _save_stage_special_01_02_data(arg_data : Array):
-	_save_using_arr(arg_data, stage_special_01_02__data_arr_file_path, "SAVE ERROR: SpecialStage01 02 settings")
-	
+#func attempt_load_special_stage_01_02_data():
+#	var load_file = File.new()
+#
+#	if load_file.file_exists(stage_special_01_02__data_arr_file_path):
+#		var err_stat = load_file.open(stage_special_01_02__data_arr_file_path, File.READ)
+#
+#		if err_stat != OK:
+#			print("Loading error! -- stage_special_01_02__data")
+#			return false
+#
+#		var result = _load_stage_special_01_02_data(load_file)
+#
+#		load_file.close()
+#		return result
+#
+#	else:
+#		#_load_game_controls_related_data(null)
+#		return null
+#
+#func _load_stage_special_01_02_data(arg_file : File):
+#	var data : Array
+#	if arg_file != null:
+#		data = parse_json(arg_file.get_line())
+#
+#		#while !arg_file.eof_reached():
+#		#	var line = parse_json(arg_file.get_line())
+#		#	data.append(line)
+#
+#	return data
+#
+#
+## special case use.
+#func _save_stage_special_01_02_data(arg_data : Array):
+#	_save_using_arr(arg_data, stage_special_01_02__data_arr_file_path, "SAVE ERROR: SpecialStage01 02 settings")
+#
 
 
 #

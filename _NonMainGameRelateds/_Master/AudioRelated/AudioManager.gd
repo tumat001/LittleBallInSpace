@@ -298,7 +298,9 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 		player = _construct_new_audio_stream_player__based_on_cons_type(player_construction_type, arg_pause_mode)
 	
 	
-	var file = load(arg_path_name)
+	var file = _load_file__using_path_name(arg_path_name)#load(arg_path_name)
+	#temptodo
+	print("audiofile: %s, arg_path_name: %s" % [file, arg_path_name])
 	
 	#
 	var loop_val = false
@@ -317,6 +319,21 @@ func get_available_or_construct_new_audio_stream_player(arg_audio_id, player_con
 	
 	return player
 
+func _load_file__using_path_name(arg_path_name : String):
+	if arg_path_name.begins_with("res"):
+		return load(arg_path_name)
+	elif arg_path_name.begins_with("user"):
+		return _load_file_from_user_folder__generate_or_fetch_existing_from_GSM(arg_path_name)
+		
+
+func _load_file_from_user_folder__generate_or_fetch_existing_from_GSM(arg_path_name : String):
+	if GameSettingsManager.if_custom_audio_path_has_generated_stream_file(arg_path_name):
+		return GameSettingsManager.get_custom_audio_path_generated_steam_file(arg_path_name)
+	else:
+		return GameSettingsManager.generate_custom_audio_steam_file_from_path(arg_path_name, true)
+
+
+##
 
 func _is_player_of_correct_type(arg_player, arg_constr_type : int):
 	if arg_constr_type == PlayerConstructionType.PLAIN and arg_player is AudioStreamPlayer:

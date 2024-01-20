@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "AudioLoader",
+"language": "GDScript",
+"path": "res://MiscRelated/AudioHelperRelated/GDScriptAudioImport.gd"
+}, {
 "base": "Camera",
 "class": "ShakeCamera",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://addons/camera_shake/camera_scripts/shake_camera_2D.gd"
 } ]
 _global_script_class_icons={
+"AudioLoader": "",
 "ShakeCamera": "",
 "ShakeCamera2D": ""
 }

@@ -34,7 +34,7 @@ enum AudioIds {
 	# RISING
 	BGM_Rising01_01 = 1100
 	BGM_Rising01_02 = 1101
-	BGM_Rising01_02 = 1102
+	BGM_Rising01_03 = 1102
 	
 	# DOOM
 	BGM_Doom01_01 = 1200
@@ -219,13 +219,28 @@ var _file_path_to_audio_id_map := {}
 
 # If not defined, then default 0.0 is used.
 var _audio_id_to_custom_standard_db_map := {
+	
+	AudioIds.BGM_Calm01_01 : -8,
+	AudioIds.BGM_Calm01_02 : -8,
+	AudioIds.BGM_Calm01_03 : -8,
+	AudioIds.BGM_Calm01_04 : -8,
+	AudioIds.BGM_Calm01_05 : -8,
+	
+	# RISING
+	AudioIds.BGM_Rising01_01 : -8,
+	AudioIds.BGM_Rising01_02 : -8,
+	AudioIds.BGM_Rising01_03 : -8,
+	
+	# DOOM
+	AudioIds.BGM_Doom01_01 : -8,
+	
+	##
+	
 	AudioIds.SFX_TileHit_MetalBang_Ping_HighPitchShortFull : -2,
 	
-	AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : 10,
-	AudioIds.SFX_TileHit_MetalBang_SoftHollow : 18,
-	AudioIds.SFX_TileHit_MetalHitGlass : 10,
-	
-	AudioIds.SFX_Pickupable_Star_01 : -12,
+	AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : 4, #10
+	AudioIds.SFX_TileHit_MetalBang_SoftHollow : 6, #18
+	AudioIds.SFX_TileHit_MetalHitGlass : 0, #10
 	
 	AudioIds.SFX_Pickupable_LaunchBallModi : -10,
 	
@@ -236,9 +251,8 @@ var _audio_id_to_custom_standard_db_map := {
 	
 	AudioIds.SFX_GUI_Button_Click_Confirmed : -16,
 	
-	AudioIds.BGM_Calm01_01 : -4,
 	
-	AudioIds.SFX_Pickupable_Star_01 : -6,
+	AudioIds.SFX_Pickupable_Star_01 : -8,
 	
 	
 	AudioIds.SFX_BallCollision_Ball_01 : -6,
@@ -257,14 +271,27 @@ var _audio_id_to_custom_standard_db_map := {
 	AudioIds.SFX_Player_Damage_01 : 10,
 	AudioIds.SFX_Enemy_Damage_01 : 8,
 	
-	AudioIds.SFX_Player_DeathExplode : -2,
-	AudioIds.SFX_Enemy_DeathExplode : 8,
+	AudioIds.SFX_Player_DeathExplode : -4,
+	AudioIds.SFX_Enemy_DeathExplode : 7,
 	
 	AudioIds.SFX_BallDispenserLaunch_01 : -4,
 	
 	
 	AudioIds.SFX_Player_HealthThresholdCrossed_Shatter_01 : -13,
 	AudioIds.SFX_Player_AllHealthLost_Shatter_01 : -13,
+	
+	##
+	
+	AudioIds.SFX_LevelSelected_01 : -4,
+	
+	AudioIds.SFX_Misc_GlassBreak_Hard : -8,
+	
+	AudioIds.SFX_TileFragments_Glass_01 : -5,
+	AudioIds.SFX_TileFragments_Glass_02 : -5,
+	AudioIds.SFX_TileFragments_Glass_03 : -5,
+	AudioIds.SFX_TileFragments_Glass_04 : -5,
+	AudioIds.SFX_TileFragments_Glass_05 : -5,
+	
 	
 	
 }
