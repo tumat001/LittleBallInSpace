@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SliderStandard/Assets/PlayerGUI_SliderStandard_Background.png" type="Texture" id=1]
-[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SliderStandard/PlayerGUI_SliderStandard.gd" type="Script" id=2]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SliderStandard/PlayerGUI_SliderStandardV.gd" type="Script" id=2]
 
 [sub_resource type="Theme" id=1]
 
@@ -21,15 +21,15 @@ margin_bottom = 165.0
 
 [node name="SliderMarginer" type="MarginContainer" parent="Control"]
 margin_left = 45.0
-margin_top = 8.0
+margin_top = 6.0
 margin_right = 61.0
-margin_bottom = 108.0
+margin_bottom = 116.0
 size_flags_horizontal = 6
 size_flags_vertical = 3
 
 [node name="VSlider" type="VSlider" parent="Control/SliderMarginer"]
 margin_right = 16.0
-margin_bottom = 100.0
+margin_bottom = 110.0
 focus_mode = 0
 theme = SubResource( 1 )
 

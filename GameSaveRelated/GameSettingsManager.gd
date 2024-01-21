@@ -537,12 +537,16 @@ enum CustomAudioIds {
 	PLAYER__TOGGLEABLE_METAL__NORMAL_HIT = 10,
 	PLAYER__COMMON_GLASS__NORMAL_HIT = 20,
 	
+	##
+	
+	
 }
 
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR = "FileDir"
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES = "CustomFilesInFileSys"
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS = "CustomFilesInFileSysFullPath"
 #const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE = "LoadedAStream"
+const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO = "VolumeRatio"
 
 #todoimp make more, for ball hitting stuffs (and self), and enemy hits
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT = "Player_CommonMetal_NormalHit"
@@ -558,6 +562,7 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
 		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
 		
 	},
 	CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT : {
@@ -565,6 +570,7 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
 		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
 		
 	},
 	CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT : {
@@ -572,6 +578,7 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
 		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
 		
 	},
 	CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT : {
@@ -579,6 +586,7 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
 		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
 		
 	},
 	
@@ -591,6 +599,8 @@ var _store_of_audio_id_to_custom_audio_id_map : Dictionary = {
 	StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass : CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT,
 	
 	#
+	
+	
 }
 
 
@@ -610,6 +620,11 @@ const custom_audio_config__audio_ids_default_unlocked : Array = [
 ]
 
 var custom_audio_config__path_name_to_loaded_stream_file_map : Dictionary
+
+
+const CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER = "AUDIO_ID_TO_VOLUME_RATIO_MAP"
+#no var for this. this is in the mapmap
+const custom_audio_config__default_volume_ratio : float = 1.0
 
 ####
 
@@ -1933,7 +1948,7 @@ func _attempt_create_dir__at_dir(arg_dir_to_create, arg_dir_to_insert_to):
 #
 
 func _init_custom_audio_functionality__after_data_init():
-	custom_audio_config__refresh_list_files_in_filesys__all()
+	#custom_audio_config__refresh_list_files_in_filesys__all()
 	
 	if GameSaveManager.can_config_custom_audio:
 		_unlocked_config_custom_audio__do_inits()
@@ -1954,10 +1969,10 @@ func _is_custom_audio_config_dir_exists(arg_audio_dir_name):
 
 
 
-func _get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(arg_audio_dir : String, arg_audio_file_name : String):
+func get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(arg_audio_dir : String, arg_audio_file_name : String):
 	return "%s%s/%s/%s" % [GameSaveManager.USER_DIR, CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, arg_audio_dir, arg_audio_file_name]
 
-func _get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_dir : String):
+func get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_dir : String):
 	return "%s%s/%s/" % [GameSaveManager.USER_DIR, CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, arg_audio_dir]
 
 func _get_full_dir_of_custom_audio_id__NOT_incl_GSM_user_path(arg_audio_dir : String):
@@ -1978,6 +1993,7 @@ func _get_custom_audio_config_as_save_dict():
 	return {
 		CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER : _custom_audio_config__audio_id_to_is_unlocked_map,
 		CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER : custom_audio_config__is_enabled,
+		CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER : generate_save_dict_for_custom_audio_id_volume_ratio(),
 		
 	}
 	
@@ -1995,6 +2011,11 @@ func _load_custom_audio_config_using_dic(data : Dictionary):
 	else:
 		_initialize_custom_audio_config_ids_unlocked__from_save_dict({})
 	
+	# VOL Ratio
+	if data.has(CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER):
+		_config_custom_audio_details_map_map__volume_ratio(data)
+	else:
+		_config_custom_audio_details_map_map__volume_ratio({})
 	
 
 func _initialize_custom_audio_config_ids_unlocked__from_save_dict(arg_dict : Dictionary):
@@ -2006,7 +2027,6 @@ func _initialize_custom_audio_config_ids_unlocked__from_save_dict(arg_dict : Dic
 			var is_available_by_default = custom_audio_config__audio_ids_default_unlocked.has(audio_id)
 			set_custom_audio_id__unlocked_status(audio_id, is_available_by_default)
 		
-
 
 func set_custom_audio_id__unlocked_status(arg_id, arg_val):
 	var old_val = false
@@ -2030,6 +2050,19 @@ func set_custom_audio_id__unlocked_status(arg_id, arg_val):
 		pass
 	
 
+func _config_custom_audio_details_map_map__volume_ratio(arg_dict : Dictionary):
+	for custom_audio_id in CustomAudioIds.values():
+		if arg_dict.has(str(custom_audio_id)):
+			var saved_vol_ratio = arg_dict[custom_audio_id]
+			
+			_custom_audio_config__audio_id_to_details_map_map[custom_audio_id][CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER] = saved_vol_ratio
+			
+		else:
+			_custom_audio_config__audio_id_to_details_map_map[custom_audio_id][CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER] = custom_audio_config__default_volume_ratio
+			
+
+
+#
 
 func custom_audio_config__refresh_list_files_in_filesys__all():
 	for audio_id in CustomAudioIds.values():
@@ -2057,7 +2090,7 @@ func _get_all_file_names_found_in_audio_specific_dir(arg_audio_id, arg_audio_id_
 	var all_file_names_found_in_audio_specific_dir : Array = []
 	if arg_audio_main_dir_instance.dir_exists(arg_audio_id_specific_dir):
 		var audio_specific_dir = Directory.new()
-		var dir_path = _get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_id_specific_dir)
+		var dir_path = get_full_dir_of_custom_audio_file_name__incl_GSM_user_path(arg_audio_id_specific_dir)
 		audio_specific_dir.open(dir_path)
 		
 		audio_specific_dir.list_dir_begin(true)
@@ -2093,7 +2126,7 @@ func get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id):
 	var arr_of_custom_files : Array = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
 	var arr_of_full_paths : Array = []
 	for custom_file_name in arr_of_custom_files:
-		var path = _get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(audio_specific_dir, custom_file_name)
+		var path = get_full_dir_of_custom_audio_file_name__with_specific_audio_file_name__incl_GSM_user_path(audio_specific_dir, custom_file_name)
 		arr_of_full_paths.append(path)
 	
 	return arr_of_full_paths
@@ -2138,18 +2171,6 @@ func generate_custom_audio_steam_file_from_path(arg_audio_path : String, arg_rep
 	
 	##
 	
-#	var file = File.new()
-#	file.open(arg_audio_path, File.READ)
-#
-#	var buffer = file.get_buffer(file.get_len())
-#	file.close()
-	
-#	var stream = AudioStreamSample.new()
-#	stream.format = AudioStreamSample.FORMAT_16_BITS
-#	stream.data = buffer
-#	stream.mix_rate = 44100
-#	stream.stereo = true
-	
 	var audio_loader = AudioLoader.new()
 	var stream = audio_loader.loadfile(arg_audio_path)
 	
@@ -2159,5 +2180,27 @@ func generate_custom_audio_steam_file_from_path(arg_audio_path : String, arg_rep
 	
 	
 	return stream
+
+
+
+func get_custom_audio_id__volume_ratio(arg_audio_id):
+	return _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER]
+
+func set_custom_audio_id__volume_ratio(arg_audio_id, arg_volume_ratio : float):
+	_custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER] = arg_volume_ratio
+
+
+func generate_save_dict_for_custom_audio_id_volume_ratio():
+	var audio_id_to_vol_ratio_map : Dictionary = {}
+	for audio_id in _custom_audio_config__audio_id_to_details_map_map.keys():
+		var volume_ratio = _custom_audio_config__audio_id_to_details_map_map[audio_id][CUSTOM_AUDIO_CONFIG__AUDIO_ID_TO_VOLUME_RATIO__DIC_IDENTIFIER]
+		audio_id_to_vol_ratio_map[audio_id] = volume_ratio
+	
+	return audio_id_to_vol_ratio_map
+
+
+
+func get_all_precalced_custom_audio_file_names(arg_audio_id):
+	return _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES]
 
 

@@ -23,11 +23,20 @@ class AudioProperties:
 
 var _audio_properties : AudioProperties
 
+export(bool) var is_mute_button_enabled : bool = true setget set_is_mute_button_enabled
 
 onready var slider_standard = $VBoxContainer/SliderStandard
 onready var mute_button = $VBoxContainer/MuteButton
 
 ####
+
+func set_is_mute_button_enabled(arg_val):
+	is_mute_button_enabled = arg_val
+	
+	if is_inside_tree():
+		mute_button.visible = is_mute_button_enabled
+
+#
 
 func set_audio_properties(arg_properties : AudioProperties):
 	_audio_properties = arg_properties
@@ -40,7 +49,8 @@ func _ready():
 		_update_display_based_on_properties()
 	
 	slider_standard.connect("slider_value_changed", self, "_on_slider_value_changed", [], CONNECT_PERSIST)
-
+	
+	set_is_mute_button_enabled(is_mute_button_enabled)
 
 func _update_display_based_on_properties():
 	slider_standard.set_name_label(_audio_properties.audio_bus_display_name)
@@ -94,10 +104,11 @@ func _on_AudioBusVolumePanel_visibility_changed():
 
 
 func _on_MuteButton_pressed():
-	if slider_standard.get_value() != 0:
-		slider_standard.set_value(0, true)
-	else:
-		slider_standard.set_value(100, true)
+	if is_mute_button_enabled:
+		if slider_standard.get_value() != 0:
+			slider_standard.set_value(0, true)
+		else:
+			slider_standard.set_value(100, true)
 
 #
 
@@ -112,3 +123,6 @@ func _on_slider_value_changed(arg_val):
 		AudioManager.set(_audio_properties.bus_player_type_mute__variable_name, true)
 	else:
 		AudioManager.set(_audio_properties.bus_player_type_mute__variable_name, false)
+
+#
+

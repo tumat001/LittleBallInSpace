@@ -117,6 +117,7 @@ func _init_and_config_mod_x_all_container_elements__as_hidden():
 		_mod_x_vbox_container_elements.append(mod_x_container.get_children())
 
 
+#todoimp continue the mod x related things to display
 func _config_mod_x_status_icons():
 	pass
 	

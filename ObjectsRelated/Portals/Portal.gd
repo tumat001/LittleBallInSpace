@@ -486,9 +486,7 @@ func _teleport_node_to_other_linked_portal(body):
 		#body.cancel_next_apply_ground_repelling_force__from_portal()
 		#CameraManager.disable_camera_smoothing()
 		
-		_set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit()
-		_set_player__is_prevent_effects_of_move_breaking__by_portal(body)
-	
+		_prevent_mov_changed_then_enable_after_conditions__if_appropriate(body)
 	
 	body.global_position = _portal_to_link_with.global_position
 	
@@ -509,7 +507,19 @@ func _teleport_node_to_other_linked_portal(body):
 		emit_signal("object_entered", body)
 		
 	
+
+
+func _prevent_mov_changed_then_enable_after_conditions__if_appropriate(body):
+	if !is_instance_valid(_portal_to_link_with):
+		return
 	
+	if !_portal_to_link_with.visible or _portal_to_link_with.is_disabled or _portal_to_link_with.is_scene_transition_type_portal or _portal_to_link_with.last_calculated_is_collision_disabled:
+		return
+	
+	_set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit()
+	_set_player__is_prevent_effects_of_move_breaking__by_portal(body)
+	
+
 
 
 func _on_Area2D_body_exited(body):
