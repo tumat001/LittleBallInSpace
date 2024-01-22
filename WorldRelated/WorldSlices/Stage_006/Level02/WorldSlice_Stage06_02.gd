@@ -92,7 +92,10 @@ func _on_Button_AntiFog_pressed(arg_is_pressed):
 			if is_instance_valid(enemy):
 				enemy.prevent_draw_enemy_range_cond_clause.remove_clause(enemy.PreventDrawEnemyRangeClauseId.CUSTOM_WORLD_SLICE)
 		
-
+		
+		GameSettingsManager.set_custom_audio_id__unlocked_status(GameSettingsManager.CustomAudioIds.ENEMY__COMBAT__TAKE_DAMAGE, true)
+		GameSettingsManager.set_custom_audio_id__unlocked_status(GameSettingsManager.CustomAudioIds.ENEMY__COMBAT__DESTROYED, true)
+		
 
 
 

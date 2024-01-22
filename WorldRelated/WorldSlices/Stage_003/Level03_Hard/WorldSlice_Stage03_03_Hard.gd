@@ -37,6 +37,9 @@ onready var mod_x_all_vbox_container = $MiscContainer/ModX_AllContainer
 onready var base_tileset_simple_glass_for_mod_x = $TileContainer/BTS_SimpleGlassForModX
 onready var button_for_mod_x_screen = $ObjectContainer/Button_ForModuleX
 
+onready var mod_x_status__level_layout_specials = $MiscContainer/ModX_AllContainer/ModX_LevelLayout_SpecialsA/ModXStatus_LevelLayout_Specials
+onready var mod_x_status__custom_audio = $MiscContainer/ModX_AllContainer/ModX_CustomAudioContainer/ModXStatus_CustomAudio
+
 ######
 
 func _init():
@@ -106,20 +109,23 @@ func _init__as_first_time_viewing_mod_x_statuses():
 	vision_fog.visible = true
 
 func _init_and_config_mod_x_all_container_elements__as_hidden():
-	#var children_list_of_list : Array = []
-	#var child_count : int
 	for mod_x_container in mod_x_all_vbox_container.get_children():
-		#child_count = mod_x_container.get_child_count()
-		#children_list_of_list.append(mod_x_container.get_children())
-		
 		for child in mod_x_container.get_children():
 			child.modulate.a = 0
 		_mod_x_vbox_container_elements.append(mod_x_container.get_children())
 
 
-#todoimp continue the mod x related things to display
+
 func _config_mod_x_status_icons():
-	pass
+	if GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01):
+		mod_x_status__level_layout_specials.texture = ModuleX_StatusIcon_Check
+	else:
+		mod_x_status__level_layout_specials.texture = ModuleX_StatusIcon_X
+	
+	if GameSaveManager.can_config_custom_audio:
+		mod_x_status__custom_audio.texture = ModuleX_StatusIcon_Check
+	else:
+		mod_x_status__custom_audio.texture = ModuleX_StatusIcon_X
 	
 #	if GameSaveManager.can_view_game_stats:
 #		mod_x_status__stats.texture = ModuleX_StatusIcon_Check

@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/GUI_CustomAudioPanel.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_Module_CustomAudio.png" type="Texture" id=3]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=4]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Assets/GUI_CustomAudioPanel_RefreshButton_Normal.png" type="Texture" id=6]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Assets/GUI_CustomAudioPanel_RefreshButton_Highlighted.png" type="Texture" id=7]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_CheckboxStandard/PlayerGUI_CheckboxStandard.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
@@ -25,12 +30,13 @@ margin_top = 20.0
 margin_right = 940.0
 margin_bottom = 520.0
 mouse_filter = 2
-custom_constants/separation = 40
+custom_constants/separation = 30
 
 [node name="DescsContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 920.0
-margin_bottom = 34.0
+margin_bottom = 44.0
 mouse_filter = 2
+custom_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/DescsContainer"]
 margin_right = 920.0
@@ -62,23 +68,105 @@ align = 1
 [node name="InfoContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 74.0
 margin_right = 920.0
-margin_bottom = 161.0
+margin_bottom = 143.0
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/InfoContainer"]
-margin_left = 28.0
-margin_right = 892.0
-margin_bottom = 87.0
+margin_left = 184.0
+margin_right = 736.0
+margin_bottom = 69.0
 size_flags_horizontal = 6
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 4 )
 text = "Steps to configure custom audio:
 1) Select audio type's folder to open.
 2) Add or remove files. Adding 2 or more picks one at random when playing the sound.
+   Supported file types: .wav, .mp3, .ogg
 
-You can test the sound by pressing the play test button. Adjust the volume to the desired level."
+Make sure to refresh first before testing the sound. Adjust the volume to the desired level."
+
+[node name="ExtraActionsContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 173.0
+margin_right = 920.0
+margin_bottom = 234.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ExtraActionsContainer"]
+margin_right = 920.0
+margin_bottom = 61.0
+custom_constants/separation = 14
+
+[node name="NotAllUnlockedLabel" type="Label" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer"]
+margin_right = 920.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 1, 0.65098, 0.2, 1 )
+text = "Play more to unlock more customizable audios."
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer"]
+margin_top = 29.0
+margin_right = 920.0
+margin_bottom = 61.0
+
+[node name="RefreshButton" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer" instance=ExtResource( 5 )]
+margin_left = 408.0
+margin_right = 511.0
+margin_bottom = 32.0
+size_flags_horizontal = 6
+size_flags_vertical = 3
+
+[node name="TextureButton" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton" index="0"]
+margin_right = 103.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 6 )
+texture_hover = ExtResource( 7 )
+
+[node name="LabelContainer" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton" index="1"]
+visible = false
+margin_right = 103.0
+margin_bottom = 33.0
+
+[node name="Label" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton/LabelContainer" index="0"]
+margin_right = 103.0
+margin_bottom = 33.0
+
+[node name="MarginerForLabel" type="MarginContainer" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton"]
+margin_right = 103.0
+margin_bottom = 32.0
+mouse_filter = 2
+size_flags_horizontal = 6
+custom_constants/margin_left = 40
+
+[node name="Label" type="Label" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton/MarginerForLabel"]
+margin_left = 40.0
+margin_top = 8.0
+margin_right = 103.0
+margin_bottom = 23.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+text = "Refresh"
+
+[node name="IsEnabledCheckbox" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer" instance=ExtResource( 8 )]
+margin_left = 811.0
+margin_right = 920.0
+size_flags_horizontal = 10
+update_properties_when_clicked_instead_of_reactive = false
+label_text = "Enabled"
+
+[node name="HBoxContainer" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox" index="0"]
+margin_right = 109.0
+
+[node name="CheckboxLabel" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox/HBoxContainer" index="0"]
+margin_right = 63.0
+text = "Enabled"
+
+[node name="Container" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox/HBoxContainer" index="1"]
+margin_left = 77.0
+margin_right = 109.0
+
+[node name="Button" parent="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox" index="1"]
+margin_right = 109.0
 
 [node name="MarginerForMainScroll" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 201.0
+margin_top = 264.0
 margin_right = 920.0
 margin_bottom = 500.0
 size_flags_horizontal = 3
@@ -90,14 +178,34 @@ custom_constants/margin_bottom = 40
 [node name="ScrollContainerForMain" type="ScrollContainer" parent="VBoxContainer/MarginerForMainScroll"]
 margin_left = 30.0
 margin_right = 890.0
-margin_bottom = 259.0
-mouse_filter = 2
+margin_bottom = 196.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MainContainer" type="MarginContainer" parent="VBoxContainer/MarginerForMainScroll/ScrollContainerForMain"]
+margin_right = 860.0
+margin_bottom = 4.0
 mouse_filter = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 
-[node name="VBoxForSCAP" type="VBoxContainer" parent="VBoxContainer/MarginerForMainScroll/ScrollContainerForMain/MainContainer"]
+[node name="VBoxMain" type="VBoxContainer" parent="VBoxContainer/MarginerForMainScroll/ScrollContainerForMain/MainContainer"]
+margin_right = 860.0
+margin_bottom = 4.0
 mouse_filter = 2
+
+[node name="HeaderContainer" type="HBoxContainer" parent="VBoxContainer/MarginerForMainScroll/ScrollContainerForMain/MainContainer/VBoxMain"]
+margin_right = 860.0
+mouse_filter = 2
+
+[node name="VBoxForSCAP" type="VBoxContainer" parent="VBoxContainer/MarginerForMainScroll/ScrollContainerForMain/MainContainer/VBoxMain"]
+margin_top = 4.0
+margin_right = 860.0
+margin_bottom = 4.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[connection signal="button_pressed" from="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton" to="." method="_on_RefreshButton_button_pressed"]
+[connection signal="pressed__intent_for_reactive" from="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox" to="." method="_on_IsEnabledCheckbox_pressed__intent_for_reactive"]
+
+[editable path="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/RefreshButton"]
+[editable path="VBoxContainer/ExtraActionsContainer/VBoxContainer/MarginContainer/IsEnabledCheckbox"]

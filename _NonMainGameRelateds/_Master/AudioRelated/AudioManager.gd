@@ -226,7 +226,7 @@ func play_sound__with_provided_stream_player(arg_audio_id, arg_stream_player,
 	if StoreOfAudio.mute_all_game_sfx_unaffecting_volume_settings and (arg_mask_level == MaskLevel.Major_SoundFX or arg_mask_level == MaskLevel.Minor_SoundFX):
 		return false
 	
-	var arg_audio_path_name = StoreOfAudio.get_audio_file_path_of_id(arg_audio_id)
+	var arg_audio_path_name = arg_stream_player.stream.resource_path #StoreOfAudio.get_audio_file_path_of_id(arg_audio_id)
 	
 	#if mask_level_to_active_count_map[arg_mask_level] <= total_active_stream_player_count_per_mask_level:
 	if mask_level_to_active_count_map[arg_mask_level] <= mask_level_to_max_active_count_available_map[arg_mask_level]:
@@ -414,6 +414,12 @@ func stop_stream_player_and_mark_as_inactive(arg_stream_player):
 		mask_level_to_active_count_map[mask_level] -= 1
 	
 	emit_signal("steam_player_stopped_and_marked_as_inactive", arg_path_name, arg_stream_player)
+
+func is_stream_player_active(arg_stream_player):
+	var arg_path_name = arg_stream_player.stream.resource_path
+	
+	return sound_path_name_to__stream_player_node_to_is_active_map[arg_path_name][arg_stream_player]
+
 
 
 func _on_stream_player_queue_free(arg_stream_player):
@@ -709,7 +715,7 @@ func helper__play_sound_effect__2d(arg_id, arg_pos : Vector2, arg_volume_ratio :
 	
 	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, pause_mode_of_player, arg_adv_param)
 	sound_player.global_position = arg_pos
-	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	sound_player.volume_db = convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
 	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	
 	return sound_player
@@ -722,7 +728,7 @@ func helper__play_sound_effect__plain(arg_id, arg_volume_ratio : float, arg_adv_
 	
 	
 	var sound_player : AudioStreamPlayer = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.PLAIN, pause_mode_of_player, arg_adv_param)
-	sound_player.volume_db = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	sound_player.volume_db = convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
 	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	
 	return sound_player
@@ -736,21 +742,24 @@ func helper__play_sound_effect__2d__lower_volume_based_on_dist(arg_id, arg_pos :
 	
 	var sound_player : AudioStreamPlayer2D = get_available_or_construct_new_audio_stream_player(arg_id, PlayerConstructionType.TWO_D, pause_mode_of_player, arg_adv_param)
 	sound_player.global_position = arg_pos
-	var final_volume = _convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
+	var final_volume = convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, StoreOfAudio.get_audio_id_custom_standard_db(arg_id))
 	
 	
 	var screen_pos = CameraManager.get_camera__screen_center_position()
 	var ratio_02 = _calculate_volume_ratio_based_on_dist(screen_pos, arg_pos)
 	
 	#print("ratio: %s, dist: %s" % [ratio_02, screen_pos.distance_to(arg_pos)])
-	final_volume = _convert_ratio_using_num_range(ratio_02, DECIBEL_VAL__INAUDIABLE, final_volume)
+	final_volume = convert_ratio_using_num_range(ratio_02, DECIBEL_VAL__INAUDIABLE, final_volume)
 	
 	sound_player.volume_db = final_volume
 	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	return sound_player
 
+#used by SoAudio
+func convert_ratio_using_num_range__from_standard_db_audibles(arg_volume_ratio):
+	return convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, DECIBEL_VAL__STANDARD)
 
-func _convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
+func convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
 	var diff = arg_max - arg_min
 	
 	return arg_min + (diff * arg_ratio)

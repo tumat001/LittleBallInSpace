@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Subs/GUI_SingleCustomAudioPanel/GUI_SingleCustomAudioPanel.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipBody.tscn" type="PackedScene" id=2]
@@ -8,116 +8,164 @@
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Assets/GUI_CustomAudioPanel_PlayButton_Highlighted.png" type="Texture" id=6]
 [ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Assets/GUI_CustomAudioPanel_PlayButton_Normal.png" type="Texture" id=7]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/PlayerGUI_SliderStandard/PlayerGUI_SliderStandardH_Simple.tscn" type="PackedScene" id=8]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_20.tres" type="DynamicFont" id=9]
+[ext_resource path="res://GameSaveRelated/GUIs/GameSettingsRelated/CustomAudioPanel/Assets/GUI_CustomAudioPanel_HUDCompo_WhiteLine_4x4.png" type="Texture" id=10]
 
 [node name="GUI_SingleCustomAudioPanel" type="MarginContainer"]
 margin_right = 40.0
 margin_bottom = 40.0
+mouse_filter = 2
 size_flags_horizontal = 3
 script = ExtResource( 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 208.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 249.0
 margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 249.0
+margin_bottom = 32.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 10
 
-[node name="CategoryContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_bottom = 40.0
-
-[node name="BoxContainer" type="VBoxContainer" parent="HBoxContainer/CategoryContainer"]
-margin_bottom = 40.0
-
-[node name="CategoryImage" type="TextureRect" parent="HBoxContainer/CategoryContainer/BoxContainer"]
-
-[node name="CategoryLabel" type="Label" parent="HBoxContainer/CategoryContainer/BoxContainer"]
-margin_top = 4.0
-margin_bottom = 19.0
-align = 1
-
-[node name="DescriptionContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 4.0
-margin_right = 4.0
-margin_bottom = 40.0
-
-[node name="DescriptionTooltipBody" parent="HBoxContainer/DescriptionContainer" instance=ExtResource( 2 )]
-margin_right = 0.0
-margin_bottom = 40.0
-default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-
-[node name="UploadedFilesContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 8.0
-margin_right = 8.0
-margin_bottom = 40.0
-
-[node name="UploadedFilesLabel" type="Label" parent="HBoxContainer/UploadedFilesContainer"]
-margin_top = 12.0
-margin_bottom = 27.0
-
-[node name="FolderButtonContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 12.0
-margin_right = 42.0
-margin_bottom = 40.0
-
-[node name="FolderButton" parent="HBoxContainer/FolderButtonContainer" instance=ExtResource( 3 )]
-margin_top = 5.0
-margin_right = 30.0
-margin_bottom = 35.0
+[node name="CategoryContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_top = 7.0
+margin_bottom = 24.0
+mouse_filter = 2
 size_flags_vertical = 6
 
-[node name="TextureButton" parent="HBoxContainer/FolderButtonContainer/FolderButton" index="0"]
+[node name="BoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CategoryContainer"]
+margin_bottom = 17.0
+mouse_filter = 2
+
+[node name="CategoryImage" type="TextureRect" parent="VBoxContainer/HBoxContainer/CategoryContainer/BoxContainer"]
+mouse_filter = 2
+size_flags_horizontal = 6
+
+[node name="CategoryLabel" type="Label" parent="VBoxContainer/HBoxContainer/CategoryContainer/BoxContainer"]
+margin_top = 4.0
+margin_bottom = 17.0
+size_flags_horizontal = 6
+custom_fonts/font = ExtResource( 9 )
+align = 1
+
+[node name="ImageTypeContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 10.0
+margin_top = 16.0
+margin_right = 10.0
+margin_bottom = 16.0
+mouse_filter = 2
+size_flags_vertical = 6
+
+[node name="ImageTypeTexRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ImageTypeContainer"]
+mouse_filter = 2
+size_flags_vertical = 6
+
+[node name="DescriptionContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 20.0
+margin_top = 16.0
+margin_right = 20.0
+margin_bottom = 16.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[node name="DescriptionTooltipBody" parent="VBoxContainer/HBoxContainer/DescriptionContainer" instance=ExtResource( 2 )]
+margin_right = 0.0
+default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+
+[node name="UploadedFilesContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 30.0
+margin_top = 9.0
+margin_right = 31.0
+margin_bottom = 22.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[node name="UploadedFilesLabel" type="Label" parent="VBoxContainer/HBoxContainer/UploadedFilesContainer"]
+margin_right = 1.0
+margin_bottom = 13.0
+custom_fonts/font = ExtResource( 9 )
+autowrap = true
+
+[node name="FolderButtonContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 41.0
+margin_top = 1.0
+margin_right = 71.0
+margin_bottom = 31.0
+size_flags_vertical = 6
+
+[node name="FolderButton" parent="VBoxContainer/HBoxContainer/FolderButtonContainer" instance=ExtResource( 3 )]
+margin_right = 30.0
+margin_bottom = 30.0
+size_flags_vertical = 6
+
+[node name="TextureButton" parent="VBoxContainer/HBoxContainer/FolderButtonContainer/FolderButton" index="0"]
 margin_right = 30.0
 margin_bottom = 30.0
 texture_normal = ExtResource( 5 )
 texture_hover = ExtResource( 4 )
 
-[node name="LabelContainer" parent="HBoxContainer/FolderButtonContainer/FolderButton" index="1"]
+[node name="LabelContainer" parent="VBoxContainer/HBoxContainer/FolderButtonContainer/FolderButton" index="1"]
 visible = false
 margin_right = 30.0
 margin_bottom = 33.0
 
-[node name="Label" parent="HBoxContainer/FolderButtonContainer/FolderButton/LabelContainer" index="0"]
+[node name="Label" parent="VBoxContainer/HBoxContainer/FolderButtonContainer/FolderButton/LabelContainer" index="0"]
 margin_right = 30.0
 margin_bottom = 33.0
 
-[node name="PlayTestContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 46.0
-margin_top = 5.0
-margin_right = 76.0
-margin_bottom = 35.0
+[node name="PlayTestContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 81.0
+margin_top = 1.0
+margin_right = 111.0
+margin_bottom = 31.0
 size_flags_vertical = 6
 
-[node name="PlayTestButton" parent="HBoxContainer/PlayTestContainer" instance=ExtResource( 3 )]
+[node name="PlayTestButton" parent="VBoxContainer/HBoxContainer/PlayTestContainer" instance=ExtResource( 3 )]
 margin_right = 30.0
 margin_bottom = 30.0
 
-[node name="TextureButton" parent="HBoxContainer/PlayTestContainer/PlayTestButton" index="0"]
+[node name="TextureButton" parent="VBoxContainer/HBoxContainer/PlayTestContainer/PlayTestButton" index="0"]
 margin_right = 30.0
 margin_bottom = 30.0
 texture_normal = ExtResource( 7 )
 texture_hover = ExtResource( 6 )
 
-[node name="LabelContainer" parent="HBoxContainer/PlayTestContainer/PlayTestButton" index="1"]
+[node name="LabelContainer" parent="VBoxContainer/HBoxContainer/PlayTestContainer/PlayTestButton" index="1"]
 visible = false
 margin_right = 30.0
 margin_bottom = 33.0
 
-[node name="Label" parent="HBoxContainer/PlayTestContainer/PlayTestButton/LabelContainer" index="0"]
+[node name="Label" parent="VBoxContainer/HBoxContainer/PlayTestContainer/PlayTestButton/LabelContainer" index="0"]
 margin_right = 30.0
 margin_bottom = 33.0
 
-[node name="VolumeContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 80.0
-margin_right = 208.0
-margin_bottom = 40.0
-
-[node name="VolumeSlider" parent="HBoxContainer/VolumeContainer" instance=ExtResource( 8 )]
-margin_top = 6.0
-margin_right = 128.0
+[node name="VolumeContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 121.0
+margin_top = 2.0
+margin_right = 249.0
+margin_bottom = 30.0
+size_flags_horizontal = 9
 size_flags_vertical = 6
 
-[connection signal="button_pressed" from="HBoxContainer/FolderButtonContainer/FolderButton" to="." method="_on_FolderButton_button_pressed"]
-[connection signal="button_pressed" from="HBoxContainer/PlayTestContainer/PlayTestButton" to="." method="_on_PlayTestButton_button_pressed"]
-[connection signal="slider_value_changed" from="HBoxContainer/VolumeContainer/VolumeSlider" to="." method="_on_VolumeSlider_slider_value_changed"]
+[node name="VolumeSlider" parent="VBoxContainer/HBoxContainer/VolumeContainer" instance=ExtResource( 8 )]
+margin_right = 128.0
+margin_bottom = 28.0
+size_flags_vertical = 6
 
-[editable path="HBoxContainer/FolderButtonContainer/FolderButton"]
-[editable path="HBoxContainer/PlayTestContainer/PlayTestButton"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+margin_top = 36.0
+margin_right = 249.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 3
+texture = ExtResource( 10 )
+stretch_mode = 2
+
+[editable path="VBoxContainer/HBoxContainer/FolderButtonContainer/FolderButton"]
+[editable path="VBoxContainer/HBoxContainer/PlayTestContainer/PlayTestButton"]

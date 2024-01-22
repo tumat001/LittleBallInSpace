@@ -45,5 +45,6 @@ func set_name_label(arg_label):
 func get_value():
 	return slider.value
 
-
+func get_max_value():
+	return slider.max_value
 

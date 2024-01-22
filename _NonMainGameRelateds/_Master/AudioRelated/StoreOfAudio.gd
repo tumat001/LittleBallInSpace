@@ -447,6 +447,15 @@ func get_audio_file_path_of_id(arg_id):
 		print("StoreOfAudio error: audio file path of id not found: %s" % [arg_id])
 
 func get_audio_id_custom_standard_db(arg_id):
+	if GameSettingsManager.custom_audio_config__is_enabled and GameSettingsManager.if_store_of_audio_id_is_associated_with_custom_audio_id(arg_id):
+		var custom_audio_id = GameSettingsManager.get_custom_audio_id_associated_with_store_of_audio_id(arg_id)
+		
+		if GameSettingsManager.if_custom_audio_id_has_files_in_file_sys__in_precalced_map(custom_audio_id):
+			var vol_ratio = GameSettingsManager.get_custom_audio_id__volume_ratio(custom_audio_id)
+			return AudioManager.convert_ratio_using_num_range__from_standard_db_audibles(vol_ratio)
+	
+	##
+	
 	if _audio_id_to_custom_standard_db_map.has(arg_id):
 		return _audio_id_to_custom_standard_db_map[arg_id]
 	else:

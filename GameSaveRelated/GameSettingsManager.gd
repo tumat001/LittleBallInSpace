@@ -71,6 +71,8 @@ signal player_aesth_config__BTId_to_saved_modulate_for_face_expression_texture_i
 #signal player_face_aesth_config_changed(arg_body_modulate, arg_body_pattern_style_id)
 
 
+signal custom_audio_enabled_changed(arg_is_enabled)
+signal custom_audio_id_unlocked_changed(arg_id, arg_val)
 
 
 ##########
@@ -537,8 +539,12 @@ enum CustomAudioIds {
 	PLAYER__TOGGLEABLE_METAL__NORMAL_HIT = 10,
 	PLAYER__COMMON_GLASS__NORMAL_HIT = 20,
 	
-	##
+	PLAYER__COMMON_GLASS__BREAK = 30,
+	PLAYER__ROTATE = 100,
+	PLAYER__CAPTURE_AREA__CAPTURED = 101,
 	
+	ENEMY__COMBAT__TAKE_DAMAGE = 500,
+	ENEMY__COMBAT__DESTROYED = 501,
 	
 }
 
@@ -548,14 +554,18 @@ const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS = "CustomFile
 #const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE = "LoadedAStream"
 const CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO = "VolumeRatio"
 
-#todoimp make more, for ball hitting stuffs (and self), and enemy hits
+
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT = "Player_CommonMetal_NormalHit"
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__LOUD_HIT = "Player_CommonMetal_LoudBangHit"
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__TOGGLEABLE_METAL__NORMAL_HIT = "Player_ToggleableMetal_NormalHit"
 const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__NORMAL_HIT = "Player_CommonGlass_NormalHit"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__BREAK = "Player_CommonGlass_Break"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__ROTATE = "Player_Rotate"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__CAPTURE_AREA__CAPTURED = "Player_CaptureArea_Captured"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__ENEMY__COMBAT__TAKE_DAMAGE = "Enemy_Combat_Damaged"
+const CUSTOM_AUDIO_CONFIG__DIR_NAME__ENEMY__COMBAT__DESTROYED = "Enemy_Combat_Destroyed"
 
 
-#todoimp continue this when making more of audio ids
 var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 	CustomAudioIds.PLAYER__COMMON_METAL__NORMAL_HIT : {
 		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_METAL__NORMAL_HIT,
@@ -590,6 +600,48 @@ var _custom_audio_config__audio_id_to_details_map_map : Dictionary = {
 		
 	},
 	
+	CustomAudioIds.PLAYER__COMMON_GLASS__BREAK : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__COMMON_GLASS__BREAK,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
+		
+	},
+	CustomAudioIds.PLAYER__ROTATE : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__ROTATE,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
+		
+	},
+	CustomAudioIds.PLAYER__CAPTURE_AREA__CAPTURED : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__PLAYER__CAPTURE_AREA__CAPTURED,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
+		
+	},
+	
+	CustomAudioIds.ENEMY__COMBAT__TAKE_DAMAGE : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__ENEMY__COMBAT__TAKE_DAMAGE,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
+		
+	},
+	CustomAudioIds.ENEMY__COMBAT__DESTROYED : {
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR : CUSTOM_AUDIO_CONFIG__DIR_NAME__ENEMY__COMBAT__DESTROYED,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILES : [],
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__CUSTOM_FILE_FULL_PATHS : [],
+		#CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__LOADED_ASTREAM_FILE : null,
+		CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__VOLUME_RATIO : 1,
+		
+	},
+	
 }
 
 var _store_of_audio_id_to_custom_audio_id_map : Dictionary = {
@@ -598,15 +650,21 @@ var _store_of_audio_id_to_custom_audio_id_map : Dictionary = {
 	StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_SoftFull_LowPitchTinPlate : CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
 	StoreOfAudio.AudioIds.SFX_TileHit_MetalHitGlass : CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT,
 	
-	#
+	StoreOfAudio.AudioIds.SFX_Misc_GlassBreak_Hard : CustomAudioIds.PLAYER__COMMON_GLASS__BREAK,
+	StoreOfAudio.AudioIds.SFX_Rotate_Standard_01 : CustomAudioIds.PLAYER__ROTATE,
+	StoreOfAudio.AudioIds.SFX_CapturePoint_Captured_02 : CustomAudioIds.PLAYER__CAPTURE_AREA__CAPTURED,
+	
+	StoreOfAudio.AudioIds.SFX_Enemy_Damage_01 : CustomAudioIds.ENEMY__COMBAT__TAKE_DAMAGE,
+	StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode : CustomAudioIds.ENEMY__COMBAT__DESTROYED,
 	
 	
 }
-
+# entries are based on above
+var _custom_audio_id_to_store_of_audio_id_map : Dictionary = {}
 
 const CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER = "CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER"
-var custom_audio_config__is_enabled : bool
-const custom_audio_config__is_enabled__default_val : bool = false
+var custom_audio_config__is_enabled : bool setget set_custom_audio_config__is_enabled
+const custom_audio_config__is_enabled__default_val : bool = true
 
 
 const CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER = "CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER"
@@ -616,6 +674,13 @@ const custom_audio_config__audio_ids_default_unlocked : Array = [
 	CustomAudioIds.PLAYER__COMMON_METAL__LOUD_BANG_HIT,
 	CustomAudioIds.PLAYER__TOGGLEABLE_METAL__NORMAL_HIT,
 	CustomAudioIds.PLAYER__COMMON_GLASS__NORMAL_HIT,
+	
+	CustomAudioIds.PLAYER__COMMON_GLASS__BREAK,
+	CustomAudioIds.PLAYER__ROTATE,
+	CustomAudioIds.PLAYER__CAPTURE_AREA__CAPTURED,
+	
+	#CustomAudioIds.ENEMY__COMBAT__TAKE_DAMAGE,
+	#CustomAudioIds.ENEMY__COMBAT__DESTROYED,
 	
 ]
 
@@ -1918,7 +1983,11 @@ func _convert_color_dict_to_color_html_string_dict(arg_dict : Dictionary):
 func _init_custom_audio_functionality__before_any_data_init():
 	if !GameSaveManager.can_config_custom_audio:
 		GameSaveManager.connect("can_config_custom_audio_changed", self, "_GSM__can_config_custom_audio_changed", [], CONNECT_DEFERRED)
+	
+	for audio_id_from_SoAI in _store_of_audio_id_to_custom_audio_id_map.keys():
+		var custom_audio_id = _store_of_audio_id_to_custom_audio_id_map[audio_id_from_SoAI]
 		
+		_custom_audio_id_to_store_of_audio_id_map[custom_audio_id] = audio_id_from_SoAI
 	
 
 func _GSM__can_config_custom_audio_changed(arg_val):
@@ -2001,9 +2070,11 @@ func _get_custom_audio_config_as_save_dict():
 func _load_custom_audio_config_using_dic(data : Dictionary):
 	# IS ENABLED
 	if data.has(CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER):
-		custom_audio_config__is_enabled = data[CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER]
+		#custom_audio_config__is_enabled = data[CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER]
+		set_custom_audio_config__is_enabled(data[CUSTOM_AUDIO_CONFIG__IS_ENABLED__DIC_IDENTIFIER])
 	else:
-		custom_audio_config__is_enabled = custom_audio_config__is_enabled__default_val
+		#custom_audio_config__is_enabled = custom_audio_config__is_enabled__default_val
+		set_custom_audio_config__is_enabled(custom_audio_config__is_enabled__default_val)
 	
 	# UNLOCKED audio ids
 	if data.has(CUSTOM_AUDIO_CONFIG__UNLOCKED_AUDIO_IDS__DIC_IDENTIFIER):
@@ -2045,9 +2116,9 @@ func set_custom_audio_id__unlocked_status(arg_id, arg_val):
 		#note: never remove a dir
 		pass
 	
-	#todoimp maybe make this emit a signal
+	
 	if old_val != arg_val:
-		pass
+		emit_signal("custom_audio_id_unlocked_changed", arg_id, arg_val)
 	
 
 func _config_custom_audio_details_map_map__volume_ratio(arg_dict : Dictionary):
@@ -2080,9 +2151,6 @@ func _custom_audio_config__refresh_list_files_in_filesys__in_dir__of_dir_instanc
 	var audio_id_specific_dir = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR]
 	
 	var all_file_names_found_in_audio_specific_dir = _get_all_file_names_found_in_audio_specific_dir(arg_audio_id, audio_id_specific_dir, arg_audio_main_dir_instance)
-	#temptodo print
-	print(all_file_names_found_in_audio_specific_dir)
-	
 	_update_custom_files_in_custom_audio_map_map(arg_audio_id, all_file_names_found_in_audio_specific_dir)
 
 
@@ -2118,8 +2186,23 @@ func _update_custom_files_in_custom_audio_map_map(arg_audio_id, arg_file_name_li
 	
 	for path in arr_of_custom_file_full_paths:
 		deferred_generate_custom_audio_steam_file_from_path(path, false)
+	
+	#
+	
+	#reset audio vol to 0 when emptying the audio list
+	if arr_of_custom_files.size() == 0:
+		set_custom_audio_id__volume_ratio(arg_audio_id, 1.0)
 
-#
+
+func set_custom_audio_config__is_enabled(arg_val):
+	var old_val = custom_audio_config__is_enabled
+	custom_audio_config__is_enabled = arg_val
+	
+	if old_val != arg_val:
+		emit_signal("custom_audio_enabled_changed", arg_val)
+
+
+###
 
 func get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id):
 	var audio_specific_dir = _custom_audio_config__audio_id_to_details_map_map[arg_audio_id][CUSTOM_AUDIO_CONFIG__DETAILS_MAP_KEY__FILE_DIR]
@@ -2132,6 +2215,13 @@ func get_all_custom_audio_full_file_paths_associated_with_id(arg_audio_id):
 	return arr_of_full_paths
 
 
+
+func is_at_least_one_custom_audio_is_locked():
+	for custom_audio_id in _custom_audio_config__audio_id_to_is_unlocked_map.keys():
+		if !_custom_audio_config__audio_id_to_is_unlocked_map[custom_audio_id]:
+			return true
+	
+	return false
 
 func is_custom_audio_unlocked(arg_audio_id):
 	return _custom_audio_config__audio_id_to_is_unlocked_map[arg_audio_id]
@@ -2152,6 +2242,10 @@ func get_custom_audio_id_associated_with_store_of_audio_id(arg_store_of_audio_id
 
 func if_store_of_audio_id_is_associated_with_custom_audio_id(arg_store_of_audio_id):
 	return _store_of_audio_id_to_custom_audio_id_map.has(arg_store_of_audio_id)
+
+
+func get_store_of_audio_id_map_associated_with_custom_audio(arg_custom_audio_id):
+	return _custom_audio_id_to_store_of_audio_id_map[arg_custom_audio_id]
 
 
 func get_custom_audio_path_generated_steam_file(arg_audio_path : String):

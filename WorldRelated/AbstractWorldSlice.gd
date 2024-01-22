@@ -307,6 +307,10 @@ func _configure_coin(arg_coin):
 		
 		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, true)
 	else:
+		
+		if GameSettingsManager.is_assist_mode_active:
+			arg_coin.configure_self_as_assist_mode_is_active()
+		
 		GameSaveManager.set_tentative_coin_id_collected_in_curr_level(arg_coin.coin_id, false)
 	
 	arg_coin.connect("collected_by_player", self, "_on_coin_collected_by_player", [arg_coin])
