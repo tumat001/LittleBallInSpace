@@ -4,6 +4,9 @@ extends Reference
 
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
+
 #
 
 signal is_level_locked_changed(arg_val)
@@ -90,6 +93,9 @@ var immediately_start_stats_record_on_GE_ready : bool = true
 var zoom_normal_vec = CameraManager.DEFAULT_ZOOM_LEVEL
 var zoom_out_vec = CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL
 
+#
+
+var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
 ##########
 

@@ -90,7 +90,6 @@ tile_set = ExtResource( 3 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 12 )]
 position = Vector2( 170, -356 )
-mod_a_for_uncaptured = 1.0
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 13 )]
 visible = false
@@ -111,7 +110,8 @@ texture = ExtResource( 7 )
 shape = SubResource( 3 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 778, -243 )
+position = Vector2( 1453, 206 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -16, 208 )

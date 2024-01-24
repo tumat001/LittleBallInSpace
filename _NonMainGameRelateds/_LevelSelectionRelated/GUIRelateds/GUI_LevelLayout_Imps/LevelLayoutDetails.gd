@@ -1,5 +1,8 @@
 extends Reference
 
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
+
 signal is_level_layout_locked_changed(arg_is_level_layout_locked)
 
 #
@@ -43,6 +46,9 @@ var transition_id__exiting_layout__in  # from blank to selection
 
 #
 
+var background_type = GameBackground.BackgroundTypeIds.STANDARD
+
+#
 
 
 func set_is_level_layout_locked(arg_val):

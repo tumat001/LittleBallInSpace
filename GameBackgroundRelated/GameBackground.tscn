@@ -6,12 +6,10 @@
 [node name="GameBackground" type="ParallaxBackground"]
 scroll_ignore_camera_zoom = true
 script = ExtResource( 1 )
+background_shader_main_colors_tween_duration = null
+background_shader_cycle_switch_tween_duration = null
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 960.0
-margin_bottom = 540.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
+[node name="ColorRectContainer" type="Node" parent="."]
 
 [node name="StarGridBackground" parent="." instance=ExtResource( 2 )]
 motion_scale = Vector2( 0, 0 )

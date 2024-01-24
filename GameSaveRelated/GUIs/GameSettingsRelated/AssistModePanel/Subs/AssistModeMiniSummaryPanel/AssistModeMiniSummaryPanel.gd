@@ -61,12 +61,13 @@ func set_is_in_game(arg_val):
 func _update_status_based_on_configs():
 	var is_disabled = false
 	if SingletonsAndConsts.current_level_details != null:
-		SingletonsAndConsts.current_level_details.ignore_assist_mode_modifications
+		is_disabled = SingletonsAndConsts.current_level_details.ignore_assist_mode_modifications
 	
 	main_button.set_is_disabled(is_disabled)
 	if is_disabled:
 		label_status.text = "(Banned for This Level)"
 		label_status.modulate = MODULATE__BANNED
+		
 	elif is_in_game:
 		#print("from GE. %s" % self)
 		if GameSettingsManager.current_assist_mode_is_active_at_current_game_elements__but_no_effect:

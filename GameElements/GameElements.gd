@@ -278,6 +278,8 @@ func _deferred_add_child__game_background():
 	add_child(game_background)
 	move_child(game_background, 0)
 	
+	game_background.set_current_background_type(SingletonsAndConsts.current_level_details.background_type, true)
+	
 	is_game_background_initialized = true
 	emit_signal("game_background_initialized", game_background)
 

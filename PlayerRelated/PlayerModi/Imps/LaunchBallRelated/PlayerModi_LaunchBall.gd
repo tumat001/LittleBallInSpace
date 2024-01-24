@@ -120,7 +120,7 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	#
 	
-	set_current_ball_count(starting_ball_count)
+	set_current_ball_count(_current_ball_count + starting_ball_count)
 	
 	#
 	

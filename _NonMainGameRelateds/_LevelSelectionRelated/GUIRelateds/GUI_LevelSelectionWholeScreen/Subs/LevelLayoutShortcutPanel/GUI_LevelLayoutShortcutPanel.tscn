@@ -34,5 +34,5 @@ mouse_filter = 2
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/ScrollContainer"]
 mouse_filter = 2
 custom_constants/vseparation = 0
-custom_constants/hseparation = 0
+custom_constants/hseparation = 5
 columns = 3

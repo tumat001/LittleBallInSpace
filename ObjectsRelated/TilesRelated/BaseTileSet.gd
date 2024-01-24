@@ -110,6 +110,7 @@ var _can_induce_speed_slowdown : bool = true
 enum TilemapModulateIds {
 	ENERGY_MODE = 0
 	BUTTON_ASSOCIATED = 1
+	CUSTOM = 2
 }
 var _modulates_of_tilemap : Dictionary
 

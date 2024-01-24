@@ -3,6 +3,8 @@ extends Node
 const LevelDetails = preload("res://LevelRelated/Classes/LevelDetails.gd")
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
 #
 
 signal hidden_levels_state_changed()
@@ -282,7 +284,6 @@ func get_level_ids__before_postgame():
 
 #
 
-
 func get_current_levels_hidden_state():
 	return current_level_hidden_state
 
@@ -297,7 +298,6 @@ func set_current_level_hidden_state(arg_val):
 		
 	elif current_level_hidden_state == AllLevelsHiddenState.AFTER_POSTGAME_STAGE_05:
 		_add_level_ids_as_non_hidden(get_all_level_ids__not_including_tests())
-	
 	
 
 ###

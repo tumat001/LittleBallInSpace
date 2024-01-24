@@ -5,6 +5,8 @@ extends Node
 const LevelLayoutDetails = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/LevelLayoutDetails.gd")
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
 #
 
 enum LevelLayoutIds {
@@ -199,7 +201,8 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
-		
+		#
+		#details.background_type = GameBackground.BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_06:
 		details.level_layout_name = [

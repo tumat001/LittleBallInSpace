@@ -22,6 +22,8 @@ const all_poses = [
 
 var coin_id : String
 
+export(bool) var ignore_is_disabled_by_assist_mode : bool = false
+
 var is_disabled_by_assist_mode : bool = false
 
 #
@@ -32,7 +34,7 @@ func get_all_poses():
 #
 
 func _on_player_entered_self(arg_player):
-	if is_disabled_by_assist_mode:
+	if is_disabled_by_assist_mode and !ignore_is_disabled_by_assist_mode:
 		return
 	
 	._on_player_entered_self(arg_player)
@@ -58,6 +60,9 @@ func collect_by_player():
 #
 
 func configure_self_as_assist_mode_is_active():
+	if ignore_is_disabled_by_assist_mode:
+		return
+	
 	is_disabled_by_assist_mode = true
 	
 	modulate.a = 0.3

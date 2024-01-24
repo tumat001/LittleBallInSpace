@@ -78,6 +78,8 @@ func _start_dialog__01():
 
 
 func _on_display_of_desc_finished__01(arg):
-	SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
+	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
+	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+	game_elements.game_result_manager.end_game__as_win()
 
 #game_elements.game_result_manager.end_game__as_win()

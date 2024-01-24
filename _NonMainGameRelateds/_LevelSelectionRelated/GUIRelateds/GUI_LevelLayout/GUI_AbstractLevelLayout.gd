@@ -94,7 +94,7 @@ const ELE_TILE_DIR__DOWN = 4
 
 #
 
-var gui_level_selection_whole_screen
+var gui_level_selection_whole_screen setget set_gui_level_selection_whole_screen
 var particles_container
 
 
@@ -645,4 +645,10 @@ func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_Lev
 			GameSaveManager.set_layout_id__layout_element_id__is_invis(level_layout_id, arg_ele.layout_ele_id, arg_ele.is_layout_element_invis)
 	
 
+
+#######
+
+func set_gui_level_selection_whole_screen(arg_gui):
+	gui_level_selection_whole_screen = arg_gui
+	
 

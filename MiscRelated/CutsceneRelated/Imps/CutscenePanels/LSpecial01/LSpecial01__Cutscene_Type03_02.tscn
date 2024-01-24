@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://MiscRelated/CutsceneRelated/Subs/GUI_CutscenePanel/GUI_CutscenePanel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_Image/FTQ_Image.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MiscRelated/CutsceneRelated/Imps/CutscenePanels/Assets/Bloopers_L03_01.PNG" type="Texture" id=3]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Subs/FTQ_CustomLabel/FTQ_CustomLabel.tscn" type="PackedScene" id=5]
+
+[node name="Special01_02__Cutscene_12" instance=ExtResource( 1 )]
+
+[node name="FTQ_CustomLabel" parent="." index="0" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -442.0
+margin_top = 48.0
+margin_right = 442.0
+margin_bottom = 135.0
+rect_min_size = Vector2( 250, 0 )
+default_font_size = 35
+cutscene_initially_visible = true
+
+[node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
+margin_right = 884.0
+margin_bottom = 87.0
+default_font_size = 60
+descriptions__from_export = "Design"
+bbcode_align_mode = 1
+
+[node name="FTQ_Image" parent="." index="1" instance=ExtResource( 2 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 70.0
+margin_top = -144.5
+margin_right = 365.0
+margin_bottom = 144.5
+texture = ExtResource( 3 )
+cutscene_initially_visible = true
+
+[node name="FTQ_CustomLabel2" parent="." index="2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -84.0
+margin_top = 162.0
+margin_right = 454.0
+margin_bottom = 405.0
+rect_min_size = Vector2( 250, 0 )
+default_font_size = 22
+cutscene_initially_visible = true
+
+[node name="TooltipBody" parent="FTQ_CustomLabel2" index="0"]
+margin_top = 121.0
+margin_right = 538.0
+margin_bottom = 121.0
+size_flags_vertical = 6
+default_font_size = 24
+descriptions__from_export = "From the many puzzle games, the ones that gave insight and inspiration are:
+1) Understand. The ? levels per stage/world/chapter are the inspiration for these levels in this special stage.
+2) Can of Wormholes. The simple yet highly consequencial game mechanics served as a design guideline. The way each mechanic is introduced is great as well.
+3) ElecHead - showed me that a platformer-puzzle with simple design can be great."
+
+[editable path="FTQ_CustomLabel"]
+[editable path="FTQ_CustomLabel2"]

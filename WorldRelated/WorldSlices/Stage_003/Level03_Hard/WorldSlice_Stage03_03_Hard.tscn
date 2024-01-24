@@ -91,23 +91,11 @@ tile_data = PoolIntArray( 2490347, 33, 0, 2490348, 33, 1, 2490349, 33, 1, 249035
 tile_set = ExtResource( 5 )
 tile_data = PoolIntArray( 65516, 17, 3, 65520, 17, 3, 131052, 17, 3, 131056, 17, 3, 196588, 17, 3, 196592, 17, 3, 262124, 17, 3, 262128, 17, 3, 262136, 17, 1, 196619, 17, 65537, 327660, 17, 3, 327672, 17, 65537, 262144, 17, 2, 262147, 17, 2, 262155, 17, 1, 393196, 17, 3, 393208, 17, 1, 327680, 17, 2, 327683, 17, 2, 327691, 17, 65537, 458732, 17, 3, 786424, 17, 65537, 720907, 17, 1, 851960, 17, 1, 786432, 17, 2, 786435, 17, 2, 786443, 17, 65537, 917496, 17, 65537, 851968, 17, 2, 851971, 17, 2, 851979, 17, 1, 1310729, 17, 65539, 1310730, 17, 65539, 1310731, 17, 65539, 1310732, 17, 65539, 1310733, 17, 65539, 1310734, 17, 65539 )
 
-[node name="BTS_Glowing" parent="TileContainer" index="7" instance=ExtResource( 1 )]
-has_glowables = true
-
-[node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
-tile_set = ExtResource( 5 )
-
-[node name="BTS_Red" parent="TileContainer" index="8" instance=ExtResource( 1 )]
+[node name="BTS_Red" parent="TileContainer" index="7" instance=ExtResource( 1 )]
 
 [node name="TileMap" parent="TileContainer/BTS_Red" index="0"]
 modulate = Color( 1, 0.141176, 0.141176, 1 )
 tile_data = PoolIntArray( 196597, 9, 65539, 196598, 9, 65539, 196599, 9, 65539, 720885, 7, 65539, 720886, 7, 65539, 720887, 7, 65539 )
-
-[node name="BTS_SimpleGlassForModX" parent="TileContainer" index="9" instance=ExtResource( 1 )]
-glass_breakable_type = 2
-
-[node name="TileMap" parent="TileContainer/BTS_SimpleGlassForModX" index="0"]
-tile_data = PoolIntArray( 2293749, 3, 65538, 2293750, 3, 65540 )
 
 [node name="PCA_01" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 392, 8 )
@@ -258,6 +246,7 @@ ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 10 )]
 position = Vector2( -545, 110 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -241, 432 )
@@ -428,9 +417,7 @@ margin_bottom = 382.0
 [editable path="TileContainer/BTS_UncollsWallDecs"]
 [editable path="TileContainer/BTS_Uncolls02"]
 [editable path="TileContainer/BTS_Uncolls03"]
-[editable path="TileContainer/BTS_Glowing"]
 [editable path="TileContainer/BTS_Red"]
-[editable path="TileContainer/BTS_SimpleGlassForModX"]
 [editable path="AreaRegionContainer/PCA_01"]
 [editable path="AreaRegionContainer/PCA_02"]
 [editable path="AreaRegionContainer/PCA_03"]
