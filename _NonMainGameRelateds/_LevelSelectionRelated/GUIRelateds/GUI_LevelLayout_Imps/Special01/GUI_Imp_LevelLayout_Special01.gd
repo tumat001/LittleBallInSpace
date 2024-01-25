@@ -34,19 +34,21 @@ func _on_coin_collected_for_level_changed(arg_coin_ids_collected_for_level, arg_
 
 
 func _set_game_background_based_on_states(arg_is_instant_in_transition):
+	#todoimp change this. make it based on unlocked levels instead of stars
+	
+	#game_background.set_current_background_type(GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01, arg_is_instant_in_transition)
+	#return
+	
+	
 	var total_star_count = StoreOfLevels.get_total_coin_count()
 	var star_count_collected = GameSaveManager.get_total_coin_collected_count()
-	
 	if total_star_count == star_count_collected:
 		_set_game_background__as_completed(arg_is_instant_in_transition)
-		
 	elif total_star_count - 1 == star_count_collected:
 		_set_game_background__as_prelude(arg_is_instant_in_transition)
-		
 	else:
 		_set_game_background__as_normal(arg_is_instant_in_transition)
-		
-	
+
 
 func _set_game_background__as_completed(arg_is_instant_in_transition):
 	game_background.set_current_background_type(GameBackground.BackgroundTypeIds.LAYOUT__CHALLENGE_COMPLETED, arg_is_instant_in_transition)

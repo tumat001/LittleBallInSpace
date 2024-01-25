@@ -96,10 +96,14 @@ position = Vector2( -408, 125 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
+pressable_count = 2
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( -268, 110 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -41, 176 )

@@ -156,6 +156,7 @@ func set_level_id_to_display_for(arg_lvl_id):
 		]
 		
 	
+	level_name_tooltip_body.default_font_color = level_details.get_title_color_based_on_level_type()
 	level_name_tooltip_body.update_display()
 	
 	

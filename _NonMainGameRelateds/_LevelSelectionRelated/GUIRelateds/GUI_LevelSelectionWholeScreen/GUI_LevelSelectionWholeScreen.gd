@@ -138,6 +138,7 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor, arg_is_in
 		
 		layout_scene._overridable__setup_game_background(arg_is_instant_in_transition)
 		
+		
 		if StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id):
 			game_background.request_show_brightened_star_background__star_collectible_collected()
 		else:
