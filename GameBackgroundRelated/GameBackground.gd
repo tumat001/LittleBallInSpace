@@ -15,7 +15,7 @@ enum BackgroundTypeIds {
 	LAYOUT__CHALLENGE_PRELUDE = 3,
 	LAYOUT__CHALLENGE_COMPLETED = 4,
 }
-var _current_background_type : int = BackgroundTypeIds.STANDARD
+var _current_background_type : int = -1 #= BackgroundTypeIds.STANDARD
 
 #
 
@@ -26,7 +26,7 @@ enum ShaderTypeId {
 	
 	CIRCULAR_NOISE_01 = 10,
 }
-var _shader_type_id_to_shader_map : Dictionary = {}
+var _shader_type_id_to_shader_material_map : Dictionary = {}
 
 #
 
@@ -141,35 +141,50 @@ func _ready():
 
 ##
 
-func _create_shader_mat_based_on_curr_background_type__and_give_to_curr_color_rect():
-	background_shader_mat = _create_shader_mat_based_on_curr_background_type()
+func _create_shader_mat_based_on_curr_background_type__and_give_to_curr_color_rect(arg_insta_set_properties : bool):
+	background_shader_mat = _create_shader_mat_based_on_curr_background_type(arg_insta_set_properties)
 	current_active_background_color_rect.material = background_shader_mat
+	
 
-func _create_shader_mat_based_on_curr_background_type():
-	var material_sh = ShaderMaterial.new()
+func _create_shader_mat_based_on_curr_background_type(arg_insta_set_properties : bool):
+	var material_sh : ShaderMaterial
 	
 	match _current_background_type:
 		BackgroundTypeIds.STANDARD:
-			material_sh.shader = _get_or_create_shader_with_type_id(ShaderTypeId.RIPPLE)
+			var details = _get_or_create_shader_material_with_type_id(ShaderTypeId.RIPPLE)
+			material_sh = details[0]
 			
-			TYPE_STANDARD__set_color_rect_shader_colors(BackgroundColor_Normal, BackgroundColor_Normal_02)
-			TYPE_STANDARD__set_shader_properties(STYPE_STANDARD__SHADER_SPEED__NORMAL, STYPE_STANDARD__SHADER_FREQUENCY__NORMAL, STYPE_STANDARD__SHADER_AMPLITUDE__NORMAL)
+			if arg_insta_set_properties or details[1]:
+				_insta_set_properties__TYPE_STANDARD(material_sh)
 			
 		BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL:
-			material_sh.shader = _get_or_create_shader_with_type_id(ShaderTypeId.CIRCULAR_NOISE_01)
+			var details = _get_or_create_shader_material_with_type_id(ShaderTypeId.CIRCULAR_NOISE_01)
+			material_sh = details[0]
 			
-			TYPE_CIRCULAR__SET
+			if arg_insta_set_properties or details[1]:
+				#arg_radius, arg_thickness, arg_color, arg_brighness, arg_angular_speed, arg_radial_speed, arg_alpha
+				_insta_set_properties__TYPE_CIRCULAR_NOISE(material_sh)
+	
 	
 	return material_sh
+
+func _insta_set_properties__TYPE_STANDARD(material_sh):
+	TYPE_STANDARD__set_color_rect_shader_colors(material_sh, BackgroundColor_Normal, BackgroundColor_Normal_02)
+	TYPE_STANDARD__set_shader_properties(material_sh, STYPE_STANDARD__SHADER_SPEED__NORMAL, STYPE_STANDARD__SHADER_FREQUENCY__NORMAL, STYPE_STANDARD__SHADER_AMPLITUDE__NORMAL)
+
+func _insta_set_properties__TYPE_CIRCULAR_NOISE(material_sh):
+	_TYPE_CIRCULAR_NOISE__set_shader_properties(material_sh, STYPE_CIRCULAR__SHADER_RADIUS__NORMAL, STYPE_CIRCULAR__SHADER_THICKNESS__NORMAL, STYPE_CIRCULAR__SHADER_COLOR__NORMAL,
+			STYPE_CIRCULAR__SHADER_BRIGHTNESS__NORMAL, STYPE_CIRCULAR__SHADER_ANGULAR_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_RADIAL_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_ALPHA__NORMAL)
+
 
 
 ## shader bg type related
 
 func set_current_background_type(arg_type, arg_use_tween_and_transition : bool):
-	var old_bg_type = _current_background_type
+	#var old_bg_type = _current_background_type
 	_current_background_type = arg_type
-	if old_bg_type != _current_background_type:
-		_update_current_background_based_on_curr_type(arg_use_tween_and_transition)
+	#if old_bg_type != _current_background_type:
+	_update_current_background_based_on_curr_type(arg_use_tween_and_transition)
 	
 	
 
@@ -178,13 +193,16 @@ func _update_current_background_based_on_curr_type(arg_use_tween_and_transition)
 	prev_cycle_background_color_rect = current_active_background_color_rect
 	_create_background_color_rect_shader__and_set_as_active(true)
 	
+	_create_shader_mat_based_on_curr_background_type__and_give_to_curr_color_rect(!arg_use_tween_and_transition)
+	
 	if arg_use_tween_and_transition:
 		_set_control_as_zero_mod__then_tween_until_full_mod(current_active_background_color_rect)
 		if is_instance_valid(prev_cycle_background_color_rect):
 			_tween_control_until_zero_mod(prev_cycle_background_color_rect)
 		
 	else:
-		prev_cycle_background_color_rect.call_deferred("queue_free")
+		if is_instance_valid(prev_cycle_background_color_rect) and !prev_cycle_background_color_rect.is_queued_for_deletion():
+			prev_cycle_background_color_rect.call_deferred("queue_free")
 		
 	
 	_update_shader_based_on_is_star_collected()
@@ -229,61 +247,65 @@ func _update_shader_based_on_is_star_collected():
 		
 		
 		if background_shader_mat == null:
-			#temptodo
-			print("shader mat is null -- with star")
 			return
 		match _current_background_type:
 			BackgroundTypeIds.STANDARD:
 				_TYPE_STANDARD__tween_color_rect_shader__into_colors(BackgroundColor_Brightened, BackgroundColor_Brightened_02)
 				_TYPE_STANDARD__tween_method__set_shader_properties(STYPE_STANDARD__SHADER_SPEED__BRIGHTENED, STYPE_STANDARD__SHADER_FREQUENCY__BRIGHTENED,STYPE_STANDARD__SHADER_AMPLITUDE__BRIGHTENED)
-				#temptodo
-				print("has star and glowing in standard")
+				
 			BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL:
 				_TYPE_CIRCULAR_NOISE__tween_rect_shader(STYPE_CIRCULAR__SHADER_RADIUS__NORMAL, STYPE_CIRCULAR__SHADER_THICKNESS__NORMAL, STYPE_CIRCULAR__SHADER_COLOR__NORMAL, STYPE_CIRCULAR__SHADER_BRIGHTNESS__NORMAL, STYPE_CIRCULAR__SHADER_ANGULAR_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_RADIAL_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_ALPHA__NORMAL)
-				#temptodo
-				print("has star and glowing in circular")
-			
+				
 		
 	else:
 		small_star_grid_background.visible_star_count = small__normal_vis_star_count
 		
 		
 		if background_shader_mat == null:
-			#temptodo
-			print("shader mat is null -- with NO star")
 			return
 		match _current_background_type:
 			BackgroundTypeIds.STANDARD:
 				_TYPE_STANDARD__tween_color_rect_shader__into_colors(BackgroundColor_Normal, BackgroundColor_Normal_02)
 				_TYPE_STANDARD__tween_method__set_shader_properties(STYPE_STANDARD__SHADER_SPEED__NORMAL, STYPE_STANDARD__SHADER_FREQUENCY__NORMAL, STYPE_STANDARD__SHADER_AMPLITUDE__NORMAL)
-				#temptodo
-				print("has NO star and glowing in standard")
+				
 			BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL:
 				_TYPE_CIRCULAR_NOISE__tween_rect_shader(STYPE_CIRCULAR__SHADER_RADIUS__NORMAL, STYPE_CIRCULAR__SHADER_THICKNESS__NORMAL, STYPE_CIRCULAR__SHADER_COLOR__NORMAL, STYPE_CIRCULAR__SHADER_BRIGHTNESS__NORMAL, STYPE_CIRCULAR__SHADER_ANGULAR_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_RADIAL_SPEED__NORMAL, STYPE_CIRCULAR__SHADER_ALPHA__NORMAL)
-				#temptodo
-				print("has NO star and glowing in standard")
-		
+				
 
 
 #
 
-func _get_or_create_shader_with_type_id(arg_id):
-	var shader
+# returns arr. [shader_mat, is_first_time]
+func _get_or_create_shader_material_with_type_id(arg_id) -> Array:
 	
-	if _shader_type_id_to_shader_map.has(arg_id):
-		return _shader_type_id_to_shader_map[arg_id]
+	if _shader_type_id_to_shader_material_map.has(arg_id):
+		return [_shader_type_id_to_shader_material_map[arg_id], false]
+	
+	var shader
+	var shader_mat = ShaderMaterial.new()
 	
 	match arg_id:
 		ShaderTypeId.RIPPLE:
 			shader = load("res://MiscRelated/ShadersRelated/Shader_RippleGradient.tres")
+			#shader_mat.shader = shader
+			#_insta_set_properties__TYPE_STANDARD(shader_mat)
+			
 		ShaderTypeId.EARTHBOUND_LIKE:
 			shader = load("res://MiscRelated/ShadersRelated/Shader_EarthboundLikeBackground.tres")
+			#shader_mat.shader = shader
+			
 		ShaderTypeId.CIRCULAR_NOISE_01:
 			shader = load("res://MiscRelated/ShadersRelated/Shader_CircularNoiseBackground.tres")
+			#shader_mat.shader = shader
+			#_insta_set_properties__TYPE_CIRCULAR_NOISE(shader_mat)
+			
 		
 	
-	_shader_type_id_to_shader_map[arg_id] = shader
-	return shader
+	shader_mat.shader = shader
+	
+	
+	_shader_type_id_to_shader_material_map[arg_id] = shader_mat
+	return [shader_mat, true]
 
 #########
 # TYPE: STANDARD
@@ -304,9 +326,9 @@ func _TYPE_STANDARD__tween_method__set_color_rect_shader_color_1(arg_color):
 func _TYPE_STANDARD__tween_method__set_color_rect_shader_color_2(arg_color):
 	background_shader_mat.set_shader_param("color2", _convert_color_to_plane(arg_color))
 
-func TYPE_STANDARD__set_color_rect_shader_colors(arg_color_01, arg_color_02):
-	background_shader_mat.set_shader_param("color1", _convert_color_to_plane(arg_color_01))
-	background_shader_mat.set_shader_param("color2", _convert_color_to_plane(arg_color_02))
+func TYPE_STANDARD__set_color_rect_shader_colors(material_sh, arg_color_01, arg_color_02):
+	material_sh.set_shader_param("color1", _convert_color_to_plane(arg_color_01))
+	material_sh.set_shader_param("color2", _convert_color_to_plane(arg_color_02))
 	
 
 #
@@ -316,10 +338,10 @@ func _TYPE_STANDARD__tween_method__set_shader_properties(arg_speed : float, arg_
 	_TYPE_STANDARD__tween_method__set_shader_frequency(arg_frequency)
 	_TYPE_STANDARD__tween_method__set_shader_amplitude(arg_amplitude)
 
-func TYPE_STANDARD__set_shader_properties(arg_speed : float, arg_frequency : float, arg_amplitude : float):
-	background_shader_mat.set_shader_param("speed", arg_speed)
-	background_shader_mat.set_shader_param("frequency", arg_frequency)
-	background_shader_mat.set_shader_param("amplitude", arg_amplitude)
+func TYPE_STANDARD__set_shader_properties(material_sh, arg_speed : float, arg_frequency : float, arg_amplitude : float):
+	material_sh.set_shader_param("speed", arg_speed)
+	material_sh.set_shader_param("frequency", arg_frequency)
+	material_sh.set_shader_param("amplitude", arg_amplitude)
 	
 
 func _TYPE_STANDARD__tween_method__set_shader_speed(arg_speed):
@@ -338,7 +360,7 @@ func _TYPE_STANDARD__tween_method__set_shader_amplitude(arg_amplitude):
 func _TYPE_CIRCULAR_NOISE__tween_rect_shader(arg_radius, arg_thickness, arg_color, arg_brighness, arg_angular_speed, arg_radial_speed, arg_alpha):
 	var radius = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__RADIUS)
 	var thickness = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__THICKNESS)
-	var color_01 = _convert_plane_to_color(background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__COLOR))
+	var color_01 = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__COLOR)
 	var brightness = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__BRIGHTNESS)
 	var angular_speed = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__ANGULAR_SPEED)
 	var radial_speed = background_shader_mat.get_shader_param(SVARNAME_CIRCULAR__RADIAL_SPEED)
@@ -354,10 +376,16 @@ func _TYPE_CIRCULAR_NOISE__tween_rect_shader(arg_radius, arg_thickness, arg_colo
 	tweener.tween_method(self, "_TYPE_ANY__tweener_method__set_shader_param_x", radial_speed, arg_radial_speed, background_shader_cycle_switch_tween_duration, [SVARNAME_CIRCULAR__RADIAL_SPEED])
 	tweener.tween_method(self, "_TYPE_ANY__tweener_method__set_shader_param_x", alpha, arg_alpha, background_shader_cycle_switch_tween_duration, [SVARNAME_CIRCULAR__ALPHA])
 
-#todoimp continue this
-func _TYPE_CIRCULAR_NOISE__set_properties():
-	pass
 
+func _TYPE_CIRCULAR_NOISE__set_shader_properties(material_sh, arg_radius, arg_thickness, arg_color, arg_brighness, arg_angular_speed, arg_radial_speed, arg_alpha):
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__RADIUS, arg_radius)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__THICKNESS, arg_thickness)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__COLOR, arg_color)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__BRIGHTNESS, arg_brighness)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__ANGULAR_SPEED, arg_angular_speed)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__RADIAL_SPEED, arg_radial_speed)
+	material_sh.set_shader_param(SVARNAME_CIRCULAR__ALPHA, arg_alpha)
+	
 
 ############
 # HELPERS

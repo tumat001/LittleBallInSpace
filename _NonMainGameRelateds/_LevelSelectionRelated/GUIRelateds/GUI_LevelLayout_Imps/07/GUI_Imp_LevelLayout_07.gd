@@ -16,7 +16,7 @@ func _ready():
 	
 	
 	layout_06__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06)
-	layout_06__tile.layout_ele_id_to_put_cursor_to = 29
+	layout_06__tile.layout_ele_id_to_put_cursor_to = 31
 	
 
 ###

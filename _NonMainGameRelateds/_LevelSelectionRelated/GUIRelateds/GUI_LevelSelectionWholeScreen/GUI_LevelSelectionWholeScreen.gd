@@ -1,6 +1,8 @@
 extends Control
 
 const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.gd")
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
 
 #
 
@@ -101,10 +103,10 @@ func _initialize_layout_shortcut_panel():
 #
 
 func show_level_layout__last_saved_in_save_manager():
-	show_level_layout(GameSaveManager.last_opened_level_layout_id, GameSaveManager.last_hovered_over_level_layout_element_id)
+	show_level_layout(GameSaveManager.last_opened_level_layout_id, GameSaveManager.last_hovered_over_level_layout_element_id, false)
 
 
-func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor):
+func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor, arg_is_instant_in_transition):
 	if !is_instance_valid(_current_active_level_layout) or _current_active_level_layout.level_layout_id != arg_layout_id:
 		for child in abstract_level_layout_container.get_children():
 			if child.level_layout_id != arg_layout_id:
@@ -123,10 +125,18 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor):
 			layout_scene.gui_level_selection_whole_screen = self
 			layout_scene.particles_container = particles_container
 		
+		layout_scene.game_background = game_background
+		
 		layout_scene.layout_ele_id_to_summon_cursor_to = arg_layout_element_id_of_cursor
 		_set_level_layout_as_current_and_active(layout_scene)
 		
 		#
+		
+		#dont do this since gui_layout may define its own background
+		#var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(arg_layout_id)
+		#game_background.set_current_background_type(level_layout_details.background_type, true)
+		
+		layout_scene._overridable__setup_game_background(arg_is_instant_in_transition)
 		
 		if StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id):
 			game_background.request_show_brightened_star_background__star_collectible_collected()
@@ -263,7 +273,7 @@ func _on_layout_prompt_entered_into_link_to_other_layout(arg_currently_hovered_t
 	SingletonsAndConsts.current_master.play_transition(transition)
 
 func _on_transition_in__from_old_layout_finished(arg_hovered_tile, arg_level_layout_details, arg_old_transition):
-	show_level_layout(arg_hovered_tile.level_layout_details.level_layout_id, arg_hovered_tile.layout_ele_id_to_put_cursor_to)
+	show_level_layout(arg_hovered_tile.level_layout_details.level_layout_id, arg_hovered_tile.layout_ele_id_to_put_cursor_to, false)
 	arg_old_transition.queue_free()
 	
 	var level_layout_of_in__instance = StoreOfLevelLayouts.generate_instance_of_layout(arg_hovered_tile.level_layout_details.level_layout_id)
@@ -304,7 +314,7 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_ti
 
 func _on_shortcut_panel_layout_tile_pressed(arg_tile, arg_id):
 	if !SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
-		show_level_layout(arg_id, arg_tile.layout_ele_id_to_put_cursor_to)
+		show_level_layout(arg_id, arg_tile.layout_ele_id_to_put_cursor_to, true)
 
 
 #########

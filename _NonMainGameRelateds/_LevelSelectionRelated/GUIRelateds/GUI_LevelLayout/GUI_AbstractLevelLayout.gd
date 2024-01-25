@@ -1,6 +1,7 @@
 extends Control
 
 const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd")
+const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
 
 const CenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.gd")
 const CenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/CenterBasedAttackSprite.tscn")
@@ -38,6 +39,10 @@ signal triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_tile
 ##
 
 var level_layout_id
+
+#
+
+var game_background : GameBackground
 
 #
 
@@ -94,7 +99,7 @@ const ELE_TILE_DIR__DOWN = 4
 
 #
 
-var gui_level_selection_whole_screen setget set_gui_level_selection_whole_screen
+var gui_level_selection_whole_screen #setget set_gui_level_selection_whole_screen
 var particles_container
 
 
@@ -648,7 +653,12 @@ func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_Lev
 
 #######
 
-func set_gui_level_selection_whole_screen(arg_gui):
-	gui_level_selection_whole_screen = arg_gui
+#func set_gui_level_selection_whole_screen(arg_gui):
+#	gui_level_selection_whole_screen = arg_gui
+#	_overridable__setup_game_background()
+
+func _overridable__setup_game_background(arg_is_instant_in_transition):
+	var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(level_layout_id)
+	game_background.set_current_background_type(level_layout_details.background_type, arg_is_instant_in_transition)
 	
 
