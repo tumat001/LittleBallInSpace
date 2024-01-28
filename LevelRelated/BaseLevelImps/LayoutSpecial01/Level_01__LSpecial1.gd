@@ -75,9 +75,9 @@ func _on_game_front_hud_initialized(arg_game_front_hud):
 
 
 func _on_hud_initialized():
-	SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(_black_sprite_cover) 
-
-
+	#SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(_black_sprite_cover) 
+	var gfh = SingletonsAndConsts.current_game_front_hud
+	gfh.add_custom_control_in_container(_black_sprite_cover)
 
 #
 

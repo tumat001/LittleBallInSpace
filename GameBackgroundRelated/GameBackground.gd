@@ -12,8 +12,8 @@ enum BackgroundTypeIds {
 	LEVEL__SPECIAL_01 = 1,
 	
 	LAYOUT__CHALLENGE_NORMAL = 2,
-	LAYOUT__CHALLENGE_PRELUDE = 3,
-	LAYOUT__CHALLENGE_COMPLETED = 4,
+	#LAYOUT__CHALLENGE_PRELUDE = 3,
+	#LAYOUT__CHALLENGE_COMPLETED = 4,
 }
 var _current_background_type : int = -1 #= BackgroundTypeIds.STANDARD
 
@@ -79,8 +79,6 @@ const STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_ANGULAR_SPEED__BRIGHTENED = -0
 const STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_RADIAL_SPEED__BRIGHTENED = 0.07
 const STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_ALPHA__BRIGHTENED = 0.12
 
-
-#todoimp continue x__prelude and x__completed
 
 const SVARNAME_CIRCULAR__RADIUS = "radius"
 const SVARNAME_CIRCULAR__THICKNESS = "thickness"
@@ -156,7 +154,7 @@ func _create_background_color_rect_shader(arg_deferred_add_child : bool):
 	var control : Control
 	
 	match _current_background_type:
-		BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL, BackgroundTypeIds.LAYOUT__CHALLENGE_PRELUDE, BackgroundTypeIds.LAYOUT__CHALLENGE_COMPLETED, BackgroundTypeIds.LEVEL__SPECIAL_01:
+		BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL, BackgroundTypeIds.LEVEL__SPECIAL_01:
 			var texture_rect = TextureRect.new()
 			
 			texture_rect.rect_size = SingletonsAndConsts.current_master.screen_size

@@ -48,7 +48,7 @@ tile_data = PoolIntArray( -131074, 12, 0, -131073, 12, 0, -196608, 12, 0, -19660
 glass_breakable_type = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_InstantBreak" index="0"]
-tile_data = PoolIntArray( 65533, 16, 0, 393221, 16, 0, 589827, 16, 262146, 589828, 16, 262147, 589829, 16, 262148 )
+tile_data = PoolIntArray( 65533, 16, 0, 589827, 16, 262146, 589828, 16, 262147, 589829, 16, 262148 )
 
 [node name="BaseTileSet_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 3 )]
 
@@ -88,12 +88,15 @@ shape = SubResource( 2 )
 position = Vector2( -248, 16 )
 rotation = 1.5708
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 14, 144 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 79, 273 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 14, 144 )

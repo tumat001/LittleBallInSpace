@@ -11,7 +11,7 @@ onready var health_panel = $ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/He
 onready var speed_panel = $ControlContainer/HUDCMH_SpeedPanel/SpeedPanel
 onready var trophy_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/TrophyPanel
 onready var robot_health_panel = $ControlContainer/HUDCMH_TopMidPanel/VBoxContainer/RobotHealthPanel
-onready var enemy_monitor_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/EnemyMonitorPanel
+#onready var enemy_monitor_panel = $ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox/EnemyMonitorPanel
 
 onready var game_dialog_panel = $ControlContainer/HUDCMH_GameDialogPanel/GameDialogPanel
 
@@ -213,17 +213,16 @@ func _on_ghf_mod_a_to_0_finished__focus_on_launch_ball_panel(arg_ending_metadata
 ############
 
 func set_control_container_visibility(arg_val : bool, arg_use_tween : bool = false, arg_duration : float = 1.0, arg_hide_mouse_if_appropriate : bool = true):
-	#control_container.visible = arg_val
 	_set_control_container_vis__internal(arg_val, arg_use_tween, arg_duration)
 	
 	if arg_val:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		MouseManager.remove_input_mouse_reservation_id(MouseManager.InputMouseModeReserveId.GAME_FRONT_HUD)
 	else:
 		if arg_hide_mouse_if_appropriate:
-			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+			MouseManager.set_input_mouse_mode__via_reservation(MouseManager.InputMouseModeReserveId.GAME_FRONT_HUD, Input.MOUSE_MODE_HIDDEN)
 		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
+			MouseManager.remove_input_mouse_reservation_id(MouseManager.InputMouseModeReserveId.GAME_FRONT_HUD)
+	
 
 func toggle_control_container_visibility__not_hides_mouse(arg_use_tween : bool = false, arg_duration : float = 1.0):
 	set_control_container_visibility(!control_container.visible, arg_use_tween, arg_duration, false)
@@ -262,4 +261,12 @@ func _set_control_container_vis__via_tween(arg_vis, arg_duration):
 
 func _on_mod_a_tweener_finished__going_to_0():
 	control_container.visible = false
+
+
+
+func add_custom_control_in_container(arg_control, arg_index = 0):
+	control_container.add_child(arg_control)
+	control_container.move_child(arg_control, arg_index)
+
+
 

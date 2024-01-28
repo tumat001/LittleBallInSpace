@@ -91,6 +91,10 @@ var is_class_type_player_modi_launch_ball : bool = true
 #var BALL_GROUP_ID = "Object_LaunchBallGroup"
 #var active_ball_count : int
 
+var is_override_mouse_angle : bool = false
+var custom_mouse_angle : float
+
+
 #
 
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
@@ -344,8 +348,15 @@ func force_launch_ball_at_pos__min_speed(arg_pos):
 func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 	#var mouse_pos : Vector2 = _player.get_global_mouse_position()
 	#var angle = _player.global_position.angle_to_point(mouse_pos)
-	var angle = player_modi_launch_ball_node.last_calc_angle_of_node_to_mouse
+	var angle = get_angle_to_use_for_ball_launch()
 	return _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength, angle)
+
+func get_angle_to_use_for_ball_launch() -> float:
+	if is_override_mouse_angle:
+		return custom_mouse_angle
+	
+	return player_modi_launch_ball_node.last_calc_angle_of_node_to_mouse
+
 
 func _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength : float, angle):
 	var launch_vector = Vector2(arg_launch_strength, 0).rotated(angle)

@@ -33,6 +33,24 @@ var _obj_requester_to_custom_requested_mouse_normal_id_map : Dictionary = {}
 
 var _current_mouse_normal_id : int
 
+
+###
+
+enum InputMouseModeReserveId {
+	GAME_FRONT_HUD = 0,
+	CUSTOM_FROM_WORLD_SLICE = 1,
+}
+var _input_mouse_reserve_id_to_mouse_mode_map : Dictionary
+const input_mouse_mode_to_priority_map : Dictionary = {
+	Input.MOUSE_MODE_VISIBLE : 0,
+	Input.MOUSE_MODE_CONFINED : 1,
+	Input.MOUSE_MODE_HIDDEN: 2,
+	Input.MOUSE_MODE_CAPTURED : 3,
+	
+}
+
+
+
 ######
 
 func _ready():
@@ -117,4 +135,47 @@ func clear_all_requesters__for_mouse_normal_id():
 
 func _update_OS_mouse_ibeam_texture():
 	Input.set_custom_mouse_cursor(CustomMouse_IBeam, Input.CURSOR_IBEAM)
+
+
+
+######
+
+#func generate_texture_rect_with_position_in_mouse_pos__of_mouse_normal_pointer():
+#	var tex_rect = TextureRect.new()
+#	tex_rect.texture = mouse_normal_sprite_type_id__to_img_res_map[_current_mouse_normal_id]
+#	tex_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+#
+#
+#	var offset = mouse_normal_sprite_type_id__to_offset_map[_current_mouse_normal_id]
+#	tex_rect.rect_position = get_viewport().get_mouse_position() + offset
+#
+#	return tex_rect
+
+################### INPUT MOUSE MODE
+
+func set_input_mouse_mode__via_reservation(arg_id, arg_mouse_mode):
+	_input_mouse_reserve_id_to_mouse_mode_map[arg_id] = arg_mouse_mode
+	_update_input_mouse_mode_based_on_reservation()
+
+func remove_input_mouse_reservation_id(arg_id):
+	if _input_mouse_reserve_id_to_mouse_mode_map.has(arg_id):
+		_input_mouse_reserve_id_to_mouse_mode_map.erase(arg_id)
+	_update_input_mouse_mode_based_on_reservation()
+
+func remove_all_input_mouse_reservations():
+	_input_mouse_reserve_id_to_mouse_mode_map.clear()
+	_update_input_mouse_mode_based_on_reservation()
+
+func _update_input_mouse_mode_based_on_reservation():
+	var curr_prio = 0
+	var curr_mouse_mode_id = input_mouse_mode_to_priority_map.keys()[curr_prio]
+	
+	for mode_id in _input_mouse_reserve_id_to_mouse_mode_map.values():
+		var prio = input_mouse_mode_to_priority_map[mode_id]
+		if curr_prio < prio:
+			curr_prio = prio
+			curr_mouse_mode_id = mode_id
+	
+	Input.mouse_mode = curr_mouse_mode_id
+
 

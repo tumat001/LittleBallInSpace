@@ -90,6 +90,7 @@ var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments :
 var initialized_enemy_killing_shockwave_relateds : bool
 var _enemy_killing_shockwave_draw_node : Node2D
 
+
 #
 
 const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 150.0
@@ -394,7 +395,7 @@ func _exit_tree():
 			game_front_hud.queue_free()
 		SingletonsAndConsts.current_game_front_hud = null
 		
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		MouseManager.remove_all_input_mouse_reservations()
 		MouseManager.clear_all_requesters__for_mouse_normal_id()
 
 func attempt_quit_game__by_queue_freeing():

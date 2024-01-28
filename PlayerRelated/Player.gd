@@ -99,9 +99,6 @@ var has_any_force_actions : bool
 
 #
 
-var can_move_left__special_case : bool = true
-
-
 var _is_on_ground : bool
 var _is_on_ground__with_energy : bool
 var _is_on_ground__with_instant_ground : bool
@@ -936,7 +933,7 @@ func _unhandled_key_input(event):
 			
 		else:
 			if event.is_action("game_left"):
-				if can_move_left__special_case and !last_calc_block_player_game_actions:
+				if !last_calc_block_player_game_actions:
 					_is_moving_left = true
 			elif event.is_action("game_right"):
 				if !last_calc_block_player_game_actions:

@@ -80,6 +80,7 @@ enum LevelIds {
 	LEVEL_01__STAGE_SPECIAL_1 = 10000
 	LEVEL_02__STAGE_SPECIAL_1 = 10001
 	LEVEL_03__STAGE_SPECIAL_1 = 10002
+	LEVEL_04__STAGE_SPECIAL_1 = 10003
 	
 	##
 	
@@ -1663,7 +1664,39 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
-	
+		
+	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
+		level_details.level_full_name = [
+			["S-!4 Losing Control", []]
+		]
+		level_details.level_name = [
+			["Losing Control", []]
+		]
+		level_details.level_desc = [
+			["", []]
+		]
+		
+		
+		_set_details__transitions_to_usual_circle_types(level_details)
+		
+		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+		
+		level_details.level_label_on_tile = "!4"
+		level_details.level_label_text_color = Color("#dddddd")
+		#level_details.level_label_outline_color = Color("#dddddd")
+		level_details.has_outline_color = false
+		
+		
+		level_details.ignore_assist_mode_modifications = true
+		
+		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+		
 	
 	
 	##
@@ -1766,6 +1799,8 @@ func generate_base_level_imp_new(arg_id):
 		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_02__LSpecial1.gd").new()
 	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
 		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_03__LSpecial1.gd").new()
+	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
+		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_04__LSpecial1.gd").new()
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
@@ -1867,6 +1902,8 @@ func _initialize_coin_details():
 		LevelIds.LEVEL_01__STAGE_SPECIAL_1 : 1,
 		LevelIds.LEVEL_02__STAGE_SPECIAL_1 : 1,
 		LevelIds.LEVEL_03__STAGE_SPECIAL_1 : 1,
+		LevelIds.LEVEL_04__STAGE_SPECIAL_1 : 1,
+		
 		
 		#
 		
@@ -1995,11 +2032,6 @@ func _initialize_level_id_unlock_requirmenets():
 		
 		##
 		
-		#todoimp continue
-		#LevelIds.level_04__stage
-		
-		##
-		
 		LevelIds.LEVEL_01__STAGE_6 : [LevelIds.LEVEL_02__STAGE_5],
 		LevelIds.LEVEL_02__STAGE_6 : [LevelIds.LEVEL_01__STAGE_6],
 		LevelIds.LEVEL_03__STAGE_6 : [LevelIds.LEVEL_02__STAGE_6],
@@ -2062,6 +2094,22 @@ func _are_all_level_ids_finished(arg_ids : Array):
 #
 ###########################
 
+func can_unlock_stage_special_02():
+	for lvl_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
+		if !GameSaveManager.is_level_id_finished(lvl_id):
+			return false
+	
+	return true
+
+func attempt_unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
+	if !can_unlock_stage_special_02():
+		return
+	
+	
+	#todoimp continue this
+
+
+
 func unlock_stage_07__and_unhide_eles_to_layout_07():
 	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07):
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
@@ -2088,13 +2136,14 @@ func unlock_stage_special_01__and_unhide_eles_to_layout_special_01():
 		_unlock_special_stage_levels()
 
 func _unlock_special_stage_levels():
-#	for level_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
-#		GameSaveManager.set_level_id_status_completion(level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+	for level_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
+		GameSaveManager.set_level_id_status_completion(level_id, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 	
-	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_02__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_03__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-	
+#	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+#	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_02__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+#	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_03__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+#	GameSaveManager.set_level_layout_id_status_completion(LevelIds.LEVEL_04__STAGE_SPECIAL_1, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+
 
 
 func unlock_relateds_after_winning_stage_05_level_02():

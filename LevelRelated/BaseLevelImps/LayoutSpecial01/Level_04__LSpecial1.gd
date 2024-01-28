@@ -16,8 +16,9 @@ func _init():
 func apply_modification_to_game_elements(arg_elements):
 	.apply_modification_to_game_elements(arg_elements)
 	
-	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_SPECIAL01_03, Vector2(0, 0))
-
+	arg_elements.world_manager.add_world_slice(StoreOfWorldSlices.WorldSliceIds.STAGE_SPECIAL01_04, Vector2(0, 0))
+	
+	arg_elements.object_lifespan__ball = 12.0
 
 ######
 
@@ -33,6 +34,8 @@ func _add_launch_ball_modi():
 	modi.starting_ball_count = 0
 	modi.is_infinite_ball_count = false
 	modi.show_player_trajectory_line = true
+	
+	
 	
 	game_elements.player_modi_manager.add_modi_to_player(modi)
 

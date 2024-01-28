@@ -15,6 +15,8 @@ export(bool) var update_keypress_label_based_on_game_control : bool = true
 
 var input_event_key : InputEventKey setget set_input_event_key
 
+export(String) var plain_text : String setget set_plain_text
+
 #
 
 var any_control_action_name : String setget set_any_control_action_name
@@ -40,7 +42,11 @@ onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer
 
 
 func _ready():
-	set_change_state_if_game_control_is_conflicting(change_state_if_game_control_is_conflicting)
+	if !Engine.editor_hint:
+		set_change_state_if_game_control_is_conflicting(change_state_if_game_control_is_conflicting)
+	
+	if plain_text.length() != 0:
+		set_plain_text(plain_text)
 
 #
 
@@ -104,11 +110,18 @@ func _update_modulate_based_on_control_conflicts():
 func set_input_event_key(arg_event):
 	input_event_key = arg_event
 	
-	if !update_keypress_label_based_on_game_control:
+	if !update_keypress_label_based_on_game_control and plain_text.length() == 0:
 		if input_event_key == null:
 			key_press_label.text = "(none)"
 		else:
 			key_press_label.text = input_event_key.as_text()
+
+func set_plain_text(arg_text : String):
+	plain_text = arg_text
+	
+	if !update_keypress_label_based_on_game_control and input_event_key == null:
+		if is_inside_tree() or Engine.editor_hint:
+			key_press_label.text = plain_text
 
 
 ############

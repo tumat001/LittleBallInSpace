@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/UncollidablesTileSet.tres" type="TileSet" id=3]
+[ext_resource path="res://ObjectsRelated/Pickupables/Subs/Coin/Pickupables_Coin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy.tscn" type="PackedScene" id=5]
+
+[node name="WorldSlice_StageSpecial02_01" instance=ExtResource( 2 )]
+
+[node name="BTS_Normal" parent="TileContainer" index="0" instance=ExtResource( 1 )]
+
+[node name="BTS_Energized" parent="TileContainer" index="1" instance=ExtResource( 1 )]
+energy_mode = 1
+
+[node name="TileMap" parent="TileContainer/BTS_Energized" index="0"]
+modulate = Color( 1, 0.968627, 0.172549, 1 )
+tile_data = PoolIntArray( 851979, 14, 2, 851980, 14, 3, 851981, 14, 3, 851982, 14, 3, 917515, 14, 65538, 983051, 14, 65538, 1048587, 14, 65538 )
+
+[node name="BTS_Grounded" parent="TileContainer" index="2" instance=ExtResource( 1 )]
+energy_mode = 2
+
+[node name="TileMap" parent="TileContainer/BTS_Grounded" index="0"]
+modulate = Color( 0.682353, 0.372549, 0, 1 )
+
+[node name="BTS_Uncolls01" parent="TileContainer" index="3" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Uncolls01" index="0"]
+tile_set = ExtResource( 3 )
+
+[node name="BTS_UncollsWallDecs" parent="TileContainer" index="4" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_UncollsWallDecs" index="0"]
+tile_set = ExtResource( 3 )
+
+[node name="BTS_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Uncolls02" index="0"]
+tile_set = ExtResource( 3 )
+
+[node name="BTS_Glowing" parent="TileContainer" index="6" instance=ExtResource( 1 )]
+has_glowables = true
+
+[node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
+tile_set = ExtResource( 3 )
+
+[node name="BTS_Blue" parent="TileContainer" index="7" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Blue" index="0"]
+modulate = Color( 0.0705882, 0.454902, 1, 1 )
+tile_data = PoolIntArray( 458765, 8, 0, 458766, 8, 0, 458767, 8, 0 )
+
+[node name="BTS_Green" parent="TileContainer" index="8" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Green" index="0"]
+modulate = Color( 0.109804, 1, 0.0352941, 1 )
+tile_data = PoolIntArray( 393229, 8, 0, 393230, 8, 0, 393231, 8, 0, 524301, 8, 0, 524302, 8, 0, 524303, 8, 0 )
+
+[node name="BTS_Red" parent="TileContainer" index="9" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Red" index="0"]
+modulate = Color( 1, 0.141176, 0.141176, 1 )
+tile_data = PoolIntArray( 327693, 8, 0, 327694, 8, 0, 327695, 8, 0, 589837, 8, 0, 589838, 8, 0, 589839, 8, 0 )
+
+[node name="BTS_Fragile" parent="TileContainer" index="10" instance=ExtResource( 1 )]
+glass_breakable_type = 3
+
+[node name="TileMap" parent="TileContainer/BTS_Fragile" index="0"]
+tile_data = PoolIntArray( 262154, 17, 0, 327690, 17, 0, 393226, 17, 0, 458762, 17, 0, 524298, 17, 0, 589834, 17, 0, 655370, 17, 0 )
+
+[node name="BaseEnemy" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
+position = Vector2( 336, 461 )
+enemy_type_template__for_export = 3
+is_immovable_and_invulnerable = null
+
+[node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
+ignore_is_disabled_by_assist_mode = false
+
+[node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
+__meta__ = {
+"_gizmo_extents_": 16.0
+}
+
+[editable path="TileContainer/BTS_Normal"]
+[editable path="TileContainer/BTS_Energized"]
+[editable path="TileContainer/BTS_Grounded"]
+[editable path="TileContainer/BTS_Uncolls01"]
+[editable path="TileContainer/BTS_UncollsWallDecs"]
+[editable path="TileContainer/BTS_Uncolls02"]
+[editable path="TileContainer/BTS_Glowing"]
+[editable path="TileContainer/BTS_Blue"]
+[editable path="TileContainer/BTS_Green"]
+[editable path="TileContainer/BTS_Red"]
+[editable path="TileContainer/BTS_Fragile"]
