@@ -298,7 +298,6 @@ shape = SubResource( 24 )
 
 [node name="PlayerCaptureAreaRegion2" parent="AreaRegionContainer" index="13" instance=ExtResource( 16 )]
 position = Vector2( 1894, -1100 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion2" index="0"]
 position = Vector2( 44, 20 )
@@ -306,7 +305,6 @@ shape = SubResource( 25 )
 
 [node name="PlayerCaptureAreaRegion3" parent="AreaRegionContainer" index="14" instance=ExtResource( 16 )]
 position = Vector2( 1925, -1309 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion3" index="0"]
 position = Vector2( 59, 18 )
@@ -314,7 +312,6 @@ shape = SubResource( 26 )
 
 [node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="15" instance=ExtResource( 16 )]
 position = Vector2( 2027, -3295 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerCaptureAreaRegion" index="0"]
 position = Vector2( 26, 31.5 )
@@ -428,6 +425,7 @@ is_disabled = true
 
 [node name="Pickupables_Coin3" parent="CoinsContainer" index="0" instance=ExtResource( 18 )]
 position = Vector2( 2751, -894 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 112, 144 )
@@ -453,8 +451,8 @@ mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MiscContainer/VBoxContainer" index="0"]
-margin_left = 70.0
-margin_right = 254.0
+margin_left = 139.0
+margin_right = 185.0
 margin_bottom = 56.0
 mouse_filter = 2
 size_flags_horizontal = 6
@@ -477,7 +475,6 @@ custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Press"
 
 [node name="VKP_LaunchBall" parent="MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource( 19 )]
-modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
 margin_top = 19.0
 margin_right = 46.0
 margin_bottom = 56.0
@@ -485,6 +482,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 
 [node name="Label" type="Label" parent="MiscContainer/VBoxContainer/HBoxContainer" index="1"]
+visible = false
 margin_left = 61.0
 margin_top = 20.0
 margin_right = 79.0
@@ -493,9 +491,10 @@ size_flags_vertical = 6
 text = "Or"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MiscContainer/VBoxContainer/HBoxContainer" index="2"]
-margin_left = 94.0
+visible = false
+margin_left = 61.0
 margin_top = 1.0
-margin_right = 184.0
+margin_right = 151.0
 margin_bottom = 55.0
 mouse_filter = 2
 size_flags_horizontal = 6
@@ -546,7 +545,6 @@ by holding"
 align = 1
 
 [node name="VKP_Rewind" parent="MiscContainer/VBoxContainer2" index="1" instance=ExtResource( 19 )]
-modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
 margin_left = 95.0
 margin_top = 37.0
 margin_right = 141.0

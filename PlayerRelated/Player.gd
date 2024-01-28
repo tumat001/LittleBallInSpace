@@ -922,13 +922,13 @@ func _unhandled_key_input(event):
 		var is_consumed = false
 		
 		if event.is_action_released("game_left"):
-			_is_moving_left = false
+			set_is_moving_left__to_false()
 			
 		elif event.is_action_released("game_right"):
-			_is_moving_right = false
+			set_is_moving_right__to_false()
 			
 		elif event.is_action_released("game_down"):
-			_is_move_breaking = false
+			set_is_move_breaking__to_false()
 			sleeping = false
 			
 		else:
@@ -973,19 +973,32 @@ func _unhandled_input(event):
 
 func _input(event):
 	if event is InputEventMouseButton:
+		
 		emit_signal("mouse_button_input_received", event)
+
+#
+
+func set_is_moving_left__to_false():
+	_is_moving_left = false
+
+func set_is_moving_right__to_false():
+	_is_moving_right = false
+
+func set_is_move_breaking__to_false():
+	_is_move_breaking = false
+
 
 #
 
 func stop_all_persisting_actions():
 	if _is_moving_left:
-		_is_moving_left = false
+		set_is_moving_left__to_false()
 	
 	if _is_moving_right:
-		_is_moving_right = false
+		set_is_moving_right__to_false()
 	
 	if _is_move_breaking:
-		_is_move_breaking = false
+		set_is_move_breaking__to_false()
 
 
 func stop_player_movement():

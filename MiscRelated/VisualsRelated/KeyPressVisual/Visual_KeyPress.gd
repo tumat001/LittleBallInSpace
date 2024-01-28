@@ -60,9 +60,9 @@ func set_game_control_action_name(arg_val):
 	if old_action_name != arg_val:
 		if is_inside_tree():
 			if update_keypress_label_based_on_game_control:
-				_update_key_press_label__as_game_control()
+				update_key_press_label__as_game_control()
 
-func _update_key_press_label__as_game_control():
+func update_key_press_label__as_game_control():
 	var key_char = GameSettingsManager.get_game_control_hotkey__as_string(game_control_action_name)
 	
 	key_press_label.text = key_char
@@ -70,7 +70,7 @@ func _update_key_press_label__as_game_control():
 
 
 func _on_game_control_hotkey_changed(arg_game_control_action, arg_old_hotkey, arg_new_hotkey):
-	_update_key_press_label__as_game_control()
+	update_key_press_label__as_game_control()
 	
 
 

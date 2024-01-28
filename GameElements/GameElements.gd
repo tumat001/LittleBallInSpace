@@ -396,6 +396,7 @@ func _exit_tree():
 		SingletonsAndConsts.current_game_front_hud = null
 		
 		MouseManager.remove_all_input_mouse_reservations()
+		MouseManager.remove_all_always_mouse_visible_reserve_id()
 		MouseManager.clear_all_requesters__for_mouse_normal_id()
 
 func attempt_quit_game__by_queue_freeing():

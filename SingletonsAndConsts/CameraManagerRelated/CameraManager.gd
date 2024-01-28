@@ -261,15 +261,26 @@ func _on_node_rotating_with_camera_tree_exiting(arg_node_2d):
 
 
 
-func make_control_node_rotate_with_camera(arg_control_node):
+func make_control_node_rotate_with_camera(arg_control_node : Control, arg_make_node_rotation_pivot_on_center : bool = false):
 	if !arg_control_node.is_connected("tree_exiting", self, "_on_control_node_rotating_with_camera_tree_exiting"):
 		arg_control_node.connect("tree_exiting", self, "_on_control_node_rotating_with_camera_tree_exiting", [arg_control_node])
 	
 	if !_node_controls_to_rotate_on_camera_rotate.has(arg_control_node):
 		_node_controls_to_rotate_on_camera_rotate.append(arg_control_node)
+	
+	if arg_make_node_rotation_pivot_on_center:
+		arg_control_node.rect_pivot_offset = arg_control_node.rect_size / 2
+		arg_control_node.connect("resized", self, "_on_control_resized__for_rotation_with_camera", [arg_control_node])
 
 func _on_control_node_rotating_with_camera_tree_exiting(arg_control_node):
 	_node_controls_to_rotate_on_camera_rotate.erase(arg_control_node)
+	
+	if arg_control_node.is_connected("resized", self, "_on_control_resized__for_rotation_with_camera"):
+		arg_control_node.disconnect("resized", self, "_on_control_resized__for_rotation_with_camera")
+
+func _on_control_resized__for_rotation_with_camera(arg_control : Control):
+	arg_control.rect_pivot_offset = arg_control.rect_size / 2
+
 
 
 

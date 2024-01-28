@@ -146,12 +146,15 @@ position = Vector2( 176, 704 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
+ball_dispenser_01_to_register_in_toggle__path = NodePath("")
+ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( -263, 215 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 401, 242 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="SpawnPosition2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 145, -2 )
@@ -178,8 +181,8 @@ mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MiscContainer/VBoxContainer" index="0"]
-margin_left = 47.0
-margin_right = 222.0
+margin_left = 112.0
+margin_right = 158.0
 margin_bottom = 56.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -201,13 +204,13 @@ custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 text = "Hold"
 
 [node name="VKP_LaunchBall" parent="MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource( 12 )]
-modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
 margin_top = 19.0
 margin_right = 46.0
 margin_bottom = 56.0
 size_flags_horizontal = 6
 
 [node name="Label" type="Label" parent="MiscContainer/VBoxContainer/HBoxContainer" index="1"]
+visible = false
 margin_left = 61.0
 margin_top = 20.0
 margin_right = 79.0
@@ -217,9 +220,10 @@ size_flags_vertical = 6
 text = "Or"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MiscContainer/VBoxContainer/HBoxContainer" index="2"]
-margin_left = 94.0
+visible = false
+margin_left = 61.0
 margin_top = 1.0
-margin_right = 175.0
+margin_right = 142.0
 margin_bottom = 55.0
 mouse_filter = 2
 size_flags_horizontal = 6

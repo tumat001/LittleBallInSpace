@@ -50,6 +50,11 @@ const input_mouse_mode_to_priority_map : Dictionary = {
 }
 
 
+enum AlwaysMouseModeVisibleReserveId {
+	SHOWING_GE_MENU = 0
+}
+var _always_mouse_visible_reserve_id_list : Array = []
+var last_calc_mouse_is_always_visible : bool = false
 
 ######
 
@@ -167,6 +172,12 @@ func remove_all_input_mouse_reservations():
 	_update_input_mouse_mode_based_on_reservation()
 
 func _update_input_mouse_mode_based_on_reservation():
+	if last_calc_mouse_is_always_visible:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
+	
+	####
+	
 	var curr_prio = 0
 	var curr_mouse_mode_id = input_mouse_mode_to_priority_map.keys()[curr_prio]
 	
@@ -178,4 +189,25 @@ func _update_input_mouse_mode_based_on_reservation():
 	
 	Input.mouse_mode = curr_mouse_mode_id
 
+
+
+func add_always_mouse_visible_reserve_id_list(arg_id):
+	if !_always_mouse_visible_reserve_id_list.has(arg_id):
+		_always_mouse_visible_reserve_id_list.append(arg_id)
+		last_calc_mouse_is_always_visible = true
+		
+		_update_input_mouse_mode_based_on_reservation()
+
+func remove_always_mouse_visible_reserve_id_list(arg_id):
+	if _always_mouse_visible_reserve_id_list.has(arg_id):
+		_always_mouse_visible_reserve_id_list.erase(arg_id)
+		last_calc_mouse_is_always_visible = _always_mouse_visible_reserve_id_list.size() != 0
+		
+		_update_input_mouse_mode_based_on_reservation()
+
+func remove_all_always_mouse_visible_reserve_id():
+	_always_mouse_visible_reserve_id_list.clear()
+	last_calc_mouse_is_always_visible = false
+	
+	_update_input_mouse_mode_based_on_reservation()
 

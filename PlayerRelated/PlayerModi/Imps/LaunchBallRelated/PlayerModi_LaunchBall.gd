@@ -91,14 +91,29 @@ var is_class_type_player_modi_launch_ball : bool = true
 #var BALL_GROUP_ID = "Object_LaunchBallGroup"
 #var active_ball_count : int
 
-var is_override_mouse_angle : bool = false
-var custom_mouse_angle : float
+var is_override_mouse_angle : bool = false setget set_is_override_mouse_angle
+var custom_mouse_angle : float setget set_custom_mouse_angle
 
 
 #
 
 func _init().(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL):
 	pass
+
+
+#
+
+func set_is_override_mouse_angle(arg_val):
+	is_override_mouse_angle = arg_val
+	
+	if player_modi_launch_ball_node != null:
+		player_modi_launch_ball_node.is_override_mouse_angle = is_override_mouse_angle
+
+func set_custom_mouse_angle(arg_val):
+	custom_mouse_angle = arg_val
+	
+	if player_modi_launch_ball_node != null:
+		player_modi_launch_ball_node.custom_mouse_angle = custom_mouse_angle
 
 
 ######
@@ -219,6 +234,9 @@ func _initialize_player_modi_launch_ball_node():
 	
 	player_modi_launch_ball_node.connect("ended_launch_charge", self, "_on_modi_launch_ball_node__ended_launch_charge")
 	
+	player_modi_launch_ball_node.is_override_mouse_angle = is_override_mouse_angle
+	player_modi_launch_ball_node.custom_mouse_angle = custom_mouse_angle
+	
 	set_can_change_aim_mode(can_change_aim_mode)
 
 func _on_can_change_aim_mode_changed(arg_val):
@@ -230,8 +248,8 @@ func _on_modi_launch_ball_node__ended_launch_charge():
 	
 	SingletonsAndConsts.current_game_front_hud.remove__is_activated__clause_for_all_HUDCMH(HUD_Control_MouseHidden.IsActivatedCondClauseIds.IS_BALL_FIRE_CHARGING)
 
-######
 
+######
 
 func _on_player_mouse_button_input_received(event):
 	if _is_launch_ability_ready:
@@ -242,7 +260,6 @@ func _on_player_mouse_button_input_received(event):
 			elif event.button_index == BUTTON_WHEEL_DOWN:
 				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * -1)
 
-
 func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEventMouseButton):
 	if _is_launch_ability_ready:
 		if event.button_index == BUTTON_LEFT and !event.is_echo() and !event.doubleclick:
@@ -251,7 +268,7 @@ func _on_player_unhandled_mouse_button_input_received__for_modi(event : InputEve
 			else:
 				_attempt_launch_ball()
 			
-			###
+	
 #		if GameSettingsManager.last_calc__unlocked_status__mouse_scroll_launch_ball and player_modi_launch_ball_node.is_charging_launch():
 #			if event.button_index == BUTTON_WHEEL_UP:
 #				player_modi_launch_ball_node.increment_current_launch__from_using_mouse_wheel(_calculate_increment_using_wheel_factor(event.factor) * 1)
@@ -349,13 +366,17 @@ func _calculate_launch_force_of_ball_and_player(arg_launch_strength : float):
 	#var mouse_pos : Vector2 = _player.get_global_mouse_position()
 	#var angle = _player.global_position.angle_to_point(mouse_pos)
 	var angle = get_angle_to_use_for_ball_launch()
+	
 	return _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength, angle)
 
 func get_angle_to_use_for_ball_launch() -> float:
-	if is_override_mouse_angle:
-		return custom_mouse_angle
+	#if is_override_mouse_angle:
+	#	return player_modi_launch_ball_node.calculate_angle_of_node_to_mouse() #custom_mouse_angle
 	
 	return player_modi_launch_ball_node.last_calc_angle_of_node_to_mouse
+
+func calculate_angle_of_node_to_mouse() -> float:
+	return player_modi_launch_ball_node.calculate_angle_of_node_to_mouse()
 
 
 func _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength : float, angle):
@@ -365,7 +386,6 @@ func _calculate_launch_force_of_ball_and_player__using_angle(arg_launch_strength
 	var player_launch_vector = launch_vector / _player.last_calculated_object_mass
 	
 	return [ball_launch_vector, player_launch_vector]
-	
 
 
 
@@ -378,7 +398,6 @@ func _create_ball__and_launch_at_vector(arg_pos, arg_vec):
 	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(ball)
 	
 	return ball
-
 
 func create_ball__for_any_use(arg_add_child : bool) -> Object_Ball:
 	var ball : Object_Ball = StoreOfObjects.construct_object(StoreOfObjects.ObjectTypeIds.BALL)

@@ -1,5 +1,16 @@
 extends CanvasLayer
 
+#
+
+signal in_game_pause_control_tree_opened()
+signal in_game_pause_control_tree_closed()
+
+
+#
+
+var is_showing_in_game_pause_panel_tree : bool = false
+
+#
 
 onready var other_hosters = $OtherHosters
 onready var other_hud_non_screen_hosters = $OtherHUDNonScreenHosters
@@ -105,16 +116,37 @@ func _ready():
 	energy_panel.player_health_panel = health_panel
 	
 	pcar_captured_panel.configure_self_to_monitor_curr_world_manager()
+	
+	_config_with_in_game_pause_panel_tree()
+
+
+func _config_with_in_game_pause_panel_tree():
+	in_game_pause_panel_tree.connect("hierarchy_emptied", self, "_on_control_tree_hierarchy_emptied")
+	in_game_pause_panel_tree.connect("hierarchy_advanced_forwards", self, "_on_control_tree_hierarchy_advanced_forwards")
+
+
+func _on_control_tree_hierarchy_emptied():
+	is_showing_in_game_pause_panel_tree = false
+	
+	emit_signal("in_game_pause_control_tree_closed")
+
+func _on_control_tree_hierarchy_advanced_forwards(arg_control):
+	if !is_showing_in_game_pause_panel_tree:
+		is_showing_in_game_pause_panel_tree = true
+		emit_signal("in_game_pause_control_tree_opened")
+	
+
 
 ##################
 
 func show_in_game_pause_control_tree():
 	set_control_container_visibility(true)
 	in_game_pause_panel_tree.show_in_game_pause_main_page()
+	
 
 func hide_in_game_pause_control_tree():
 	in_game_pause_panel_tree.hide_current_control__and_traverse_thru_hierarchy(false)
-
+	
 
 #
 

@@ -75,6 +75,12 @@ var can_change_aim_mode : bool = true setget set_can_change_aim_mode
 
 #
 
+var is_override_mouse_angle : bool = false
+var custom_mouse_angle : float
+var is_modify_custom_mouse_angle_with_cam_manager_angle : bool = true
+
+#
+
 func set_can_change_aim_mode(arg_val):
 	var old_val = can_change_aim_mode
 	can_change_aim_mode = arg_val
@@ -228,8 +234,8 @@ func end_launch_charge():
 func _draw():
 	if _is_charging_launch:
 		var color_to_use = _get_color_to_use_based_on_current_launch_force()
-		var mouse_pos = get_global_mouse_position()
 		var node_pos = _node_to_follow.global_position
+		
 		
 		_current_color_to_use_for_draw = color_to_use
 		
@@ -238,23 +244,15 @@ func _draw():
 		var line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH * 0.66 / _max_launch_force
 		var line_end_pos = Vector2(line_length, 0)
 		
-		var angle_of_node_to_mouse
-		if current_aim_mode == AimMode.OMNI:
-			angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
-		elif current_aim_mode == AimMode.SNAP:
-			angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
-			angle_of_node_to_mouse = _clean_up_angle__perfect_translated_for_circle_partition(angle_of_node_to_mouse)
-		
-		last_calc_angle_of_node_to_mouse = angle_of_node_to_mouse
-		
-		var towards_mouse_line_end_pos = line_end_pos.rotated(angle_of_node_to_mouse) + node_pos
+		update_last_calc_angle_of_node_to_mouse()
+		var towards_mouse_line_end_pos = line_end_pos.rotated(last_calc_angle_of_node_to_mouse) + node_pos
 		
 		##
 		
 		var player_line_length = current_launch_force * MAX_LAUNCH_LINE_LENGTH / _max_launch_force
 		var player_line_end_pos = Vector2(player_line_length, 0)
 		
-		player_line_end_pos = player_line_end_pos.rotated(angle_of_node_to_mouse + PI) + node_pos
+		player_line_end_pos = player_line_end_pos.rotated(last_calc_angle_of_node_to_mouse + PI) + node_pos
 		
 		##
 		if show_player_trajectory_line:
@@ -264,6 +262,31 @@ func _draw():
 		# BALL line
 		draw_line(node_pos, player_line_end_pos, color_to_use, LINE_WIDTH__FOR_BALL)
 
+
+func update_last_calc_angle_of_node_to_mouse():
+	last_calc_angle_of_node_to_mouse = calculate_angle_of_node_to_mouse()
+
+func calculate_angle_of_node_to_mouse():
+	if is_override_mouse_angle:
+		var angle = custom_mouse_angle
+		if is_modify_custom_mouse_angle_with_cam_manager_angle:
+			angle += CameraManager.camera.rotation
+		
+		return angle
+	
+	var mouse_pos = get_global_mouse_position()
+	var node_pos = _node_to_follow.global_position
+	
+	#
+	var angle_of_node_to_mouse
+	
+	if current_aim_mode == AimMode.OMNI:
+		angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
+	elif current_aim_mode == AimMode.SNAP:
+		angle_of_node_to_mouse = node_pos.angle_to_point(mouse_pos)
+		angle_of_node_to_mouse = _clean_up_angle__perfect_translated_for_circle_partition(angle_of_node_to_mouse)
+	
+	return angle_of_node_to_mouse
 
 func _get_color_to_use_based_on_current_launch_force() -> Color:
 	if is_equal_approx(current_launch_force, _starting_launch_force):
