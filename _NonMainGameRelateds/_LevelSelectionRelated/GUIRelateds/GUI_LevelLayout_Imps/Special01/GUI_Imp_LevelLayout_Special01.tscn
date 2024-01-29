@@ -142,3 +142,42 @@ margin_top = 230.0
 margin_right = 736.0
 margin_bottom = 276.0
 is_path = true
+
+[node name="GUI_LevelLayoutEle_Path_18" parent="LayoutElesContainer" index="20" instance=ExtResource( 2 )]
+margin_left = 460.0
+margin_top = 230.0
+margin_right = 506.0
+margin_bottom = 276.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Path_19" parent="LayoutElesContainer" index="21" instance=ExtResource( 2 )]
+margin_left = 460.0
+margin_top = 184.0
+margin_right = 506.0
+margin_bottom = 230.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Path_20" parent="LayoutElesContainer" index="22" instance=ExtResource( 2 )]
+margin_left = 460.0
+margin_top = 138.0
+margin_right = 506.0
+margin_bottom = 184.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Path_21" parent="LayoutElesContainer" index="23" instance=ExtResource( 2 )]
+margin_left = 460.0
+margin_top = 92.0
+margin_right = 506.0
+margin_bottom = 138.0
+is_path = true
+is_layout_element_invis_by_default = true
+
+[node name="GUI_LevelLayoutEle_Layout_ToSpec02" parent="LayoutElesContainer" index="24" instance=ExtResource( 2 )]
+margin_left = 460.0
+margin_top = 46.0
+margin_right = 506.0
+margin_bottom = 92.0
+is_layout_element_invis_by_default = true

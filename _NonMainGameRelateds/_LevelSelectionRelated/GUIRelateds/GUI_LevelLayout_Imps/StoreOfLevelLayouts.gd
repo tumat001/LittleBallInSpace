@@ -21,6 +21,7 @@ enum LevelLayoutIds {
 	LAYOUT_07 = 7,
 	
 	LAYOUT_SPECIAL_01 = 1000
+	LAYOUT_SPECIAL_02 = 1001
 	
 }
 
@@ -64,6 +65,8 @@ func generate_instance_of_layout(arg_id):
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_01:
 		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special01/GUI_Imp_LevelLayout_Special01.tscn")
+	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_02:
+		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special02/GUI_Imp_LevelLayout_Special02.tscn")
 	
 	
 	return scene_ref.instance()
@@ -241,7 +244,28 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
-	
+		
+	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_02:
+		details.level_layout_name = [
+			["Finale", []]
+		]
+		details.level_layout_desc = [
+			["...", []],
+		]
+		
+		_set_details_transition_types__to_usual_circle_types(details)
+		
+		details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Circle__LevelLayoutSpecial02.png")
+		details.modulate_of_level_tile = Color(1, 1, 1, 1)
+		
+		details.level_layout_label_on_tile = ""
+		details.level_label_text_color = Color("#dddddd")
+		#details.level_label_outline_color = Color("#dddddd")
+		details.has_outline_color = false
+		
+		#
+		#details.background_type = GameBackground.BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL
+		
 	
 	_set_layout_details_configs_and_params_based_on_GSM(details)
 	
