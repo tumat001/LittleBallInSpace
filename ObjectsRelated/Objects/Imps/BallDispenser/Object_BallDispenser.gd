@@ -51,8 +51,8 @@ var _is_done_in_ready : bool = false
 onready var ball_indicator_anim_sprite = $BallIndicatorAnimSprite
 onready var triggerable_count_label = $TriggerableCountLabel
 
-onready var coll_shape_2d__2 = $CollisionShape2D2
-onready var coll_shape_2d__3 = $CollisionShape2D3
+#onready var coll_shape_2d__2 = $CollisionShape2D2
+#onready var coll_shape_2d__3 = $CollisionShape2D3
 onready var coll_shape_2d__for_ball_absorb_area = $BallAbsorbArea2D/CollisionShape2D
 
 #
@@ -62,8 +62,8 @@ func _ready():
 	#8 = radius of ball
 	BALL_SPAWN_POINT_OFFSET = Vector2(16 + 8, 0)
 	
-	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__2)
-	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__3)
+#	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__2)
+#	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__3)
 	add_monitor_to_collision_shape_for_rewind(coll_shape_2d__for_ball_absorb_area)
 	
 	_is_done_in_ready = true

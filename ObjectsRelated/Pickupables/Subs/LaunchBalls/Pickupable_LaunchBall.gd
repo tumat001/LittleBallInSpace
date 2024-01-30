@@ -24,6 +24,9 @@ export(LaunchBallType) var launch_ball_type : int = LaunchBallType.AMMO_01 setge
 var ammo_refill : int
 var is_make_ammo_infinite : bool
 
+
+export(bool) var is_replenish_type : bool = false
+
 #
 
 const offset_from_center__red = Vector2(0, -8)
@@ -78,16 +81,34 @@ func _on_player_entered_self(arg_player):
 	
 	var modi = SingletonsAndConsts.current_game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
 	if modi != null:
+		var has_made_changes : bool = false
 		if ammo_refill != 0:
-			modi.set_current_ball_count(modi.get_current_ball_count() + ammo_refill)
+			if !is_replenish_type:
+				modi.set_current_ball_count(modi.get_current_ball_count() + ammo_refill)
+				has_made_changes = true
+			else:
+				var curr_count = modi.get_current_ball_count()
+				if curr_count < ammo_refill:
+					modi.set_current_ball_count(ammo_refill)
+					has_made_changes = true
 		
 		if is_make_ammo_infinite:
-			modi.is_infinite_ball_count = is_make_ammo_infinite
+			if !is_replenish_type:
+				modi.is_infinite_ball_count = is_make_ammo_infinite
+				has_made_changes = true
+			else:
+				pass
 		
-		_attempt_play_particle_and_sound_effects()
-		_destroy_self__on_consume_by_player()
 		
-		emit_signal("ball_collected_by_player")
+		if has_made_changes:
+			_attempt_play_particle_and_sound_effects()
+		
+		
+		if has_made_changes and !is_replenish_type:
+			_destroy_self__on_consume_by_player()
+		
+		if has_made_changes:
+			emit_signal("ball_collected_by_player")
 
 func _attempt_play_particle_and_sound_effects():
 	if SingletonsAndConsts.current_game_elements.is_game_front_hud_initialized:

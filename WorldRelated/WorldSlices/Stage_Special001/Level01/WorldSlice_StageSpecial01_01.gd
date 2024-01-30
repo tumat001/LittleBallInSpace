@@ -23,9 +23,8 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	_attempt_show_cutscene()
-
-
-
+	
+	_helper__conn_to_GRM_on_win_attempt_unlock_to_spec_layout_02()
 
 ## CUTSCENE
 

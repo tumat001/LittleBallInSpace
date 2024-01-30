@@ -778,4 +778,14 @@ func as_test__override__do_insta_win__template_capture_all_points():
 	
 
 
+########################
+## Helpers
+
+func _helper__conn_to_GRM_on_win_attempt_unlock_to_spec_layout_02():
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__helper_for_unlock_spec_layout_02")
+
+func _on_game_result_decided__helper_for_unlock_spec_layout_02(arg_result):
+	if game_elements.game_result_manager.is_game_result_win():
+		StoreOfLevels.attempt_unlock_stage_special_02__and_unhide_eles_to_layout_special_02()
+
 

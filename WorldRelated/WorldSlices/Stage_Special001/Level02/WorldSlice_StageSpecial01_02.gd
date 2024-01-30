@@ -38,6 +38,9 @@ func _on_after_game_start_init():
 	#SingletonsAndConsts.current_rewind_manager.remove_non_existing_objs_in_traversal = false
 	
 	call_deferred("_deferred_init")
+	
+	
+	_helper__conn_to_GRM_on_win_attempt_unlock_to_spec_layout_02()
 
 func _deferred_init():
 	_load_or_generate_rewindable_data__for_this_level()

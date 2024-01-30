@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Object_InteractableButton.tscn" type="PackedScene" id=9]
 [ext_resource path="res://AreaRegionRelated/Subs/ObjectDestroyingAreaRegion/ObjectDestroyingAreaRegion.tscn" type="PackedScene" id=10]
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerClearAreaRegion/PlayerClearAreaRegion.tscn" type="PackedScene" id=11]
+[ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 73.5 )
@@ -44,6 +45,15 @@ extents = Vector2( 32, 32 )
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 16, 32 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 610, 461.5 )
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 366.5, 145.25 )
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 225, 442.5 )
 
 [node name="WorldSlice_StageSpecial01_03" instance=ExtResource( 2 )]
 script = ExtResource( 7 )
@@ -209,6 +219,20 @@ position = Vector2( -82, -182 )
 position = Vector2( 50, -10 )
 shape = SubResource( 8 )
 
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="13" instance=ExtResource( 12 )]
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
+position = Vector2( -37, 59.5 )
+shape = SubResource( 14 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
+position = Vector2( 10.5, 652.75 )
+shape = SubResource( 15 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="2"]
+position = Vector2( 155, 1224.5 )
+shape = SubResource( 16 )
+
 [node name="Portal_Red01" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
 position = Vector2( -145, 464 )
 portal_color = 0
@@ -305,3 +329,4 @@ __meta__ = {
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion6"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion7"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion2"]
+[editable path="AreaRegionContainer/PDAR_MapBounds"]

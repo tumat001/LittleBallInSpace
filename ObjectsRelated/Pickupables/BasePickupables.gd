@@ -12,7 +12,8 @@ onready var collision_shape = $CollisionShape2D
 #
 
 func _ready():
-	SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
+	if !Engine.editor_hint:
+		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
 	
 
 

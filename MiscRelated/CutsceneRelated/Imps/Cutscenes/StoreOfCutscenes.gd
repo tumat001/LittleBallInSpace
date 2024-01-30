@@ -5,6 +5,7 @@ enum CutsceneId {
 	LSpecial01_Lvl01 = 0,
 	LSpecial01_Lvl02 = 1,
 	LSpecial01_Lvl03 = 2,
+	LSpecial01_Lvl04 = 3,
 	
 }
 
@@ -18,6 +19,8 @@ static func generate_cutscene_from_id(arg_id):
 		scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/LSpecial01/Lvl02/LSpecial01_Cutscene_Lvl02.tscn")
 	elif arg_id == CutsceneId.LSpecial01_Lvl03:
 		scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/LSpecial01/Lvl03/LSpecial01_Cutscene_Lvl03.tscn")
+	elif arg_id == CutsceneId.LSpecial01_Lvl04:
+		scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/LSpecial01/Lvl04/LSpecial01_Cutscene_Lvl04.tscn")
 	
 	
 	return scene_pack.instance()

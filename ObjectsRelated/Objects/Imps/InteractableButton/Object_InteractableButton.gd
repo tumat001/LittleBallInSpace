@@ -1,3 +1,4 @@
+tool
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
@@ -237,14 +238,15 @@ func set_button_color(arg_color):
 	elif button_color == ButtonColor.RED:
 		color = TILESET_COLOR__RED
 	
-	for tileset in _tilesets_to_toggle_to_is_reverse_map.keys():
-		tileset.set_modulate_for_tilemap(tileset.TilemapModulateIds.BUTTON_ASSOCIATED, color)
-	
-	for portal in _portals_to_toggle:
-		portal.set_portal_color(color)
-	
-	for ball_dispenser in _ball_dispensers_to_toggle:
-		ball_dispenser.set_dispenser_color(color)
+	if !Engine.editor_hint:
+		for tileset in _tilesets_to_toggle_to_is_reverse_map.keys():
+			tileset.set_modulate_for_tilemap(tileset.TilemapModulateIds.BUTTON_ASSOCIATED, color)
+		
+		for portal in _portals_to_toggle:
+			portal.set_portal_color(color)
+		
+		for ball_dispenser in _ball_dispensers_to_toggle:
+			ball_dispenser.set_dispenser_color(color)
 	
 	#
 	
@@ -256,30 +258,34 @@ func _update_button_display():
 			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Red.png")
 			if is_pressed:
 				base_sprite.play("red_on")
-				
 			else:
 				base_sprite.play("red_off")
-				
 			
 		elif button_color == ButtonColor.GREEN:
 			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Green.png")
 			if is_pressed:
 				base_sprite.play("green_on")
-				
 			else:
 				base_sprite.play("green_off")
-				
+			
 			
 		elif button_color == ButtonColor.BLUE:
 			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Blue.png")
 			if is_pressed:
 				base_sprite.play("blue_on")
-				
 			else:
 				base_sprite.play("blue_off")
-				
 			
-	
+
+#func _update_button_display__for_editor():
+#	if is_inside_tree():
+#		if button_color == ButtonColor.RED:
+#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Red.png")
+#		elif button_color == ButtonColor.GREEN:
+#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Green.png")
+#		elif button_color == ButtonColor.BLUE:
+#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Blue.png")
+
 
 #
 
@@ -288,12 +294,18 @@ func set_pressable_count(arg_val):
 	
 	if is_inside_tree():
 		use_count_label.text = str(arg_val)
-	
 
 
 #
 
 func _ready():
+	
+	if Engine.editor_hint:
+		set_button_color(button_color)
+		return
+	
+	#
+	
 	_is_in_ready = true
 	
 	coll_shape_button_blocker_y_pos_diff_from_button = button_container.position.y - collision_shape_2d_02.position.y

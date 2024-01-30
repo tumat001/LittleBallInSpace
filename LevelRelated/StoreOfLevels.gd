@@ -172,6 +172,8 @@ func _initialize_levels_in_level_layout():
 		"STAGE_6" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06,
 		"STAGE_7" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07,
 		
+		"STAGE_SPECIAL_2" : StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02,
+		
 	}
 	
 	##
@@ -2186,15 +2188,19 @@ func _are_all_level_ids_finished(arg_ids : Array):
 #
 ###########################
 
-func can_unlock_stage_special_02():
-	for lvl_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
-		if !GameSaveManager.is_level_id_finished(lvl_id):
-			return false
-	
-	return !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02)
+# unlock trophy (curtain call) level
+func attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02():
+	if GameSaveManager.get_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2) == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED:
+		#gets finished so no need to set
+		
+		for i in range(4, 16 + 1):
+			GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, i, false)
+		
+
+
 
 func attempt_unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
-	if !can_unlock_stage_special_02():
+	if can_unlock_stage_special_02():
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 		
@@ -2205,7 +2211,16 @@ func attempt_unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
 		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 24, false)
 		
 		GameSaveManager.set_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-		
+
+func can_unlock_stage_special_02():
+	for lvl_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
+		if !GameSaveManager.is_level_id_finished(lvl_id):
+			return false
+	
+	return !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02)
+
+
+
 
 func unlock_stage_07__and_unhide_eles_to_layout_07():
 	if !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07):

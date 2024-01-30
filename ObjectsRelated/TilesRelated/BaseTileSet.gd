@@ -973,7 +973,8 @@ func restore_from_destroyed_from_rewind():
 	
 
 func started_rewind():
-	pass
+	_make_self_not_breakable_on_player_contact()
+	
 	#if _save_tiles_data_next_frame__for_rewind_save__count > 0:
 	#	_save_tiles_data_next_frame__for_rewind_save__count = 0
 	#	save_state["cell_save_data"] = _saved_cell_data_queue.pop_back()#_saved_cell_data

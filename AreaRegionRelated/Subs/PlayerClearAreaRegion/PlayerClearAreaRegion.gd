@@ -22,6 +22,7 @@ func _on_player_entered_in_area__CAR():
 	if launch_ball_modi != null:
 		if launch_ball_modi.get_current_ball_count() != 0:
 			launch_ball_modi.set_current_ball_count(0)
+			launch_ball_modi.is_infinite_ball_count = false
 			
 			cleared_at_least_one = true
 	
