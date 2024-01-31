@@ -1,4 +1,4 @@
-
+tool
 extends "res://ObjectsRelated/Objects/BaseObject.gd"
 
 
@@ -58,6 +58,12 @@ onready var coll_shape_2d__for_ball_absorb_area = $BallAbsorbArea2D/CollisionSha
 #
 
 func _ready():
+	if Engine.editor_hint:
+		set_dispenser_color(dispenser_color)
+		set_triggerable_count(triggerable_count)
+		
+		return
+	
 	#16 = half of this size
 	#8 = radius of ball
 	BALL_SPAWN_POINT_OFFSET = Vector2(16 + 8, 0)
@@ -120,7 +126,7 @@ func _tween_make_ball_indicator_flash_glow():
 func set_triggerable_count(arg_val):
 	triggerable_count = arg_val
 	
-	if is_inside_tree() or Engine.editor_hint:
+	if is_inside_tree() or (Engine.editor_hint and is_inside_tree()):
 		triggerable_count_label.text = str(triggerable_count)
 		
 
@@ -130,7 +136,7 @@ func set_dispenser_color(arg_color):
 	dispenser_color = arg_color
 	
 	#yeah, use _is_done_in_ready instead of is_inside_tree()...
-	if _is_done_in_ready or Engine.editor_hint:
+	if _is_done_in_ready or (Engine.editor_hint and is_inside_tree()):
 		var anim_name = _get_anim_name_to_play_based_on_dispenser_color()
 		anim_sprite.play(anim_name)
 		ball_indicator_anim_sprite.play(anim_name)

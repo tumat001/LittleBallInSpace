@@ -172,7 +172,7 @@ export(StartingActivationModeId) var starting_activation_mode_id #= #StartingAct
 
 #
 
-var current_health : float = GameSettingsManager.combat__current_max_enemy_health setget set_current_health
+var current_health : float setget set_current_health
 const REWIND_DATA__current_health = "current_health"
 
 var _is_robot_dead : bool
@@ -205,7 +205,7 @@ var _objects_to_add_mask_layer_collision_after_exit : Array
 
 #
 
-var on_death__audio_id_to_play : int = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
+var on_death__audio_id_to_play : int
 var on_death__audio_id_to_play__override : int = -1
 
 #
@@ -257,6 +257,11 @@ onready var area_for_tileset__coll_shape = $CollForTileset/CollisionShape2D
 ##
 
 func _init():
+	if !Engine.editor_hint:
+		current_health = GameSettingsManager.combat__current_max_enemy_health
+		on_death__audio_id_to_play = StoreOfAudio.AudioIds.SFX_Enemy_DeathExplode
+		
+	
 	can_not_attack_conditional_clause = ConditionalClauses.new()
 	can_not_attack_conditional_clause.connect("clause_inserted", self, "_on_can_not_attack_conditional_clause_updated")
 	can_not_attack_conditional_clause.connect("clause_removed", self, "_on_can_not_attack_conditional_clause_updated")

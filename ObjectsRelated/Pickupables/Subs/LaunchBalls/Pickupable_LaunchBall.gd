@@ -40,7 +40,7 @@ const delay_per_ball_particle : float = 0.1
 func set_launch_ball_type(arg_type):
 	launch_ball_type = arg_type
 	
-	if is_inside_tree() or Engine.editor_hint:
+	if is_inside_tree() or (Engine.editor_hint and is_inside_tree()):
 		if launch_ball_type == LaunchBallType.AMMO_01:
 			sprite.texture = preload("res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Assets/Pickupables_LaunchBall_Ball01.png")
 			ammo_refill = 1
@@ -94,11 +94,12 @@ func _on_player_entered_self(arg_player):
 		
 		if is_make_ammo_infinite:
 			if !is_replenish_type:
-				modi.is_infinite_ball_count = is_make_ammo_infinite
+				modi.is_infinite_ball_count = true
 				has_made_changes = true
 			else:
-				pass
-		
+				var old_val = modi.is_infinite_ball_count
+				modi.is_infinite_ball_count = true
+				has_made_changes = old_val != true
 		
 		if has_made_changes:
 			_attempt_play_particle_and_sound_effects()

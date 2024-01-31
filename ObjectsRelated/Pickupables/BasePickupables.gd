@@ -14,7 +14,6 @@ onready var collision_shape = $CollisionShape2D
 func _ready():
 	if !Engine.editor_hint:
 		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
-	
 
 
 func _get_adjusted_sprite_size__remove_alpha_borders():
