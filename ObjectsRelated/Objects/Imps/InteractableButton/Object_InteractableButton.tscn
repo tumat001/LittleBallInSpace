@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://ObjectsRelated/Objects/BaseObject.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Blue.png" type="Texture" id=2]
@@ -9,6 +9,10 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Red.png" type="Texture" id=7]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_On_Red.png" type="Texture" id=8]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Green.png" type="Texture" id=9]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_On_Yellow.png" type="Texture" id=10]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_On_Gray.png" type="Texture" id=11]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Gray.png" type="Texture" id=12]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Yellow.png" type="Texture" id=13]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 12, 3 )
@@ -23,6 +27,16 @@ animations = [ {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
 "name": "blue_on",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "gray_off",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 11 ) ],
+"loop": true,
+"name": "gray_on",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 9 ) ],
@@ -44,6 +58,16 @@ animations = [ {
 "loop": true,
 "name": "red_on",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ) ],
+"loop": true,
+"name": "yellow_off",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "yellow_on",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=3]
@@ -53,6 +77,8 @@ extents = Vector2( 16, 8 )
 extents = Vector2( 16, 4.5 )
 
 [node name="Object_InteractableButton" instance=ExtResource( 1 )]
+collision_mask = 11
+mass = 20.0
 script = ExtResource( 5 )
 tileset_01_to_register_in_toggle__path = NodePath("")
 tileset_01_to_register_in_toggle__is_reversed = false
@@ -84,7 +110,8 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" parent="." index="1"]
 frames = SubResource( 1 )
-animation = "red_on"
+animation = "gray_on"
+playing = true
 
 [node name="CollisionShape2D" parent="." index="2"]
 shape = SubResource( 3 )

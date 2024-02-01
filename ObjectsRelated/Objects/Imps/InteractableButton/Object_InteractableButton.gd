@@ -11,6 +11,8 @@ signal pressed(arg_is_pressed)
 const TILESET_COLOR__BLUE = Color("#1274ff")
 const TILESET_COLOR__RED = Color("#ff2424") #Color(253/255.0, 17/255.0, 19/255.0)
 const TILESET_COLOR__GREEN = Color("#1cff09") #Color(17/255.0, 253/255.0, 19/255.0)
+const TILESET_COLOR__YELLOW = Color("#FFDC70")
+const TILESET_COLOR__GRAY = Color("#B8B8B8")
 
 
 const BUTTON_CONTAINER_Y_CHANGE_DURATION : float = 0.5
@@ -76,6 +78,8 @@ enum ButtonColor {
 	RED = 0,
 	GREEN = 1,
 	BLUE = 2,
+	YELLOW = 3,
+	GRAY = 4,
 }
 export(ButtonColor) var button_color : int = ButtonColor.BLUE setget set_button_color
 
@@ -98,12 +102,16 @@ var can_play_sound : bool = true
 
 ##
 
-const ANIM_NAME__BASE__BLUE_OFF = "blue_off"
-const ANIM_NAME__BASE__BLUE_ON = "blue_on"
-const ANIM_NAME__BASE__GREEN_OFF = "green_off"
-const ANIM_NAME__BASE__GREEN_ON = "green_on"
-const ANIM_NAME__BASE__RED_OFF = "red_off"
-const ANIM_NAME__BASE__RED_ON = "red_on"
+#const ANIM_NAME__BASE__BLUE_OFF = "blue_off"
+#const ANIM_NAME__BASE__BLUE_ON = "blue_on"
+#const ANIM_NAME__BASE__GREEN_OFF = "green_off"
+#const ANIM_NAME__BASE__GREEN_ON = "green_on"
+#const ANIM_NAME__BASE__RED_OFF = "red_off"
+#const ANIM_NAME__BASE__RED_ON = "red_on"
+#const ANIM_NAME__BASE__YELLOW_OFF = "yellow_off"
+#const ANIM_NAME__BASE__YELLOW_ON = "yellow_on"
+#const ANIM_NAME__BASE__GRAY_OFF = "gray_off"
+#const ANIM_NAME__BASE__GRAY_ON = "gray_on"
 
 
 onready var button_sprite = $ButtonContainer/Button
@@ -230,13 +238,7 @@ func _on_button_pos_change_finished__coll_shape():
 func set_button_color(arg_color):
 	button_color = arg_color
 	
-	var color
-	if button_color == ButtonColor.BLUE:
-		color = TILESET_COLOR__BLUE
-	elif button_color == ButtonColor.GREEN:
-		color = TILESET_COLOR__GREEN
-	elif button_color == ButtonColor.RED:
-		color = TILESET_COLOR__RED
+	var color = _get_tileset_color_associated_with_button_color_id(button_color)
 	
 	if !Engine.editor_hint:
 		for tileset in _tilesets_to_toggle_to_is_reverse_map.keys():
@@ -252,40 +254,66 @@ func set_button_color(arg_color):
 	
 	_update_button_display()
 
+func _get_tileset_color_associated_with_button_color_id(arg_button_color):
+	var color = -1
+	
+	match arg_button_color:
+		ButtonColor.BLUE:
+			color = TILESET_COLOR__BLUE
+		ButtonColor.GREEN:
+			color = TILESET_COLOR__GREEN
+		ButtonColor.RED:
+			color = TILESET_COLOR__RED
+		ButtonColor.YELLOW:
+			color = TILESET_COLOR__YELLOW
+		ButtonColor.GRAY:
+			color = TILESET_COLOR__GRAY
+	
+	return color
+
+
 func _update_button_display():
 	if is_inside_tree():
-		if button_color == ButtonColor.RED:
-			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Red.png")
-			if is_pressed:
-				base_sprite.play("red_on")
-			else:
-				base_sprite.play("red_off")
-			
-		elif button_color == ButtonColor.GREEN:
-			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Green.png")
-			if is_pressed:
-				base_sprite.play("green_on")
-			else:
-				base_sprite.play("green_off")
-			
-			
-		elif button_color == ButtonColor.BLUE:
-			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Blue.png")
-			if is_pressed:
-				base_sprite.play("blue_on")
-			else:
-				base_sprite.play("blue_off")
-			
-
-#func _update_button_display__for_editor():
-#	if is_inside_tree():
-#		if button_color == ButtonColor.RED:
-#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Red.png")
-#		elif button_color == ButtonColor.GREEN:
-#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Green.png")
-#		elif button_color == ButtonColor.BLUE:
-#			button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Blue.png")
-
+		match button_color:
+			ButtonColor.RED:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Red.png")
+				if is_pressed:
+					base_sprite.play("red_on")
+				else:
+					base_sprite.play("red_off")
+				
+				
+			ButtonColor.GREEN:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Green.png")
+				if is_pressed:
+					base_sprite.play("green_on")
+				else:
+					base_sprite.play("green_off")
+				
+				
+			ButtonColor.BLUE:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Blue.png")
+				if is_pressed:
+					base_sprite.play("blue_on")
+				else:
+					base_sprite.play("blue_off")
+				
+				
+			ButtonColor.YELLOW:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Yellow.png")
+				if is_pressed:
+					base_sprite.play("yellow_on")
+				else:
+					base_sprite.play("yellow_off")
+				
+				
+			ButtonColor.GRAY:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Gray.png")
+				if is_pressed:
+					base_sprite.play("gray_on")
+				else:
+					base_sprite.play("gray_off")
+				
 
 #
 
@@ -342,13 +370,8 @@ func _ready():
 func add_tileset_to_toggle_to_is_reverse_map(arg_tileset, arg_is_reversed):
 	_tilesets_to_toggle_to_is_reverse_map[arg_tileset] = arg_is_reversed
 	
-	var color
-	if button_color == ButtonColor.BLUE:
-		color = TILESET_COLOR__BLUE
-	elif button_color == ButtonColor.GREEN:
-		color = TILESET_COLOR__GREEN
-	elif button_color == ButtonColor.RED:
-		color = TILESET_COLOR__RED
+	var color = _get_tileset_color_associated_with_button_color_id(button_color)
+	
 	arg_tileset.set_modulate_for_tilemap(arg_tileset.TilemapModulateIds.BUTTON_ASSOCIATED, color)
 	
 	arg_tileset.make_tileset_rewindable()
