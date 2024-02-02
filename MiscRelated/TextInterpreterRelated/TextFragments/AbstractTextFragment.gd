@@ -25,6 +25,7 @@ enum DESCRIPTION_TYPE {
 	
 	
 	ENEMY = 400,
+	STAR = 401,
 	
 }
 
@@ -51,7 +52,7 @@ const type_to_for_light_color_map : Dictionary = {
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "#5C2E00",
 	
 	DESCRIPTION_TYPE.ENEMY : "#620F10",
-	
+	DESCRIPTION_TYPE.STAR : "#926E01",
 	
 }
 
@@ -79,6 +80,7 @@ const type_to_for_dark_color_map : Dictionary = {
 	
 	
 	DESCRIPTION_TYPE.ENEMY : "#E65659",
+	DESCRIPTION_TYPE.STAR : "#FEDF81",
 	
 }
 
@@ -105,6 +107,7 @@ const type_to_name_map : Dictionary = {
 	
 	
 	DESCRIPTION_TYPE.ENEMY : "Enemy",
+	DESCRIPTION_TYPE.STAR : "Star",
 	
 }
 
@@ -126,6 +129,7 @@ const type_to_img_map__for_dark : Dictionary = {
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForDark.png",
 	
 	DESCRIPTION_TYPE.ENEMY : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Enemy_ForDark.png",
+	DESCRIPTION_TYPE.STAR : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Star_ForDark.png",
 	
 }
 
@@ -147,6 +151,7 @@ const type_to_img_map__for_light : Dictionary  = {
 	DESCRIPTION_TYPE.LAUNCH_BALL_AMMO__INFINITE : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_LaunchBallAmmo_Inf_ForLight.png",
 	
 	DESCRIPTION_TYPE.ENEMY : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Enemy_ForLight.png",
+	DESCRIPTION_TYPE.STAR : "res://MiscRelated/TextInterpreterRelated/IconAssets/Icon_Star_ForLight.png",
 	
 }
 

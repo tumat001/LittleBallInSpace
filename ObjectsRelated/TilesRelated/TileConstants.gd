@@ -820,6 +820,18 @@ func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
 			Vector2(2, 0) : _construct_light_details__for_43__V02_00(),
 			Vector2(3, 0) : _construct_light_details__for_43__V03_00(),
 			
+		},
+		
+		# purple spaceship
+		55 : {
+			Vector2(0, 0) : _construct_light_details__for_55__V00_00(),
+			Vector2(1, 0) : _construct_light_details__for_55__V01_00(),
+			
+			Vector2(0, 1) : _construct_light_details__for_55__V00_01(),
+			Vector2(1, 1) : _construct_light_details__for_55__V01_01(),
+			Vector2(2, 1) : _construct_light_details__for_55__V02_01(),
+			Vector2(3, 1) : _construct_light_details__for_55__V03_01(),
+			
 		}
 		
 	}
@@ -897,6 +909,56 @@ func _construct_light_details__for_43__V03_00():
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99FF8F1F"), Color(0, 0, 0, 0))
 	
 	return light_details
+
+
+
+func _construct_light_details__for_55__V00_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(257, 257))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	
+	return light_details
+
+func _construct_light_details__for_55__V01_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(160, 167))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	
+	return light_details
+
+
+func _construct_light_details__for_55__V00_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(50, 50))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, 9)
+	
+	return light_details
+
+func _construct_light_details__for_55__V01_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(50.5, 50.5))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(-9, 0)
+	
+	return light_details
+
+func _construct_light_details__for_55__V02_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(51, 51))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, -9)
+	
+	return light_details
+
+func _construct_light_details__for_55__V03_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(49.5, 49.5))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99933AA1"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(9, 0)
+	
+	return light_details
+
 
 
 

@@ -78,8 +78,10 @@ enum ButtonColor {
 	RED = 0,
 	GREEN = 1,
 	BLUE = 2,
-	YELLOW = 3,
-	GRAY = 4,
+	
+	GRAY = 3,
+	
+	YELLOW = 4,
 }
 export(ButtonColor) var button_color : int = ButtonColor.BLUE setget set_button_color
 
@@ -245,10 +247,10 @@ func set_button_color(arg_color):
 			tileset.set_modulate_for_tilemap(tileset.TilemapModulateIds.BUTTON_ASSOCIATED, color)
 		
 		for portal in _portals_to_toggle:
-			portal.set_portal_color(color)
+			portal.set_portal_color(button_color)
 		
 		for ball_dispenser in _ball_dispensers_to_toggle:
-			ball_dispenser.set_dispenser_color(color)
+			ball_dispenser.set_dispenser_color(button_color)
 	
 	#
 	

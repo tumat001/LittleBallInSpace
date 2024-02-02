@@ -162,7 +162,7 @@ func _set_portal_to_link_to(arg_portal):
 func set_portal_color(arg_color):
 	portal_color = arg_color
 	
-	if is_inside_tree():
+	if _is_in_ready:
 		if portal_color == PortalColor.RED:
 			portal_sprite.modulate = COLOR_RED__P_SPRITE
 			portal_frame.modulate = COLOR_RED__P_FRAME
@@ -178,8 +178,8 @@ func set_portal_color(arg_color):
 		elif portal_color == PortalColor.WHITE:
 			portal_sprite.modulate = COLOR_WHITE__P_SPRITE
 			portal_frame.modulate = COLOR_WHITE__P_FRAME
-			
-		
+	
+	#print("portal_color: %s" % portal_color)
 
 
 func toggle_is_disabled():

@@ -48,7 +48,7 @@ var remove_non_existing_objs_in_traversal : bool = true
 #
 
 #technically double since we skip every other
-const REWIND_DURATION : float = 30.0
+const REWIND_DURATION : float = 32.0
 
 #var _rewind_time_step : float = 0.1
 #var _current_rewind_save_step_wait : float
@@ -61,6 +61,7 @@ var is_rewinding : bool
 enum CanStoreRewindDataClauseIds {
 	IN_CUTSCENE = 0
 	CUSTOM_FROM_WORLD_SLICE = 1
+	CUSTOM_FROM_WORLD_SLICE_02 = 2
 }
 var can_store_rewind_data_cond_clause : ConditionalClauses
 var last_calculated_can_store_rewind_data : bool
@@ -75,6 +76,7 @@ enum CanCastRewindClauseIds {
 	IN_CUTSCENE = 3,
 	HAS_NODES_TO_BLOCK_REWIND = 4,
 	CUSTOM_FROM_WORLD_SLICE = 5,
+	CUSTOM_FROM_WORLD_SLICE_02 = 6
 }
 var can_cast_rewind_cond_clause : ConditionalClauses
 var last_calculated_can_cast_rewind : bool

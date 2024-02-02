@@ -2188,6 +2188,7 @@ func _are_all_level_ids_finished(arg_ids : Array):
 #
 ###########################
 
+# on finish MAGNUM OPUS
 # unlock trophy (curtain call) level
 func attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02():
 	if GameSaveManager.get_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2) == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED:
@@ -2196,6 +2197,9 @@ func attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02():
 		for i in range(4, 16 + 1):
 			GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, i, false)
 		
+		#
+		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
+		SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2
 
 
 
@@ -2355,6 +2359,7 @@ func unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 		
 		# do not do this yet, so that it does not show up in shortcuts
 		#GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+		
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__LOCKED)
 		
 		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)

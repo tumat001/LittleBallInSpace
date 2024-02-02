@@ -34,7 +34,7 @@ onready var vision_fog = $MiscContainer/VisionFogForModX
 onready var mod_x_screen = $MiscContainer/ModX_Screen
 onready var mod_x_all_vbox_container = $MiscContainer/ModX_AllContainer
 
-onready var base_tileset_simple_glass_for_mod_x = $TileContainer/BTS_SimpleGlassForModX
+#onready var base_tileset_simple_glass_for_mod_x = $TileContainer/BTS_SimpleGlassForModX
 onready var button_for_mod_x_screen = $ObjectContainer/Button_ForModuleX
 
 onready var mod_x_status__level_layout_specials = $MiscContainer/ModX_AllContainer/ModX_LevelLayout_SpecialsA/ModXStatus_LevelLayout_Specials
@@ -150,7 +150,7 @@ func _init__as_NOT_first_time_viewing_mod_x_statuses():
 	_config_mod_x_status_icons()
 	mod_x_screen.modulate = MOD_X_SCREEN_MODULATE__ACTIVE
 	
-	base_tileset_simple_glass_for_mod_x.remove_tiles_at_all_coords()
+	#base_tileset_simple_glass_for_mod_x.remove_tiles_at_all_coords()
 	
 	button_for_mod_x_screen.can_play_sound = false
 	button_for_mod_x_screen.set_is_pressed(true)
