@@ -2,6 +2,12 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
+const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
+
+const AnimalAnimSprite = preload("res://MiscRelated/SpriteRelated/AnimalAnimSpriteRelated/AnimalAnimSprite.gd")
+const ColorRectContainerForAnimalAnimSprite = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.gd")
+const ColorRectContainerForAnimalAnimSprite_Scene = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.tscn")
+
 
 #
 
@@ -13,6 +19,11 @@ var _current_long_transition
 
 var _player
 var _player_modi_energy
+
+
+#
+
+var color_rect_container_for_animal_anim_sprite : ColorRectContainerForAnimalAnimSprite
 
 #
 
@@ -28,7 +39,10 @@ onready var fast_spawn_pos_2d = $MiscContainer/FastSpawnPos2D
 onready var normal_spawn_pos_2d = $PlayerSpawnCoordsContainer/Position2D
 
 
-#
+onready var vis_transition_fog_finale_trophy = $MiscContainer/VisTransFog_FinaleTrophy
+
+
+##
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
@@ -175,11 +189,24 @@ func _configure_custom_rules_of_trophy_round():
 
 #########
 
+func _on_PDAR_CinemStart_01_player_entered_in_area():
+	var player = game_elements.get_current_player()
+	player.curr_max_player_move_left_right_speed = BaseTileSet.MOMENTUM_FOR_BREAK__STRONG_GLASS_TILE / player.last_calculated_object_mass
 
-func _on_PDAR_ToSequence02_player_entered_in_area():
-	pass # Replace with function body.
-	
-	
+func _on_PDAR_Cinematic_End_player_entered_in_area():
+	var player = game_elements.get_current_player()
+	player.curr_max_player_move_left_right_speed = player.MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+
+
+#############
+# SEQUENCE 07 -- LAST
+
+func _on_Portal_Entry_Seq07_player_entered(arg_player):
+	_init_color_rect_container_for_animal_anim_sprite_and_relateds()
+
+func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
+	_init_color_rect_container_for_animal_anim_sprite_and_relateds = ColorRectContainerForAnimalAnimSprite_Scene.instance()
+	game_elements.game_front_hud.
 
 
 

@@ -37,7 +37,9 @@ func _on_after_game_start_init():
 	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided", [], CONNECT_ONESHOT)
 	
 	if STARS_NEEDED > GameSaveManager.get_total_coin_collected_count():
-		_do_actions_from_lack_of_stars()
+		#todoimp TEST 02_01
+		pass
+		#_do_actions_from_lack_of_stars()
 
 
 #

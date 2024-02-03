@@ -175,7 +175,9 @@ class RotationRequestData:
 #
 
 const MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED = 200.0
+var curr_max_player_move_left_right_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
 const ON_INPUT_PLAYER_MOVE_LEFT_RIGHT_PER_SEC = 200.0
+
 const PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED : float = 2.0 #1.5
 
 var _current_player_left_right_move_speed : float
@@ -1040,9 +1042,9 @@ func _physics_process(delta):
 					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
 				_current_player_left_right_move_speed -= speed_modi
 				
-				if _current_player_left_right_move_speed < -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-					var excess = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED - _current_player_left_right_move_speed
-					_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+				if _current_player_left_right_move_speed < -curr_max_player_move_left_right_speed:
+					var excess = -curr_max_player_move_left_right_speed - _current_player_left_right_move_speed
+					_current_player_left_right_move_speed = -curr_max_player_move_left_right_speed
 					
 					var mov_of_left_right = _get_cleaned_vector(Vector2(_current_player_left_right_move_speed, 0).rotated(CameraManager.current_cam_rotation))
 					
@@ -1099,9 +1101,9 @@ func _physics_process(delta):
 					speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
 				_current_player_left_right_move_speed += speed_modi
 				
-				if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-					var excess = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED - _current_player_left_right_move_speed
-					_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+				if _current_player_left_right_move_speed > curr_max_player_move_left_right_speed:
+					var excess = curr_max_player_move_left_right_speed - _current_player_left_right_move_speed
+					_current_player_left_right_move_speed = curr_max_player_move_left_right_speed
 					
 					var mov_of_left_right = _get_cleaned_vector(Vector2(_current_player_left_right_move_speed, 0).rotated(CameraManager.current_cam_rotation))
 					
@@ -1146,8 +1148,8 @@ func _physics_process(delta):
 						speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
 						_current_player_left_right_move_speed += speed_modi
 						
-						if _current_player_left_right_move_speed > MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-							_current_player_left_right_move_speed = MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+						if _current_player_left_right_move_speed > curr_max_player_move_left_right_speed:
+							_current_player_left_right_move_speed = curr_max_player_move_left_right_speed
 						elif _current_player_left_right_move_speed > 0:
 							_current_player_left_right_move_speed = 0
 						
@@ -1156,8 +1158,8 @@ func _physics_process(delta):
 						speed_modi *= PLAYER_MOV_MULTIPLER_ON_OPPOSITE_CURR_SPEED
 						_current_player_left_right_move_speed -= speed_modi
 						
-						if _current_player_left_right_move_speed < -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED:
-							_current_player_left_right_move_speed = -MAX_PLAYER_MOVE_LEFT_RIGHT_SPEED
+						if _current_player_left_right_move_speed < -curr_max_player_move_left_right_speed:
+							_current_player_left_right_move_speed = -curr_max_player_move_left_right_speed
 						elif _current_player_left_right_move_speed < 0:
 							_current_player_left_right_move_speed = 0
 						

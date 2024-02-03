@@ -93,6 +93,7 @@ position = Vector2( 40, 5 )
 shape = SubResource( 1 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 8 )]
+visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( 104, -1281 )
@@ -116,6 +117,7 @@ shape = SubResource( 5 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 2 )]
 position = Vector2( -36, -527 )
+is_replenish_type = false
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="1" instance=ExtResource( 4 )]
 position = Vector2( 3, -527 )
@@ -163,6 +165,7 @@ button_color = 0
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 3229, -288 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 8, 144 )

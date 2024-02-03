@@ -1,3 +1,4 @@
+#NOTE: make use of _is_in_ready when appropriate
 tool
 extends Node2D
 
@@ -51,8 +52,12 @@ var _nodes_to_not_teleport_on_first_enter : Array
 
 var _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed : Dictionary
 
+
+export(bool) var is_silent_and_invisible : bool = false setget set_is_silent_and_invisible
+
 #
 
+#dunno why but this is needed
 var _is_in_ready : bool = false
 
 #
@@ -114,6 +119,15 @@ func _update_last_calculated_is_collision_disabled():
 
 #
 
+func set_is_silent_and_invisible(arg_val):
+	is_silent_and_invisible = arg_val
+	
+	if _is_in_ready and !Engine.editor_hint:
+		visible = !is_silent_and_invisible
+	
+
+#
+
 func _ready():
 	if !Engine.editor_hint:
 		SingletonsAndConsts.current_rewind_manager.add_to_rewindables(self)
@@ -128,6 +142,7 @@ func _ready():
 	
 	set_portal_color(portal_color)
 	set_is_disabled(is_disabled)
+	set_is_silent_and_invisible(is_silent_and_invisible)
 	
 	_initialize_is_scene_transition_type_portal()
 	#
@@ -162,7 +177,7 @@ func _set_portal_to_link_to(arg_portal):
 func set_portal_color(arg_color):
 	portal_color = arg_color
 	
-	if _is_in_ready:
+	if _is_in_ready or Engine.editor_hint:
 		if portal_color == PortalColor.RED:
 			portal_sprite.modulate = COLOR_RED__P_SPRITE
 			portal_frame.modulate = COLOR_RED__P_FRAME
@@ -479,7 +494,8 @@ func _teleport_node_to_other_linked_portal(body):
 	var is_body_player = body.get("is_player")
 	
 	if is_body_player:
-		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
+		if !is_silent_and_invisible:
+			AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_Normal, 1.0, null)
 		body.ignore_effect_based_on_pos_change__next_frame_count = 2
 		
 		body.clear_points_of_current_speed_trail()

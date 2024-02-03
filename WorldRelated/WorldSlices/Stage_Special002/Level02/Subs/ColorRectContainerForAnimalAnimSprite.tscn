@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/SpriteRelated/AnimalAnimSpriteRelated/AnimalAnimSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.gd" type="Script" id=2]
+
+[node name="ColorRectContainerForAnimalAnimSprite" type="ColorRect"]
+margin_left = -480.0
+margin_top = -270.0
+margin_right = 480.0
+margin_bottom = 270.0
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 2 )
+
+[node name="AnimalAnimSprite" parent="." instance=ExtResource( 1 )]
