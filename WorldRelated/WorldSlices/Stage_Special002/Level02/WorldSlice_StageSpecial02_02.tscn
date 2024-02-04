@@ -251,7 +251,7 @@ is_disabled = true
 is_silent_and_invisible = true
 
 [node name="Pickupables_Coin2" parent="CoinsContainer" index="0" instance=ExtResource( 2 )]
-position = Vector2( -1507, 234 )
+position = Vector2( 4253, 2705 )
 ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
@@ -384,6 +384,7 @@ circle_ratio__inside_of_inner_ring = 0.0
 
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_CinemStart_01" to="." method="_on_PDAR_CinemStart_01_player_entered_in_area"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_Cinematic_End" to="." method="_on_PDAR_Cinematic_End_player_entered_in_area"]
+[connection signal="player_entered" from="ObjectContainer/Portal_Entry_Seq07" to="." method="_on_Portal_Entry_Seq07_player_entered"]
 
 [editable path="TileContainer/BaseTileSet"]
 [editable path="TileContainer/BTS_Energized"]

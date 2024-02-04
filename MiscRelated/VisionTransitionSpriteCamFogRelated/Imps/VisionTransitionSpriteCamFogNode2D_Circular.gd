@@ -52,7 +52,8 @@ func _construct_transition_sprite():
 
 #
 
-
+func get_transition_sprite():
+	return _transition_sprite
 
 ###
 

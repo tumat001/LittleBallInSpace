@@ -8,10 +8,13 @@ const AnimalAnimSprite = preload("res://MiscRelated/SpriteRelated/AnimalAnimSpri
 const ColorRectContainerForAnimalAnimSprite = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.gd")
 const ColorRectContainerForAnimalAnimSprite_Scene = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.tscn")
 
-
 #
 
 const DURATION_OF_TRAVEL_FROM_AIR_TO_GROUND__CUTSCENE : float = 12.0
+
+#
+
+const SHADER_PARAM__CIRCLE_SIZE = "circle_size"
 
 #
 
@@ -20,10 +23,13 @@ var _current_long_transition
 var _player
 var _player_modi_energy
 
-
 #
 
 var color_rect_container_for_animal_anim_sprite : ColorRectContainerForAnimalAnimSprite
+var animal_anim_sprite : AnimalAnimSprite
+
+var shader_mat_of_color_rect_container : ShaderMaterial
+var _vision_transition_sprite_for_trophy_sequence
 
 #
 
@@ -187,7 +193,8 @@ func _configure_custom_rules_of_trophy_round():
 	
 	
 
-#########
+####################
+# SEQUENCE 04 TO 05
 
 func _on_PDAR_CinemStart_01_player_entered_in_area():
 	var player = game_elements.get_current_player()
@@ -202,11 +209,43 @@ func _on_PDAR_Cinematic_End_player_entered_in_area():
 # SEQUENCE 07 -- LAST
 
 func _on_Portal_Entry_Seq07_player_entered(arg_player):
-	_init_color_rect_container_for_animal_anim_sprite_and_relateds()
+	call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
 
 func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
-	_init_color_rect_container_for_animal_anim_sprite_and_relateds = ColorRectContainerForAnimalAnimSprite_Scene.instance()
-	game_elements.game_front_hud.
+	color_rect_container_for_animal_anim_sprite = ColorRectContainerForAnimalAnimSprite_Scene.instance()
+	game_elements.game_front_hud.add_node_to_above_other_hosters(color_rect_container_for_animal_anim_sprite)
+	
+	# animal sprite
+	animal_anim_sprite = color_rect_container_for_animal_anim_sprite.animal_anim_sprite
+	var animal_sprite_frames_to_use : SpriteFrames = _get_animal_sprite_frames_to_use_based_on_GSM()
+	animal_anim_sprite.config_set_sprite_frames(animal_sprite_frames_to_use)
+	animal_anim_sprite.config_set_player_to_watch_speed(game_elements.get_current_player())
+	
+	# color rect related
+	_vision_transition_sprite_for_trophy_sequence = vis_transition_fog_finale_trophy.get_transition_sprite()
+	_give_color_rect_container_reverse_circle_shader__and_config_shader_relateds()
+	
+
+func _get_animal_sprite_frames_to_use_based_on_GSM():
+	match GameSaveManager.animal_choice_id:
+		GameSaveManager.AnimalChoiceId.CAT:
+			return load("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Res/SFAnimal_Cat.tres")
+		GameSaveManager.AnimalChoiceId.DOG:
+			return load("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Res/SFAnimal_Dog.tres")
+
+
+func _give_color_rect_container_reverse_circle_shader__and_config_shader_relateds():
+	var shader_mat = ShaderMaterial.new()
+	shader_mat.shader = load("res://MiscRelated/ShadersRelated/Shader_CircleTransitionReversed.tres")
+	shader_mat.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, 1.05)
+	
+	shader_mat_of_color_rect_container = shader_mat
+	color_rect_container_for_animal_anim_sprite.material = shader_mat
+	
+	_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
+
+func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_ratio):
+	shader_mat_of_color_rect_container.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, arg_ratio)
 
 
 

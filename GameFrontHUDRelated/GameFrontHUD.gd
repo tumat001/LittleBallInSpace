@@ -13,6 +13,7 @@ var is_showing_in_game_pause_panel_tree : bool = false
 #
 
 onready var other_hosters = $OtherHosters
+onready var above_other_hosters = $AboveOtherHosters
 onready var other_hud_non_screen_hosters = $OtherHUDNonScreenHosters
 
 onready var ability_panel = $ControlContainer/HUDCMH_AbilityPanel/AbilityPanel
@@ -86,11 +87,17 @@ func remove__is_activated__clause_for_all_HUDCMH(arg_clause_id):
 
 func add_node_to_other_hosters(arg_node : Node):
 	other_hosters.add_child(arg_node)
-	
 
 func add_node_to_other_hosters__deferred(arg_node : Node):
 	other_hosters.call_deferred("add_child", arg_node)
-	
+
+
+func add_node_to_above_other_hosters(arg_node : Node):
+	above_other_hosters.add_child(arg_node)
+
+func add_node_to_above_other_hosters__deferred(arg_node : Node):
+	above_other_hosters.call_deferred("add_child", arg_node)
+
 
 ##
 

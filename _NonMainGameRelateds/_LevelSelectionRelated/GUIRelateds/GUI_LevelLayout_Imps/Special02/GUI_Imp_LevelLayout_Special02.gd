@@ -22,3 +22,9 @@ func _ready():
 	layout_spec_01__tile.layout_ele_id_to_put_cursor_to = 24
 	
 
+#
+
+func _set_game_background_based_on_states(arg_is_instant_in_transition):
+	pass
+	#todoimp change this to depending on completion states
+

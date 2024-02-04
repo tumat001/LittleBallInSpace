@@ -28,10 +28,16 @@ var _tween_for_intervalue : SceneTreeTween
 # samples only from one frame btw
 var sprite_size : Vector2
 
+
+
+var player_to_watch_speed
+
 #######
 
 func _ready():
 	_tween_for_intervalue = SceneTreeTween.new()
+	
+	set_process(false)
 
 #
 
@@ -44,7 +50,12 @@ func config_set_sprite_frames(arg_sframes):
 
 #
 
-func config_self_based_on_char_speed(arg_char_speed):
+func config_set_player_to_watch_speed(arg_player):
+	player_to_watch_speed = arg_player
+	
+	set_process(true)
+
+func update_self_based_on_char_speed(arg_char_speed):
 	if arg_char_speed <= MAX_CHAR_SPEED_FOR_IDLE:
 		_play_anim__idle()
 		
@@ -66,4 +77,12 @@ func _play_anim__walk__using_char_speed(arg_char_speed):
 		speed_scale = ratio
 	
 	play(ANIM_NAME__WALK)
+
+
+#####
+
+func _process(delta):
+	if is_instance_valid(player_to_watch_speed):
+		update_self_based_on_char_speed(player_to_watch_speed.linear_velocity.length())
+	
 

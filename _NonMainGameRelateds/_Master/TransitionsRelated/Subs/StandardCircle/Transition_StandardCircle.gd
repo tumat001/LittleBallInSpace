@@ -1,6 +1,9 @@
 extends "res://_NonMainGameRelateds/_Master/TransitionsRelated/AbstractTransitionSprite.gd"
 
 
+signal circle_ratio_changed(arg_ratio)
+
+
 var screen_size = Vector2(960, 540)
 var circle_center : Vector2 = screen_size / 2
 
@@ -76,6 +79,8 @@ func _tween_circle_size_of_shader(arg_ratio):
 
 func set_circle_ratio(arg_ratio):
 	material.set_shader_param("circle_size", arg_ratio)
+	
+	emit_signal("circle_ratio_changed", arg_ratio)
 
 func _finished_tween():
 	_on_end_of_transition()

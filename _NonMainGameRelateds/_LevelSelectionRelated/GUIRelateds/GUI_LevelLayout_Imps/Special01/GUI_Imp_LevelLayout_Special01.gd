@@ -11,8 +11,6 @@ onready var level_04__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Tile_04
 onready var layout_02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_To02
 onready var layout_spec_02__tile = $LayoutElesContainer/GUI_LevelLayoutEle_Layout_ToSpec02
 
-
-
 ##
 
 func _init():

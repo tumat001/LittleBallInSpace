@@ -48,9 +48,11 @@ func _on_player_entered_self(arg_player):
 	if !is_equal_approx(arg_player.get_current_robot_health(), arg_player.get_max_robot_health()): 
 		var health_flat_heal = arg_player.get_max_robot_health() * health_ratio_increase
 		arg_player.heal_robot_health(health_flat_heal)
-		#is_replenish_type
+		
 		_attempt_play_particle_and_sound_effects()
-		_destroy_self__on_consume_by_player()
+		
+		if !is_replenish_type:
+			_destroy_self__on_consume_by_player()
 	
 
 func _attempt_play_particle_and_sound_effects():
