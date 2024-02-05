@@ -5,7 +5,7 @@ const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/Text
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 
 
-const STAR_COUNT_BUFFER = 3
+const STAR_COUNT_BUFFER = 6
 var STARS_NEEDED : int
 
 
@@ -13,21 +13,20 @@ var STARS_NEEDED : int
 
 var _transition_sprite
 
+var is_darkened_by_no_stars : bool = false
 
 ###
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
-	
-	# init stars needed --> the -2 is from this and the trophy level (next)
 
 
 func as_test__override__do_insta_win():
 	as_test__override__do_insta_win__template_capture_all_points()
-	
 
 
 func _ready():
+	# init stars needed --> the -2 is from this and the trophy level (next)
 	STARS_NEEDED = StoreOfLevels.get_total_coin_count() - (2) - STAR_COUNT_BUFFER
 
 
@@ -37,14 +36,14 @@ func _on_after_game_start_init():
 	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided", [], CONNECT_ONESHOT)
 	
 	if STARS_NEEDED > GameSaveManager.get_total_coin_collected_count():
-		#todoimp TEST 02_01
-		pass
-		#_do_actions_from_lack_of_stars()
+		_do_actions_from_lack_of_stars()
 
 
 #
 
 func _do_actions_from_lack_of_stars():
+	is_darkened_by_no_stars = true
+	
 	if game_elements.is_game_front_hud_initialized:
 		_do_actions_from_lack_of_stars__all_GFH_relateds()
 	else:
@@ -104,7 +103,8 @@ func _on_display_of_desc_finished__01(arg_data):
 
 func _on_game_result_decided(arg_result):
 	if game_elements.game_result_manager.is_game_result_win():
-		StoreOfLevels.attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02()
-		
+		var successful = StoreOfLevels.attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02()
+		if successful:
+			StoreOfLevels.directly_go_to_spec02_02_on_level_finish()
 
 

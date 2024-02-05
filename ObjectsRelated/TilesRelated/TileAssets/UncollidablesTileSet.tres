@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=55 format=2]
+[gd_resource type="TileSet" load_steps=56 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -54,6 +54,7 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__WallDetails04.png" type="Texture" id=52]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__Glowables01.png" type="Texture" id=53]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__WallDetails05.png" type="Texture" id=54]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__StarAndInfWrench.png" type="Texture" id=55]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1232,3 +1233,24 @@
 55/shape_one_way_margin = 0.0
 55/shapes = [  ]
 55/z_index = 0
+56/name = "Tileset_Spaceship_Uncollidables__StarAndInfWrench.png 56"
+56/texture = ExtResource( 55 )
+56/tex_offset = Vector2( 0, 0 )
+56/modulate = Color( 1, 1, 1, 1 )
+56/region = Rect2( 0, 0, 160, 96 )
+56/tile_mode = 2
+56/autotile/icon_coordinate = Vector2( 0, 0 )
+56/autotile/tile_size = Vector2( 32, 32 )
+56/autotile/spacing = 0
+56/autotile/occluder_map = [  ]
+56/autotile/navpoly_map = [  ]
+56/autotile/priority_map = [  ]
+56/autotile/z_index_map = [  ]
+56/occluder_offset = Vector2( 0, 0 )
+56/navigation_offset = Vector2( 0, 0 )
+56/shape_offset = Vector2( 0, 0 )
+56/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+56/shape_one_way = false
+56/shape_one_way_margin = 0.0
+56/shapes = [  ]
+56/z_index = 0

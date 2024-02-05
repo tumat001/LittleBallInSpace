@@ -141,8 +141,6 @@ position = Vector2( -24, 176 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Red")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
@@ -158,42 +156,57 @@ is_disabled = true
 
 [node name="BaseEnemy_Lp01" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 2704, 560 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Lp02" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="1" instance=ExtResource( 6 )]
 position = Vector2( 2704, -336 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Lp03" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="2" instance=ExtResource( 6 )]
 position = Vector2( 2256, 112 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Lp04" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="3" instance=ExtResource( 6 )]
 position = Vector2( 3152, 112 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn01" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="4" instance=ExtResource( 6 )]
 position = Vector2( 2560, 256 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn02" parent="ObjectContainer/AllEnemiesInDeathChamberContainer" index="5" instance=ExtResource( 6 )]
 position = Vector2( 2848, -32 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="Pickupable_Wrench" parent="ObjectContainer" index="4" instance=ExtResource( 11 )]
 position = Vector2( 2576, 184 )
+is_replenish_type = false
 
 [node name="Pickupable_Wrench2" parent="ObjectContainer" index="5" instance=ExtResource( 11 )]
 position = Vector2( 2832, 40 )
+is_replenish_type = false
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 287, 50 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 176, 176 )

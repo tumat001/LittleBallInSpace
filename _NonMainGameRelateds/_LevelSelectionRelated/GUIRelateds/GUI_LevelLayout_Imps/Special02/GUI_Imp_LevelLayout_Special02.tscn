@@ -10,9 +10,9 @@ default_node_to_summon_cursor_on__for_first_time__path = NodePath("LayoutElesCon
 
 [node name="GUI_LevelLayoutEle_Layout_ToSpec01" parent="LayoutElesContainer" index="0" instance=ExtResource( 2 )]
 margin_left = 460.0
-margin_top = 368.0
+margin_top = 322.0
 margin_right = 506.0
-margin_bottom = 414.0
+margin_bottom = 368.0
 
 [node name="GUI_LevelLayoutEle_Tile_01" parent="LayoutElesContainer" index="1" instance=ExtResource( 2 )]
 margin_left = 460.0
@@ -20,21 +20,14 @@ margin_top = 230.0
 margin_right = 506.0
 margin_bottom = 276.0
 
-[node name="GUI_LevelLayoutEle_Path_01" parent="LayoutElesContainer" index="2" instance=ExtResource( 2 )]
-margin_left = 460.0
-margin_top = 322.0
-margin_right = 506.0
-margin_bottom = 368.0
-is_path = true
-
-[node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="3" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_02" parent="LayoutElesContainer" index="2" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 276.0
 margin_right = 506.0
 margin_bottom = 322.0
 is_path = true
 
-[node name="GUI_LevelLayoutEle_Path_03" parent="LayoutElesContainer" index="4" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_03" parent="LayoutElesContainer" index="3" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 184.0
 margin_right = 506.0
@@ -42,7 +35,7 @@ margin_bottom = 230.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_04" parent="LayoutElesContainer" index="5" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_04" parent="LayoutElesContainer" index="4" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 138.0
 margin_right = 506.0
@@ -50,7 +43,7 @@ margin_bottom = 184.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_05" parent="LayoutElesContainer" index="6" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_05" parent="LayoutElesContainer" index="5" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 92.0
 margin_right = 506.0
@@ -58,7 +51,7 @@ margin_bottom = 138.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_06" parent="LayoutElesContainer" index="7" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_06" parent="LayoutElesContainer" index="6" instance=ExtResource( 2 )]
 margin_left = 460.0
 margin_top = 46.0
 margin_right = 506.0
@@ -66,7 +59,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_07" parent="LayoutElesContainer" index="8" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_07" parent="LayoutElesContainer" index="7" instance=ExtResource( 2 )]
 margin_left = 414.0
 margin_top = 46.0
 margin_right = 460.0
@@ -74,7 +67,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_08" parent="LayoutElesContainer" index="9" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_08" parent="LayoutElesContainer" index="8" instance=ExtResource( 2 )]
 margin_left = 368.0
 margin_top = 46.0
 margin_right = 414.0
@@ -82,7 +75,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_09" parent="LayoutElesContainer" index="10" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_09" parent="LayoutElesContainer" index="9" instance=ExtResource( 2 )]
 margin_left = 322.0
 margin_top = 46.0
 margin_right = 368.0
@@ -90,7 +83,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_10" parent="LayoutElesContainer" index="11" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_10" parent="LayoutElesContainer" index="10" instance=ExtResource( 2 )]
 margin_left = 276.0
 margin_top = 46.0
 margin_right = 322.0
@@ -98,7 +91,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_11" parent="LayoutElesContainer" index="12" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_11" parent="LayoutElesContainer" index="11" instance=ExtResource( 2 )]
 margin_left = 230.0
 margin_top = 46.0
 margin_right = 276.0
@@ -106,7 +99,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_12" parent="LayoutElesContainer" index="13" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_12" parent="LayoutElesContainer" index="12" instance=ExtResource( 2 )]
 margin_left = 184.0
 margin_top = 46.0
 margin_right = 230.0
@@ -114,7 +107,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_13" parent="LayoutElesContainer" index="14" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_13" parent="LayoutElesContainer" index="13" instance=ExtResource( 2 )]
 margin_left = 138.0
 margin_top = 46.0
 margin_right = 184.0
@@ -122,7 +115,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Path_14" parent="LayoutElesContainer" index="15" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Path_14" parent="LayoutElesContainer" index="14" instance=ExtResource( 2 )]
 margin_left = 92.0
 margin_top = 46.0
 margin_right = 138.0
@@ -130,7 +123,7 @@ margin_bottom = 92.0
 is_path = true
 is_layout_element_invis_by_default = true
 
-[node name="GUI_LevelLayoutEle_Tile_02" parent="LayoutElesContainer" index="16" instance=ExtResource( 2 )]
+[node name="GUI_LevelLayoutEle_Tile_02" parent="LayoutElesContainer" index="15" instance=ExtResource( 2 )]
 margin_left = 46.0
 margin_top = 46.0
 margin_right = 92.0

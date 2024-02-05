@@ -47,6 +47,7 @@ onready var normal_spawn_pos_2d = $PlayerSpawnCoordsContainer/Position2D
 
 onready var vis_transition_fog_finale_trophy = $MiscContainer/VisTransFog_FinaleTrophy
 
+onready var base_enemy = $ObjectContainer/BaseEnemy
 
 ##
 
@@ -69,10 +70,8 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
 	
-	GameSaveManager.first_time_opening_game = false
-	
 	vbox_of_instructions__01.modulate.a = 0
-	SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
+	#SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
 	
 	
 	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
@@ -103,7 +102,10 @@ func _on_after_game_start_init():
 	CameraManager.start_camera_zoom_change(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL, 0.0)
 	
 	call_deferred("_deferred_init__for_first_time_and_not")
-
+	
+	#
+	
+	base_enemy.current_health = GameSettingsManager.combat__current_max_enemy_health / 100.0
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -131,9 +133,13 @@ func _init__as_first_time__and_do_cutscenes():
 	_player.connect("on_ground_state_changed", self, "_on_player_on_ground_state_changed")
 	
 	if game_elements.is_game_front_hud_initialized:
-		SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(false)
+		#SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(false)
+		_on_game_front_hud_initialized(game_elements.game_front_hud)
 	else:
 		game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized", [], CONNECT_ONESHOT)
+	
+	##temptodo
+	call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
 	
 	_apply_force_to_make_player_goto_pos_from_air_pos()
 	
@@ -199,6 +205,8 @@ func _configure_custom_rules_of_trophy_round():
 func _on_PDAR_CinemStart_01_player_entered_in_area():
 	var player = game_elements.get_current_player()
 	player.curr_max_player_move_left_right_speed = BaseTileSet.MOMENTUM_FOR_BREAK__STRONG_GLASS_TILE / player.last_calculated_object_mass
+	
+	#print(player.curr_max_player_move_left_right_speed)
 
 func _on_PDAR_Cinematic_End_player_entered_in_area():
 	var player = game_elements.get_current_player()
@@ -214,6 +222,8 @@ func _on_Portal_Entry_Seq07_player_entered(arg_player):
 func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
 	color_rect_container_for_animal_anim_sprite = ColorRectContainerForAnimalAnimSprite_Scene.instance()
 	game_elements.game_front_hud.add_node_to_above_other_hosters(color_rect_container_for_animal_anim_sprite)
+	#temptodo
+	#color_rect_container_for_animal_anim_sprite.follow_node_pos__on_screen__centered(game_elements.get_current_player())
 	
 	# animal sprite
 	animal_anim_sprite = color_rect_container_for_animal_anim_sprite.animal_anim_sprite
@@ -224,6 +234,17 @@ func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
 	# color rect related
 	_vision_transition_sprite_for_trophy_sequence = vis_transition_fog_finale_trophy.get_transition_sprite()
 	_give_color_rect_container_reverse_circle_shader__and_config_shader_relateds()
+	
+	# vision fog related
+	vis_transition_fog_finale_trophy.activate_monitor_for_player()
+	
+	
+	##temptodo -- start
+	var tweener = create_tween()
+	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 0.0, 1.0, 3.0)
+	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 1.0, 0.0, 3.0)
+	tweener.set_loops()
+	##temptodo -- end
 	
 
 func _get_animal_sprite_frames_to_use_based_on_GSM():
@@ -238,14 +259,14 @@ func _give_color_rect_container_reverse_circle_shader__and_config_shader_related
 	var shader_mat = ShaderMaterial.new()
 	shader_mat.shader = load("res://MiscRelated/ShadersRelated/Shader_CircleTransitionReversed.tres")
 	shader_mat.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, 1.05)
+	#shader_mat.set_shader_param("noise", animal_anim_sprite)
 	
 	shader_mat_of_color_rect_container = shader_mat
-	color_rect_container_for_animal_anim_sprite.material = shader_mat
+	color_rect_container_for_animal_anim_sprite.animal_anim_sprite.material = shader_mat
 	
-	_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
+	#temptodo
+	#_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
 
 func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_ratio):
 	shader_mat_of_color_rect_container.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, arg_ratio)
-
-
-
+	print("ratio: %s" % arg_ratio)

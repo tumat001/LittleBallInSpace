@@ -29,6 +29,7 @@ cutscene_initially_visible = true
 [node name="TooltipBody" parent="FTQ_CustomLabel" index="0"]
 margin_right = 250.0
 margin_bottom = 370.0
+default_font_size = 30
 descriptions__from_export = "The game mechanics envisioned from day 1"
 
 [editable path="FTQ_CustomLabel"]

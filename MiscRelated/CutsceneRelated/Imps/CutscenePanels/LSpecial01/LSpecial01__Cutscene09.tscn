@@ -37,7 +37,7 @@ cutscene_initially_visible = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -124.0
-margin_top = 162.0
+margin_top = 229.0
 margin_right = 454.0
 margin_bottom = 312.0
 rect_min_size = Vector2( 250, 0 )
@@ -46,7 +46,7 @@ cutscene_initially_visible = true
 
 [node name="TooltipBody" parent="FTQ_CustomLabel2" index="0"]
 margin_right = 578.0
-margin_bottom = 150.0
+margin_bottom = 83.0
 descriptions__from_export = "The previous iteration of the launch ball ability was the ability to rip apart yourself (the player) to launch yourself in directions."
 
 [node name="FTQ_CustomLabel3" parent="." index="3" instance=ExtResource( 5 )]
@@ -63,8 +63,8 @@ cutscene_initially_visible = true
 [node name="TooltipBody" parent="FTQ_CustomLabel3" index="0"]
 margin_right = 840.0
 margin_bottom = 150.0
-descriptions__from_export = "This idea was scrapped because:\\n
-1) Too much variables in play, such as your total mass (the ball launcher also used to take this into account)\\n
+descriptions__from_export = "This idea was scrapped because:
+1) Too much variables in play, such as your total mass (the ball launcher also used to take this into account)
 2) Designing hands was a lot more challenging than what I thought. The idea of losing functions/things to win is interesting though."
 
 [editable path="FTQ_CustomLabel"]

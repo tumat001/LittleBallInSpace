@@ -55,6 +55,9 @@ var _bodies_inside_portal_to_entry_direction__to_return_on_velocity_reversed : D
 
 export(bool) var is_silent_and_invisible : bool = false setget set_is_silent_and_invisible
 
+
+export(bool) var can_only_teleport_players : bool = false
+
 #
 
 #dunno why but this is needed
@@ -177,7 +180,7 @@ func _set_portal_to_link_to(arg_portal):
 func set_portal_color(arg_color):
 	portal_color = arg_color
 	
-	if _is_in_ready or Engine.editor_hint:
+	if _is_in_ready or (Engine.editor_hint and _is_in_ready):
 		if portal_color == PortalColor.RED:
 			portal_sprite.modulate = COLOR_RED__P_SPRITE
 			portal_frame.modulate = COLOR_RED__P_FRAME
@@ -204,7 +207,7 @@ func set_is_disabled(arg_val):
 	var old_val = is_disabled
 	is_disabled = arg_val
 	
-	if is_inside_tree():
+	if is_inside_tree() or (Engine.editor_hint and _is_in_ready):
 		if old_val != is_disabled or _is_in_ready:
 			if is_disabled:
 				modulate = Color(0.5, 0.5, 0.5, 0.85)
@@ -481,6 +484,10 @@ func _on_Area2D_body_entered(body):
 				
 
 func _teleport_node_to_other_linked_portal(body):
+	var is_body_player = body.get("is_player")
+	if can_only_teleport_players and !is_body_player:
+		return
+	
 	_portal_to_link_with.add_node_to_not_teleport_on_first_enter(body)
 	remove_node_inside_portal__to_return_on_velocity_reversed(body)
 	
@@ -490,8 +497,6 @@ func _teleport_node_to_other_linked_portal(body):
 	body.global_position
 	_portal_to_link_with.global_position
 	# END OF DO NOT REMOVE
-	
-	var is_body_player = body.get("is_player")
 	
 	if is_body_player:
 		if !is_silent_and_invisible:

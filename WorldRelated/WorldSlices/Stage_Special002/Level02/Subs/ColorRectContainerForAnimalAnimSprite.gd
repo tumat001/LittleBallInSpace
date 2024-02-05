@@ -12,10 +12,10 @@ onready var animal_anim_sprite = $AnimalAnimSprite
 ##
 
 func _ready():
+	center_pos = rect_size / 2.0
+	
 	animal_anim_sprite.connect("sprite_frames_changed", self, "_on_animal_anim_sprite_frames_changed")
 	_update_based_on_animal_anim_sprite()
-	
-	center_pos = rect_size / 2.0
 	
 	set_process(false)
 
@@ -44,5 +44,5 @@ func _process(delta):
 func _update_pos():
 	if is_instance_valid(node_to_follow__screen_based):
 		rect_position = node_to_follow__screen_based.get_viewport_transform().get_origin()
-
+		
 

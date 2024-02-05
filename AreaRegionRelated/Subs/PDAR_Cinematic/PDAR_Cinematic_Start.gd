@@ -13,6 +13,9 @@ export(bool) var force_action_natural_movement : bool = false
 export(bool) var make_player_energy_undeductable : bool = false
 
 
+export(bool) var force_action_natural_movement__right : bool = false
+
+
 func _on_PDAR_Cinematic_player_entered_in_area():
 	SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(stop_player_movement, reset_cam_zoom_level)
 	
@@ -26,7 +29,9 @@ func _on_PDAR_Cinematic_player_entered_in_area():
 			player.add_force_actions_flag_id(player.ForceActionFlagIds.LEFT)
 		elif player.is_curr_mov_velocity__right():
 			player.add_force_actions_flag_id(player.ForceActionFlagIds.RIGHT)
-		
+	
+	if force_action_natural_movement__right:
+		player.add_force_actions_flag_id(player.ForceActionFlagIds.RIGHT)
 	
 	if make_player_energy_undeductable:
 		var player_modi_manager = SingletonsAndConsts.current_game_elements.player_modi_manager

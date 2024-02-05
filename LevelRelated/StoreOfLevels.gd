@@ -1736,7 +1736,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
-		#todoimp change this
+		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
 		
@@ -1769,9 +1769,9 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.ignore_assist_mode_modifications = true
 		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		level_details.level_type = level_details.LevelTypeId.FOR_FUN
 		
-		#todoimp change this
+		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
 	
@@ -2194,27 +2194,39 @@ func attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02():
 	if GameSaveManager.get_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2) == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED:
 		#gets finished so no need to set
 		
-		for i in range(4, 16 + 1):
+		var layout_ele_of_trophy_round = 15
+		for i in range(3, layout_ele_of_trophy_round + 1):
 			GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, i, false)
 		
+		GameSaveManager.last_hovered_over_level_layout_element_id = layout_ele_of_trophy_round
+		
 		#
-		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
-		SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2
+		return true
+	
+	return false
+
+func directly_go_to_spec02_02_on_level_finish():
+	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
+	SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2
 
 
 
 func attempt_unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
 	if can_unlock_stage_special_02():
-		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
-		GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
-		
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 20, false)
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 21, false)
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 22, false)
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 23, false)
-		GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 24, false)
-		
-		GameSaveManager.set_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+		_unlock_stage_special_02__and_unhide_eles_to_layout_special_02()
+
+func _unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
+	GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__FINISHED)
+	GameSaveManager.set_level_layout_id_status_completion(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+	
+	GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 20, false)
+	GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 21, false)
+	GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 22, false)
+	GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 23, false)
+	GameSaveManager.set_layout_id__layout_element_id__is_invis(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01, 24, false)
+	
+	GameSaveManager.set_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+
 
 func can_unlock_stage_special_02():
 	for lvl_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
