@@ -46,13 +46,12 @@ var screen_size_minus_animal_size : Vector2
 
 #
 
-const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(300, -100)
+const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(220, -80)
 const SUPER_STAR_FINAL_POS_CHANGE_DURATION = 1.5
 const SUPER_STAR_FINAL_POS_CHANGE_TRANS = Tween.TRANS_QUAD
 const SUPER_STAR_FINAL_POS_CHANGE_EASE = Tween.EASE_OUT
 
 const SHINE_ADDITIONAL_DELAY : float = 0.75
-const SHINE_DELAY_PER_STAR_BEAM : float = 0.5
 
 #
 
@@ -78,12 +77,18 @@ onready var base_enemy = $ObjectContainer/BaseEnemy
 onready var misc_container = $MiscContainer
 
 var cdsu_super_star
+var cdsu_super_star_simulated
 var super_star_fx_drawer
 
 var special_pos_for_cam__for_super_star : Node2D
 var super_star_particles_container : Node2D
 
 ##
+
+#temptodo
+var temp_is_test : bool = true
+
+#
 
 func _init():
 	can_spawn_player_when_no_current_player_in_GE = true
@@ -104,9 +109,11 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
 	
+	if temp_is_test:
+		return
+	
 	vbox_of_instructions__01.modulate.a = 0
 	#SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
-	
 	
 	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
 	transition.initial_ratio = 0.2
@@ -119,13 +126,25 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	
 	transition.set_is_transition_paused(true)
 	_current_long_transition = transition
-	
-	
+
 
 #
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
+	
+	
+	
+	base_enemy.current_health = GameSettingsManager.combat__current_max_enemy_health / 100.0
+	
+	
+	if temp_is_test:
+		#var pos = Vector2(7038, 656)
+		var pos = Vector2(4490, 1296)
+		game_elements.get_current_player().global_position = pos
+		return
+	
+	#
 	
 	vkp_left.game_control_action_name = "game_left"
 	vkp_right.game_control_action_name = "game_right"
@@ -139,10 +158,10 @@ func _on_after_game_start_init():
 	
 	#
 	
-	base_enemy.current_health = GameSettingsManager.combat__current_max_enemy_health / 100.0
-	
-	#temptodo
-	_create_and_init_cdsu_super_star()
+	# start
+	#SingletonsAndConsts.current_game_front_hud.init_adjusted_pos_node_container__above_other_hosters()
+	#_create_and_init_cdsu_super_star()
+	# end
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -160,6 +179,11 @@ func _add_energy_modi():
 
 func _deferred_init__for_first_time_and_not():
 	_add_energy_modi()
+	
+	if temp_is_test:
+		_configure_custom_rules_of_trophy_round()
+		#_init_color_rect_container_for_animal_anim_sprite_and_relateds()
+		return
 	
 	_init__as_first_time__and_do_cutscenes()
 
@@ -347,6 +371,9 @@ func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_r
 
 
 func _init_above_GFH_node_container__and_related_nodes():
+	SingletonsAndConsts.current_game_front_hud.init_adjusted_pos_node_container__above_other_hosters()
+	
+	
 	var super_star_particles_container = Node2D.new()
 	_create_and_init_super_star_fx_drawer_node()
 	_create_and_init_cdsu_super_star()
@@ -359,35 +386,46 @@ func _init_above_GFH_node_container__and_related_nodes():
 #	node_container_above_game_front_hud.add_child(super_star_fx_drawer)
 #	node_container_above_game_front_hud.add_child(cdsu_super_star)
 	
-	#####
-	super_star_fx_drawer.shine_delay_per_star_beam = SHINE_DELAY_PER_STAR_BEAM
-	
 	#
-	cdsu_super_star.sprite.texture = load("res://ObjectsRelated/Pickupables/Subs/Coin/Assets/Pickupable_Coin_Pic__SuperStar.png")
-	
 	var coll_shape = CircleShape2D.new()
 	coll_shape.radius = 20
 	cdsu_super_star.collision_shape.shape = coll_shape
 	
-	#
 	
 
 
 func _create_and_init_cdsu_super_star():
 	cdsu_super_star = CustomDefinedSingleUse_Pickupable_Scene.instance()
 	
-	#temptodo
-	#cdsu_super_star.position = Vector2(8194, 617)
 	
-	cdsu_super_star.position = Vector2(7194, 617)
-	
+	cdsu_super_star.position = Vector2(8194, 635)
+	#cdsu_super_star.position = Vector2(7194, 617)
 	cdsu_super_star.is_destroy_self_on_player_entered = false
 	cdsu_super_star.connect("player_entered_self__custom_defined", self, "_on_CDSU_SuperStar_player_entered_self__custom_defined", [], CONNECT_ONESHOT)
+	misc_container.add_child(cdsu_super_star)
+	
+	#cdsu_super_star.sprite.texture = load("res://ObjectsRelated/Pickupables/Subs/Coin/Assets/Pickupable_Coin_Pic__SuperStar.png")
+	
+	##
+	
+	cdsu_super_star_simulated = Sprite.new()
+	cdsu_super_star_simulated.texture = load("res://ObjectsRelated/Pickupables/Subs/Coin/Assets/Pickupable_Coin_Pic__SuperStar.png")
+	
+	SingletonsAndConsts.current_game_front_hud.add_node_to_adjusted_pos_node_container(cdsu_super_star_simulated, cdsu_super_star)
+	
+	##
+	
+	var shader_mat_for_star = ShaderMaterial.new()
+	shader_mat_for_star.shader = preload("res://MiscRelated/ShadersRelated/Shader_PickupableOutline_Rainbow.tres")
+	
+	#cdsu_super_star.material = shader_mat_for_star
+	cdsu_super_star_simulated.material = shader_mat_for_star
 	
 
 func _create_and_init_super_star_fx_drawer_node():
 	super_star_fx_drawer = SuperStarFXDrawer_Scene.instance()
 	
+	SingletonsAndConsts.current_game_front_hud.add_node_to_above_other_hosters(super_star_fx_drawer)
 
 ###
 
@@ -413,7 +451,7 @@ func _do_all_tween_related_to_super_star_collection():
 	#
 	var delay_tween = create_tween()
 	delay_tween.tween_interval(SUPER_STAR_FINAL_POS_CHANGE_DURATION + SHINE_ADDITIONAL_DELAY)
-	delay_tween.tween_callback(self, "_start_super_star_fx_drawer")
+	delay_tween.tween_callback(self, "_start_sequence")
 
 func _tween_relocate_super_star_based_on_collection_offset(arg_tween : SceneTreeTween):
 	var final_pos = cdsu_super_star.global_position + SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS
@@ -424,10 +462,15 @@ func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTwee
 	arg_tween.tween_property(special_pos_for_cam__for_super_star, "global_position", final_pos, SUPER_STAR_FINAL_POS_CHANGE_DURATION).set_trans(SUPER_STAR_FINAL_POS_CHANGE_TRANS).set_ease(SUPER_STAR_FINAL_POS_CHANGE_EASE)
 
 
-func _start_super_star_fx_drawer():
+#########
+
+func _start_sequence():
+	_start_super_star_fx_drawer("")
+	
+
+func _start_super_star_fx_drawer(arg_func_name_to_call_on_end):
+	super_star_fx_drawer.center_pos_of_lines = cdsu_super_star_simulated.global_position
 	super_star_fx_drawer.start_draw()
 	
 
-#todoimp make lots of partiles for star -- upon pickup and when not yet picked up
-#todoimp make animal sprite gray if dead (reuse shader/effx on endingsummarypanel)
 

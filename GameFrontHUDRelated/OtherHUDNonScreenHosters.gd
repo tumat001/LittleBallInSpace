@@ -15,6 +15,8 @@ onready var launch_ball_circle_draw_node = $LaunchBallCircleDrawNode
 onready var battery_circle_draw_node = $BatteryCircleDraw
 onready var wrench_circle_draw_node = $WrenchCircleDraw
 
+#var _adjusted_pos_node_container : Node2D
+#var _adjusted_node_to_in_GE_node_map : Dictionary
 
 #
 
@@ -36,6 +38,8 @@ func _exit_tree():
 func _ready():
 	_init_all_launch_ball_pickup_relateds()
 	#_init_all_battery_pickup_relateds()
+	
+	set_process(false)
 
 ##
 
@@ -209,8 +213,4 @@ func play_blue_ring__pickup_of_wrench(arg_origin, arg_initial_radius : float, ar
 	var tweener = create_tween()
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius, arg_duration_to_full_radius).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius + (arg_final_radius / 3.0), arg_additional_lifetime)
-
-
-############################################
-
 

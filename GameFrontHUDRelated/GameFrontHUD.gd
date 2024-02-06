@@ -12,6 +12,10 @@ var is_showing_in_game_pause_panel_tree : bool = false
 
 #
 
+var _adjusted_pos_node_container__above_other_hosters : Node2D
+var _adjusted_node_to_in_GE_node_map : Dictionary
+var _half_screen_size = SingletonsAndConsts.current_master.screen_size / 2
+
 onready var other_hosters = $OtherHosters
 onready var above_other_hosters = $AboveOtherHosters
 onready var other_hud_non_screen_hosters = $OtherHUDNonScreenHosters
@@ -312,4 +316,27 @@ func add_custom_control_in_container(arg_control, arg_index = 0):
 	control_container.move_child(arg_control, arg_index)
 
 
+#############
+
+############################################
+#_adjusted_pos_node_container__above_other_hosters relateds
+
+func init_adjusted_pos_node_container__above_other_hosters():
+	_adjusted_pos_node_container__above_other_hosters = Node2D.new()
+	add_child(_adjusted_pos_node_container__above_other_hosters)
+	move_child(_adjusted_pos_node_container__above_other_hosters, above_other_hosters.get_index())
+
+func add_node_to_adjusted_pos_node_container(arg_node, arg_node_to_follow_in_GE):
+	_adjusted_node_to_in_GE_node_map[arg_node] = arg_node_to_follow_in_GE
+	_adjusted_pos_node_container__above_other_hosters.add_child(arg_node)
+	set_process(true)
+
+func _process(delta):
+	var cam_screen_center = CameraManager.camera.get_camera_screen_center()
+	for adjusted_node in _adjusted_node_to_in_GE_node_map.keys():
+		var in_GE_node = _adjusted_node_to_in_GE_node_map[adjusted_node]
+		
+		var pos_in_hud = in_GE_node.global_position - cam_screen_center + _half_screen_size
+		adjusted_node.global_position = pos_in_hud
+		
 
