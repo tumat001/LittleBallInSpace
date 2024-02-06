@@ -296,7 +296,11 @@ func _set_control_container_vis__via_tween(arg_vis, arg_duration):
 		tweener.connect("finished", self, "_on_mod_a_tweener_finished__going_to_0", [], CONNECT_ONESHOT)
 		tweener.tween_property(control_container, "modulate:a", 0.0, arg_duration)
 		
-	
+
+
+func external__set_control_container_mod_a(arg_mod_a):
+	control_container.modulate.a = arg_mod_a
+
 
 func _on_mod_a_tweener_finished__going_to_0():
 	control_container.visible = false

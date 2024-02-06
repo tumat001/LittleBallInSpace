@@ -16,10 +16,10 @@ animations = [ {
 "frames": [ ExtResource( 4 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 6 ) ],
 "loop": true,
 "name": "idle",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [ ExtResource( 1 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 9 ), ExtResource( 7 ) ],
 "loop": true,
 "name": "walk",
-"speed": 5.0
+"speed": 10.0
 } ]

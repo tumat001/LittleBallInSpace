@@ -70,6 +70,8 @@ onready var cutscene_container = $CutsceneContainer
 
 onready var gs_gui_control_tree = $GS_GUI_ControlTree
 
+#var above_transition_node_2d_container__single_GE_instance : Node2D
+
 #
 
 func _enter_tree():
@@ -560,4 +562,32 @@ func add_cutscene_to_container(arg_cutscene):
 func set_pause_game(arg_val):
 	get_tree().paused = arg_val
 	
+
+
+###################
+#
+#func initialize_above_transition_node_2d_container__for_single_GE_instance():
+#	var game_elements = SingletonsAndConsts.current_game_elements
+#	if !is_instance_valid(game_elements):
+#		return
+#
+#	above_transition_node_2d_container__single_GE_instance = Node2D.new()
+#	add_child(above_transition_node_2d_container__single_GE_instance)
+#
+#	var idx_of_transition_container = transition_container.get_index()
+#	move_child(above_transition_node_2d_container__single_GE_instance, idx_of_transition_container)
+#
+#	SingletonsAndConsts.connect("current_game_elements_changed", self, "_on_current_game_elements_changed__for_single_GE_instance_monitor")
+#
+#
+#	return above_transition_node_2d_container__single_GE_instance
+#
+#func _on_current_game_elements_changed__for_single_GE_instance_monitor(arg_ge):
+#	if is_instance_valid(arg_ge):
+#		return
+#
+#	SingletonsAndConsts.disconnect("current_game_elements_changed", self, "_on_current_game_elements_changed__for_single_GE_instance_monitor")
+#	above_transition_node_2d_container__single_GE_instance.queue_free()
+
+
 

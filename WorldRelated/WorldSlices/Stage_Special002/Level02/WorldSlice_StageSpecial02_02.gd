@@ -1,6 +1,14 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
+const CustomDefinedSingleUse_Pickupable = preload("res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_CustomDefinedSingleUse.gd")
+const CustomDefinedSingleUse_Pickupable_Scene = preload("res://ObjectsRelated/Pickupables/Subs/_CusotmDefinedSingleUse/Pickupable_CustomDefinedSingleUse.tscn")
+
+const SuperStarFXDrawer = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/SuperStarFXDrawer.gd")
+const SuperStarFXDrawer_Scene = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/SuperStarFXDrawer.tscn")
+
+
+
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
 
@@ -15,6 +23,7 @@ const DURATION_OF_TRAVEL_FROM_AIR_TO_GROUND__CUTSCENE : float = 12.0
 #
 
 const SHADER_PARAM__CIRCLE_SIZE = "circle_size"
+const SHADER_PARAM__SATURATION = "saturation"
 
 #
 
@@ -28,8 +37,22 @@ var _player_modi_energy
 var color_rect_container_for_animal_anim_sprite : ColorRectContainerForAnimalAnimSprite
 var animal_anim_sprite : AnimalAnimSprite
 
-var shader_mat_of_color_rect_container : ShaderMaterial
+var shader_mat_of_animal_anim_sprite : ShaderMaterial
 var _vision_transition_sprite_for_trophy_sequence
+
+
+var animal_size : Vector2
+var screen_size_minus_animal_size : Vector2
+
+#
+
+const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(300, -100)
+const SUPER_STAR_FINAL_POS_CHANGE_DURATION = 1.5
+const SUPER_STAR_FINAL_POS_CHANGE_TRANS = Tween.TRANS_QUAD
+const SUPER_STAR_FINAL_POS_CHANGE_EASE = Tween.EASE_OUT
+
+const SHINE_ADDITIONAL_DELAY : float = 0.75
+const SHINE_DELAY_PER_STAR_BEAM : float = 0.5
 
 #
 
@@ -48,6 +71,17 @@ onready var normal_spawn_pos_2d = $PlayerSpawnCoordsContainer/Position2D
 onready var vis_transition_fog_finale_trophy = $MiscContainer/VisTransFog_FinaleTrophy
 
 onready var base_enemy = $ObjectContainer/BaseEnemy
+
+#onready var cdsu_super_star = $MiscContainer/CDSU_SuperStar
+#onready var super_star_fx_drawer = $MiscContainer/SuperStarFXDrawer
+
+onready var misc_container = $MiscContainer
+
+var cdsu_super_star
+var super_star_fx_drawer
+
+var special_pos_for_cam__for_super_star : Node2D
+var super_star_particles_container : Node2D
 
 ##
 
@@ -106,6 +140,9 @@ func _on_after_game_start_init():
 	#
 	
 	base_enemy.current_health = GameSettingsManager.combat__current_max_enemy_health / 100.0
+	
+	#temptodo
+	_create_and_init_cdsu_super_star()
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -138,8 +175,7 @@ func _init__as_first_time__and_do_cutscenes():
 	else:
 		game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized", [], CONNECT_ONESHOT)
 	
-	##temptodo
-	call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
+	#call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
 	
 	_apply_force_to_make_player_goto_pos_from_air_pos()
 	
@@ -222,29 +258,50 @@ func _on_Portal_Entry_Seq07_player_entered(arg_player):
 func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
 	color_rect_container_for_animal_anim_sprite = ColorRectContainerForAnimalAnimSprite_Scene.instance()
 	game_elements.game_front_hud.add_node_to_above_other_hosters(color_rect_container_for_animal_anim_sprite)
-	#temptodo
-	#color_rect_container_for_animal_anim_sprite.follow_node_pos__on_screen__centered(game_elements.get_current_player())
+	color_rect_container_for_animal_anim_sprite.follow_node_pos__on_screen__centered(game_elements.get_current_player())
+	
+	# color rect related
+	_vision_transition_sprite_for_trophy_sequence = vis_transition_fog_finale_trophy.get_transition_sprite()
 	
 	# animal sprite
 	animal_anim_sprite = color_rect_container_for_animal_anim_sprite.animal_anim_sprite
 	var animal_sprite_frames_to_use : SpriteFrames = _get_animal_sprite_frames_to_use_based_on_GSM()
+	_give_color_rect_container_reverse_circle_shader__and_config_shader_relateds()
+	_init_animal_is_dead_config()
 	animal_anim_sprite.config_set_sprite_frames(animal_sprite_frames_to_use)
 	animal_anim_sprite.config_set_player_to_watch_speed(game_elements.get_current_player())
-	
-	# color rect related
-	_vision_transition_sprite_for_trophy_sequence = vis_transition_fog_finale_trophy.get_transition_sprite()
-	_give_color_rect_container_reverse_circle_shader__and_config_shader_relateds()
+	_init_animal_size()
+	screen_size_minus_animal_size = SingletonsAndConsts.current_master.screen_size - animal_size
 	
 	# vision fog related
 	vis_transition_fog_finale_trophy.activate_monitor_for_player()
 	
 	
-	##temptodo -- start
-	var tweener = create_tween()
-	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 0.0, 1.0, 3.0)
-	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 1.0, 0.0, 3.0)
-	tweener.set_loops()
-	##temptodo -- end
+	#shader_mat_of_animal_anim_sprite.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, 0)
+	
+	##start
+#	var tweener = create_tween()
+#	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 0.9, 1.0, 3.0)
+#	tweener.tween_method(self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed", 1.0, 0.9, 3.0)
+#	tweener.set_loops()
+	## -- end
+	
+	
+	# star
+	call_deferred("_init_above_GFH_node_container__and_related_nodes")
+
+
+func _init_animal_is_dead_config():
+	if GameSaveManager.is_player_died_in_any_level():
+		animal_anim_sprite.config_as_dead()
+		shader_mat_of_animal_anim_sprite.set_shader_param(SHADER_PARAM__SATURATION, 0.0)
+
+func _init_animal_size():
+	animal_size = animal_anim_sprite.sprite_size
+	if animal_size.x > animal_size.y:
+		animal_size = Vector2(animal_size.x, animal_size.x)
+	else:
+		animal_size = Vector2(animal_size.y, animal_size.y)
 	
 
 func _get_animal_sprite_frames_to_use_based_on_GSM():
@@ -259,14 +316,118 @@ func _give_color_rect_container_reverse_circle_shader__and_config_shader_related
 	var shader_mat = ShaderMaterial.new()
 	shader_mat.shader = load("res://MiscRelated/ShadersRelated/Shader_CircleTransitionReversed.tres")
 	shader_mat.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, 1.05)
+	shader_mat.set_shader_param(SHADER_PARAM__SATURATION, 1.0)
 	#shader_mat.set_shader_param("noise", animal_anim_sprite)
 	
-	shader_mat_of_color_rect_container = shader_mat
+	shader_mat_of_animal_anim_sprite = shader_mat
 	color_rect_container_for_animal_anim_sprite.animal_anim_sprite.material = shader_mat
 	
-	#temptodo
-	#_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
+	_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
 
 func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_ratio):
-	shader_mat_of_color_rect_container.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, arg_ratio)
-	print("ratio: %s" % arg_ratio)
+	var circle_bounding_size : Vector2 = SingletonsAndConsts.current_master.screen_size * (1 - arg_ratio)
+	var final_ratio : float = 1
+	
+	var circle_bounding_length_sqr = circle_bounding_size.length()
+	var screen_animal_size_length_sqr = screen_size_minus_animal_size.length()
+	if circle_bounding_length_sqr >= screen_animal_size_length_sqr:
+		# x -- 0 (0 being full/max)
+		var curr_size_diff : Vector2 = SingletonsAndConsts.current_master.screen_size - circle_bounding_size
+		
+		final_ratio = (curr_size_diff / animal_size).length()
+	
+	shader_mat_of_animal_anim_sprite.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, final_ratio)
+	
+	
+	###
+	game_elements.game_front_hud.external__set_control_container_mod_a(arg_ratio)
+	
+	#print("final ratio: %s, arg: %s" % [final_ratio, arg_ratio])
+
+
+
+func _init_above_GFH_node_container__and_related_nodes():
+	var super_star_particles_container = Node2D.new()
+	_create_and_init_super_star_fx_drawer_node()
+	_create_and_init_cdsu_super_star()
+	
+	
+	##
+	#note: does not work. try something else (putting node in GFH other non screen hosters perhaps?)
+#	var node_container_above_game_front_hud = SingletonsAndConsts.current_game_elements.init_node_container_above_game_front_hud()
+#	node_container_above_game_front_hud.add_child(super_star_particles_container)
+#	node_container_above_game_front_hud.add_child(super_star_fx_drawer)
+#	node_container_above_game_front_hud.add_child(cdsu_super_star)
+	
+	#####
+	super_star_fx_drawer.shine_delay_per_star_beam = SHINE_DELAY_PER_STAR_BEAM
+	
+	#
+	cdsu_super_star.sprite.texture = load("res://ObjectsRelated/Pickupables/Subs/Coin/Assets/Pickupable_Coin_Pic__SuperStar.png")
+	
+	var coll_shape = CircleShape2D.new()
+	coll_shape.radius = 20
+	cdsu_super_star.collision_shape.shape = coll_shape
+	
+	#
+	
+
+
+func _create_and_init_cdsu_super_star():
+	cdsu_super_star = CustomDefinedSingleUse_Pickupable_Scene.instance()
+	
+	#temptodo
+	#cdsu_super_star.position = Vector2(8194, 617)
+	
+	cdsu_super_star.position = Vector2(7194, 617)
+	
+	cdsu_super_star.is_destroy_self_on_player_entered = false
+	cdsu_super_star.connect("player_entered_self__custom_defined", self, "_on_CDSU_SuperStar_player_entered_self__custom_defined", [], CONNECT_ONESHOT)
+	
+
+func _create_and_init_super_star_fx_drawer_node():
+	super_star_fx_drawer = SuperStarFXDrawer_Scene.instance()
+	
+
+###
+
+func _on_CDSU_SuperStar_player_entered_self__custom_defined():
+	_init_special_pos_for_cam__for_super_star()
+	#_do_all_tween_related_to_super_star_collection()
+	call_deferred("_do_all_tween_related_to_super_star_collection")
+	
+	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+
+func _init_special_pos_for_cam__for_super_star():
+	special_pos_for_cam__for_super_star = Node2D.new()
+	special_pos_for_cam__for_super_star.global_position = CameraManager.camera.get_camera_screen_center() #game_elements.get_current_player().global_position
+	
+	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(special_pos_for_cam__for_super_star)
+	CameraManager.set_camera_to_follow_node_2d(special_pos_for_cam__for_super_star)
+
+func _do_all_tween_related_to_super_star_collection():
+	var tween = create_tween()
+	tween.set_parallel(true)
+	_tween_relocate_super_star_based_on_collection_offset(tween)
+	_tween_relocate_camera_based_on_collection_offset(tween)
+	#
+	var delay_tween = create_tween()
+	delay_tween.tween_interval(SUPER_STAR_FINAL_POS_CHANGE_DURATION + SHINE_ADDITIONAL_DELAY)
+	delay_tween.tween_callback(self, "_start_super_star_fx_drawer")
+
+func _tween_relocate_super_star_based_on_collection_offset(arg_tween : SceneTreeTween):
+	var final_pos = cdsu_super_star.global_position + SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS
+	arg_tween.tween_property(cdsu_super_star, "global_position", final_pos, SUPER_STAR_FINAL_POS_CHANGE_DURATION).set_trans(SUPER_STAR_FINAL_POS_CHANGE_TRANS).set_ease(SUPER_STAR_FINAL_POS_CHANGE_EASE)
+
+func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTween):
+	var final_pos = special_pos_for_cam__for_super_star.global_position + (SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS / 2)
+	arg_tween.tween_property(special_pos_for_cam__for_super_star, "global_position", final_pos, SUPER_STAR_FINAL_POS_CHANGE_DURATION).set_trans(SUPER_STAR_FINAL_POS_CHANGE_TRANS).set_ease(SUPER_STAR_FINAL_POS_CHANGE_EASE)
+
+
+func _start_super_star_fx_drawer():
+	super_star_fx_drawer.start_draw()
+	
+
+#todoimp make lots of partiles for star -- upon pickup and when not yet picked up
+#todoimp make animal sprite gray if dead (reuse shader/effx on endingsummarypanel)
+

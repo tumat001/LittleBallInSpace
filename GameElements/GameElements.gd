@@ -60,6 +60,9 @@ var game_front_hud : GameFrontHUD
 var is_game_background_initialized : bool = false
 var game_background : GameBackground
 
+
+#var node_container_above_game_front_hud
+
 #
 
 var pause_game_at_startup : bool = false
@@ -586,4 +589,16 @@ func _destory_enemies_based_on_draw_param(arg_draw_param):
 			
 			enemy.queue_free()
 			enemy.play_damage_audio__on_death()
+
+####
+
+#func init_node_container_above_game_front_hud():
+#	if !is_game_front_hud_initialized:
+#		return
+#
+#	node_container_above_game_front_hud = Node.new()
+#
+#	add_child(node_container_above_game_front_hud)
+#
+#	return node_container_above_game_front_hud
 

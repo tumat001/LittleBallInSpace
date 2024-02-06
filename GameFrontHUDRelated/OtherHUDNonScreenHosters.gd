@@ -210,3 +210,7 @@ func play_blue_ring__pickup_of_wrench(arg_origin, arg_initial_radius : float, ar
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius, arg_duration_to_full_radius).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius + (arg_final_radius / 3.0), arg_additional_lifetime)
 
+
+############################################
+
+

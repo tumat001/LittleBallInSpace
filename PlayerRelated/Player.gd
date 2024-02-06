@@ -1545,7 +1545,7 @@ func get_lin_vel__reduced_by_ground_attracting_velocity__if_on_ground():
 #
 
 
-
+# note: can be called multiple times if cam is added and removed. account for that possibility
 func receive_cam_focus__as_child(arg_cam : Camera2D):
 	add_child(arg_cam)
 	

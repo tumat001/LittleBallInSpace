@@ -126,10 +126,12 @@ func set_camera_to_follow_node_2d(arg_node_2d : Node2D):
 	if is_instance_valid(cam_parent):
 		cam_parent.remove_child(camera)
 	
-	if arg_node_2d.has_method("receive_cam_focus__as_child"):
-		arg_node_2d.receive_cam_focus__as_child(camera)
-	else:
-		arg_node_2d.add_child(camera)
+	if is_instance_valid(arg_node_2d):
+		if arg_node_2d.has_method("receive_cam_focus__as_child"):
+			arg_node_2d.receive_cam_focus__as_child(camera)
+		else:
+			arg_node_2d.add_child(camera)
+
 
 ###
 

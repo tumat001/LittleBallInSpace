@@ -627,6 +627,11 @@ func _on_game_result_decided(arg_result, arg_game_result_manager):
 			level_id_died_in = SingletonsAndConsts.current_base_level_id
 
 
+#
+
+func is_player_died_in_any_level():
+	return level_id_died_in != -1
+
 ##
 
 func set_can_view_game_stats(arg_val):
