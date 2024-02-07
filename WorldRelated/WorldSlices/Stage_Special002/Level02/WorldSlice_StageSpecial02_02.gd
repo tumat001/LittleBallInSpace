@@ -44,6 +44,13 @@ var _vision_transition_sprite_for_trophy_sequence
 var animal_size : Vector2
 var screen_size_minus_animal_size : Vector2
 
+
+var prev_sprite_transition_ratio_for_trophy_segment : float = -1
+
+#
+
+var background_music_playlist
+
 #
 
 const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(220, -80)
@@ -75,6 +82,7 @@ onready var base_enemy = $ObjectContainer/BaseEnemy
 #onready var super_star_fx_drawer = $MiscContainer/SuperStarFXDrawer
 
 onready var misc_container = $MiscContainer
+
 
 var cdsu_super_star
 var cdsu_super_star_simulated
@@ -142,6 +150,8 @@ func _on_after_game_start_init():
 		#var pos = Vector2(7038, 656)
 		var pos = Vector2(4490, 1296)
 		game_elements.get_current_player().global_position = pos
+		background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	
 		return
 	
 	#
@@ -162,6 +172,9 @@ func _on_after_game_start_init():
 	#SingletonsAndConsts.current_game_front_hud.init_adjusted_pos_node_container__above_other_hosters()
 	#_create_and_init_cdsu_super_star()
 	# end
+	
+	background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -349,8 +362,12 @@ func _give_color_rect_container_reverse_circle_shader__and_config_shader_related
 	_vision_transition_sprite_for_trophy_sequence.connect("circle_ratio_changed", self, "_on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed")
 
 func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_ratio):
+	if is_equal_approx(prev_sprite_transition_ratio_for_trophy_segment, arg_ratio):
+		return
+	prev_sprite_transition_ratio_for_trophy_segment = arg_ratio
+	
 	var circle_bounding_size : Vector2 = SingletonsAndConsts.current_master.screen_size * (1 - arg_ratio)
-	var final_ratio : float = 1
+	var final_ratio_for_animal_shader : float = 1
 	
 	var circle_bounding_length_sqr = circle_bounding_size.length()
 	var screen_animal_size_length_sqr = screen_size_minus_animal_size.length()
@@ -358,15 +375,17 @@ func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_r
 		# x -- 0 (0 being full/max)
 		var curr_size_diff : Vector2 = SingletonsAndConsts.current_master.screen_size - circle_bounding_size
 		
-		final_ratio = (curr_size_diff / animal_size).length()
+		final_ratio_for_animal_shader = (curr_size_diff / animal_size).length()
 	
-	shader_mat_of_animal_anim_sprite.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, final_ratio)
+	######
 	
+	shader_mat_of_animal_anim_sprite.set_shader_param(SHADER_PARAM__CIRCLE_SIZE, final_ratio_for_animal_shader)
 	
-	###
 	game_elements.game_front_hud.external__set_control_container_mod_a(arg_ratio)
 	
-	#print("final ratio: %s, arg: %s" % [final_ratio, arg_ratio])
+	background_music_playlist.set_volume_db__bus_interal__using_ratio(arg_ratio)
+	
+	#print("final ratio: %s, arg: %s" % [final_ratio_for_animal_shader, arg_ratio])
 
 
 
@@ -465,12 +484,47 @@ func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTwee
 #########
 
 func _start_sequence():
-	_start_super_star_fx_drawer("")
+	_start_super_star_fx_drawer()
 	
 
-func _start_super_star_fx_drawer(arg_func_name_to_call_on_end):
-	super_star_fx_drawer.center_pos_of_lines = cdsu_super_star_simulated.global_position
-	super_star_fx_drawer.start_draw()
+func _start_super_star_fx_drawer():
+	super_star_fx_drawer.connect("draw_phase_01_standard_finished", self, "_on_star_fx_drawer_draw_phase_01_standard_finished", [], CONNECT_ONESHOT)
+	super_star_fx_drawer.center_pos_basis = cdsu_super_star_simulated.global_position
+	super_star_fx_drawer.start_draw_phase_01_standard()
 	
 
+func _on_star_fx_drawer_draw_phase_01_standard_finished():
+	#_play_cutscene_msg()
+	visible = false
+	cdsu_super_star_simulated.visible = false
+	color_rect_container_for_animal_anim_sprite.visible = false
+	
+	super_star_fx_drawer.
 
+
+
+
+##
+
+func _play_cutscene_msg():
+	pass
+	
+
+##
+
+func _end_level():
+	_play_inner_transition_to_level_selection()
+	game_elements.game_result_manager.end_game__as_win()
+	
+
+func _play_inner_transition_to_level_selection():
+	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__CIRCLE_SPEC_02_02)
+	transition.initial_ratio = 0.0
+	transition.target_ratio = 1.0
+	transition.wait_at_start = 0.0
+	transition.duration = 8.0
+	transition.trans_type = Tween.TRANS_LINEAR
+	transition.queue_free_on_end_of_transition = true
+	SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
+	
+	

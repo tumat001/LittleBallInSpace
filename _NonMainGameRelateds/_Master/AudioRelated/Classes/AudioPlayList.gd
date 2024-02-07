@@ -382,6 +382,10 @@ func _set_is_playing(arg_is_playing):
 
 #
 
+func set_volume_db__bus_interal__using_ratio(arg_ratio):
+	var db = AudioManager.convert_ratio_using_num_range__from_standard_db_audibles(arg_ratio)
+	set_volume_db__bus_internal(db)
+
 func set_volume_db__bus_internal(arg_val):
 	volume_db__bus_internal = arg_val
 	

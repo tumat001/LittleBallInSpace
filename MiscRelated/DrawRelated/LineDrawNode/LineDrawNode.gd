@@ -31,6 +31,14 @@ func remove_draw_param(arg_draw_param : DrawParams):
 		
 		update()
 
+func remove_all_draw_params():
+	if _all_draw_params.size() != 0:
+		_all_draw_params.clear()
+		set_process(false)
+		update()
+
+func get_all_draw_params():
+	return _all_draw_params
 
 ###
 

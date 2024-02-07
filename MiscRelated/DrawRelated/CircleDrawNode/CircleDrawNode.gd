@@ -104,6 +104,8 @@ func has_draw_param():
 	return _all_draw_params.size() > 0
 	
 
+func get_all_draw_params():
+	return _all_draw_params
 
 #
 

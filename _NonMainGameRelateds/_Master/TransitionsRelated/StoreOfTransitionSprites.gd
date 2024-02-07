@@ -22,6 +22,10 @@ enum TransitionSpriteIds {
 	
 	#
 	
+	OUT__CIRCLE_SPEC_02_02 = 100,
+	
+	#
+	
 	BOOT_SPLASH_AWAY_TRANSITION = 1000,
 	
 }
@@ -29,35 +33,42 @@ enum TransitionSpriteIds {
 
 static func construct_transition_sprite(arg_id):
 	var transition
-	if arg_id == TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK:
-		transition = _construct_transition__standard_circle()
-		_configure_transition__standard_circle__to_out(transition)
-		_configure_transition__any__to_black(transition)
+	match arg_id:
+		TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK:
+			transition = _construct_transition__standard_circle()
+			_configure_transition__standard_circle__to_out(transition)
+			_configure_transition__any__to_black(transition)
+			
+		TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK:
+			transition = _construct_transition__standard_circle()
+			_configure_transition__standard_circle__to_in(transition)
+			_configure_transition__any__to_black(transition)
+			
+		TransitionSpriteIds.OUT__STANDARD_CIRCLE__WHITE:
+			transition = _construct_transition__standard_circle()
+			_configure_transition__standard_circle__to_out(transition)
+			_configure_transition__any__to_white(transition)
+			
+		TransitionSpriteIds.IN__STANDARD_CIRCLE__WHITE:
+			transition = _construct_transition__standard_circle()
+			_configure_transition__standard_circle__to_in(transition)
+			_configure_transition__any__to_white(transition)
+			
+		TransitionSpriteIds.OUT__STANDARD_FADE__BLACK__LONG:
+			transition = _construct_transition__standard_fade()
+			_configure_transition__standard_fade__to_out(transition, 3.0)
+			
+			#transition = _construct_transition__standard_circle()
+			#_configure_transition_circle__to_fade__out(transition, Color(0, 0, 0, 0), Color(0, 0, 0, 1))
+			
+		TransitionSpriteIds.OUT__CIRCLE_SPEC_02_02:
+			transition = _construct_transition__standard_circle()
+			transition.duration = 0.8
+			
 		
-	elif arg_id == TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK:
-		transition = _construct_transition__standard_circle()
-		_configure_transition__standard_circle__to_in(transition)
-		_configure_transition__any__to_black(transition)
+		TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION:
+			return load("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/BootSplashAwayTransition/BootSplashAwayTransition.tscn").instance()
 		
-	elif arg_id == TransitionSpriteIds.OUT__STANDARD_CIRCLE__WHITE:
-		transition = _construct_transition__standard_circle()
-		_configure_transition__standard_circle__to_out(transition)
-		_configure_transition__any__to_white(transition)
-		
-	elif arg_id == TransitionSpriteIds.IN__STANDARD_CIRCLE__WHITE:
-		transition = _construct_transition__standard_circle()
-		_configure_transition__standard_circle__to_in(transition)
-		_configure_transition__any__to_white(transition)
-		
-	elif arg_id == TransitionSpriteIds.OUT__STANDARD_FADE__BLACK__LONG:
-		transition = _construct_transition__standard_fade()
-		_configure_transition__standard_fade__to_out(transition, 3.0)
-		
-		#transition = _construct_transition__standard_circle()
-		#_configure_transition_circle__to_fade__out(transition, Color(0, 0, 0, 0), Color(0, 0, 0, 1))
-		
-	elif arg_id == TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION:
-		return load("res://_NonMainGameRelateds/_Master/TransitionsRelated/Subs/BootSplashAwayTransition/BootSplashAwayTransition.tscn").instance()
 	
 	return transition
 

@@ -1754,6 +1754,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		_set_details__transitions_to_usual_circle_types(level_details)
+		level_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.NONE
+		level_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.NONE
 		
 		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_CurCall_32x32.png")
 		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)

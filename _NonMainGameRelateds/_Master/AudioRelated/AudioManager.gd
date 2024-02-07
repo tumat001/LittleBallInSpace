@@ -755,7 +755,7 @@ func helper__play_sound_effect__2d__lower_volume_based_on_dist(arg_id, arg_pos :
 	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	return sound_player
 
-#used by SoAudio
+#used by SoAudio and AudioPlaylist
 func convert_ratio_using_num_range__from_standard_db_audibles(arg_volume_ratio):
 	return convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, DECIBEL_VAL__STANDARD)
 
