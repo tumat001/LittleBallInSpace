@@ -47,26 +47,27 @@ func _ready():
 func generate_instance_of_layout(arg_id):
 	var scene_ref
 	
-	if arg_id == LevelLayoutIds.LAYOUT_01:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_02:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/02/GUI_Imp_LevelLayout_02.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_03:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/03/GUI_Imp_LevelLayout_03.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_04:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/04/GUI_Imp_LevelLayout_04.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_05:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/05/GUI_Imp_LevelLayout_05.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_06:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/06/GUI_Imp_LevelLayout_06.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_07:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/07/GUI_Imp_LevelLayout_07.tscn")
-		
-		
-	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_01:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special01/GUI_Imp_LevelLayout_Special01.tscn")
-	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_02:
-		scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special02/GUI_Imp_LevelLayout_Special02.tscn")
+	match arg_id:
+		LevelLayoutIds.LAYOUT_01:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/01/GUI_Imp_LevelLayout_01.tscn")
+		LevelLayoutIds.LAYOUT_02:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/02/GUI_Imp_LevelLayout_02.tscn")
+		LevelLayoutIds.LAYOUT_03:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/03/GUI_Imp_LevelLayout_03.tscn")
+		LevelLayoutIds.LAYOUT_04:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/04/GUI_Imp_LevelLayout_04.tscn")
+		LevelLayoutIds.LAYOUT_05:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/05/GUI_Imp_LevelLayout_05.tscn")
+		LevelLayoutIds.LAYOUT_06:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/06/GUI_Imp_LevelLayout_06.tscn")
+		LevelLayoutIds.LAYOUT_07:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/07/GUI_Imp_LevelLayout_07.tscn")
+			
+			
+		LevelLayoutIds.LAYOUT_SPECIAL_01:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special01/GUI_Imp_LevelLayout_Special01.tscn")
+		LevelLayoutIds.LAYOUT_SPECIAL_02:
+			scene_ref = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout_Imps/Special02/GUI_Imp_LevelLayout_Special02.tscn")
 	
 	
 	return scene_ref.instance()

@@ -118,12 +118,7 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor, arg_is_in
 		if _layout_id_to_level_layout_map.has(arg_layout_id):
 			layout_scene = _layout_id_to_level_layout_map[arg_layout_id]
 		else:
-			layout_scene = StoreOfLevelLayouts.generate_instance_of_layout(arg_layout_id)
-			layout_scene.level_layout_id = arg_layout_id
-			abstract_level_layout_container.add_child(layout_scene)
-			
-			layout_scene.gui_level_selection_whole_screen = self
-			layout_scene.particles_container = particles_container
+			layout_scene = _create_and_configure_new_layout_scene(arg_layout_id)
 		
 		layout_scene.game_background = game_background
 		
@@ -143,6 +138,27 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor, arg_is_in
 			game_background.request_show_brightened_star_background__star_collectible_collected()
 		else:
 			game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
+
+func _create_and_configure_new_layout_scene(arg_layout_id):
+	var layout_scene = StoreOfLevelLayouts.generate_instance_of_layout(arg_layout_id)
+	layout_scene.level_layout_id = arg_layout_id
+	abstract_level_layout_container.add_child(layout_scene)
+	
+	layout_scene.gui_level_selection_whole_screen = self
+	layout_scene.particles_container = particles_container
+	
+	_layout_id_to_level_layout_map[arg_layout_id] = layout_scene
+	
+	return layout_scene
+
+func create_and_configure_all_layout_scenes():
+	for layout_id in StoreOfLevelLayouts.LevelLayoutIds.values():
+		if !_layout_id_to_level_layout_map.has(layout_id):
+			_create_and_configure_new_layout_scene(layout_id)
+
+func get_layout_id_to_level_layout_map() -> Dictionary:
+	return _layout_id_to_level_layout_map
+
 
 
 func _set_level_layout_as_inactive(layout_scene : GUI_AbstractLevelLayout):
@@ -277,7 +293,8 @@ func _on_transition_in__from_old_layout_finished(arg_hovered_tile, arg_level_lay
 	show_level_layout(arg_hovered_tile.level_layout_details.level_layout_id, arg_hovered_tile.layout_ele_id_to_put_cursor_to, false)
 	arg_old_transition.queue_free()
 	
-	var level_layout_of_in__instance = StoreOfLevelLayouts.generate_instance_of_layout(arg_hovered_tile.level_layout_details.level_layout_id)
+	#NOTE: see if anything has changed. Commented this since this does nothing...
+	#var level_layout_of_in__instance = StoreOfLevelLayouts.generate_instance_of_layout(arg_hovered_tile.level_layout_details.level_layout_id)
 	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(arg_hovered_tile.level_layout_details.transition_id__entering_layout__in)
 	transition.queue_free_on_end_of_transition = true
 	transition.circle_center = arg_hovered_tile.get_center_position()

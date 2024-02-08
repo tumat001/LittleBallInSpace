@@ -99,6 +99,12 @@ func remove_draw_param(arg_draw_param : DrawParams):
 		update()
 		emit_signal("all_draw_params_finished")
 
+func remove_all_draw_params():
+	_all_draw_params.clear()
+	set_process(false)
+	update()
+	emit_signal("all_draw_params_finished")
+
 
 func has_draw_param():
 	return _all_draw_params.size() > 0

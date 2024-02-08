@@ -33,7 +33,7 @@ func _ready():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided", [], CONNECT_ONESHOT)
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__wsss0201", [], CONNECT_ONESHOT)
 	
 	if STARS_NEEDED > GameSaveManager.get_total_coin_collected_count():
 		_do_actions_from_lack_of_stars()
@@ -101,10 +101,14 @@ func _on_display_of_desc_finished__01(arg_data):
 
 ###########
 
-func _on_game_result_decided(arg_result):
+func _on_game_result_decided__wsss0201(arg_result):
 	if game_elements.game_result_manager.is_game_result_win():
 		var successful = StoreOfLevels.attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02()
 		if successful:
 			StoreOfLevels.directly_go_to_spec02_02_on_level_finish()
+		
+		if is_darkened_by_no_stars:
+			if !GameSaveManager.has_metadata_in_level_id(SingletonsAndConsts.current_base_level_id):
+				GameSaveManager.set_metadata_of_level_id(SingletonsAndConsts.current_base_level_id, true)
 
 

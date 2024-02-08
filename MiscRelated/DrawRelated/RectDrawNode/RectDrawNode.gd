@@ -5,7 +5,7 @@ class DrawParams:
 	
 	var initial_rect : Rect2
 	var target_rect : Rect2
-	var _current_rect : Rect2
+	var current_rect : Rect2
 	
 	var fill_color : Color
 	
@@ -48,7 +48,7 @@ class DrawParams:
 			_fill_transparency_per_sec = 0
 		
 		_current_lifetime = 0
-		_current_rect = initial_rect
+		current_rect = initial_rect
 		
 		
 		_current_rect_pos_per_sec = (target_rect.position - initial_rect.position) / lifetime_of_draw
@@ -95,8 +95,8 @@ func _process(delta):
 		if !pause_lifetime_of_all_draws and param.has_lifetime:
 			param._current_lifetime += delta
 		
-		#param._current_rect.position = param.initial_rect.position + (param._current_rect_pos_per_sec * param._current_lifetime)
-		#param._current_rect.end = param.initial_rect.end + (param._current_rect_end_per_sec * param._current_lifetime)
+		#param.current_rect.position = param.initial_rect.position + (param._current_rect_pos_per_sec * param._current_lifetime)
+		#param.current_rect.end = param.initial_rect.end + (param._current_rect_end_per_sec * param._current_lifetime)
 		
 		if param.lifetime_to_start_transparency <= param._current_lifetime:
 			param.fill_color.a -= param._fill_transparency_per_sec * delta
@@ -106,7 +106,7 @@ func _process(delta):
 			remove_draw_param(param)
 		
 		
-		#print("pos: %s, end: %s" % [param._current_rect.position.rotated(param.angle_rad), param._current_rect.end.rotated(param.angle_rad)])
+		#print("pos: %s, end: %s" % [param.current_rect.position.rotated(param.angle_rad), param.current_rect.end.rotated(param.angle_rad)])
 	
 	update()
 
@@ -116,9 +116,9 @@ func _draw():
 		
 		draw_set_transform(param.pivot_point, param.angle_rad, Vector2(1, 1))
 		
-		var rect = param._current_rect
-		#rect.position -= param._current_rect.get_center()
-		#rect.end -= param._current_rect.get_center()
+		var rect = param.current_rect
+		#rect.position -= param.current_rect.get_center()
+		#rect.end -= param.current_rect.get_center()
 		
 		draw_rect(rect, param.fill_color, true)
 		if param.outline_width != 0:

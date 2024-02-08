@@ -1,6 +1,7 @@
 extends Node
 
 
+const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
 const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.gd")
 
 #
@@ -13,6 +14,9 @@ signal can_view_game_stats_changed(arg_val)
 signal can_edit_tile_colors_changed(arg_val)
 signal can_edit_player_aesth_changed(arg_val)
 signal can_config_custom_audio_changed(arg_val)
+#signal trophy_collected__with_metadata(arg_trophy, arg_metadata)
+#signal trophy_uncollected__with_metadata(arg_trophy)
+signal trophies_collected_changed()
 
 signal is_player_health_on_start_zero_changed()
 signal is_player_health_invulnerable__state_changed(arg_val)
@@ -43,7 +47,7 @@ const CAN_VIEW_GAME_STATS__DIC_IDENTIFIER = "CAN_VIEW_GAME_STATS__DIC_IDENTIFIER
 const CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER = "CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER"
 const CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER = "CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER"
 const CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER = "CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER"
-
+const TROPHY_COLLECTED__DIC_IDENTIFIER = "TROPHY_COLLECTED"
 
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
@@ -76,6 +80,23 @@ var can_view_game_stats : bool setget set_can_view_game_stats
 var can_edit_tile_colors : bool setget set_can_edit_tile_colors
 var can_edit_player_aesth : bool setget set_can_edit_player_aesth
 var can_config_custom_audio : bool setget set_can_config_custom_audio
+
+
+enum TrophyNonVolatileId {
+	WSSS0103_NO_ASSIST_MODE_USED = 0,
+	WSSS0202_SUPER_STAR_COLLECTED = 1,
+	WSSS0202_SUPER_STAR_COLLECTED__WHILE_BLINDED_LOW_STAR = 2,
+	ALL_STARS_COLLECTED = 3,
+	
+}
+var collected_trophy_id_to_metadata_map : Dictionary = {}
+var trophy_id_to_details_map : Dictionary = {}
+
+class TrophyDetails:
+	var trophy_id : int
+	var trophy_name : String
+	var trophy_mini_image : Texture
+	var desc : Array
 
 ###
 
@@ -305,6 +326,14 @@ func _load_player_related_data(arg_file : File):
 		set_can_config_custom_audio(data[CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER])
 	else:
 		set_can_config_custom_audio(false)
+	
+	##
+	
+	if data.has(TROPHY_COLLECTED__DIC_IDENTIFIER):
+		set_collected_trophies_and_metadata_from_save(data[TROPHY_COLLECTED__DIC_IDENTIFIER])
+	else:
+		set_collected_trophies_and_metadata_from_save({})
+
 
 #
 
@@ -344,6 +373,20 @@ func _update_coin_count_collected_in_whole_game():
 		total += coin_ids_collected.size()
 	
 	_total_coin_collected_count = total
+	
+	call_deferred("_update_all_stars_collected_trophy_status")
+
+
+func _update_all_stars_collected_trophy_status():
+	if _total_coin_collected_count != StoreOfLevels.get_total_coin_count():
+		if is_trophy_collected(TrophyNonVolatileId.ALL_STARS_COLLECTED):
+			set_trophy_as_uncollected(TrophyNonVolatileId.ALL_STARS_COLLECTED)
+		
+	else:
+		if !is_trophy_collected(TrophyNonVolatileId.ALL_STARS_COLLECTED):
+			set_trophy_as_collected__and_assign_metadata(TrophyNonVolatileId.ALL_STARS_COLLECTED, true)
+		
+	
 
 #
 
@@ -543,7 +586,7 @@ func _save_player_data():
 		CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER : can_edit_tile_colors,
 		CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER : can_edit_player_aesth,
 		CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER : can_config_custom_audio,
-		
+		TROPHY_COLLECTED__DIC_IDENTIFIER : collected_trophy_id_to_metadata_map,
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -657,6 +700,82 @@ func set_can_config_custom_audio(arg_val):
 	
 	if _is_manager_initialized:
 		emit_signal("can_config_custom_audio_changed", arg_val)
+
+
+#################
+# TROPHY RELATED
+
+func set_collected_trophies_and_metadata_from_save(arg_data : Dictionary):
+	for trophy_id_str in arg_data.keys():
+		var metadata = arg_data[trophy_id_str]
+		var trophy_id = int(trophy_id_str)
+		
+		collected_trophy_id_to_metadata_map[trophy_id] = metadata
+
+func set_trophy_as_collected__and_assign_metadata(arg_trophy_id, arg_metadata):
+	collected_trophy_id_to_metadata_map[arg_trophy_id] = arg_metadata
+	
+	#emit_signal("trophy_collected__with_metadata", arg_trophy_id, arg_metadata)
+	emit_signal("trophies_collected_changed")
+
+func is_trophy_collected(arg_id):
+	return collected_trophy_id_to_metadata_map.has(arg_id)
+
+func set_trophy_as_uncollected(arg_trophy_id):
+	collected_trophy_id_to_metadata_map.erase(arg_trophy_id)
+	
+	#emit_signal("trophy_uncollected__with_metadata", arg_trophy_id)
+	emit_signal("trophies_collected_changed")
+
+func get_or_generate_trophy_details(arg_trophy_id):
+	if trophy_id_to_details_map.has(arg_trophy_id):
+		return trophy_id_to_details_map[arg_trophy_id]
+	
+	if !TrophyNonVolatileId.values().has(arg_trophy_id):
+		return null
+	
+	var details : TrophyDetails = TrophyDetails.new()
+	details.trophy_id = arg_trophy_id
+	match arg_trophy_id:
+		TrophyNonVolatileId.WSSS0103_NO_ASSIST_MODE_USED:
+			var full_lvl_name = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_03__STAGE_SPECIAL_1).level_full_name
+			
+			details.trophy_name = "Unassisted?!"
+			details.trophy_mini_image = load("res://GameFrontHUDRelated/Subs/TrophyPanel/Assets/TrophyIcon_WSSS0103_NoAssistModeUsed.png")
+			details.desc = [
+				["Beaten %s without using the intended solution???" % [full_lvl_name], []],
+				["I dunno how you dunnit. Either me being blind, hax, or ball manueverability.", []]
+			]
+		TrophyNonVolatileId.WSSS0202_SUPER_STAR_COLLECTED:
+			var full_lvl_name = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2).level_full_name
+			
+			details.trophy_name = "%s" % full_lvl_name
+			details.trophy_mini_image = load("res://GameFrontHUDRelated/Subs/TrophyPanel/Assets/TrophyIcon_WSSS0202_SuperStarCollected.png")
+			details.desc = [
+				["Completed %s." % full_lvl_name, []]
+			]
+		TrophyNonVolatileId.WSSS0202_SUPER_STAR_COLLECTED__WHILE_BLINDED_LOW_STAR:
+			var full_lvl_name = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2).level_full_name
+			
+			details.trophy_name = "BLIND %s" % full_lvl_name
+			details.trophy_mini_image = load("res://GameFrontHUDRelated/Subs/TrophyPanel/Assets/TrophyIcon_WSSS0202_SuperStarCollected_WhileBlinded.png")
+			details.desc = [
+				["Completed %s while blinded." % full_lvl_name, []],
+				["How? and why? Really though, how and why?", []],
+			]
+			
+		TrophyNonVolatileId.ALL_STARS_COLLECTED:
+			var plain_fragment__stars = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.STAR, "stars")
+			
+			details.trophy_name = "All Star"
+			details.trophy_mini_image = load("res://GameFrontHUDRelated/Subs/TrophyPanel/Assets/TrophyIcon_AllStarCollected.png")
+			details.desc = [
+				["All |0| collected!!!", [plain_fragment__stars]],
+			]
+			
+	
+	trophy_id_to_details_map[arg_trophy_id] = details
+	return details
 
 #####################################
 ## LEVEL RELATED

@@ -58,9 +58,14 @@ const CIRCLE_END__DELAY_BEFORE_NEXT_PHASE : float = 5.0
 const CIRCLE_END__MODULATE = Color("#FEEDBA")
 
 
-const SHRINK_CIRCLE_END__FINAL_RADIUS = 10.0 
-const SHRINK_CIRCLE_END__DURATION_FOR_SHRINK = 3.0
-const SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE = 2.0
+#const SHRINK_CIRCLE_END__FINAL_RADIUS = 6.0 
+#const SHRINK_CIRCLE_END__DURATION_FOR_SHRINK = 3.0
+#const SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE = 2.0
+
+const SHRINK_RECT_END__INITIAL_SIZE = Vector2(1300, 1300)
+const SHRINK_RECT_END__FINAL_SIZE = Vector2(10, 10)
+const SHRINK_RECT_END__DURATION_FOR_SHRINK = 4.0
+const SHRINK_RECT_END__DELAY_BEFORE_NEXT_PHASE = 2.0
 
 #
 
@@ -68,12 +73,14 @@ var center_pos_basis : Vector2
 
 var _curr_shine_rot_per_sec : float = 0.0
 
-var _ending_circle_draw_param
+#var _ending_circle_draw_param
+var _ending_rect_draw_param
 
 #
 
 onready var star_line_draw_node = $LineDrawNode
 onready var circle_draw_node = $CircleDrawNode
+onready var rect_draw_node = $RectDrawNode
 
 ####
 
@@ -243,7 +250,7 @@ func _add_star_circle_draw_param__end_circle_type():
 	
 	circle_draw_node.add_draw_param(draw_param)
 	
-	_ending_circle_draw_param = draw_param
+	#_ending_circle_draw_param = draw_param
 	
 	return draw_param
 
@@ -265,25 +272,81 @@ func _process(delta):
 
 ####################
 
+
 func start_draw_phase_02_standard():
 	star_line_draw_node.remove_all_draw_params()
-	_remove_all_circle_draw_param_except__ending_circle_draw_param()
+	circle_draw_node.remove_all_draw_params()
 	
-	var shrinking_tween = create_tween()
-	_tween_shrink_ending_circle_draw_param(shrinking_tween)
-	shrinking_tween.tween_interval(SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE)
-	shrinking_tween.tween_callback(self, "_on_end_of_draw_phase_02_standard")
+	_ending_rect_draw_param = _draw_encompassing_rect()
+	
+	var shrinking_waiting_tween = create_tween()
+	#_tween_shrink_ending_rect_draw_param(shrinking_tween)
+	shrinking_waiting_tween.tween_interval(SHRINK_RECT_END__DELAY_BEFORE_NEXT_PHASE + SHRINK_RECT_END__DURATION_FOR_SHRINK)
+	shrinking_waiting_tween.tween_callback(self, "_on_end_of_draw_phase_02_standard")
+	
+	var shrink_tween = create_tween()
+	shrink_tween.set_parallel(true)
+	shrink_tween.tween_property(_ending_rect_draw_param, "current_rect:size", SHRINK_RECT_END__FINAL_SIZE, SHRINK_RECT_END__DURATION_FOR_SHRINK)
+	shrink_tween.tween_property(_ending_rect_draw_param, "current_rect:position", center_pos_basis, SHRINK_RECT_END__DURATION_FOR_SHRINK)
 
-func _remove_all_circle_draw_param_except__ending_circle_draw_param():
-	for param in circle_draw_node.get_all_draw_params():
-		if param != _ending_circle_draw_param:
-			circle_draw_node.remove_draw_param(param)
 
+func _draw_encompassing_rect():
+	var draw_param = rect_draw_node.DrawParams.new()
+	
+	draw_param.fill_color = CIRCLE_END__MODULATE
+	
+	draw_param.outline_color = CIRCLE_END__MODULATE
+	draw_param.outline_width = 1
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.angle_rad = 0
+	draw_param.lifetime_of_draw = 1000
+	draw_param.has_lifetime = false
+	draw_param.pivot_point = Vector2(0, 0)
+	
+	var half_size = SHRINK_RECT_END__INITIAL_SIZE / 2
+	var initial_rect = Rect2(center_pos_basis - half_size, SHRINK_RECT_END__INITIAL_SIZE)
+	draw_param.initial_rect = initial_rect
+	#draw_param.target_rect = SHRINK_RECT_END__FINAL_SIZE
+	
+	rect_draw_node.add_draw_param(draw_param)
+	
+	return draw_param
 
-func _tween_shrink_ending_circle_draw_param(arg_tween : SceneTreeTween):
-	arg_tween.tween_property(_ending_circle_draw_param, "current_radius", SHRINK_CIRCLE_END__FINAL_RADIUS, SHRINK_CIRCLE_END__DURATION_FOR_SHRINK)
+#func _tween_shrink_ending_rect_draw_param(arg_tween : SceneTreeTween):
+#	arg_tween.tween_property(_ending_rect_draw_param, "current_rect:size", SHRINK_RECT_END__FINAL_SIZE, SHRINK_RECT_END__DURATION_FOR_SHRINK)
+#	arg_tween.tween-
 
 func _on_end_of_draw_phase_02_standard():
 	emit_signal("draw_phase_02_standard_finished")
 
+
+#OLD -- CIRCLE
+#func start_draw_phase_02_standard():
+#	star_line_draw_node.remove_all_draw_params()
+#	_remove_all_circle_draw_param_except__ending_circle_draw_param()
+#
+#	var shrinking_tween = create_tween()
+#	_tween_shrink_ending_circle_draw_param(shrinking_tween)
+#	shrinking_tween.tween_interval(SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE)
+#	shrinking_tween.tween_callback(self, "_on_end_of_draw_phase_02_standard")
+#
+#func _remove_all_circle_draw_param_except__ending_circle_draw_param():
+#	for param in circle_draw_node.get_all_draw_params():
+#		if param != _ending_circle_draw_param:
+#			circle_draw_node.remove_draw_param(param)
+#
+#
+#func _tween_shrink_ending_circle_draw_param(arg_tween : SceneTreeTween):
+#	arg_tween.tween_property(_ending_circle_draw_param, "current_radius", SHRINK_CIRCLE_END__FINAL_RADIUS, SHRINK_CIRCLE_END__DURATION_FOR_SHRINK)
+#
+#func _on_end_of_draw_phase_02_standard():
+#	emit_signal("draw_phase_02_standard_finished")
+
+
+##
+
+#func clear_states__and_make_self_invis():
+#	circle_draw_node.remove_all_draw_params()
+#	visible = false
 

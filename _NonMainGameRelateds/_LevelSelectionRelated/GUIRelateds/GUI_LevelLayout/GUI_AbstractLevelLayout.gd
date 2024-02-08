@@ -73,6 +73,7 @@ var _currently_hovered_tile : GUI_LevelLayoutEle_Tile
 #
 
 var _rect_position_to_layout_ele_map : Dictionary
+var _top_left_corner_rect_pos : Vector2 = Vector2(960, 540)
 
 # tile ele with level only, not path nor layout
 var _all_level_only_tile_ele__level_id_to_ele__map : Dictionary
@@ -140,7 +141,7 @@ func _ready():
 	
 	call_deferred("_initialize_layout_ele_dependent_vars")
 	call_deferred("_initialize_particles_related")
-	
+
 #
 
 func _initialize_particles_related():
@@ -572,8 +573,17 @@ func _trigger_circular_burst_on_curr_ele_for_victory__as_additionals():
 ################################
 
 func _initialize_layout_ele_dependent_vars():
+	var lowest_x = 9999
+	var lowest_y = 9999
 	for child in layout_elements_container.get_children():
-		_rect_position_to_layout_ele_map[child.rect_global_position] = child
+		var glob_pos_of_ele = child.rect_global_position
+		_rect_position_to_layout_ele_map[glob_pos_of_ele] = child
+		
+		if glob_pos_of_ele.x < lowest_x:
+			lowest_x = glob_pos_of_ele.x
+		if glob_pos_of_ele.y < lowest_y:
+			lowest_y = glob_pos_of_ele.y
+	_top_left_corner_rect_pos = Vector2(lowest_x, lowest_y)
 	
 	for child in layout_elements_container.get_children():
 		_init_signals_with_tile_ele(child)
@@ -650,6 +660,13 @@ func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_Lev
 			GameSaveManager.set_layout_id__layout_element_id__is_invis(level_layout_id, arg_ele.layout_ele_id, arg_ele.is_layout_element_invis)
 	
 
+#
+
+func get_rect_position_to_layout_ele_map() -> Dictionary:
+	return _rect_position_to_layout_ele_map
+
+func get_top_left_corner_rect_pos() -> Vector2:
+	return _top_left_corner_rect_pos
 
 #######
 

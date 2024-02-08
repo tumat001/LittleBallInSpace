@@ -1,16 +1,23 @@
 extends MarginContainer
 
 
+
+var trophy_id_to_texture_rect_node_map : Dictionary
+
 onready var player_dead_tex_rect = $MarginContainer/HBoxContainer/PlayerDeadTextureRect
 onready var player_health_invul_tex_rect = $MarginContainer/HBoxContainer/PlayerHealthInvulTexture
 
+onready var trophy_non_volatile_container = $MarginContainer/HBoxContainer/TrophyNonVolatileContainer
+
+
+#
 
 func _ready():
 	player_dead_tex_rect.visible = false
 	player_health_invul_tex_rect.visible = false
 	
 	_init_player_heart_vis_status__check_for_GE()
-
+	_init_trophy_non_volatile__from_GSM()
 
 
 func _init_player_heart_vis_status__check_for_GE():
@@ -78,5 +85,42 @@ func _tween_set_texture_rect_visible(arg_texture_rect : TextureRect):
 func get_player_dead_tex_rect_pos__and_center_pos__and_texture__and_is_vis():
 	var center_pos = player_dead_tex_rect.rect_global_position + player_dead_tex_rect.texture.get_size() / 2.0
 	return [player_dead_tex_rect.rect_global_position, center_pos, player_dead_tex_rect.texture, player_dead_tex_rect.visible]
+
+
+####
+
+func _init_trophy_non_volatile__from_GSM():
+	_update_trophy_non_volatile_container__based_on_GSM()
+	GameSaveManager.connect("trophies_collected_changed", self, "_on_trophies_collected_changed")
+
+func _on_trophies_collected_changed():
+	_update_trophy_non_volatile_container__based_on_GSM()
+
+func _update_trophy_non_volatile_container__based_on_GSM():
+	var make_trophy_container_vis : bool = false
+	for trophy_id in GameSaveManager.collected_trophy_id_to_metadata_map.keys():
+		if !trophy_id_to_texture_rect_node_map.has(trophy_id):
+			_construct_texture_rect_from_trophy_id(trophy_id)
+		else:
+			var tex_rec = trophy_id_to_texture_rect_node_map[trophy_id]
+			tex_rec.visible = true
+		
+		make_trophy_container_vis = true
+	
+	for trophy_id in trophy_id_to_texture_rect_node_map.keys():
+		if !GameSaveManager.is_trophy_collected(trophy_id):
+			var tex_rec = trophy_id_to_texture_rect_node_map[trophy_id]
+			tex_rec.visible = false
+	
+	trophy_non_volatile_container.visible = make_trophy_container_vis
+
+func _construct_texture_rect_from_trophy_id(arg_id):
+	var trophy_details = GameSaveManager.get_or_generate_trophy_details(arg_id)
+	
+	var texture_rect = TextureRect.new()
+	texture_rect.texture = trophy_details.trophy_mini_image
+	trophy_non_volatile_container.add_child(texture_rect)
+	
+	trophy_id_to_texture_rect_node_map[arg_id] = texture_rect
 
 

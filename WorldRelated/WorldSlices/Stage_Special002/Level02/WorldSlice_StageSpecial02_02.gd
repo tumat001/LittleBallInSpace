@@ -16,6 +16,10 @@ const AnimalAnimSprite = preload("res://MiscRelated/SpriteRelated/AnimalAnimSpri
 const ColorRectContainerForAnimalAnimSprite = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.gd")
 const ColorRectContainerForAnimalAnimSprite_Scene = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/ColorRectContainerForAnimalAnimSprite.tscn")
 
+
+const WSSS0202_EndingPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/WSSS0202_EndingPanel/WSSS0202_EndingPanel.gd")
+const WSSS0202_EndingPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/WSSS0202_EndingPanel/WSSS0202_EndingPanel.tscn")
+
 #
 
 const DURATION_OF_TRAVEL_FROM_AIR_TO_GROUND__CUTSCENE : float = 12.0
@@ -50,6 +54,10 @@ var prev_sprite_transition_ratio_for_trophy_segment : float = -1
 #
 
 var background_music_playlist
+
+#
+
+var wsss0202_ending_panel : WSSS0202_EndingPanel
 
 #
 
@@ -141,7 +149,9 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__wsss0201", [], CONNECT_ONESHOT)
 	
+	#
 	
 	base_enemy.current_health = GameSettingsManager.combat__current_max_enemy_health / 100.0
 	
@@ -151,7 +161,7 @@ func _on_after_game_start_init():
 		var pos = Vector2(4490, 1296)
 		game_elements.get_current_player().global_position = pos
 		background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
-	
+		_configure_custom_rules_of_trophy_round()
 		return
 	
 	#
@@ -192,11 +202,6 @@ func _add_energy_modi():
 
 func _deferred_init__for_first_time_and_not():
 	_add_energy_modi()
-	
-	if temp_is_test:
-		_configure_custom_rules_of_trophy_round()
-		#_init_color_rect_container_for_animal_anim_sprite_and_relateds()
-		return
 	
 	_init__as_first_time__and_do_cutscenes()
 
@@ -499,16 +504,37 @@ func _on_star_fx_drawer_draw_phase_01_standard_finished():
 	cdsu_super_star_simulated.visible = false
 	color_rect_container_for_animal_anim_sprite.visible = false
 	
-	super_star_fx_drawer.
+	super_star_fx_drawer.connect("draw_phase_02_standard_finished", self, "_on_star_fx_drawer_draw_phase_02_standard_finished", [], CONNECT_ONESHOT)
+	super_star_fx_drawer.start_draw_phase_02_standard()
 
-
+func _on_star_fx_drawer_draw_phase_02_standard_finished():
+	call_deferred("_play_cutscene_msg")
 
 
 ##
 
 func _play_cutscene_msg():
-	pass
+	wsss0202_ending_panel = WSSS0202_EndingPanel_Scene.instance()
+	wsss0202_ending_panel.show_bonus_blind_panel = _is_magnum_opus_level_completed_blind()
+	game_elements.game_front_hud.add_node_to_above_other_hosters(wsss0202_ending_panel)
 	
+	wsss0202_ending_panel.connect("ending_panel_finished", self, "_on_wsss0202_ending_panel_finished", [], CONNECT_PERSIST)
+	wsss0202_ending_panel.start_display()
+	
+
+func _on_wsss0202_ending_panel_finished():
+	wsss0202_ending_panel.visible = false
+	wsss0202_ending_panel.queue_free()
+	
+
+#
+
+func _show_levels_as_constellations():
+	pass
+	#todoimp make this a separate scene
+	#start from 01-01 then branch out the constellation
+
+
 
 ##
 
@@ -528,3 +554,33 @@ func _play_inner_transition_to_level_selection():
 	SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
 	
 	
+
+#############
+
+func _on_game_result_decided__wsss0202(arg_result):
+	if game_elements.game_result_manager.is_game_result_win():
+		_attempt_unlock_trophy__super_star_collected()
+		_attempt_unlock_trophy__super_star_collected_while_blinded__if_conditions_met()
+
+
+func _attempt_unlock_trophy__super_star_collected():
+	var trophy_id = GameSaveManager.TrophyNonVolatileId.WSSS0202_SUPER_STAR_COLLECTED
+	if !GameSaveManager.is_trophy_collected(trophy_id):
+		GameSaveManager.set_trophy_as_collected__and_assign_metadata(trophy_id, null)
+
+func _attempt_unlock_trophy__super_star_collected_while_blinded__if_conditions_met():
+	if !_is_magnum_opus_level_completed_blind():
+		return
+	
+	var trophy_id = GameSaveManager.TrophyNonVolatileId.WSSS0202_SUPER_STAR_COLLECTED__WHILE_BLINDED_LOW_STAR
+	if !GameSaveManager.is_trophy_collected(trophy_id):
+		GameSaveManager.set_trophy_as_collected__and_assign_metadata(trophy_id, null)
+
+func _is_magnum_opus_level_completed_blind():
+	var magnum_opus_lvl_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2
+	return GameSaveManager.has_metadata_in_level_id(magnum_opus_lvl_id)
+
+
+##
+
+

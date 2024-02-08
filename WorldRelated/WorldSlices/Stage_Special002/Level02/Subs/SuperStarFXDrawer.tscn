@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/SuperStarFXDrawer.gd" type="Script" id=1]
 [ext_resource path="res://MiscRelated/DrawRelated/LineDrawNode/LineDrawNode.gd" type="Script" id=2]
 [ext_resource path="res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd" type="Script" id=3]
+[ext_resource path="res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd" type="Script" id=4]
 
 [node name="SuperStarFXDrawer" type="Node2D"]
 script = ExtResource( 1 )
@@ -12,3 +13,6 @@ script = ExtResource( 2 )
 
 [node name="CircleDrawNode" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[node name="RectDrawNode" type="Node2D" parent="."]
+script = ExtResource( 4 )
