@@ -26,6 +26,10 @@ const ColorRectContainerForAnimalAnimSprite_Scene = preload("res://WorldRelated/
 const WSSS0202_EndingPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/WSSS0202_EndingPanel/WSSS0202_EndingPanel.gd")
 const WSSS0202_EndingPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/WSSS0202_EndingPanel/WSSS0202_EndingPanel.tscn")
 
+
+const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260.png")
+const GameLogo_BannerSized_Opaque = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260__OpaqueBackground.png")
+
 #
 
 const DURATION_OF_TRAVEL_FROM_AIR_TO_GROUND__CUTSCENE : float = 12.0
@@ -67,7 +71,11 @@ var wsss0202_ending_panel : WSSS0202_EndingPanel
 
 #
 
-const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(220, -80)
+
+#const CDSU_SUPER_STAR_POS = Vector2(8194, 635)
+const CDSU_SUPER_STAR_POS = Vector2(8194, 605)
+
+const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(280, -145)
 const SUPER_STAR_FINAL_POS_CHANGE_DURATION = 1.5
 const SUPER_STAR_FINAL_POS_CHANGE_TRANS = Tween.TRANS_QUAD
 const SUPER_STAR_FINAL_POS_CHANGE_EASE = Tween.EASE_OUT
@@ -115,10 +123,6 @@ var super_star_fx_drawer
 
 var special_pos_for_cam__for_super_star : Node2D
 var super_star_particles_container : Node2D
-
-
-#const CDSU_SUPER_STAR_POS = Vector2(8194, 635)
-const CDSU_SUPER_STAR_POS = Vector2(8194, 605)
 
 ##
 
@@ -522,9 +526,9 @@ func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTwee
 
 func _start_sequence():
 	#temptodo
-	call_deferred("_show_phase__levels_as_constellations")
+	#call_deferred("_show_phase__levels_as_constellations")
 	#temptodo
-	#_start_super_star_fx_drawer()
+	_start_super_star_fx_drawer()
 	
 
 func _start_super_star_fx_drawer():
@@ -622,7 +626,7 @@ func _config_constell_board():
 	# 04 to 03
 	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(15, 29), Vector2(25, 29))
 	# 03 to 02
-	#temptodo swap
+	#swap
 	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(33, 27), Vector2(37, 29))
 	# 02 to S01
 	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(51, 25), Vector2(51, 22))
@@ -634,7 +638,7 @@ func _config_constell_in_progress_renderer():
 	constellation_renderer__in_progress = ConstellCoordBoardRenderer_InProgress_V01_Scene.instance()
 	constellation_renderer__in_progress.constell_coord_board = constellation_coord_board
 	constellation_renderer__in_progress.update_config_based_on_curr_constell_coord_board()
-	constellation_renderer__in_progress.connect("in_progress_render_det_finished", self, "_temptodo_on_in_progress_render_det_finished")
+	#constellation_renderer__in_progress.connect("in_progress_render_det_finished", self, "_on_in_progress_render_det_finished")
 	constellation_renderer__in_progress.connect("all_finished", self, "_on_constell_in_prog_renderer_all_finished", [], CONNECT_ONESHOT)
 	
 	#misc_container.add_child(constellation_renderer__in_progress)   # not thread safe
@@ -668,13 +672,10 @@ func _config_constell_finished_renderer():
 func _show_phase__levels_as_constellations():
 	if _is_thread_for_constell_calcs_finished:
 		#temptodo
-		print("showing phase: constell")
-		#temptodo
-		cdsu_super_star_simulated.visible = false
-		
+		#cdsu_super_star_simulated.visible = false
 		
 		#temptodo start
-		vis_transition_fog_finale_trophy.hide()
+		#vis_transition_fog_finale_trophy.hide()
 		#end
 		
 		_config_viewport_for_constellation_in_progress__shift()
@@ -691,7 +692,7 @@ func _show_phase__levels_as_constellations():
 func _config_viewport_for_constellation_in_progress__shift():
 	var coord = Vector2(42, 7)
 	#coord = Vector2(10, 14)
-	var target_pos = cdsu_super_star_simulated.position
+	var target_pos = cdsu_super_star_simulated.position + ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__CELL_SIZE/2
 	constellation_renderer__in_progress.shift_all_draw_pos_shift_to_make_coord_at_pos(coord, target_pos)
 	
 
@@ -701,14 +702,10 @@ func _config_viewport_for_constellation_finished__position():
 	#viewport_for_constellation_finished__container.rect_global_position = pos
 
 
-#temptodo
-func _temptodo_on_in_progress_render_det_finished(arg_render_det_map, arg_coord):
-	print("coord done: %s. real pos: %s. dir dests: %s" % [arg_coord, constellation_renderer__in_progress._pre_calced__coord_to_pos_map[arg_coord], arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS]])
+#func _on_in_progress_render_det_finished(arg_render_det_map, arg_coord):
+#	print("coord done: %s. real pos: %s. dir dests: %s" % [arg_coord, constellation_renderer__in_progress._pre_calced__coord_to_pos_map[arg_coord], arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS]])
 
 func _on_constell_in_prog_renderer_all_finished():
-	#temptodo
-	print("all finished")
-	
 	var delay_tweener = create_tween()
 	delay_tweener.tween_interval(5.0)
 	delay_tweener.tween_callback(self, "_show_phase__little_ball_in_space_logo")
@@ -716,11 +713,21 @@ func _on_constell_in_prog_renderer_all_finished():
 #
 
 func _show_phase__little_ball_in_space_logo():
+	#todoimp continue this
+	var logo_tex_rect = TextureRect.new()
+	logo_tex_rect.texture = GameLogo_BannerSized_Opaque
+	logo_tex_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	logo_tex_rect.modulate.a = 0
 	
-	#temptodo
-	print("showin logo")
+	SingletonsAndConsts.current_game_front_hud.misc_center_container.add_child(logo_tex_rect)
+	
+	var mod_a_tweener = create_tween()
+	mod_a_tweener.tween_property(logo_tex_rect, "modulate:a", 1.0, 1.5)
 	
 	
+
+
+
 
 ##
 

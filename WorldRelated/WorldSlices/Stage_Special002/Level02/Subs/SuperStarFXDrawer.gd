@@ -34,28 +34,28 @@ const SHINE_ALL_BEAM_ANGLES : Array = [
 const CIRCLE_SMALL__LIFETIME = 1.75
 const CIRCLE_SMALL__DURATION_TO_REACH_MAX = 1.5
 const CIRCLE_SMALL__LIFETIME_FOR_TRANSPARENCY = 1.25
-const CIRCLE_SMALL__MAX_RADIUS = 100.0
+const CIRCLE_SMALL__MAX_RADIUS = 80.0
 const CIRCLE_SMALL__DELAY_BEFORE_NEXT_PHASE : float = 1.25
 
 
 const CIRCLE_MED__LIFETIME = 2.5
 const CIRCLE_MED__DURATION_TO_REACH_MAX = 1.75
 const CIRCLE_MED__LIFETIME_FOR_TRANSPARENCY = 1.5
-const CIRCLE_MED__MAX_RADIUS = 140.0
+const CIRCLE_MED__MAX_RADIUS = 120.0
 const CIRCLE_MED__DELAY_BEFORE_NEXT_PHASE : float = 1.75
 
 
 const CIRCLE_LARGE__LIFETIME = 3.5
 const CIRCLE_LARGE__DURATION_TO_REACH_MAX = 1.75
 const CIRCLE_LARGE__LIFETIME_FOR_TRANSPARENCY = 2.0
-const CIRCLE_LARGE__MAX_RADIUS = 200.0
+const CIRCLE_LARGE__MAX_RADIUS = 180.0
 const CIRCLE_LARGE__DELAY_BEFORE_NEXT_PHASE : float = 2.5
 
 
 const CIRCLE_END__LIFETIME = 900.0
 const CIRCLE_END__DURATION_TO_REACH_MAX = 4.0
 const CIRCLE_END__LIFETIME_FOR_TRANSPARENCY = 900.0
-const CIRCLE_END__MAX_RADIUS = 800.0
+const CIRCLE_END__MAX_RADIUS = 900.0
 const CIRCLE_END__DELAY_BEFORE_NEXT_PHASE : float = 5.0
 const CIRCLE_END__MODULATE = ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__COLOR__MOST_ELES
 
@@ -64,7 +64,7 @@ const CIRCLE_END__MODULATE = ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE_
 #const SHRINK_CIRCLE_END__DURATION_FOR_SHRINK = 3.0
 #const SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE = 2.0
 
-const SHRINK_RECT_END__INITIAL_SIZE = Vector2(1300, 1300)
+const SHRINK_RECT_END__INITIAL_SIZE = Vector2(1500, 1500)
 const SHRINK_RECT_END__FINAL_SIZE = ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__LEVEL_RECT_SIZE
 const SHRINK_RECT_END__DURATION_FOR_SHRINK = 4.0
 const SHRINK_RECT_END__DELAY_BEFORE_NEXT_PHASE = 2.0
@@ -109,7 +109,7 @@ func _start_draw_star_beams__using_tween(tween):
 		#var rad_angle = SHINE_ALL_BEAM_ANGLES[i]#i * (2*PI / 5)
 		var rad_angle = i * (2*PI / 5) + PI/2
 		tween.tween_callback(self, "_add_star_line_draw_param__with_angle", [rad_angle, tween, draw_param])
-		tween.tween_method(self, "_tween_length_star_line_draw_param", 0.0, 700.0, SHINE_BEAM_EXTEND_DURATION, [draw_param])
+		tween.tween_method(self, "_tween_length_star_line_draw_param", 0.0, 1000.0, SHINE_BEAM_EXTEND_DURATION, [draw_param])
 		tween.tween_interval(SHINE_DELAY_PER_STAR_BEAM)
 	
 

@@ -47,6 +47,7 @@ func _process(delta):
 
 func _draw():
 	for param in _all_draw_params:
-		var dest_pos = param.center_pos + Vector2(param.length, 0).rotated(param.angle)
-		draw_line(param.center_pos, dest_pos, param.color, param.width)
+		if param.length > 0:
+			var dest_pos = param.center_pos + Vector2(param.length, 0).rotated(param.angle)
+			draw_line(param.center_pos, dest_pos, param.color, param.width)
 

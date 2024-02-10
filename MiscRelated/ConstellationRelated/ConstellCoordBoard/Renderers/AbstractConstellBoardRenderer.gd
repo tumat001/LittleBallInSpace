@@ -25,9 +25,9 @@ extends Node2D
 
 
 const DRAW_ELE__PATH_LINE_WIDTH : float = 2.0
-const DRAW_ELE__PATH_LINE_HALF_LENGTH : float = 6.0
-const DRAW_ELE__LEVEL_RECT_SIZE : Vector2 = Vector2(8, 8)
-const DRAW_ELE__LAYOUT_RADIUS : float = 6.0
+const DRAW_ELE__PATH_LINE_HALF_LENGTH : float = 8.0
+const DRAW_ELE__LEVEL_RECT_SIZE : Vector2 = Vector2(15, 15)
+const DRAW_ELE__LAYOUT_RADIUS : float = 8.0
 const DRAW_ELE__CUSTOM_PATH_LAYOUT_TO_LAYOUT_LINE_WIDTH : float = 1.0
 
 const DRAW_ELE__CELL_LW : float = DRAW_ELE__PATH_LINE_HALF_LENGTH * 2

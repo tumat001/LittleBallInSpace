@@ -49,8 +49,7 @@ func add_gui_level_layout_to_board(arg_gui_level_layout : GUI_AbstractLevelLayou
 	
 	
 	#print(rect_pos_to_layout_ele_map.keys())
-	#temptodo
-	print(coord_to_details_map.keys())
+	#print(coord_to_details_map.keys())
 
 func _update_bot_and_right_coord_based_on_coord(arg_coord : Vector2):
 	if _bot_coord < arg_coord.y:
@@ -134,15 +133,14 @@ func add_adjacency_of_coord_det(arg_coord_det : CoordDetails, arg_coord_of_det :
 		3:
 			arg_coord_det.adjacent_coord__right = Vector2(1, 0)
 	
-	#temptodo
-	if arg_coord_of_det == Vector2(33, 27):
-	#if arg_coord_of_det == Vector2(51, 13):
-		print("ARG COORD DET with dir: %s" % arg_dir_type)
-		if arg_dir_type == 0:
-			pass
 	
-	#temptodo
-	print("added adjacency: %s, %s" % [arg_coord_of_det, arg_dir_type])
+#	if arg_coord_of_det == Vector2(33, 27):
+#	#if arg_coord_of_det == Vector2(51, 13):
+#		print("ARG COORD DET with dir: %s" % arg_dir_type)
+#		if arg_dir_type == 0:
+#			pass
+	
+	#print("added adjacency: %s, %s" % [arg_coord_of_det, arg_dir_type])
 
 
 
@@ -261,9 +259,6 @@ func _loop_thru_abs_coord_dif__y(abs_coord_dif, y_sign, curr_x, curr_y, arg_coor
 		last_coord_det = _construct_and_register_coord_details__custom_path_layout_to_layout(new_coord, prev_adjacent_coord, y_axis__dir_type)
 		prev_adjacent_coord = new_coord
 		
-		#temptodo
-		print("loop y: newcoord: %s" % new_coord)
-		
 		at_least_one_setted = true
 	
 	#if final_coord_adjacency != CoordDetails.NONE_ADJACENT_COORD:
@@ -291,9 +286,6 @@ func _loop_thru_abs_coord_dif__x(abs_coord_dif, x_sign, curr_x, curr_y, arg_coor
 		#var add_adjacency_in_curr_dir = curr_x != arg_coord_02.x
 		last_coord_det = _construct_and_register_coord_details__custom_path_layout_to_layout(new_coord, prev_adjacent_coord, x_axis__dir_type)
 		prev_adjacent_coord = new_coord
-		
-		#temptodo
-		print("loop x: newcoord: %s" % new_coord)
 		
 		at_least_one_setted = true
 	
