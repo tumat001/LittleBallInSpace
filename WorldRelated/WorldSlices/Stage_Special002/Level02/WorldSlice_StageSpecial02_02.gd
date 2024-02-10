@@ -8,6 +8,12 @@ const SuperStarFXDrawer = preload("res://WorldRelated/WorldSlices/Stage_Special0
 const SuperStarFXDrawer_Scene = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Subs/SuperStarFXDrawer.tscn")
 
 
+const ConstellationCoordBoard = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/ConstellCoordBoard.gd")
+const ConstellCoordBoardRenderer_FinishedNoClear_V01 = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/Renderers/ConstellCoordBoardRenderer_FinishedNoClear_V01.gd")
+const ConstellCoordBoardRenderer_FinishedNoClear_V01_Scene = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/Renderers/ConstellCoordBoardRenderer_FinishedNoClear_V01.tscn")
+const ConstellCoordBoardRenderer_InProgress_V01 = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/Renderers/ConstellCoordBoardRenderer_InProgress_V01.gd")
+const ConstellCoordBoardRenderer_InProgress_V01_Scene = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/Renderers/ConstellCoordBoardRenderer_InProgress_V01.tscn")
+
 
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
 const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
@@ -70,6 +76,17 @@ const SHINE_ADDITIONAL_DELAY : float = 0.75
 
 #
 
+var constellation_coord_board : ConstellationCoordBoard
+var constellation_renderer__in_progress : ConstellCoordBoardRenderer_InProgress_V01
+var constellation_renderer__finished : ConstellCoordBoardRenderer_FinishedNoClear_V01
+var viewport_for_constellation_finished__container : ViewportContainer
+var viewport_for_constellation_finished : Viewport
+
+var thread_for_constellation_board_calcs : Thread
+var _is_thread_for_constell_calcs_finished : bool = false
+
+#
+
 onready var vkp_left = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left
 onready var vkp_right = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right
 
@@ -98,6 +115,10 @@ var super_star_fx_drawer
 
 var special_pos_for_cam__for_super_star : Node2D
 var super_star_particles_container : Node2D
+
+
+#const CDSU_SUPER_STAR_POS = Vector2(8194, 635)
+const CDSU_SUPER_STAR_POS = Vector2(8194, 605)
 
 ##
 
@@ -150,6 +171,11 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__wsss0201", [], CONNECT_ONESHOT)
+	
+	#
+	
+	var gui__level_selection_whole_screen = SingletonsAndConsts.current_master.gui__level_selection_whole_screen
+	gui__level_selection_whole_screen.create_and_configure_all_layout_scenes()
 	
 	#
 	
@@ -296,6 +322,7 @@ func _on_PDAR_Cinematic_End_player_entered_in_area():
 
 func _on_Portal_Entry_Seq07_player_entered(arg_player):
 	call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
+	call_deferred("_start_threaded_calc_for_constell_board")
 
 func _init_color_rect_container_for_animal_anim_sprite_and_relateds():
 	color_rect_container_for_animal_anim_sprite = ColorRectContainerForAnimalAnimSprite_Scene.instance()
@@ -390,6 +417,11 @@ func _on_vision_transition_sprite_for_trophy_sequence_circle_ratio_changed(arg_r
 	
 	background_music_playlist.set_volume_db__bus_interal__using_ratio(arg_ratio)
 	
+	if is_zero_approx(arg_ratio):
+		cdsu_super_star_simulated.modulate.a = 1.0
+	else:
+		cdsu_super_star_simulated.modulate.a = 0.0
+	
 	#print("final ratio: %s, arg: %s" % [final_ratio_for_animal_shader, arg_ratio])
 
 
@@ -412,7 +444,7 @@ func _init_above_GFH_node_container__and_related_nodes():
 	
 	#
 	var coll_shape = CircleShape2D.new()
-	coll_shape.radius = 20
+	coll_shape.radius = 50
 	cdsu_super_star.collision_shape.shape = coll_shape
 	
 	
@@ -422,7 +454,7 @@ func _create_and_init_cdsu_super_star():
 	cdsu_super_star = CustomDefinedSingleUse_Pickupable_Scene.instance()
 	
 	
-	cdsu_super_star.position = Vector2(8194, 635)
+	cdsu_super_star.position = CDSU_SUPER_STAR_POS
 	#cdsu_super_star.position = Vector2(7194, 617)
 	cdsu_super_star.is_destroy_self_on_player_entered = false
 	cdsu_super_star.connect("player_entered_self__custom_defined", self, "_on_CDSU_SuperStar_player_entered_self__custom_defined", [], CONNECT_ONESHOT)
@@ -478,7 +510,7 @@ func _do_all_tween_related_to_super_star_collection():
 	delay_tween.tween_callback(self, "_start_sequence")
 
 func _tween_relocate_super_star_based_on_collection_offset(arg_tween : SceneTreeTween):
-	var final_pos = cdsu_super_star.global_position + SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS
+	var final_pos = CDSU_SUPER_STAR_POS + SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS
 	arg_tween.tween_property(cdsu_super_star, "global_position", final_pos, SUPER_STAR_FINAL_POS_CHANGE_DURATION).set_trans(SUPER_STAR_FINAL_POS_CHANGE_TRANS).set_ease(SUPER_STAR_FINAL_POS_CHANGE_EASE)
 
 func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTween):
@@ -489,7 +521,10 @@ func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTwee
 #########
 
 func _start_sequence():
-	_start_super_star_fx_drawer()
+	#temptodo
+	call_deferred("_show_phase__levels_as_constellations")
+	#temptodo
+	#_start_super_star_fx_drawer()
 	
 
 func _start_super_star_fx_drawer():
@@ -518,7 +553,7 @@ func _play_cutscene_msg():
 	wsss0202_ending_panel.show_bonus_blind_panel = _is_magnum_opus_level_completed_blind()
 	game_elements.game_front_hud.add_node_to_above_other_hosters(wsss0202_ending_panel)
 	
-	wsss0202_ending_panel.connect("ending_panel_finished", self, "_on_wsss0202_ending_panel_finished", [], CONNECT_PERSIST)
+	wsss0202_ending_panel.connect("ending_panel_finished", self, "_on_wsss0202_ending_panel_finished", [], CONNECT_ONESHOT)
 	wsss0202_ending_panel.start_display()
 	
 
@@ -526,15 +561,166 @@ func _on_wsss0202_ending_panel_finished():
 	wsss0202_ending_panel.visible = false
 	wsss0202_ending_panel.queue_free()
 	
+	
+	call_deferred("_show_phase__levels_as_constellations")
+
+###
+
+func _start_threaded_calc_for_constell_board():
+	_config_constell_board_and_related_renderers__from_thread(null)
+	
+	#temptodo
+#	thread_for_constellation_board_calcs = Thread.new()
+#	thread_for_constellation_board_calcs.start(self, "_config_constell_board_and_related_renderers__from_thread", null)
+
+func _config_constell_board_and_related_renderers__from_thread(arg_01):
+	_config_constell_board()
+	_config_constell_in_progress_renderer()
+	_config_viewport_for_constellation_finished()
+	_config_constell_finished_renderer()
+	_is_thread_for_constell_calcs_finished = true
+	
+
+func _config_constell_board():
+	constellation_coord_board = ConstellationCoordBoard.new()
+	
+	#
+	var gui__level_selection_whole_screen = SingletonsAndConsts.current_master.gui__level_selection_whole_screen
+	
+	var layout_id_to_level_layout_map = gui__level_selection_whole_screen.get_layout_id_to_level_layout_map()
+	var level_layout_01 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_01]
+	var level_layout_02 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_02]
+	var level_layout_03 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_03]
+	var level_layout_04 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_04]
+	var level_layout_05 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05]
+	var level_layout_06 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_06]
+	var level_layout_07 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_07]
+	var level_layout_spec01 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]
+	var level_layout_spec02 = layout_id_to_level_layout_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02]
+	
+	#board top left coord
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_01, Vector2(0, 13))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_02, Vector2(37, 25))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_03, Vector2(24, 23))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_04, Vector2(13, 23))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_05, Vector2(14, 10))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_06, Vector2(15, 0))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_07, Vector2(33, 2))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_spec01, Vector2(46, 16))
+	constellation_coord_board.add_gui_level_layout_to_board(level_layout_spec02, Vector2(42, 7))
+	
+	#linking layouts
+	# 07 to 06
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(33, 2), Vector2(28, 2))
+	# 06 to 05
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(20, 6), Vector2(20, 10))
+	# 05 to 01
+	#swapped, but whatevs. just to make it work
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(10, 14), Vector2(14, 10))
+	# 05 to 04
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(21, 16), Vector2(21, 23))
+	# 04 to 03
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(15, 29), Vector2(25, 29))
+	# 03 to 02
+	#temptodo swap
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(33, 27), Vector2(37, 29))
+	# 02 to S01
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(51, 25), Vector2(51, 22))
+	# S01 to S02
+	constellation_coord_board.connect_coords_with_custom_path_layout_to_layout(Vector2(51, 16), Vector2(51, 13))
+	
+
+func _config_constell_in_progress_renderer():
+	constellation_renderer__in_progress = ConstellCoordBoardRenderer_InProgress_V01_Scene.instance()
+	constellation_renderer__in_progress.constell_coord_board = constellation_coord_board
+	constellation_renderer__in_progress.update_config_based_on_curr_constell_coord_board()
+	constellation_renderer__in_progress.connect("in_progress_render_det_finished", self, "_temptodo_on_in_progress_render_det_finished")
+	constellation_renderer__in_progress.connect("all_finished", self, "_on_constell_in_prog_renderer_all_finished", [], CONNECT_ONESHOT)
+	
+	#misc_container.add_child(constellation_renderer__in_progress)   # not thread safe
+	#misc_container.call_deferred("add_child", constellation_renderer__in_progress)
+	game_elements.game_front_hud.call_deferred("add_node_to_above_other_hosters", constellation_renderer__in_progress)
+	
+
+func _config_viewport_for_constellation_finished():
+	viewport_for_constellation_finished = Viewport.new()
+	viewport_for_constellation_finished.size = SingletonsAndConsts.current_master.screen_size
+	
+	viewport_for_constellation_finished__container = ViewportContainer.new()
+	viewport_for_constellation_finished__container.add_child(viewport_for_constellation_finished)
+	viewport_for_constellation_finished__container.rect_size = SingletonsAndConsts.current_master.screen_size
+	viewport_for_constellation_finished__container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	#misc_container.call_deferred("add_child", viewport_for_constellation_finished__container)
+	game_elements.game_front_hud.call_deferred("add_node_to_above_other_hosters", viewport_for_constellation_finished__container)
+	
+
+func _config_constell_finished_renderer():
+	constellation_renderer__finished = ConstellCoordBoardRenderer_FinishedNoClear_V01_Scene.instance()
+	constellation_renderer__finished.set_board_renderer_in_progress(constellation_renderer__in_progress)
+	constellation_renderer__finished.config_parent_viewport(viewport_for_constellation_finished)
+	
+	viewport_for_constellation_finished.call_deferred("add_child", constellation_renderer__finished)
 
 #
 
-func _show_levels_as_constellations():
+
+func _show_phase__levels_as_constellations():
+	if _is_thread_for_constell_calcs_finished:
+		#temptodo
+		print("showing phase: constell")
+		#temptodo
+		cdsu_super_star_simulated.visible = false
+		
+		
+		#temptodo start
+		vis_transition_fog_finale_trophy.hide()
+		#end
+		
+		_config_viewport_for_constellation_in_progress__shift()
+		_config_viewport_for_constellation_finished__position()
+		#constellation_renderer__in_progress.start_constellation_light_up_at_coord(Vector2(42, 7))
+		var coord = Vector2(42, 7)
+		#coord = Vector2(0, 16)
+		constellation_renderer__in_progress.call_deferred("start_constellation_light_up_at_coord", coord)
+		
+	else:
+		_show_phase__little_ball_in_space_logo()
+
+
+func _config_viewport_for_constellation_in_progress__shift():
+	var coord = Vector2(42, 7)
+	#coord = Vector2(10, 14)
+	var target_pos = cdsu_super_star_simulated.position
+	constellation_renderer__in_progress.shift_all_draw_pos_shift_to_make_coord_at_pos(coord, target_pos)
+	
+
+func _config_viewport_for_constellation_finished__position():
 	pass
-	#todoimp make this a separate scene
-	#start from 01-01 then branch out the constellation
+	#var pos = (CDSU_SUPER_STAR_POS - viewport_for_constellation_finished__container.rect_size)
+	#viewport_for_constellation_finished__container.rect_global_position = pos
 
 
+#temptodo
+func _temptodo_on_in_progress_render_det_finished(arg_render_det_map, arg_coord):
+	print("coord done: %s. real pos: %s. dir dests: %s" % [arg_coord, constellation_renderer__in_progress._pre_calced__coord_to_pos_map[arg_coord], arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS]])
+
+func _on_constell_in_prog_renderer_all_finished():
+	#temptodo
+	print("all finished")
+	
+	var delay_tweener = create_tween()
+	delay_tweener.tween_interval(5.0)
+	delay_tweener.tween_callback(self, "_show_phase__little_ball_in_space_logo")
+
+#
+
+func _show_phase__little_ball_in_space_logo():
+	
+	#temptodo
+	print("showin logo")
+	
+	
 
 ##
 
@@ -582,5 +768,9 @@ func _is_magnum_opus_level_completed_blind():
 
 
 ##
+
+func _exit_tree():
+	if thread_for_constellation_board_calcs != null:
+		thread_for_constellation_board_calcs.wait_to_finish()
 
 

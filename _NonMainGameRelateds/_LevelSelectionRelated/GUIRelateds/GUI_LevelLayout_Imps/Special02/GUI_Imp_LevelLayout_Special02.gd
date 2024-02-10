@@ -18,7 +18,7 @@ func _ready():
 	level_01__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2)
 	level_02__tile.level_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2)
 	
-	layout_spec_01__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02)
+	layout_spec_01__tile.level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01)
 	layout_spec_01__tile.layout_ele_id_to_put_cursor_to = 24
 	
 

@@ -338,5 +338,9 @@ func _process(delta):
 		
 		var pos_in_hud = in_GE_node.global_position - cam_screen_center + _half_screen_size
 		adjusted_node.global_position = pos_in_hud
-		
+
+
+#func get_adjusted_pos_in_hud__of_pos(arg_in_GE_node_pos : Vector2):
+#	return arg_in_GE_node_pos - cam_screen_center + _half_screen_size
+#
 

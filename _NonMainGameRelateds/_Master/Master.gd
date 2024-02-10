@@ -81,10 +81,11 @@ func _enter_tree():
 #
 
 func _ready():
+	_init_viewport_config()
+	
 	set_process(false)
 	
 	#StoreOfLevels._unlock_stage_special_02__and_unhide_eles_to_layout_special_02()
-	
 	
 	#Temp for quick testing of lvls
 	# fast level
@@ -111,6 +112,10 @@ func _ready():
 		load_and_show_layout_selection_whole_screen()
 
 
+func _init_viewport_config():
+	get_viewport().usage = Viewport.USAGE_2D  # u might use HDR so prob not safe to do??
+	
+
 func _do_appropriate_action__for_first_time():
 	#var first_stage_details = StoreOfLevels.generate_or_get_level_details_of_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1)
 	#instant_start_game_elements__with_level_details(first_stage_details)
@@ -125,10 +130,13 @@ func _show_boot_splash_away_transition():
 	play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION)
 
 func load_and_show_layout_selection_whole_screen():
-	gui__level_selection_whole_screen = GUI_LevelSelectionWholeScreen_Scene.instance()
-	layout_selection_container.add_child(gui__level_selection_whole_screen)
+	if !is_instance_valid(gui__level_selection_whole_screen):
+		gui__level_selection_whole_screen = GUI_LevelSelectionWholeScreen_Scene.instance()
+		layout_selection_container.add_child(gui__level_selection_whole_screen)
+		
+		gui__level_selection_whole_screen.connect("prompt_entered_into_level", self, "_on_selection_screen__prompt_entered_into_level")
 	
-	gui__level_selection_whole_screen.connect("prompt_entered_into_level", self, "_on_selection_screen__prompt_entered_into_level")
+	gui__level_selection_whole_screen.visible = true
 	gui__level_selection_whole_screen.show_level_layout__last_saved_in_save_manager()
 
 
@@ -194,7 +202,9 @@ func instant_start_game_elements__with_level_details(level_details, arg_circle_p
 	
 	if is_instance_valid(gui__level_selection_whole_screen):
 		gui__level_selection_whole_screen.visible = false
-		gui__level_selection_whole_screen.queue_free()
+		if level_details.queue_free_gui_level_selection_panel:
+			gui__level_selection_whole_screen.queue_free()
+		
 	
 	#TODO make use of asyncloader eventually
 	var game_elements = GameElements_Scene.instance()

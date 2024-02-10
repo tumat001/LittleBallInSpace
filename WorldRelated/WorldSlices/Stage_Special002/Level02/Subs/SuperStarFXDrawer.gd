@@ -2,6 +2,8 @@ extends Node2D
 
 #const LineDrawNode = preload("res://MiscRelated/DrawRelated/LineDrawNode/LineDrawNode.gd")
 
+const ConstellCoordBoardRenderer_InProgress_V01 = preload("res://MiscRelated/ConstellationRelated/ConstellCoordBoard/Renderers/ConstellCoordBoardRenderer_InProgress_V01.gd")
+
 signal draw_phase_01_standard_finished()
 signal draw_phase_02_standard_finished()
 
@@ -55,7 +57,7 @@ const CIRCLE_END__DURATION_TO_REACH_MAX = 4.0
 const CIRCLE_END__LIFETIME_FOR_TRANSPARENCY = 900.0
 const CIRCLE_END__MAX_RADIUS = 800.0
 const CIRCLE_END__DELAY_BEFORE_NEXT_PHASE : float = 5.0
-const CIRCLE_END__MODULATE = Color("#FEEDBA")
+const CIRCLE_END__MODULATE = ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__COLOR__MOST_ELES
 
 
 #const SHRINK_CIRCLE_END__FINAL_RADIUS = 6.0 
@@ -63,7 +65,7 @@ const CIRCLE_END__MODULATE = Color("#FEEDBA")
 #const SHRINK_CIRCLE_END__DELAY_BEFORE_NEXT_PHASE = 2.0
 
 const SHRINK_RECT_END__INITIAL_SIZE = Vector2(1300, 1300)
-const SHRINK_RECT_END__FINAL_SIZE = Vector2(10, 10)
+const SHRINK_RECT_END__FINAL_SIZE = ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__LEVEL_RECT_SIZE
 const SHRINK_RECT_END__DURATION_FOR_SHRINK = 4.0
 const SHRINK_RECT_END__DELAY_BEFORE_NEXT_PHASE = 2.0
 
@@ -275,7 +277,9 @@ func _process(delta):
 
 func start_draw_phase_02_standard():
 	star_line_draw_node.remove_all_draw_params()
-	circle_draw_node.remove_all_draw_params()
+	#circle_draw_node.remove_all_draw_params()
+	#circle_draw_node.call_deferred("remove_all_draw_params")
+	
 	
 	_ending_rect_draw_param = _draw_encompassing_rect()
 	
@@ -288,7 +292,10 @@ func start_draw_phase_02_standard():
 	shrink_tween.set_parallel(true)
 	shrink_tween.tween_property(_ending_rect_draw_param, "current_rect:size", SHRINK_RECT_END__FINAL_SIZE, SHRINK_RECT_END__DURATION_FOR_SHRINK)
 	shrink_tween.tween_property(_ending_rect_draw_param, "current_rect:position", center_pos_basis, SHRINK_RECT_END__DURATION_FOR_SHRINK)
-
+	
+	var delay_for_circle_remove_tween = create_tween()
+	delay_for_circle_remove_tween.tween_interval(0.15)
+	delay_for_circle_remove_tween.tween_callback(circle_draw_node, "remove_all_draw_params")
 
 func _draw_encompassing_rect():
 	var draw_param = rect_draw_node.DrawParams.new()

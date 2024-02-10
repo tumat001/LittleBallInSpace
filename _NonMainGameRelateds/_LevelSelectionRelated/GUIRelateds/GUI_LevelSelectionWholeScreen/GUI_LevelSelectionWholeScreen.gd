@@ -60,6 +60,11 @@ func _ready():
 		coins_panel.display_type = coins_panel.DisplayType.NUMERICAL
 		level_count_panel.visible = false
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
+	
+	connect("visibility_changed", self, "_on_visibility_changed")
+
+func _on_visibility_changed():
+	game_background.visible = visible
 
 
 func _on_save_manager_initialized():
@@ -154,7 +159,8 @@ func _create_and_configure_new_layout_scene(arg_layout_id):
 func create_and_configure_all_layout_scenes():
 	for layout_id in StoreOfLevelLayouts.LevelLayoutIds.values():
 		if !_layout_id_to_level_layout_map.has(layout_id):
-			_create_and_configure_new_layout_scene(layout_id)
+			var layout_scene = _create_and_configure_new_layout_scene(layout_id)
+			_set_level_layout_as_inactive(layout_scene)
 
 func get_layout_id_to_level_layout_map() -> Dictionary:
 	return _layout_id_to_level_layout_map
@@ -345,5 +351,4 @@ func get_current_active_level_layout() -> GUI_AbstractLevelLayout:
 func _on_StatsForLevelButton_pressed():
 	SingletonsAndConsts.current_master.gs_gui_control_tree.show_gsm_level_panel(_current_active_level_layout.get_currently_hovered_tile().level_details.level_id)
 	
-
 

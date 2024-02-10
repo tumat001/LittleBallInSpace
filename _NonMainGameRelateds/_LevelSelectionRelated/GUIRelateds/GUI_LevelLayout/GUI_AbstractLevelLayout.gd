@@ -281,19 +281,19 @@ func set_is_layout_enabled(arg_val):
 	var old_val = is_layout_enabled
 	is_layout_enabled = arg_val
 	
-	if old_val != arg_val:
-		if is_layout_enabled:
-			#if !is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
-			#	connect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
-			
-			visible = true
-			pass
-		else:
-			#if is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
-			#	disconnect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
-			
-			visible = false
-			pass
+	#if old_val != arg_val:
+	if is_layout_enabled:
+		#if !is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
+		#	connect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+		
+		visible = true
+		pass
+	else:
+		#if is_connected("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input"):
+		#	disconnect("gui_input", self, "_on_GUI_AbstractLevelLayout_gui_input")
+		
+		visible = false
+		pass
 
 ##
 
@@ -583,13 +583,17 @@ func _initialize_layout_ele_dependent_vars():
 			lowest_x = glob_pos_of_ele.x
 		if glob_pos_of_ele.y < lowest_y:
 			lowest_y = glob_pos_of_ele.y
+		
+	
 	_top_left_corner_rect_pos = Vector2(lowest_x, lowest_y)
 	
+	# note: yes, this is in a separate loop
 	for child in layout_elements_container.get_children():
 		_init_signals_with_tile_ele(child)
 		_configure_ele_tile_neighbors(child)
 		_attempt_add_tile_ele_as_level_only_ele(child)
 		_check_for_if_invis_by_default__and_do_appropriate_action(child)
+	
 	
 
 
@@ -662,7 +666,7 @@ func _check_for_if_invis_by_default__and_do_appropriate_action(arg_ele : GUI_Lev
 
 #
 
-func get_rect_position_to_layout_ele_map() -> Dictionary:
+func get__rect_position_to_layout_ele_map():
 	return _rect_position_to_layout_ele_map
 
 func get_top_left_corner_rect_pos() -> Vector2:

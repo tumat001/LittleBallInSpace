@@ -86,6 +86,10 @@ var ignore_assist_mode_modifications : bool = false
 
 #
 
+var queue_free_gui_level_selection_panel : bool = true
+
+#
+
 var immediately_start_stats_record_on_GE_ready : bool = true
 
 ##

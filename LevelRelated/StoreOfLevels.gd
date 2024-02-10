@@ -1776,6 +1776,9 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
+		#note: only for this!
+		level_details.queue_free_gui_level_selection_panel = false
+		
 	
 	
 	##

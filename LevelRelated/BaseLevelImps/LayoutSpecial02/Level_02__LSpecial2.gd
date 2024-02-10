@@ -8,8 +8,6 @@ func _init():
 	
 	win_message_type = AbstractVicDefAnim.WinMessageType.CONGRATULATIONS
 	lose_messege_type = AbstractVicDefAnim.LoseMessageType.DEFEAT
-	
-	
 
 #
 
