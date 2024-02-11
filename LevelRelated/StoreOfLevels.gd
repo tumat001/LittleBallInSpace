@@ -1605,6 +1605,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
 		level_details.level_full_name = [
@@ -1636,6 +1638,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
@@ -1671,6 +1675,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
 		level_details.level_full_name = [
@@ -1704,6 +1710,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_2:
@@ -1739,6 +1746,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
+		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_2:
@@ -1754,8 +1762,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		
 		_set_details__transitions_to_usual_circle_types(level_details)
-		level_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.NONE
-		level_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.NONE
+		#level_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.NONE
+		#level_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.NONE
 		
 		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_CurCall_32x32.png")
 		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
@@ -1778,7 +1786,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		#note: only for this!
 		level_details.queue_free_gui_level_selection_panel = false
-		
+		level_details.immediately_start_stats_record_on_GE_ready = false
 	
 	
 	##

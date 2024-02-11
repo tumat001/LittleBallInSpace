@@ -206,7 +206,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.has_outline_color = false
 		
 		#
-		#details.background_type = GameBackground.BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL
+		details.background_type = GameBackground.BackgroundTypeIds.LAYOUT_SPECIALS
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_06:
 		details.level_layout_name = [
@@ -225,6 +225,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.level_label_text_color = Color("#dddddd")
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
+		
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_07:
@@ -246,6 +247,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.has_outline_color = false
 		
 		
+		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_02:
 		details.level_layout_name = [
 			["Finale", []]
@@ -265,7 +267,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.has_outline_color = false
 		
 		#
-		#details.background_type = GameBackground.BackgroundTypeIds.LAYOUT__CHALLENGE_NORMAL
+		details.background_type = GameBackground.BackgroundTypeIds.LAYOUT_SPECIALS
 		
 	
 	_set_layout_details_configs_and_params_based_on_GSM(details)

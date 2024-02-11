@@ -7,14 +7,15 @@ const AudioPlayListCatalog = preload("res://_NonMainGameRelateds/_Master/AudioRe
 
 const BGM_AUDIO_NAME_ID_PREFIX = "BGM_"
 const SFX_AUDIO_NAME_ID_PREFIX = "SFX_"
-const BGM_AUDIO_FOLDER_PATH =  "res://_NonMainGameRelateds/_Master/AudioRelated/Audios/BGM/"
-const SFX_AUDIO_FOLDER_PATH =  "res://_NonMainGameRelateds/_Master/AudioRelated/Audios/SFX/"
+const BGM_AUDIO_FOLDER_PATH = "res://_NonMainGameRelateds/_Master/AudioRelated/Audios/BGM/"
+const SFX_AUDIO_FOLDER_PATH = "res://_NonMainGameRelateds/_Master/AudioRelated/Audios/SFX/"
 
 
 const BGM_STRING_IDENTIFIER__CALM_01 = "Calm01"
 const BGM_STRING_IDENTIFIER__RISING_01 = "Rising01"
 const BGM_STRING_IDENTIFIER__DOOM_01 = "Doom01"
 const BGM_STRING_IDENTIFIER__SPECIAL_01 = "Special01"
+const BGM_STRING_IDENTIFIER__SUSPENSE_01 = "Suspense01"
 
 # DONT CHANGE NAMES of ids -- used for finding files by its name
 # SIMILARLY, do not change file names
@@ -42,6 +43,12 @@ enum AudioIds {
 	
 	# Special
 	BGM_Special01_FakeoutSuspense = 1300
+	
+	
+	# Suspense
+	BGM_Suspense01_01 = 1400
+	BGM_Suspense01_02 = 1401
+	BGM_Suspense01_03 = 1402
 	
 	
 	####################
@@ -308,6 +315,7 @@ enum BGMPlaylistId {
 	CALM_01 = 1,
 	RISING_01 = 2,
 	DOOM_01 = 3,
+	SUSPENSE_01 = 4,
 	
 	SPECIALS_01 = 10
 }
@@ -318,6 +326,7 @@ var BGM_playlist__calm_01 : AudioPlayList
 var BGM_playlist__rising_01 : AudioPlayList
 var BGM_playlist__doom_01 : AudioPlayList
 var BGM_playlist__special_01 : AudioPlayList
+var BGM_playlist__suspense_01 : AudioPlayList
 
 var BGM_playlist_catalog : AudioPlayListCatalog
 
@@ -325,6 +334,7 @@ const BGM_ids__calm_01__list = []
 const BGM_ids__rising_01__list = []
 const BGM_ids__doom_01__list = []
 const BGM_ids__special_01__list = []
+const BGM_ids__suspense_01__list = []
 
 #
 
@@ -336,7 +346,7 @@ func _init():
 		BGM_STRING_IDENTIFIER__RISING_01 : BGM_ids__rising_01__list,
 		BGM_STRING_IDENTIFIER__DOOM_01 : BGM_ids__doom_01__list,
 		BGM_STRING_IDENTIFIER__SPECIAL_01 : BGM_ids__special_01__list,
-		
+		BGM_STRING_IDENTIFIER__SUSPENSE_01 : BGM_ids__suspense_01__list
 	}
 	_initialize_bgm_list_with_string_identifier(string_id_to_list_map)
 	
@@ -378,6 +388,7 @@ func reset_bgm_playlists():
 	BGM_playlist__rising_01.set_audio_ids_of_playlist(BGM_ids__rising_01__list)
 	BGM_playlist__doom_01.set_audio_ids_of_playlist(BGM_ids__doom_01__list)
 	BGM_playlist__special_01.set_audio_ids_of_playlist(BGM_ids__special_01__list)
+	BGM_playlist__suspense_01.set_audio_ids_of_playlist(BGM_ids__suspense_01__list)
 
 #######
 
@@ -386,11 +397,13 @@ func _initialize_bgm_stages_playlist():
 	BGM_playlist__rising_01 = AudioPlayList.new()
 	BGM_playlist__doom_01 = AudioPlayList.new()
 	BGM_playlist__special_01 = AudioPlayList.new()
+	BGM_playlist__suspense_01 = AudioPlayList.new()
 	
 	BGM_playlist__calm_01.playlist_id = BGMPlaylistId.CALM_01
 	BGM_playlist__rising_01.playlist_id = BGMPlaylistId.RISING_01
 	BGM_playlist__doom_01.playlist_id = BGMPlaylistId.DOOM_01
 	BGM_playlist__special_01.playlist_id = BGMPlaylistId.SPECIALS_01
+	BGM_playlist__suspense_01.playlist_id = BGMPlaylistId.SUSPENSE_01
 	
 	BGM_playlist__special_01.autoplay_to_same_audio_id = true
 	
@@ -398,20 +411,20 @@ func _initialize_bgm_stages_playlist():
 	BGM_playlist__rising_01.playlist_name = "Rising 01"
 	BGM_playlist__doom_01.playlist_name = "Doom 01"
 	BGM_playlist__special_01.playlist_name = "Specials 01"
-	
+	BGM_playlist__suspense_01.playlist_name = "Suspense 01"
 	
 	_all_BGM_stages_playlist.append(BGM_playlist__calm_01)
 	_all_BGM_stages_playlist.append(BGM_playlist__rising_01)
 	_all_BGM_stages_playlist.append(BGM_playlist__doom_01)
 	_all_BGM_stages_playlist.append(BGM_playlist__special_01)
-	
+	_all_BGM_stages_playlist.append(BGM_playlist__suspense_01)
 	
 	BGM_playlist_catalog = AudioPlayListCatalog.new()
 	BGM_playlist_catalog.add_audio_play_list(BGMPlaylistId.CALM_01, BGM_playlist__calm_01)
 	BGM_playlist_catalog.add_audio_play_list(BGMPlaylistId.RISING_01, BGM_playlist__rising_01)
 	BGM_playlist_catalog.add_audio_play_list(BGMPlaylistId.DOOM_01, BGM_playlist__doom_01)
 	BGM_playlist_catalog.add_audio_play_list(BGMPlaylistId.SPECIALS_01, BGM_playlist__special_01)
-	
+	BGM_playlist_catalog.add_audio_play_list(BGMPlaylistId.SUSPENSE_01, BGM_playlist__suspense_01)
 	
 	for playlist in _all_BGM_stages_playlist:
 		playlist.set_autoplay_delay_with_node_to_host_timer(10, 20, self)

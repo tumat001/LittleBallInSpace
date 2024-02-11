@@ -41,6 +41,8 @@ onready var game_background = $GameBackground
 
 onready var stats_for_level_button = $HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton
 
+onready var trophy_panel = $HUDContainer/VBoxContainer/TrophyPanel
+
 #
 
 #############
@@ -62,6 +64,9 @@ func _ready():
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
 	
 	connect("visibility_changed", self, "_on_visibility_changed")
+	
+	trophy_panel.can_show_healths_related_trophies = false
+
 
 func _on_visibility_changed():
 	game_background.visible = visible

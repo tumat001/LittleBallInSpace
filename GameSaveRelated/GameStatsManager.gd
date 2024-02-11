@@ -266,7 +266,7 @@ func _attempt_load_all__from_game_stats_file():
 
 func _load_per_level_stats(arg_file : File):
 	
-	var data : Dictionary
+	var data
 	if arg_file != null:
 		data = parse_json(arg_file.get_line())
 	
@@ -280,7 +280,6 @@ func _load_per_level_stats(arg_file : File):
 		_fill_per_level_data_map__with_save_dict(data[GAME_STATS__PER_LEVEL__DIC_IDENTIFIER])
 	else:
 		pass
-	
 	
 	
 

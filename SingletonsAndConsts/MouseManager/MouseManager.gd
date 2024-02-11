@@ -52,6 +52,7 @@ const input_mouse_mode_to_priority_map : Dictionary = {
 
 enum AlwaysMouseModeVisibleReserveId {
 	SHOWING_GE_MENU = 0
+	CUSTOM = 1
 }
 var _always_mouse_visible_reserve_id_list : Array = []
 var last_calc_mouse_is_always_visible : bool = false

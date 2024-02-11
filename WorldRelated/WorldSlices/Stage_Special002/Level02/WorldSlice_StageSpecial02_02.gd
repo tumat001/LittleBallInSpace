@@ -30,6 +30,11 @@ const WSSS0202_EndingPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameH
 const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260.png")
 const GameLogo_BannerSized_Opaque = preload("res://_NonMainGameRelateds/GameDetails/ALBIS_GameLogo_450x260__OpaqueBackground.png")
 
+const WSSS0202_NextArrow_Normal = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Assets/WSSS0202_NextArrow.png")
+const WSSS0202_NextArrow_Highlighted = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level02/Assets/WSSS0202_NextArrow_Highlighted.png")
+const PlayerGUI_ButtonStandard = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.gd")
+const PlayerGUI_ButtonStandard_Scene = preload("res://MiscRelated/GUIControlsRelated/PlayerGUI_ButtonStandard/PlayerGUI_ButtonStandard.tscn")
+
 #
 
 const DURATION_OF_TRAVEL_FROM_AIR_TO_GROUND__CUTSCENE : float = 12.0
@@ -73,9 +78,10 @@ var wsss0202_ending_panel : WSSS0202_EndingPanel
 
 
 #const CDSU_SUPER_STAR_POS = Vector2(8194, 635)
-const CDSU_SUPER_STAR_POS = Vector2(8194, 605)
+#const CDSU_SUPER_STAR_POS = Vector2(8194, 605)
+const CDSU_SUPER_STAR_POS = Vector2(8494, 605)
 
-const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(280, -145)
+const SUPER_STAR_FINAL_POS_OFFSET_FROM_COLLECTION_POS = Vector2(280, -160)
 const SUPER_STAR_FINAL_POS_CHANGE_DURATION = 1.5
 const SUPER_STAR_FINAL_POS_CHANGE_TRANS = Tween.TRANS_QUAD
 const SUPER_STAR_FINAL_POS_CHANGE_EASE = Tween.EASE_OUT
@@ -92,6 +98,31 @@ var viewport_for_constellation_finished : Viewport
 
 var thread_for_constellation_board_calcs : Thread
 var _is_thread_for_constell_calcs_finished : bool = false
+
+#
+
+
+
+var cdsu_super_star
+var cdsu_super_star_simulated
+var super_star_fx_drawer
+
+var special_pos_for_cam__for_super_star : Node2D
+#var super_star_particles_container : Node2D
+
+
+var on_constellation_show__next_button : PlayerGUI_ButtonStandard
+
+#
+
+var is_fast_view_constellation_mode : bool = false
+
+##
+
+const FAST_VIEW_CONSTELL__PLAYER_POS = Vector2(8452.689453, 656.0047)
+const FAST_VIEW_CONSTELL__CAM_POS = Vector2(8583.742188, 576.004761)
+const FAST_VIEW_CONSTELL__ACTUAL_STAR_POS = Vector2(8774, 445)
+const FAST_VIEW_CONSTELL__SIMULATED_STAR_POS = Vector2(690.341797, 138.946533)
 
 #
 
@@ -117,17 +148,17 @@ onready var base_enemy = $ObjectContainer/BaseEnemy
 onready var misc_container = $MiscContainer
 
 
-var cdsu_super_star
-var cdsu_super_star_simulated
-var super_star_fx_drawer
+onready var pca_01 = $AreaRegionContainer/PCA_01
+onready var pca_02 = $AreaRegionContainer/PCA_02
+onready var pca_03 = $AreaRegionContainer/PCA_03
+onready var pca_04 = $AreaRegionContainer/PCA_04
+onready var pca_05 = $AreaRegionContainer/PCA_05
+onready var pca_06 = $AreaRegionContainer/PCA_06
+onready var pca_07 = $AreaRegionContainer/PCA_07
 
-var special_pos_for_cam__for_super_star : Node2D
-var super_star_particles_container : Node2D
+#
 
-##
-
-#temptodo
-var temp_is_test : bool = true
+var temp_is_test : bool = false
 
 #
 
@@ -146,12 +177,31 @@ func _ready():
 
 #
 
+func _apply_modification_to_game_elements():
+	._apply_modification_to_game_elements()
+	
+	if GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_level_details.level_id):
+		is_fast_view_constellation_mode = true
+		
+
 func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
 	
 	
 	if temp_is_test:
 		return
+	
+	
+	if is_fast_view_constellation_mode:
+		arg_player.global_position = FAST_VIEW_CONSTELL__ACTUAL_STAR_POS
+		
+		#var tween = create_tween()
+		#tween.tween_interval(0.5)
+		#tween.tween_callback(self, "_show_phase__levels_as_constellations")
+		
+		return
+	
+	####
 	
 	vbox_of_instructions__01.modulate.a = 0
 	#SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
@@ -174,7 +224,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
-	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__wsss0201", [], CONNECT_ONESHOT)
+	game_elements.game_result_manager.connect("game_result_decided", self, "_on_game_result_decided__wsss0202", [], CONNECT_ONESHOT)
 	
 	#
 	
@@ -192,6 +242,23 @@ func _on_after_game_start_init():
 		game_elements.get_current_player().global_position = pos
 		background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
 		_configure_custom_rules_of_trophy_round()
+		return
+	
+	if is_fast_view_constellation_mode:
+		_init_special_pos_for_cam__for_super_star()
+		special_pos_for_cam__for_super_star.global_position = FAST_VIEW_CONSTELL__CAM_POS
+		
+		background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+		_configure_custom_rules_of_trophy_round()
+		
+		if game_elements.is_game_front_hud_initialized:
+			_on_game_front_hud_initialized__fast_view_constell(game_elements.game_front_hud)
+		else:
+			game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized__fast_view_constell", [], CONNECT_ONESHOT)
+		
+		visible = false
+		vis_transition_fog_finale_trophy.activate_monitor_for_player()
+		
 		return
 	
 	#
@@ -215,6 +282,22 @@ func _on_after_game_start_init():
 	
 	background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
 	
+
+func _on_game_front_hud_initialized__fast_view_constell(arg_GFH):
+	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(false)
+	SingletonsAndConsts.current_game_front_hud.init_adjusted_pos_node_container__above_other_hosters()
+	
+	var tweener = create_tween()
+	tweener.tween_interval(0.75)
+	tweener.tween_callback(self, "_on_tween_wait_finished__GFH_init__fast_view_constell")
+
+func _on_tween_wait_finished__GFH_init__fast_view_constell():
+	_config_constell_board_and_related_renderers__from_thread(null)
+	
+	call_deferred("_show_phase__levels_as_constellations")
+
+
+#
 
 func _add_energy_modi():
 	var modi = StoreOfPlayerModi.load_modi(StoreOfPlayerModi.PlayerModiIds.ENERGY)
@@ -325,6 +408,7 @@ func _on_PDAR_Cinematic_End_player_entered_in_area():
 # SEQUENCE 07 -- LAST
 
 func _on_Portal_Entry_Seq07_player_entered(arg_player):
+	_on_portal_entry_seq07_player_entered__cap_cpa()
 	call_deferred("_init_color_rect_container_for_animal_anim_sprite_and_relateds")
 	call_deferred("_start_threaded_calc_for_constell_board")
 
@@ -434,7 +518,7 @@ func _init_above_GFH_node_container__and_related_nodes():
 	SingletonsAndConsts.current_game_front_hud.init_adjusted_pos_node_container__above_other_hosters()
 	
 	
-	var super_star_particles_container = Node2D.new()
+	#var super_star_particles_container = Node2D.new()
 	_create_and_init_super_star_fx_drawer_node()
 	_create_and_init_cdsu_super_star()
 	
@@ -525,11 +609,14 @@ func _tween_relocate_camera_based_on_collection_offset(arg_tween : SceneTreeTwee
 #########
 
 func _start_sequence():
-	#temptodo
+	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(false)
+	
+	
 	#call_deferred("_show_phase__levels_as_constellations")
-	#temptodo
+	
 	_start_super_star_fx_drawer()
 	
+	#print("player_pos: %s, cam_pos: %s, actual_star_pos: %s, simulated_star_pos: %s" % [game_elements.get_current_player().global_position, special_pos_for_cam__for_super_star.global_position, cdsu_super_star.global_position, cdsu_super_star_simulated.position])
 
 func _start_super_star_fx_drawer():
 	super_star_fx_drawer.connect("draw_phase_01_standard_finished", self, "_on_star_fx_drawer_draw_phase_01_standard_finished", [], CONNECT_ONESHOT)
@@ -545,6 +632,7 @@ func _on_star_fx_drawer_draw_phase_01_standard_finished():
 	
 	super_star_fx_drawer.connect("draw_phase_02_standard_finished", self, "_on_star_fx_drawer_draw_phase_02_standard_finished", [], CONNECT_ONESHOT)
 	super_star_fx_drawer.start_draw_phase_02_standard()
+
 
 func _on_star_fx_drawer_draw_phase_02_standard_finished():
 	call_deferred("_play_cutscene_msg")
@@ -571,11 +659,10 @@ func _on_wsss0202_ending_panel_finished():
 ###
 
 func _start_threaded_calc_for_constell_board():
-	_config_constell_board_and_related_renderers__from_thread(null)
+	#_config_constell_board_and_related_renderers__from_thread(null)
 	
-	#temptodo
-#	thread_for_constellation_board_calcs = Thread.new()
-#	thread_for_constellation_board_calcs.start(self, "_config_constell_board_and_related_renderers__from_thread", null)
+	thread_for_constellation_board_calcs = Thread.new()
+	thread_for_constellation_board_calcs.start(self, "_config_constell_board_and_related_renderers__from_thread", null)
 
 func _config_constell_board_and_related_renderers__from_thread(arg_01):
 	_config_constell_board()
@@ -671,10 +758,10 @@ func _config_constell_finished_renderer():
 
 func _show_phase__levels_as_constellations():
 	if _is_thread_for_constell_calcs_finished:
-		#temptodo start
+		# start
 		#cdsu_super_star_simulated.visible = false
 		#vis_transition_fog_finale_trophy.hide()
-		#end
+		# end
 		
 		_config_viewport_for_constellation_in_progress__shift()
 		_config_viewport_for_constellation_finished__position()
@@ -690,7 +777,12 @@ func _show_phase__levels_as_constellations():
 func _config_viewport_for_constellation_in_progress__shift():
 	var coord = Vector2(42, 7)
 	#coord = Vector2(10, 14)
-	var target_pos = cdsu_super_star_simulated.position + ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__CELL_SIZE/2
+	var target_pos : Vector2
+	if !is_fast_view_constellation_mode:
+		target_pos = cdsu_super_star_simulated.position + ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__CELL_SIZE/2
+	else:
+		target_pos = FAST_VIEW_CONSTELL__SIMULATED_STAR_POS + ConstellCoordBoardRenderer_InProgress_V01.DRAW_ELE__CELL_SIZE/2
+	
 	constellation_renderer__in_progress.shift_all_draw_pos_shift_to_make_coord_at_pos(coord, target_pos)
 	
 
@@ -705,13 +797,16 @@ func _config_viewport_for_constellation_finished__position():
 
 func _on_constell_in_prog_renderer_all_finished():
 	var delay_tweener = create_tween()
-	delay_tweener.tween_interval(5.0)
-	delay_tweener.tween_callback(self, "_show_phase__little_ball_in_space_logo")
+	if !is_fast_view_constellation_mode:
+		delay_tweener.tween_interval(5.0)
+		delay_tweener.tween_callback(self, "_show_phase__little_ball_in_space_logo")
+	else:
+		delay_tweener.tween_interval(1.0)
+		delay_tweener.tween_callback(self, "_show_phase__allow_end")
 
 #
 
 func _show_phase__little_ball_in_space_logo():
-	#todoimp continue this
 	var logo_tex_rect = TextureRect.new()
 	logo_tex_rect.texture = GameLogo_BannerSized_Opaque
 	logo_tex_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -730,29 +825,56 @@ func _show_phase__little_ball_in_space_logo():
 #
 
 func _show_phase__allow_end():
-	pass
-	#todoimp show end button
-	#todoimp put PCA per teleport, then capture that PCA
+	call_deferred("_init_and_add_next_button_from_constellation")
+	
+	MouseManager.add_always_mouse_visible_reserve_id_list(MouseManager.AlwaysMouseModeVisibleReserveId.CUSTOM)
+	
 
+func _init_and_add_next_button_from_constellation():
+	game_elements.game_front_hud.init_control_container_above_control_container()
+	
+	on_constellation_show__next_button = PlayerGUI_ButtonStandard_Scene.instance()
+	game_elements.game_front_hud.add_node_to_control_container_above_control_container(on_constellation_show__next_button)
+	on_constellation_show__next_button.rect_size = Vector2(1, 1)
+	on_constellation_show__next_button.texture_button.texture_normal = WSSS0202_NextArrow_Normal
+	on_constellation_show__next_button.texture_button.texture_hover = WSSS0202_NextArrow_Highlighted
+	on_constellation_show__next_button.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT, true)
+	
+	on_constellation_show__next_button.connect("button_pressed", self, "_on_constellation_show__next_button_pressed")
+	on_constellation_show__next_button.rect_position -= on_constellation_show__next_button.rect_size + Vector2(15, 0)
+	
+	#print(on_constellation_show__next_button.rect_global_position)
+
+func _on_constellation_show__next_button_pressed():
+	
+	if !is_fast_view_constellation_mode:
+		_on_winning_capture__cap_cpa__and_all_if_not()
+		
+		on_constellation_show__next_button.visible = false
+		var tweener = create_tween()
+		tweener.tween_property(viewport_for_constellation_finished__container, "modulate:a", 0.0, 1.25)
+		
+	else:
+		SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
 
 ##
 
-func _end_level():
-	_play_inner_transition_to_level_selection()
-	game_elements.game_result_manager.end_game__as_win()
-	
-
-func _play_inner_transition_to_level_selection():
-	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__CIRCLE_SPEC_02_02)
-	transition.initial_ratio = 0.0
-	transition.target_ratio = 1.0
-	transition.wait_at_start = 0.0
-	transition.duration = 8.0
-	transition.trans_type = Tween.TRANS_LINEAR
-	transition.queue_free_on_end_of_transition = true
-	SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
-	
-	
+#func _end_level():
+#	_play_inner_transition_to_level_selection()
+#	game_elements.game_result_manager.end_game__as_win()
+#
+#
+#func _play_inner_transition_to_level_selection():
+#	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__CIRCLE_SPEC_02_02)
+#	transition.initial_ratio = 0.0
+#	transition.target_ratio = 1.0
+#	transition.wait_at_start = 0.0
+#	transition.duration = 8.0
+#	transition.trans_type = Tween.TRANS_LINEAR
+#	transition.queue_free_on_end_of_transition = true
+#	SingletonsAndConsts.current_master.play_transition__alter_no_states(transition)
+#
+#
 
 #############
 
@@ -787,3 +909,43 @@ func _exit_tree():
 		thread_for_constellation_board_calcs.wait_to_finish()
 
 
+#
+
+func _on_Portal_Entry_Seq02_player_entered(arg_player):
+	pca_01.set_is_area_captured__external(true)
+
+func _on_Portal_Entry_Seq03_player_entered(arg_player):
+	pca_02.set_is_area_captured__external(true)
+
+func _on_Portal_Entry_Seq04_player_entered(arg_player):
+	pca_03.set_is_area_captured__external(true)
+
+func _on_Portal_Entry_Seq05_player_entered(arg_player):
+	pca_04.set_is_area_captured__external(true)
+
+func _on_Portal_Entry_Seq06_player_entered(arg_player):
+	pca_05.set_is_area_captured__external(true)
+
+func _on_portal_entry_seq07_player_entered__cap_cpa():
+	pca_06.set_is_area_captured__external(true)
+
+func _on_winning_capture__cap_cpa__and_all_if_not():
+	pca_07.set_is_area_captured__external(true)
+	
+	if !pca_01.is_area_captured():
+		pca_01.set_is_area_captured__external(true)
+	if !pca_02.is_area_captured():
+		pca_02.set_is_area_captured__external(true)
+	if !pca_03.is_area_captured():
+		pca_03.set_is_area_captured__external(true)
+	if !pca_04.is_area_captured():
+		pca_04.set_is_area_captured__external(true)
+	if !pca_05.is_area_captured():
+		pca_05.set_is_area_captured__external(true)
+	if !pca_06.is_area_captured():
+		pca_06.set_is_area_captured__external(true)
+	
+
+
+###############################
+###

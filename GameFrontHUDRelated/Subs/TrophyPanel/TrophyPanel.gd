@@ -4,6 +4,8 @@ extends MarginContainer
 
 var trophy_id_to_texture_rect_node_map : Dictionary
 
+export(bool) var can_show_healths_related_trophies : bool = true setget set_can_show_healths_related_trophies
+
 onready var player_dead_tex_rect = $MarginContainer/HBoxContainer/PlayerDeadTextureRect
 onready var player_health_invul_tex_rect = $MarginContainer/HBoxContainer/PlayerHealthInvulTexture
 
@@ -21,6 +23,9 @@ func _ready():
 
 
 func _init_player_heart_vis_status__check_for_GE():
+	if !can_show_healths_related_trophies:
+		return
+	
 	if !SingletonsAndConsts.current_game_elements.is_player_spawned():
 		SingletonsAndConsts.current_game_elements.connect("player_spawned", self, "_on_player_spawned", [], CONNECT_ONESHOT)
 	else:
@@ -55,6 +60,12 @@ func _on_is_player_health_invulnerable_changed(arg_val):
 #
 
 func _update_player_heart_vis_status():
+	if !can_show_healths_related_trophies:
+		player_health_invul_tex_rect.visible = false
+		player_dead_tex_rect.visible = false
+		return
+	
+	
 	var player = SingletonsAndConsts.current_game_elements.get_current_player()#.get_current_health()
 	var is_dead = player.is_no_health() #is_equal_approx(, 0)
 	if is_dead:
@@ -122,5 +133,13 @@ func _construct_texture_rect_from_trophy_id(arg_id):
 	trophy_non_volatile_container.add_child(texture_rect)
 	
 	trophy_id_to_texture_rect_node_map[arg_id] = texture_rect
+
+#
+
+func set_can_show_healths_related_trophies(arg_val):
+	can_show_healths_related_trophies = arg_val
+	
+	if is_inside_tree():
+		_update_player_heart_vis_status()
 
 

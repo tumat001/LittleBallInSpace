@@ -87,19 +87,19 @@ func _draw_render_det_map(arg_render_det_map : Dictionary):
 		
 
 
-func _draw_render_det_map__path(arg_render_det_map, arg_line_width = DRAW_ELE__PATH_LINE_WIDTH):
+func _draw_render_det_map__path(arg_render_det_map, arg_line_width = DRAW_ELE__PATH_LINE_WIDTH, arg_base_color = DRAW_ELE__COLOR__MOST_ELES):
 	var dir_as_vec__from_source = arg_render_det_map[RENDER_DET_KEY__DIR_AS_VEC_SOURCE_OF_PROGRESS]
 	var dirs_as_vec__to_dest = arg_render_det_map[RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS]
 	
 	var pos = arg_render_det_map[RENDER_DET_KEY__POSITION]
 	
-	draw_line(pos - (dir_as_vec__from_source * DRAW_ELE__PATH_LINE_HALF_LENGTH), pos, DRAW_ELE__COLOR__MOST_ELES, arg_line_width)
+	draw_line(pos - (dir_as_vec__from_source * DRAW_ELE__PATH_LINE_HALF_LENGTH), pos, arg_base_color, arg_line_width)
 	for dir_as_vec_to_dest in dirs_as_vec__to_dest:
-		draw_line(pos, pos + (dir_as_vec_to_dest * DRAW_ELE__PATH_LINE_HALF_LENGTH), DRAW_ELE__COLOR__MOST_ELES, arg_line_width)
+		draw_line(pos, pos + (dir_as_vec_to_dest * DRAW_ELE__PATH_LINE_HALF_LENGTH), arg_base_color, arg_line_width)
 
 
 func _draw_render_det_map__level(arg_render_det_map):
-	_draw_render_det_map__path(arg_render_det_map)
+	#_draw_render_det_map__path(arg_render_det_map)
 	
 	var pos = arg_render_det_map[RENDER_DET_KEY__POSITION]
 	
@@ -126,14 +126,14 @@ func _get_or_gen_calc_level_rect_for_coord(pos):
 
 
 func _draw_render_det_map__layout(arg_render_det_map):
-	_draw_render_det_map__path(arg_render_det_map)
+	#_draw_render_det_map__path(arg_render_det_map)
 	
 	var pos = arg_render_det_map[RENDER_DET_KEY__POSITION]
-	draw_circle(pos, DRAW_ELE__LAYOUT_RADIUS, DRAW_ELE__COLOR__MOST_ELES)
+	draw_circle(pos, DRAW_ELE__LAYOUT_RADIUS, DRAW_ELE__COLOR__LAYOUT)
 
 
 func _draw_render_det_map__custom_path_from_layout_to_layout(arg_render_det_map):
-	_draw_render_det_map__path(arg_render_det_map, DRAW_ELE__CUSTOM_PATH_LAYOUT_TO_LAYOUT_LINE_WIDTH)
+	_draw_render_det_map__path(arg_render_det_map, DRAW_ELE__CUSTOM_PATH_LAYOUT_TO_LAYOUT_LINE_WIDTH, DRAW_ELE__COLOR__CUSTOM_PATH)
 	
 
 

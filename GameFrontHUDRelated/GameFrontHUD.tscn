@@ -160,7 +160,7 @@ margin_top = 28.0
 margin_bottom = 52.0
 
 [node name="TrophyPanel" parent="ControlContainer/TopRightPanel/HUDCMH_TopRightPanel/VBox" instance=ExtResource( 7 )]
-margin_left = 44.0
+margin_left = 40.0
 margin_top = 56.0
 margin_right = 80.0
 margin_bottom = 71.0

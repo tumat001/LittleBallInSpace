@@ -85,11 +85,15 @@ func _ready():
 	
 	set_process(false)
 	
+	#StoreOfLevels.attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02()
+	#GameSaveManager.set_level_id_status_completion(StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+	
 	#StoreOfLevels._unlock_stage_special_02__and_unhide_eles_to_layout_special_02()
+	
 	
 	#Temp for quick testing of lvls
 	# fast level
-	# temptodo
+	#temptodo
 	if (true):
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_1
 		#SingletonsAndConsts.current_base_level_id = StoreOfLevels.LevelIds.TEST

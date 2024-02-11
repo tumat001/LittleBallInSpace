@@ -32,7 +32,6 @@ func _on_ep_scene01_sequence_finished():
 	else:
 		_config_tweener_to_callback_end_panel(tweener)
 	
-	
 
 func _start_show_ep_scene_bonus_blind():
 	ep_scene_bonus_blind.connect("sequence_finished", self, "_on_ep_scene_bonus_blind_sequence_finished", [], CONNECT_ONESHOT)
