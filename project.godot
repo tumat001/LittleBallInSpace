@@ -66,6 +66,7 @@ GameStatsManager="*res://GameSaveRelated/GameStatsManager.gd"
 
 [debug]
 
+settings/stdout/verbose_stdout=true
 gdscript/warnings/enable=false
 gdscript/warnings/unassigned_variable=false
 gdscript/warnings/unassigned_variable_op_assign=false

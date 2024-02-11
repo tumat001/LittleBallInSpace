@@ -18,6 +18,8 @@ const RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS = "dirDestinations"
 const RENDER_DET_KEY__ELE_TYPE = "eleType"
 const RENDER_DET_KEY__POSITION = "position"
 
+const RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP = "isTypeLevelLitUp"
+
 #
 
 var _render_det_map_list_for_only_next_draw_call : Array
@@ -59,6 +61,7 @@ func _conv_renderer_det_map_and_coord__to_own_det_map(arg_render_det_map, arg_co
 	render_map[RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS] = arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS]
 	render_map[RENDER_DET_KEY__ELE_TYPE] = arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__ELE_TYPE]
 	render_map[RENDER_DET_KEY__POSITION] = board_renderer_in_progress.get_pre_calced_pos_of_coord(arg_coord)
+	render_map[RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP] = arg_render_det_map[ConstellCoordBoardRenderer_InProgress_V01.RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP]
 	
 	return render_map
 
@@ -101,7 +104,15 @@ func _draw_render_det_map__level(arg_render_det_map):
 	var pos = arg_render_det_map[RENDER_DET_KEY__POSITION]
 	
 	var rect = _get_or_gen_calc_level_rect_for_coord(pos)
-	draw_rect(rect, DRAW_ELE__COLOR__MOST_ELES, true)
+	var is_lit_up = arg_render_det_map[RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP]
+	
+	var color_to_use : Color
+	if is_lit_up:
+		color_to_use = DRAW_ELE__COLOR__MOST_ELES
+	else:
+		color_to_use = DRAW_ELE__COLOR__UNLIT_LEVEL
+	
+	draw_rect(rect, color_to_use, true)
 
 func _get_or_gen_calc_level_rect_for_coord(pos):
 	if _pre_calced__pos_to_rect_map.has(pos):

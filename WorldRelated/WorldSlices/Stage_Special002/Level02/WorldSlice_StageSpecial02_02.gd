@@ -671,10 +671,8 @@ func _config_constell_finished_renderer():
 
 func _show_phase__levels_as_constellations():
 	if _is_thread_for_constell_calcs_finished:
-		#temptodo
-		#cdsu_super_star_simulated.visible = false
-		
 		#temptodo start
+		#cdsu_super_star_simulated.visible = false
 		#vis_transition_fog_finale_trophy.hide()
 		#end
 		
@@ -721,12 +719,20 @@ func _show_phase__little_ball_in_space_logo():
 	
 	SingletonsAndConsts.current_game_front_hud.misc_center_container.add_child(logo_tex_rect)
 	
-	var mod_a_tweener = create_tween()
-	mod_a_tweener.tween_property(logo_tex_rect, "modulate:a", 1.0, 1.5)
-	
-	
+	var tweener = create_tween()
+	tweener.tween_property(logo_tex_rect, "modulate:a", 1.0, 1.5)
+	tweener.tween_interval(3.0)
+	tweener.tween_property(logo_tex_rect, "modulate:a", 0.0, 1.5)
+	tweener.tween_interval(1.0)
+	tweener.tween_callback(self, "_show_phase__allow_end")
 
 
+#
+
+func _show_phase__allow_end():
+	pass
+	#todoimp show end button
+	#todoimp put PCA per teleport, then capture that PCA
 
 
 ##

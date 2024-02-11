@@ -35,6 +35,12 @@ const DRAW_ELE__CELL_SIZE = Vector2(DRAW_ELE__CELL_LW, DRAW_ELE__CELL_LW)
 
 const DRAW_ELE__COLOR__MOST_ELES := Color("#FEEDBA")
 
+const DRAW_ELE__COLOR__UNLIT_LEVEL := Color("#6D6346")
+#todoimp
+#color for portal
+#color for path
+#color for custom path
+
 #const DRAW_ELE__PATH_LINE_WIDTH : float = 2.0
 #const DRAW_ELE__PATH_LINE_HALF_LENGTH : float = 4.0
 #const DRAW_ELE__LEVEL_RECT_SIZE : Vector2 = Vector2(6, 6)

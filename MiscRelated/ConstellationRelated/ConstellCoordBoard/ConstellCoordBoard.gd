@@ -23,6 +23,9 @@ class CoordDetails:
 	var adjacent_coord__up : Vector2 = NONE_ADJACENT_COORD
 	var adjacent_coord__down : Vector2 = NONE_ADJACENT_COORD
 	
+	
+	var metadata__is_type_level_lit_up : bool = false
+	
 
 # coord example: Vector(1, 1) --> 2nd ele from top, 2nd ele from left
 # shifted so that at least one element is at (0, x) and another element at (x, 0)
@@ -65,9 +68,17 @@ func _construct_and_register_coord_details_from_layout_ele(arg_layout_ele, arg_c
 	elif arg_layout_ele.level_details != null:
 		coord_details.layout_element_type = CoordDetails.LayoutElementTypeId.LEVEL
 		coord_details.level_id = arg_layout_ele.level_details.level_id
+		
+		# the tentative is equal to this lvl, which should always be true
+		if GameSaveManager.is_all_coins_collected_in_level(coord_details.level_id) or (GameSaveManager.get_tentative_coin_ids_collected_in_curr_level_id__count() == 1 and coord_details.level_id == StoreOfLevels.LevelIds.LEVEL_02__STAGE_SPECIAL_2):
+			coord_details.metadata__is_type_level_lit_up = true
+		else:
+			coord_details.metadata__is_type_level_lit_up = false
+		
 	elif arg_layout_ele.level_layout_details != null:
 		coord_details.layout_element_type = CoordDetails.LayoutElementTypeId.TO_LAYOUT
 		coord_details.level_layout_id = arg_layout_ele.level_layout_details.level_layout_id
+		
 	
 	if is_instance_valid(arg_layout_ele.layout_element_tile__left):
 		add_adjacency_of_coord_det(coord_details, arg_coord, 2)

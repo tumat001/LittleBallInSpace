@@ -29,6 +29,7 @@ const RENDER_DET_KEY__GLOW_PROGRESS_RATIO_TO_DEST = "glowProgressToDest"
 const RENDER_DET_KEY__DIR_AS_VEC_SOURCE_OF_PROGRESS = "dirSource"
 const RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS = "dirDestinations"
 const RENDER_DET_KEY__ELE_TYPE = "eleType"
+const RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP = "isTypeLevelLitUp"
 
 #var _curr_coord_to_render_details_map_map : Dictionary
 #var _curr_coord_to_render_details_map_map__path : Dictionary = {}
@@ -205,6 +206,9 @@ func _generate_render_details_from_coord_details(arg_coord_det : ConstellCoordDe
 		RENDER_DET_KEY__DIRS_AS_VEC_DESTINATION_PROGRESS : _conv_dir_ids_to_dirs_as_vec(dir_dests),
 		
 		RENDER_DET_KEY__ELE_TYPE : arg_coord_det.layout_element_type,
+		
+		RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP : arg_coord_det.metadata__is_type_level_lit_up,
+		
 	}
 
 func _conv_dir_ids_to_dirs_as_vec(arg_dir_ids : Array):
@@ -338,16 +342,23 @@ func _draw_render_det_map_in_coord__path(arg_render_det_map, arg_coord, arg_line
 func _draw_render_det_map_in_coord__level(arg_render_det_map, arg_coord):
 	_draw_render_det_map_in_coord__path(arg_render_det_map, arg_coord)
 	
-	var color_to_use = _get_mod_a_to_use(arg_render_det_map)
+	
+	var color_to_use_based_on_level_data : Color#DRAW_ELE__COLOR__MOST_ELES
+	if arg_render_det_map[RENDER_DET_KEY__METADATA_IS_TYPE_LEVEL_LIT_UP]:
+		color_to_use_based_on_level_data = DRAW_ELE__COLOR__MOST_ELES
+	else:
+		color_to_use_based_on_level_data = DRAW_ELE__COLOR__UNLIT_LEVEL
+	
+	var final_color_to_use = _get_mod_a_to_use(arg_render_det_map, color_to_use_based_on_level_data)
 	var rect = _get_or_gen_calc_level_rect_for_coord(arg_coord)
-	draw_rect(rect, color_to_use, true)
+	draw_rect(rect, final_color_to_use, true)
 
-func _get_mod_a_to_use(arg_render_det_map : Dictionary):
+func _get_mod_a_to_use(arg_render_det_map : Dictionary, arg_base_color : Color):
 	var prog_ratio__from_source = arg_render_det_map[RENDER_DET_KEY__GLOW_PROGRESS_RATIO_FROM_SOURCE]
 	var prog_ratio__to_dest = arg_render_det_map[RENDER_DET_KEY__GLOW_PROGRESS_RATIO_TO_DEST]
 	var total_prog_ratio = (prog_ratio__from_source + prog_ratio__to_dest) / 2.0
 	
-	var color_to_use = DRAW_ELE__COLOR__MOST_ELES
+	var color_to_use = arg_base_color
 	color_to_use.a = total_prog_ratio
 	
 	return color_to_use
@@ -367,7 +378,7 @@ func _get_or_gen_calc_level_rect_for_coord(arg_coord):
 func _draw_render_det_map_in_coord__layout(arg_render_det_map, arg_coord):
 	_draw_render_det_map_in_coord__path(arg_render_det_map, arg_coord)
 	
-	var color_to_use = _get_mod_a_to_use(arg_render_det_map)
+	var color_to_use = _get_mod_a_to_use(arg_render_det_map, DRAW_ELE__COLOR__MOST_ELES)
 	draw_circle(_pre_calced__coord_to_pos_map[arg_coord], DRAW_ELE__LAYOUT_RADIUS, color_to_use)
 
 func _draw_render_det_map_in_coord__custom_path_from_layout_to_layout(arg_render_det_map, arg_coord):

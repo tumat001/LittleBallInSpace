@@ -1743,13 +1743,13 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_2:
 		level_details.level_full_name = [
-			["Curtain Call", []]
+			["Constellation", []]
 		]
 		level_details.level_name = [
-			["Curtain Call", []]
+			["Constellation", []]
 		]
 		level_details.level_desc = [
-			["", []]
+			["If I could be a", []]
 		]
 		
 		
