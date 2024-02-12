@@ -71,6 +71,8 @@ func _update_slider_and_mute_button_based_on_volume():
 	var volume_db = AudioManager.get(_audio_properties.bus_player_type_volume__variable_name)
 	var amount = _convert_volume_db_into_100_to_0_range(volume_db)
 	
+	#print("voldb: %s, amount: %s" % [volume_db, amount])
+	
 	if AudioManager.get(_audio_properties.bus_player_type_mute__variable_name):
 		amount = 0
 	

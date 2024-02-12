@@ -55,7 +55,8 @@ default_font_size = 24
 descriptions__from_export = "From the many puzzle games, the ones that gave insight and inspiration are:
 1) Understand. The ? levels per stage/world/chapter are the inspiration for these levels in this special stage.
 2) Can of Wormholes. The simple yet highly consequencial game mechanics served as a design guideline. The way each mechanic is introduced is great as well.
-3) ElecHead - showed me that a platformer-puzzle with simple design can be great."
+3) ElecHead - showed me that a platformer-puzzle with simple design can be great.
+4) A Monster's Expedition. Same gist as can of wormholes. Also gave inspiration to level 1-5."
 
 [editable path="FTQ_CustomLabel"]
 [editable path="FTQ_CustomLabel2"]

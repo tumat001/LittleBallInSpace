@@ -18,7 +18,7 @@ var data_name__sound_fx_is_mute_name : String = "soundfx_ismute"
 
 #
 
-const DECIBEL_VAL__INAUDIABLE : float = -30.0   # true zero/silence cannot be met, but this should be good enough
+const DECIBEL_VAL__INAUDIABLE : float = -80.0   # true zero/silence cannot be met, but this should be good enough
 const DECIBEL_VAL__STANDARD : float = 0.0  
 
 #
@@ -757,10 +757,16 @@ func helper__play_sound_effect__2d__lower_volume_based_on_dist(arg_id, arg_pos :
 
 #used by SoAudio and AudioPlaylist
 func convert_ratio_using_num_range__from_standard_db_audibles(arg_volume_ratio):
-	return convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, DECIBEL_VAL__STANDARD)
+	var deci = convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, DECIBEL_VAL__STANDARD)
+	
+	#print("vol_ratio: %s, deci: %s, CONST_INAUD: %s" % [arg_volume_ratio, deci, DECIBEL_VAL__INAUDIABLE])
+	
+	return deci
 
 func convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
 	var diff = arg_max - arg_min
+	
+	
 	
 	return arg_min + (diff * arg_ratio)
 
