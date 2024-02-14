@@ -18,7 +18,7 @@ var data_name__sound_fx_is_mute_name : String = "soundfx_ismute"
 
 #
 
-const DECIBEL_VAL__INAUDIABLE : float = -80.0   # true zero/silence cannot be met, but this should be good enough
+const DECIBEL_VAL__INAUDIABLE : float = -30.0   # true zero/silence cannot be met, but this should be good enough
 const DECIBEL_VAL__STANDARD : float = 0.0  
 
 #

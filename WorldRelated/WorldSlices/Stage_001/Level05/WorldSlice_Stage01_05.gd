@@ -13,7 +13,7 @@ var _is_displaying_switch_aim_mode : bool
 
 #
 
-onready var vkp_launch_ball = $MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
+onready var vkp_launch_ball = $MiscContainer/VisIns_BallShoot/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
 onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
 
 
@@ -33,8 +33,10 @@ onready var PDAR_fakeout_disable_rewind = $AreaRegionContainer/PDAreaRegion_Fake
 onready var PDAR_near_fakeout = $AreaRegionContainer/PDAreaRegion_NearFakeout
 
 
-onready var vbox_container_01__launch_ball_tut_panel = $MiscContainer/VBoxContainer
-onready var vbox_container_02__rewind_reminder_panel = $MiscContainer/VBoxContainer2
+#onready var vbox_container_01__launch_ball_tut_panel = $MiscContainer/VBoxContainer
+#onready var vbox_container_02__rewind_reminder_panel = $MiscContainer/VBoxContainer2
+
+onready var vis_ins_anim__ball_shoot = $MiscContainer/VisIns_BallShoot
 
 #
 
@@ -58,8 +60,9 @@ func _deferred_do_insta_win():
 
 
 func _ready():
-	vbox_container_01__launch_ball_tut_panel.modulate.a = 0
-	vbox_container_02__rewind_reminder_panel.modulate.a = 0
+	pass
+	#vbox_container_01__launch_ball_tut_panel.modulate.a = 0
+	#vbox_container_02__rewind_reminder_panel.modulate.a = 0
 
 #
 
@@ -344,11 +347,12 @@ func _on_PDAR_EndTeachAimMode_player_entered_in_area():
 func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
 	GameSettingsManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
 	
-	_start_unhide_launch_ball_tut_vboxes()
-
-func _start_unhide_launch_ball_tut_vboxes():
-	var tweener = create_tween()
-	tweener.tween_property(vbox_container_01__launch_ball_tut_panel, "modulate:a", 1.0, 0.75)
-	tweener.tween_interval(7.5)
-	tweener.tween_property(vbox_container_02__rewind_reminder_panel, "modulate:a", 1.0, 0.75)
+	vis_ins_anim__ball_shoot.start_display()
+#	_start_unhide_launch_ball_tut_vboxes()
+#
+#func _start_unhide_launch_ball_tut_vboxes():
+#	var tweener = create_tween()
+#	tweener.tween_property(vbox_container_01__launch_ball_tut_panel, "modulate:a", 1.0, 0.75)
+#	tweener.tween_interval(7.5)
+#	tweener.tween_property(vbox_container_02__rewind_reminder_panel, "modulate:a", 1.0, 0.75)
 

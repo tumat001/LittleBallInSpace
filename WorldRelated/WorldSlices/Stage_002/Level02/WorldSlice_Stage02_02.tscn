@@ -84,9 +84,11 @@ shape = SubResource( 2 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 5 )]
 position = Vector2( 105, -73 )
+is_replenish_type = false
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
 position = Vector2( -359, -237 )
+is_replenish_type = false
 
 [node name="Object_InteractableButton" parent="ObjectContainer" index="2" instance=ExtResource( 6 )]
 position = Vector2( -383, 89 )
@@ -95,7 +97,8 @@ tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileS
 button_color = 0
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
-position = Vector2( -416, -152 )
+position = Vector2( -392, -152 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 6, 112 )

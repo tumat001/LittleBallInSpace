@@ -93,12 +93,14 @@ var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments :
 var initialized_enemy_killing_shockwave_relateds : bool
 var _enemy_killing_shockwave_draw_node : Node2D
 
+#var initialized_ball_fire_particle_circle_draw_node : bool
+#var _ball_fire_particle_circle_draw_node
 
 #
 
 const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 150.0
 
-#
+###
 
 onready var world_manager = $GameContainer/WorldManager
 onready var player_modi_manager = $GameContainer/PlayerModiManager
@@ -425,8 +427,7 @@ func _initialize_damage_particle_component_pool__all():
 		damage_particle_component_pool__fragment.func_name_for_creating_attack_sprite = "_create_damage_particle__internal__fragment"
 		damage_particle_component_pool__fragment.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
 		damage_particle_component_pool__fragment.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
-	
-	
+
 
 func _create_damage_particle__internal__fragment():
 	var particle = CenterBasedAttackSprite_Scene.instance()
@@ -590,7 +591,7 @@ func _destory_enemies_based_on_draw_param(arg_draw_param):
 			enemy.queue_free()
 			enemy.play_damage_audio__on_death()
 
-####
+##########
 
 #func init_node_container_above_game_front_hud():
 #	if !is_game_front_hud_initialized:
@@ -601,4 +602,9 @@ func _destory_enemies_based_on_draw_param(arg_draw_param):
 #	add_child(node_container_above_game_front_hud)
 #
 #	return node_container_above_game_front_hud
+
+##########
+
+#func init_
+
 

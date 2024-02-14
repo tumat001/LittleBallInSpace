@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=56 format=2]
+[gd_resource type="TileSet" load_steps=59 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -55,6 +55,9 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__Glowables01.png" type="Texture" id=53]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__WallDetails05.png" type="Texture" id=54]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__StarAndInfWrench.png" type="Texture" id=55]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor02.png" type="Texture" id=56]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor03.png" type="Texture" id=57]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Commons/Tileset_Uncollidables_Commons_InstructionScreens.png" type="Texture" id=58]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1254,3 +1257,66 @@
 56/shape_one_way_margin = 0.0
 56/shapes = [  ]
 56/z_index = 0
+57/name = "Tileset_SimpleMetal_Uncollidables__WallDecor02.png 57"
+57/texture = ExtResource( 56 )
+57/tex_offset = Vector2( 0, 0 )
+57/modulate = Color( 1, 1, 1, 1 )
+57/region = Rect2( 0, 0, 128, 192 )
+57/tile_mode = 2
+57/autotile/icon_coordinate = Vector2( 0, 0 )
+57/autotile/tile_size = Vector2( 32, 32 )
+57/autotile/spacing = 0
+57/autotile/occluder_map = [  ]
+57/autotile/navpoly_map = [  ]
+57/autotile/priority_map = [  ]
+57/autotile/z_index_map = [  ]
+57/occluder_offset = Vector2( 0, 0 )
+57/navigation_offset = Vector2( 0, 0 )
+57/shape_offset = Vector2( 0, 0 )
+57/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+57/shape_one_way = false
+57/shape_one_way_margin = 0.0
+57/shapes = [  ]
+57/z_index = 0
+58/name = "Tileset_SimpleMetal_Uncollidables__WallDecor03.png 58"
+58/texture = ExtResource( 57 )
+58/tex_offset = Vector2( 0, 0 )
+58/modulate = Color( 1, 1, 1, 1 )
+58/region = Rect2( 0, 0, 128, 192 )
+58/tile_mode = 2
+58/autotile/icon_coordinate = Vector2( 0, 0 )
+58/autotile/tile_size = Vector2( 32, 32 )
+58/autotile/spacing = 0
+58/autotile/occluder_map = [  ]
+58/autotile/navpoly_map = [  ]
+58/autotile/priority_map = [  ]
+58/autotile/z_index_map = [  ]
+58/occluder_offset = Vector2( 0, 0 )
+58/navigation_offset = Vector2( 0, 0 )
+58/shape_offset = Vector2( 0, 0 )
+58/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+58/shape_one_way = false
+58/shape_one_way_margin = 0.0
+58/shapes = [  ]
+58/z_index = 0
+59/name = "Tileset_Uncollidables_Commons_InstructionScreens.png 59"
+59/texture = ExtResource( 58 )
+59/tex_offset = Vector2( 0, 0 )
+59/modulate = Color( 1, 1, 1, 1 )
+59/region = Rect2( 0, 0, 128, 192 )
+59/tile_mode = 2
+59/autotile/icon_coordinate = Vector2( 0, 0 )
+59/autotile/tile_size = Vector2( 32, 32 )
+59/autotile/spacing = 0
+59/autotile/occluder_map = [  ]
+59/autotile/navpoly_map = [  ]
+59/autotile/priority_map = [  ]
+59/autotile/z_index_map = [  ]
+59/occluder_offset = Vector2( 0, 0 )
+59/navigation_offset = Vector2( 0, 0 )
+59/shape_offset = Vector2( 0, 0 )
+59/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+59/shape_one_way = false
+59/shape_one_way_margin = 0.0
+59/shapes = [  ]
+59/z_index = 0

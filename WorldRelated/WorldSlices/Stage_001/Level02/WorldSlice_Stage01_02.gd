@@ -47,6 +47,7 @@ onready var pdar_stuck_show_warning = $AreaRegionContainer/PDAR_StuckShowWarning
 onready var base_tileset_blocking_to_last_part = $TileContainer/BaseTileSet_ToggleAtCapture
 
 onready var pca_very_last_near_battery = $AreaRegionContainer/PCAR_NearBatt
+onready var pca_near_electric_trigger = $AreaRegionContainer/PCAR_NearTrigger
 
 #
 
@@ -114,6 +115,7 @@ func _on_after_game_start_init():
 	stuck_label_container.modulate.a = 0
 	
 	pca_very_last_near_battery.visible = false
+	pca_near_electric_trigger.visible = false
 	
 	_player = game_elements.get_current_player()
 	_player.block_health_change_cond_clauses.attempt_insert_clause(_player.BlockHealthChangeClauseIds.CUSTOM_DEFINED__01)
@@ -231,6 +233,7 @@ func _on_both_pcr_in_decision_tree_captured():
 	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 	
 	pca_very_last_near_battery.visible = true
+	pca_near_electric_trigger.visible = true
 	
 	var wait_tween = create_tween()
 	wait_tween.tween_callback(self, "_wait_tween_over__both_pcr_captured").set_delay(1.0)
@@ -371,7 +374,7 @@ func _finished_energy_panel_brief_focus_and_glow_up(arg_param):
 ############
 
 func _on_PDAR_Event_Rewi_03_player_entered_in_area():
-	_player.is_show_lines_to_uncaptured_player_capture_regions = true
+	#_player.is_show_lines_to_uncaptured_player_capture_regions = true
 	
 	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 	game_elements.allow_rewind_manager_to_store_and_cast_rewind()

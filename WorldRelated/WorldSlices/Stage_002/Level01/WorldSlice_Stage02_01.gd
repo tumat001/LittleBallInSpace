@@ -131,7 +131,9 @@ func _on_delay_after_displaying_desc_01():
 
 
 func _on_PDAR_ShowLaunchIns_player_entered_in_area():
-	var tweener = create_tween()
-	tweener.tween_property(vbox_of_launch_ins, "modulate:a", 1.0, 0.5)
+	pass
+#	vbox_of_launch_ins.visible = true
+#	var tweener = create_tween()
+#	tweener.tween_property(vbox_of_launch_ins, "modulate:a", 1.0, 0.5)
 	
 

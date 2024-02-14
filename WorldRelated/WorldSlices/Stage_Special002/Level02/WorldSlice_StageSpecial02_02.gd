@@ -126,12 +126,14 @@ const FAST_VIEW_CONSTELL__SIMULATED_STAR_POS = Vector2(690.341797, 138.946533)
 
 #
 
-onready var vkp_left = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left
-onready var vkp_right = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right
+onready var vkp_left = $MiscContainer/VisIns_Move/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left
+onready var vkp_right = $MiscContainer/VisIns_Move/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right
 
 onready var trajectory_editor_line = $MiscContainer/TrajectoryEditorHelper
 
-onready var vbox_of_instructions__01 = $MiscContainer/VBoxContainer3
+#onready var vbox_of_instructions__01 = $MiscContainer/VBoxContainer3
+onready var visual_instruction = $MiscContainer/VisIns_Move
+
 
 #fast spawn = destination
 onready var fast_spawn_pos_2d = $MiscContainer/FastSpawnPos2D
@@ -181,8 +183,9 @@ func _apply_modification_to_game_elements():
 	._apply_modification_to_game_elements()
 	
 	if GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_level_details.level_id):
-		is_fast_view_constellation_mode = true
-		
+		#is_fast_view_constellation_mode = true
+		pass
+		#temptodo
 
 func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
@@ -203,7 +206,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	
 	####
 	
-	vbox_of_instructions__01.modulate.a = 0
+	#vbox_of_instructions__01.modulate.a = 0
 	#SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
 	
 	var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)
@@ -365,17 +368,18 @@ func _on_player_wakeup_sequence_finish():
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	
 	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(true)
-	_make_vbox_of_instructions__01__visible_by_tweener()
+	#_make_vbox_of_instructions__01__visible_by_tweener()
 	
+	visual_instruction.start_display()
 	SingletonsAndConsts.current_master.start_play_music_playlist_of_curr_level()
 	
 	
 	_configure_custom_rules_of_trophy_round()
 
-func _make_vbox_of_instructions__01__visible_by_tweener():
-	var tweener = create_tween()
-	tweener.tween_property(vbox_of_instructions__01, "modulate:a", 1.0, 1.0)
-	
+#func _make_vbox_of_instructions__01__visible_by_tweener():
+#	var tweener = create_tween()
+#	tweener.tween_property(vbox_of_instructions__01, "modulate:a", 1.0, 1.0)
+#
 
 
 #

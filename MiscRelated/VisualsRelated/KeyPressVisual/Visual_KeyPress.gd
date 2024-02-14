@@ -26,6 +26,11 @@ var _curr_idx__any_control_action_name
 
 #
 
+export(Color) var modulate_normal = MODULATE_NORMAL setget set_modulate_normal
+export(Color) var label_modulate = Color("#dddddd") setget set_label_modulate
+
+#
+
 onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer/KeyPressLabel
 
 #
@@ -41,9 +46,29 @@ onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer
 #	return text_for_keypress
 
 
+func set_modulate_normal(arg_mod : Color):
+	modulate_normal = arg_mod
+	
+	if is_inside_tree():
+		if Engine.editor_hint:
+			modulate = modulate_normal
+		else:
+			set_change_state_if_game_control_is_conflicting(change_state_if_game_control_is_conflicting)
+
+func set_label_modulate(arg_mod : Color):
+	label_modulate = arg_mod
+	
+	if is_inside_tree():
+		key_press_label.add_color_override("font_color", label_modulate)
+		
+
+#
+
 func _ready():
 	if !Engine.editor_hint:
 		set_change_state_if_game_control_is_conflicting(change_state_if_game_control_is_conflicting)
+	
+	set_label_modulate(label_modulate)
 	
 	if plain_text.length() != 0:
 		set_plain_text(plain_text)
@@ -90,7 +115,7 @@ func set_change_state_if_game_control_is_conflicting(arg_val):
 			GameSettingsManager.disconnect("conflicting_game_controls_hotkey_changed", self, "_on_conflicting_game_controls_hotkey_changed")
 		
 		if is_inside_tree():
-			modulate = MODULATE_NORMAL
+			modulate = modulate_normal
 
 
 func _on_conflicting_game_controls_hotkey_changed(arg_last_calc_game_controls_in_conflicts):
@@ -102,7 +127,7 @@ func _update_modulate_based_on_control_conflicts():
 		if GameSettingsManager.if_last_calc_game_control_has_conflicts(game_control_action_name):
 			modulate = MODULATE_WITH_CONFLICT
 		else:
-			modulate = MODULATE_NORMAL
+			modulate = modulate_normal
 			
 
 ##

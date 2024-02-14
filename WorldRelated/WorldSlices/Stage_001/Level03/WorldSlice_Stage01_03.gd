@@ -14,11 +14,14 @@ var _started_part_03_sequence : bool
 #onready var label_rewind = $MessegesContainer/Label3Rewind
 #onready var label_zoomout = $MessegesContainer/Label4Zoomout
 
-onready var vkp_zoom_out = $MessegesContainer/VBoxContainer2/VKP_ZoomOut
-onready var vkp_slow_down = $MessegesContainer/VBoxContainer3/VKPSlowDown
+onready var vkp_zoom_out = $MessegesContainer/VisIns_Zoom/VBoxContainer2/VKP_ZoomOut
+onready var vkp_slow_down = $MessegesContainer/VisIns_Slowdown/VBoxContainer3/VKPSlowDown
 
-onready var vkp_zoom_out_container = $MessegesContainer/VBoxContainer2
-onready var vkp_slow_down_container = $MessegesContainer/VBoxContainer3
+onready var vis_ins__zoom_out = $MessegesContainer/VisIns_Zoom
+onready var vis_ins__slowdown = $MessegesContainer/VisIns_Slowdown
+
+#onready var vkp_zoom_out_container = $MessegesContainer/VisIns_Zoom/VBoxContainer2
+#onready var vkp_slow_down_container = $MessegesContainer/VisIns_Slowdown/VBoxContainer3
 
 onready var base_tileset_block_leaving_part_02 = $TileContainer/BaseTileSet_ToggleNotAllCapturedPart02
 
@@ -58,8 +61,8 @@ func _on_after_game_start_init():
 	#vkp_slow_down.text_for_keypress = orig_text_slowdown % InputMap.get_action_list("ui_down")[0].as_text()
 	vkp_slow_down.game_control_action_name = "game_down"
 	
-	vkp_zoom_out_container.modulate.a = 0
-	vkp_slow_down_container.modulate.a = 0
+	#vkp_zoom_out_container.modulate.a = 0
+	#vkp_slow_down_container.modulate.a = 0
 	
 	
 	label_not_all_areas_in_part_2_captured.modulate.a = 0
@@ -73,12 +76,14 @@ func _on_PDAR_ZoomAndSlow_player_entered_in_area():
 	GameSettingsManager.set_game_control_name_string__is_hidden("game_down", false)
 	
 	
-	var vkp_zoom_out_tweener = create_tween()
-	vkp_zoom_out_tweener.tween_property(vkp_zoom_out_container, "modulate:a", 1.0, 0.75)
+#	var vkp_zoom_out_tweener = create_tween()
+	#vkp_zoom_out_tweener.tween_property(vkp_zoom_out_container, "modulate:a", 1.0, 0.75)
 	
-	var vkp_slow_down_tweener = create_tween()
-	vkp_slow_down_tweener.tween_property(vkp_slow_down_container, "modulate:a", 1.0, 0.75)
-
+	#var vkp_slow_down_tweener = create_tween()
+	#vkp_slow_down_tweener.tween_property(vkp_slow_down_container, "modulate:a", 1.0, 0.75)
+	
+	vis_ins__zoom_out.start_display()
+	vis_ins__slowdown.start_display()
 
 
 

@@ -137,20 +137,21 @@ shape = SubResource( 8 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 579, 136 )
+is_replenish_type = false
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
 position = Vector2( 111, 779 )
+is_replenish_type = false
 
 [node name="Object_InteractableButton" parent="ObjectContainer" index="2" instance=ExtResource( 9 )]
 position = Vector2( 176, 704 )
 rotation = 3.14159
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="3" instance=ExtResource( 7 )]
 position = Vector2( -263, 215 )
+is_replenish_type = false
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 401, 242 )
@@ -172,6 +173,7 @@ position = Vector2( 116, 35 )
 shape = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MiscContainer" index="2"]
+visible = false
 margin_left = 682.0
 margin_top = 255.0
 margin_right = 952.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_CBM.tscn" type="PackedScene" id=2]
@@ -12,6 +12,11 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 13
 outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 font_data = ExtResource( 3 )
 
@@ -107,7 +112,7 @@ margin_right = 71.5
 margin_bottom = -140.5
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "Music & Audio"
+text = "Music"
 align = 1
 
 [node name="Label_MusicDesc" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
@@ -116,12 +121,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -149.0
-margin_top = -125.0
+margin_top = -133.0
 margin_right = 148.0
-margin_bottom = -90.0
+margin_bottom = -98.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = SubResource( 2 )
-text = "All music is sourced 
+custom_fonts/font = SubResource( 4 )
+text = "Most musics are sourced 
 from Pixabay"
 align = 1
 
@@ -131,9 +136,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -150.0
-margin_top = -68.0
+margin_top = -95.0
 margin_right = 150.0
-margin_bottom = 13.0
+margin_bottom = -14.0
 rect_min_size = Vector2( 300, 0 )
 
 [node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox"]
@@ -155,37 +160,42 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -148.5
-margin_top = 41.5
-margin_right = 148.5
-margin_bottom = 95.5
+margin_left = -149.0
+margin_top = 6.0
+margin_right = 148.0
+margin_bottom = 41.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = SubResource( 2 )
-text = "All audios and musics
-are sourced
-from Pixabay and Freesound.org"
+custom_fonts/font = SubResource( 4 )
+text = "A few are sourced
+from Chosic"
 align = 1
 
-[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+[node name="Music_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -149.0
-margin_top = 109.0
-margin_right = 151.0
-margin_bottom = 154.0
+margin_left = -150.0
+margin_top = 41.0
+margin_right = 150.0
+margin_bottom = 158.0
 rect_min_size = Vector2( 300, 0 )
 
-[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Sfx_VBox"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox2"]
 margin_right = 300.0
-margin_bottom = 45.0
+margin_bottom = 117.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Small Laser, by Sustainededed
-Charge Up Shot, by spoonsandlessspoons
-
-non exhaustive. I LOST THE LIST :'((("
+text = "Moonlight by Scott Buckley
+Phase Shift by Scott Buckley
+Adrift Among Infinite Stars by Scott Buckley
+(www.scottbuckley.com.au)
+(Creative Commons CC BY 4.0)
+(https://creativecommons.org/licenses/by/4.0/)
+(Dev note: This Buckley guy is the gigachad of
+suspense music I didn't even notice that all
+were from him hahahahhaha)
+"
 align = 1
 
 [node name="Control2" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
@@ -433,7 +443,7 @@ margin_bottom = 47.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Monogram by datagoblin
-(fun fact, this font is monogram)"
+(Dev note: fun fact, this font is monogram)"
 align = 1
 
 [node name="Label_MusicHeader2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
@@ -478,6 +488,44 @@ text = "Portions of this software
 are copyright © <2024> The FreeType Project
  (www.freetype.org). All rights reserved.
 (Godot uses this to render fonts)"
+align = 1
+
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.5
+margin_top = 69.5
+margin_right = 148.5
+margin_bottom = 123.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "All audios and sfx
+are sourced
+from Pixabay and Freesound.org"
+align = 1
+
+[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = 137.0
+margin_right = 151.0
+margin_bottom = 182.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Sfx_VBox"]
+margin_right = 300.0
+margin_bottom = 45.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Small Laser, by Sustainededed
+Charge Up Shot, by spoonsandlessspoons
+
+non exhaustive. I LOST THE LIST :'((("
 align = 1
 
 [node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]

@@ -17,15 +17,17 @@ var _player_modi_energy
 
 #
 
-onready var vkp_left = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left
-onready var vkp_right = $MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right
+onready var vkp_left = $MiscContainer/VisIns_Move/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left #$MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer/VKP_Left
+onready var vkp_right = $MiscContainer/VisIns_Move/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right #$MiscContainer/VBoxContainer3/HBoxContainer/VBoxContainer2/VKP_Right
 
 onready var fast_spawn_pos_2d = $MiscContainer/FastSpawnPos2D
 onready var normal_spawn_pos_2d = $PlayerSpawnCoordsContainer/Position2D
 
 onready var trajectory_editor_line = $MiscContainer/TrajectoryEditorHelper
 
-onready var vbox_of_instructions__01 = $MiscContainer/VBoxContainer3
+#onready var vbox_of_instructions__01 = $MiscContainer/VBoxContainer3
+
+onready var visual_instruction = $MiscContainer/VisIns_Move
 
 #
 
@@ -67,7 +69,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 		#var first_time = GameSaveManager.first_time_opening_game
 		GameSaveManager.first_time_opening_game = false
 		
-		vbox_of_instructions__01.modulate.a = 0
+		#vbox_of_instructions__01.modulate.a = 0
 		SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_1, true)
 		
 		
@@ -175,14 +177,17 @@ func _on_player_wakeup_sequence_finish():
 	game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	
 	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(true)
-	_make_vbox_of_instructions__01__visible_by_tweener()
+	#_make_vbox_of_instructions__01__visible_by_tweener()
 	
 	SingletonsAndConsts.current_master.start_play_music_playlist_of_curr_level()
-
-func _make_vbox_of_instructions__01__visible_by_tweener():
-	var tweener = create_tween()
-	tweener.tween_property(vbox_of_instructions__01, "modulate:a", 1.0, 1.0)
 	
+	
+	visual_instruction.start_display()
+
+#func _make_vbox_of_instructions__01__visible_by_tweener():
+#	var tweener = create_tween()
+#	tweener.tween_property(vbox_of_instructions__01, "modulate:a", 1.0, 1.0)
+#
 
 
 

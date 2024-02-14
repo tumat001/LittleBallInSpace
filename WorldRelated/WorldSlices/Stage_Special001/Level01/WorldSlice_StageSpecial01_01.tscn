@@ -88,11 +88,10 @@ shape = SubResource( 2 )
 position = Vector2( -248, 16 )
 rotation = 1.5708
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 14, 144 )
+is_replenish_type = false
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 79, 273 )
