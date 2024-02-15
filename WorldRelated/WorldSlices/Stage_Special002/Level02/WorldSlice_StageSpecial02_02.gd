@@ -183,9 +183,7 @@ func _apply_modification_to_game_elements():
 	._apply_modification_to_game_elements()
 	
 	if GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_level_details.level_id):
-		#is_fast_view_constellation_mode = true
-		pass
-		#temptodo
+		is_fast_view_constellation_mode = true
 
 func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	._before_player_spawned_signal_emitted__chance_for_changes(arg_player)
