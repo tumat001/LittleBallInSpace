@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_Cinematic/PDAR_Cinematic_End.tscn" type="PackedScene" id=12]
 [ext_resource path="res://MiscRelated/VisionTransitionSpriteCamFogRelated/Imps/VisionTransitionSpriteCamFogNode2D_Circular.gd" type="Script" id=13]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=14]
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_20.tres" type="DynamicFont" id=15]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 58.5, 13 )
@@ -62,7 +63,7 @@ tile_data = PoolIntArray( -327684, 45, 131075, -393212, 45, 131074, -262136, 45,
 
 [node name="TileMap" parent="TileContainer/BTS_Uncolls02" index="0"]
 tile_set = ExtResource( 3 )
-tile_data = PoolIntArray( 851984, 35, 131072, 851985, 35, 131073, 851986, 35, 131072, 851987, 35, 131073, 851988, 35, 131072, 983056, 35, 131072, 983057, 35, 131073, 983058, 35, 131072, 983059, 35, 131073, 983060, 35, 131072 )
+tile_data = PoolIntArray( -1, 38, 1, 65535, 38, 65538, 0, 35, 262146, 1, 38, 262144, 131068, 38, 65539, 131069, 38, 0, 131070, 1073741862, 2, 131071, 38, 0, 65536, 38, 65537, 65539, 59, 0, 65540, 59, 1, 65541, 59, 1, 65542, 59, 1, 65543, 59, 1, 65544, 59, 1, 65545, 59, 1, 65546, 59, 1, 65547, 59, 1, 65548, 59, 1, 65549, 59, 1, 65550, 59, 1, 196604, 38, 1, 131075, 59, 65536, 131076, 59, 65537, 131077, 59, 65537, 131078, 59, 65537, 131079, 59, 65537, 131080, 59, 65537, 131081, 59, 65537, 131082, 59, 65537, 131083, 59, 65537, 131084, 59, 65537, 131085, 59, 65537, 131086, 59, 65537, 131087, 59, 65538, 262137, 38, 65539, 262138, 38, 0, 262139, 38, 0, 262140, 35, 196608, 196611, 59, 65536, 196612, 59, 65537, 196613, 59, 65537, 196614, 59, 65537, 196615, 59, 65537, 196616, 59, 65537, 196617, 59, 65537, 196618, 59, 65537, 196619, 59, 65537, 196620, 59, 65537, 196621, 59, 65537, 196622, 59, 65537, 196623, 59, 65538, 327673, 38, 262145, 327676, 38, 262145, 262147, 59, 131072, 262148, 59, 131073, 262149, 59, 131073, 262150, 59, 131073, 262151, 59, 131073, 262152, 59, 131073, 262153, 59, 131073, 262154, 59, 131073, 262155, 59, 131073, 262156, 59, 131073, 262157, 59, 131073, 262158, 59, 131073, 262159, 59, 131074, 851984, 35, 131072, 851985, 35, 131073, 851986, 35, 131072, 851987, 35, 131073, 851988, 35, 131072, 983056, 35, 131072, 983057, 35, 131073, 983058, 35, 131072, 983059, 35, 131073, 983060, 35, 131072 )
 
 [node name="BTS_Glowing" parent="TileContainer" index="6" instance=ExtResource( 1 )]
 has_glowables = true
@@ -81,6 +82,7 @@ tile_data = PoolIntArray( 65538, 9, 0, 131074, 9, 65536, 196610, 9, 65536, 26214
 position = Vector2( 621, 347 )
 force_action_natural_movement = true
 make_player_energy_undeductable = true
+force_action_natural_movement__right = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Cinematic_Start" index="0"]
 position = Vector2( -48.5, 3 )
@@ -105,8 +107,6 @@ position = Vector2( -216, 144 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Red")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="1" instance=ExtResource( 6 )]
@@ -123,55 +123,75 @@ portal_to_link_with__path = NodePath("../Portal_Blue01")
 
 [node name="BaseEnemy_Bn05" parent="ObjectContainer/EnemyContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 3488, -96 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn06" parent="ObjectContainer/EnemyContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 4672, -96 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn07" parent="ObjectContainer/EnemyContainer" index="2" instance=ExtResource( 8 )]
 position = Vector2( 4672, 1088 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn08" parent="ObjectContainer/EnemyContainer" index="3" instance=ExtResource( 8 )]
 position = Vector2( 3488, 1088 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Ln01" parent="ObjectContainer/EnemyContainer" index="4" instance=ExtResource( 8 )]
 position = Vector2( 4080, 496 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 2
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn01" parent="ObjectContainer/EnemyContainer" index="5" instance=ExtResource( 8 )]
 position = Vector2( 3408, 496 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn02" parent="ObjectContainer/EnemyContainer" index="6" instance=ExtResource( 8 )]
 position = Vector2( 4080, -176 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn03" parent="ObjectContainer/EnemyContainer" index="7" instance=ExtResource( 8 )]
 position = Vector2( 4752, 496 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy_Bn04" parent="ObjectContainer/EnemyContainer" index="8" instance=ExtResource( 8 )]
 position = Vector2( 4080, 1168 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="4" instance=ExtResource( 14 )]
 position = Vector2( 4080, 353 )
 launch_ball_type = 3
+is_replenish_type = false
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 80, -8 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -23, 144 )
@@ -244,15 +264,16 @@ circle_ratio__inside_of_inner_ring = 0.2
 [node name="AdditionalEnemiesInHard" type="Node" parent="MiscContainer" index="1"]
 
 [node name="ModifLabel" type="Label" parent="MiscContainer" index="2"]
-margin_left = 158.0
-margin_top = 70.0
-margin_right = 482.0
-margin_bottom = 121.0
+margin_left = 132.0
+margin_top = 66.0
+margin_right = 480.0
+margin_bottom = 130.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 15 )
 text = "Rule Modifications:
-1) Capture points do not slowly
-reset progress when you leave it
+1) Capture points do not slowly reset progress when you leave it
 2) Rewinds DO NOT work"
+autowrap = true
 
 [connection signal="region_area_captured" from="AreaRegionContainer/PCA_Moving" to="." method="_on_PCA_Moving_region_area_captured"]
 [connection signal="pressed" from="ObjectContainer/Object_InteractableButton" to="." method="_on_Object_InteractableButton_pressed"]

@@ -342,7 +342,7 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_ti
 #
 
 func _on_shortcut_panel_layout_tile_pressed(arg_tile, arg_id):
-	if !SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
+	if SingletonsAndConsts.current_master.can_level_layout_do_action(): #!SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:
 		show_level_layout(arg_id, arg_tile.layout_ele_id_to_put_cursor_to, true)
 
 

@@ -133,15 +133,19 @@ func _show_boot_splash_away_transition():
 	play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.BOOT_SPLASH_AWAY_TRANSITION)
 
 func load_and_show_layout_selection_whole_screen():
+	load_but_do_not_show_layout_selection_whole_screen()
+	
+	gui__level_selection_whole_screen.visible = true
+	gui__level_selection_whole_screen.show_level_layout__last_saved_in_save_manager()
+
+func load_but_do_not_show_layout_selection_whole_screen():
 	if !is_instance_valid(gui__level_selection_whole_screen):
 		gui__level_selection_whole_screen = GUI_LevelSelectionWholeScreen_Scene.instance()
 		layout_selection_container.add_child(gui__level_selection_whole_screen)
 		
 		gui__level_selection_whole_screen.connect("prompt_entered_into_level", self, "_on_selection_screen__prompt_entered_into_level")
-	
-	gui__level_selection_whole_screen.visible = true
-	gui__level_selection_whole_screen.show_level_layout__last_saved_in_save_manager()
-
+		
+		gui__level_selection_whole_screen.visible = false
 
 ###
 

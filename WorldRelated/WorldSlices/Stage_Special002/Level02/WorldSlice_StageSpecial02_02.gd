@@ -230,7 +230,11 @@ func _on_after_game_start_init():
 	#
 	
 	var gui__level_selection_whole_screen = SingletonsAndConsts.current_master.gui__level_selection_whole_screen
-	gui__level_selection_whole_screen.create_and_configure_all_layout_scenes()
+	if !is_instance_valid(gui__level_selection_whole_screen):
+		pass
+		call_deferred("_create_then_init_gui__level_selection_whole_screen_relateds")
+	else:
+		gui__level_selection_whole_screen.create_and_configure_all_layout_scenes()
 	
 	#
 	
@@ -260,6 +264,8 @@ func _on_after_game_start_init():
 		visible = false
 		vis_transition_fog_finale_trophy.activate_monitor_for_player()
 		
+		game_elements.configure_game_state_for_cutscene_occurance(true, true)
+		
 		return
 	
 	#
@@ -283,6 +289,12 @@ func _on_after_game_start_init():
 	
 	background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
 	
+
+func _create_then_init_gui__level_selection_whole_screen_relateds():
+	SingletonsAndConsts.current_master.load_but_do_not_show_layout_selection_whole_screen()
+	SingletonsAndConsts.current_master.gui__level_selection_whole_screen.create_and_configure_all_layout_scenes()
+	
+
 
 func _on_game_front_hud_initialized__fast_view_constell(arg_GFH):
 	SingletonsAndConsts.current_game_front_hud.set_control_container_visibility(false)

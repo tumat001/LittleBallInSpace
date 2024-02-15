@@ -34,6 +34,6 @@ size_flags_vertical = 6
 default_font_size = 40
 descriptions__from_export = "Launching the ball used to launch you even if you're on the ground.
 
-The reason this was done is to make 1-5's gimmik possible. Mechanics-wise it also worked very nicely."
+The reason this was changed was to make 1-5's gimmik possible. Mechanics-wise it also worked very nicely."
 
 [editable path="FTQ_CustomLabel"]

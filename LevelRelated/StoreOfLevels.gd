@@ -2241,10 +2241,15 @@ func _unlock_stage_special_02__and_unhide_eles_to_layout_special_02():
 	GameSaveManager.set_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
 
 
+
+# u can leave at least 1 (2-1) locked and it will advance
 func can_unlock_stage_special_02():
+	var locked_counter = 0
 	for lvl_id in _level_layout_id_to_level_id_map[StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01]:
 		if !GameSaveManager.is_level_id_finished(lvl_id):
-			return false
+			locked_counter += 1
+			if locked_counter > 2:
+				return false
 	
 	return !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_02)
 
@@ -2320,7 +2325,7 @@ func unlock_and_goto_stage_05_level_02_on_win():
 		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = true
 		SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel = StoreOfLevels.LevelIds.LEVEL_02__STAGE_5
 		
-		GameSaveManager.last_hovered_over_level_layout_element_id = 7
+		GameSaveManager.last_hovered_over_level_layout_element_id = 12  #7
 		GameSaveManager.last_opened_level_layout_id = StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05
 		
 

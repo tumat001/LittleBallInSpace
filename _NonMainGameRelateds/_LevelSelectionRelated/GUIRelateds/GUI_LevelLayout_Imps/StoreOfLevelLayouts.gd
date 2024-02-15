@@ -192,7 +192,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 			["Specials - A", []]
 		]
 		details.level_layout_desc = [
-			["Challenges with a bit of rule breaking!", []],
+			["The challenges. Welcome.", []],
 		]
 		
 		_set_details_transition_types__to_usual_circle_types(details)

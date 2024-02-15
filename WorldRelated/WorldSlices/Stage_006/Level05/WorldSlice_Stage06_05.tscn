@@ -180,26 +180,33 @@ shape = SubResource( 13 )
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 1225, 241 )
 launch_ball_type = 1
+is_replenish_type = false
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
 position = Vector2( 2063, 554 )
 launch_ball_type = 1
+is_replenish_type = false
 
 [node name="Pickupable_LaunchBall3" parent="ObjectContainer" index="2" instance=ExtResource( 7 )]
 position = Vector2( 3167, 811 )
 launch_ball_type = 1
+is_replenish_type = false
 
 [node name="BaseEnemy" parent="ObjectContainer" index="3" instance=ExtResource( 10 )]
 position = Vector2( 1498, 228 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy2" parent="ObjectContainer" index="4" instance=ExtResource( 10 )]
 position = Vector2( 2401, 561 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="5" instance=ExtResource( 11 )]
 position = Vector2( 2269, 560 )
@@ -214,22 +221,20 @@ position = Vector2( 2152, 367 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Blue")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 
 [node name="BaseEnemy3" parent="ObjectContainer" index="8" instance=ExtResource( 10 )]
 position = Vector2( 3525, 816 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="Object_InteractableButton2" parent="ObjectContainer" index="9" instance=ExtResource( 8 )]
 position = Vector2( 2697, 816 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BTS_Green")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 
 [node name="Pickupable_Battery" parent="ObjectContainer" index="10" instance=ExtResource( 12 )]
@@ -243,6 +248,7 @@ battery_type = 2
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 3849, 1097 )
 rotation = 4.71239
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 78, 80 )
