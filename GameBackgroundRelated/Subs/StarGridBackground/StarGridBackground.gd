@@ -51,9 +51,9 @@ func _ready():
 	_rng_to_use = StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL)
 	_init__available_grid_cell_poses()
 	_populate_with_stars()
-	set_visible_star_count(visible_star_count)
+	#set_visible_star_count(visible_star_count)
 	
-	#position -= (Vector2(960, 540)) * scale
+	#position = -(Vector2(960, 540))/2
 	
 	#_init_poses_of_children()
 	
@@ -78,6 +78,7 @@ func _populate_with_stars():
 		if !success:
 			print("no more star space left")
 			break
+		
 	
 
 func _populate__one_star() -> bool:
@@ -93,6 +94,8 @@ func _create_and_configure_star(arg_pos):
 	var star = BackgroundEle_Star_Scene.instance()
 	
 	star.position = arg_pos - global_position #- #(grid_size / 2)
+	
+	#star.global_position = -SingletonsAndConsts.current_master.screen_size / 2
 	
 	_all_stars.append(star)
 	call_deferred("_deferred_add_star_as_child", star)
@@ -130,11 +133,10 @@ func set_visible_star_count(arg_val):
 		if is_inside_tree():
 			if _current_visible_stars.size() > visible_star_count:
 				_hide_stars_until_vis_count_met()
-				
 			else:
 				_show_stars_until_vis_count_met()
-				
-
+			
+			#print("setted star count")
 
 func _hide_stars_until_vis_count_met():
 	_start_star_vis_setter_tweener__hide_until()
@@ -169,8 +171,9 @@ func _show_star__via_setter_tweener():
 	
 	star_at_all_index.set_is_invis(false, true)
 	
-	#print("curr_pos: %s" % global_position)
-	#print("showing %s" % star_at_all_index.global_position)
+#	print("curr_pos: %s" % position)
+#	print("showing %s" % star_at_all_index.global_position)
+#	print("vis: %s. mod_a: %s" % [visible, modulate.a]) #also tried vis_at_
 
 func _start_star_vis_setter_tweener__hide_until():
 	_kill_star_vis_setter_tweener()
@@ -188,3 +191,5 @@ func _hide_star__via_setter_tweener():
 	if _current_visible_stars.size() == visible_star_count:
 		_kill_star_vis_setter_tweener()
 
+
+##

@@ -67,13 +67,12 @@ func _ready():
 
 func _randomize_sprite():
 	texture = StoreOfRNG.randomly_select_one_element(all_star_pics, _rng_to_use)
-	
 
 func _start_mod_a_tweener__cycle():
 	_end_mod_a_tweener()
-	
+
 	_mod_a_tweener = create_tween()
-	
+
 	_mod_a_tweener.set_loops()
 	_mod_a_tweener.set_parallel(false)
 	_mod_a_tweener.tween_property(self, "modulate:a", _modulate_a__max, _duration_of_mod_a_half_cycle)
@@ -81,7 +80,7 @@ func _start_mod_a_tweener__cycle():
 
 func _start_mod_a_tweener__hide():
 	_end_mod_a_tweener()
-	
+
 	_mod_a_tweener = create_tween()
 	_mod_a_tweener.tween_property(self, "modulate:a", 0.0, 2.0)
 
@@ -111,6 +110,19 @@ func set_is_invis(arg_val, arg_use_tweeners : bool):
 				else:
 					modulate.a = _modulate_a__min
 					_start_mod_a_tweener__cycle()
+
+
+
+#func _process(delta: float) -> void:
+#	global_position = get_viewport().get_mouse_position()
+#	print("is_vis: %s, mod_a: %s" % [is_visible_in_tree(), modulate.a])
+#	modulate.a = 1.0
+
+#func _process(delta: float) -> void:
+#	update()
+#
+#func _draw() -> void:
+#	draw_circle(Vector2.ZERO, 10, Color.rebeccapurple)
 
 #
 

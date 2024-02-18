@@ -63,13 +63,15 @@ func _ready():
 		level_count_panel.visible = false
 		GameSaveManager.connect("save_manager_initialized", self, "_on_save_manager_initialized", [], CONNECT_ONESHOT)
 	
-	connect("visibility_changed", self, "_on_visibility_changed")
+	connect("visibility_changed", self, "_on_visibility_changed", [], CONNECT_DEFERRED)
+	_on_visibility_changed()
 	
 	trophy_panel.can_show_healths_related_trophies = false
 
 
 func _on_visibility_changed():
 	game_background.visible = visible
+
 
 
 func _on_save_manager_initialized():
@@ -130,24 +132,47 @@ func show_level_layout(arg_layout_id, arg_layout_element_id_of_cursor, arg_is_in
 		else:
 			layout_scene = _create_and_configure_new_layout_scene(arg_layout_id)
 		
-		layout_scene.game_background = game_background
-		
 		layout_scene.layout_ele_id_to_summon_cursor_to = arg_layout_element_id_of_cursor
 		_set_level_layout_as_current_and_active(layout_scene)
 		
 		#
 		
 		#dont do this since gui_layout may define its own background
-		#var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(arg_layout_id)
-		#game_background.set_current_background_type(level_layout_details.background_type, true)
+#		var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(arg_layout_id)
+#		game_background.set_current_background_type(level_layout_details.background_type, true)
+		
+		
+		layout_scene.game_background = game_background
+		
+#		# sss
+#		var level_layout_details = StoreOfLevelLayouts.get_or_construct_layout_details(arg_layout_id)
+#		var all_stars_collected = StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id)
+#		game_background.config_self_based_on_background_params_and_update(level_layout_details.background_type, all_stars_collected, true)
+#		#end of sss
+		
+		
+		
+		#call_deferred("_deferred_background_init", layout_scene, arg_is_instant_in_transition)
 		
 		layout_scene._overridable__setup_game_background(arg_is_instant_in_transition)
-		
 		
 		if StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id):
 			game_background.request_show_brightened_star_background__star_collectible_collected()
 		else:
 			game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
+		
+
+#func _deferred_background_init(layout_scene, arg_is_instant_in_transition):
+#	layout_scene._overridable__setup_game_background(arg_is_instant_in_transition)
+#
+#	if StoreOfLevels.is_level_layout_all_associated_levels_all_coins_collected(layout_scene.level_layout_id):
+#		game_background.request_show_brightened_star_background__star_collectible_collected()
+#	else:
+#		game_background.request_unshow_brightened_star_background__star_collectible_uncollected()
+
+	
+
+
 
 func _create_and_configure_new_layout_scene(arg_layout_id):
 	var layout_scene = StoreOfLevelLayouts.generate_instance_of_layout(arg_layout_id)

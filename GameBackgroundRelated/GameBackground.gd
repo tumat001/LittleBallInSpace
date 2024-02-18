@@ -150,7 +150,7 @@ func _generate_noise_texture():
 
 #
 
-func config_self_based_on_background_params_and_update(arg_background_type : int, arg_is_star_collected : int, arg_use_tween_and_transition : bool = true):
+func config_self_based_on_background_params_and_update(arg_background_type : int, arg_is_star_collected : bool, arg_use_tween_and_transition : bool = true):
 	set_current_background_type(arg_background_type, arg_use_tween_and_transition)
 	_set_is_star_collected(arg_is_star_collected)
 
@@ -209,7 +209,6 @@ func _create_background_color_rect_shader(arg_deferred_add_child : bool):
 func _ready():
 	small__total_star_count = small_star_grid_background.star_count__at_start
 	small__normal_vis_star_count = small_star_grid_background.visible_star_count
-	
 	##
 	
 #	_create_background_color_rect_shader__and_set_as_active(false)
@@ -284,7 +283,6 @@ func set_current_background_type(arg_type, arg_use_tween_and_transition : bool):
 	#if old_bg_type != _current_background_type:
 	_update_current_background_based_on_curr_type(arg_use_tween_and_transition)
 	
-	
 
 func _update_current_background_based_on_curr_type(arg_use_tween_and_transition):
 	_attempt_queue_free_prev_cycle_background_shader_control_holder()
@@ -301,9 +299,9 @@ func _update_current_background_based_on_curr_type(arg_use_tween_and_transition)
 	else:
 		if is_instance_valid(prev_cycle_background_shader_control_holder) and !prev_cycle_background_shader_control_holder.is_queued_for_deletion():
 			prev_cycle_background_shader_control_holder.call_deferred("queue_free")
-		
 	
 	_update_shader_based_on_is_star_collected()
+
 
 func _attempt_queue_free_prev_cycle_background_shader_control_holder():
 	if is_instance_valid(prev_cycle_background_shader_control_holder) and !prev_cycle_background_shader_control_holder.is_queued_for_deletion():
@@ -343,7 +341,6 @@ func _update_shader_based_on_is_star_collected():
 	if _is_star_collected:
 		small_star_grid_background.visible_star_count = small__total_star_count
 		
-		
 		if background_shader_mat == null:
 			return
 		match _current_background_type:
@@ -360,7 +357,6 @@ func _update_shader_based_on_is_star_collected():
 	else:
 		small_star_grid_background.visible_star_count = small__normal_vis_star_count
 		
-		
 		if background_shader_mat == null:
 			return
 		match _current_background_type:
@@ -373,7 +369,7 @@ func _update_shader_based_on_is_star_collected():
 				
 			BackgroundTypeIds.LEVEL__SPECIAL_01:
 				_TYPE_CIRCULAR_NOISE__tween_rect_shader(STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_RADIUS__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_THICKNESS__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_COLOR__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_BRIGHTNESS__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_ANGULAR_SPEED__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_RADIAL_SPEED__NORMAL, STYPE_CIRCULAR_01__LEVEL_SPECIAL_01__SHADER_ALPHA__NORMAL)
-		
+
 
 #
 
@@ -504,4 +500,6 @@ func _TYPE_ANY__shader_param_set_x(arg_shader_param_name : String, arg_val):
 
 func _TYPE_ANY__tweener_method__set_shader_param_x(arg_val, arg_shader_param_name):
 	background_shader_mat.set_shader_param(arg_shader_param_name, arg_val)
+
+########
 

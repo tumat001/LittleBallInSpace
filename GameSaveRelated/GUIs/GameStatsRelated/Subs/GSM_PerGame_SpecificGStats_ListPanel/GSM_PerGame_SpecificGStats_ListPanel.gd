@@ -54,7 +54,7 @@ func _ready():
 #
 
 func add_per_game_list_item(arg_list_item : PerGameListItem, arg_set_and_update : bool):
-	if arg_list_item.button_icon != null:
+	if arg_list_item.button_icon == null:
 		option_button.add_item(arg_list_item.button_label, arg_list_item.id)
 	else:
 		option_button.add_icon_item(arg_list_item.button_icon, arg_list_item.button_label, arg_list_item.id)

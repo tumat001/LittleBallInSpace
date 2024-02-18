@@ -93,8 +93,25 @@ var player_atlased_textures_and_top_left_pos__and_length_of_img__for_fragments :
 var initialized_enemy_killing_shockwave_relateds : bool
 var _enemy_killing_shockwave_draw_node : Node2D
 
-#var initialized_ball_fire_particle_circle_draw_node : bool
-#var _ball_fire_particle_circle_draw_node
+
+const BALL_FIRE_PARTICLE__COUNT__STR01 : int = 3
+const BALL_FIRE_PARTICLE__COUNT__STR02 : int = 5
+const BALL_FIRE_PARTICLE__COUNT__STR03 : int = 7
+const BALL_FIRE_PARTICLE__ANGLE_RAND : float = PI/4
+const BALL_FIRE_PARTICLE__RAD_INITIAL : float = 2.0
+const BALL_FIRE_PARTICLE__RAD_MID : float = 4.0
+const BALL_FIRE_PARTICLE__RAD_FINAL : float = 0.0
+
+const BALL_FIRE_PARTICLE__MOD_A_INITIAL : float = 0.5
+const BALL_FIRE_PARTICLE__MOD_A_MID : float = 0.8
+const BALL_FIRE_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const BALL_FIRE_PARTICLE__DURATION_TO_MID : float = 0.3
+const BALL_FIRE_PARTICLE__DURATION_TO_FINAL : float = 0.75
+
+
+var initialized_ball_fire_particle_circle_draw_node : bool
+var _ball_fire_particle_circle_draw_node : Node2D
 
 #
 
@@ -323,10 +340,10 @@ func _unhandled_key_input(event):
 		
 		
 	#TEST action inputs
-	#temptodo
-	elif event.is_action_pressed("TEST_game_insta_win"):
-		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
-		main_world_slice.as_test__override__do_insta_win()
+	#TEST_game_insta_win with key: 0
+#	elif event.is_action_pressed("TEST_game_insta_win"):
+#		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
+#		main_world_slice.as_test__override__do_insta_win()
 
 
 #######
@@ -605,6 +622,25 @@ func _destory_enemies_based_on_draw_param(arg_draw_param):
 
 ##########
 
-#func init_
+func init_ball_fire_particle_circle_draw_relateds():
+	if !initialized_ball_fire_particle_circle_draw_node:
+		initialized_ball_fire_particle_circle_draw_node = true
+		
+		#
+		
+		_ball_fire_particle_circle_draw_node = Node2D.new()
+		_ball_fire_particle_circle_draw_node.set_script(CircleDrawNode)
+		add_child(_ball_fire_particle_circle_draw_node)
+	
+
+func summon_ball_fire_particle(arg_ball_fire_angle : float):
+	pass
+	
+
+func _generate_ball_fire_angle_based_on_param(arg_ball_fire_angle : float):
+	pass
+	
+
+
 
 

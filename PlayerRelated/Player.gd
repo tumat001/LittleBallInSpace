@@ -380,7 +380,16 @@ enum DisablePlayerCollisionMarkClauseIds {
 var disable_player_collision_cond_clauses : ConditionalClauses
 var last_calc_is_player_collision_disabled : bool
 
+#
 
+var idle_time : float
+const IDLE_TIME_TO_TRIGGER_IDLE_ACTIONS : float = 30.0
+
+enum IdleActionIds {
+	FACE_ROTATION = 0,
+	#SLEEP = 1,
+}
+var curr_idle_action_id : int = -1
 
 #
 
@@ -937,12 +946,17 @@ func _unhandled_key_input(event):
 			if event.is_action("game_left"):
 				if !last_calc_block_player_game_actions:
 					_is_moving_left = true
+					reset_idle_time__and_clear_curr_idle()
+				
 			elif event.is_action("game_right"):
 				if !last_calc_block_player_game_actions:
 					_is_moving_right = true
+					reset_idle_time__and_clear_curr_idle()
+				
 			elif event.is_action("game_down") and !GameSettingsManager.get_game_control_name__is_hidden("game_down"):
 				if !last_calc_block_player_game_actions:
 					_is_move_breaking = true
+					reset_idle_time__and_clear_curr_idle()
 				
 			
 		
@@ -1018,6 +1032,12 @@ func is_move_breaking_and_can_do_move_changing_effects():
 # note: after phy, it is followed by integ, never by another phy.
 func _physics_process(delta):
 	if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+		
+		add_to_idle_time(delta)
+		if curr_idle_action_id == IdleActionIds.FACE_ROTATION:
+			player_face.rotation += PI * delta
+		
+		#
 		
 		is_prevent_effects_of_move_change__by_portal__delta_count -= delta
 		
@@ -2535,6 +2555,53 @@ func is_curr_mov_velocity__left():
 func is_curr_mov_velocity__right():
 	return _current_player_left_right_move_speed > 0
 
+#
+
+func reset_idle_time__and_clear_curr_idle():
+	idle_time = 0
+	
+	if curr_idle_action_id != -1:
+		_cancel_current_idle_effect()
+
+
+func _cancel_current_idle_effect():
+	match curr_idle_action_id:
+		IdleActionIds.FACE_ROTATION:
+			pass
+#		IdleActionIds.SLEEP:
+#			pass
+#
+	
+	curr_idle_action_id = -1
+
+
+
+
+func add_to_idle_time(arg_delta):
+	idle_time += arg_delta
+	
+	if idle_time >= IDLE_TIME_TO_TRIGGER_IDLE_ACTIONS and curr_idle_action_id == -1:
+		do_random_idle_effect()
+		
+
+func do_random_idle_effect():
+	var rand_idle_effect = StoreOfRNG.randomly_select_one_element(IdleActionIds.values(), SingletonsAndConsts.non_essential_rng)
+	match (rand_idle_effect):
+		IdleActionIds.FACE_ROTATION:
+			do_idle_effect__face_rotation()
+#		IdleActionIds.SLEEP:
+#			do_idle_effect__sleep()
+#
+
+func do_idle_effect__face_rotation():
+	curr_idle_action_id = IdleActionIds.FACE_ROTATION
+	
+
+func do_idle_effect__sleep():
+	pass
+	#curr_idle_action_id = IdleActionIds.SLEEP
+	#not continued
+
 
 ###################### 
 # REWIND RELATED
@@ -2733,6 +2800,8 @@ func started_rewind():
 	disable_player_collision_cond_clauses.attempt_insert_clause(DisablePlayerCollisionMarkClauseIds.REWINDING)
 	
 	_attempt_destroy_current_speed_trail()
+	
+	reset_idle_time__and_clear_curr_idle()
 
 func ended_rewind():
 	_ignore_next_current_player_left_right_move_reset = true

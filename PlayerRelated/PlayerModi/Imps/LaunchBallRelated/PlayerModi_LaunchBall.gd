@@ -301,6 +301,7 @@ func _attempt_begin_charge_ball():
 			_player.player_modi__energy.set_forecasted_energy_consume(_player.player_modi__energy.ForecastConsumeId.LAUNCH_BALL, energy_consume_on_launch)
 			
 		
+		_player.reset_idle_time__and_clear_curr_idle()
 		_player.player_face.play_sequence__charging_launch_ball()
 		
 		MouseManager.request_change_mouse_normal_id(self, MouseManager.MouseNormalSpriteTypeId.TARGET_RETICLE)
@@ -316,6 +317,8 @@ func _attempt_launch_ball():
 		
 		if !_player.is_on_ground():
 			_player.apply_inside_induced_force__with_counterforce_speed_if_applicable(ball_and_player_force[1])
+		
+		_player.reset_idle_time__and_clear_curr_idle()
 		
 		#
 		

@@ -12,42 +12,42 @@ const LABEL_VAL_DISPLAY__NOT_PRESENT = "N/A"
 const GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID = "GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID"
 const GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID = "GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID"
 
-#todo add the icons soon
+
 const GAME_STAT__TO_OPTION_DISPLAY_DETAIL_MAP : Dictionary = {
 	# game time
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Time to Win",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Time.png")
 	},
 	
 	# time spent in rewind
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__TIME_SPENT_IN_REWIND__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Rewind Duration",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Rewind.png")
 	},
 	
 	# rotation
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__ROTATION_COUNT__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Rotations",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Rotation.png")
 	},
 	
 	# highest speed
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__HIGHEST_SPEED__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Highest Speed",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Speed.png")
 	},
 	
 	# balls
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__BALLS_SHOT_COUNT__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Balls Shot",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Ball.png")
 	},
 	
 	# lowest energy
 	GameStatsManager.PER_LEVEL__PER_WIN_ARR__LOWEST_ENERGY__DIC_ID : {
 		GAME_STAT_DISPLAY__OPTION_LABEL__DISP_ID : "Lowest Energy",
-		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : null
+		GAME_STAT_DISPLAY__OPTION_ICON__DISP_ID : preload("res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/HighScoreAssets/Stats_HighScore_Energy.png")
 	},
 	
 }

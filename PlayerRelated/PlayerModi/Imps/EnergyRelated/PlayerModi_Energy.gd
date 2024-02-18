@@ -155,6 +155,8 @@ func inc_current_energy(arg_amount, arg_source_id = -1) -> float:
 func dec_current_energy(arg_amount, arg_source_id = -1):
 	set_current_energy(_current_energy - arg_amount, arg_source_id)
 	
+	if is_instance_valid(_player):
+		_player.reset_idle_time__and_clear_curr_idle()
 
 func set_current_energy(arg_val, arg_source_id = -1):
 	var old_val = _current_energy
