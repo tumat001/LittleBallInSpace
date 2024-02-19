@@ -51,7 +51,7 @@ func _ready():
 	_rng_to_use = StoreOfRNG.get_rng(StoreOfRNG.RNGSource.NON_ESSENTIAL)
 	_init__available_grid_cell_poses()
 	_populate_with_stars()
-	#set_visible_star_count(visible_star_count)
+	set_visible_star_count(visible_star_count)
 	
 	#position = -(Vector2(960, 540))/2
 	

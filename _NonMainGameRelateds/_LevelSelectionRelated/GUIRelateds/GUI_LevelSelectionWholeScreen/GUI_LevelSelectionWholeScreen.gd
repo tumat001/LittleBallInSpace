@@ -71,7 +71,7 @@ func _ready():
 
 func _on_visibility_changed():
 	game_background.visible = visible
-
+	
 
 
 func _on_save_manager_initialized():

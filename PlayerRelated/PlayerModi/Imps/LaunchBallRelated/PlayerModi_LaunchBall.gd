@@ -151,7 +151,9 @@ func apply_modification_to_player_and_game_elements(arg_player, arg_game_element
 	
 	#_configure_to_player__with_energy_modi()
 	call_deferred("_configure_to_player__with_energy_modi")
-
+	
+	#
+	_game_elements.init_ball_fire_particle_circle_draw_relateds()
 
 #
 
@@ -322,7 +324,7 @@ func _attempt_launch_ball():
 		
 		#
 		
-		_create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
+		var ball = _create_ball__and_launch_at_vector(_player.global_position, ball_and_player_force[0])
 		if !is_infinite_ball_count:
 			set_current_ball_count(_current_ball_count - 1)
 		
@@ -340,19 +342,27 @@ func _attempt_launch_ball():
 		
 		var strength_factor_from_0_to_2 = player_modi_launch_ball_node.get_launch_force_as_range_from_0_to_2()
 		var volume_ratio
+		var ball_fire_particle_amount : int = 0
 		if strength_factor_from_0_to_2 == 0:
 			volume_ratio = 0.33
+			ball_fire_particle_amount = 2
 		elif strength_factor_from_0_to_2 == 1:
 			volume_ratio = 0.66
+			ball_fire_particle_amount = 3
 		else:
 			volume_ratio = 1
+			ball_fire_particle_amount = 4
 		
 		var launch_ball_sfx_id = StoreOfAudio.get_randomized_sfx_id__launch_ball()
 		AudioManager.helper__play_sound_effect__2d(launch_ball_sfx_id, _player.global_position, volume_ratio, null)
 		
 		if GameStatsManager.is_started_GE_record_stats():
 			GameStatsManager.current_GE__balls_shot_count += 1
-
+		
+		#
+		var angle = get_angle_to_use_for_ball_launch()
+		for i in ball_fire_particle_amount:
+			_game_elements.summon_single_ball_fire_particle(angle, _player.global_position, ball.modulate, _player.linear_velocity / 2, _player.is_on_ground())
 
 func force_launch_ball_at_pos__min_speed(arg_pos):
 	var angle_to_use = _player.global_position.angle_to_point(arg_pos)

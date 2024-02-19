@@ -94,21 +94,23 @@ var initialized_enemy_killing_shockwave_relateds : bool
 var _enemy_killing_shockwave_draw_node : Node2D
 
 
-const BALL_FIRE_PARTICLE__COUNT__STR01 : int = 3
-const BALL_FIRE_PARTICLE__COUNT__STR02 : int = 5
-const BALL_FIRE_PARTICLE__COUNT__STR03 : int = 7
-const BALL_FIRE_PARTICLE__ANGLE_RAND : float = PI/4
-const BALL_FIRE_PARTICLE__RAD_INITIAL : float = 2.0
-const BALL_FIRE_PARTICLE__RAD_MID : float = 4.0
+#const BALL_FIRE_PARTICLE__COUNT__STR01 : int = 3
+#const BALL_FIRE_PARTICLE__COUNT__STR02 : int = 5
+#const BALL_FIRE_PARTICLE__COUNT__STR03 : int = 7
+const BALL_FIRE_PARTICLE__ANGLE_RAND_ON_GROUND : float = PI/4
+const BALL_FIRE_PARTICLE__ANGLE_RAND_ON_AIR : float = PI/2.5
+
+const BALL_FIRE_PARTICLE__RAD_INITIAL : float = 1.0
+const BALL_FIRE_PARTICLE__RAD_MID : float = 1.5
 const BALL_FIRE_PARTICLE__RAD_FINAL : float = 0.0
 
-const BALL_FIRE_PARTICLE__MOD_A_INITIAL : float = 0.5
-const BALL_FIRE_PARTICLE__MOD_A_MID : float = 0.8
+const BALL_FIRE_PARTICLE__MOD_A_INITIAL : float = 0.2
+const BALL_FIRE_PARTICLE__MOD_A_MID : float = 0.4
 const BALL_FIRE_PARTICLE__MOD_A_FINAL : float = 0.0
 
 const BALL_FIRE_PARTICLE__DURATION_TO_MID : float = 0.3
-const BALL_FIRE_PARTICLE__DURATION_TO_FINAL : float = 0.75
-
+const BALL_FIRE_PARTICLE__DURATION_TO_FINAL : float = 0.65
+const BALL_FIRE_PARTICLE__DURATION_TOTAL : float = BALL_FIRE_PARTICLE__DURATION_TO_MID + BALL_FIRE_PARTICLE__DURATION_TO_FINAL
 
 var initialized_ball_fire_particle_circle_draw_node : bool
 var _ball_fire_particle_circle_draw_node : Node2D
@@ -633,14 +635,64 @@ func init_ball_fire_particle_circle_draw_relateds():
 		add_child(_ball_fire_particle_circle_draw_node)
 	
 
-func summon_ball_fire_particle(arg_ball_fire_angle : float):
-	pass
-	
 
-func _generate_ball_fire_angle_based_on_param(arg_ball_fire_angle : float):
-	pass
+func summon_single_ball_fire_particle(arg_ball_fire_angle : float, arg_center_pos_basis : Vector2, arg_fill_color : Color, arg_particle_lin_vel : Vector2, arg_is_player_on_ground : bool):
+	arg_fill_color.a = BALL_FIRE_PARTICLE__MOD_A_INITIAL
 	
+	var rand_radius_modif = SingletonsAndConsts.non_essential_rng.randf_range(-0.5, 0.75)
+	var rand_angle
+	if arg_is_player_on_ground:
+		rand_angle = arg_ball_fire_angle + SingletonsAndConsts.non_essential_rng.randf_range(-BALL_FIRE_PARTICLE__ANGLE_RAND_ON_GROUND, BALL_FIRE_PARTICLE__ANGLE_RAND_ON_GROUND)
+	else:
+		rand_angle = arg_ball_fire_angle + SingletonsAndConsts.non_essential_rng.randf_range(-BALL_FIRE_PARTICLE__ANGLE_RAND_ON_AIR, BALL_FIRE_PARTICLE__ANGLE_RAND_ON_AIR)
+	
+	var rand_lifetime_modif = SingletonsAndConsts.non_essential_rng.randf_range(-0.25, 0.25)
+	var rand_lifetime_modif__half = rand_lifetime_modif / 2
+	
+	#
+	
+	var draw_param = _ball_fire_particle_circle_draw_node.DrawParams.new()
+	draw_param.center_pos = arg_center_pos_basis
+	draw_param.current_radius = BALL_FIRE_PARTICLE__RAD_INITIAL + rand_radius_modif
+	draw_param.radius_per_sec = 0
+	draw_param.fill_color = arg_fill_color
+	
+	draw_param.outline_color = arg_fill_color #Color("#FFFFFF00")
+	draw_param.outline_width = 0
+	draw_param.lifetime_of_draw = BALL_FIRE_PARTICLE__DURATION_TOTAL + rand_lifetime_modif + 1.0
+	draw_param.lifetime_to_start_transparency = 9999.0
+	
+	_ball_fire_particle_circle_draw_node.add_draw_param(draw_param)
+	
+	##
+	
+	var draw_tweener = create_tween()
+	draw_tweener.set_parallel(true)
+	# pos relateds
+	var rand_dist = SingletonsAndConsts.non_essential_rng.randf_range(25, 60)
+	var final_pos = arg_center_pos_basis + Vector2(rand_dist, 0).rotated(rand_angle + PI) + arg_particle_lin_vel
+	draw_tweener.tween_property(draw_param, "center_pos", final_pos, BALL_FIRE_PARTICLE__DURATION_TOTAL + rand_lifetime_modif).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# mod a
+	draw_tweener.tween_property(draw_param, "fill_color:a", BALL_FIRE_PARTICLE__MOD_A_MID, BALL_FIRE_PARTICLE__DURATION_TO_MID + rand_lifetime_modif__half)
+	# radius
+	draw_tweener.tween_property(draw_param, "current_radius", BALL_FIRE_PARTICLE__RAD_MID + rand_radius_modif, BALL_FIRE_PARTICLE__DURATION_TO_MID + rand_lifetime_modif__half)
+	draw_tweener.set_parallel(false)
 
+	###### DELAY
+	draw_tweener.tween_interval(BALL_FIRE_PARTICLE__DURATION_TO_MID + rand_lifetime_modif__half)
+
+
+	draw_tweener.set_parallel(true)
+	# mod a
+	draw_tweener.tween_property(draw_param, "fill_color:a", BALL_FIRE_PARTICLE__MOD_A_FINAL, BALL_FIRE_PARTICLE__DURATION_TO_FINAL + rand_lifetime_modif__half)
+	# radius
+	draw_tweener.tween_property(draw_param, "current_radius", BALL_FIRE_PARTICLE__RAD_FINAL, BALL_FIRE_PARTICLE__DURATION_TO_FINAL + rand_lifetime_modif__half)
+	draw_tweener.set_parallel(false)
+	
+	
+	
+	return draw_param
+	
 
 
 
