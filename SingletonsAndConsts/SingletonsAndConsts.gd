@@ -50,7 +50,10 @@ var interrupt_return_to_screen_layout_panel__go_directly_to_level : bool = false
 var level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel
 
 
-var show_end_game_result_pre_hud : bool = false
+var interrupt_return_to_screen_layout_panel__for_any_ending_cutscene : bool = false
+var cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene : int = -1
+
+#var show_end_game_result_pre_hud : bool = false
 
 #
 

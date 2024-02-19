@@ -3,6 +3,7 @@ extends Node
 const GUI_LevelSelectionWholeScreen = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.gd")
 const GUI_LevelSelectionWholeScreen_Scene = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.tscn")
 const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/TransitionsRelated/StoreOfTransitionSprites.gd")
+const StoreOfCutscenes = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/StoreOfCutscenes.gd")
 
 const GameElements = preload("res://GameElements/GameElements.gd")
 const GameElements_Scene = preload("res://GameElements/GameElements.tscn")
@@ -13,6 +14,8 @@ const FirstTimeQuestionWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreG
 
 const EndingSummaryWSPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.gd")
 const EndingSummaryWSPanel_Scene = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/EndingSummaryWSP/EndingSummaryWSP.tscn")
+
+const GUI_Cutscene = preload("res://MiscRelated/CutsceneRelated/GUI_Cutscene.gd")
 
 #
 
@@ -26,6 +29,10 @@ signal switching_from_game_elements__non_restart__transition_ended()
 
 signal switch_from_GE__from_quit()
 signal switch_from_GE__from_restart()
+
+#
+
+signal on_curr_game_elements_tree_exited__begin_for_any_ending_cutscene()
 
 #
 
@@ -326,52 +333,78 @@ func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_tran
 	_tween_unmute_background_music__internal()
 	
 	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
-		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited")
+		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited__immediately_start_level")
+	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene:
+		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited__begin_for_any_ending_cutscene", [SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene])
 	
 	SingletonsAndConsts.current_game_elements.queue_free()
 	
 	
-	if !SingletonsAndConsts.show_end_game_result_pre_hud:
-		if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
-			load_and_show_layout_selection_whole_screen()
-			
-			arg_curr_transition.queue_free()
-			var transition = play_transition__using_id(arg_next_transition_id)
-			transition.queue_free_on_end_of_transition = true
-			
-			if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
-				call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
-			
-		else:
-			arg_curr_transition.queue_free()
-			
-			if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
-				_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
-			for level_id in _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on:
-				if !GameSaveManager.is_level_id_finished(level_id):
-					_make_level_id_mark_as_finished(level_id)
+	if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level and !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene:
+		load_and_show_layout_selection_whole_screen()
+		
+		arg_curr_transition.queue_free()
+		var transition = play_transition__using_id(arg_next_transition_id)
+		transition.queue_free_on_end_of_transition = true
+		
+		if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+			call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
 		
 	else:
 		arg_curr_transition.queue_free()
 		
-		if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
-			_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
-		for level_id in _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on:
-			if !GameSaveManager.is_level_id_finished(level_id):
-				_make_level_id_mark_as_finished(level_id)
+		_mark_level_as_finished__and_unlock_lvls_with_prereqs()
 		
-		#_show_ending_summary_wsp()
+	
+#	if !SingletonsAndConsts.show_end_game_result_pre_hud:
+#		# the normal pathing
+#		if !SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
+#			load_and_show_layout_selection_whole_screen()
+#
+#			arg_curr_transition.queue_free()
+#			var transition = play_transition__using_id(arg_next_transition_id)
+#			transition.queue_free_on_end_of_transition = true
+#
+#			if arg_is_win and !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+#				call_deferred("_attempt_unlock_and_play_anim_on_victory__on_level_id")
+#
+#		else:
+#			arg_curr_transition.queue_free()
+#
+#			_mark_level_as_finished__and_unlock_lvls_with_prereqs()
+#
+#	else:
+#		arg_curr_transition.queue_free()
+#
+#		_mark_level_as_finished__and_unlock_lvls_with_prereqs()
+#
+#		#_show_ending_summary_wsp()
 	
 	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level = false
-	
+	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene = false
+	SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene = -1
+
+func _mark_level_as_finished__and_unlock_lvls_with_prereqs():
+	if !GameSaveManager.is_level_id_finished(SingletonsAndConsts.current_base_level_id):
+		_make_level_id_mark_as_finished(_level_id_to_mark_as_finish__and_display_win_vic_on)
+	for level_id in _level_ids_to_mark_as_finish__as_additional__and_display_win_vic_on:
+		if !GameSaveManager.is_level_id_finished(level_id):
+			_make_level_id_mark_as_finished(level_id)
+
 
 # for all except restart
-func _on_curr_game_elements_tree_exited():
+func _on_curr_game_elements_tree_exited__immediately_start_level():
 	var level_details = StoreOfLevels.generate_or_get_level_details_of_id(SingletonsAndConsts.level_id_to_go_directly_to__after_interrupt_to_return_to_screen_layout_panel)
 	#instant_start_game_elements__with_level_details(level_details)
 	call_deferred("instant_start_game_elements__with_level_details", level_details)
-	
 
+func _on_curr_game_elements_tree_exited__begin_for_any_ending_cutscene(arg_cutscene_id):
+	if arg_cutscene_id != -1:
+		#_create_and_show_ending_cutscene_on_GE_tree_exit(SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene)
+		call_deferred("_create_and_show_ending_cutscene_on_GE_tree_exit", arg_cutscene_id)
+	
+	emit_signal("on_curr_game_elements_tree_exited__begin_for_any_ending_cutscene")
+	
 
 func _attempt_unlock_and_play_anim_on_victory__on_level_id():
 	if _level_id_to_mark_as_finish__and_display_win_vic_on != -1:
@@ -537,9 +570,6 @@ func _on_switching_from_game_elements__as_win__start_ending_sequence(arg_transit
 
 func _on_switching_from_game_elements__as_win__transition_ended():
 	emit_signal("switching_from_game_elements__as_win__transition_ended")
-	
-
-
 
 
 func _on_ending_summary_panel_finished():
@@ -549,6 +579,30 @@ func _on_ending_summary_panel_finished():
 	load_and_show_layout_selection_whole_screen()
 	
 	ending_summary_ws_panel.queue_free()
+
+#
+
+func _create_and_show_ending_cutscene_on_GE_tree_exit(arg_cutscene_id):
+	var cutscene_scene = StoreOfCutscenes.generate_cutscene_from_id(arg_cutscene_id)
+	
+	show_any_ending_cutscene(cutscene_scene)
+
+func show_any_ending_cutscene(arg_cutscene : GUI_Cutscene):
+	#note, see if this should be in cutscene container or nah
+	add_child(arg_cutscene)
+	move_child(arg_cutscene, 0)
+	
+	arg_cutscene.connect("cutscene_ended", self, "_on_ending_cutscene_ended", [arg_cutscene], CONNECT_ONESHOT)
+	
+	arg_cutscene.start_display()
+
+func _on_ending_cutscene_ended(arg_cutscene : GUI_Cutscene):
+	var transition = play_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.IN__STANDARD_CIRCLE__BLACK)
+	transition.queue_free_on_end_of_transition = true
+	
+	load_and_show_layout_selection_whole_screen()
+	
+	arg_cutscene.queue_free()
 
 
 ##################

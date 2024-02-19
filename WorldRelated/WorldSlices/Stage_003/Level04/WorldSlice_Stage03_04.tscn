@@ -147,6 +147,7 @@ shape = SubResource( 4 )
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 187, 143 )
 launch_ball_type = 3
+is_replenish_type = false
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="1" instance=ExtResource( 5 )]
 position = Vector2( 424, 64 )
@@ -292,6 +293,7 @@ shape = SubResource( 6 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 1235, -316 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 82, 144 )

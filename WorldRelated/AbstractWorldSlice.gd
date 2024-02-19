@@ -88,6 +88,10 @@ var trail_compo_for_module_x_pickup_particle : MultipleTrailsForNodeComponent
 
 #
 
+var _interrupt_ending_to_show_cutscene_id : int = -1
+
+#
+
 onready var tile_container = $TileContainer
 onready var object_container = $ObjectContainer
 onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
@@ -118,6 +122,8 @@ func _ready():
 	_attempt_init_player_capture_area_style_to_one_at_a_time()
 	call_deferred("_deferred_initialize_game_background_configs_related")
 	call_deferred("_init_all_star_pickup_related")
+	
+	show_no_cutscene_id_at_GE_end()
 
 func _initialize_spawn_coords():
 	for child in player_spawn_coords_container.get_children():
@@ -777,6 +783,22 @@ func as_test__override__do_insta_win__template_capture_all_points():
 			pca.set_is_area_captured__external(true)
 	
 
+
+#
+
+func show_cutscene_id_at_GE_end(arg_cutscene_id):
+	var old_cutscene_id = _interrupt_ending_to_show_cutscene_id
+	_interrupt_ending_to_show_cutscene_id = arg_cutscene_id
+	
+	SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene = true
+	SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene = arg_cutscene_id
+
+func show_no_cutscene_id_at_GE_end():
+	if _interrupt_ending_to_show_cutscene_id != -1:
+		_interrupt_ending_to_show_cutscene_id = -1
+		
+		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene = false
+		SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene = -1
 
 ########################
 ## Helpers

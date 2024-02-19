@@ -164,7 +164,8 @@ func _on_PCA_Last_region_area_captured():
 		
 		game_elements.ban_rewind_manager_to_store_and_cast_rewind()
 		
-		SingletonsAndConsts.show_end_game_result_pre_hud = true
+		#SingletonsAndConsts.show_end_game_result_pre_hud = true
+		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene = true
 		
 		call_deferred("_deferred_last_region_captured")
 

@@ -1,6 +1,9 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
+const StoreOfCutscenes = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/StoreOfCutscenes.gd")
+
+#
 
 var _is_cdsu_module_tile_colors_picked_up : bool
 
@@ -39,7 +42,10 @@ func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
 
 func _on_game_result_decided__win__base():
 	if _is_cdsu_module_tile_colors_picked_up:
+		var old_val = GameSaveManager.can_edit_tile_colors
 		GameSaveManager.can_edit_tile_colors = true
-
+		
+		if old_val != true:
+			show_cutscene_id_at_GE_end(StoreOfCutscenes.CutsceneId.MOD_X_INFO__TILE_COLORS)
 
 

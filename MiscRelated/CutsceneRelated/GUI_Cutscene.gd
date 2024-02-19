@@ -298,11 +298,14 @@ func _set_current_cutscene__and_start_display(arg_cutscene : GUI_CutscenePanel, 
 	
 	##
 	
-	if arg_page_index == _total_cutscene_panel_count - 1:
-		_show_left_and_right_buttons__right_as_last()
+	if arg_page_index == 0:
+		if arg_page_index == _total_cutscene_panel_count - 1:
+			_show_right_button_only__right_as_last()
+		else:
+			_show_right_button_only__standard()
 		
-	elif arg_page_index == 0:
-		_show_right_button_only()
+	elif arg_page_index == _total_cutscene_panel_count - 1:
+		_show_left_and_right_buttons__right_as_last()
 		
 	else:
 		_show_left_and_right_buttons__standard()
@@ -321,22 +324,34 @@ func _show_left_and_right_buttons__right_as_last():
 	
 	#
 	
-	right_button.visible = true
-	right_button_tex_button.texture_normal = GUI_Cutscene_EndButton_Normal
-	right_button_tex_button.texture_hover = GUI_Cutscene_EndButton_Highlighted
-	right_button_label.text = PAGE_TRAVERSAL_BUTTON_TEXT__END
-	
+	_sepa__show_right_button__right_as_last()
 
-func _show_right_button_only():
-	left_button.visible = false
-	
-	#
-	
+func _sepa__show_right_button__standard():
 	right_button.visible = true
 	right_button_tex_button.texture_normal = GUI_Cutscene_NextButton_Normal
 	right_button_tex_button.texture_hover = GUI_Cutscene_NextButton_Highlighted
 	right_button_label.text = PAGE_TRAVERSAL_BUTTON_TEXT__NEXT
+
+func _sepa__show_right_button__right_as_last():
+	right_button.visible = true
+	right_button_tex_button.texture_normal = GUI_Cutscene_EndButton_Normal
+	right_button_tex_button.texture_hover = GUI_Cutscene_EndButton_Highlighted
+	right_button_label.text = PAGE_TRAVERSAL_BUTTON_TEXT__END
+
+
+func _show_right_button_only__right_as_last():
+	left_button.visible = false
 	
+	#
+	
+	_sepa__show_right_button__right_as_last()
+
+func _show_right_button_only__standard():
+	left_button.visible = false
+	
+	#
+	
+	_sepa__show_right_button__standard()
 
 func _show_left_and_right_buttons__standard():
 	left_button.visible = true

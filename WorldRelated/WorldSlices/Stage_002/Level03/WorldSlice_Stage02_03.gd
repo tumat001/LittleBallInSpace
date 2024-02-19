@@ -2,6 +2,9 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
 
+const StoreOfCutscenes = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/StoreOfCutscenes.gd")
+
+
 #
 
 var _is_cdsu_module_stats_picked_up : bool
@@ -208,5 +211,12 @@ func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
 
 func _on_game_result_decided__win__base():
 	if _is_cdsu_module_stats_picked_up:
+		var old_val = GameSaveManager.can_view_game_stats
 		GameSaveManager.can_view_game_stats = true
+		
+		if old_val != true:
+			show_cutscene_id_at_GE_end(StoreOfCutscenes.CutsceneId.MOD_X_INFO__STATS)
+#		SingletonsAndConsts.interrupt_return_to_screen_layout_panel__for_any_ending_cutscene = true
+#		SingletonsAndConsts.cutscene_id_to_show__after_interrupt_return_to_screen_layout_panel__for_ending_cutscene = StoreOfCutscenes.CutsceneId.MOD_X_INFO__STATS
+		
 

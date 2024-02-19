@@ -1,6 +1,10 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
+const StoreOfCutscenes = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/StoreOfCutscenes.gd")
+
+#
+
 var _is_cdsu_module_custom_audio_picked_up : bool
 
 onready var pickup_cdsu_module_custom_audio = $ObjectContainer/PickupCDSU_Module_CustomAudio
@@ -13,10 +17,11 @@ func _init():
 	
 
 func as_test__override__do_insta_win():
-	as_test__override__do_insta_win__template_capture_all_points()
 	_is_cdsu_module_custom_audio_picked_up = true
 	StoreOfLevels.unlock_stage_04__and_unhide_eles_to_layout_04()
-
+	
+	as_test__override__do_insta_win__template_capture_all_points()
+	
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
@@ -47,7 +52,10 @@ func _on_PickupCDSU_Module_CustomAudio_restored_from_destroyed_from_rewind():
 
 func _on_game_result_decided__win__base():
 	if _is_cdsu_module_custom_audio_picked_up:
+		var old_val = GameSaveManager.can_config_custom_audio
 		GameSaveManager.can_config_custom_audio = true
-
+		
+		if old_val != true:
+			show_cutscene_id_at_GE_end(StoreOfCutscenes.CutsceneId.MOD_X_INFO__CUSTOM_AUDIO)
 
 

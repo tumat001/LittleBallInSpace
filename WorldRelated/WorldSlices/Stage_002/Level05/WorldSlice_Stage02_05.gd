@@ -1,6 +1,10 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
+const StoreOfCutscenes = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/StoreOfCutscenes.gd")
+
+#
+
 var _is_cdsu_module_x_picked_up : bool
 
 #
@@ -39,6 +43,11 @@ func _on_PickupCDSU_PlayerAesth_restored_from_destroyed_from_rewind():
 
 func _on_game_result_decided__win__base():
 	if _is_cdsu_module_x_picked_up:
+		var old_val = GameSaveManager.can_edit_player_aesth
 		GameSaveManager.can_edit_player_aesth = true
+		
+		if old_val != true:
+			show_cutscene_id_at_GE_end(StoreOfCutscenes.CutsceneId.MOD_X_INFO__PLAYER_AESTH)
+
 
 
