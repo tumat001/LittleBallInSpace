@@ -29,13 +29,13 @@ static func generate_cutscene_from_id(arg_id):
 			scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/LSpecial01/Lvl04/LSpecial01_Cutscene_Lvl04.tscn")
 			
 		CutsceneId.MOD_X_INFO__STATS:
-			scene_pack = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_Stats.tscn")
+			scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_Stats.tscn")
 		CutsceneId.MOD_X_INFO__PLAYER_AESTH:
-			scene_pack = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_PlayerAesth.tscn")
+			scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_PlayerAesth.tscn")
 		CutsceneId.MOD_X_INFO__TILE_COLORS:
-			scene_pack = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_TileColors.tscn")
+			scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_TileColors.tscn")
 		CutsceneId.MOD_X_INFO__CUSTOM_AUDIO:
-			scene_pack = preload("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_CustomAudio.tscn")
+			scene_pack = load("res://MiscRelated/CutsceneRelated/Imps/Cutscenes/ModX/ModX_Cutscene_CustomAudio.tscn")
 		
 	
 	return scene_pack.instance()

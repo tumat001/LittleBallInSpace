@@ -24,8 +24,9 @@ func _init():
 	is_player_capture_area_style_one_at_a_time__in_node_order = true
 
 func as_test__override__do_insta_win():
-	_on_PCA_Last_region_area_captured()
-
+	as_test__override__do_insta_win__template_capture_all_points()
+	#_on_PCA_Last_region_area_captured()
+	
 
 
 func _on_after_game_start_init():

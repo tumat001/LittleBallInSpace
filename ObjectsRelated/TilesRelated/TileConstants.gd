@@ -2,7 +2,10 @@ extends Node
 
 
 const LightTextureConstructor = preload("res://MiscRelated/Light2DRelated/LightTextureConstructor.gd")
+const BaseTileSet = preload("res://ObjectsRelated/TilesRelated/BaseTileSet.gd")
 
+
+#
 
 const INSTANT_BREAK_GLASS_TILE__MASS = 12
 const FRAGILE_BREAK_GLASS_TILE__MASS = 15
@@ -67,7 +70,7 @@ const SPACESHIP_SPECIAL_GLASS_TILE_ID = 13
 const DARK_METAL_TILE_ID = 14
 
 const DARK_METAL_FRAME_TILE_ID = 23
-#24 is above
+#24 is above (SIMPLE_METAL_TILE_ID__01__V2)
 const SIMPLE_METAL_FRAME_TILE_ID = 25
 
 const HOSTILE_SHIP_METAL_TILE_ID__01 = 26
@@ -222,6 +225,80 @@ onready var _tile_id_to_ball_collision_sound_list_map : Dictionary = {
 	
 	TOGGLEABLE_HOSTILE_SHIP_BLOCKS_TILE_ID__FILLED : BALL__TOGGLEABLE_TILE_COLLISION_SOUND_LIST,
 	
+	
+}
+
+
+#const DEFAULT_PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE = Color("#CCCCCC")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_METAL = Color("#282828")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_METAL = Color("#614F82")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__DARK_METAL = Color("#1A1A1A")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_SPECIAL_GLASS = Color("#CFCFCF")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_BREAKABLE = Color("#317BA7")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__INSTANT_BREAKABLE = Color("#D2FDFE")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__FRAGILE_BREAKABLE = Color("#AAFDFE")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__STRONG_BREAKABLE = Color("#317BA7")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_WALL_BREAKABLE = Color("#614F82")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__TOGGLEABLE_COLOR_CODED_BLOCKS = Color("#474747")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__HOSTILE_SHIP_METAL = Color("#1F1F1F")
+const PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__TOGGLEABLE_HOSTILE_SHIP_BLOCKS = Color("#970204")
+
+
+onready var _tile_id_to_player_hit_collision_rect_particle_modulate_map := {
+	SIMPLE_METAL_TILE_ID__01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_METAL,
+	SIMPLE_METAL_TILE_ID__02 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_METAL,
+	SIMPLE_METAL_TILE_ID__01__V2 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_METAL,
+	
+	SPACESHIP_TILE_ID__01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_METAL,
+	SPACESHIP_TILE_ID__02 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_METAL,
+	
+	DARK_METAL_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__DARK_METAL,
+	
+	#
+	
+	SPACESHIP_METAL_FRAME_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_METAL,
+	SPACESHIP_SPECIAL_GLASS_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_METAL,
+	
+	DARK_METAL_FRAME_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__DARK_METAL,
+	SIMPLE_METAL_FRAME_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_METAL,
+	
+	#
+	
+	BREAKABLE_GLASS_TILE_ID__ATLAS_01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_BREAKABLE,
+	BREAKABLE_GLASS_TILE_ID__ATLAS_02 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_BREAKABLE,
+	BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_BREAKABLE,
+	BREAKABLE_GLASS_GLOWING_TILE_ID__ATLAS_02 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SIMPLE_BREAKABLE,
+	
+	
+	INSTANT_BREAK_GLASS_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__INSTANT_BREAKABLE,
+	INSTANT_BREAK_GLASS_GLOWING_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__INSTANT_BREAKABLE,
+	
+	FRAGILE_BREAK_GLASS_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__FRAGILE_BREAKABLE,
+	FRAGILE_BREAK_GLASS_GLOWING_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__FRAGILE_BREAKABLE,
+	
+	STRONG_BREAK_GLASS_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__STRONG_BREAKABLE,
+	STRONG_BREAK_GLASS_GLOWING_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__STRONG_BREAKABLE,
+	
+	#
+	
+	SPACESHIP_WALL_BREAKABLE_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_WALL_BREAKABLE,
+	SPACESHIP_WALL_BREAKABLE_GLOWING_TILE_ID : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__SPACESHIP_WALL_BREAKABLE,
+	
+	#
+	
+	TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__TOGGLEABLE_COLOR_CODED_BLOCKS,
+	TOGGLEABLE_COLOR_CODED_BLOCKS_TILE_ID__FILLED_02 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__TOGGLEABLE_COLOR_CODED_BLOCKS,
+	
+	#
+	
+	HOSTILE_SHIP_METAL_TILE_ID__01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__HOSTILE_SHIP_METAL,
+	HOSTILE_SHIP_METAL_FRAME_TILE__01 : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__HOSTILE_SHIP_METAL,
+	
+	TOGGLEABLE_HOSTILE_SHIP_BLOCKS_TILE_ID__FILLED : PLAYER_HIT_COLLISION_RECT_PARTICLE_MODULATE__TOGGLEABLE_HOSTILE_SHIP_BLOCKS,
+	
+}
+
+onready var _precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map : Dictionary = {
 	
 }
 
@@ -995,4 +1072,39 @@ func get_tile_id_to_ball_collision_sound_list(arg_tile_id):
 		return _tile_id_to_ball_collision_sound_list_map[arg_tile_id]
 	else:
 		return NONE__ANY_COLLISION_SOUND_LIST
+
+
+
+
+func get_or_calc_modulate_for_player_hit_tile_rect_draw_particles_on_tile_id(arg_tile_id, arg_tileset_curr_modulate : Color):
+	if !_precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map.has(arg_tile_id):
+		return _populate_precalc_player_hit_collision_rect_particle_modulate_map_map__first_key__and_get_calced_modulate(arg_tile_id, arg_tileset_curr_modulate)
+		
+	
+	if !_precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map[arg_tile_id].has(arg_tileset_curr_modulate):
+		return _populate_precalc_player_hit_collision_rect_particle_modulate_map_map__sec_key__and_get_calced_modulate(arg_tile_id, arg_tileset_curr_modulate)
+		
+	
+	return _precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map[arg_tile_id][arg_tileset_curr_modulate]
+
+
+
+func _populate_precalc_player_hit_collision_rect_particle_modulate_map_map__first_key__and_get_calced_modulate(arg_tile_id, arg_tileset_curr_modulate : Color):
+	var modulate_of_tileset = _tile_id_to_player_hit_collision_rect_particle_modulate_map[arg_tile_id]
+	var calced_modulate = BaseTileSet.calculate_final_modulate_to_use([modulate_of_tileset, arg_tileset_curr_modulate])
+	
+	_precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map[arg_tile_id] = {
+		arg_tileset_curr_modulate : calced_modulate
+	}
+	
+	return calced_modulate
+
+func _populate_precalc_player_hit_collision_rect_particle_modulate_map_map__sec_key__and_get_calced_modulate(arg_tile_id, arg_tileset_curr_modulate : Color):
+	var modulate_of_tileset = _tile_id_to_player_hit_collision_rect_particle_modulate_map[arg_tile_id]
+	var calced_modulate = BaseTileSet.calculate_final_modulate_to_use([modulate_of_tileset, arg_tileset_curr_modulate])
+	
+	_precalced_tile_id_to_tileset_extr_modulate_to_player_hit_collision_rect_particle_modulate_map_map[arg_tile_id][arg_tileset_curr_modulate] = calced_modulate
+	
+	return calced_modulate
+
 

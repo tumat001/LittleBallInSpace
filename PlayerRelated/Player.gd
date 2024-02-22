@@ -21,7 +21,7 @@ const BaseEnemy = preload("res://ObjectsRelated/Objects/Imps/BaseEnemy/BaseEnemy
 const MathHelper = preload("res://MiscRelated/HelperRelated/MathHelper.gd")
 
 
-#
+###
 
 signal break_all_player_game_actions__blocked_game_actions()
 signal last_calc_block_player_game_actions_changed(arg_val)
@@ -139,6 +139,7 @@ var _last_cell_id
 var _last_cell_autocoord
 var _last_cell_global_pos
 var _pos_change_caused_by_tile : bool
+var _last_base_tile_set_colled : BaseTileSet
 
 var _is_pos_change_potentially_from_tileset : bool
 var _pos_change_potentially_from_tileset__diff
@@ -418,7 +419,7 @@ onready var pca_captured_drawer = $PCACapturedDrawer
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
-#
+###
 
 func _init():
 	block_player_move_left_and_right_cond_clauses = ConditionalClauses.new()
@@ -737,6 +738,7 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		_last_cell_id = cell_id
 		_last_cell_autocoord = cell_autocoord
 		_last_cell_global_pos = tile_global_pos
+		_last_base_tile_set_colled = body
 		
 		if _is_pos_change_potentially_from_tileset:
 			_play_tile_hit_sound__and_show_particles(_pos_change_potentially_from_tileset__diff)
@@ -1911,29 +1913,60 @@ func _play_tile_hit_sound__and_show_particles(diff):
 	##################
 	
 	_attempt_play_player_hit_particle(diff)
+	_attempt_play_player_tile_hit_rect_draw_particles(diff)
 
 func _attempt_play_player_hit_particle(diff):
 	if diff >= 100:
 		var particle = player_hit_tile_particle_compo_pool.get_or_create_resource_from_pool()
 		_configure_particle_position(particle)
+		
+
+#todoimp continue testing this
+func _attempt_play_player_tile_hit_rect_draw_particles(diff):
+	if is_instance_valid(_last_base_tile_set_colled):
+		var modulate_to_use : Color = TileConstants.get_or_calc_modulate_for_player_hit_tile_rect_draw_particles_on_tile_id(_last_cell_id, _last_base_tile_set_colled.modulate)
+		SingletonsAndConsts.current_game_elements.attempt_summon_player_tile_collision_particles__based_on_params(diff, linear_velocity, modulate_to_use, self)
 
 
 func _configure_particle_position(arg_particle : AnimatedSprite):
+	var particle_size = arg_particle.frames.get_frame("medium", 0).get_size().y
+	var details = get_last_glob_and_rotation__pos_tile_collision__for_particle(particle_size)
+	
+	arg_particle.global_position = details[0]
+	arg_particle.rotation = details[1]
+	
+#	var curr_pos = global_position
+#	var tile_pos = _last_cell_global_pos
+#
+#	var dist_to_edge = _base_player_size.x / 2  #or y, does not matter
+#	var particle_half_size = arg_particle.frames.get_frame("medium", 0).get_size()
+#
+#	var pos_modification = Vector2(0, (dist_to_edge - particle_half_size.y))
+#
+#
+#	var cleaned_up_angle = _clean_up_angle__perfect_translated_for_circle_partition(curr_pos.angle_to_point(tile_pos)) + (PI/2)
+#	pos_modification = pos_modification.rotated(cleaned_up_angle)
+#
+#	arg_particle.global_position = global_position + pos_modification
+#	arg_particle.rotation = cleaned_up_angle
+
+
+func get_last_glob_and_rotation__pos_tile_collision__for_particle(arg_xy_offset_from_tile : float):
 	var curr_pos = global_position
 	var tile_pos = _last_cell_global_pos
 	
 	var dist_to_edge = _base_player_size.x / 2  #or y, does not matter
-	var particle_half_size = arg_particle.frames.get_frame("medium", 0).get_size()
 	
-	var pos_modification = Vector2(0, (dist_to_edge - particle_half_size.y))
+	var pos_modification = Vector2(0, (dist_to_edge - arg_xy_offset_from_tile))
 	
 	
 	var cleaned_up_angle = _clean_up_angle__perfect_translated_for_circle_partition(curr_pos.angle_to_point(tile_pos)) + (PI/2)
 	pos_modification = pos_modification.rotated(cleaned_up_angle)
 	
-	arg_particle.global_position = global_position + pos_modification
-	arg_particle.rotation = cleaned_up_angle
+	var final_pos = global_position + pos_modification
 	
+	return [final_pos, cleaned_up_angle]
+
 
 # Particles related
 

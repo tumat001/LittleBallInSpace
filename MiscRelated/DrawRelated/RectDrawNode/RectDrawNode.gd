@@ -37,7 +37,7 @@ class DrawParams:
 		
 		if _current_lifetime >= lifetime_of_draw:
 			_current_lifetime = lifetime_of_draw
-	
+		
 	
 	func configure_properties():
 		if lifetime_to_start_transparency != -1:

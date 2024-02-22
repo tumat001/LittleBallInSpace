@@ -22,6 +22,7 @@ const DamageParticle_Fragment_02 = preload("res://MiscRelated/CommonParticlesRel
 const DamageParticle_Fragment_03 = preload("res://MiscRelated/CommonParticlesRelated/DamageParticles/DamageParticle_Shrapnel_01.png")
 
 const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
+const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
 
 #
 
@@ -117,6 +118,28 @@ var _ball_fire_particle_circle_draw_node : Node2D
 
 #
 
+const PLAYER_TILE_COLL_PARTICLE__SPEED_RATIO_TO_LIN_VEL_CHANGE : float = 0.08
+
+const PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_INITIAL : float = 2.0
+const PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_MID : float = 4.0
+const PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_FINAL : float = 0.0
+
+const PLAYER_TILE_COLL_PARTICLE__MOD_A_INITIAL : float = 0.2
+const PLAYER_TILE_COLL_PARTICLE__MOD_A_MID : float = 0.4
+const PLAYER_TILE_COLL_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const PLAYER_TILE_COLL_PARTICLE__DURATION_TO_MID : float = 0.2
+const PLAYER_TILE_COLL_PARTICLE__DURATION_TO_FINAL : float = 0.5
+const PLAYER_TILE_COLL_PARTICLE__DURATION_TOTAL : float = PLAYER_TILE_COLL_PARTICLE__DURATION_TO_MID + PLAYER_TILE_COLL_PARTICLE__DURATION_TO_FINAL
+
+
+const PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL : float = PI/12
+
+var initialized_player_tile_collision_rect_draw_node : bool
+var _player_tile_collision_rect_draw_node : Node2D
+
+#
+
 const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 150.0
 
 ###
@@ -180,6 +203,7 @@ func _ready():
 		
 		emit_signal("player_spawned", player)
 	
+	call_deferred("init_player_tile_collision_particle_rect_draw_relateds")
 	
 	CameraManager.set_current_default_zoom_normal_vec(SingletonsAndConsts.current_level_details.zoom_normal_vec, false)
 	CameraManager.set_current_default_zoom_out_vec(SingletonsAndConsts.current_level_details.zoom_out_vec)
@@ -343,10 +367,9 @@ func _unhandled_key_input(event):
 		
 	#TEST action inputs
 	#TEST_game_insta_win with key: 0
-	#temptodo
-	elif event.is_action_pressed("TEST_game_insta_win"):
-		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
-		main_world_slice.as_test__override__do_insta_win()
+#	elif event.is_action_pressed("TEST_game_insta_win"):
+#		var main_world_slice = world_manager.get_world_slice__can_spawn_player_when_no_current_player_in_GE()
+#		main_world_slice.as_test__override__do_insta_win()
 
 
 #######
@@ -626,16 +649,17 @@ func _destory_enemies_based_on_draw_param(arg_draw_param):
 ##########
 
 func init_ball_fire_particle_circle_draw_relateds():
-	if !initialized_ball_fire_particle_circle_draw_node:
-		initialized_ball_fire_particle_circle_draw_node = true
-		
-		#
-		
-		_ball_fire_particle_circle_draw_node = Node2D.new()
-		_ball_fire_particle_circle_draw_node.set_script(CircleDrawNode)
-		add_child(_ball_fire_particle_circle_draw_node)
+	if initialized_ball_fire_particle_circle_draw_node:
+		return
 	
-
+	
+	initialized_ball_fire_particle_circle_draw_node = true
+	
+	#
+	
+	_ball_fire_particle_circle_draw_node = Node2D.new()
+	_ball_fire_particle_circle_draw_node.set_script(CircleDrawNode)
+	add_child(_ball_fire_particle_circle_draw_node)
 
 func summon_single_ball_fire_particle(arg_ball_fire_angle : float, arg_center_pos_basis : Vector2, arg_fill_color : Color, arg_particle_lin_vel : Vector2, arg_is_player_on_ground : bool):
 	arg_fill_color.a = BALL_FIRE_PARTICLE__MOD_A_INITIAL
@@ -697,3 +721,145 @@ func summon_single_ball_fire_particle(arg_ball_fire_angle : float, arg_center_po
 
 
 
+func init_player_tile_collision_particle_rect_draw_relateds():
+	if initialized_player_tile_collision_rect_draw_node:
+		return
+	
+	initialized_player_tile_collision_rect_draw_node = true
+	
+	_player_tile_collision_rect_draw_node = Node2D.new()
+	_player_tile_collision_rect_draw_node.set_script(RectDrawNode)
+	add_child(_player_tile_collision_rect_draw_node)
+
+
+func attempt_summon_player_tile_collision_particles__based_on_params(
+		arg_player_lin_vel_diff : float, arg_player_lin_vel : Vector2,
+		arg_modulate : Color,
+		arg_player):
+	
+	var particle_count_per_side = _get_particle_count_per_side__based_on_param(arg_player_lin_vel_diff)
+	if particle_count_per_side == 0:
+		return
+	
+	var particle_play_offset : float = 1.0
+	var pos_and_angle_details = arg_player.get_last_glob_and_rotation__pos_tile_collision__for_particle(particle_play_offset)
+	var pos_of_coll = pos_and_angle_details[0]
+	var angle_of_coll = pos_and_angle_details[1]
+	
+	var base_angle_for_left : float = angle_of_coll - PI/4 + PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL - PI/2
+	var base_angle_for_right : float = angle_of_coll + PI/4 - PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL - PI/2
+	
+	var base_splash_speed = arg_player_lin_vel_diff * PLAYER_TILE_COLL_PARTICLE__SPEED_RATIO_TO_LIN_VEL_CHANGE
+	
+	#print("angle left: %s, angle right: %s, angle: %s" % [base_angle_for_left, base_angle_for_right, angle_of_coll])
+	
+	var non_essential_rng := SingletonsAndConsts.non_essential_rng
+	
+	#left
+	for i in particle_count_per_side:
+		var angle_modif = non_essential_rng.randf_range(-PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL, PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL)
+		var angle__final_val = base_angle_for_left + angle_modif
+		
+		_summon_single_player_tile_collision_particle(pos_of_coll, angle__final_val, base_splash_speed, arg_modulate)
+	
+	#right
+	for i in particle_count_per_side:
+		var angle_modif = non_essential_rng.randf_range(-PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL, PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL)
+		var angle__final_val = base_angle_for_right + angle_modif
+		
+		_summon_single_player_tile_collision_particle(pos_of_coll, angle__final_val, base_splash_speed, arg_modulate)
+	
+	
+
+
+func _get_particle_count_per_side__based_on_param(arg_player_lin_vel_diff):
+	if arg_player_lin_vel_diff >= 400:
+		return 3
+	elif arg_player_lin_vel_diff >= 200:
+		return 2
+	elif arg_player_lin_vel_diff >= 120:
+		return 1
+	
+	
+	return 0
+
+
+
+func _summon_single_player_tile_collision_particle(arg_final_val_center_pos : Vector2, arg_final_val_angle : float, 
+		arg_speed : float, 
+		arg_modulate : Color):
+	
+	var non_essential_rng := SingletonsAndConsts.non_essential_rng
+	
+	var lifetime_modif : float = non_essential_rng.randf_range(-0.15, 0.15)
+	var lifetime__final_val = PLAYER_TILE_COLL_PARTICLE__DURATION_TOTAL + lifetime_modif
+	
+	var lifetime_to_mid__final_val = PLAYER_TILE_COLL_PARTICLE__DURATION_TO_MID + lifetime_modif/2
+	var lifetime_to_final__final_val = PLAYER_TILE_COLL_PARTICLE__DURATION_TO_FINAL + lifetime_modif/2
+	
+	var speed_ratio_modif = non_essential_rng.randf_range(-0.1, 0.1)
+	var speed__final_val = arg_speed + (arg_speed * speed_ratio_modif)
+	
+	var final_center_pos__final_calced_pos = Vector2(speed__final_val, 0).rotated(arg_final_val_angle) + arg_final_val_center_pos
+	
+	var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+	var mod_a_initial__final_val = PLAYER_TILE_COLL_PARTICLE__MOD_A_INITIAL + mod_a_modif
+	var mod_a_mid__final_val = PLAYER_TILE_COLL_PARTICLE__MOD_A_MID + mod_a_modif
+	arg_modulate.a = mod_a_mid__final_val
+	
+	var length_wid_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+	var len_wid_initial__final_val = PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_INITIAL + length_wid_modif
+	var len_wid_mid__final_val = PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_MID + length_wid_modif
+	
+	
+	var draw_param : RectDrawNode.DrawParams = _construct_rect_draw_param__player_tile_collision_particle(arg_final_val_center_pos, arg_modulate, lifetime__final_val, len_wid_initial__final_val)
+	_tween_player_tile_collision_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, 0.0, len_wid_mid__final_val, 0.0)
+
+func _construct_rect_draw_param__player_tile_collision_particle(arg_center_pos : Vector2, arg_modulate : Color,
+		 arg_lifetime : float, arg_length_width : float) -> RectDrawNode.DrawParams:
+	
+	#
+	
+	var draw_param = _player_tile_collision_rect_draw_node.DrawParams.new()
+	
+	draw_param.fill_color = arg_modulate
+	
+	draw_param.outline_color = arg_modulate
+	draw_param.outline_width = 0
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.angle_rad = 0
+	draw_param.lifetime_of_draw = arg_lifetime + 0.3
+	draw_param.has_lifetime = true
+	draw_param.pivot_point = Vector2(0, 0)
+	
+	var size = Vector2(arg_length_width, arg_length_width)
+	var initial_rect = Rect2(arg_center_pos - (size/2), size)
+	draw_param.initial_rect = initial_rect
+	
+	_player_tile_collision_rect_draw_node.add_draw_param(draw_param)
+	
+	return draw_param
+
+func _tween_player_tile_collision_rect_draw_param__using_params(arg_rect_draw_param : RectDrawNode.DrawParams, 
+		arg_lifetime_to_mid : float, arg_lifetime_from_mid_to_end : float,
+		arg_final_center_pos : Vector2, 
+		arg_mid_color_mod_a : float, arg_final_color_mod_a : float,
+		arg_mid_length_width : float, arg_final_length_width : float):
+	
+	
+	var full_lifetime = arg_lifetime_to_mid + arg_lifetime_from_mid_to_end
+	
+	var tweener = create_tween()
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_rect_draw_param, "current_rect:position", arg_final_center_pos, full_lifetime).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_mid_length_width, arg_mid_length_width), arg_lifetime_to_mid)
+	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_mid_color_mod_a, arg_lifetime_to_mid)
+	tweener.set_parallel(false)
+	
+	tweener.tween_interval(arg_lifetime_to_mid)
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_final_length_width, arg_final_length_width), arg_lifetime_from_mid_to_end)
+	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
+	
