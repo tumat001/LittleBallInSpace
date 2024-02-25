@@ -144,6 +144,9 @@ script = ExtResource( 5 )
 [node name="RectDrawNode_LevelHovered" type="Node2D" parent="."]
 script = ExtResource( 13 )
 
+[node name="CircDrawNode_LayoutHovered" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
 [connection signal="pressed" from="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton" to="." method="_on_StatsForLevelButton_pressed"]
 
 [editable path="GameBackground"]

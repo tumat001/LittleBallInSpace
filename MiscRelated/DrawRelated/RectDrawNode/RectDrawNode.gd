@@ -85,6 +85,12 @@ func remove_draw_param(arg_draw_param : DrawParams):
 	if _all_draw_params.size() == 0:
 		set_process(false)
 
+func remove_all_draw_params():
+	_all_draw_params.clear()
+	
+	set_process(false)
+	update()
+
 #####
 
 

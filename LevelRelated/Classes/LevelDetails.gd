@@ -103,7 +103,6 @@ var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
 #
 
-#todoimp config this in storeoflevels
 var modulates_for_level_hover_list : Array
 
 ##########

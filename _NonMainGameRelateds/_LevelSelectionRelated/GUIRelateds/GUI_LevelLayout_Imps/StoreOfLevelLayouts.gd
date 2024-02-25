@@ -39,7 +39,16 @@ var _layout_id_to_layout_details_map : Dictionary
 
 #
 
-const MODULATE_LEVEL_HOVER_LIST__L01 = []
+const MODULATE_LEVEL_HOVER_LIST__L01 = [Color("#ADADAD")]
+const MODULATE_LEVEL_HOVER_LIST__L02 = [Color("#FA7D00")]
+const MODULATE_LEVEL_HOVER_LIST__L03 = [Color("#FC2C2F"), Color("#46FD2B"), Color("#462BFD")]
+const MODULATE_LEVEL_HOVER_LIST__L04 = [Color("#7DB6D9")]
+const MODULATE_LEVEL_HOVER_LIST__L05 = [Color("#AD5DFD")]
+const MODULATE_LEVEL_HOVER_LIST__L06 = [Color("#FC4043")]
+const MODULATE_LEVEL_HOVER_LIST__L07 = [Color("#93D789")]
+
+const MODULATE_LEVEL_HOVER_LIST__LS01 = [Color("#FDD14D"), Color("#9D0204")]
+const MODULATE_LEVEL_HOVER_LIST__LS02 = [Color("#6402DE"), Color("#FDC51C")]
 
 ##
 
@@ -113,6 +122,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L01
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_02:
 		details.level_layout_name = [
@@ -131,6 +141,8 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.level_label_text_color = Color("#dddddd")
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
+		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L02
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_03:
@@ -151,6 +163,8 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L03
+		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_04:
 		details.level_layout_name = [
@@ -169,6 +183,8 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		details.level_label_text_color = Color("#dddddd")
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
+		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L04
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_05:
@@ -189,6 +205,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L05
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_01:
@@ -212,6 +229,9 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#
 		details.background_type = GameBackground.BackgroundTypeIds.LAYOUT_SPECIALS
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__LS01
+		
+		
 	elif arg_id == LevelLayoutIds.LAYOUT_06:
 		details.level_layout_name = [
 			["Pressure", []]
@@ -230,6 +250,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L06
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_07:
@@ -250,6 +271,7 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		#details.level_label_outline_color = Color("#dddddd")
 		details.has_outline_color = false
 		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__L07
 		
 		
 	elif arg_id == LevelLayoutIds.LAYOUT_SPECIAL_02:
@@ -272,6 +294,8 @@ func get_or_construct_layout_details(arg_id) -> LevelLayoutDetails:
 		
 		#
 		details.background_type = GameBackground.BackgroundTypeIds.LAYOUT_SPECIALS
+		
+		details.modulates_for_level_layout_hover_list = MODULATE_LEVEL_HOVER_LIST__LS02
 		
 	
 	_set_layout_details_configs_and_params_based_on_GSM(details)

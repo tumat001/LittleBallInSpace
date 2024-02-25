@@ -856,7 +856,7 @@ func _summon_single_player_tile_collision_particle(arg_final_val_center_pos : Ve
 	var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
 	var mod_a_initial__final_val = PLAYER_TILE_COLL_PARTICLE__MOD_A_INITIAL + mod_a_modif
 	var mod_a_mid__final_val = PLAYER_TILE_COLL_PARTICLE__MOD_A_MID + mod_a_modif
-	arg_modulate.a = mod_a_mid__final_val
+	arg_modulate.a = mod_a_initial__final_val
 	
 	var length_wid_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
 	var len_wid_initial__final_val = PLAYER_TILE_COLL_PARTICLE__LEN_WIDTH_INITIAL + length_wid_modif
@@ -864,7 +864,7 @@ func _summon_single_player_tile_collision_particle(arg_final_val_center_pos : Ve
 	
 	
 	var draw_param : RectDrawNode.DrawParams = _construct_rect_draw_param__player_tile_collision_particle(arg_final_val_center_pos, arg_modulate, lifetime__final_val, len_wid_initial__final_val)
-	_tween_player_tile_collision_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, 0.0, len_wid_mid__final_val, 0.0)
+	_tween_player_tile_collision_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, PLAYER_TILE_COLL_PARTICLE__MOD_A_FINAL, len_wid_mid__final_val, 0.0)
 	
 
 func _construct_rect_draw_param__player_tile_collision_particle(arg_center_pos : Vector2, arg_modulate : Color,

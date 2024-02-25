@@ -5,10 +5,9 @@ const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelect
 const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
 
 const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
+const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
 
-
-
-const LEVEL_HOVER_RECT_PARTICLE__SPEED_RATIO_TO_LIN_VEL_CHANGE : float = 0.08
+#
 
 const LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_INITIAL : float = 2.0
 const LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_MID : float = 4.0
@@ -26,6 +25,27 @@ const LEVEL_HOVER_RECT_PARTICLE__SPEED : float = 40.0
 
 const LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MIN : int = 3
 const LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MAX : int = 5
+
+
+#
+
+const LAYOUT_HOVER_RECT_PARTICLE__RADIUS_INITIAL : float = 1.0
+const LAYOUT_HOVER_RECT_PARTICLE__RADIUS_MID : float = 2.0
+const LAYOUT_HOVER_RECT_PARTICLE__RADIUS_FINAL : float = 0.0
+
+const LAYOUT_HOVER_RECT_PARTICLE__MOD_A_INITIAL : float = 0.2
+const LAYOUT_HOVER_RECT_PARTICLE__MOD_A_MID : float = 0.4
+const LAYOUT_HOVER_RECT_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_MID : float = 0.2
+const LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_FINAL : float = 0.5
+const LAYOUT_HOVER_RECT_PARTICLE__DURATION_TOTAL : float = LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_MID + LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_FINAL
+
+const LAYOUT_HOVER_RECT_PARTICLE__SPEED : float = 40.0
+
+const LAYOUT_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MIN : int = 3
+const LAYOUT_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MAX : int = 5
+
 
 
 #
@@ -63,6 +83,7 @@ onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel
 onready var particles_container = $ParticlesContainer
 onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
 onready var rect_draw_node__level_hover = $RectDrawNode_LevelHovered
+onready var circ_draw_node__layout_hover = $CircDrawNode_LayoutHovered
 
 onready var game_background = $GameBackground
 
@@ -363,7 +384,11 @@ func _on_transition_in__from_old_layout_finished(arg_hovered_tile, arg_level_lay
 	transition.queue_free_on_end_of_transition = true
 	transition.circle_center = arg_hovered_tile.get_center_position()
 	SingletonsAndConsts.current_master.play_transition(transition)
-
+	
+	
+	#if u do this, find a way to destroy all tweens in the process
+	#rect_draw_node__level_hover.remove_all_draw_params()
+	#circ_draw_node__layout_hover.remove_all_draw_params()
 
 
 func play_circular_draw_node__circle_burst__for_victory(arg_pos : Vector2):
@@ -431,7 +456,7 @@ func _play_rect_draw_node__single_rect_particle_on_level_hover(arg_pos : Vector2
 	var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
 	var mod_a_initial__final_val = LEVEL_HOVER_RECT_PARTICLE__MOD_A_INITIAL + mod_a_modif
 	var mod_a_mid__final_val = LEVEL_HOVER_RECT_PARTICLE__MOD_A_MID + mod_a_modif
-	arg_modulate.a = mod_a_mid__final_val
+	arg_modulate.a = mod_a_initial__final_val
 	
 	var length_wid_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
 	var len_wid_initial__final_val = LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_INITIAL + length_wid_modif
@@ -439,7 +464,7 @@ func _play_rect_draw_node__single_rect_particle_on_level_hover(arg_pos : Vector2
 	
 	
 	var draw_param : RectDrawNode.DrawParams = _construct_rect_draw_param__rect_particles_on_level_hover(arg_pos, arg_modulate, lifetime__final_val, len_wid_initial__final_val)
-	_tween_rect_particles_on_level_hover_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, 0.0, len_wid_mid__final_val, 0.0)
+	_tween_rect_particles_on_level_hover_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, LEVEL_HOVER_RECT_PARTICLE__MOD_A_FINAL, len_wid_mid__final_val, 0.0)
 
 
 func _construct_rect_draw_param__rect_particles_on_level_hover(arg_center_pos : Vector2, 
@@ -449,7 +474,7 @@ func _construct_rect_draw_param__rect_particles_on_level_hover(arg_center_pos : 
 	
 	
 	var rand_modulate = arg_base_modulate * non_essential_rng.randf_range(0.6, 1.0)
-	rand_modulate.a = 0.75
+	rand_modulate.a = LEVEL_HOVER_RECT_PARTICLE__MOD_A_INITIAL
 	draw_param.fill_color = rand_modulate
 	draw_param.outline_color = rand_modulate
 	draw_param.outline_width = 0
@@ -490,6 +515,105 @@ func _tween_rect_particles_on_level_hover_rect_draw_param__using_params(arg_rect
 	tweener.set_parallel(true)
 	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_final_length_width, arg_final_length_width), arg_lifetime_from_mid_to_end)
 	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
+	
+
+
+## circ layout
+
+
+func play_circ_draw_node__circ_particles_on_layout_hover(arg_gui_level_tile : GUI_LevelLayoutEle_Tile):
+	var layout_details = arg_gui_level_tile.level_layout_details
+	
+	var rand_particle_count = non_essential_rng.randi_range(LAYOUT_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MIN, LAYOUT_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MAX)
+	var modulate_i : int = 0
+	for i in rand_particle_count:
+		
+		var pos_to_use = arg_gui_level_tile.get_center_position()
+		var modulate_to_use = layout_details.modulates_for_level_layout_hover_list[modulate_i]
+		
+		for j in 2:
+			_play_circ_draw_node__single_circ_particle_on_layout_hover(pos_to_use, modulate_to_use)
+		
+		##
+		
+		modulate_i += 1
+		if layout_details.modulates_for_level_layout_hover_list.size() <= modulate_i:
+			modulate_i = 0
+		
+
+func _play_circ_draw_node__single_circ_particle_on_layout_hover(arg_pos : Vector2, arg_modulate : Color):
+	
+	var lifetime_modif : float = non_essential_rng.randf_range(-0.15, 0.15)
+	var lifetime__final_val = LAYOUT_HOVER_RECT_PARTICLE__DURATION_TOTAL + lifetime_modif
+	
+	var lifetime_to_mid__final_val = LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_MID + lifetime_modif/2
+	var lifetime_to_final__final_val = LAYOUT_HOVER_RECT_PARTICLE__DURATION_TO_FINAL + lifetime_modif/2
+	
+	var speed_ratio_modif = non_essential_rng.randf_range(-0.2, 0.2)
+	var speed__final_val = LAYOUT_HOVER_RECT_PARTICLE__SPEED + (LAYOUT_HOVER_RECT_PARTICLE__SPEED * speed_ratio_modif)
+	
+	var arg_final_val_angle = non_essential_rng.randf_range(0, 2*PI)
+	
+	var final_center_pos__final_calced_pos = Vector2(speed__final_val, 0).rotated(arg_final_val_angle) + arg_pos
+	
+	var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+	var mod_a_initial__final_val = LAYOUT_HOVER_RECT_PARTICLE__MOD_A_INITIAL + mod_a_modif
+	var mod_a_mid__final_val = LAYOUT_HOVER_RECT_PARTICLE__MOD_A_MID + mod_a_modif
+	arg_modulate.a = mod_a_initial__final_val
+	
+	var rad_modif : float = non_essential_rng.randf_range(-0.2, 0.2)
+	var rad_initial__final_val = LAYOUT_HOVER_RECT_PARTICLE__RADIUS_INITIAL + rad_modif
+	var rad_mid__final_val = LAYOUT_HOVER_RECT_PARTICLE__RADIUS_MID + rad_modif
+	
+	
+	var draw_param : CircleDrawNode.DrawParams = _construct_circ_draw_param__circ_particles_on_layout_hover(arg_pos, arg_modulate, lifetime__final_val, rad_initial__final_val)
+	_tween_circ_particles_on_layout_hover_circ_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, LAYOUT_HOVER_RECT_PARTICLE__MOD_A_FINAL, rad_mid__final_val, 0.0)
+
+
+func _construct_circ_draw_param__circ_particles_on_layout_hover(arg_center_pos : Vector2, 
+		arg_base_modulate : Color, arg_total_lifetime : float, arg_radius : float):
+	
+	var draw_param = circ_draw_node__layout_hover.DrawParams.new()
+	
+	var rand_modulate = arg_base_modulate * non_essential_rng.randf_range(0.6, 1.0)
+	rand_modulate.a = 0.75
+	draw_param.fill_color = rand_modulate
+	draw_param.outline_color = rand_modulate
+	draw_param.outline_width = 0
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.lifetime_of_draw = arg_total_lifetime + 0.3
+	draw_param.has_lifetime = true
+	
+	draw_param.current_radius = arg_radius
+	draw_param.center_pos = arg_center_pos
+	
+	circ_draw_node__layout_hover.add_draw_param(draw_param)
+	
+	
+	return draw_param
+
+func _tween_circ_particles_on_layout_hover_circ_draw_param__using_params(arg_draw_param : CircleDrawNode.DrawParams, 
+		arg_lifetime_to_mid : float, arg_lifetime_from_mid_to_end : float,
+		arg_final_center_pos : Vector2, 
+		arg_mid_color_mod_a : float, arg_final_color_mod_a : float,
+		arg_mid_rad : float, arg_final_rad : float):
+	
+	
+	var full_lifetime = arg_lifetime_to_mid + arg_lifetime_from_mid_to_end
+	
+	var tweener = create_tween()
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_draw_param, "center_pos", arg_final_center_pos, full_lifetime).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	tweener.tween_property(arg_draw_param, "current_radius", arg_mid_rad, arg_lifetime_to_mid)
+	tweener.tween_property(arg_draw_param, "fill_color:a", arg_mid_color_mod_a, arg_lifetime_to_mid)
+	tweener.set_parallel(false)
+	
+	tweener.tween_interval(arg_lifetime_to_mid)
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_draw_param, "current_radius", arg_final_rad, arg_lifetime_from_mid_to_end)
+	tweener.tween_property(arg_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
 	
 
 ##

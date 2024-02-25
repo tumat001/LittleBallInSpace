@@ -50,6 +50,10 @@ var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
 #
 
+var modulates_for_level_layout_hover_list : Array
+
+#
+
 
 func set_is_level_layout_locked(arg_val):
 	var old_val = is_level_layout_locked
