@@ -1,9 +1,27 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/LevelsCompletedPanel.gd" type="Script" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/Assets/LevelsCompletedPanel_GreenFlag.png" type="Texture" id=2]
 [ext_resource path="res://GameFrontHUDRelated/Subs/LevelsCompletedPanel/Assets/LevelsCompletedPanel_Background.png" type="Texture" id=3]
 [ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=4]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_Flamebow.tres" type="Shader" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 5 )
+shader_param/DonutMaskCenter = Vector2( 0.5, 1.15 )
+shader_param/DonutMaskSize = 0.7
+shader_param/DonutMaskThickness = 0.6
+shader_param/OutlineWidth = 3.0
+shader_param/OutlinePixelSize = 1.0
+shader_param/UseRainbowColorOutline = true
+shader_param/RainbowColorLightOffset = 0.5
+shader_param/RainbowColorSinFrequency = 0.1
+shader_param/OutlineUseNoise = false
+shader_param/NoiseBlockSize = 2.0
+shader_param/NoiseMaxLineWidth = 10.0
+shader_param/NoiseMinLineWidth = 5.0
+shader_param/NoiseFreq = 2.0
+shader_param/BackgroundColor = Color( 0.0313726, 0.0313726, 0.0313726, 1 )
 
 [node name="LevelsCompletedPanel" type="MarginContainer"]
 margin_right = 80.0
@@ -18,6 +36,14 @@ texture = ExtResource( 3 )
 [node name="Control" type="Control" parent="."]
 margin_right = 80.0
 margin_bottom = 24.0
+
+[node name="RainbowColorRect" type="ColorRect" parent="Control"]
+modulate = Color( 1, 1, 1, 0.392157 )
+material = SubResource( 1 )
+margin_right = 80.0
+margin_bottom = 24.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
 
 [node name="LevelCountsLabel" type="Label" parent="Control"]
 margin_left = 4.0

@@ -896,7 +896,8 @@ func _on_game_result_decided__wsss0202(arg_result):
 	if game_elements.game_result_manager.is_game_result_win():
 		_attempt_unlock_trophy__super_star_collected()
 		_attempt_unlock_trophy__super_star_collected_while_blinded__if_conditions_met()
-
+		
+		StoreOfLevels.attempt_finish_level_layout__spec_02()
 
 func _attempt_unlock_trophy__super_star_collected():
 	var trophy_id = GameSaveManager.TrophyNonVolatileId.WSSS0202_SUPER_STAR_COLLECTED

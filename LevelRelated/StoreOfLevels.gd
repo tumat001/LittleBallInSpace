@@ -2297,6 +2297,12 @@ func _are_all_level_ids_finished(arg_ids : Array):
 #
 ###########################
 
+
+func attempt_finish_level_layout__spec_02():
+	if GameSaveManager.get_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2) == GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED:
+		GameSaveManager.set_level_id_status_completion(LevelIds.LEVEL_01__STAGE_SPECIAL_2, GameSaveManager.LEVEL_OR_LAYOUT_COMPLETION_STATUS__UNLOCKED)
+	
+
 # on finish MAGNUM OPUS
 # unlock trophy (curtain call) level
 func attempt_do_unlock_actions_on_finish_level_01_of_stage_special_02():

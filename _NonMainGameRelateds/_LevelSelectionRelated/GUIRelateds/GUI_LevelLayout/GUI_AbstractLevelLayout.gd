@@ -260,7 +260,12 @@ func _assign_layout_ele_as_current_hovered(arg_ele, arg_play_sound : bool = true
 				
 			elif arg_ele.level_layout_details != null:
 				gui_level_selection_whole_screen.play_circ_draw_node__circ_particles_on_layout_hover(arg_ele)
-		
+	
+	
+	if arg_ele.is_path:
+		player_cursor.modulate = Color("#bbbbbb")
+	else:
+		player_cursor.modulate = Color("#F6FEBA")
 	
 	emit_signal("currently_hovered_layout_ele_changed", _currently_hovered_layout_ele_id, _currently_hovered_tile)
 
