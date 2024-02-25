@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/GUI_LevelSelectionWholeScreen.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_DialogPanel.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Normal.png" type="Texture" id=10]
 [ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Highlighted.png" type="Texture" id=11]
 [ext_resource path="res://GameFrontHUDRelated/Subs/TrophyPanel/TrophyPanel.tscn" type="PackedScene" id=12]
+[ext_resource path="res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd" type="Script" id=13]
 
 [node name="GUI_LevelSelectionLayout" type="Control"]
 margin_right = 960.0
@@ -139,6 +140,9 @@ mouse_filter = 2
 
 [node name="CircularDrawNode_CircleBurst" type="Node2D" parent="."]
 script = ExtResource( 5 )
+
+[node name="RectDrawNode_LevelHovered" type="Node2D" parent="."]
+script = ExtResource( 13 )
 
 [connection signal="pressed" from="HUDContainer/DialogPanel/Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton" to="." method="_on_StatsForLevelButton_pressed"]
 

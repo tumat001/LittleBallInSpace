@@ -29,6 +29,8 @@ const ENERGY_RATIO_FOR_WARNING_TRIGGER = 0.25
 
 #
 
+var _game_elements
+
 var _player
 
 var _energy_down__sound_player : AudioStreamPlayer2D
@@ -127,6 +129,9 @@ func helper__set_clause_to_is_energy_not_deductable__xxxany_clause_id(arg_is_add
 func apply_modification_to_player_and_game_elements(arg_player, arg_game_elements):
 	.apply_modification_to_player_and_game_elements(arg_player, arg_game_elements)
 	
+	_game_elements = arg_game_elements
+	_game_elements.initialize_all_player_major_energy_spark_particle_relateds()
+	
 	_player = arg_player
 	
 	if arg_game_elements.is_game_front_hud_initialized:
@@ -190,6 +195,7 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				_energy_down__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerDown_01, _player.global_position, 1.18, null) #1.38
 				if _energy_restored__sound_player != null and _energy_restored__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_restored__sound_player)
+					_game_elements.stop_play_player_major_energy_spark_particle__queue()
 			
 			if is_instance_valid(_player):
 				_player.can_capture_PCA_regions = false
@@ -203,6 +209,8 @@ func set_current_energy(arg_val, arg_source_id = -1):
 				_energy_restored__sound_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_EnergyModi_PowerUp_01, _player.global_position, 1.0, null)
 				if _energy_down__sound_player != null and _energy_down__sound_player.playing:
 					AudioManager.stop_stream_player_and_mark_as_inactive(_energy_down__sound_player)
+				
+				_game_elements.play_player_major_energy_spark_particle__config_with_params_to_node_2d__queue_amount(_player, 7)
 			
 			if is_instance_valid(_player):
 				_player.can_capture_PCA_regions = true

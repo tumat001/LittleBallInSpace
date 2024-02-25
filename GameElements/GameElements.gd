@@ -24,6 +24,12 @@ const DamageParticle_Fragment_03 = preload("res://MiscRelated/CommonParticlesRel
 const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
 const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
 
+const With2ndCenterBasedAttackSprite = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.gd")
+const With2ndCenterBasedAttackSprite_Scene = preload("res://MiscRelated/AttackSpriteRelated/With2ndCenterBasedAttackSprite.tscn")
+const StoreOfTrailType = preload("res://MiscRelated/TrailRelated/StoreOfTrailType.gd")
+const MultipleTrailsForNodeComponent = preload("res://MiscRelated/TrailRelated/MultipleTrailsForNodeComponent.gd")
+
+
 #
 
 signal before_game_start_init()
@@ -116,7 +122,7 @@ const BALL_FIRE_PARTICLE__DURATION_TOTAL : float = BALL_FIRE_PARTICLE__DURATION_
 var initialized_ball_fire_particle_circle_draw_node : bool
 var _ball_fire_particle_circle_draw_node : Node2D
 
-#
+###
 
 const PLAYER_TILE_COLL_PARTICLE__SPEED_RATIO_TO_LIN_VEL_CHANGE : float = 0.08
 
@@ -138,7 +144,36 @@ const PLAYER_TILE_COLL_PARTICLE__ANGLE_OF_PARTICLE_FROM_COLL : float = PI/12
 var initialized_player_tile_collision_rect_draw_node : bool
 var _player_tile_collision_rect_draw_node : Node2D
 
-#
+###
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__COUNT : int = 8
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__LEN_WIDTH_INITIAL : float = 1.0
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__LEN_WIDTH_MID : float = 4.0
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__LEN_WIDTH_FINAL : float = 0.0
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__MOD_A_INITIAL : float = 0.2
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__MOD_A_MID : float = 0.4
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__SPEED_INITIAL : float = 2.0
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__SPEED_FINAL : float = 0.0
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__MOD_MULTIPLIER_RAND_MAG : float = 0.15
+
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__QUEUE__MIN_RAND_DELAY : float = 0.08
+const PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__QUEUE__MAX_RAND_DELAY : float = 0.15
+
+
+var node_2d_for_player_major_energy_spark_particle : Node2D
+var player_major_energy_spark_particle_pool_component : AttackSpritePoolComponent
+var trail_compo_for_player_major_energy_spark_particle : MultipleTrailsForNodeComponent
+
+var _player_major_energy_spark_particle_queue_count : int
+var _player_major_energy_spark_particle_delay_to_next : float
+
+
+###
 
 const LIN_SPEED_OF_FRAGMENT_PER_10 : float = 150.0
 
@@ -260,6 +295,22 @@ func _on_before_end_of_GE_record_stats__for_last_chance_edits(arg_record_stats_a
 #
 
 func _process(delta):
+	if _player_major_energy_spark_particle_queue_count > 0:
+		_player_major_energy_spark_particle_delay_to_next -= delta
+		
+		if _player_major_energy_spark_particle_delay_to_next <= 0:
+			if is_instance_valid(node_2d_for_player_major_energy_spark_particle):
+				var repeat_count = (_player_major_energy_spark_particle_queue_count / 2) + 1
+				for i in repeat_count:
+					#play_player_major_energy_spark_particle__config_with_params(node_2d_for_player_major_energy_spark_particle.global_position)
+					call_deferred("play_player_major_energy_spark_particle__config_with_params", node_2d_for_player_major_energy_spark_particle.global_position)
+			
+			_inc_randomized__player_major_energy_spark_particle_delay_to_next()
+			
+			_player_major_energy_spark_particle_queue_count -= 1
+			if _player_major_energy_spark_particle_queue_count <= 0:
+				stop_play_player_major_energy_spark_particle__queue()
+	
 	emit_signal("process__sig", delta)
 
 ###
@@ -773,11 +824,11 @@ func attempt_summon_player_tile_collision_particles__based_on_params(
 
 
 func _get_particle_count_per_side__based_on_param(arg_player_lin_vel_diff):
-	if arg_player_lin_vel_diff >= 400:
+	if arg_player_lin_vel_diff >= 300:
 		return 3
 	elif arg_player_lin_vel_diff >= 200:
 		return 2
-	elif arg_player_lin_vel_diff >= 120:
+	elif arg_player_lin_vel_diff >= 100:
 		return 1
 	
 	
@@ -814,6 +865,7 @@ func _summon_single_player_tile_collision_particle(arg_final_val_center_pos : Ve
 	
 	var draw_param : RectDrawNode.DrawParams = _construct_rect_draw_param__player_tile_collision_particle(arg_final_val_center_pos, arg_modulate, lifetime__final_val, len_wid_initial__final_val)
 	_tween_player_tile_collision_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, 0.0, len_wid_mid__final_val, 0.0)
+	
 
 func _construct_rect_draw_param__player_tile_collision_particle(arg_center_pos : Vector2, arg_modulate : Color,
 		 arg_lifetime : float, arg_length_width : float) -> RectDrawNode.DrawParams:
@@ -863,3 +915,99 @@ func _tween_player_tile_collision_rect_draw_param__using_params(arg_rect_draw_pa
 	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_final_length_width, arg_final_length_width), arg_lifetime_from_mid_to_end)
 	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
 	
+
+
+###
+
+func initialize_all_player_major_energy_spark_particle_relateds():
+	_initialize_player_major_energy_spark_particle_pool()
+	_initialize_trail_compo_for_player_major_energy_spark()
+	
+
+
+func _initialize_player_major_energy_spark_particle_pool():
+	player_major_energy_spark_particle_pool_component = AttackSpritePoolComponent.new()
+	player_major_energy_spark_particle_pool_component.source_for_funcs_for_attk_sprite = self
+	player_major_energy_spark_particle_pool_component.func_name_for_creating_attack_sprite = "_create_player_major_energy_spark_particle"
+	player_major_energy_spark_particle_pool_component.node_to_listen_for_queue_free = SingletonsAndConsts.current_game_elements
+	player_major_energy_spark_particle_pool_component.node_to_parent_attack_sprites = SingletonsAndConsts.current_game_elements__other_node_hoster
+	
+
+func _create_player_major_energy_spark_particle():
+	var particle = CenterBasedAttackSprite_Scene.instance()
+	
+	#particle.center_pos_of_basis = arg_pos
+	#particle.initial_speed_towards_center = -40
+	#particle.speed_accel_towards_center = -20
+	particle.min_starting_distance_from_center = 10
+	particle.max_starting_distance_from_center = 16
+	particle.texture_to_use = preload("res://PlayerRelated/PlayerParticles/EnergySpark/PlayerParticle_EnergySpark_White1x1.png") 
+	particle.queue_free_at_end_of_lifetime = false
+	particle.turn_invisible_at_end_of_lifetime = true
+	
+	particle.modulate.a = 0.0
+	#particle.visible = true
+	#particle.lifetime = 0.4
+	
+	return particle
+
+
+
+
+func stop_play_player_major_energy_spark_particle__queue():
+	_player_major_energy_spark_particle_delay_to_next = 0
+	_player_major_energy_spark_particle_queue_count = 0
+
+func play_player_major_energy_spark_particle__config_with_params_to_node_2d__queue_amount(arg_node_2d : Node2D, arg_count : int):
+	node_2d_for_player_major_energy_spark_particle = arg_node_2d
+	_inc_randomized__player_major_energy_spark_particle_delay_to_next()
+	
+	_player_major_energy_spark_particle_queue_count = arg_count
+
+func _inc_randomized__player_major_energy_spark_particle_delay_to_next():
+	_player_major_energy_spark_particle_delay_to_next += SingletonsAndConsts.non_essential_rng.randf_range(PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__QUEUE__MIN_RAND_DELAY, PLAYER_MAJOR_ENERGY_SPARK_PARTICLE__QUEUE__MAX_RAND_DELAY)
+
+
+func play_player_major_energy_spark_particle__config_with_params(arg_pos : Vector2):
+	var non_essential_rng = SingletonsAndConsts.non_essential_rng
+	
+	var particle : CenterBasedAttackSprite = player_major_energy_spark_particle_pool_component.get_or_create_attack_sprite_from_pool()
+	particle.center_pos_of_basis = arg_pos
+	
+	
+	particle.initial_speed_towards_center = non_essential_rng.randf_range(-55, -85)
+	particle.speed_accel_towards_center = non_essential_rng.randf_range(-10, -30)
+	particle.lifetime = non_essential_rng.randf_range(0.3, 0.5)
+	particle.lifetime_to_start_transparency = non_essential_rng.randf_range(0.1, 0.2)
+	particle.transparency_per_sec = 1 / (particle.lifetime - particle.lifetime_to_start_transparency)
+	
+	particle.reset_for_another_use()
+	
+	particle.visible = true
+	
+	#
+	
+	trail_compo_for_player_major_energy_spark_particle.create_trail_for_node(particle)
+
+
+func _initialize_trail_compo_for_player_major_energy_spark():
+	trail_compo_for_player_major_energy_spark_particle = MultipleTrailsForNodeComponent.new()
+	trail_compo_for_player_major_energy_spark_particle.node_to_host_trails = self
+	trail_compo_for_player_major_energy_spark_particle.trail_type_id = StoreOfTrailType.BASIC_TRAIL
+	trail_compo_for_player_major_energy_spark_particle.connect("on_trail_before_attached_to_node", self, "_trail_before_attached_to_player_energy_spark_particle")
+	
+
+func _trail_before_attached_to_player_energy_spark_particle(arg_trail, arg_particle_node):
+	var non_essential_rng = SingletonsAndConsts.non_essential_rng
+	
+	#
+	
+	arg_trail.max_trail_length = non_essential_rng.randi_range(7, 12)
+	arg_trail.trail_color = Color("#FDC621") * non_essential_rng.randf_range(0.6, 1.0)
+	arg_trail.trail_color.a = 0.7
+	arg_trail.width = non_essential_rng.randi_range(1, 4)
+	
+	arg_trail.set_to_idle_and_available_if_node_is_not_visible = true
+
+
+

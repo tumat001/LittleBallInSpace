@@ -37,6 +37,10 @@ var level_layout_ids_unlocked_by_default = [
 
 var _layout_id_to_layout_details_map : Dictionary
 
+#
+
+const MODULATE_LEVEL_HOVER_LIST__L01 = []
+
 ##
 
 func _ready():

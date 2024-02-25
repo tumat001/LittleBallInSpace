@@ -1,7 +1,31 @@
 extends Control
 
+const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd")
 const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.gd")
 const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
+
+const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
+
+
+
+const LEVEL_HOVER_RECT_PARTICLE__SPEED_RATIO_TO_LIN_VEL_CHANGE : float = 0.08
+
+const LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_INITIAL : float = 2.0
+const LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_MID : float = 4.0
+const LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_FINAL : float = 0.0
+
+const LEVEL_HOVER_RECT_PARTICLE__MOD_A_INITIAL : float = 0.2
+const LEVEL_HOVER_RECT_PARTICLE__MOD_A_MID : float = 0.4
+const LEVEL_HOVER_RECT_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_MID : float = 0.2
+const LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_FINAL : float = 0.5
+const LEVEL_HOVER_RECT_PARTICLE__DURATION_TOTAL : float = LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_MID + LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_FINAL
+
+const LEVEL_HOVER_RECT_PARTICLE__SPEED : float = 40.0
+
+const LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MIN : int = 3
+const LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MAX : int = 5
 
 
 #
@@ -18,6 +42,8 @@ signal current_level_layout_changed(arg_layout, arg_layout_id)
 var _current_active_level_layout
 
 var _layout_id_to_level_layout_map : Dictionary
+
+var non_essential_rng : RandomNumberGenerator
 
 #
 
@@ -36,6 +62,7 @@ onready var level_count_panel = $HUDContainer/VBoxContainer/LevelsCompletedPanel
 
 onready var particles_container = $ParticlesContainer
 onready var circular_draw_node__circle_burst = $CircularDrawNode_CircleBurst
+onready var rect_draw_node__level_hover = $RectDrawNode_LevelHovered
 
 onready var game_background = $GameBackground
 
@@ -67,7 +94,8 @@ func _ready():
 	_on_visibility_changed()
 	
 	trophy_panel.can_show_healths_related_trophies = false
-
+	
+	non_essential_rng = SingletonsAndConsts.non_essential_rng
 
 func _on_visibility_changed():
 	game_background.visible = visible
@@ -355,8 +383,6 @@ func play_circular_draw_node__circle_burst__for_victory(arg_pos : Vector2):
 	
 	
 
-
-
 func _on_triggered_circular_burst_on_curr_ele_for_victory(arg_tile_ele_for_playing_victory_animation_for, arg_level_details):
 	emit_signal("triggered_circular_burst_on_curr_ele_for_victory", arg_tile_ele_for_playing_victory_animation_for, arg_level_details)
 
@@ -364,7 +390,109 @@ func _on_triggered_circular_burst_on_curr_ele_for_victory__as_additionals(arg_ti
 	emit_signal("triggered_circular_burst_on_curr_ele_for_victory__as_additionals", arg_tile_eles)
 	
 
-#
+###
+
+
+func play_rect_draw_node__rect_particles_on_level_hover(arg_gui_level_tile : GUI_LevelLayoutEle_Tile):
+	var level_details = arg_gui_level_tile.level_details
+	
+	var rand_particle_count = non_essential_rng.randi_range(LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MIN, LEVEL_HOVER_RECT_PARTICLE__PARTICLE_COUNT_MAX)
+	var modulate_i : int = 0
+	for i in rand_particle_count:
+		
+		var pos_to_use = arg_gui_level_tile.get_center_position()
+		var modulate_to_use = level_details.modulates_for_level_hover_list[modulate_i]
+		
+		for j in 2:
+			_play_rect_draw_node__single_rect_particle_on_level_hover(pos_to_use, modulate_to_use)
+		
+		##
+		
+		modulate_i += 1
+		if level_details.modulates_for_level_hover_list.size() <= modulate_i:
+			modulate_i = 0
+		
+
+func _play_rect_draw_node__single_rect_particle_on_level_hover(arg_pos : Vector2, arg_modulate : Color):
+	
+	var lifetime_modif : float = non_essential_rng.randf_range(-0.15, 0.15)
+	var lifetime__final_val = LEVEL_HOVER_RECT_PARTICLE__DURATION_TOTAL + lifetime_modif
+	
+	var lifetime_to_mid__final_val = LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_MID + lifetime_modif/2
+	var lifetime_to_final__final_val = LEVEL_HOVER_RECT_PARTICLE__DURATION_TO_FINAL + lifetime_modif/2
+	
+	var speed_ratio_modif = non_essential_rng.randf_range(-0.2, 0.2)
+	var speed__final_val = LEVEL_HOVER_RECT_PARTICLE__SPEED + (LEVEL_HOVER_RECT_PARTICLE__SPEED * speed_ratio_modif)
+	
+	var arg_final_val_angle = non_essential_rng.randf_range(0, 2*PI)
+	
+	var final_center_pos__final_calced_pos = Vector2(speed__final_val, 0).rotated(arg_final_val_angle) + arg_pos
+	
+	var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+	var mod_a_initial__final_val = LEVEL_HOVER_RECT_PARTICLE__MOD_A_INITIAL + mod_a_modif
+	var mod_a_mid__final_val = LEVEL_HOVER_RECT_PARTICLE__MOD_A_MID + mod_a_modif
+	arg_modulate.a = mod_a_mid__final_val
+	
+	var length_wid_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+	var len_wid_initial__final_val = LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_INITIAL + length_wid_modif
+	var len_wid_mid__final_val = LEVEL_HOVER_RECT_PARTICLE__LEN_WIDTH_MID + length_wid_modif
+	
+	
+	var draw_param : RectDrawNode.DrawParams = _construct_rect_draw_param__rect_particles_on_level_hover(arg_pos, arg_modulate, lifetime__final_val, len_wid_initial__final_val)
+	_tween_rect_particles_on_level_hover_rect_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, 0.0, len_wid_mid__final_val, 0.0)
+
+
+func _construct_rect_draw_param__rect_particles_on_level_hover(arg_center_pos : Vector2, 
+		arg_base_modulate : Color, arg_total_lifetime : float, arg_length_width : float):
+	
+	var draw_param = rect_draw_node__level_hover.DrawParams.new()
+	
+	
+	var rand_modulate = arg_base_modulate * non_essential_rng.randf_range(0.6, 1.0)
+	rand_modulate.a = 0.75
+	draw_param.fill_color = rand_modulate
+	draw_param.outline_color = rand_modulate
+	draw_param.outline_width = 0
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.angle_rad = 0
+	draw_param.lifetime_of_draw = arg_total_lifetime + 0.3
+	draw_param.has_lifetime = true
+	draw_param.pivot_point = Vector2(0, 0)
+	
+	var size = Vector2(arg_length_width, arg_length_width)
+	var initial_rect = Rect2(arg_center_pos - (size/2), size)
+	draw_param.initial_rect = initial_rect
+	
+	rect_draw_node__level_hover.add_draw_param(draw_param)
+	
+	
+	return draw_param
+
+func _tween_rect_particles_on_level_hover_rect_draw_param__using_params(arg_rect_draw_param : RectDrawNode.DrawParams, 
+		arg_lifetime_to_mid : float, arg_lifetime_from_mid_to_end : float,
+		arg_final_center_pos : Vector2, 
+		arg_mid_color_mod_a : float, arg_final_color_mod_a : float,
+		arg_mid_length_width : float, arg_final_length_width : float):
+	
+	
+	var full_lifetime = arg_lifetime_to_mid + arg_lifetime_from_mid_to_end
+	
+	var tweener = create_tween()
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_rect_draw_param, "current_rect:position", arg_final_center_pos, full_lifetime).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_mid_length_width, arg_mid_length_width), arg_lifetime_to_mid)
+	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_mid_color_mod_a, arg_lifetime_to_mid)
+	tweener.set_parallel(false)
+	
+	tweener.tween_interval(arg_lifetime_to_mid)
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_rect_draw_param, "current_rect:size", Vector2(arg_final_length_width, arg_final_length_width), arg_lifetime_from_mid_to_end)
+	tweener.tween_property(arg_rect_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
+	
+
+##
 
 func _on_shortcut_panel_layout_tile_pressed(arg_tile, arg_id):
 	if SingletonsAndConsts.current_master.can_level_layout_do_action(): #!SingletonsAndConsts.current_master._is_transitioning and !SingletonsAndConsts.current_master._is_in_game_or_loading_to_game:

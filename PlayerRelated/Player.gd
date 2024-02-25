@@ -1921,7 +1921,6 @@ func _attempt_play_player_hit_particle(diff):
 		_configure_particle_position(particle)
 		
 
-#todoimp continue testing this
 func _attempt_play_player_tile_hit_rect_draw_particles(diff):
 	if is_instance_valid(_last_base_tile_set_colled):
 		var modulate_to_use : Color = TileConstants.get_or_calc_modulate_for_player_hit_tile_rect_draw_particles_on_tile_id(_last_cell_id, _last_base_tile_set_colled.modulate)

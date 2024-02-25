@@ -101,6 +101,11 @@ var zoom_out_vec = CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL
 
 var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
+#
+
+#todoimp config this in storeoflevels
+var modulates_for_level_hover_list : Array
+
 ##########
 
 func set_level_name(arg_val):

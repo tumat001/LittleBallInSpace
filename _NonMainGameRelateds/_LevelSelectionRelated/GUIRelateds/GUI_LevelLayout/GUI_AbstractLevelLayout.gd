@@ -89,7 +89,8 @@ const INPUT_TYPE__RIGHT = 2
 const INPUT_TYPE__UP = 3
 const INPUT_TYPE__DOWN = 4
 
-var _last_input_type : int = INPUT_TYPE__NONE
+#var _last_input_type : int = INPUT_TYPE__NONE
+var _mov_input_type_stack : Array
 
 #
 
@@ -253,6 +254,13 @@ func _assign_layout_ele_as_current_hovered(arg_ele, arg_play_sound : bool = true
 	if arg_play_sound:
 		if !arg_ele.is_path and !SingletonsAndConsts.current_master._is_transitioning:
 			AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_LevelTile_Hover, 1.0, null)
+			
+			if arg_ele.level_details != null:
+				gui_level_selection_whole_screen.play_rect_draw_node__rect_particles_on_level_hover(arg_ele)
+				
+			elif arg_ele.level_layout_details != null:
+				pass
+				#todoimp make particles for layout as well
 	
 	emit_signal("currently_hovered_layout_ele_changed", _currently_hovered_layout_ele_id, _currently_hovered_tile)
 
@@ -301,49 +309,41 @@ func _unhandled_key_input(event):
 	if event is InputEventKey:
 		if _is_player_cursor_active and is_layout_enabled:
 			
-			#if !_is_player_cursor_gliding:
-#			if event.is_action("ui_up") and !event.is_action_released("ui_up"):
-#				_attempt_glide_cursor_from_current__to_up()
-#
-#			elif event.is_action("ui_down") and !event.is_action_released("ui_down"):
-#				_attempt_glide_cursor_from_current__to_down()
-#
-#			elif event.is_action("ui_left") and !event.is_action_released("ui_left"):
-#				_attempt_glide_cursor_from_current__to_left()
-#
-#			elif event.is_action("ui_right") and !event.is_action_released("ui_right"):
-#				_attempt_glide_cursor_from_current__to_right()
-#
-			
-			
 			if event.is_action_pressed("ui_up"):
-				_last_input_type = INPUT_TYPE__UP
+				#_last_input_type = INPUT_TYPE__UP
+				_mov_input_type_stack.append(INPUT_TYPE__UP)
 				
 			elif event.is_action_pressed("ui_down"):
-				_last_input_type = INPUT_TYPE__DOWN
+				#_last_input_type = INPUT_TYPE__DOWN
+				_mov_input_type_stack.append(INPUT_TYPE__DOWN)
 				
 			elif event.is_action_pressed("ui_left"):
-				_last_input_type = INPUT_TYPE__LEFT
+				#_last_input_type = INPUT_TYPE__LEFT
+				_mov_input_type_stack.append(INPUT_TYPE__LEFT)
 				
 			elif event.is_action_pressed("ui_right"):
-				_last_input_type = INPUT_TYPE__RIGHT
-				
+				#_last_input_type = INPUT_TYPE__RIGHT
+				_mov_input_type_stack.append(INPUT_TYPE__RIGHT)
 			
 			if event.is_action_released("ui_up"):
-				if _last_input_type == INPUT_TYPE__UP:
-					_last_input_type = INPUT_TYPE__NONE
+				#if _last_input_type == INPUT_TYPE__UP:
+				#	_last_input_type = INPUT_TYPE__NONE
+				_mov_input_type_stack.erase(INPUT_TYPE__UP)
 			
 			if event.is_action_released("ui_down"):
-				if _last_input_type == INPUT_TYPE__DOWN:
-					_last_input_type = INPUT_TYPE__NONE
+				#if _last_input_type == INPUT_TYPE__DOWN:
+				#	_last_input_type = INPUT_TYPE__NONE
+				_mov_input_type_stack.erase(INPUT_TYPE__DOWN)
 			
 			if event.is_action_released("ui_left"):
-				if _last_input_type == INPUT_TYPE__LEFT:
-					_last_input_type = INPUT_TYPE__NONE
+				#if _last_input_type == INPUT_TYPE__LEFT:
+				#	_last_input_type = INPUT_TYPE__NONE
+				_mov_input_type_stack.erase(INPUT_TYPE__LEFT)
 			
 			if event.is_action_released("ui_right"):
-				if _last_input_type == INPUT_TYPE__RIGHT:
-					_last_input_type = INPUT_TYPE__NONE
+				#if _last_input_type == INPUT_TYPE__RIGHT:
+				#	_last_input_type = INPUT_TYPE__NONE
+				_mov_input_type_stack.erase(INPUT_TYPE__RIGHT)
 			
 			
 			##
@@ -357,24 +357,26 @@ func _process(delta):
 			_input_delay -= delta
 		
 		if _input_delay <= 0:
-			if _is_player_cursor_active and is_layout_enabled:
+			if _is_player_cursor_active and is_layout_enabled and _mov_input_type_stack.size() != 0:
 				
-				if _last_input_type == INPUT_TYPE__LEFT:
-					_attempt_glide_cursor_from_current__to_left()
-					_input_delay += INPUT_DELAY_AFTER_GLIDE
-					
-				elif _last_input_type == INPUT_TYPE__RIGHT:
-					_attempt_glide_cursor_from_current__to_right()
-					_input_delay += INPUT_DELAY_AFTER_GLIDE
-					
-				elif _last_input_type == INPUT_TYPE__UP:
-					_attempt_glide_cursor_from_current__to_up()
-					_input_delay += INPUT_DELAY_AFTER_GLIDE
-					
-				elif _last_input_type == INPUT_TYPE__DOWN:
-					_attempt_glide_cursor_from_current__to_down()
-					_input_delay += INPUT_DELAY_AFTER_GLIDE
-					
+				var most_recent_input_type = _mov_input_type_stack.back()
+				match most_recent_input_type:
+					INPUT_TYPE__LEFT:
+						_attempt_glide_cursor_from_current__to_left()
+						_input_delay += INPUT_DELAY_AFTER_GLIDE
+						
+					INPUT_TYPE__RIGHT:
+						_attempt_glide_cursor_from_current__to_right()
+						_input_delay += INPUT_DELAY_AFTER_GLIDE
+						
+					INPUT_TYPE__UP:
+						_attempt_glide_cursor_from_current__to_up()
+						_input_delay += INPUT_DELAY_AFTER_GLIDE
+						
+					INPUT_TYPE__DOWN:
+						_attempt_glide_cursor_from_current__to_down()
+						_input_delay += INPUT_DELAY_AFTER_GLIDE
+						
 				
 				
 

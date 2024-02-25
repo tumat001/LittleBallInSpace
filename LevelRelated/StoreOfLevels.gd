@@ -157,6 +157,19 @@ var _level_layout_id_to_level_id_map : Dictionary
 # see func to initialize this
 var _stage_name_to_level_layout_id_map : Dictionary
 
+#
+
+const MODULATE_LEVEL_HOVER_LIST__NORMAL = [Color("#ADADAD")]
+const MODULATE_LEVEL_HOVER_LIST__CHALLENGE = [Color("#FC0307")]
+const MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO = [Color("#FC0307"), Color("#6C02DA")]
+const MODULATE_LEVEL_HOVER_LIST__VIO = [Color("#6C02DA")]
+
+const MODULATE_LEVEL_HOVER_LIST__YELLOW = [Color("#9CB102")]
+const MODULATE_LEVEL_HOVER_LIST__BLUE = [Color("#462BFD")]
+const MODULATE_LEVEL_HOVER_LIST__MAGNUM_OPUS = [Color("#440297"), Color("#E3AB02")]
+const MODULATE_LEVEL_HOVER_LIST__CONSTELLATION = [Color("#FEEDB9"), Color("#454545")]
+
+
 #################
 
 func _initialize_levels_in_level_layout():
@@ -396,6 +409,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
@@ -420,6 +434,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
 		level_details.level_name = [
@@ -442,6 +458,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#444444")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
@@ -466,6 +484,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
+		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
 		level_details.level_name = [
@@ -489,6 +509,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 		
 		
 		
@@ -517,6 +538,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
 		level_details.level_full_name = [
@@ -542,6 +565,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_2__HARD:
@@ -571,6 +596,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_2:
 		level_details.level_full_name = [
@@ -597,6 +624,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_2:
@@ -624,6 +652,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_2:
@@ -650,6 +679,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_2:
@@ -678,6 +709,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_2__HARD:
@@ -710,6 +743,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_3:
 		level_details.level_full_name = [
@@ -736,6 +770,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_3:
@@ -763,6 +798,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+		
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_3:
@@ -789,6 +826,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_3__HARD:
@@ -818,6 +857,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_3:
 		level_details.level_full_name = [
@@ -844,6 +885,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_3__HARD:
@@ -873,6 +915,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_3:
@@ -901,6 +944,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_3__HARD:
@@ -933,6 +978,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_4:
 		level_details.level_full_name = [
@@ -958,6 +1005,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 		
@@ -986,6 +1035,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_4:
@@ -1013,6 +1063,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_4__HARD:
@@ -1042,6 +1093,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_4:
 		level_details.level_full_name = [
@@ -1067,6 +1120,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_4__HARD:
@@ -1096,6 +1151,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
 		level_details.level_full_name = [
@@ -1123,6 +1180,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4__HARD:
@@ -1155,6 +1214,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_5:
 		level_details.level_full_name = [
@@ -1180,6 +1241,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_5:
@@ -1209,6 +1272,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
+		
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
@@ -1236,6 +1301,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_6:
@@ -1263,6 +1329,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_6:
@@ -1290,6 +1357,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+		
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6:
@@ -1316,6 +1385,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.level_label_text_color = Color("#dddddd")
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD:
@@ -1345,6 +1416,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD_V02:
 		level_details.level_full_name = [
@@ -1373,6 +1446,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 		
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_6:
@@ -1400,6 +1474,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_6:
@@ -1427,6 +1502,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD:
@@ -1456,6 +1532,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD_V02:
 		level_details.level_full_name = [
@@ -1483,6 +1561,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		level_details.level_type = level_details.LevelTypeId.CHALLENGE
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 		
 		
 		
@@ -1512,6 +1592,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.has_outline_color = false
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 		
 		
 		
@@ -1545,6 +1627,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 		
 		
 		
@@ -1572,6 +1655,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#level_details.level_label_outline_color = Color("#dddddd")
 		level_details.has_outline_color = false
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_1:
@@ -1607,6 +1691,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
 		level_details.level_full_name = [
@@ -1640,6 +1726,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 		
 		
 	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
@@ -1677,6 +1765,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+		
 		
 	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
 		level_details.level_full_name = [
@@ -1711,6 +1801,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 		
 		
 	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_2:
@@ -1747,6 +1839,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
 		
 		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__MAGNUM_OPUS
 		
 		
 	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_2:
@@ -1787,7 +1881,9 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		#note: only for this!
 		level_details.queue_free_gui_level_selection_panel = false
 		level_details.immediately_start_stats_record_on_GE_ready = false
-	
+		
+		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CONSTELLATION
+		
 	
 	##
 	
