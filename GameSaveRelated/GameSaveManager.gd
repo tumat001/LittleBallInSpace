@@ -571,7 +571,6 @@ func set_level_layout_id_status_completion(arg_id, arg_status):
 	if old_val != arg_status:
 		emit_signal("level_layout_id_completion_status_changed", arg_id, arg_status)
 
-
 #
 
 func _save_player_data():
