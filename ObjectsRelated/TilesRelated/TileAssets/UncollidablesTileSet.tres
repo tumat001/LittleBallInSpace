@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=59 format=2]
+[gd_resource type="TileSet" load_steps=63 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -58,6 +58,10 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor02.png" type="Texture" id=56]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/SimpleMetal/Tileset_SimpleMetal_Uncollidables__WallDecor03.png" type="Texture" id=57]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Commons/Tileset_Uncollidables_Commons_InstructionScreens.png" type="Texture" id=58]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__WallDecor03.png" type="Texture" id=59]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__WallDecor04.png" type="Texture" id=60]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__WallDecor05.png" type="Texture" id=61]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_DarkMetal_Uncollidables__Lamps02.png" type="Texture" id=62]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1320,3 +1324,87 @@
 59/shape_one_way_margin = 0.0
 59/shapes = [  ]
 59/z_index = 0
+60/name = "Tileset_Spaceship_Uncollidables__WallDecor03.png 60"
+60/texture = ExtResource( 59 )
+60/tex_offset = Vector2( 0, 0 )
+60/modulate = Color( 1, 1, 1, 1 )
+60/region = Rect2( 0, 0, 128, 192 )
+60/tile_mode = 2
+60/autotile/icon_coordinate = Vector2( 0, 0 )
+60/autotile/tile_size = Vector2( 32, 32 )
+60/autotile/spacing = 0
+60/autotile/occluder_map = [  ]
+60/autotile/navpoly_map = [  ]
+60/autotile/priority_map = [  ]
+60/autotile/z_index_map = [  ]
+60/occluder_offset = Vector2( 0, 0 )
+60/navigation_offset = Vector2( 0, 0 )
+60/shape_offset = Vector2( 0, 0 )
+60/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+60/shape_one_way = false
+60/shape_one_way_margin = 0.0
+60/shapes = [  ]
+60/z_index = 0
+61/name = "Tileset_Spaceship_Uncollidables__WallDecor04.png 61"
+61/texture = ExtResource( 60 )
+61/tex_offset = Vector2( 0, 0 )
+61/modulate = Color( 1, 1, 1, 1 )
+61/region = Rect2( 0, 0, 128, 192 )
+61/tile_mode = 2
+61/autotile/icon_coordinate = Vector2( 0, 0 )
+61/autotile/tile_size = Vector2( 32, 32 )
+61/autotile/spacing = 0
+61/autotile/occluder_map = [  ]
+61/autotile/navpoly_map = [  ]
+61/autotile/priority_map = [  ]
+61/autotile/z_index_map = [  ]
+61/occluder_offset = Vector2( 0, 0 )
+61/navigation_offset = Vector2( 0, 0 )
+61/shape_offset = Vector2( 0, 0 )
+61/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+61/shape_one_way = false
+61/shape_one_way_margin = 0.0
+61/shapes = [  ]
+61/z_index = 0
+62/name = "Tileset_Spaceship_Uncollidables__WallDecor05.png 62"
+62/texture = ExtResource( 61 )
+62/tex_offset = Vector2( 0, 0 )
+62/modulate = Color( 1, 1, 1, 1 )
+62/region = Rect2( 0, 0, 128, 160 )
+62/tile_mode = 2
+62/autotile/icon_coordinate = Vector2( 0, 0 )
+62/autotile/tile_size = Vector2( 32, 32 )
+62/autotile/spacing = 0
+62/autotile/occluder_map = [  ]
+62/autotile/navpoly_map = [  ]
+62/autotile/priority_map = [  ]
+62/autotile/z_index_map = [  ]
+62/occluder_offset = Vector2( 0, 0 )
+62/navigation_offset = Vector2( 0, 0 )
+62/shape_offset = Vector2( 0, 0 )
+62/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+62/shape_one_way = false
+62/shape_one_way_margin = 0.0
+62/shapes = [  ]
+62/z_index = 0
+63/name = "Tileset_DarkMetal_Uncollidables__Lamps02.png 63"
+63/texture = ExtResource( 62 )
+63/tex_offset = Vector2( 0, 0 )
+63/modulate = Color( 1, 1, 1, 1 )
+63/region = Rect2( 0, 0, 128, 64 )
+63/tile_mode = 2
+63/autotile/icon_coordinate = Vector2( 0, 0 )
+63/autotile/tile_size = Vector2( 32, 32 )
+63/autotile/spacing = 0
+63/autotile/occluder_map = [  ]
+63/autotile/navpoly_map = [  ]
+63/autotile/priority_map = [  ]
+63/autotile/z_index_map = [  ]
+63/occluder_offset = Vector2( 0, 0 )
+63/navigation_offset = Vector2( 0, 0 )
+63/shape_offset = Vector2( 0, 0 )
+63/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+63/shape_one_way = false
+63/shape_one_way_margin = 0.0
+63/shapes = [  ]
+63/z_index = 0

@@ -909,6 +909,20 @@ func _initialize_all_uncol_tile_to_light_tex_rect_size_and_color_gradient_map():
 			Vector2(2, 1) : _construct_light_details__for_55__V02_01(),
 			Vector2(3, 1) : _construct_light_details__for_55__V03_01(),
 			
+		},
+		
+		# dark metal
+		63 : {
+			Vector2(0, 0) : _construct_light_details__for_63__V00_00(),
+			Vector2(1, 0) : _construct_light_details__for_63__V01_00(),
+			Vector2(2, 0) : _construct_light_details__for_63__V02_00(),
+			Vector2(3, 0) : _construct_light_details__for_63__V03_00(),
+			
+			Vector2(0, 1) : _construct_light_details__for_63__V00_01(),
+			Vector2(1, 1) : _construct_light_details__for_63__V01_01(),
+			Vector2(2, 1) : _construct_light_details__for_63__V02_01(),
+			Vector2(3, 1) : _construct_light_details__for_63__V03_01(),
+			
 		}
 		
 	}
@@ -1038,6 +1052,74 @@ func _construct_light_details__for_55__V03_01():
 
 
 
+
+func _construct_light_details__for_63__V00_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90, 60))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#9933FFB2"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, 7)
+	
+	return light_details
+
+func _construct_light_details__for_63__V01_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90.5, 60))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#9933FFB2"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(-7, 0)
+	
+	return light_details
+
+func _construct_light_details__for_63__V02_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91, 60))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#9933FFB2"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, -7)
+	
+	return light_details
+
+func _construct_light_details__for_63__V03_00():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91.5, 60))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#9933FFB2"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(7, 0)
+	
+	return light_details
+
+
+
+func _construct_light_details__for_63__V00_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90, 61))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, 11)
+	
+	return light_details
+
+func _construct_light_details__for_63__V01_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90.5, 61))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(-11, 0)
+	
+	return light_details
+
+func _construct_light_details__for_63__V02_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91, 61))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(0, -11)
+	
+	return light_details
+
+func _construct_light_details__for_63__V03_01():
+	var light_details = LightDetails.new()
+	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91.5, 61))
+	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
+	light_details.offset = Vector2(11, 0)
+	
+	return light_details
+
+#
 
 func get_light_details_of_tile_id(arg_tile_id, arg_auto_coords) -> LightDetails:
 	if _uncollidable_tile_id_to_auto_coord_to_light_details_to_use_map.has(arg_tile_id):
