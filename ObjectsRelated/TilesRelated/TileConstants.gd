@@ -1091,7 +1091,7 @@ func _construct_light_details__for_63__V00_01():
 	var light_details = LightDetails.new()
 	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90, 61))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
-	light_details.offset = Vector2(0, 11)
+	light_details.offset = Vector2(0, 8)
 	
 	return light_details
 
@@ -1099,7 +1099,7 @@ func _construct_light_details__for_63__V01_01():
 	var light_details = LightDetails.new()
 	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(90.5, 61))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
-	light_details.offset = Vector2(-11, 0)
+	light_details.offset = Vector2(-8, 0)
 	
 	return light_details
 
@@ -1107,7 +1107,7 @@ func _construct_light_details__for_63__V02_01():
 	var light_details = LightDetails.new()
 	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91, 61))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
-	light_details.offset = Vector2(0, -11)
+	light_details.offset = Vector2(0, -8)
 	
 	return light_details
 
@@ -1115,7 +1115,7 @@ func _construct_light_details__for_63__V03_01():
 	var light_details = LightDetails.new()
 	light_details.light_texture = LightTextureConstructor.construct_or_get_rect_gradient_texture(Vector2(91.5, 61))
 	light_details.light_texture.gradient = LightTextureConstructor.construct_or_get_gradient_two_color(Color("#99#FF8842"), Color(0, 0, 0, 0))
-	light_details.offset = Vector2(11, 0)
+	light_details.offset = Vector2(8, 0)
 	
 	return light_details
 
