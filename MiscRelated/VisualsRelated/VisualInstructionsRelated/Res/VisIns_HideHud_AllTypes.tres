@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[ext_resource path="res://MiscRelated/VisualsRelated/VisualInstructionsRelated/Assets/VisualInstruction_HudHide_AllShown.png" type="Texture" id=1]
+[ext_resource path="res://MiscRelated/VisualsRelated/VisualInstructionsRelated/Assets/VisualInstruction_HudHide_NoneShown.png" type="Texture" id=2]
+[ext_resource path="res://MiscRelated/VisualsRelated/VisualInstructionsRelated/Assets/VisualInstruction_HudHide_OnlyMouseShown.png" type="Texture" id=3]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "hide_all",
+"speed": 0.5
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "hide_except_mouse",
+"speed": 0.5
+} ]
