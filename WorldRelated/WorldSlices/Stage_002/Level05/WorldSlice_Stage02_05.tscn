@@ -144,7 +144,6 @@ position = Vector2( -62.25, 130.625 )
 shape = SubResource( 5 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="3" instance=ExtResource( 13 )]
-visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
 position = Vector2( 306.5, 144.5 )

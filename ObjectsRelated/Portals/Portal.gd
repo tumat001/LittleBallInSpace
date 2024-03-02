@@ -180,7 +180,7 @@ func _set_portal_to_link_to(arg_portal):
 func set_portal_color(arg_color):
 	portal_color = arg_color
 	
-	if _is_in_ready or (Engine.editor_hint and _is_in_ready):
+	if _is_in_ready or (Engine.editor_hint and is_inside_tree()):
 		if portal_color == PortalColor.RED:
 			portal_sprite.modulate = COLOR_RED__P_SPRITE
 			portal_frame.modulate = COLOR_RED__P_FRAME

@@ -685,10 +685,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_2:
 		level_details.level_full_name = [
-			["2-6 Enclosed", []]
+			["2-6 Path Maker", []]
 		]
 		level_details.level_name = [
-			["Enclosed", []]
+			["Path Maker", []]
 		]
 		level_details.level_desc = [
 			["", []]
@@ -715,10 +715,10 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_06__STAGE_2__HARD:
 		level_details.level_full_name = [
-			["2-!6 Planned Out", []]
+			["2-!6 Path Maker V2", []]
 		]
 		level_details.level_name = [
-			["Planned Out", []]
+			["Path Maker V2", []]
 		]
 		level_details.level_desc = [
 			["", []]
