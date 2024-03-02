@@ -28,6 +28,8 @@ script = ExtResource( 2 )
 [node name="PlayerContainer" type="Node" parent="GameContainer"]
 script = ExtResource( 9 )
 
+[node name="LightsContainer" type="Node" parent="GameContainer"]
+
 [node name="PlayerModiManager" type="Node" parent="GameContainer"]
 script = ExtResource( 3 )
 

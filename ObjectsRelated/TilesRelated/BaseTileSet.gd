@@ -86,7 +86,7 @@ var speed_slowdown_on_tile_break #: float = SPEED_SLOWDOWN_RATIO__GLASS
 #############################
 
 export(bool) var has_glowables : bool = false
-var _light_2d_glowables_node_2d_container : Node2D setget set_light_2d_glowables_node_2d_container
+var _light_2d_glowables_node_2d_container setget set_light_2d_glowables_node_2d_container
 
 
 var _player setget set_player, get_player
@@ -833,7 +833,7 @@ func set_is_responsible_for_own_movement__for_rewind(arg_val):
 #
 
 
-func set_light_2d_glowables_node_2d_container(arg_node : Node2D):
+func set_light_2d_glowables_node_2d_container(arg_node):
 	_light_2d_glowables_node_2d_container = arg_node
 	
 	emit_signal("light_2d_glowables_node_2d_container_setted", _light_2d_glowables_node_2d_container)
@@ -862,20 +862,30 @@ func _deferred__create_light_2ds_based_on_curr_tiles():
 			var tile_local_pos_top_left = tilemap.map_to_world(cell_coords)
 			var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
 			
-			var light_2d = _create_light_2d_on_light_container()
+			#var light_2d = _create_light_2d_on_light_container()
+			var light_2d = _create_light_on_light_container__as_sprite()
 			light_2d.position = tile_local_pos
 			light_2d.texture = light_details.light_texture
 			light_2d.rotation = light_details.rotation
 			light_2d.offset = light_details.offset
-			
+			light_2d.modulate.a = 0.25
 
 func _create_light_2d_on_light_container() -> Light2D:
 	var light2d = Light2D.new()
+	
 	_light_2d_glowables_node_2d_container.add_child(light2d)
 	#SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(light2d)
 	
 	return light2d
 
+
+
+func _create_light_on_light_container__as_sprite() -> Sprite:
+	var light_sprite = Sprite.new()
+	
+	_light_2d_glowables_node_2d_container.add_child(light_sprite)
+	
+	return light_sprite
 
 #
 

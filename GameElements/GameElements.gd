@@ -190,6 +190,8 @@ onready var game_result_manager = $GameContainer/GameResultManager
 
 onready var player_container = $GameContainer/PlayerContainer
 
+onready var lights_container = $GameContainer/LightsContainer
+
 var non_gui_screen_sprite
 
 #####

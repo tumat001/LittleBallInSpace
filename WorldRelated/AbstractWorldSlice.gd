@@ -97,7 +97,7 @@ onready var object_container = $ObjectContainer
 onready var player_spawn_coords_container = $PlayerSpawnCoordsContainer
 onready var area_region_container = $AreaRegionContainer
 onready var coins_container = $CoinsContainer
-onready var lights_container = $LightsContainer
+#onready var lights_container = $LightsContainer
 
 ####
 
@@ -118,7 +118,7 @@ func set_game_elements(arg_elements):
 func _ready():
 	_initialize_spawn_coords()
 	#_initialize_coins()
-	_initialize_base_tilesets()
+	#_initialize_base_tilesets()
 	_attempt_init_player_capture_area_style_to_one_at_a_time()
 	call_deferred("_deferred_initialize_game_background_configs_related")
 	call_deferred("_init_all_star_pickup_related")
@@ -151,7 +151,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 ####
 
 func _apply_modification_to_game_elements():
-	pass
+	_initialize_base_tilesets()
 
 func _on_before_game_start_init():
 	pass
@@ -348,8 +348,9 @@ func _on_GE_player_spawned(arg_player):
 
 func _initialize_base_tilesets():
 	for child in tile_container.get_children():
-		child.set_light_2d_glowables_node_2d_container(lights_container)
-
+		#child.set_light_2d_glowables_node_2d_container(lights_container)
+		
+		child.set_light_2d_glowables_node_2d_container(SingletonsAndConsts.current_game_elements.lights_container)
 
 #########################
 
