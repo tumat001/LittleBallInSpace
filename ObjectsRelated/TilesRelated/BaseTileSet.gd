@@ -333,6 +333,7 @@ func _apply_visual_changes__breakable():
 	if !_applied_changes_for_breakable:
 		_applied_changes_for_breakable = true
 		
+		# make cells glow
 		for cell_pos in tilemap.get_used_cells():
 			var cell_id = tilemap.get_cellv(cell_pos)
 			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
@@ -353,6 +354,7 @@ func _unapply_visual_changes__breakable(arg_forced : bool):
 	if _applied_changes_for_breakable or arg_forced:
 		_applied_changes_for_breakable = false
 		
+		#make cells unglow
 		for cell_pos in tilemap.get_used_cells():
 			var cell_id = tilemap.get_cellv(cell_pos)
 			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
