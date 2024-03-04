@@ -1,7 +1,7 @@
 extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 
-onready var prepare_yourself_label = $MiscContainer/PrepareYourselfLabel
+#onready var prepare_yourself_label = $MiscContainer/PrepareYourselfLabel
 
 #
 
@@ -16,7 +16,8 @@ func as_test__override__do_insta_win():
 
 
 func _ready():
-	prepare_yourself_label.modulate.a = 0
+	pass
+	#prepare_yourself_label.modulate.a = 0
 
 #
 
@@ -28,8 +29,8 @@ func _on_after_game_start_init():
 
 ##
 
-func _on_PDAR_PrepareYourself_player_entered_in_area():
-	var tweener = create_tween()
-	tweener.tween_property(prepare_yourself_label, "modulate:a", 1.0, 0.75)
-	
+#func _on_PDAR_PrepareYourself_player_entered_in_area():
+#	var tweener = create_tween()
+#	tweener.tween_property(prepare_yourself_label, "modulate:a", 1.0, 0.75)
+#
 
