@@ -94,7 +94,7 @@ tile_data = PoolIntArray( -2359296, 27, 1, -2359293, 27, 1, -2359291, 32, 131073
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncoll02" index="0"]
 tile_set = ExtResource( 11 )
-tile_data = PoolIntArray( -2162686, 13, 65539, -2162685, 13, 2, -2162681, 32, 0, -2162680, 32, 1, -2097150, 13, 1, -2097145, 32, 65536, -2097144, 32, 65537, -2031614, 13, 1, -1966078, 13, 1, -458751, 18, 196609, -458750, 18, 196609, -327679, 18, 262147, 65534, 17, 65538, 131070, 17, 65538, 65542, 17, 65538, 65546, 17, 0, 196606, 17, 65538, 131078, 17, 65538, 262139, 18, 0, 262142, 17, 65538, 196614, 17, 65538, 196618, 18, 0, 327678, 17, 65538, 262150, 17, 65538, 524289, 18, 262145, 524290, 18, 262145, 917505, 17, 131073, 917506, 17, 131072, 983041, 17, 131072, 983042, 17, 131073, 1310721, 17, 131072, 1310722, 17, 131073, 1376257, 17, 131073, 1376258, 17, 131072, 1572867, 18, 196608, 1572869, 18, 262144, 1572872, 18, 262144, 1572875, 18, 262144, 1572878, 18, 262144, 1572881, 18, 65536, 1572882, 13, 0, 1572883, 18, 196608, 1638403, 18, 196608, 1638419, 18, 196608 )
+tile_data = PoolIntArray( -2162686, 13, 65539, -2162685, 13, 2, -2162681, 32, 0, -2162680, 32, 1, -2097150, 13, 1, -2097145, 32, 65536, -2097144, 32, 65537, -2031614, 13, 1, -1966078, 13, 1, -458751, 18, 196609, -458750, 18, 196609, -327679, 18, 262147, 65534, 17, 65538, 131070, 17, 65538, 65542, 17, 65538, 65546, 17, 0, 196606, 17, 65538, 131078, 17, 65538, 262139, 18, 0, 262142, 17, 65538, 196614, 17, 65538, 196618, 18, 0, 327678, 17, 65538, 262150, 17, 65538, 524289, 18, 262145, 524290, 18, 262145, 917505, 17, 131073, 917506, 17, 131072, 983041, 17, 131072, 983042, 17, 131073, 1245197, 19, 131074, 1245198, 19, 0, 1245199, 19, 0, 1245200, 19, 0, 1310721, 17, 131072, 1310722, 17, 131073, 1310733, 19, 1, 1376257, 17, 131073, 1376258, 17, 131072, 1376269, 19, 1, 1441805, 19, 1, 1572867, 18, 196608, 1572869, 18, 262144, 1572872, 18, 262144, 1572875, 18, 262144, 1572878, 18, 262144, 1572881, 18, 65536, 1572882, 13, 0, 1572883, 18, 196608, 1703935, 62, 131072, 1638400, 62, 1, 1638401, 62, 3, 1638402, 62, 131072, 1638403, 18, 196608, 1638404, 62, 131072, 1638405, 62, 131072, 1638406, 62, 1, 1638407, 62, 3, 1638408, 62, 131072, 1638409, 62, 131072, 1638410, 62, 1, 1638411, 62, 2, 1638412, 62, 3, 1638413, 62, 131072, 1638414, 62, 131072, 1638415, 62, 1, 1638416, 62, 3, 1638417, 62, 131072, 1638418, 62, 131072, 1638419, 18, 196608, 1638420, 62, 131072, 1638421, 62, 131072, 1638422, 62, 1, 1638423, 62, 3, 1638424, 62, 131072, 1638425, 62, 131072 )
 
 [node name="BaseTileSet_Light" parent="TileContainer" index="6" instance=ExtResource( 3 )]
 has_glowables = true
@@ -187,10 +187,12 @@ shape = SubResource( 10 )
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="0" instance=ExtResource( 7 )]
 position = Vector2( 173, 144 )
+is_replenish_type = false
 
 [node name="Pickupable_LaunchBall2" parent="ObjectContainer" index="1" instance=ExtResource( 7 )]
 position = Vector2( -100, 145 )
 launch_ball_type = 1
+is_replenish_type = false
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="2" instance=ExtResource( 5 )]
 position = Vector2( 272, 142 )
@@ -207,8 +209,6 @@ body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Blue")
 portal_01_to_register_in_toggle__path = NodePath("../Portal_Blue01")
 portal_02_to_register_in_toggle__path = NodePath("../Portal_Blue02")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 pressable_count = 99
 
 [node name="Object_InteractableButton_Green" parent="ObjectContainer" index="5" instance=ExtResource( 8 )]
@@ -216,8 +216,6 @@ position = Vector2( -344, 240 )
 rotation = 1.5708
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Green")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 1
 pressable_count = 2
 
@@ -226,8 +224,6 @@ position = Vector2( 343, 144 )
 rotation = 4.71239
 body_mode_to_use = 1
 tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileSet_Red")
-ball_dispenser_01_to_register_in_toggle__path = NodePath("")
-ball_dispenser_02_to_register_in_toggle__path = NodePath("")
 button_color = 0
 pressable_count = 2
 
@@ -245,6 +241,7 @@ shape = SubResource( 12 )
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 12 )]
 position = Vector2( 269, 50 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( -26, 144 )

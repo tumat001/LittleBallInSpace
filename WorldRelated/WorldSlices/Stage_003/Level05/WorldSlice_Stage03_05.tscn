@@ -26,7 +26,7 @@ extents = Vector2( 28, 28 )
 extents = Vector2( 329, 272 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 419, 172 )
+extents = Vector2( 460.5, 172 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 15.5, 32 )
@@ -69,7 +69,7 @@ tile_data = PoolIntArray( -196605, 27, 1, -131072, 27, 0, -131071, 27, 131073, -
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls02" index="0"]
 tile_set = ExtResource( 11 )
-tile_data = PoolIntArray( -196606, 17, 65538, -131070, 17, 65538, -4, 17, 65537, -65534, 17, 65538, 65530, 17, 0, 65532, 17, 1, 2, 17, 65538, 131068, 17, 65537, 65538, 17, 65538, 196604, 17, 1, 262140, 17, 65537, 196610, 17, 65538, 327676, 17, 1, 262146, 17, 65538, 1245188, 18, 262144, 1245191, 18, 262144, 1245194, 18, 262144, 1245197, 18, 65536, 1245198, 13, 0, 1245199, 18, 196608, 1310735, 18, 196608 )
+tile_data = PoolIntArray( -196606, 17, 65538, -131070, 17, 65538, -4, 17, 65537, -65534, 17, 65538, 65530, 17, 0, 65532, 17, 1, 2, 17, 65538, 131068, 17, 65537, 65538, 17, 65538, 196604, 17, 1, 262140, 17, 65537, 196610, 17, 65538, 327676, 17, 1, 262146, 17, 65538, 1245188, 18, 262144, 1245191, 18, 262144, 1245194, 18, 262144, 1245197, 18, 65536, 1245198, 13, 0, 1245199, 18, 196608, 1376253, 62, 131072, 1376254, 62, 131072, 1376255, 62, 1, 1310720, 62, 3, 1310721, 62, 131072, 1310722, 62, 131072, 1310723, 62, 131072, 1310724, 62, 131072, 1310725, 62, 1, 1310726, 62, 3, 1310727, 62, 131072, 1310728, 62, 131072, 1310729, 62, 131072, 1310730, 62, 131072, 1310731, 62, 1, 1310732, 62, 3, 1310733, 62, 131072, 1310734, 62, 131072, 1310735, 18, 196608, 1310736, 62, 131072, 1310737, 62, 1, 1310738, 62, 3, 1310739, 62, 131072, 1310740, 62, 131072 )
 
 [node name="BaseTileSet_Light" parent="TileContainer" index="6" instance=ExtResource( 3 )]
 has_glowables = true
@@ -124,7 +124,7 @@ position = Vector2( -52, 125 )
 shape = SubResource( 3 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="1"]
-position = Vector2( 286, 568 )
+position = Vector2( 327.5, 568 )
 shape = SubResource( 4 )
 
 [node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="4" instance=ExtResource( 10 )]
