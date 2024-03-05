@@ -116,7 +116,6 @@ tile_data = PoolIntArray( -4128546, 3, 0, -4063010, 3, 65536, -3997474, 3, 65536
 
 [node name="PCAR_0First" parent="AreaRegionContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( 1168, 139 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_0First" index="0"]
 position = Vector2( -10, -23 )
@@ -124,7 +123,6 @@ shape = SubResource( 13 )
 
 [node name="PCAR_01" parent="AreaRegionContainer" index="1" instance=ExtResource( 6 )]
 position = Vector2( 2492, -38 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_01" index="0"]
 position = Vector2( 76, 25 )
@@ -132,7 +130,6 @@ shape = SubResource( 1 )
 
 [node name="PCAR_02" parent="AreaRegionContainer" index="2" instance=ExtResource( 6 )]
 position = Vector2( 2503, -636 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_02" index="0"]
 position = Vector2( 41, -20 )
@@ -140,7 +137,6 @@ shape = SubResource( 2 )
 
 [node name="PCAR_03" parent="AreaRegionContainer" index="3" instance=ExtResource( 6 )]
 position = Vector2( 4364, -810 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_03" index="0"]
 position = Vector2( 52, -12.5 )
@@ -148,7 +144,6 @@ shape = SubResource( 3 )
 
 [node name="PCAR_04" parent="AreaRegionContainer" index="4" instance=ExtResource( 6 )]
 position = Vector2( 4395, -1757 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_04" index="0"]
 position = Vector2( 53, -12.5 )
@@ -156,7 +151,6 @@ shape = SubResource( 4 )
 
 [node name="PCAR_04_5" parent="AreaRegionContainer" index="5" instance=ExtResource( 6 )]
 position = Vector2( 3462, -2653 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_04_5" index="0"]
 position = Vector2( 90, 12.25 )
@@ -164,7 +158,6 @@ shape = SubResource( 14 )
 
 [node name="PCAR_05" parent="AreaRegionContainer" index="6" instance=ExtResource( 6 )]
 position = Vector2( 4415, -2313 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_05" index="0"]
 position = Vector2( 49.5, -13 )
@@ -172,7 +165,6 @@ shape = SubResource( 5 )
 
 [node name="PCAR_06" parent="AreaRegionContainer" index="7" instance=ExtResource( 6 )]
 position = Vector2( 5273, -1641 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_06" index="0"]
 position = Vector2( 45, -71 )
@@ -180,7 +172,6 @@ shape = SubResource( 6 )
 
 [node name="PCAR_07" parent="AreaRegionContainer" index="8" instance=ExtResource( 6 )]
 position = Vector2( 7458, -1865 )
-mod_a_for_uncaptured = 1.0
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCAR_07" index="0"]
 position = Vector2( 94.25, -87 )
@@ -215,84 +206,110 @@ shape = SubResource( 12 )
 
 [node name="BaseEnemy10" parent="ObjectContainer" index="0" instance=ExtResource( 8 )]
 position = Vector2( 1321, 139 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy" parent="ObjectContainer" index="1" instance=ExtResource( 8 )]
 position = Vector2( 2458, 64 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy2" parent="ObjectContainer" index="2" instance=ExtResource( 8 )]
 position = Vector2( 3020, -769 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy3" parent="ObjectContainer" index="3" instance=ExtResource( 8 )]
 position = Vector2( 4893, -1405 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy4" parent="ObjectContainer" index="4" instance=ExtResource( 8 )]
 position = Vector2( 4169, -2213 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy11" parent="ObjectContainer" index="5" instance=ExtResource( 8 )]
 position = Vector2( 3550, -2175 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy5" parent="ObjectContainer" index="6" instance=ExtResource( 8 )]
 position = Vector2( 3491, -1477 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy6" parent="ObjectContainer" index="7" instance=ExtResource( 8 )]
 position = Vector2( 5470, -2017 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 2
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy8" parent="ObjectContainer" index="8" instance=ExtResource( 8 )]
 position = Vector2( 5691, -1920 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy7" parent="ObjectContainer" index="9" instance=ExtResource( 8 )]
 position = Vector2( 4682, -2553 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 3
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="BaseEnemy9" parent="ObjectContainer" index="10" instance=ExtResource( 8 )]
 position = Vector2( 6601, -1501 )
+collision_mask = 11
+mass = 20.0
 enemy_type_template__for_export = 1
 starting_activation_mode_id = 1
-is_immovable_and_invulnerable = null
+is_immovable_and_invulnerable = false
 
 [node name="Pickupable_LaunchBall" parent="ObjectContainer" index="11" instance=ExtResource( 7 )]
 position = Vector2( 933, 145 )
 launch_ball_type = 3
+is_replenish_type = false
 
 [node name="Pickupable_Wrench" parent="ObjectContainer" index="12" instance=ExtResource( 9 )]
 position = Vector2( 3608, -1096 )
 rotation = 3.14159
+is_replenish_type = false
 
 [node name="Pickupable_Wrench2" parent="ObjectContainer" index="13" instance=ExtResource( 9 )]
 position = Vector2( 4914, -2568 )
 rotation = 3.14159
+is_replenish_type = false
 
 [node name="Pickupable_Wrench3" parent="ObjectContainer" index="14" instance=ExtResource( 9 )]
 position = Vector2( 5035, -951 )
+is_replenish_type = false
 
 [node name="Portal_Red01" parent="ObjectContainer" index="15" instance=ExtResource( 11 )]
 position = Vector2( 892, 144 )
@@ -315,6 +332,7 @@ portal_to_link_with__path = NodePath("../Portal_Green01")
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 4 )]
 position = Vector2( 5548, -2010 )
+ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 13, 112 )
@@ -322,7 +340,7 @@ __meta__ = {
 "_gizmo_extents_": 16.0
 }
 
-[node name="Node" type="Node" parent="." index="6"]
+[node name="Node" type="Node" parent="." index="5"]
 
 [node name="FastRespawnPos2D" type="Position2D" parent="Node" index="0"]
 position = Vector2( 462, -16 )

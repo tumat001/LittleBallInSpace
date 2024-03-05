@@ -44,26 +44,32 @@ tile_data = PoolIntArray( 327682, 14, 4 )
 tile_set = ExtResource( 7 )
 tile_data = PoolIntArray( -131074, 12, 0, -131073, 12, 0, -196608, 12, 0, -196607, 12, 0, -196606, 12, 0, -196605, 12, 0, -196604, 12, 0, -196603, 12, 0, -65538, 12, 0, -65537, 12, 0, -131072, 12, 0, -131071, 12, 0, -131070, 12, 0, -131069, 12, 0, -131068, 12, 0, -131067, 12, 0, -2, 12, 0, -1, 12, 0, -65536, 12, 0, -65534, 12, 0, -65533, 12, 0, -65532, 12, 0, -65531, 12, 0, 65528, 12, 0, 65529, 12, 0, 65530, 12, 0, 65531, 12, 0, 65532, 12, 0, 65533, 12, 0, 65534, 12, 0, 65535, 12, 0, 0, 12, 0, 2, 12, 0, 3, 12, 0, 4, 12, 0, 5, 12, 0, 131070, 12, 0, 131071, 12, 0, 65536, 12, 0, 65538, 12, 0, 65539, 12, 0, 65540, 12, 0, 65541, 12, 0, 196606, 12, 0, 196607, 12, 0, 131072, 12, 0, 131073, 12, 0, 131074, 12, 0, 131075, 12, 0, 131076, 12, 0, 131077, 12, 0, 262142, 12, 0, 262143, 12, 0, 196608, 12, 0, 196609, 12, 0, 196610, 12, 0, 196611, 12, 0, 196612, 12, 0, 196613, 12, 0, 327678, 12, 0, 327679, 12, 0, 262144, 12, 0, 262145, 12, 0, 262146, 12, 0, 262147, 12, 0, 262148, 12, 0, 262149, 12, 0, 327683, 12, 0, 327684, 12, 0, 327685, 12, 0, 393219, 12, 0, 393220, 12, 0, 393221, 12, 0, 458755, 12, 0, 458756, 12, 0, 458757, 12, 0 )
 
-[node name="BaseTileSet_InstantBreak" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+[node name="BTS_UncollsWallDec" parent="TileContainer" index="4" instance=ExtResource( 3 )]
+
+[node name="TileMap" parent="TileContainer/BTS_UncollsWallDec" index="0"]
+tile_set = ExtResource( 7 )
+tile_data = PoolIntArray( -196608, 27, 1, -196605, 27, 1, -131072, 27, 1, -131069, 27, 1, -65536, 27, 1, -65533, 27, 1, 65534, 27, 65539, 65535, 27, 0, 0, 27, 131074, 3, 27, 65538, 4, 27, 65536, 131070, 27, 1, 65536, 27, 1, 65540, 27, 1, 196606, 27, 65537, 131072, 27, 1, 131076, 27, 65538, 131077, 27, 65536, 196608, 27, 65538, 196609, 27, 0, 196610, 27, 65536, 196613, 27, 1, 262146, 27, 1, 262149, 27, 1, 327685, 27, 1, 393221, 27, 65538 )
+
+[node name="BaseTileSet_InstantBreak" parent="TileContainer" index="5" instance=ExtResource( 3 )]
 glass_breakable_type = 1
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_InstantBreak" index="0"]
 tile_data = PoolIntArray( 65533, 16, 0, 589827, 16, 262146, 589828, 16, 262147, 589829, 16, 262148 )
 
-[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="5" instance=ExtResource( 3 )]
+[node name="BaseTileSet_Uncolls02" parent="TileContainer" index="6" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Uncolls02" index="0"]
 tile_set = ExtResource( 7 )
 tile_data = PoolIntArray( -2, 17, 131074, -1, 17, 131074, -65536, 17, 131074, -65534, 17, 131074, -65533, 17, 131074, -65532, 17, 131074, -65531, 17, 131074, 131070, 17, 131074, 131071, 17, 131074, 65536, 17, 131074, 65538, 17, 131074, 65539, 17, 131074, 65540, 17, 131074, 65541, 17, 131074, 131075, 18, 262145, 196612, 18, 65539, 262148, 13, 1, 327684, 13, 1, 393220, 13, 1, 458755, 18, 196609, 458756, 18, 196609, 458757, 18, 196609 )
 
-[node name="BaseTileSet_Glow" parent="TileContainer" index="6" instance=ExtResource( 3 )]
+[node name="BaseTileSet_Glow" parent="TileContainer" index="7" instance=ExtResource( 3 )]
 has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Glow" index="0"]
 tile_set = ExtResource( 7 )
 tile_data = PoolIntArray( -65537, 14, 0, -131068, 14, 0, 262143, 14, 0 )
 
-[node name="BaseTileSet_Blue" parent="TileContainer" index="7" instance=ExtResource( 3 )]
+[node name="BaseTileSet_Blue" parent="TileContainer" index="8" instance=ExtResource( 3 )]
 
 [node name="TileMap" parent="TileContainer/BaseTileSet_Blue" index="0"]
 modulate = Color( 0.152941, 0.435294, 0.972549, 1 )
@@ -78,6 +84,7 @@ position = Vector2( 82.5, -25.5 )
 shape = SubResource( 1 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="1" instance=ExtResource( 4 )]
+visible = false
 is_rewindable = true
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
@@ -107,6 +114,7 @@ __meta__ = {
 [editable path="TileContainer/BaseTileSet_Energized"]
 [editable path="TileContainer/BaseTileSet_Grounded"]
 [editable path="TileContainer/BaseTileSet_Uncolls01"]
+[editable path="TileContainer/BTS_UncollsWallDec"]
 [editable path="TileContainer/BaseTileSet_InstantBreak"]
 [editable path="TileContainer/BaseTileSet_Uncolls02"]
 [editable path="TileContainer/BaseTileSet_Glow"]
