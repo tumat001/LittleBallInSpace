@@ -1156,13 +1156,13 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 		
 	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
 		level_details.level_full_name = [
-			["4-5 Surface", []]
+			["4-5 One Way", []]
 		]
 		level_details.level_name = [
-			["Surface", []]
+			["One Way", []]
 		]
 		level_details.level_desc = [
-			["", []]
+			["Commitment to one way.", []]
 		]
 		
 		
