@@ -870,7 +870,7 @@ func _deferred__create_light_2ds_based_on_curr_tiles():
 			light_2d.texture = light_details.light_texture
 			light_2d.rotation = light_details.rotation
 			light_2d.offset = light_details.offset
-			light_2d.modulate.a = 0.25
+			light_2d.modulate.a = 0.45
 
 func _create_light_2d_on_light_container() -> Light2D:
 	var light2d = Light2D.new()

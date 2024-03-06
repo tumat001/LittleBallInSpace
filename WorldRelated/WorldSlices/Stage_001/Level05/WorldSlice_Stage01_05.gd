@@ -144,6 +144,8 @@ func _add_launch_ball_modi():
 	modi.can_change_aim_mode = false
 	_launch_ball_modi = modi
 	game_elements.player_modi_manager.add_modi_to_player(modi)
+	
+	modi.can_launch_player_when_on_air = false
 
 func _start_hide_god_rays():
 	var tweener = create_tween()
@@ -229,6 +231,9 @@ func _on_player_entered_in_area__PDAR_near_fakeout():
 	
 	StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(StoreOfAudio.BGMPlaylistId.SPECIALS_01, StoreOfAudio.AudioIds.BGM_Special01_FakeoutSuspense)
 	
+	#
+	
+	_launch_ball_modi.can_launch_player_when_on_air = true
 
 
 func _on_display_of_desc_finished__03(arg_metadata):

@@ -94,6 +94,9 @@ var is_class_type_player_modi_launch_ball : bool = true
 var is_override_mouse_angle : bool = false setget set_is_override_mouse_angle
 var custom_mouse_angle : float setget set_custom_mouse_angle
 
+#
+
+var can_launch_player_when_on_air : bool = true
 
 #
 
@@ -317,7 +320,7 @@ func _attempt_launch_ball():
 		
 		var ball_and_player_force = _calculate_launch_force_of_ball_and_player(player_modi_launch_ball_node.current_launch_force)
 		
-		if !_player.is_on_ground():
+		if !_player.is_on_ground() and can_launch_player_when_on_air:
 			_player.apply_inside_induced_force__with_counterforce_speed_if_applicable(ball_and_player_force[1])
 		
 		_player.reset_idle_time__and_clear_curr_idle()

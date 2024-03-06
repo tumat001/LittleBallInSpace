@@ -417,6 +417,8 @@ onready var player_face = $SpriteLayer/PlayerFace
 
 onready var pca_captured_drawer = $PCACapturedDrawer
 
+onready var counter_force_arrow_draw_node = $CounterForceArrowDrawNode
+
 #onready var remote_transform_2d = $RemoteTransform2D
 
 ###
@@ -2486,8 +2488,12 @@ func set_is_show_lines_to_uncaptured_player_capture_regions(arg_val):
 	pca_line_direction_drawer.is_show_lines_to_uncaptured_player_capture_regions = arg_val
 
 
+####
 
-#
+#todoimp put arrow related stuffs here
+
+
+#################
 
 func get_base_player_size():
 	return _base_player_size
