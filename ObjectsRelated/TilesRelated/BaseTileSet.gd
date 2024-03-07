@@ -183,6 +183,7 @@ func _ready():
 	_update_display_based_on_has_glowables()
 	
 	GameSettingsManager.connect("tile_color_config__tile_modulate__x_changed", self, "_on_GSM_tile_color_config__tile_modulate__x_changed")
+	
 
 func _update_display_based_on_energy_mode():
 	if energy_mode == EnergyMode.ENERGIZED:
@@ -253,10 +254,19 @@ func set_glass_breakable_type(arg_type):
 	
 	_set_momentum_breaking_point(_glass_breakable_type_to_momentum_for_break_val_map[arg_type])
 	speed_slowdown_on_tile_break = _glass_breakable_type_to_speed_ratio_reduction_val_map[arg_type]
+	
+	if arg_type != GlassBreakableType.NEVER_BREAK and is_inside_tree():
+		_construct_material_for_breakable_shader()
 
 #func set_momentum_breaking_point_standard(arg_val):
 #	momentum_breaking_point_standard = arg_val
 #	_set_momentum_breaking_point(_glass_breakable_type_to_momentum_for_break_val_map[arg_val])
+
+func _construct_material_for_breakable_shader():
+	var mat = ShaderMaterial.new()
+	
+	tilemap.material = mat
+
 
 func _set_momentum_breaking_point(arg_val):
 	momentum_breaking_point = arg_val
@@ -333,18 +343,20 @@ func _apply_visual_changes__breakable():
 	if !_applied_changes_for_breakable:
 		_applied_changes_for_breakable = true
 		
-		# make cells glow
-		for cell_pos in tilemap.get_used_cells():
-			var cell_id = tilemap.get_cellv(cell_pos)
-			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
-			var breakable_glowing_cell_id_equi = TileConstants.convert_non_glowing_breakable_tile_id__to_glowing(cell_id)
-			
-			if breakable_glowing_cell_id_equi != null:
-				_set_tile_at_coords(cell_pos, breakable_glowing_cell_id_equi, cell_autocord, false, false)
-			else:
-				print("BASE TILE SET: setting from unbreakable to breakable: texture id error")
+#		# make cells glow
+#		for cell_pos in tilemap.get_used_cells():
+#			var cell_id = tilemap.get_cellv(cell_pos)
+#			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
+#			var breakable_glowing_cell_id_equi = TileConstants.convert_non_glowing_breakable_tile_id__to_glowing(cell_id)
+#
+#			if breakable_glowing_cell_id_equi != null:
+#				_set_tile_at_coords(cell_pos, breakable_glowing_cell_id_equi, cell_autocord, false, false)
+#			else:
+#				print("BASE TILE SET: setting from unbreakable to breakable: texture id error")
+#
+#		tilemap.update_dirty_quadrants()
 		
-		tilemap.update_dirty_quadrants()
+		_make_cells_glow()
 		
 		_can_induce_rotation_change__due_to_cell_v_changes = false
 		#set_deferred("_can_induce_rotation_change__due_to_cell_v_changes", true)
@@ -354,18 +366,20 @@ func _unapply_visual_changes__breakable(arg_forced : bool):
 	if _applied_changes_for_breakable or arg_forced:
 		_applied_changes_for_breakable = false
 		
-		#make cells unglow
-		for cell_pos in tilemap.get_used_cells():
-			var cell_id = tilemap.get_cellv(cell_pos)
-			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
-			var breakable_non_glowing_cell_id_equi = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(cell_id)
-			
-			if breakable_non_glowing_cell_id_equi != null:
-				_set_tile_at_coords(cell_pos, breakable_non_glowing_cell_id_equi, cell_autocord, false, false)
-			else:
-				print("BASE TILE SET: setting from breakable to unbreakable: texture id error")
+#		#make cells unglow
+#		for cell_pos in tilemap.get_used_cells():
+#			var cell_id = tilemap.get_cellv(cell_pos)
+#			var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
+#			var breakable_non_glowing_cell_id_equi = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(cell_id)
+#
+#			if breakable_non_glowing_cell_id_equi != null:
+#				_set_tile_at_coords(cell_pos, breakable_non_glowing_cell_id_equi, cell_autocord, false, false)
+#			else:
+#				print("BASE TILE SET: setting from breakable to unbreakable: texture id error")
+#
+#		tilemap.update_dirty_quadrants()
 		
-		tilemap.update_dirty_quadrants()
+		_make_cells_unglow()
 		
 		_can_induce_rotation_change__due_to_cell_v_changes = false
 		#set_deferred("_can_induce_rotation_change__due_to_cell_v_changes", true)
@@ -375,6 +389,13 @@ func _unapply_visual_changes__breakable(arg_forced : bool):
 func _set_true__can_induce_rotation_change__due_to_cell_v_changes__after_small_delay():
 	_can_induce_rotation_after_delay_timer.start(0.25)
 
+
+func _make_cells_glow():
+	tilemap.material.shader = preload("res://MiscRelated/ShadersRelated/Shader_TileBreakableOutline.tres")
+
+func _make_cells_unglow():
+	tilemap.material.shader = null
+	
 
 
 

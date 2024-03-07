@@ -68,7 +68,7 @@ func _on_transition_finished():
 
 func _start_dialog__01():
 	var dialog_desc = [
-		["Every journey, has its end. New paths may reveal, soon.", []],
+		["Every journey has its end. New paths may reveal, soon.", []],
 		["(Thank you for playing. - bambii)", []],
 	]
 	
@@ -80,6 +80,25 @@ func _start_dialog__01():
 func _on_display_of_desc_finished__01(arg):
 	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__from_quit()
 	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+	
+	if GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01):
+		game_elements.game_result_manager.end_game__as_win()
+	else:
+		#SingletonsAndConsts.current_game_front_hud.game_dialog_panel.disconnect("display_of_desc_finished", self, "_on_display_of_desc_finished__01")
+		_start_dialog__02()
+	
+
+func _start_dialog__02():
+	var dialog_desc = [
+		["But this journey has not ended yet.", []],
+		["The galaxy still hides its secrets.", []],
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 5.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+
+func _on_display_of_desc_finished__02(arg):
 	game_elements.game_result_manager.end_game__as_win()
 
-#game_elements.game_result_manager.end_game__as_win()
+#

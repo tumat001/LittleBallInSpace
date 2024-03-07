@@ -417,7 +417,7 @@ onready var player_face = $SpriteLayer/PlayerFace
 
 onready var pca_captured_drawer = $PCACapturedDrawer
 
-onready var counter_force_arrow_draw_node = $CounterForceArrowDrawNode
+#onready var counter_force_arrow_draw_node = $CounterForceArrowDrawNode
 
 #onready var remote_transform_2d = $RemoteTransform2D
 
@@ -1724,7 +1724,10 @@ func _on_body_entered__base_object(body_rid, body, body_shape_index, local_shape
 			var dmg = body.calculate_damage_to__player(linear_velocity)
 			take_robot_health_damage(dmg)
 			create_damage_fragment_particles_from_ball_collision(body.global_position, body)
-
+		
+		#if _is_on_ground:
+		#	_attempt_play_and_draw_counter_force_arrow__from_hitting_ball(body)
+	
 #	#var object_momentum : Vector2 = base_object.calculate_momentum() / last_calculated_object_mass
 #	#var self_momentum = get_player_linear_velocity() * last_calculated_object_mass
 #
@@ -2490,8 +2493,15 @@ func set_is_show_lines_to_uncaptured_player_capture_regions(arg_val):
 
 ####
 
-#todoimp put arrow related stuffs here
-
+#func _attempt_play_and_draw_counter_force_arrow__from_hitting_ball(arg_ball : RigidBody2D):
+#	pass
+#
+#
+#func _play_and_draw_counter_force_arrow(arg_counter_mov):
+#	#_current_excess_player_left_right_move_speed_to_fight_counter_speed
+#
+#	counter_force_arrow_draw_node.play_and_draw_arrow_based_on_args(arg_counter_mov)
+#
 
 #################
 

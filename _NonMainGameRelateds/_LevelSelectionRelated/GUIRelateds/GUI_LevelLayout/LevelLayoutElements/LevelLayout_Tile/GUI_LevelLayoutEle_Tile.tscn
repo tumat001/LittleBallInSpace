@@ -56,7 +56,6 @@ margin_right = 46.0
 margin_bottom = 41.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 4 )
-text = "01"
 align = 1
 valign = 1
 

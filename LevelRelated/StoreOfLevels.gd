@@ -373,1517 +373,1520 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	var level_details : LevelDetails = LevelDetails.new()
 	level_details.level_id = arg_id
 	
-	if arg_id == LevelIds.TEST:
-		level_details.level_name = [
-			["TestName Desc", []]
-		]
-		level_details.level_desc = [
-			["Testing Desc Lorem ipsum", []]
-		]
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_1:
-		level_details.level_name = [
-			["Beginnings", []]
-		]
-		level_details.level_desc = [
-			["A step in a thousand mile journey... Well, you can't really make a step here but you know what I mean...", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.can_start_playlist_on_master = false
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
-		level_details.level_name = [
-			["Decision", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "02"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
-		level_details.level_name = [
-			["Energy", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "03"
-		level_details.level_label_text_color = Color("#444444")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
-		level_details.level_name = [
-			["Remnants", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "04"
-		level_details.level_label_text_color = Color("#444444")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
-		level_details.level_name = [
-			["Escape", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "05"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
-		level_details.level_full_name = [
-			["2-1 Recoil", []]
-		]
-		level_details.level_name = [
-			["Recoil", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
-		level_details.level_full_name = [
-			["2-2 Bounce", []]
-		]
-		level_details.level_name = [
-			["Bounce", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "02"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_2__HARD:
-		level_details.level_full_name = [
-			["2-!2 Bounce 2.0", []]
-		]
-		level_details.level_name = [
-			["Bounce 2.0", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!2"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_2:
-		level_details.level_full_name = [
-			["2-3 Infinity", []]
-		]
-		level_details.level_name = [
-			["Infinity", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "03"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_2:
-		level_details.level_full_name = [
-			["2-4 Manuever", []]
-		]
-		level_details.level_name = [
-			["Manuever", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "04"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_2:
-		level_details.level_full_name = [
-			["2-5 Ricochete", []]
-		]
-		level_details.level_name = [
-			["Ricochete", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "05"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_06__STAGE_2:
-		level_details.level_full_name = [
-			["2-6 Path Maker", []]
-		]
-		level_details.level_name = [
-			["Path Maker", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "06"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
-		
-		
-	elif arg_id == LevelIds.LEVEL_06__STAGE_2__HARD:
-		level_details.level_full_name = [
-			["2-!6 Path Maker V2", []]
-		]
-		level_details.level_name = [
-			["Path Maker V2", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!6"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_06__STAGE_2)
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_3:
-		level_details.level_full_name = [
-			["3-1 Gates", []]
-		]
-		level_details.level_name = [
-			["Gates", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_3:
-		level_details.level_full_name = [
-			["3-2 Direction", []]
-		]
-		level_details.level_name = [
-			["Direction", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "02"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_3:
-		level_details.level_full_name = [
-			["3-3 Parity", []]
-		]
-		level_details.level_name = [
-			["Parity", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "03"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_3__HARD:
-		level_details.level_full_name = [
-			["3-!3 Parity V2", []]
-		]
-		level_details.level_name = [
-			["Parity V2", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!3"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_3:
-		level_details.level_full_name = [
-			["3-4 Holes", []]
-		]
-		level_details.level_name = [
-			["Holes", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "04"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_3__HARD:
-		level_details.level_full_name = [
-			["3-!4 Trickshot", []]
-		]
-		level_details.level_name = [
-			["Trickshot", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!4"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_3:
-		level_details.level_full_name = [
-			["3-5 Perpetual", []]
-		]
-		level_details.level_name = [
-			["Perpetual", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "05"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_3__HARD:
-		level_details.level_full_name = [
-			["3-5! In the way", []]
-		]
-		level_details.level_name = [
-			["In the way", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!5"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_3)
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_4:
-		level_details.level_full_name = [
-			["4-1 Breakables", []]
-		]
-		level_details.level_name = [
-			["Breakables", []]
-		]
-		level_details.level_desc = [
-			["Breakables", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_4:
-		level_details.level_full_name = [
-			["4-2 Glass and Ball", []]
-		]
-		level_details.level_name = [
-			["Glass and Ball", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "02"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_4:
-		level_details.level_full_name = [
-			["4-3 Speed Limit", []]
-		]
-		level_details.level_name = [
-			["Speed Limit", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "03"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_4__HARD:
-		level_details.level_full_name = [
-			["4-!3 Speed Control", []]
-		]
-		level_details.level_name = [
-			["Speed Control", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!3"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_4:
-		level_details.level_full_name = [
-			["4-4 Speed", []]
-		]
-		level_details.level_name = [
-			["Speed", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "04"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_4__HARD:
-		level_details.level_full_name = [
-			["4-!4 Speed 2.0", []]
-		]
-		level_details.level_name = [
-			["Speed 2.0", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!4"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
-		level_details.level_full_name = [
-			["4-5 One Way", []]
-		]
-		level_details.level_name = [
-			["One Way", []]
-		]
-		level_details.level_desc = [
-			["Commitment to one way.", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "05"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_4__HARD:
-		level_details.level_full_name = [
-			["4-!5 Trim", []]
-		]
-		level_details.level_name = [
-			["Trim", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!5"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_4)
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_5:
-		level_details.level_full_name = [
-			["5-0 Limitless", []]
-		]
-		level_details.level_name = [
-			["Limitless", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_SpecialBlue_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "00"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_5:
-		level_details.level_full_name = [
-			["5-1 True Escape", []]
-		]
-		level_details.level_name = [
-			["True Escape", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_SpecialBlue_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
-		level_details.level_full_name = [
-			["6-1 Prelude", []]
-		]
-		level_details.level_name = [
-			["Prelude", []]
-		]
-		level_details.level_desc = [
-			["The adventure's ain't over, yet", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_6:
-		level_details.level_full_name = [
-			["6-2 First Contact", []]
-		]
-		level_details.level_name = [
-			["First Contact", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "02"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_6:
-		level_details.level_full_name = [
-			["6-3 Colony", []]
-		]
-		level_details.level_name = [
-			["Colony", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "03"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6:
-		level_details.level_full_name = [
-			["6-4 Painful Aid", []]
-		]
-		level_details.level_name = [
-			["Painful Aid", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "04"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD:
-		level_details.level_full_name = [
-			["6-!4 Reveal", []]
-		]
-		level_details.level_name = [
-			["Reveal", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!4"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD_V02:
-		level_details.level_full_name = [
-			["6-?4 Reveal v2", []]
-		]
-		level_details.level_name = [
-			["Reveal v2", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "?4"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_05__STAGE_6:
-		level_details.level_full_name = [
-			["6-5 Intercept", []]
-		]
-		level_details.level_name = [
-			["Intercept", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "05"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6:
-		level_details.level_full_name = [
-			["6-6 Happy Feet", []]
-		]
-		level_details.level_name = [
-			["Happy Feet", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "06"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD:
-		level_details.level_full_name = [
-			["6-!6 Moving Capture", []]
-		]
-		level_details.level_name = [
-			["Moving Capture", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!6"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD_V02:
-		level_details.level_full_name = [
-			["6-?6 Unrewindable", []]
-		]
-		level_details.level_name = [
-			["Unrewindable", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "?6"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_07__STAGE_6:
-		level_details.level_full_name = [
-			["6-7 Range", []]
-		]
-		level_details.level_name = [
-			["Range", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "07"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_07__STAGE_6__HARD:
-		level_details.level_full_name = [
-			["6-!7 Slider", []]
-		]
-		level_details.level_name = [
-			["Slider", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!7"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_07__STAGE_6)
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
-		
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_7:
-		level_details.level_full_name = [
-			["7-1 New Tool", []]
-		]
-		level_details.level_name = [
-			["New Tool", []]
-		]
-		level_details.level_desc = [
-			["Future content", []]
-		]
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "01"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_1:
-		level_details.level_full_name = [
-			["S-!1 Darkness", []]
-		]
-		level_details.level_name = [
-			["Darkness", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!1"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
-		level_details.level_full_name = [
-			["S-!2 Too Late", []]
-		]
-		level_details.level_name = [
-			["Too Late", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!2"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
-		#NOTE: assist mode in enabled for this specific special level.
-		level_details.level_full_name = [
-			["S-!3 Zero", []]
-		]
-		level_details.level_name = [
-			["Zero", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!3"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		#an exception to the rule
-		#level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
-		level_details.level_full_name = [
-			["S-!4 Losing Control", []]
-		]
-		level_details.level_name = [
-			["Losing Control", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = "!4"
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_2:
-		level_details.level_full_name = [
-			["Magnum Opus", []]
-		]
-		level_details.level_name = [
-			["Magnum Opus", []]
-		]
-		level_details.level_desc = [
-			["", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_Opus_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = ""
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.CHALLENGE
-		
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__MAGNUM_OPUS
-		
-		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_2:
-		level_details.level_full_name = [
-			["Constellation", []]
-		]
-		level_details.level_name = [
-			["Constellation", []]
-		]
-		level_details.level_desc = [
-			["If I could be a", []]
-		]
-		
-		
-		_set_details__transitions_to_usual_circle_types(level_details)
-		#level_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.NONE
-		#level_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.NONE
-		
-		level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_CurCall_32x32.png")
-		level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
-		
-		level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
-		level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
-		
-		level_details.level_label_on_tile = ""
-		level_details.level_label_text_color = Color("#dddddd")
-		#level_details.level_label_outline_color = Color("#dddddd")
-		level_details.has_outline_color = false
-		
-		
-		level_details.ignore_assist_mode_modifications = true
-		
-		level_details.level_type = level_details.LevelTypeId.FOR_FUN
-		
-		
-		level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
-		
-		#note: only for this!
-		level_details.queue_free_gui_level_selection_panel = false
-		level_details.immediately_start_stats_record_on_GE_ready = false
-		
-		level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CONSTELLATION
-		
+	match arg_id:
+		LevelIds.TEST:
+			level_details.level_name = [
+				["TestName Desc", []]
+			]
+			level_details.level_desc = [
+				["Testing Desc Lorem ipsum", []]
+			]
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+		
+		
+		LevelIds.LEVEL_01__STAGE_1:
+			level_details.level_name = [
+				["Beginnings", []]
+			]
+			level_details.level_desc = [
+				["A step in a thousand mile journey... Well, you can't really make a step here but you know what I mean...", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.can_start_playlist_on_master = false
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_02__STAGE_1:
+			level_details.level_name = [
+				["Decision", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "02"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_03__STAGE_1:
+			level_details.level_name = [
+				["Energy", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "03"
+			level_details.level_label_text_color = Color("#444444")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
+			
+			
+		LevelIds.LEVEL_04__STAGE_1:
+			level_details.level_name = [
+				["Remnants", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Yellow_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "04"
+			level_details.level_label_text_color = Color("#444444")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
+			
+			
+		LevelIds.LEVEL_05__STAGE_1:
+			level_details.level_name = [
+				["Escape", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "05"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			
+			
+		LevelIds.LEVEL_01__STAGE_2:
+			level_details.level_full_name = [
+				["2-1 Recoil", []]
+			]
+			level_details.level_name = [
+				["Recoil", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_02__STAGE_2:
+			level_details.level_full_name = [
+				["2-2 Bounce", []]
+			]
+			level_details.level_name = [
+				["Bounce", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "02"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_02__STAGE_2__HARD:
+			level_details.level_full_name = [
+				["2-!2 Bounce 2.0", []]
+			]
+			level_details.level_name = [
+				["Bounce 2.0", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!2"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+			_attach_custom_behavior_to_lvl_details__show_4_point_star_based_on_conditions(level_details)
+			
+		LevelIds.LEVEL_03__STAGE_2:
+			level_details.level_full_name = [
+				["2-3 Infinity", []]
+			]
+			level_details.level_name = [
+				["Infinity", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "03"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_04__STAGE_2:
+			level_details.level_full_name = [
+				["2-4 Manuever", []]
+			]
+			level_details.level_name = [
+				["Manuever", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "04"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_05__STAGE_2:
+			level_details.level_full_name = [
+				["2-5 Ricochete", []]
+			]
+			level_details.level_name = [
+				["Ricochete", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "05"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_06__STAGE_2:
+			level_details.level_full_name = [
+				["2-6 Path Maker", []]
+			]
+			level_details.level_name = [
+				["Path Maker", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "06"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			
+		LevelIds.LEVEL_06__STAGE_2__HARD:
+			level_details.level_full_name = [
+				["2-!6 Path Maker V2", []]
+			]
+			level_details.level_name = [
+				["Path Maker V2", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!6"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_06__STAGE_2)
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+			
+		LevelIds.LEVEL_01__STAGE_3:
+			level_details.level_full_name = [
+				["3-1 Gates", []]
+			]
+			level_details.level_name = [
+				["Gates", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_02__STAGE_3:
+			level_details.level_full_name = [
+				["3-2 Direction", []]
+			]
+			level_details.level_name = [
+				["Direction", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "02"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+			
+		LevelIds.LEVEL_03__STAGE_3:
+			level_details.level_full_name = [
+				["3-3 Parity", []]
+			]
+			level_details.level_name = [
+				["Parity", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "03"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_03__STAGE_3__HARD:
+			level_details.level_full_name = [
+				["3-!3 Parity V2", []]
+			]
+			level_details.level_name = [
+				["Parity V2", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!3"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_04__STAGE_3:
+			level_details.level_full_name = [
+				["3-4 Holes", []]
+			]
+			level_details.level_name = [
+				["Holes", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "04"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_04__STAGE_3__HARD:
+			level_details.level_full_name = [
+				["3-!4 Trickshot", []]
+			]
+			level_details.level_name = [
+				["Trickshot", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!4"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_05__STAGE_3:
+			level_details.level_full_name = [
+				["3-5 Perpetual", []]
+			]
+			level_details.level_name = [
+				["Perpetual", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "05"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			
+		LevelIds.LEVEL_05__STAGE_3__HARD:
+			level_details.level_full_name = [
+				["3-5! In the way", []]
+			]
+			level_details.level_name = [
+				["In the way", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!5"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_3)
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+			
+			
+		LevelIds.LEVEL_01__STAGE_4:
+			level_details.level_full_name = [
+				["4-1 Breakables", []]
+			]
+			level_details.level_name = [
+				["Breakables", []]
+			]
+			level_details.level_desc = [
+				["Breakables", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+			
+		LevelIds.LEVEL_02__STAGE_4:
+			level_details.level_full_name = [
+				["4-2 Glass and Ball", []]
+			]
+			level_details.level_name = [
+				["Glass and Ball", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "02"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_03__STAGE_4:
+			level_details.level_full_name = [
+				["4-3 Speed Limit", []]
+			]
+			level_details.level_name = [
+				["Speed Limit", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "03"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_03__STAGE_4__HARD:
+			level_details.level_full_name = [
+				["4-!3 Speed Control", []]
+			]
+			level_details.level_name = [
+				["Speed Control", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!3"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_04__STAGE_4:
+			level_details.level_full_name = [
+				["4-4 Speed", []]
+			]
+			level_details.level_name = [
+				["Speed", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "04"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_04__STAGE_4__HARD:
+			level_details.level_full_name = [
+				["4-!4 Speed 2.0", []]
+			]
+			level_details.level_name = [
+				["Speed 2.0", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!4"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_05__STAGE_4:
+			level_details.level_full_name = [
+				["4-5 One Way", []]
+			]
+			level_details.level_name = [
+				["One Way", []]
+			]
+			level_details.level_desc = [
+				["Commitment to one way.", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "05"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			
+		LevelIds.LEVEL_05__STAGE_4__HARD:
+			level_details.level_full_name = [
+				["4-!5 Trim", []]
+			]
+			level_details.level_name = [
+				["Trim", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!5"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_05__STAGE_4)
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+			
+			
+		LevelIds.LEVEL_01__STAGE_5:
+			level_details.level_full_name = [
+				["5-0 Limitless", []]
+			]
+			level_details.level_name = [
+				["Limitless", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_SpecialBlue_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "00"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
+			
+			
+		LevelIds.LEVEL_02__STAGE_5:
+			level_details.level_full_name = [
+				["5-1 True Escape", []]
+			]
+			level_details.level_name = [
+				["True Escape", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_SpecialBlue_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
+			
+			
+			
+		LevelIds.LEVEL_01__STAGE_6:
+			level_details.level_full_name = [
+				["6-1 Prelude", []]
+			]
+			level_details.level_name = [
+				["Prelude", []]
+			]
+			level_details.level_desc = [
+				["The adventure's ain't over, yet", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_02__STAGE_6:
+			level_details.level_full_name = [
+				["6-2 First Contact", []]
+			]
+			level_details.level_name = [
+				["First Contact", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "02"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_03__STAGE_6:
+			level_details.level_full_name = [
+				["6-3 Colony", []]
+			]
+			level_details.level_name = [
+				["Colony", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "03"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+			
+		LevelIds.LEVEL_04__STAGE_6:
+			level_details.level_full_name = [
+				["6-4 Painful Aid", []]
+			]
+			level_details.level_name = [
+				["Painful Aid", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "04"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_04__STAGE_6__HARD:
+			level_details.level_full_name = [
+				["6-!4 Reveal", []]
+			]
+			level_details.level_name = [
+				["Reveal", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!4"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_04__STAGE_6__HARD_V02:
+			level_details.level_full_name = [
+				["6-?4 Reveal v2", []]
+			]
+			level_details.level_name = [
+				["Reveal v2", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "?4"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_05__STAGE_6:
+			level_details.level_full_name = [
+				["6-5 Intercept", []]
+			]
+			level_details.level_name = [
+				["Intercept", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "05"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_06__STAGE_6:
+			level_details.level_full_name = [
+				["6-6 Happy Feet", []]
+			]
+			level_details.level_name = [
+				["Happy Feet", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "06"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_06__STAGE_6__HARD:
+			level_details.level_full_name = [
+				["6-!6 Moving Capture", []]
+			]
+			level_details.level_name = [
+				["Moving Capture", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!6"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_06__STAGE_6__HARD_V02:
+			level_details.level_full_name = [
+				["6-?6 Unrewindable", []]
+			]
+			level_details.level_name = [
+				["Unrewindable", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "?6"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+			
+		LevelIds.LEVEL_07__STAGE_6:
+			level_details.level_full_name = [
+				["6-7 Range", []]
+			]
+			level_details.level_name = [
+				["Range", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Violet_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "07"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			
+			
+		LevelIds.LEVEL_07__STAGE_6__HARD:
+			level_details.level_full_name = [
+				["6-!7 Slider", []]
+			]
+			level_details.level_name = [
+				["Slider", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedWithVio_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!7"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			level_details.additional_level_ids_to_mark_as_complete.append(LevelIds.LEVEL_07__STAGE_6)
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
+			
+			
+			
+		LevelIds.LEVEL_01__STAGE_7:
+			level_details.level_full_name = [
+				["7-1 New Tool", []]
+			]
+			level_details.level_name = [
+				["New Tool", []]
+			]
+			level_details.level_desc = [
+				["Future content", []]
+			]
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_Gray_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "01"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			
+		LevelIds.LEVEL_01__STAGE_SPECIAL_1:
+			level_details.level_full_name = [
+				["S-!1 Darkness", []]
+			]
+			level_details.level_name = [
+				["Darkness", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!1"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_02__STAGE_SPECIAL_1:
+			level_details.level_full_name = [
+				["S-!2 Too Late", []]
+			]
+			level_details.level_name = [
+				["Too Late", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!2"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_03__STAGE_SPECIAL_1:
+			#NOTE: assist mode in enabled for this specific special level.
+			level_details.level_full_name = [
+				["S-!3 Zero", []]
+			]
+			level_details.level_name = [
+				["Zero", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!3"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			#an exception to the rule
+			#level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_04__STAGE_SPECIAL_1:
+			level_details.level_full_name = [
+				["S-!4 Losing Control", []]
+			]
+			level_details.level_name = [
+				["Losing Control", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_Stage01_RedChallenge_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = "!4"
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			
+			level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			
+		LevelIds.LEVEL_01__STAGE_SPECIAL_2:
+			level_details.level_full_name = [
+				["Magnum Opus", []]
+			]
+			level_details.level_name = [
+				["Magnum Opus", []]
+			]
+			level_details.level_desc = [
+				["", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_Opus_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = ""
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			
+			level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.CHALLENGE
+			
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__MAGNUM_OPUS
+			
+			
+		LevelIds.LEVEL_02__STAGE_SPECIAL_2:
+			level_details.level_full_name = [
+				["Constellation", []]
+			]
+			level_details.level_name = [
+				["Constellation", []]
+			]
+			level_details.level_desc = [
+				["If I could be a", []]
+			]
+			
+			
+			_set_details__transitions_to_usual_circle_types(level_details)
+			#level_details.transition_id__exiting_level__in = StoreOfTransitionSprites.TransitionSpriteIds.NONE
+			#level_details.transition_id__exiting_level__out = StoreOfTransitionSprites.TransitionSpriteIds.NONE
+			
+			level_details.texture_of_level_tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/SpecificAssets/LevelLayout_Tile_StageSpec02_CurCall_32x32.png")
+			level_details.modulate_of_level_tile = Color(1, 1, 1, 1)
+			
+			level_details.texture_of_level_tile__locked = level_details.texture_of_level_tile
+			level_details.modulate_of_level_tile__locked = LevelDetails.DEFAULT_LEVEL_TILE_LOCKED_MODULATE
+			
+			level_details.level_label_on_tile = ""
+			level_details.level_label_text_color = Color("#dddddd")
+			#level_details.level_label_outline_color = Color("#dddddd")
+			level_details.has_outline_color = false
+			
+			
+			level_details.ignore_assist_mode_modifications = true
+			
+			level_details.level_type = level_details.LevelTypeId.FOR_FUN
+			
+			
+			level_details.background_type = GameBackground.BackgroundTypeIds.LEVEL__SPECIAL_01
+			
+			#note: only for this!
+			level_details.queue_free_gui_level_selection_panel = false
+			level_details.immediately_start_stats_record_on_GE_ready = false
+			
+			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CONSTELLATION
+			
 	
 	##
 	
@@ -1897,133 +1900,157 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 	
 	return level_details
 
+##
+
+func _attach_custom_behavior_to_lvl_details__show_4_point_star_based_on_conditions(arg_lvl_details : LevelDetails):
+	_update_lvl_details__volatile__is_show_four_pointed_star_vfx__based_on_conditions(arg_lvl_details)
+	
+	GameSaveManager.connect("level_id_completion_status_changed", self, "_on_level_id_completion_status_changed__for_4_pointed_star_for_02_02_hard", [arg_lvl_details])
+	GameSaveManager.connect("level_layout_id_completion_status_changed", self, "_on_level_layout_id_completion_status_changed__for_4_pointed_star_for_02_02_hard", [arg_lvl_details])
+
+func _on_level_id_completion_status_changed__for_4_pointed_star_for_02_02_hard(arg_id, arg_status, arg_lvl_details):
+	if arg_id == LevelIds.LEVEL_01__STAGE_7:
+		_update_lvl_details__volatile__is_show_four_pointed_star_vfx__based_on_conditions(arg_lvl_details)
+	
+
+func _on_level_layout_id_completion_status_changed__for_4_pointed_star_for_02_02_hard(arg_id, arg_status, arg_lvl_details):
+	if arg_id == StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01:
+		_update_lvl_details__volatile__is_show_four_pointed_star_vfx__based_on_conditions(arg_lvl_details)
+	
+
+
+func _update_lvl_details__volatile__is_show_four_pointed_star_vfx__based_on_conditions(arg_lvl_details):
+	arg_lvl_details.volatile__is_show_four_pointed_star_vfx = GameSaveManager.is_level_id_finished(StoreOfLevels.LevelIds.LEVEL_01__STAGE_7) and !GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01)
+	
+	#arg_lvl_details.volatile__is_show_four_pointed_star_vfx = true
 
 #####
 
 func generate_base_level_imp_new(arg_id):
-	if arg_id == LevelIds.TEST:
-		return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
-	elif arg_id == LevelIds.LEVEL_01__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_02.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_1:
-		return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
+	match arg_id:
+		LevelIds.TEST:
+			return load("res://LevelRelated/BaseLevelImps/Test/Level_Test01.gd").new()
+		LevelIds.LEVEL_01__STAGE_1:
+			return load("res://LevelRelated/BaseLevelImps/Layout01/Level_01.gd").new()
+		LevelIds.LEVEL_02__STAGE_1:
+			return load("res://LevelRelated/BaseLevelImps/Layout01/Level_02.gd").new()
+		LevelIds.LEVEL_03__STAGE_1:
+			return load("res://LevelRelated/BaseLevelImps/Layout01/Level_03.gd").new()
+		LevelIds.LEVEL_04__STAGE_1:
+			return load("res://LevelRelated/BaseLevelImps/Layout01/Level_04.gd").new()
+		LevelIds.LEVEL_05__STAGE_1:
+			return load("res://LevelRelated/BaseLevelImps/Layout01/Level_05.gd").new()
 		
 		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_01__L2.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_03__L2.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_04__L2.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_05__L2.gd").new()
-	elif arg_id == LevelIds.LEVEL_06__STAGE_2:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_06__L2.gd").new()
+		LevelIds.LEVEL_01__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_01__L2.gd").new()
+		LevelIds.LEVEL_02__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2.gd").new()
+		LevelIds.LEVEL_03__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_03__L2.gd").new()
+		LevelIds.LEVEL_04__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_04__L2.gd").new()
+		LevelIds.LEVEL_05__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_05__L2.gd").new()
+		LevelIds.LEVEL_06__STAGE_2:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_06__L2.gd").new()
 		
-	elif arg_id == LevelIds.LEVEL_02__STAGE_2__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_06__STAGE_2__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout02/Level_06__L2__Hard.gd").new()
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_3:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_01__L3.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_3:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_02__L3.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_3:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_03__L3.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_3:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_04__L3.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_3:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_05__L3.gd").new()
-		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_3__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_03__L3__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_3__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_04__L3__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_3__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout03/Level_05__L3__Hard.gd").new()
+		LevelIds.LEVEL_02__STAGE_2__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_02__L2__Hard.gd").new()
+		LevelIds.LEVEL_06__STAGE_2__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout02/Level_06__L2__Hard.gd").new()
 		
 		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_4:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_01__L4.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_4:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_02__L4.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_4:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_4:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_4:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4.gd").new()
+		LevelIds.LEVEL_01__STAGE_3:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_01__L3.gd").new()
+		LevelIds.LEVEL_02__STAGE_3:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_02__L3.gd").new()
+		LevelIds.LEVEL_03__STAGE_3:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_03__L3.gd").new()
+		LevelIds.LEVEL_04__STAGE_3:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_04__L3.gd").new()
+		LevelIds.LEVEL_05__STAGE_3:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_05__L3.gd").new()
 		
-	elif arg_id == LevelIds.LEVEL_03__STAGE_4__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_4__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_4__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4__Hard.gd").new()
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_5:
-		return load("res://LevelRelated/BaseLevelImps/Layout05/Level_01__L5.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_5:
-		return load("res://LevelRelated/BaseLevelImps/Layout05/Level_02__L5.gd").new()
+		LevelIds.LEVEL_03__STAGE_3__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_03__L3__Hard.gd").new()
+		LevelIds.LEVEL_04__STAGE_3__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_04__L3__Hard.gd").new()
+		LevelIds.LEVEL_05__STAGE_3__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout03/Level_05__L3__Hard.gd").new()
 		
 		
+		LevelIds.LEVEL_01__STAGE_4:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_01__L4.gd").new()
+		LevelIds.LEVEL_02__STAGE_4:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_02__L4.gd").new()
+		LevelIds.LEVEL_03__STAGE_4:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4.gd").new()
+		LevelIds.LEVEL_04__STAGE_4:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4.gd").new()
+		LevelIds.LEVEL_05__STAGE_4:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4.gd").new()
 		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_1:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_01__LSpecial1.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_1:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_02__LSpecial1.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_SPECIAL_1:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_03__LSpecial1.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_SPECIAL_1:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_04__LSpecial1.gd").new()
-		
-		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_01__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_02__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_03__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_03__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_05__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_05__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6.gd").new()
-	elif arg_id == LevelIds.LEVEL_07__STAGE_6:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6.gd").new()
-		
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_04__STAGE_6__HARD_V02:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard_V02.gd").new()
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6__Hard.gd").new()
-	elif arg_id == LevelIds.LEVEL_06__STAGE_6__HARD_V02:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6__Hard_V02.gd").new()
-	elif arg_id == LevelIds.LEVEL_07__STAGE_6__HARD:
-		return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6__Hard.gd").new()
+		LevelIds.LEVEL_03__STAGE_4__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_03__L4__Hard.gd").new()
+		LevelIds.LEVEL_04__STAGE_4__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_04__L4__Hard.gd").new()
+		LevelIds.LEVEL_05__STAGE_4__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout04/Level_05__L4__Hard.gd").new()
 		
 		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_7:
-		return load("res://LevelRelated/BaseLevelImps/Layout07/Level_01__L7.gd").new()
+		LevelIds.LEVEL_01__STAGE_5:
+			return load("res://LevelRelated/BaseLevelImps/Layout05/Level_01__L5.gd").new()
+		LevelIds.LEVEL_02__STAGE_5:
+			return load("res://LevelRelated/BaseLevelImps/Layout05/Level_02__L5.gd").new()
 		
 		
-	elif arg_id == LevelIds.LEVEL_01__STAGE_SPECIAL_2:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial02/Level_01__LSpecial2.gd").new()
-	elif arg_id == LevelIds.LEVEL_02__STAGE_SPECIAL_2:
-		return load("res://LevelRelated/BaseLevelImps/LayoutSpecial02/Level_02__LSpecial2.gd").new()
+		
+		LevelIds.LEVEL_01__STAGE_SPECIAL_1:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_01__LSpecial1.gd").new()
+		LevelIds.LEVEL_02__STAGE_SPECIAL_1:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_02__LSpecial1.gd").new()
+		LevelIds.LEVEL_03__STAGE_SPECIAL_1:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_03__LSpecial1.gd").new()
+		LevelIds.LEVEL_04__STAGE_SPECIAL_1:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial01/Level_04__LSpecial1.gd").new()
+		
+		
+		LevelIds.LEVEL_01__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_01__L6.gd").new()
+		LevelIds.LEVEL_02__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_02__L6.gd").new()
+		LevelIds.LEVEL_03__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_03__L6.gd").new()
+		LevelIds.LEVEL_04__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6.gd").new()
+		LevelIds.LEVEL_05__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_05__L6.gd").new()
+		LevelIds.LEVEL_06__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6.gd").new()
+		LevelIds.LEVEL_07__STAGE_6:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6.gd").new()
+		
+		LevelIds.LEVEL_04__STAGE_6__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard.gd").new()
+		LevelIds.LEVEL_04__STAGE_6__HARD_V02:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_04__L6__Hard_V02.gd").new()
+		LevelIds.LEVEL_06__STAGE_6__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6__Hard.gd").new()
+		LevelIds.LEVEL_06__STAGE_6__HARD_V02:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_06__L6__Hard_V02.gd").new()
+		LevelIds.LEVEL_07__STAGE_6__HARD:
+			return load("res://LevelRelated/BaseLevelImps/Layout06/Level_07__L6__Hard.gd").new()
+		
+		
+		LevelIds.LEVEL_01__STAGE_7:
+			return load("res://LevelRelated/BaseLevelImps/Layout07/Level_01__L7.gd").new()
+		
+		
+		LevelIds.LEVEL_01__STAGE_SPECIAL_2:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial02/Level_01__LSpecial2.gd").new()
+		LevelIds.LEVEL_02__STAGE_SPECIAL_2:
+			return load("res://LevelRelated/BaseLevelImps/LayoutSpecial02/Level_02__LSpecial2.gd").new()
 	
 	
 

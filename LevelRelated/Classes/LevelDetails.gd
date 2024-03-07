@@ -9,6 +9,8 @@ const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
 
 #
 
+signal volatile__is_show_four_pointed_star_vfx_changed(arg_val)
+
 signal is_level_locked_changed(arg_val)
 
 #
@@ -105,6 +107,11 @@ var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
 var modulates_for_level_hover_list : Array
 
+
+#
+
+var volatile__is_show_four_pointed_star_vfx : bool = false setget set_volatile__is_show_four_pointed_star_vfx
+
 ##########
 
 func set_level_name(arg_val):
@@ -119,14 +126,14 @@ func set_is_level_locked(arg_val):
 	var old_val = is_level_locked
 	is_level_locked = arg_val
 	
-	if old_val != is_level_locked:
-		if is_level_locked:
-			pass
-			
-		else:
-			pass
-			
-	
+#	if old_val != is_level_locked:
+#		if is_level_locked:
+#			pass
+#
+#		else:
+#			pass
+#
+#
 	
 	emit_signal("is_level_locked_changed", is_level_locked)
 
@@ -166,5 +173,11 @@ func has_additional_level_ids_to_mark_as_complete():
 	return additional_level_ids_to_mark_as_complete.size() != 0
 
 
+##############
+
+func set_volatile__is_show_four_pointed_star_vfx(arg_val):
+	volatile__is_show_four_pointed_star_vfx = arg_val
+	
+	emit_signal("volatile__is_show_four_pointed_star_vfx_changed", arg_val)
 
 

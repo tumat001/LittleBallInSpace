@@ -82,7 +82,23 @@ var is_hovered_by_hover_icon_in_non_tile_type : bool setget set_is_hovered_by_ho
 
 #
 
+
+const FOUR_POINT_STAR__MOD_A__MIN = 0.1
+const FOUR_POINT_STAR__MOD_A__MAX = 0.9
+const FOUR_POINT_STAR__MOD_A_HALF_CYCLE_DURATION = 3.0 
+var is_init_four_point_star_sprite_relateds : bool
+var four_point_star_mod_a_tweener : SceneTreeTween
+var four_point_star_sprite_container : Node2D
+var four_point_star_sprite__left : Sprite
+var four_point_star_sprite__right : Sprite
+var four_point_star_sprite__up : Sprite
+var four_point_star_sprite__down : Sprite
+
+#
+
+
 var _hover_icon : TextureRect
+
 
 onready var tile_texture_rect = $TileTextureRect
 
@@ -121,7 +137,9 @@ func set_level_details(arg_level):
 	level_details = arg_level
 	
 	level_details.connect("is_level_locked_changed", self, "_is_level_locked_changed")
+	level_details.connect("volatile__is_show_four_pointed_star_vfx_changed", self, "_on_volatile__is_show_four_pointed_star_vfx")
 	
+	_update_vfx_based_on_is_show_four_pointed_star_vfx()
 	_update_tile_texture_rect__texture()
 	_update_label_text()
 	_update_all_marker_visibility()
@@ -490,6 +508,108 @@ func set_is_hovered_by_hover_icon_in_non_tile_type(arg_val):
 		
 		
 	
+
+#
+
+func play_four_pointed_star_vfx():
+	if !is_init_four_point_star_sprite_relateds:
+		_init_all_related_four_pointed_star()
+	else:
+		_set_four_point_sprite_visiblity(true)
+		_construct_and_play_mod_a_tweener_for_four_pointed_stars()
+
+func _init_all_related_four_pointed_star():
+	_construct_four_pointed_star_container()
+	_construct_and_config_four_pointed_star_sprites()
+	_construct_and_play_mod_a_tweener_for_four_pointed_stars()
+
+func _construct_four_pointed_star_container():
+	four_point_star_sprite_container = Node2D.new()
+	
+	add_child(four_point_star_sprite_container)
+	move_child(four_point_star_sprite_container, 0)
+
+func _construct_and_config_four_pointed_star_sprites():
+	four_point_star_sprite__left = _construct_four_pointed_star_sprite__vanilla_template()
+	four_point_star_sprite__right = _construct_four_pointed_star_sprite__vanilla_template()
+	four_point_star_sprite__up = _construct_four_pointed_star_sprite__vanilla_template()
+	four_point_star_sprite__down = _construct_four_pointed_star_sprite__vanilla_template()
+	
+	##
+	
+	four_point_star_sprite__left.rotation = PI
+	four_point_star_sprite__up.rotation = -PI/2
+	#four_point_star_sprite__right.rotation = 0.0
+	four_point_star_sprite__down.rotation = PI/2
+	
+	##
+	
+	# assumes x and y of texture are the same
+	var sprite_half_len_width = four_point_star_sprite__up.texture.get_size().x / 2
+	var glob_center_pos = get_center_position()
+	var tile_texture_half_len_width = tile_texture_rect.texture.get_size().x / 2
+	
+	four_point_star_sprite__left.global_position = glob_center_pos - Vector2(tile_texture_half_len_width + sprite_half_len_width, 0)
+	four_point_star_sprite__right.global_position = glob_center_pos + Vector2(tile_texture_half_len_width + sprite_half_len_width, 0)
+	four_point_star_sprite__up.global_position = glob_center_pos - Vector2(0, tile_texture_half_len_width + sprite_half_len_width)
+	four_point_star_sprite__down.global_position = glob_center_pos + Vector2(0, tile_texture_half_len_width + sprite_half_len_width)
+	
+
+func _construct_four_pointed_star_sprite__vanilla_template() -> Sprite:
+	var four_point_star_sprite = Sprite.new()
+	four_point_star_sprite.texture = load("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/Assets/LevelLayout_Tile_4PointStarShine_Right.png")
+	four_point_star_sprite.modulate.a = 0.4
+	
+	four_point_star_sprite_container.add_child(four_point_star_sprite)
+	
+	return four_point_star_sprite
+
+#
+
+func _construct_and_play_mod_a_tweener_for_four_pointed_stars():
+	if four_point_star_mod_a_tweener != null and four_point_star_mod_a_tweener.is_running():
+		return
+	
+	four_point_star_mod_a_tweener = create_tween()
+	four_point_star_mod_a_tweener.set_loops()
+	four_point_star_mod_a_tweener.set_parallel(true)
+	for sprite in four_point_star_sprite_container.get_children():
+		four_point_star_mod_a_tweener.tween_property(sprite, "modulate:a", FOUR_POINT_STAR__MOD_A__MAX, FOUR_POINT_STAR__MOD_A_HALF_CYCLE_DURATION)
+	four_point_star_mod_a_tweener.set_parallel(false)
+	four_point_star_mod_a_tweener.tween_interval(FOUR_POINT_STAR__MOD_A_HALF_CYCLE_DURATION)
+	four_point_star_mod_a_tweener.set_parallel(true)
+	for sprite in four_point_star_sprite_container.get_children():
+		four_point_star_mod_a_tweener.tween_property(sprite, "modulate:a", FOUR_POINT_STAR__MOD_A__MIN, FOUR_POINT_STAR__MOD_A_HALF_CYCLE_DURATION)
+	
+
+#
+
+func _set_four_point_sprite_visiblity(arg_vis):
+	for sprite in four_point_star_sprite_container.get_children():
+		sprite.visible = arg_vis
+	
+
+#
+
+func unplay_four_pointed_star_vfx():
+	if is_init_four_point_star_sprite_relateds:
+		_set_four_point_sprite_visiblity(false)
+		
+
+##
+
+func _on_volatile__is_show_four_pointed_star_vfx(arg_val):
+	_update_vfx_based_on_is_show_four_pointed_star_vfx()
+
+func _update_vfx_based_on_is_show_four_pointed_star_vfx():
+	if level_details.volatile__is_show_four_pointed_star_vfx:
+		play_four_pointed_star_vfx()
+		
+	else:
+		unplay_four_pointed_star_vfx()
+		
+	
+
 
 #############
 

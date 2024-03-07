@@ -119,7 +119,7 @@ __meta__ = {
 "_gizmo_extents_": 16.0
 }
 
-[node name="MiscContainer" type="Node" parent="." index="6"]
+[node name="MiscContainer" type="Node" parent="." index="5"]
 
 [node name="GodRays" type="Sprite" parent="MiscContainer" index="0"]
 material = SubResource( 4 )
