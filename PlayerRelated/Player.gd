@@ -576,12 +576,6 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 		
 		
 		if body is BaseTileSet:
-			if !_tilesets_entered_to_cell_coords_entered_count_map.has(body):
-				_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
-			
-			if _tilesets_entered_to_cell_coords_entered_count_map[body] < 0:
-				_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
-			_tilesets_entered_to_cell_coords_entered_count_map[body] += 1
 			_on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_index)
 			
 		elif body is BaseObject:
@@ -593,30 +587,43 @@ func _on_FloorArea2D_body_shape_entered(body_rid, body, body_shape_index, local_
 
 
 
+func break_tile_on_coord__by_any_means(body, coordinate):
+	var tilemap : TileMap = body.tilemap
+	var cell_id = tilemap.get_cellv(coordinate)
+	
+	var cell_autocoord = tilemap.get_cell_autotile_coord(coordinate.x, coordinate.y)
+	
+	var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
+	var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
+	var tile_global_pos = tilemap.to_global(tile_local_pos)
+	
+	var sound_id_of_break = TileConstants.get_sound_id_to_play_for_tile_break(cell_id, cell_autocoord)
+	if sound_id_of_break != -1:
+		AudioManager.helper__play_sound_effect__2d(sound_id_of_break, tile_global_pos, 1.0, null)
+	
+	#
+	
+	body.break_tile_coord__using_player(coordinate, self)
+	body.remove_cell_coord_in_contact_with_player(coordinate)
+
 func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_index):
 	#print("body entered__tilemap -- player")
 	
 	##
 	
+	if !_tilesets_entered_to_cell_coords_entered_count_map.has(body):
+		_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
+	
+	if _tilesets_entered_to_cell_coords_entered_count_map[body] < 0:
+		_tilesets_entered_to_cell_coords_entered_count_map[body] = 0
+	_tilesets_entered_to_cell_coords_entered_count_map[body] += 1
+	
+	##
+	
 	if body.break_on_player_contact:
 		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
-		
-		#
-		var tilemap : TileMap = body.tilemap
-		var cell_id = tilemap.get_cellv(coordinate)
-		var cell_autocoord = tilemap.get_cell_autotile_coord(coordinate.x, coordinate.y)
-		
-		var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
-		var tile_local_pos = tile_local_pos_top_left + (tilemap.cell_size / 2)
-		var tile_global_pos = tilemap.to_global(tile_local_pos)
-		
-		var sound_id_of_break = TileConstants.get_sound_id_to_play_for_tile_break(cell_id, cell_autocoord)
-		if sound_id_of_break != -1:
-			AudioManager.helper__play_sound_effect__2d(sound_id_of_break, tile_global_pos, 1.0, null)
-		
-		#
-		
-		body.break_tile_coord__using_player(coordinate, self)
+	
+		break_tile_on_coord__by_any_means(body, coordinate)
 		
 		##
 		
@@ -631,10 +638,16 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 		
 		
 	else:
-		var tileset_energy_mode = body.energy_mode
-		
 		
 		var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+		
+		if body.can_track__cell_coords_in_contact_with_player():
+			body.add_cell_coord_in_contact_with_player(coordinate)
+		
+		#
+		
+		var tileset_energy_mode = body.energy_mode
+		
 		var tilemap : TileMap = body.tilemap
 		
 		var tile_local_pos_top_left = tilemap.map_to_world(coordinate)
@@ -784,6 +797,7 @@ func _clean_up_angle__perfect_translated_for_circle_partition(arg_angle):
 
 func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if body is BaseTileSet:
+		
 		if _tilesets_entered_to_cell_coords_entered_count_map.has(body):
 			var count = _tilesets_entered_to_cell_coords_entered_count_map[body]
 			_tilesets_entered_to_cell_coords_entered_count_map[body] -= 1
@@ -797,7 +811,11 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 						var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
 						
 						_attempt_remove_on_ground_count__with_any_identif(coordinate)
-			
+		
+		if body.can_track__cell_coords_in_contact_with_player():
+			if body.has_tile_by_body_shape_index(body_shape_index):
+				var coordinate: Vector2 = Physics2DServer.body_get_shape_metadata(body.get_rid(), body_shape_index)
+				body.remove_cell_coord_in_contact_with_player(coordinate)
 		
 		#if !body.changing_colls__from_fill_and_unfilled:
 		#	body.changing_colls__from_fill_and_unfilled = false
@@ -808,7 +826,6 @@ func _on_FloorArea2D_body_shape_exited(body_rid, body, body_shape_index, local_s
 	emit_signal("player_body_shape_exited", body_rid, body, body_shape_index, local_shape_index)
 
 func remove_on_ground_count_with_identif__from_breakable_tile__before_breaking(arg_coordinate, arg_tilemap):
-	
 	var result = _attempt_remove_on_ground_count__with_any_identif(arg_coordinate)
 	if result:
 		if _tilesets_entered_to_cell_coords_entered_count_map.has(arg_tilemap):

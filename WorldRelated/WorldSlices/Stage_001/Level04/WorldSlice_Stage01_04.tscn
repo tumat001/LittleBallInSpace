@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://AreaRegionRelated/Subs/PlayerCaptureAreaRegion/PlayerCaptureAreaRegion.tscn" type="PackedScene" id=7]
 [ext_resource path="res://AreaRegionRelated/Subs/PDAR_MapBounds/PDAR_MapBounds.tscn" type="PackedScene" id=8]
 [ext_resource path="res://MiscRelated/TileFragmentCloudsRelated/TileFragmentCloud.tscn" type="PackedScene" id=9]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_ElecSparks/EnvEvent_ElecSparks.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 243, 396 )
@@ -79,7 +80,7 @@ has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
 tile_set = ExtResource( 6 )
-tile_data = PoolIntArray( -2883553, 55, 0, -2883550, 55, 0, -720888, 55, 0, -720882, 55, 0 )
+tile_data = PoolIntArray( -2883553, 55, 0, -2883550, 55, 0, -2293722, 55, 1, -2097114, 55, 1, -720888, 55, 0, -720882, 55, 0 )
 
 [node name="PDAR_MapBounds" parent="AreaRegionContainer" index="0" instance=ExtResource( 8 )]
 visible = false
@@ -140,7 +141,7 @@ ignore_is_disabled_by_assist_mode = false
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
 position = Vector2( 49, 114 )
 
-[node name="MiscContainer" type="Node" parent="." index="6"]
+[node name="MiscContainer" type="Node" parent="." index="5"]
 
 [node name="TileFragmentCloud" parent="MiscContainer" index="0" instance=ExtResource( 9 )]
 position = Vector2( 749, -331 )
@@ -153,6 +154,13 @@ position = Vector2( 1452, -1001 )
 radius_for_spawn = 240.0
 particle_count_multiplier = 2
 tile_set_template_id = 200
+
+[node name="EnvEvent_ElecSparks01" parent="MiscContainer" index="2" instance=ExtResource( 10 )]
+position = Vector2( 580, -171 )
+radius_for_event = 500.0
+loop_wait_max = 7.0
+angle_deg_start = 325.982
+angle_deg_end = 34.01
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]

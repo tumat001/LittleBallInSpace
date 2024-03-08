@@ -12,7 +12,7 @@
 [ext_resource path="res://ObjectsRelated/Portals/Portal.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 26.5, 112 )
+extents = Vector2( 26.5, 128 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 127.75, 71 )
@@ -113,7 +113,7 @@ modulate = Color( 1, 0.141176, 0.141176, 1 )
 position = Vector2( -306, 118 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_01" index="0"]
-position = Vector2( 12.5, -38 )
+position = Vector2( 12.5, -22 )
 shape = SubResource( 1 )
 
 [node name="PCA_02" parent="AreaRegionContainer" index="1" instance=ExtResource( 6 )]

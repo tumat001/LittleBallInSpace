@@ -98,7 +98,7 @@ tileset_01_to_register_in_toggle__path = NodePath("../../TileContainer/BaseTileS
 button_color = 0
 
 [node name="Pickupables_Coin" parent="CoinsContainer" index="0" instance=ExtResource( 9 )]
-position = Vector2( -392, -152 )
+position = Vector2( -426, -151 )
 ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]

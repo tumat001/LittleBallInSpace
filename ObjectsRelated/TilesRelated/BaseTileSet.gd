@@ -91,6 +91,9 @@ var _light_2d_glowables_node_2d_container setget set_light_2d_glowables_node_2d_
 
 var _player setget set_player, get_player
 
+var _can_track__cell_coords_in_contact_with_player : bool
+var _cell_coords_in_contact_with_player : Array
+
 
 var _applied_changes_for_breakable : bool
 var break_on_player_contact : bool
@@ -149,7 +152,7 @@ export(bool) var tile_fragments_has_standard_defined_limited_lifetime : bool = t
 
 onready var tilemap = $TileMap
 
-#
+###########
 
 func set_player(arg_player):
 	_player = arg_player
@@ -255,8 +258,6 @@ func set_glass_breakable_type(arg_type):
 	_set_momentum_breaking_point(_glass_breakable_type_to_momentum_for_break_val_map[arg_type])
 	speed_slowdown_on_tile_break = _glass_breakable_type_to_speed_ratio_reduction_val_map[arg_type]
 	
-	if arg_type != GlassBreakableType.NEVER_BREAK and is_inside_tree():
-		_construct_material_for_breakable_shader()
 
 #func set_momentum_breaking_point_standard(arg_val):
 #	momentum_breaking_point_standard = arg_val
@@ -270,6 +271,11 @@ func _construct_material_for_breakable_shader():
 
 func _set_momentum_breaking_point(arg_val):
 	momentum_breaking_point = arg_val
+	
+	
+	if momentum_breaking_point != MOMENTUM_FOR_BREAK__NEVER_BREAK and is_inside_tree():
+		_construct_material_for_breakable_shader()
+		_can_track__cell_coords_in_contact_with_player = true
 	
 	if is_inside_tree():
 		_update_properties_based_on_is_breakable()
@@ -391,10 +397,41 @@ func _set_true__can_induce_rotation_change__due_to_cell_v_changes__after_small_d
 
 
 func _make_cells_glow():
-	tilemap.material.shader = preload("res://MiscRelated/ShadersRelated/Shader_TileBreakableOutline.tres")
+	tilemap.material.shader = load("res://MiscRelated/ShadersRelated/Shader_TileBreakableOutline.tres")
+	
+	_break_all_tiles_currently_in_contact_with_player()
+	
+#	for cell_pos in tilemap.get_used_cells():
+#		var cell_id = tilemap.get_cellv(cell_pos)
+#		var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
+#		var breakable_glowing_cell_id_equi = TileConstants.convert_non_glowing_breakable_tile_id__to_glowing(cell_id)
+#
+#		if breakable_glowing_cell_id_equi != null:
+#			_set_tile_at_coords(cell_pos, breakable_glowing_cell_id_equi, cell_autocord, false, false)
+#		else:
+#			print("BASE TILE SET: setting from unbreakable to breakable: texture id error")
+#
+#	tilemap.update_dirty_quadrants()
 
 func _make_cells_unglow():
 	tilemap.material.shader = null
+	
+#	for cell_pos in tilemap.get_used_cells():
+#		var cell_id = tilemap.get_cellv(cell_pos)
+#		var cell_autocord = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
+#		var breakable_non_glowing_cell_id_equi = TileConstants.convert_glowing_breakable_tile_id__to_non_glowing(cell_id)
+#
+#		if breakable_non_glowing_cell_id_equi != null:
+#			_set_tile_at_coords(cell_pos, breakable_non_glowing_cell_id_equi, cell_autocord, false, false)
+#		else:
+#			print("BASE TILE SET: setting from breakable to unbreakable: texture id error")
+#
+#	tilemap.update_dirty_quadrants()
+
+#todoimp continue this
+func _break_all_tiles_currently_in_contact_with_player():
+	for coord in _cell_coords_in_contact_with_player:
+		SingletonsAndConsts.current_game_elements.get_current_player().break_tile_on_coord__by_any_means(self, coord)
 	
 
 
@@ -928,11 +965,27 @@ func has_tile_by_body_shape_index(arg_idx : int):
 #	print("tile_count: %s, idx: %s" % [tile_count, arg_idx])
 #	return tile_count - 1 > arg_idx
 
+#
+
+func can_track__cell_coords_in_contact_with_player() -> bool:
+	return _can_track__cell_coords_in_contact_with_player
+
+func add_cell_coord_in_contact_with_player(arg_cell_coord : Vector2):
+	_cell_coords_in_contact_with_player.append(arg_cell_coord)
+
+func remove_cell_coord_in_contact_with_player(arg_cell_coord : Vector2):
+	_cell_coords_in_contact_with_player.erase(arg_cell_coord)
+
+func set_cell_coords_in_contact_with_player(arg_cell_coords : Array):
+	_cell_coords_in_contact_with_player.clear()
+	_cell_coords_in_contact_with_player.append_array(arg_cell_coords)
 
 
 ###################### 
 # REWIND RELATED
 #####################
+
+var _rewinded__cell_coords_in_contact_with_player
 
 export(bool) var is_rewindable : bool
 var is_dead_but_reserved_for_rewind : bool
@@ -964,6 +1017,8 @@ func get_rewind_save_state():
 		"is_responsible_for_own_movement__for_rewind" : is_responsible_for_own_movement__for_rewind,
 		
 		"energy_mode" : energy_mode,
+		
+		"_cell_coords_in_contact_with_player" : _cell_coords_in_contact_with_player
 		#"applied_changes_for_breakable" : _applied_changes_for_breakable,
 	}
 	
@@ -990,6 +1045,8 @@ func load_into_rewind_save_state(arg_state):
 	
 	set_energy_mode(arg_state["energy_mode"])
 	#_applied_changes_for_breakable = arg_state["applied_changes_for_breakable"]
+	
+	_rewinded__cell_coords_in_contact_with_player = arg_state["_cell_coords_in_contact_with_player"]
 	
 	if arg_state.has("cell_save_data"):
 		var saved_cell_data = arg_state["cell_save_data"]
@@ -1022,6 +1079,8 @@ func ended_rewind():
 		_applied_changes_for_breakable = false
 		#mode = RigidBody2D.MODE_RIGID
 		#collision_shape.set_deferred("disabled", false)
+		
+		set_cell_coords_in_contact_with_player(_rewinded__cell_coords_in_contact_with_player)
 		
 		#_use_integ_forces_new_vals = true
 	

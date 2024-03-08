@@ -61,6 +61,8 @@ margin_bottom = 32.0
 rect_pivot_offset = Vector2( 32, 32 )
 
 [node name="Light2D" type="Light2D" parent="."]
+shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )
 
 [connection signal="body_shape_entered" from="FloorArea2D" to="." method="_on_FloorArea2D_body_shape_entered"]
 [connection signal="body_shape_exited" from="FloorArea2D" to="." method="_on_FloorArea2D_body_shape_exited"]
