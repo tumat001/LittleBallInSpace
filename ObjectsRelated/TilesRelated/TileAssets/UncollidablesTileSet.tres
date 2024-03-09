@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=64 format=2]
+[gd_resource type="TileSet" load_steps=67 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__SolidsCornerPieces.png" type="Texture" id=1]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/Spaceship/Tileset_Spaceship_Uncollidables__DestroyedAssets01.png" type="Texture" id=2]
@@ -63,6 +63,9 @@
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__WallDecor05.png" type="Texture" id=61]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_DarkMetal_Uncollidables__Lamps02.png" type="Texture" id=62]
 [ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__PortalFrame01.png" type="Texture" id=63]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/DarkMetal/Tileset_Spaceship_Uncollidables__ElectricalEquipment01.png" type="Texture" id=64]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__ElectricalEquipment01.png" type="Texture" id=65]
+[ext_resource path="res://ObjectsRelated/TilesRelated/TileAssets/HostileShipMetal/Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc08.png" type="Texture" id=66]
 
 [resource]
 0/name = "Tileset_Spaceship_Uncollidables__DestroyedAssets01.png 0"
@@ -1430,3 +1433,66 @@
 64/shape_one_way_margin = 0.0
 64/shapes = [  ]
 64/z_index = 0
+65/name = "Tileset_Spaceship_Uncollidables__ElectricalEquipment01.png 65"
+65/texture = ExtResource( 64 )
+65/tex_offset = Vector2( 0, 0 )
+65/modulate = Color( 1, 1, 1, 1 )
+65/region = Rect2( 0, 0, 128, 64 )
+65/tile_mode = 2
+65/autotile/icon_coordinate = Vector2( 0, 0 )
+65/autotile/tile_size = Vector2( 32, 32 )
+65/autotile/spacing = 0
+65/autotile/occluder_map = [  ]
+65/autotile/navpoly_map = [  ]
+65/autotile/priority_map = [  ]
+65/autotile/z_index_map = [  ]
+65/occluder_offset = Vector2( 0, 0 )
+65/navigation_offset = Vector2( 0, 0 )
+65/shape_offset = Vector2( 0, 0 )
+65/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+65/shape_one_way = false
+65/shape_one_way_margin = 0.0
+65/shapes = [  ]
+65/z_index = 0
+66/name = "Tileset_HostileShipMetal_Uncollidables__ElectricalEquipment01.png 66"
+66/texture = ExtResource( 65 )
+66/tex_offset = Vector2( 0, 0 )
+66/modulate = Color( 1, 1, 1, 1 )
+66/region = Rect2( 0, 0, 128, 96 )
+66/tile_mode = 2
+66/autotile/icon_coordinate = Vector2( 0, 0 )
+66/autotile/tile_size = Vector2( 32, 32 )
+66/autotile/spacing = 0
+66/autotile/occluder_map = [  ]
+66/autotile/navpoly_map = [  ]
+66/autotile/priority_map = [  ]
+66/autotile/z_index_map = [  ]
+66/occluder_offset = Vector2( 0, 0 )
+66/navigation_offset = Vector2( 0, 0 )
+66/shape_offset = Vector2( 0, 0 )
+66/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+66/shape_one_way = false
+66/shape_one_way_margin = 0.0
+66/shapes = [  ]
+66/z_index = 0
+67/name = "Tileset_HostileShipMetal_Uncollidables__Decor_WallMisc08.png 67"
+67/texture = ExtResource( 66 )
+67/tex_offset = Vector2( 0, 0 )
+67/modulate = Color( 1, 1, 1, 1 )
+67/region = Rect2( 0, 0, 128, 160 )
+67/tile_mode = 2
+67/autotile/icon_coordinate = Vector2( 0, 0 )
+67/autotile/tile_size = Vector2( 32, 32 )
+67/autotile/spacing = 0
+67/autotile/occluder_map = [  ]
+67/autotile/navpoly_map = [  ]
+67/autotile/priority_map = [  ]
+67/autotile/z_index_map = [  ]
+67/occluder_offset = Vector2( 0, 0 )
+67/navigation_offset = Vector2( 0, 0 )
+67/shape_offset = Vector2( 0, 0 )
+67/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+67/shape_one_way = false
+67/shape_one_way_margin = 0.0
+67/shapes = [  ]
+67/z_index = 0
