@@ -398,7 +398,7 @@ func _set_true__can_induce_rotation_change__due_to_cell_v_changes__after_small_d
 
 func _make_cells_glow():
 	tilemap.material.shader = load("res://MiscRelated/ShadersRelated/Shader_TileBreakableOutline.tres")
-	
+
 	_break_all_tiles_currently_in_contact_with_player()
 	
 #	for cell_pos in tilemap.get_used_cells():
@@ -428,7 +428,7 @@ func _make_cells_unglow():
 #
 #	tilemap.update_dirty_quadrants()
 
-#todoimp continue this
+
 func _break_all_tiles_currently_in_contact_with_player():
 	for coord in _cell_coords_in_contact_with_player:
 		SingletonsAndConsts.current_game_elements.get_current_player().break_tile_on_coord__by_any_means(self, coord)
@@ -1080,7 +1080,8 @@ func ended_rewind():
 		#mode = RigidBody2D.MODE_RIGID
 		#collision_shape.set_deferred("disabled", false)
 		
-		set_cell_coords_in_contact_with_player(_rewinded__cell_coords_in_contact_with_player)
+		if _rewinded__cell_coords_in_contact_with_player != null:
+			set_cell_coords_in_contact_with_player(_rewinded__cell_coords_in_contact_with_player)
 		
 		#_use_integ_forces_new_vals = true
 	

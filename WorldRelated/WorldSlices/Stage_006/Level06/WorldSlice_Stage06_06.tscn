@@ -79,19 +79,25 @@ tile_data = PoolIntArray( -327603, 37, 1, -327597, 37, 1, -327595, 37, 1, -32759
 tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( -65516, 46, 131074, 20, 46, 131074, 65556, 46, 131074, 131092, 46, 131074, 196628, 46, 131074, 262164, 46, 131074, 393215, 38, 0, 327680, 38, 0, 327681, 38, 0, 327682, 38, 2, 327683, 38, 0, 327684, 38, 0, 327685, 38, 0, 327686, 38, 0, 327700, 46, 131074, 393236, 46, 131074, 458772, 46, 131074, 524308, 46, 131074, 589844, 46, 131074, 655380, 46, 131074, 720916, 46, 131074, 786452, 46, 131074, 851988, 46, 131074, 917524, 46, 131074, 983060, 46, 131074, 1048596, 46, 131074, 1114132, 46, 131074, 1179668, 46, 131074, 1245204, 46, 131074, 1310740, 46, 131074, 1376276, 46, 131074, 1441812, 46, 131074, 1507348, 46, 131074, 1572884, 46, 131074, 1638420, 46, 131074, 1703956, 46, 131074, 1769492, 46, 131074, 1835028, 46, 131074, 1900564, 46, 131074, 1966100, 46, 131074, 2031636, 46, 131074, 2097172, 46, 131074, 2162708, 46, 131074, 2228244, 46, 131074, 2293780, 46, 131074 )
 
-[node name="BTS_Glowing" parent="TileContainer" index="6" instance=ExtResource( 1 )]
+[node name="BTS_Uncolls03" parent="TileContainer" index="6" instance=ExtResource( 1 )]
+
+[node name="TileMap" parent="TileContainer/BTS_Uncolls03" index="0"]
+tile_set = ExtResource( 3 )
+tile_data = PoolIntArray( 655375, 35, 131075, 655376, 35, 131074, 655377, 35, 131075, 655378, 35, 131074, 655379, 35, 131075, 655380, 35, 131074, 655381, 35, 131075, 917520, 35, 131074, 917521, 35, 131075, 917522, 35, 131074, 917523, 35, 131075, 917524, 35, 131074, 917525, 35, 131075, 1245201, 35, 131075, 1245202, 35, 131074, 1245203, 35, 131075, 1245204, 35, 131074, 1245205, 35, 131075, 1507346, 35, 131074, 1507347, 35, 131075, 1507348, 35, 131074, 1507349, 35, 131075 )
+
+[node name="BTS_Glowing" parent="TileContainer" index="7" instance=ExtResource( 1 )]
 has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
 tile_set = ExtResource( 3 )
 
-[node name="BTS_Red" parent="TileContainer" index="7" instance=ExtResource( 1 )]
+[node name="BTS_Red" parent="TileContainer" index="8" instance=ExtResource( 1 )]
 
 [node name="TileMap" parent="TileContainer/BTS_Red" index="0"]
 modulate = Color( 1, 0.141176, 0.141176, 1 )
 tile_data = PoolIntArray( 196615, 9, 0, 262151, 9, 65536, 327687, 9, 131072 )
 
-[node name="BTS_Fragile" parent="TileContainer" index="8" instance=ExtResource( 1 )]
+[node name="BTS_Fragile" parent="TileContainer" index="9" instance=ExtResource( 1 )]
 glass_breakable_type = 3
 
 [node name="TileMap" parent="TileContainer/BTS_Fragile" index="0"]
@@ -109,6 +115,7 @@ shape = SubResource( 1 )
 position = Vector2( 627, 793 )
 force_action_natural_movement = true
 make_player_energy_undeductable = true
+force_action_natural_movement__right = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Cinematic_Start" index="0"]
 position = Vector2( 40, 14 )
@@ -214,7 +221,7 @@ __meta__ = {
 "_gizmo_extents_": 16.0
 }
 
-[node name="Node" type="Node" parent="." index="6"]
+[node name="Node" type="Node" parent="." index="5"]
 
 [node name="MarginContainer" type="MarginContainer" parent="Node" index="0"]
 margin_left = 2434.0
@@ -271,6 +278,7 @@ circle_ratio__inside_of_inner_ring = 0.2
 [editable path="TileContainer/BTS_Uncolls01"]
 [editable path="TileContainer/BTS_UncollsWallDecs"]
 [editable path="TileContainer/BTS_Uncolls02"]
+[editable path="TileContainer/BTS_Uncolls03"]
 [editable path="TileContainer/BTS_Glowing"]
 [editable path="TileContainer/BTS_Red"]
 [editable path="TileContainer/BTS_Fragile"]
