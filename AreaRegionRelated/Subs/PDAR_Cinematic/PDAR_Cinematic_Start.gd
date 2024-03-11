@@ -1,6 +1,9 @@
 extends "res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.gd"
 
 
+signal player_entered_and_cinematic_started()
+
+
 export(bool) var hide_game_control_hud : bool = false
 export(bool) var hide_game_control_hud__use_tween : bool = true
 export(float) var hide_game_control_hud__duration : float = 0.75
@@ -15,8 +18,18 @@ export(bool) var make_player_energy_undeductable : bool = false
 
 export(bool) var force_action_natural_movement__right : bool = false
 
+#
+
+export(bool) var is_disabled : bool = false
+
+#
 
 func _on_PDAR_Cinematic_player_entered_in_area():
+	if is_disabled:
+		return
+	
+	########################
+	
 	SingletonsAndConsts.current_game_elements.configure_game_state_for_cutscene_occurance(stop_player_movement, reset_cam_zoom_level)
 	
 	if hide_game_control_hud:
@@ -39,5 +52,5 @@ func _on_PDAR_Cinematic_player_entered_in_area():
 		if energy_modi != null:
 			energy_modi.helper__set_clause_to_is_energy_not_deductable__PDAR_CINEMATIC(true)
 	
-	
+	emit_signal("player_entered_and_cinematic_started")
 

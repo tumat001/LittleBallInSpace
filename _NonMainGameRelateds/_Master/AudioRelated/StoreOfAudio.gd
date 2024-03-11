@@ -169,6 +169,12 @@ enum AudioIds {
 	SFX_Enemy_ChargeBall = 6540
 	SFX_Enemy_LaunchBall = 6541
 	
+	
+	# AMBIENT
+	SFX_Ambient_ElectricGenerator = 6600
+	SFX_Ambient_ComputerSoundFuturistic01_01 = 6610
+	SFX_Ambient_ComputerSoundFuturistic01_02 = 6611
+	
 	#######
 	
 	

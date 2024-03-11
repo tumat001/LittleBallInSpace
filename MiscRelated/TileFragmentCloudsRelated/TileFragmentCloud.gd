@@ -214,3 +214,9 @@ func queue_free():
 			fragment.queue_free()
 
 
+#####
+
+func force_set_all_fragment_mod_a(arg_mod_a : float):
+	for fragment in _all_fragments:
+		fragment.modulate.a = arg_mod_a
+

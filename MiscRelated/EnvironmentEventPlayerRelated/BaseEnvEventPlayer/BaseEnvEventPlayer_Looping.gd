@@ -5,6 +5,7 @@ export(float) var loop_wait_min : float = 0.0
 export(float) var loop_wait_max : float = 1.0
 
 var _current_loop_wait
+var is_paused : bool = false
 
 func _on_set_as_active__true():
 	._on_set_as_active__true()
@@ -21,7 +22,7 @@ func _on_set_as_active__false():
 #
 
 func _process(delta):
-	if _is_active and !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+	if _is_active and !SingletonsAndConsts.current_rewind_manager.is_rewinding and !is_paused:
 		_current_loop_wait -= delta
 		if _current_loop_wait < 0:
 			_assign_random_loop_wait()

@@ -92,7 +92,7 @@ func _on_PlayerSoftArea2D_body_entered(body):
 			var dir = global_position.angle_to_point(body.global_position)
 			var force = Vector2(pushback, 0).rotated(dir)
 			
-			var lin_vel : Vector2= body.linear_velocity
+			var lin_vel : Vector2 = body.linear_velocity
 			lin_vel.limit_length(3.333 * last_calculated_object_mass)
 			
 			apply_central_impulse(force + lin_vel)

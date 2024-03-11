@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/BaseEnvEventPlayer/BaseEnvEventPlayer_Looping.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MiscRelated/EnvironmentEventPlayerRelated/Imps/EnvEvent_AmbientAudio/EnvEvent_AmbientAudio.gd" type="Script" id=2]
+
+[node name="EnvEvent_AmbientAudio" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+export__audio_template_id = -1
+export__audio_list_type_id = -1

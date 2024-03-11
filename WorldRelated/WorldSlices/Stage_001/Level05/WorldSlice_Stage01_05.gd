@@ -13,6 +13,10 @@ var _is_displaying_switch_aim_mode : bool
 
 #
 
+var _ghost_vis_tweener : SceneTreeTween
+
+#
+
 onready var vkp_launch_ball = $MiscContainer/VisIns_BallShoot/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
 onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
 
@@ -37,6 +41,8 @@ onready var PDAR_near_fakeout = $AreaRegionContainer/PDAreaRegion_NearFakeout
 #onready var vbox_container_02__rewind_reminder_panel = $MiscContainer/VBoxContainer2
 
 onready var vis_ins_anim__ball_shoot = $MiscContainer/VisIns_BallShoot
+
+onready var ghost_sprite = $MiscContainer/GhostSprite01
 
 #
 
@@ -360,4 +366,27 @@ func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
 #	tweener.tween_property(vbox_container_01__launch_ball_tut_panel, "modulate:a", 1.0, 0.75)
 #	tweener.tween_interval(7.5)
 #	tweener.tween_property(vbox_container_02__rewind_reminder_panel, "modulate:a", 1.0, 0.75)
+
+
+#########
+
+func _init_ghost_sprite():
+	ghost_sprite.modulate.a = 0.5
+	
+
+func _on_GhostSpriteVisibilityNotifier2D_screen_entered() -> void:
+	var tweener = create_tween()
+	tweener.tween_interval(2.0)
+	tweener.tween_callback(self, "_tween_hide_ghost_then_queue_free", [1.0])
+	
+	_ghost_vis_tweener = tweener
+	
+	##
+	
+	CameraManager.connect("camera_zoom_changed", self, "")
+
+func _tween_hide_ghost_then_queue_free(arg_fade_duration : float):
+	var hide_tweener = create_tween()
+	hide_tweener.tween_property(ghost_sprite, "moduate:a", 0.0, arg_fade_duration)
+	hide_tweener.tween_callback(ghost_sprite, "queue_free")
 

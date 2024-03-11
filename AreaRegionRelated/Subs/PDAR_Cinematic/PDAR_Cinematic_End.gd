@@ -1,5 +1,8 @@
 extends "res://AreaRegionRelated/Subs/PlayerDetectionAreaRegion/PlayerDetectionAreaRegion.gd"
 
+signal player_entered_and_cinematic_ended()
+
+
 export(bool) var unhide_game_control_hud : bool = true
 export(bool) var unhide_game_control_hud__use_tween : bool = true
 export(bool) var unhide_game_control_hud__duration : float = 0.5
@@ -30,3 +33,7 @@ func _on_PDAR_Cinematic_player_entered_in_area():
 	if delete_rewind_history:
 		SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
 	
+	
+	#
+	
+	emit_signal("player_entered_and_cinematic_ended")

@@ -10,6 +10,8 @@ signal current_cam_rotation_changed(arg_val)
 signal cam_visual_rotation_finished()
 signal cam_visual_rotation_changed(arg_val)
 
+signal camera_zoom_changed(arg_is_default_zoom)
+
 #
 
 const ZOOM_OUT__DEFAULT__ZOOM_LEVEL = Vector2(2.0, 2.0)
@@ -337,12 +339,15 @@ func start_camera_zoom_change(arg_val, arg_duration):
 	_current_cam_zoom_tweener.tween_property(camera, "zoom", arg_val, arg_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	
 	_is_at_default_zoom = false
+	
+	emit_signal("camera_zoom_changed", _is_at_default_zoom)
 
 func reset_camera_zoom_level():
 	start_camera_zoom_change(_current_default_zoom_normal_vec, ZOOM_IN_FROM_OUT__DEFAULT__DURATION_OF_TRANSITION)
 	
 	_is_at_default_zoom = true
-
+	
+	emit_signal("camera_zoom_changed", _is_at_default_zoom)
 
 func is_at_default_zoom():
 	return _is_at_default_zoom
