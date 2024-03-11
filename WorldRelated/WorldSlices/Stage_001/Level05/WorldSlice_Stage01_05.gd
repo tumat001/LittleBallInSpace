@@ -83,7 +83,8 @@ func _on_after_game_start_init():
 	PDAR_fakeout_disable_rewind.connect("player_entered_in_area", self, "_on_player_entered_PDAR_fakeout_disable_rewind", [], CONNECT_ONESHOT)
 	
 	PDAR_near_fakeout.connect("player_entered_in_area", self, "_on_player_entered_in_area__PDAR_near_fakeout", [], CONNECT_ONESHOT)
-
+	
+	_init_ghost_sprite()
 
 func _configure_labels():
 	#var orig_text__launch_ball = launch_ball_ins_label.text
@@ -376,17 +377,30 @@ func _init_ghost_sprite():
 
 func _on_GhostSpriteVisibilityNotifier2D_screen_entered() -> void:
 	var tweener = create_tween()
-	tweener.tween_interval(2.0)
-	tweener.tween_callback(self, "_tween_hide_ghost_then_queue_free", [1.0])
+	tweener.tween_interval(2.75)
+	tweener.tween_callback(self, "_tween_hide_ghost_then_queue_free", [0.75])
 	
 	_ghost_vis_tweener = tweener
 	
 	##
 	
-	CameraManager.connect("camera_zoom_changed", self, "")
+	CameraManager.connect("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen")
+
+
+func _on_camera_zoom_changed_on_ghost_in_screen(arg_is_default_zoom):
+	if !arg_is_default_zoom:
+		_tween_hide_ghost_then_queue_free(0.2)
+
+func _disconnect_cam_manager_zoom_changed_for_ghost():
+	if CameraManager.is_connected("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen"):
+		CameraManager.disconnect("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen")
 
 func _tween_hide_ghost_then_queue_free(arg_fade_duration : float):
 	var hide_tweener = create_tween()
-	hide_tweener.tween_property(ghost_sprite, "moduate:a", 0.0, arg_fade_duration)
+	hide_tweener.tween_property(ghost_sprite, "modulate:a", 0.0, arg_fade_duration)
 	hide_tweener.tween_callback(ghost_sprite, "queue_free")
-
+	
+	if _ghost_vis_tweener != null and _ghost_vis_tweener.is_valid():
+		_ghost_vis_tweener.kill()
+	
+	_disconnect_cam_manager_zoom_changed_for_ghost()

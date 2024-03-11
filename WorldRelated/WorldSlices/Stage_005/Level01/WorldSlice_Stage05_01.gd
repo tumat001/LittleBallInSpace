@@ -6,11 +6,24 @@ const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/Text
 
 var _speed_for_break
 
+#
+
+const TILE_MAP_NAME__ENERGIZED = "TMMem_Energized"
+
+var tilemap_memory_energized
+
+#
+
 onready var toughened_glass_tileset = $TileContainer/BaseTileSet_StrongGlass
 
 onready var cdsu_mega_battery = $ObjectContainer/CDSU_MegaBattery
 
 onready var god_rays_sprite = $MiscContainer/GodRays
+
+onready var vis_transition_fog_circ = $MiscContainer/VisTransitionFog_Circ
+
+onready var memory_flashback_container_01_for_TMM = $MemoryFlashbackContainer01_TMM
+onready var shader_memory_container_01 = $ShaderMemoryContainer01
 
 #
 
@@ -28,6 +41,9 @@ func as_test__override__do_insta_win():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
+	
+	_set_modulate_a_for_memory_containers(0.0)
+	_init_tilemap_memories()
 
 #########
 
@@ -116,6 +132,11 @@ func _start_dialog__04():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__04", [], CONNECT_ONESHOT)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 3.0, 4.0, null)
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	
+	##
+	vis_transition_fog_circ.activate_monitor_for_player()
+
+#
 
 func _on_display_of_desc_finished__04(arg_metadata):
 	_end_dialog__04()
@@ -199,7 +220,40 @@ func _on_wait_after_portal_enter_done():
 	
 
 
+########################################
+
+func _on_VisTransitionFog_Circ_progress_one_to_zero_ratio_changed(arg_ratio) -> void:
+	_set_modulate_a_for_memory_containers(arg_ratio)
+
+func _set_modulate_a_for_memory_containers(arg_ratio):
+	memory_flashback_container_01_for_TMM.modulate.a = arg_ratio
+	shader_memory_container_01.modulate.a = arg_ratio
+	
 
 
 
+func _init_tilemap_memories():
+	tilemap_memory_energized = memory_flashback_container_01_for_TMM.get_node(TILE_MAP_NAME__ENERGIZED)
+	
+	#
+	
+	_update_tilemap_memory_energized_modulate()
+	GameSettingsManager.connect("tile_color_config__tile_modulate__energized_changed", self, "_on_tile_color_config__tile_modulate__energized_changed")
+	_update_tilemap_memory_normal_modulate()
+	GameSettingsManager.connect("tile_color_config__tile_modulate__normal_changed", self, "_on_tile_color_config__tile_modulate__normal_changed")
+
+func _update_tilemap_memory_energized_modulate():
+	tilemap_memory_energized.modulate = GameSettingsManager.tile_color_config__tile_modulate__energized
+
+func _on_tile_color_config__tile_modulate__energized_changed(arg_val):
+	_update_tilemap_memory_energized_modulate()
+
+
+func _update_tilemap_memory_normal_modulate():
+	for tilemap in memory_flashback_container_01_for_TMM.get_children():
+		if tilemap != tilemap_memory_energized:
+			tilemap.modulate = GameSettingsManager.tile_color_config__tile_modulate__normal
+
+func _on_tile_color_config__tile_modulate__normal_changed(arg_val):
+	_update_tilemap_memory_normal_modulate()
 

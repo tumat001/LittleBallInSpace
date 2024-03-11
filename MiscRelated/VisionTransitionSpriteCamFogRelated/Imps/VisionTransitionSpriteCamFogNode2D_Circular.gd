@@ -3,6 +3,10 @@ extends "res://MiscRelated/VisionTransitionSpriteCamFogRelated/AbstractVisionTra
 
 #
 
+signal progress_one_to_zero_ratio_changed(arg_ratio)
+
+#
+
 export(float) var circle_ratio__outside_of_outer_ring : float = 0.0
 export(float) var circle_ratio__inside_of_outer_ring : float = 0.0
 export(float) var circle_ratio__inside_of_inner_ring : float = 0.8
@@ -70,6 +74,7 @@ func _player_is_outside_of_outer_ring(arg_dist):
 	._player_is_outside_of_outer_ring(arg_dist)
 	set_transition_sprite_circle_ratio(circle_ratio__outside_of_outer_ring)
 	
+	emit_signal("progress_one_to_zero_ratio_changed", 0.0)
 
 func _player_is_inside_of_outer_ring(arg_dist):
 #	_set_transition_sprite_circle_ratio__dist__inside_of_outer_ring(arg_dist)
@@ -80,12 +85,15 @@ func _player_is_inside_of_outer_ring(arg_dist):
 	var circle_ratio = _tween_for_intervalue.interpolate_value(circle_ratio__inside_of_outer_ring, (circle_ratio__inside_of_inner_ring - circle_ratio__inside_of_outer_ring), (arg_dist - inner_ring__radius_max_fog), (outer_ring__radius_start_of_fog - inner_ring__radius_max_fog), Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	circle_ratio = (1 + circle_ratio__inside_of_inner_ring) - circle_ratio
 	set_transition_sprite_circle_ratio(circle_ratio)
-
+	
+	var prog_ratio = _tween_for_intervalue.interpolate_value(1.0, -1.0, (arg_dist - inner_ring__radius_max_fog), (outer_ring__radius_start_of_fog - inner_ring__radius_max_fog), Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	emit_signal("progress_one_to_zero_ratio_changed", prog_ratio)
 
 func _player_is_inside_of_inner_ring(arg_dist):
 	._player_is_inside_of_inner_ring(arg_dist)
 	set_transition_sprite_circle_ratio(circle_ratio__inside_of_inner_ring)
 	
+	emit_signal("progress_one_to_zero_ratio_changed", 1.0)
 
 
 func set_transition_sprite_circle_ratio(arg_circle_ratio):

@@ -3,6 +3,10 @@ extends "res://WorldRelated/AbstractWorldSlice.gd"
 
 #
 
+const TILE_MAP_NAME__ENERGIZED = "TMMem_Energized"
+
+#
+
 var background_music_playlist
 
 
@@ -13,10 +17,14 @@ var _memory_tweener : SceneTreeTween
 
 #
 
+var tilemap_memory_energized
+
+#
+
 onready var button_green = $ObjectContainer/ButtonGreen
 
 onready var memory_flashback_01_container = $MemoryFlashback01
-onready var tilemap_memory_energized = $MemoryFlashback01/TMMem_Energized
+#onready var tilemap_memory_energized = $MemoryFlashback01/TMMem_Energized
 
 onready var pdar_memory_cinematic_start = $AreaRegionContainer/PDAR_Memory_CineStart
 
@@ -37,7 +45,7 @@ func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
 	memory_flashback_01_container.visible = false
-	_init_tilemap_memory_energized()
+	_init_tilemap_memories()
 	_init_pdar_memory_cinestart()
 	
 	background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
@@ -53,16 +61,30 @@ func as_test__override__do_insta_win():
 
 ####
 
-func _init_tilemap_memory_energized():
+func _init_tilemap_memories():
+	tilemap_memory_energized = memory_flashback_01_container.get_node(TILE_MAP_NAME__ENERGIZED)
+	
+	#
+	
 	_update_tilemap_memory_energized_modulate()
 	GameSettingsManager.connect("tile_color_config__tile_modulate__energized_changed", self, "_on_tile_color_config__tile_modulate__energized_changed")
+	_update_tilemap_memory_normal_modulate()
+	GameSettingsManager.connect("tile_color_config__tile_modulate__normal_changed", self, "_on_tile_color_config__tile_modulate__normal_changed")
 
 func _update_tilemap_memory_energized_modulate():
 	tilemap_memory_energized.modulate = GameSettingsManager.tile_color_config__tile_modulate__energized
-	
 
 func _on_tile_color_config__tile_modulate__energized_changed(arg_val):
 	_update_tilemap_memory_energized_modulate()
+
+
+func _update_tilemap_memory_normal_modulate():
+	for tilemap in memory_flashback_01_container.get_children():
+		if tilemap != tilemap_memory_energized:
+			tilemap.modulate = GameSettingsManager.tile_color_config__tile_modulate__normal
+
+func _on_tile_color_config__tile_modulate__normal_changed(arg_val):
+	_update_tilemap_memory_normal_modulate()
 
 
 ########
@@ -178,5 +200,7 @@ func _end_memory_01():
 	
 	
 	memory_flashback_01_container.queue_free()
-
-
+	if GameSettingsManager.is_connected("tile_color_config__tile_modulate__energized_changed", self, "_on_tile_color_config__tile_modulate__energized_changed"):
+		GameSettingsManager.disconnect("tile_color_config__tile_modulate__energized_changed", self, "_on_tile_color_config__tile_modulate__energized_changed")
+	if GameSettingsManager.is_connected("tile_color_config__tile_modulate__normal_changed", self, "_on_tile_color_config__tile_modulate__normal_changed"):
+		GameSettingsManager.disconnect("tile_color_config__tile_modulate__normal_changed", self, "_on_tile_color_config__tile_modulate__normal_changed")
