@@ -7,12 +7,6 @@ const GameLogo_BannerSized = preload("res://_NonMainGameRelateds/GameDetails/ALB
 
 #
 
-const ROTATION_FOR_AIM_ARROW__DIFF : float = PI/5
-#var toggle_aim_arrow_anim_full_duration
-var per_toggle_mode_show_duration : float = 2.0
-
-#
-
 var _launch_ball_modi
 
 var _is_displaying_switch_aim_mode : bool
@@ -21,18 +15,19 @@ var _is_displaying_switch_aim_mode : bool
 
 var _ghost_vis_tweener : SceneTreeTween
 
-var _toggle_aim_mode_arrow_rotation_tweener : SceneTreeTween
-
 #
 
-onready var vkp_launch_ball = $MiscContainer/VisIns_BallShoot/VKP_LaunchBall
-#onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
+onready var vkp_launch_ball = $MiscContainer/VisIns_BallShoot/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
+onready var vkp_rewind = $MiscContainer/VBoxContainer2/VKP_Rewind
+
 
 onready var CDSU_pickupable_launcher = $ObjectContainer/CDSUPickupable_Launcher
 onready var CDSU_pickupable_remote = $ObjectContainer/CDSUPickupable_Remote
 onready var CDSU_pickupable_remote__sprite = $ObjectContainer/CDSUPickupable_Remote/Sprite
 
 onready var god_rays_sprite = $MiscContainer/GodRays
+
+onready var PDAR_cancel_dialog_remote = $AreaRegionContainer/PDAreaRegion_CancelDialog02
 
 #onready var launch_ball_ins_label = $MiscContainer/LaunchBallInsLabel
 #onready var rewind_reminder_label = $MiscContainer/RewindReminderLabel
@@ -48,10 +43,6 @@ onready var PDAR_near_fakeout = $AreaRegionContainer/PDAreaRegion_NearFakeout
 onready var vis_ins_anim__ball_shoot = $MiscContainer/VisIns_BallShoot
 
 onready var ghost_sprite = $MiscContainer/GhostSprite01
-
-onready var vis_ins_anim__toggle_aim_mode = $MiscContainer/VisIns_ToggleAimMode
-onready var vis_ins_anim__toggle_aim_mode__anim_sprite = vis_ins_anim__toggle_aim_mode.anim_sprite_of_vis_ins
-onready var vis_ins_anim__toggle_aim_mode__arrow_sprite = $MiscContainer/VisIns_ToggleAimMode/ToggleAimArrowSprite
 
 #
 
@@ -109,7 +100,7 @@ func _configure_labels():
 	
 	#var orig_text__reminder_label = vkp_rewind.text_for_keypress
 	#vkp_rewind.text_for_keypress = orig_text__reminder_label % [InputMap.get_action_list("rewind")[0].as_text()]
-	#vkp_rewind.game_control_action_name = "rewind"
+	vkp_rewind.game_control_action_name = "rewind"
 
 ############
 
@@ -150,11 +141,7 @@ func _on_item_cutscene_end(arg_param):
 
 func _on_highlight_launchball_panel_ended(arg_param):
 	_start_hide_god_rays()
-	
-	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
-	#game_elements.allow_rewind_manager_to_store_and_cast_rewind()
-	
-	#_start_remote_dialog__01()
+	_start_remote_dialog__01()
 
 
 func _add_launch_ball_modi():
@@ -177,14 +164,92 @@ func _make_god_rays_sprite_invisible():
 	god_rays_sprite.visible = false
 
 
+
+func _start_remote_dialog__01():
+	var dialog_desc = [
+		["Is anyone there? Did you take the ball launcher?", []],
+		["Anyways, pick up the remote control so we can talk.", []]
+	]
+	
+	if !SingletonsAndConsts.current_game_front_hud.game_dialog_panel.is_connected("display_of_desc_finished", self, "_on_display_of_desc_finished__01"):
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+
+
+func _on_display_of_desc_finished__01(arg_metadata):
+	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
+	call_deferred("_deferred__end_of_desc_finish_01")
+
+func _deferred__end_of_desc_finish_01():
+	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
+	
+	CDSU_pickupable_remote__sprite.material.shader = Shader_Rainbow
+	CDSU_pickupable_remote.set_collidable_with_player(true)
+	CDSU_pickupable_remote.connect("player_entered_self__custom_defined", self, "_on_player_entered_self__custom_defined__remote")
+
+
+
+
+func _on_player_entered_self__custom_defined__remote():
+	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Pickupable_RemoteControl, 1.0, null)
+	
+	_start_remote_dialog__02()
+
+func _start_remote_dialog__02():
+	var dialog_desc = [
+		["Oh, could this be?...", []],
+		["Ok. There's an escape pod in ship. It's up north... Where's north?", []],
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+
+
+func _on_display_of_desc_finished__02(arg_metadata):
+	SingletonsAndConsts.current_rewind_manager.prevent_rewind_up_to_this_time_point()
+	call_deferred("_deferred_finish_desc_display_02")
+
+func _deferred_finish_desc_display_02():
+	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
+	
+	PDAR_cancel_dialog_remote.connect("player_entered_in_area", self, "_on_PDAR_cancel_dialog_remote_player_entered_area")
+	
+
+
+func _on_PDAR_cancel_dialog_remote_player_entered_area():
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	
+	game_elements.allow_rewind_manager_to_store_and_cast_rewind()
+
 #######
 
 func _on_player_entered_in_area__PDAR_near_fakeout():
+	var dialog_desc = [
+		["You're near the escape pod!", []],
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__03", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	
+	#
+	
 	StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(StoreOfAudio.BGMPlaylistId.SPECIALS_01, StoreOfAudio.AudioIds.BGM_Special01_FakeoutSuspense)
 	
 	#
 	
 	_launch_ball_modi.can_launch_player_when_on_air = true
+
+
+func _on_display_of_desc_finished__03(arg_metadata):
+	var timer_tweener = create_tween()
+	timer_tweener.tween_callback(self, "_on_delay_after_displaying_desc_03").set_delay(2.0)
+
+func _on_delay_after_displaying_desc_03():
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+
 
 #######
 
@@ -247,6 +312,63 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 	StoreOfLevels.unlock_stage_02__and_start_at_stage_02_01_on_level_finish__if_appropriate()
 
 
+####
+
+func _on_PDAR_TeachAndEnableAimMode_player_entered_in_area():
+	#_launch_ball_modi.can_change_aim_mode = true
+	var launch_ball_modi = game_elements.player_modi_manager.get_modi_or_null(StoreOfPlayerModi.PlayerModiIds.LAUNCH_BALL)
+	launch_ball_modi.can_change_aim_mode = true
+	
+	var dialog_desc = [
+		["Look at the bottom left, and you'll see a glowing button. Click it to toggle between aim modes.", []]
+	]
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim")
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 15.0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.connect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed")
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.show_highlight_of_aim_mode_swap_button()
+	_is_displaying_switch_aim_mode = true
+
+func _on_toggle_button_of_mode_change_pressed():
+	_end_show_of_change_aim_mode()
+
+func _on_display_of_desc_finished__teach_toggle_aim(arg_metadata):
+	_end_show_of_change_aim_mode()
+
+func _end_show_of_change_aim_mode():
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+	SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.end_highlight_of_aim_mode_swap_button()
+	
+	if SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.is_connected("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed"):
+		SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.disconnect("toggle_button_of_mode_change_pressed", self, "_on_toggle_button_of_mode_change_pressed")
+	
+	if SingletonsAndConsts.current_game_front_hud.game_dialog_panel.is_connected("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim"):
+		SingletonsAndConsts.current_game_front_hud.game_dialog_panel.disconnect("display_of_desc_finished", self, "_on_display_of_desc_finished__teach_toggle_aim")
+	
+	_is_displaying_switch_aim_mode = false
+
+
+
+
+func _on_PDAR_EndTeachAimMode_player_entered_in_area():
+	if _is_displaying_switch_aim_mode:
+		_end_show_of_change_aim_mode()
+
+
+func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
+	
+	vis_ins_anim__ball_shoot.start_display()
+#	_start_unhide_launch_ball_tut_vboxes()
+#
+#func _start_unhide_launch_ball_tut_vboxes():
+#	var tweener = create_tween()
+#	tweener.tween_property(vbox_container_01__launch_ball_tut_panel, "modulate:a", 1.0, 0.75)
+#	tweener.tween_interval(7.5)
+#	tweener.tween_property(vbox_container_02__rewind_reminder_panel, "modulate:a", 1.0, 0.75)
+
+
 #########
 
 func _init_ghost_sprite():
@@ -282,69 +404,3 @@ func _tween_hide_ghost_then_queue_free(arg_fade_duration : float):
 		_ghost_vis_tweener.kill()
 	
 	_disconnect_cam_manager_zoom_changed_for_ghost()
-
-
-########
-
-func _on_PDAR_ActivateVisIns_ToggleAim_player_entered_in_area() -> void:
-	#_config_toggle_aim_arrow_durations_related_based_on_res()
-	vis_ins_anim__toggle_aim_mode__anim_sprite.play("omni")
-	
-	vis_ins_anim__toggle_aim_mode.start_display()
-	vis_ins_anim__toggle_aim_mode.connect("start_display_finished", self, "_on_vis_ins_anim__toggle_aim_mode__start_display_finished", [], CONNECT_ONESHOT)
-	#_start_show_toggle_aim__as_omni()
-
-#func _config_toggle_aim_arrow_durations_related_based_on_res():
-#	var sprite_frames : SpriteFrames = vis_ins_anim__toggle_aim_mode__anim_sprite.frames
-#	toggle_aim_arrow_anim_full_duration = sprite_frames.get_frame_count("default") / sprite_frames.get_animation_speed("default")
-#	per_toggle_mode_show_duration = toggle_aim_arrow_anim_full_duration/2
-
-func _on_vis_ins_anim__toggle_aim_mode__start_display_finished():
-	_start_show_toggle_aim__as_omni()
-
-
-func _start_show_toggle_aim__as_omni():
-	vis_ins_anim__toggle_aim_mode__anim_sprite.play("omni")
-	
-	_kill_tweener_toggle_aim_arrow_if_valid()
-	_tween_toggle_aim_arrow_rotation__as_omni()
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_start_show_toggle_aim__as_snap")
-
-func _kill_tweener_toggle_aim_arrow_if_valid():
-	if _toggle_aim_mode_arrow_rotation_tweener != null and _toggle_aim_mode_arrow_rotation_tweener.is_valid():
-		_toggle_aim_mode_arrow_rotation_tweener.kill()
-
-
-func _tween_toggle_aim_arrow_rotation__as_omni():
-	_toggle_aim_mode_arrow_rotation_tweener = create_tween()
-	_toggle_aim_mode_arrow_rotation_tweener.tween_property(vis_ins_anim__toggle_aim_mode__arrow_sprite, "rotation", -ROTATION_FOR_AIM_ARROW__DIFF, per_toggle_mode_show_duration/4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_property(vis_ins_anim__toggle_aim_mode__arrow_sprite, "rotation", ROTATION_FOR_AIM_ARROW__DIFF, per_toggle_mode_show_duration/2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_property(vis_ins_anim__toggle_aim_mode__arrow_sprite, "rotation", 0.0, per_toggle_mode_show_duration/4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	
-
-
-func _start_show_toggle_aim__as_snap():
-	vis_ins_anim__toggle_aim_mode__anim_sprite.play("snap")
-	
-	_kill_tweener_toggle_aim_arrow_if_valid()
-	_tween_toggle_aim_arrow_rotation__as_snap()
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_start_show_toggle_aim__as_omni")
-
-func _tween_toggle_aim_arrow_rotation__as_snap():
-	_toggle_aim_mode_arrow_rotation_tweener = create_tween()
-	_toggle_aim_mode_arrow_rotation_tweener.tween_interval(per_toggle_mode_show_duration/4)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_set_toggle_aim_mode_arrow_rotation", [-ROTATION_FOR_AIM_ARROW__DIFF])
-	_toggle_aim_mode_arrow_rotation_tweener.tween_interval(per_toggle_mode_show_duration/4)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_set_toggle_aim_mode_arrow_rotation", [0.0])
-	_toggle_aim_mode_arrow_rotation_tweener.tween_interval(per_toggle_mode_show_duration/4)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_set_toggle_aim_mode_arrow_rotation", [ROTATION_FOR_AIM_ARROW__DIFF])
-	_toggle_aim_mode_arrow_rotation_tweener.tween_interval(per_toggle_mode_show_duration/4)
-	_toggle_aim_mode_arrow_rotation_tweener.tween_callback(self, "_set_toggle_aim_mode_arrow_rotation", [0.0])
-	_toggle_aim_mode_arrow_rotation_tweener.tween_interval(per_toggle_mode_show_duration/4)
-
-func _set_toggle_aim_mode_arrow_rotation(arg_rot : float):
-	vis_ins_anim__toggle_aim_mode__arrow_sprite.rotation = arg_rot
-
-
-
-
