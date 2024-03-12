@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_005/Level01/WorldSlice_Stage05_01.gd" type="Script" id=2]
@@ -30,11 +30,20 @@
 shader = ExtResource( 25 )
 shader_param/saturation = 0.3
 
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 114.75, 35.4375 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 114.75, 25.5 )
+
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 208, 64 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 224 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 59.5, 20.5 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 82.5, 3.25 )
@@ -53,9 +62,6 @@ extents = Vector2( 272.5, 424 )
 
 [sub_resource type="RectangleShape2D" id=24]
 extents = Vector2( 1292, 485.875 )
-
-[sub_resource type="RectangleShape2D" id=27]
-extents = Vector2( 10, 176 )
 
 [sub_resource type="ShaderMaterial" id=20]
 shader = ExtResource( 13 )
@@ -256,40 +262,64 @@ margin_bottom = -1370.0
 texture = ExtResource( 24 )
 stretch_mode = 2
 
-[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="0" instance=ExtResource( 7 )]
+[node name="PDAR_TriggerDialog_01" parent="AreaRegionContainer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 328, -120 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_TriggerDialog_01" index="0"]
+position = Vector2( 70, -48.5625 )
+shape = SubResource( 1 )
+
+[node name="PDAR_TriggerDialog_02" parent="AreaRegionContainer" index="1" instance=ExtResource( 4 )]
+position = Vector2( 137, -359 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_TriggerDialog_02" index="0"]
+position = Vector2( 70, -1.5 )
+shape = SubResource( 2 )
+
+[node name="ObjectDestroyingAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 7 )]
 position = Vector2( -690, -784 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion" index="0"]
 position = Vector2( 481, 80 )
 shape = SubResource( 3 )
 
-[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="1" instance=ExtResource( 10 )]
+[node name="PlayerClearAreaRegion" parent="AreaRegionContainer" index="3" instance=ExtResource( 10 )]
 position = Vector2( 624, -912 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PlayerClearAreaRegion" index="0"]
 position = Vector2( 32, 144 )
 shape = SubResource( 4 )
 
-[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="2" instance=ExtResource( 11 )]
+[node name="PlayerCaptureAreaRegion" parent="AreaRegionContainer" index="4" instance=ExtResource( 11 )]
 position = Vector2( 2949, -2008 )
 
-[node name="PDAR_ZoomOutForArea" parent="AreaRegionContainer" index="3" instance=ExtResource( 4 )]
+[node name="PDAT_EndDialog02" parent="AreaRegionContainer" index="5" instance=ExtResource( 4 )]
+position = Vector2( -442, -370 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAT_EndDialog02" index="0"]
+position = Vector2( -170, 7 )
+shape = SubResource( 5 )
+
+[node name="PDAR_TriggerDialog03" parent="AreaRegionContainer" index="6" instance=ExtResource( 4 )]
 position = Vector2( -570, -689 )
 triggerable_only_once = true
 
-[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_ZoomOutForArea" index="0"]
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_TriggerDialog03" index="0"]
 position = Vector2( 53, 45.25 )
 shape = SubResource( 6 )
 
-[node name="PDAR_InitForMemory" parent="AreaRegionContainer" index="4" instance=ExtResource( 4 )]
+[node name="PDAR_TriggerDialog04" parent="AreaRegionContainer" index="7" instance=ExtResource( 4 )]
 position = Vector2( 775, -583 )
 triggerable_only_once = true
 
-[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_InitForMemory" index="0"]
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_TriggerDialog04" index="0"]
 position = Vector2( -12.5, -956 )
 shape = SubResource( 7 )
 
-[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="5" instance=ExtResource( 17 )]
+[node name="PDAR_MapBounds" parent="AreaRegionContainer" index="8" instance=ExtResource( 17 )]
 visible = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="0"]
@@ -307,13 +337,6 @@ shape = SubResource( 23 )
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="AreaRegionContainer/PDAR_MapBounds" index="3"]
 position = Vector2( 2222, -1687.13 )
 shape = SubResource( 24 )
-
-[node name="ObjectDestroyingAreaRegion2" parent="AreaRegionContainer" index="6" instance=ExtResource( 7 )]
-position = Vector2( 638, -546 )
-
-[node name="CollisionShape2D" parent="AreaRegionContainer/ObjectDestroyingAreaRegion2" index="0"]
-position = Vector2( -8, -174 )
-shape = SubResource( 27 )
 
 [node name="Portal_Blue01" parent="ObjectContainer" index="0" instance=ExtResource( 6 )]
 position = Vector2( -17, -656 )
@@ -407,8 +430,11 @@ auto_activate_on_player_created = false
 circle_ratio__outside_of_outer_ring = 1.0
 circle_ratio__inside_of_outer_ring = 1.0
 
-[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_ZoomOutForArea" to="." method="_on_PDAR_ZoomOutForArea_player_entered_in_area"]
-[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_InitForMemory" to="." method="_on_PDAR_InitForMemory_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TriggerDialog_01" to="." method="_on_PDAR_TriggerDialog_01_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TriggerDialog_02" to="." method="_on_PDAR_TriggerDialog_02_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAT_EndDialog02" to="." method="_on_PDAT_EndDialog02_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TriggerDialog03" to="." method="_on_PDAR_TriggerDialog03_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_TriggerDialog04" to="." method="_on_PDAR_TriggerDialog04_player_entered_in_area"]
 [connection signal="player_entered__as_scene_transition" from="ObjectContainer/Portal" to="." method="_on_Portal_player_entered__as_scene_transition"]
 [connection signal="player_entered_self__custom_defined" from="ObjectContainer/CDSU_MegaBattery" to="." method="_on_CDSU_MegaBattery_player_entered_self__custom_defined"]
 [connection signal="progress_one_to_zero_ratio_changed" from="MiscContainer/VisTransitionFog_Circ" to="." method="_on_VisTransitionFog_Circ_progress_one_to_zero_ratio_changed"]
@@ -422,10 +448,12 @@ circle_ratio__inside_of_outer_ring = 1.0
 [editable path="TileContainer/BTS_Uncolls03"]
 [editable path="TileContainer/BaseTileSet_StrongGlass"]
 [editable path="TileContainer/BTS_Glowing"]
+[editable path="AreaRegionContainer/PDAR_TriggerDialog_01"]
+[editable path="AreaRegionContainer/PDAR_TriggerDialog_02"]
 [editable path="AreaRegionContainer/ObjectDestroyingAreaRegion"]
 [editable path="AreaRegionContainer/PlayerClearAreaRegion"]
-[editable path="AreaRegionContainer/PDAR_ZoomOutForArea"]
-[editable path="AreaRegionContainer/PDAR_InitForMemory"]
+[editable path="AreaRegionContainer/PDAT_EndDialog02"]
+[editable path="AreaRegionContainer/PDAR_TriggerDialog03"]
+[editable path="AreaRegionContainer/PDAR_TriggerDialog04"]
 [editable path="AreaRegionContainer/PDAR_MapBounds"]
-[editable path="AreaRegionContainer/ObjectDestroyingAreaRegion2"]
 [editable path="ObjectContainer/CDSU_MegaBattery"]
