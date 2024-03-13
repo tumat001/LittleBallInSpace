@@ -71,41 +71,42 @@ func _on_after_game_start_init():
 		
 
 func _on_transition_finished():
-	_start_dialog__01()
+	pass
+	#_start_dialog__01()
 	
 	#game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	
 
 
 
-
-func _start_dialog__01():
-	var dialog_desc = [
-		["Unfortunately, there are many others that are missing...", []],
-	]
-	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-
-
-
-func _on_display_of_desc_finished__01(arg_val):
-	_start_dialog__02()
-
-func _start_dialog__02():
-	var dialog_desc = [
-		["We must go back in space, and locate the lost.", []],
-	]
-	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-
-func _on_display_of_desc_finished__02(arg_val):
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
-	
-	
+#
+#func _start_dialog__01():
+#	var dialog_desc = [
+#		["Unfortunately, there are many others that are missing...", []],
+#	]
+#
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+#
+#
+#
+#func _on_display_of_desc_finished__01(arg_val):
+#	_start_dialog__02()
+#
+#func _start_dialog__02():
+#	var dialog_desc = [
+#		["We must go back in space, and locate the lost.", []],
+#	]
+#
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__02", [], CONNECT_ONESHOT)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 2.0, 0, null)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+#
+#func _on_display_of_desc_finished__02(arg_val):
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+#
+#
 
 
 

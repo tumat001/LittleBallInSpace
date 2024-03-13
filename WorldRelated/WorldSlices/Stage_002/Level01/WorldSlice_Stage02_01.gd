@@ -12,13 +12,6 @@ var _pos_to_put_player : Vector2
 onready var spawn_position_2d = $PlayerSpawnCoordsContainer/SpawnPosition2D
 onready var target_position_2d = $MiscContainer/TargetPos2D
 
-onready var PDAR_initial_convo_trigger = $MiscContainer/PDAR_InitialConvo
-
-onready var VKP_launch_ball = $MiscContainer/VBoxContainer/HBoxContainer/VBoxContainer/VKP_LaunchBall
-
-onready var vbox_of_launch_ins = $MiscContainer/VBoxContainer
-
-
 ##
 
 func _init():
@@ -30,23 +23,12 @@ func as_test__override__do_insta_win():
 	
 
 
-func _ready():
-	vbox_of_launch_ins.modulate.a = 0
-
-
-
 func _on_after_game_start_init():
 	._on_after_game_start_init()
-	
-	PDAR_initial_convo_trigger.connect("player_entered_in_area", self, "_on_player_entered_in_area__PDAR_initial_convo", [], CONNECT_ONESHOT)
 	
 	call_deferred("_connect_signals_with_energy_modi")
 	
 	#
-	
-	#var orig_text__launch_ball = VKP_launch_ball.text_for_keypress
-	#VKP_launch_ball.text_for_keypress = orig_text__launch_ball % InputMap.get_action_list("game_launch_ball")[0].as_text()
-	VKP_launch_ball.game_control_action_name = "game_launch_ball"
 	
 	CameraManager.start_camera_zoom_change(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL, 0.0)
 
@@ -102,38 +84,5 @@ func _on_player_spawned(arg_player):
 
 #################
 
-func _on_player_entered_in_area__PDAR_initial_convo():
-	_start_remote_dialog__01()
-	
-
-
-func _start_remote_dialog__01():
-	var dialog_desc = [
-		["Looks like you got sent really far away!", []],
-		["Just explore for now.", []],
-		
-	]
-	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 1.5, 0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-	
+func _on_PDAR_OnLand_player_entered_in_area() -> void:
 	CameraManager.reset_camera_zoom_level()
-
-func _on_display_of_desc_finished__01(arg_metadata):
-	var timer_tweener = create_tween()
-	timer_tweener.tween_callback(self, "_on_delay_after_displaying_desc_01").set_delay(5.0)
-
-func _on_delay_after_displaying_desc_01():
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
-
-#
-
-
-func _on_PDAR_ShowLaunchIns_player_entered_in_area():
-	pass
-#	vbox_of_launch_ins.visible = true
-#	var tweener = create_tween()
-#	tweener.tween_property(vbox_of_launch_ins, "modulate:a", 1.0, 0.5)
-	
-

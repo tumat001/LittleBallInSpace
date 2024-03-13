@@ -88,25 +88,25 @@ func _on_transition_finished():
 
 
 
-func _on_PDAR_DialogTrigger_player_entered_in_area():
-	_start_dialog__01()
-
-
-func _start_dialog__01():
-	var plain_fragment__enemies = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENEMY, "enemies")
-	
-	var dialog_desc = [
-		["Be careful up ahead. There are many |0| in the way. You do not need to destroy them all.", [plain_fragment__enemies]],
-		["Follow the guide and make it through the other side.", []],
-	]
-	
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 6.0, 1.0, null)
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-
-func _on_display_of_desc_finished__01(arg_params):
-	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
-	
+#func _on_PDAR_DialogTrigger_player_entered_in_area():
+#	_start_dialog__01()
+#
+#
+#func _start_dialog__01():
+#	var plain_fragment__enemies = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.ENEMY, "enemies")
+#
+#	var dialog_desc = [
+#		["Be careful up ahead. There are many |0| in the way. You do not need to destroy them all.", [plain_fragment__enemies]],
+#		["Follow the guide and make it through the other side.", []],
+#	]
+#
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 6.0, 1.0, null)
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+#
+#func _on_display_of_desc_finished__01(arg_params):
+#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+#
 
 ####
 

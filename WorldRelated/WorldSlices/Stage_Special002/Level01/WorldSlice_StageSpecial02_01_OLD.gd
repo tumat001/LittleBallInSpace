@@ -55,8 +55,7 @@ func _on_game_front_hud_initialized(arg_GFH):
 
 func _do_actions_from_lack_of_stars__all_GFH_relateds():
 	_construct_fog_transition_sprite()
-	#_start_dialog__01()
-	_do_show_animation_for_lack_of_stars()
+	_start_dialog__01()
 
 
 func _construct_fog_transition_sprite():
@@ -80,33 +79,27 @@ func _construct_fog_transition_sprite():
 	_transition_sprite.modulate.a = 1.0
 
 
-#func _start_dialog__01():
-#	var plain_fragment__x_stars_needed = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.STAR, "%s stars" % STARS_NEEDED)
-#	var plain_fragment__x_curr_stars = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.STAR, "%s stars" % GameSaveManager.get_total_coin_collected_count())
-#
-#
-#	var dialog_desc = [
-#		["It's too dark here! You'll need at least |0| to lift the darkness.", [plain_fragment__x_stars_needed]],
-#		["Right now, you have |0|.", [plain_fragment__x_curr_stars]],
-#	]
-#
-#	#
-#
-#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
-#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 7.5, 0, null)
-#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
-#
-#func _on_display_of_desc_finished__01(arg_data):
-#	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
-
-
-func _do_show_animation_for_lack_of_stars():
-	game_elements.configure_game_state_for_cutscene_occurance(true, true)
+func _start_dialog__01():
+	var plain_fragment__x_stars_needed = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.STAR, "%s stars" % STARS_NEEDED)
+	var plain_fragment__x_curr_stars = PlainTextFragment.new(PlainTextFragment.DESCRIPTION_TYPE.STAR, "%s stars" % GameSaveManager.get_total_coin_collected_count())
 	
 	
+	var dialog_desc = [
+		["It's too dark here! You'll need at least |0| to lift the darkness.", [plain_fragment__x_stars_needed]],
+		["Right now, you have |0|.", [plain_fragment__x_curr_stars]],
+	]
+	
+	#
+	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 7.5, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+
+func _on_display_of_desc_finished__01(arg_data):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
 
 
-#####################
+###########
 
 func _on_game_result_decided__wsss0201(arg_result):
 	if game_elements.game_result_manager.is_game_result_win():

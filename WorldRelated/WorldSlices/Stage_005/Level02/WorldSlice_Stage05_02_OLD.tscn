@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/WorldSlices/Stage_005/Level02/WorldSlice_Stage05_02.gd" type="Script" id=2]
@@ -43,6 +43,9 @@ extents = Vector2( 398.5, 448.25 )
 [sub_resource type="RectangleShape2D" id=25]
 extents = Vector2( 44.5, 53.5 )
 
+[sub_resource type="RectangleShape2D" id=26]
+extents = Vector2( 123.5, 38.5 )
+
 [sub_resource type="RectangleShape2D" id=27]
 extents = Vector2( 76, 55 )
 
@@ -81,6 +84,9 @@ extents = Vector2( 87.5, 79.75 )
 
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 75.5, 63 )
+
+[sub_resource type="RectangleShape2D" id=41]
+extents = Vector2( 6.5, 114.5 )
 
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
@@ -224,13 +230,19 @@ shape = SubResource( 40 )
 
 [node name="PDAR_Dialog01" parent="AreaRegionContainer" index="1" instance=ExtResource( 13 )]
 position = Vector2( 420, 576 )
-triggerable_only_once = true
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Dialog01" index="0"]
 position = Vector2( 45, 46 )
 shape = SubResource( 25 )
 
-[node name="PCA_01" parent="AreaRegionContainer" index="2" instance=ExtResource( 16 )]
+[node name="PDAR_Dialog01Ender" parent="AreaRegionContainer" index="2" instance=ExtResource( 13 )]
+position = Vector2( 643, 197 )
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Dialog01Ender" index="0"]
+position = Vector2( 109, 31 )
+shape = SubResource( 26 )
+
+[node name="PCA_01" parent="AreaRegionContainer" index="3" instance=ExtResource( 16 )]
 position = Vector2( 759, -174 )
 duration_for_capture = 0.05
 
@@ -238,7 +250,7 @@ duration_for_capture = 0.05
 position = Vector2( 57, 39 )
 shape = SubResource( 27 )
 
-[node name="PCA_02" parent="AreaRegionContainer" index="3" instance=ExtResource( 16 )]
+[node name="PCA_02" parent="AreaRegionContainer" index="4" instance=ExtResource( 16 )]
 position = Vector2( 2009, -206 )
 duration_for_capture = 0.05
 
@@ -246,7 +258,7 @@ duration_for_capture = 0.05
 position = Vector2( 5, 22 )
 shape = SubResource( 28 )
 
-[node name="PCA_03" parent="AreaRegionContainer" index="4" instance=ExtResource( 16 )]
+[node name="PCA_03" parent="AreaRegionContainer" index="5" instance=ExtResource( 16 )]
 position = Vector2( 1419, -650 )
 duration_for_capture = 0.05
 
@@ -254,7 +266,7 @@ duration_for_capture = 0.05
 position = Vector2( -45, 19 )
 shape = SubResource( 29 )
 
-[node name="PCA_04" parent="AreaRegionContainer" index="5" instance=ExtResource( 16 )]
+[node name="PCA_04" parent="AreaRegionContainer" index="6" instance=ExtResource( 16 )]
 position = Vector2( 1105, -1032 )
 duration_for_capture = 0.05
 
@@ -262,7 +274,7 @@ duration_for_capture = 0.05
 position = Vector2( -5, 27 )
 shape = SubResource( 30 )
 
-[node name="PCA_05_1" parent="AreaRegionContainer" index="6" instance=ExtResource( 16 )]
+[node name="PCA_05_1" parent="AreaRegionContainer" index="7" instance=ExtResource( 16 )]
 position = Vector2( 1497, -992 )
 duration_for_capture = 0.05
 
@@ -270,7 +282,7 @@ duration_for_capture = 0.05
 position = Vector2( 57, -103.5 )
 shape = SubResource( 31 )
 
-[node name="PCA_05_2" parent="AreaRegionContainer" index="7" instance=ExtResource( 16 )]
+[node name="PCA_05_2" parent="AreaRegionContainer" index="8" instance=ExtResource( 16 )]
 position = Vector2( 1946, -1169 )
 duration_for_capture = 0.05
 
@@ -278,7 +290,7 @@ duration_for_capture = 0.05
 position = Vector2( 57, -103.5 )
 shape = SubResource( 31 )
 
-[node name="PCA_06" parent="AreaRegionContainer" index="8" instance=ExtResource( 16 )]
+[node name="PCA_06" parent="AreaRegionContainer" index="9" instance=ExtResource( 16 )]
 position = Vector2( 3003, -890 )
 duration_for_capture = 0.05
 
@@ -286,7 +298,7 @@ duration_for_capture = 0.05
 position = Vector2( 2, 27 )
 shape = SubResource( 32 )
 
-[node name="PCA_07" parent="AreaRegionContainer" index="9" instance=ExtResource( 16 )]
+[node name="PCA_07" parent="AreaRegionContainer" index="10" instance=ExtResource( 16 )]
 position = Vector2( 2849, -1348 )
 duration_for_capture = 0.05
 
@@ -294,7 +306,7 @@ duration_for_capture = 0.05
 position = Vector2( 25, 29.5 )
 shape = SubResource( 33 )
 
-[node name="PCA_08" parent="AreaRegionContainer" index="10" instance=ExtResource( 16 )]
+[node name="PCA_08" parent="AreaRegionContainer" index="11" instance=ExtResource( 16 )]
 position = Vector2( 2222, -1881 )
 duration_for_capture = 0.05
 
@@ -302,7 +314,7 @@ duration_for_capture = 0.05
 position = Vector2( -4, 31 )
 shape = SubResource( 34 )
 
-[node name="PCA_09" parent="AreaRegionContainer" index="11" instance=ExtResource( 16 )]
+[node name="PCA_09" parent="AreaRegionContainer" index="12" instance=ExtResource( 16 )]
 position = Vector2( 1990, -2148 )
 duration_for_capture = 0.05
 
@@ -310,7 +322,7 @@ duration_for_capture = 0.05
 position = Vector2( 0, -2 )
 shape = SubResource( 35 )
 
-[node name="PCA_09_2" parent="AreaRegionContainer" index="12" instance=ExtResource( 16 )]
+[node name="PCA_09_2" parent="AreaRegionContainer" index="13" instance=ExtResource( 16 )]
 position = Vector2( 1985, -2634 )
 duration_for_capture = 0.05
 
@@ -318,7 +330,7 @@ duration_for_capture = 0.05
 position = Vector2( 0, -58.25 )
 shape = SubResource( 42 )
 
-[node name="PCA_10" parent="AreaRegionContainer" index="13" instance=ExtResource( 16 )]
+[node name="PCA_10" parent="AreaRegionContainer" index="14" instance=ExtResource( 16 )]
 position = Vector2( 2323, -2589 )
 duration_for_capture = 0.05
 
@@ -326,7 +338,7 @@ duration_for_capture = 0.05
 position = Vector2( 8, -6 )
 shape = SubResource( 36 )
 
-[node name="PCA_11" parent="AreaRegionContainer" index="14" instance=ExtResource( 16 )]
+[node name="PCA_11" parent="AreaRegionContainer" index="15" instance=ExtResource( 16 )]
 position = Vector2( 2670, -3469 )
 duration_for_capture = 0.05
 
@@ -334,12 +346,20 @@ duration_for_capture = 0.05
 position = Vector2( -48.5, 43.25 )
 shape = SubResource( 37 )
 
-[node name="PCA_Last" parent="AreaRegionContainer" index="15" instance=ExtResource( 16 )]
+[node name="PCA_Last" parent="AreaRegionContainer" index="16" instance=ExtResource( 16 )]
 position = Vector2( 2027, -3295 )
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PCA_Last" index="0"]
 position = Vector2( -23.5, 0 )
 shape = SubResource( 7 )
+
+[node name="PDAR_Breakthru" parent="AreaRegionContainer" index="17" instance=ExtResource( 13 )]
+position = Vector2( 3357, -720 )
+triggerable_only_once = true
+
+[node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Breakthru" index="0"]
+position = Vector2( -3.5, -111.5 )
+shape = SubResource( 41 )
 
 [node name="Object_InteractableButton" parent="ObjectContainer" index="0" instance=ExtResource( 11 )]
 position = Vector2( 1920, -71 )
@@ -434,8 +454,13 @@ radius_for_spawn = 240.0
 particle_count_multiplier = 1
 tile_set_template_id = 200
 
+[connection signal="tile_broken_via_player_and_speed" from="TileContainer/BaseTileSet_SpaceshipBreakable" to="." method="_on_BaseTileSet_SpaceshipBreakable_tile_broken_via_player_and_speed"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_Dialog01" to="." method="_on_PDAR_Dialog01_player_entered_in_area"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_Dialog01Ender" to="." method="_on_PDAR_Dialog01Ender_player_entered_in_area"]
+[connection signal="region_area_captured" from="AreaRegionContainer/PCA_02" to="." method="_on_PCA_02_region_area_captured"]
+[connection signal="region_area_captured" from="AreaRegionContainer/PCA_06" to="." method="_on_PCA_06_region_area_captured"]
 [connection signal="region_area_captured" from="AreaRegionContainer/PCA_Last" to="." method="_on_PCA_Last_region_area_captured"]
+[connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_Breakthru" to="." method="_on_PDAR_Breakthru_player_entered_in_area"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]
@@ -454,6 +479,7 @@ tile_set_template_id = 200
 [editable path="TileContainer/BaseTileSet_FakeoutRed01"]
 [editable path="AreaRegionContainer/PDAR_MapBounds"]
 [editable path="AreaRegionContainer/PDAR_Dialog01"]
+[editable path="AreaRegionContainer/PDAR_Dialog01Ender"]
 [editable path="AreaRegionContainer/PCA_01"]
 [editable path="AreaRegionContainer/PCA_02"]
 [editable path="AreaRegionContainer/PCA_03"]
@@ -468,4 +494,5 @@ tile_set_template_id = 200
 [editable path="AreaRegionContainer/PCA_10"]
 [editable path="AreaRegionContainer/PCA_11"]
 [editable path="AreaRegionContainer/PCA_Last"]
+[editable path="AreaRegionContainer/PDAR_Breakthru"]
 [editable path="ObjectContainer/Object_CustomDefined"]
