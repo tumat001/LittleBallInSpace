@@ -889,6 +889,8 @@ func get_metadata_of_level_id(arg_id):
 func has_metadata_in_level_id(arg_id):
 	return _level_id_to_metadata_map.has(arg_id)
 
+func remove_metadata_of_level_id(arg_id):
+	_level_id_to_metadata_map.erase(arg_id)
 
 #
 

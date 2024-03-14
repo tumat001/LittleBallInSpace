@@ -175,6 +175,9 @@ enum AudioIds {
 	SFX_Ambient_ComputerSoundFuturistic01_01 = 6610
 	SFX_Ambient_ComputerSoundFuturistic01_02 = 6611
 	
+	# LVL Specific
+	SFX_LevelSpecific_Spec0201_StarFilled = 6700
+	
 	#######
 	
 	

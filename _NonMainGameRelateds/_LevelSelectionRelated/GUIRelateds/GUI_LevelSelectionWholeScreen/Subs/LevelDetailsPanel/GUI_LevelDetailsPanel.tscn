@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LevelDetailsPanel.png" type="Texture" id=1]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/LevelSelectionWhoeScreen_MidPanel_Assets/GUI_LevelSelectionWS_TopCornerDecor_06.png" type="Texture" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_Flag_Transparent.png" type="Texture" id=2]
 [ext_resource path="res://GameFrontHUDRelated/Subs/CoinsPanel/CoinsPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelDetailsPanel/GUI_LevelDetailsPanel.gd" type="Script" id=4]
 [ext_resource path="res://MiscRelated/FontRelated/Fonts/Monogram/monogram.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelPanel_StarConstellCornerPiece/LevelPanel_StarConstellLine.tscn" type="PackedScene" id=6]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/Commons/GUI_LevelSelection_Commons_WhiteBackground.png" type="Texture" id=7]
+[ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelPanel_StarConstellCornerPiece/LevelPanel_StarConstellCornerPiece.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 extra_spacing_top = -4
@@ -12,26 +15,104 @@ font_data = ExtResource( 5 )
 
 [node name="LevelDetailsPanel" type="MarginContainer"]
 margin_right = 150.0
-margin_bottom = 159.0
+margin_bottom = 150.0
 script = ExtResource( 4 )
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="MainBackground" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 0.6 )
 margin_right = 150.0
-margin_bottom = 159.0
+margin_bottom = 150.0
+texture = ExtResource( 7 )
+stretch_mode = 2
+
+[node name="BackgroundPanel" type="MarginContainer" parent="."]
+margin_right = 150.0
+margin_bottom = 150.0
+mouse_filter = 2
+
+[node name="TL_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 8 )]
+margin_right = 150.0
+margin_bottom = 150.0
 texture = ExtResource( 1 )
+texture_type_id = 1
+
+[node name="TR_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 8 )]
+margin_left = 90.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_horizontal = 10
+texture = ExtResource( 1 )
+flip_h = true
+corner_type_id = 1
+texture_type_id = 1
+
+[node name="BL_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 8 )]
+margin_top = 90.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_vertical = 10
+texture = ExtResource( 1 )
+flip_v = true
+corner_type_id = 2
+texture_type_id = 1
+
+[node name="BR_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 8 )]
+margin_left = 90.0
+margin_top = 90.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+texture = ExtResource( 1 )
+flip_h = true
+flip_v = true
+corner_type_id = 3
+texture_type_id = 1
+
+[node name="Top_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 6 )]
+margin_right = 150.0
+margin_bottom = 6.0
+
+[node name="Bot_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 6 )]
+margin_top = 144.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_vertical = 10
+custom_constants/margin_top = 0
+custom_constants/margin_bottom = 4
+position_type_id = 1
+
+[node name="Left_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 6 )]
+margin_right = 6.0
+margin_bottom = 150.0
+size_flags_horizontal = 2
+size_flags_vertical = 3
+custom_constants/margin_top = 0
+custom_constants/margin_left = 4
+position_type_id = 2
+
+[node name="Right_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 6 )]
+margin_left = 144.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_horizontal = 10
+size_flags_vertical = 3
+custom_constants/margin_right = 4
+custom_constants/margin_top = 0
+position_type_id = 3
 
 [node name="DetailsContainer" type="MarginContainer" parent="."]
 margin_right = 150.0
-margin_bottom = 159.0
+margin_bottom = 150.0
 custom_constants/margin_right = 16
-custom_constants/margin_top = 12
+custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DetailsContainer"]
 margin_left = 16.0
-margin_top = 12.0
+margin_top = 16.0
 margin_right = 134.0
-margin_bottom = 159.0
+margin_bottom = 150.0
 custom_constants/separation = 10
 
 [node name="CoinsPanel" parent="DetailsContainer/VBoxContainer" instance=ExtResource( 3 )]
@@ -67,13 +148,13 @@ texture = ExtResource( 2 )
 [node name="LevelCompletionAdditonalPanel" type="MarginContainer" parent="DetailsContainer/VBoxContainer"]
 margin_top = 62.0
 margin_right = 118.0
-margin_bottom = 122.0
-custom_constants/margin_top = 15
+margin_bottom = 118.0
+custom_constants/margin_top = 11
 
 [node name="Label" type="Label" parent="DetailsContainer/VBoxContainer/LevelCompletionAdditonalPanel"]
-margin_top = 15.0
+margin_top = 11.0
 margin_right = 118.0
-margin_bottom = 60.0
+margin_bottom = 56.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Completing this
@@ -84,15 +165,15 @@ align = 1
 
 [node name="AssistModeDisabledPanel" type="MarginContainer" parent="DetailsContainer/VBoxContainer"]
 visible = false
-margin_top = 132.0
+margin_top = 128.0
 margin_right = 118.0
-margin_bottom = 180.0
-custom_constants/margin_top = 15
+margin_bottom = 176.0
+custom_constants/margin_top = 11
 
 [node name="Label" type="Label" parent="DetailsContainer/VBoxContainer/AssistModeDisabledPanel"]
-margin_top = 15.0
+margin_top = 13.0
 margin_right = 118.0
-margin_bottom = 48.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Assist Mode has

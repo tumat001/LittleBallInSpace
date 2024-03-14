@@ -51,30 +51,27 @@ func _on_game_front_hud_initialized(arg_GFH):
 
 
 func _do_star_and_fog_actions_based_on_states():
+	#note: temp for then testing first time occurance:
+	#GameSaveManager.remove_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2)
+	
+	
 	if !GameSaveManager.has_metadata_in_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2):
-		#temptodo
-		print("no metadata -- fog disp")
 		
 		_init_wsss0201_fog_and_star_status_displayer()
 		_config_as_fog_and_star_display_active()
 		
-		#temptodo
-		if true:#STARS_NEEDED > GameSaveManager.get_total_coin_collected_count():
+		if STARS_NEEDED > GameSaveManager.get_total_coin_collected_count():
 			_do_star_and_fog_actions__fail_lift_fog()
 			CameraManager.set_current_default_zoom_out_vec(Vector2.ONE)
 			
 		else:
 			_do_star_and_fog_actions__success_lift_fog()
 			
-			#temptodo
-			#GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2, [true])
+			GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2, [true])
 		
 	else:
 		pass
 		
-		#temptodo
-		print("has metadata -- fog unlocked")
-
 
 
 func _config_as_fog_and_star_display_active():
@@ -109,14 +106,10 @@ func _get_lvls_considered_for_star_collecting():
 
 
 func _do_star_and_fog_actions__fail_lift_fog():
-	#temptodo
-	print("fail")
 	wsss0201_fog_and_star_status_displayer.start_display__as_failed_unlock()
 	
 
 func _do_star_and_fog_actions__success_lift_fog():
-	#temptodo
-	print("success")
 	wsss0201_fog_and_star_status_displayer.start_display__as_successful_unlock()
 	
 

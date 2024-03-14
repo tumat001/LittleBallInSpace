@@ -55,12 +55,14 @@ func init_with_vals(arg_threshold_count : int, arg_lvl_ids_for_stars : Array):
 func start_display__as_successful_unlock():
 	_is_unlock_fog_attempt_success = true
 	star_wheel_count_displayer.last_phase_id_star_removal = star_wheel_count_displayer.LastPhaseIds_StarRemoval.OUTWARD
+	star_wheel_count_displayer.is_attempt_unlock_fail = false
 	_start_display__common_actions()
 	
 
 func start_display__as_failed_unlock():
 	_is_unlock_fog_attempt_success = false
 	star_wheel_count_displayer.last_phase_id_star_removal = star_wheel_count_displayer.LastPhaseIds_StarRemoval.INWARD
+	star_wheel_count_displayer.is_attempt_unlock_fail = true
 	_start_display__common_actions()
 	
 

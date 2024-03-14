@@ -6,7 +6,7 @@ const DELAY_FOR_NEXT_STAR_CREATION : float = 0.05
 const DIST_OF_STAR_TRAVEL_FROM_CENTER : float = 250.0
 const DURATION_OF_STAR_TRAVEL_FROM_CENTER : float = 0.75
 
-const FILL_STAR_SLOT_TOTAL_DURATION : float = 1.50
+const FILL_STAR_SLOT_TOTAL_DURATION : float = 3.5 #1.50
 
 const FILL_SHAKE_01_DURATION : float = 0.15
 const FILL_SHAKE_02_DURATION : float = 0.1
@@ -23,6 +23,13 @@ const STAR_REMOVAL__OUTWARD__DURATION : float = 2.0
 const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DURATION : float = 0.3
 const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_SEQUENCE_DELAY_PER_STAR : float = 0.015
 const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DIST : float = 55.0
+
+
+const STAR_FILL_PITCH__ACCEL__STARTING = 1.0
+const STAR_FILL_PITCH__ACCEL__ENDING = 3.0
+const STAR_FILL_PITCH__DECEL__ENDING = 0.75
+
+var _curr_accel_pitch_peak : float
 
 #
 
@@ -47,7 +54,13 @@ var last_phase_id_star_removal : int = LastPhaseIds_StarRemoval.INWARD
 
 #
 
+var is_attempt_unlock_fail : bool
+
+#
+
 var audio_pitch_shift_effect : AudioEffectPitchShift
+var audio_adv_param_for_pitch_shift : AudioManager.PlayAdvParams
+var star_fill_audio_stream_player_2d : AudioStreamPlayer2D
 
 ##
 
@@ -65,7 +78,8 @@ func _init_commons():
 	non_essential_rng = SingletonsAndConsts.non_essential_rng
 	
 	audio_pitch_shift_effect = AudioManager.add_pitch_effect__to_bus(AudioManager.bus__sfx_pitch_shift_01_name)
-	
+	audio_adv_param_for_pitch_shift = AudioManager.construct_play_adv_params()
+	audio_adv_param_for_pitch_shift.play_sound_type = AudioManager.PlayerSoundType.PITCH_SHIFT_01
 
 #
 
@@ -133,10 +147,14 @@ func _get_lvls_with_collected_stars_from_counter():
 
 func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collected_count, arg_draw_param):
 	var indiv_star_tweener = create_tween()
-	var delay = indiv_star_tweener.interpolate_value(0.0, FILL_STAR_SLOT_TOTAL_DURATION, i, arg_total_star_collected_count, Tween.TRANS_QUAD, Tween.EASE_OUT_IN)
+	var delay 
+	if is_attempt_unlock_fail:
+		delay = indiv_star_tweener.interpolate_value(0.0, FILL_STAR_SLOT_TOTAL_DURATION, i, arg_total_star_collected_count, Tween.TRANS_SINE, Tween.EASE_OUT_IN)
+	else:
+		delay = indiv_star_tweener.interpolate_value(0.0, FILL_STAR_SLOT_TOTAL_DURATION, i, arg_total_star_collected_count, Tween.TRANS_SINE, Tween.EASE_IN)
 	indiv_star_tweener.tween_interval(delay)
 	
-	var rand_angle_intensity = non_essential_rng.randf_range(PI/8, PI/4)
+	var rand_angle_intensity = non_essential_rng.randf_range(PI/32, PI/24)
 	
 	var is_accelerating_uptick = (i / float(arg_total_star_collected_count)) <= 0.5
 	
@@ -160,7 +178,7 @@ func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collec
 	indiv_star_tweener.set_parallel(true)
 	indiv_star_tweener.tween_property(arg_draw_param, "angle", (rand_angle_intensity), FILL_SHAKE_03_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	indiv_star_tweener.tween_callback(self, "_tween_callback_method__set_star_draw_param_texture", [arg_draw_param, texture_to_use])
-	indiv_star_tweener.tween_callback(self, "_tween_callback_method__star_filled_in", [arg_lvl_id, i, arg_total_star_collected_count, is_accelerating_uptick])
+	indiv_star_tweener.tween_callback(self, "_tween_callback_method__star_filled_in", [arg_lvl_id, i, arg_total_star_collected_count, is_accelerating_uptick, indiv_star_tweener, arg_draw_param])
 	indiv_star_tweener.set_parallel(false)
 	indiv_star_tweener.tween_interval(FILL_SHAKE_03_DURATION)
 	#############shake 04
@@ -179,7 +197,23 @@ func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collec
 func _tween_callback_method__set_star_draw_param_texture(arg_draw_param, arg_texture : Texture):
 	arg_draw_param.texture = arg_texture
 
-func _tween_callback_method__star_filled_in(arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick):
+func _tween_callback_method__star_filled_in(arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick, arg_indiv_star_tweener : SceneTreeTween, arg_draw_param):
+	var pitch_shift : float
+	if arg_is_accelerating_uptick or !is_attempt_unlock_fail:
+		pitch_shift = arg_indiv_star_tweener.interpolate_value(STAR_FILL_PITCH__ACCEL__STARTING, (STAR_FILL_PITCH__ACCEL__ENDING - STAR_FILL_PITCH__ACCEL__STARTING), i, arg_total_star_collected_count, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		_curr_accel_pitch_peak = pitch_shift
+	else:
+		pitch_shift = arg_indiv_star_tweener.interpolate_value(_curr_accel_pitch_peak, (STAR_FILL_PITCH__DECEL__ENDING - _curr_accel_pitch_peak), i, arg_total_star_collected_count, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	
+	
+	audio_pitch_shift_effect.pitch_scale = pitch_shift
+	if star_fill_audio_stream_player_2d == null:
+		star_fill_audio_stream_player_2d = AudioManager.helper__play_sound_effect__2d__pitch_01(StoreOfAudio.AudioIds.SFX_LevelSpecific_Spec0201_StarFilled, arg_draw_param.center_pos, 1.3, audio_adv_param_for_pitch_shift)
+	else:
+		star_fill_audio_stream_player_2d.stop()
+		AudioManager.play_sound__with_provided_stream_player(StoreOfAudio.AudioIds.SFX_LevelSpecific_Spec0201_StarFilled, star_fill_audio_stream_player_2d, AudioManager.MaskLevel.Major_SoundFX, audio_adv_param_for_pitch_shift)
+	
+	#
 	emit_signal("star_filled_in__lvl_and_index", arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick)
 
 

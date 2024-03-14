@@ -70,9 +70,9 @@ func set_curr_count(arg_count : int, arg_is_curr_count_final : bool):
 
 func _update_curr_label_modulate_based_on_states():
 	if _curr_count >= _threshold_count:
-		star_count_curr_label.modulate = Color("#F6FEBA")
+		star_count_curr_label.modulate = Color("#E1FC1D")
 	elif _curr_count < _threshold_count and _is_curr_count_final:
-		star_count_curr_label.modulate = Color("#FEB9B9")
+		star_count_curr_label.modulate = Color("#FC2C2C")
 	else:
 		star_count_curr_label.modulate = Color("#dddddd")
 

@@ -134,8 +134,8 @@ const DISTANCE_FROM_2D_TO_REACH_MINIMUM : float = 660.0 #+ DISTANCE_FROM_2D_WITH
 #
 
 enum AudioEffectIdx {
-	PITCH_EFFECT_01 = 1,
-	
+	PITCH_EFFECT_01 = 0,
+	#note:: for some reason only 0 works with no error...
 }
 
 #
@@ -649,7 +649,8 @@ func add_pitch_effect__to_bus(arg_bus_name) -> AudioEffectPitchShift:
 func remove_all_pitch_effects_from_all_buses():
 	for bus_idx in _all_bus_idx_with_effects:
 		for effect_idx in AudioEffectIdx.values():
-			if AudioServer.get_bus_effect(bus_idx, effect_idx) != null:
+			#if AudioServer.get_bus_effect(bus_idx, effect_idx) != null:
+			if AudioServer.is_bus_effect_enabled(bus_idx, effect_idx):
 				AudioServer.remove_bus_effect(bus_idx, effect_idx)
 	
 	_all_bus_idx_with_effects.clear()

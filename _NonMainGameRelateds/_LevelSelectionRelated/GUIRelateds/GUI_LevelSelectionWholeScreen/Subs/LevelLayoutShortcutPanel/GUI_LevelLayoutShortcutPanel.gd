@@ -1,7 +1,7 @@
 extends MarginContainer
 
-const Background_NoBar = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LayoutShortcutPanel_NoBarSize.png")
-const Background_Normal = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LayoutShortcutPanel.png")
+#const Background_NoBar = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LayoutShortcutPanel_NoBarSize.png")
+#const Background_Normal = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/GUI_LevelSelectionWholeScreen_LayoutShortcutPanel.png")
 
 
 const GUI_LevelLayoutEle_Tile = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/LevelLayoutElements/LevelLayout_Tile/GUI_LevelLayoutEle_Tile.gd")
@@ -23,7 +23,7 @@ var _frame_count_wait_for__update_shortcut_panel__button_status : int
 
 #
 
-onready var background_texture_rect = $Background
+onready var background_texture_rect = $MainBackground
 onready var grid_container = $MarginContainer/ScrollContainer/GridContainer
 
 ###

@@ -364,7 +364,7 @@ position = Vector2( 910, -720 )
 ignore_is_disabled_by_assist_mode = false
 
 [node name="Position2D" type="Position2D" parent="PlayerSpawnCoordsContainer" index="0"]
-position = Vector2( 752, -647 )
+position = Vector2( 126, 272 )
 __meta__ = {
 "_gizmo_extents_": 16.0
 }

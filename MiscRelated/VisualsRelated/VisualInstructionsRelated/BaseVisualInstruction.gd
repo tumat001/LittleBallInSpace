@@ -49,6 +49,7 @@ var _node_to_match_modulate_a__01
 func _ready() -> void:
 	set_node_path_for_tex_rect_background(node_path_for_tex_rect_background)
 	
+	_update_can_do_process_based_on_vals()
 	
 	if Engine.editor_hint:
 		return
@@ -58,7 +59,8 @@ func _ready() -> void:
 	
 	if start_at_ready:
 		start_display()
-	_update_can_do_process_based_on_vals()
+	
+	rotation = 0.0
 
 ##
 
@@ -109,12 +111,13 @@ func set_snap_rotation_per_sec__deg(arg_val):
 func _update_can_do_process_based_on_vals():
 	set_process(!Engine.editor_hint and abs(snap_rotation_per_sec__deg) > 0 and is_start_display_finished)
 
-
 func _process(delta: float) -> void:
 	_rot_below_snap += (delta * snap_rotation_per_sec__deg)
+	
 	if abs(_rot_below_snap) >= abs(snap_rotation_threshold__deg):  #yes, i used if, not while
 		rotate(deg2rad(snap_rotation_threshold__deg))
 		_rot_below_snap -= snap_rotation_threshold__deg
+		
 	
 
 
