@@ -497,9 +497,19 @@ func _exit_tree():
 			game_front_hud.queue_free()
 		SingletonsAndConsts.current_game_front_hud = null
 		
+		_tween_unmute_background_music__internal()
+		AudioManager.remove_all_pitch_effects_from_all_buses()
+		
 		MouseManager.remove_all_input_mouse_reservations()
 		MouseManager.remove_all_always_mouse_visible_reserve_id()
 		MouseManager.clear_all_requesters__for_mouse_normal_id()
+
+func _tween_unmute_background_music__internal():
+	var background_music_playlist = StoreOfAudio.BGM_playlist__calm_01  ## does not matter since they affect the same bus
+	background_music_playlist.set_volume_db__bus_internal__tween(AudioManager.DECIBEL_VAL__STANDARD, 1.5, self, "_on_finish_tweening_background_music", null)
+
+
+
 
 func attempt_quit_game__by_queue_freeing():
 	emit_signal("quiting_game_by_queue_free__on_game_quit")

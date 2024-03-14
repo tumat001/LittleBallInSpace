@@ -70,6 +70,7 @@ enum PlayerSoundType {
 	SOUND_FX = 0,
 	BACKGROUND_MUSIC = 1,
 	
+	PITCH_SHIFT_01 = 2,
 	
 	DEFAULT = 0,
 }
@@ -80,15 +81,21 @@ const bus__background_name : String = "Background"
 const bus__background_name__internal : String = "_BackgroundHidden"
 var bus__background_name__internal__idx : int = -1
 
+const bus__sfx_pitch_shift_01_name = "_SFX_PitchShift01"
+
 
 const player_sound_type_to_bus_name_map : Dictionary = {
 	PlayerSoundType.SOUND_FX : bus__sound_fx_name,
 	PlayerSoundType.BACKGROUND_MUSIC : bus__background_name,
+	
+	PlayerSoundType.PITCH_SHIFT_01 : bus__sfx_pitch_shift_01_name,
 }
 
 const player_sound_type_to_bus_name_map__internal : Dictionary = {
 	PlayerSoundType.SOUND_FX : bus__sound_fx_name,
 	PlayerSoundType.BACKGROUND_MUSIC : bus__background_name__internal,
+	
+	PlayerSoundType.PITCH_SHIFT_01 : bus__sfx_pitch_shift_01_name,
 }
 
 
@@ -126,7 +133,18 @@ const DISTANCE_FROM_2D_TO_REACH_MINIMUM : float = 660.0 #+ DISTANCE_FROM_2D_WITH
 
 #
 
+enum AudioEffectIdx {
+	PITCH_EFFECT_01 = 1,
+	
+}
+
+#
+
 var game_elements
+
+#
+
+var _all_bus_idx_with_effects : Array
 
 #####
 
@@ -606,6 +624,35 @@ func get_bus__background_music_volume__internal():
 	
 	return bus__background_name__internal__idx
 
+#
+
+func add_pitch_effect__to_bus(arg_bus_name) -> AudioEffectPitchShift:
+	var bus_idx = AudioServer.get_bus_index(arg_bus_name)
+	
+	var pitch_effect = AudioEffectPitchShift.new()
+	pitch_effect.pitch_scale = 1.0
+	AudioServer.add_bus_effect(bus_idx, pitch_effect, AudioEffectIdx.PITCH_EFFECT_01)
+	
+	_all_bus_idx_with_effects.append(bus_idx)
+	
+	return pitch_effect
+
+#func set_pitch_effect__of_bus(arg_bus_name, arg_pitch_scale, arg_effect_idx = AudioEffectIdx.PITCH_EFFECT_01):
+#	var bus_idx = AudioServer.get_bus_index(arg_bus_name)
+#	var pitch_effect : AudioEffectPitchShift = AudioServer.get_bus_effect_instance(bus_idx, arg_effect_idx)
+#
+#	pitch_effect.pitch_scale = arg_pitch_scale
+
+
+#
+
+func remove_all_pitch_effects_from_all_buses():
+	for bus_idx in _all_bus_idx_with_effects:
+		for effect_idx in AudioEffectIdx.values():
+			if AudioServer.get_bus_effect(bus_idx, effect_idx) != null:
+				AudioServer.remove_bus_effect(bus_idx, effect_idx)
+	
+	_all_bus_idx_with_effects.clear()
 
 ####################
 
@@ -707,6 +754,14 @@ func helper__linearly_set_current_player_db_to_inaudiable(player, time_to_reach_
 
 #########
 
+func helper__play_sound_effect__2d__pitch_01(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null, arg_mask_level : int = MaskLevel.Major_SoundFX):
+	if arg_adv_param == null:
+		arg_adv_param = construct_play_adv_params()
+		arg_adv_param.play_sound_type = PlayerSoundType.PITCH_SHIFT_01
+	
+	helper__play_sound_effect__2d(arg_id, arg_pos, arg_volume_ratio, arg_adv_param, arg_mask_level)
+
+
 func helper__play_sound_effect__2d(arg_id, arg_pos : Vector2, arg_volume_ratio : float, arg_adv_param : PlayAdvParams = null, arg_mask_level : int = MaskLevel.Major_SoundFX):
 	#return play_sound(arg_id, MaskLevel.Major_SoundFX, PlayerConstructionType.TWO_D, arg_adv_param)
 	var pause_mode_of_player = PAUSE_MODE_INHERIT
@@ -765,8 +820,6 @@ func convert_ratio_using_num_range__from_standard_db_audibles(arg_volume_ratio):
 
 func convert_ratio_using_num_range(arg_ratio, arg_min, arg_max):
 	var diff = arg_max - arg_min
-	
-	
 	
 	return arg_min + (diff * arg_ratio)
 

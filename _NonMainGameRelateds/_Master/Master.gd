@@ -330,7 +330,7 @@ func _on_transition_out__from_GE__any():
 func _on_transition_out__from_GE__finished(arg_next_transition_id, arg_curr_transition, arg_is_win : bool):
 	emit_signal("switching_from_game_elements__non_restart__transition_ended")
 	
-	_tween_unmute_background_music__internal()
+	#_tween_unmute_background_music__internal()
 	
 	if SingletonsAndConsts.interrupt_return_to_screen_layout_panel__go_directly_to_level:
 		SingletonsAndConsts.current_game_elements.connect("tree_exited", self, "_on_curr_game_elements_tree_exited__immediately_start_level")
@@ -457,7 +457,7 @@ func _on_transition_out__from_GE__finished__for_restart(arg_next_transition_id, 
 	if is_instance_valid(SingletonsAndConsts.current_game_elements):
 		SingletonsAndConsts.current_game_elements.attempt_quit_game__by_queue_freeing()
 	
-	_tween_unmute_background_music__internal()
+	#_tween_unmute_background_music__internal()
 	
 	start_game_elements__with_level_details(SingletonsAndConsts.current_level_details, screen_size / 2)
 	

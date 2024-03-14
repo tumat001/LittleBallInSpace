@@ -73,7 +73,6 @@ func _construct_fog_transition_sprite():
 	_transition_sprite.queue_free_on_end_of_transition = false
 	#SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(_transition_sprite)
 	
-	
 	SingletonsAndConsts.current_game_front_hud.add_node_to_other_hosters(_transition_sprite)
 	_transition_sprite.start_transition()
 	_transition_sprite.modulate.a = 1.0

@@ -3,7 +3,7 @@ extends Node2D
 
 const DELAY_FOR_NEXT_STAR_CREATION : float = 0.05
 
-const DIST_OF_STAR_TRAVEL_FROM_CENTER : float = 300.0
+const DIST_OF_STAR_TRAVEL_FROM_CENTER : float = 250.0
 const DURATION_OF_STAR_TRAVEL_FROM_CENTER : float = 0.75
 
 const FILL_STAR_SLOT_TOTAL_DURATION : float = 1.50
@@ -19,15 +19,18 @@ const STAR_REMOVAL__INWARD__DURATION : float = 1.0
 const STAR_REMOVAL__INWARD__BRIEF_OUTWARD_DURATION : float = 0.5
 const STAR_REMOVAL__INWARD__BRIEF_OUTWARD_DIST : float = 75.0
 
-const STAR_REMOVAL__OUTWARD__DURATION : float = 1.2
-const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DURATION : float = 0.5
-const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_SEQUENCE_DELAY_PER_STAR : float = 0.025
-const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DIST : float = 35.0
+const STAR_REMOVAL__OUTWARD__DURATION : float = 2.0
+const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DURATION : float = 0.3
+const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_SEQUENCE_DELAY_PER_STAR : float = 0.015
+const STAR_REMOVAL__OUTWARD__BRIEF_INWARD_DIST : float = 55.0
 
 #
 
 signal display_of_last_phase_finished()
-signal star_filled_in__lvl_and_index(arg_lvl_id, arg_i)
+signal star_filled_in__lvl_and_index(arg_lvl_id, arg_i, arg_total_star_collected_count, arg_is_accelerating_uptick)
+
+signal last_phase_star_removal__after_windup_main_removal_phase_started()
+signal last_phase_star_removal_started()
 
 #
 
@@ -41,6 +44,10 @@ enum LastPhaseIds_StarRemoval {
 	OUTWARD = 1
 }
 var last_phase_id_star_removal : int = LastPhaseIds_StarRemoval.INWARD
+
+#
+
+var audio_pitch_shift_effect : AudioEffectPitchShift
 
 ##
 
@@ -56,6 +63,8 @@ func start_display():
 
 func _init_commons():
 	non_essential_rng = SingletonsAndConsts.non_essential_rng
+	
+	audio_pitch_shift_effect = AudioManager.add_pitch_effect__to_bus(AudioManager.bus__sfx_pitch_shift_01_name)
 	
 
 #
@@ -75,7 +84,6 @@ func _start_phase__star_creation_and_location():
 	
 
 func _draw_star__from_lvl_id__and_put_to_appropriate_location(arg_lvl_id, i, arg_total, arg_star_tweener : SceneTreeTween):
-	
 	var draw_param = star_draw_node.DrawParams.new()
 	draw_param.center_pos = Vector2(0, 0)
 	draw_param.texture = preload("res://WorldRelated/WorldSlices/Stage_Special002/Level01/SpecificAssets/WSSS0201_Star_EmptySlot.png")
@@ -83,7 +91,8 @@ func _draw_star__from_lvl_id__and_put_to_appropriate_location(arg_lvl_id, i, arg
 	
 	#
 	
-	var angle_of_travel = (2*PI)*(i/arg_total)
+	var angle_of_travel = (2*PI)*(i/float(arg_total))
+	
 	var vec_of_travel = Vector2(DIST_OF_STAR_TRAVEL_FROM_CENTER, 0).rotated(angle_of_travel)
 	var delay_before_action = DELAY_FOR_NEXT_STAR_CREATION * i
 	
@@ -124,9 +133,12 @@ func _get_lvls_with_collected_stars_from_counter():
 
 func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collected_count, arg_draw_param):
 	var indiv_star_tweener = create_tween()
-	var delay = indiv_star_tweener.interpolate_value(0.0, FILL_STAR_SLOT_TOTAL_DURATION, i, arg_total_star_collected_count, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	var delay = indiv_star_tweener.interpolate_value(0.0, FILL_STAR_SLOT_TOTAL_DURATION, i, arg_total_star_collected_count, Tween.TRANS_QUAD, Tween.EASE_OUT_IN)
+	indiv_star_tweener.tween_interval(delay)
 	
 	var rand_angle_intensity = non_essential_rng.randf_range(PI/8, PI/4)
+	
+	var is_accelerating_uptick = (i / float(arg_total_star_collected_count)) <= 0.5
 	
 	######
 	
@@ -147,8 +159,8 @@ func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collec
 	############shake 03
 	indiv_star_tweener.set_parallel(true)
 	indiv_star_tweener.tween_property(arg_draw_param, "angle", (rand_angle_intensity), FILL_SHAKE_03_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	indiv_star_tweener.tween_callback(arg_draw_param, "_tween_callback_method__set_star_draw_param_texture", [arg_draw_param, texture_to_use])
-	indiv_star_tweener.tween_callback(self, "_tween_callback_method__star_filled_in", [arg_lvl_id, i])
+	indiv_star_tweener.tween_callback(self, "_tween_callback_method__set_star_draw_param_texture", [arg_draw_param, texture_to_use])
+	indiv_star_tweener.tween_callback(self, "_tween_callback_method__star_filled_in", [arg_lvl_id, i, arg_total_star_collected_count, is_accelerating_uptick])
 	indiv_star_tweener.set_parallel(false)
 	indiv_star_tweener.tween_interval(FILL_SHAKE_03_DURATION)
 	#############shake 04
@@ -167,8 +179,8 @@ func _fill_star_draw_param__based_on_params(arg_lvl_id, i, arg_total_star_collec
 func _tween_callback_method__set_star_draw_param_texture(arg_draw_param, arg_texture : Texture):
 	arg_draw_param.texture = arg_texture
 
-func _tween_callback_method__star_filled_in(arg_lvl_id, i):
-	emit_signal("star_filled_in__lvl_and_index", arg_lvl_id, i)
+func _tween_callback_method__star_filled_in(arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick):
+	emit_signal("star_filled_in__lvl_and_index", arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick)
 
 
 func _listen_for_tween_finished__from_fill_phase__to_next_phase(arg_tweener : SceneTreeTween):
@@ -189,6 +201,8 @@ func _start_phase__last_phase_star_removal():
 			star_tweener = _start_phase__last_phase_star_removal__as_outward()
 	
 	star_tweener.connect("finished", self, "_on_last_phase_star_tweener_finished", [], CONNECT_ONESHOT)
+	
+	emit_signal("last_phase_star_removal_started")
 
 func _start_phase__last_phase_star_removal__as_inward():
 	var star_tweener = create_tween()
@@ -204,12 +218,16 @@ func _start_phase__last_phase_star_removal__as_inward():
 	star_tweener.set_parallel(false)
 	star_tweener.tween_interval(STAR_REMOVAL__INWARD__BRIEF_OUTWARD_DURATION)
 	#02: inward
+	star_tweener.tween_callback(self, "_emit_last_phase_star_removal__after_windup_main_removal_phase_started")
 	star_tweener.set_parallel(true)
 	for draw_param in star_draw_node.get_all_draw_params():
 		star_tweener.tween_property(draw_param, "center_pos", Vector2.ZERO, STAR_REMOVAL__INWARD__BRIEF_OUTWARD_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		
 	
 	return star_tweener
+
+func _emit_last_phase_star_removal__after_windup_main_removal_phase_started():
+	emit_signal("last_phase_star_removal__after_windup_main_removal_phase_started")
 
 
 func _start_phase__last_phase_star_removal__as_outward():
@@ -232,6 +250,7 @@ func _start_phase__last_phase_star_removal__as_outward():
 	
 	##
 	#02: outward
+	star_tweener.tween_callback(self, "_emit_last_phase_star_removal__after_windup_main_removal_phase_started")
 	star_tweener.set_parallel(true)
 	for draw_param in star_draw_node.get_all_draw_params():
 		var angle_for_travel = draw_param.center_pos.angle()

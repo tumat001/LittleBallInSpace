@@ -51,8 +51,9 @@ func _process(delta):
 func _draw():
 	for param in _all_draw_params:
 		#draw_texture()
-		draw_set_transform(param.texture_offset, param.angle, param.texture_scale)
-		draw_texture(param.texture, param.center_pos, param.texture_modulate)
+		#temptodo fix this soon
+		#draw_set_transform(param.texture_offset, param.angle, param.texture_scale)
+		draw_texture(param.texture, param.center_pos - param.texture.get_size()/2, param.texture_modulate)
 
 
 
