@@ -112,8 +112,6 @@ func _process(delta):
 			param.outline_color.a -= param._outline_transparency_per_sec * delta
 		
 		if param.lifetime_of_draw <= param._current_lifetime and param.remove_self_at_max_lifetime:
-			#temptodo
-			print("removed due to lifetime")
 			remove_draw_param(param)
 		
 		

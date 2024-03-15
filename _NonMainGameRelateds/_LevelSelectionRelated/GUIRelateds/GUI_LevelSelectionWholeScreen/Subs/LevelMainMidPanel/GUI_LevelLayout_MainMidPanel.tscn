@@ -24,6 +24,7 @@ script = ExtResource( 6 )
 modulate = Color( 0, 0, 0, 0.6 )
 margin_right = 500.0
 margin_bottom = 150.0
+mouse_filter = 2
 texture = ExtResource( 7 )
 stretch_mode = 2
 
@@ -106,6 +107,7 @@ position_type_id = 3
 [node name="Marginer" type="MarginContainer" parent="."]
 margin_right = 500.0
 margin_bottom = 150.0
+mouse_filter = 2
 custom_constants/margin_right = 16
 custom_constants/margin_top = 16
 custom_constants/margin_left = 16
@@ -146,3 +148,5 @@ default_font_size = 16
 
 [node name="RectFloatDrawNode" type="Node2D" parent="."]
 script = ExtResource( 8 )
+
+[connection signal="pressed" from="Marginer/VBoxContainer/LevelTitleTooltipBody/StatsForLevelButton" to="." method="_on_StatsForLevelButton_pressed"]

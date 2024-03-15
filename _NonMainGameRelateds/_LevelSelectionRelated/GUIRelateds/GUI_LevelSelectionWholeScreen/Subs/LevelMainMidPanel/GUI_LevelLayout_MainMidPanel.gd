@@ -1,6 +1,10 @@
 extends MarginContainer
 
 
+signal stats_button_pressed()
+
+#
+
 enum MainMidPanelColorTemplateType {
 	NONE = -1,
 	
@@ -14,6 +18,10 @@ enum MainMidPanelColorTemplateType {
 	LVL_01_05 = 6,
 	STAGE_05 = 7,
 	CONSTELLATION = 8,
+	
+	###
+	
+	
 }
 
 const MODULATES_FOR_RECT_PARTICLE__NONE = []
@@ -130,33 +138,233 @@ func _config_settings_based_on_rect_particle_type(arg_particle_type):
 			
 		MainMidPanelColorTemplateType.CHALLENGE:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__CHALLENGE
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.75
+			rect_particle_frequency_max = 1.5
+			rect_particle_count_per_pulse_min = 0
+			rect_particle_count_per_pulse_min = 2
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.0
+			rect_particle_lifetime_max = 4.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 30.0
+			rect_particle_float_dist_max = 50.0
 			
 		MainMidPanelColorTemplateType.BRANCHING_NORMAL:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__BRANCHING_NORMAL
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.75
+			rect_particle_frequency_max = 1.5
+			rect_particle_count_per_pulse_min = 1
+			rect_particle_count_per_pulse_min = 3
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.0
+			rect_particle_lifetime_max = 4.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 30.0
+			rect_particle_float_dist_max = 50.0
+			
 			
 		MainMidPanelColorTemplateType.BRANCHING_CHALLENGE:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__BRANCHING_CHALLENGE
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.75
+			rect_particle_frequency_max = 1.5
+			rect_particle_count_per_pulse_min = 1
+			rect_particle_count_per_pulse_min = 3
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.0
+			rect_particle_lifetime_max = 4.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 30.0
+			rect_particle_float_dist_max = 50.0
 			
 		MainMidPanelColorTemplateType.SPEC_CHALLENGE:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__SPEC_CHALLENGE
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.75
+			rect_particle_frequency_max = 1.5
+			rect_particle_count_per_pulse_min = 1
+			rect_particle_count_per_pulse_min = 3
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 3.0
+			rect_particle_lifetime_max = 5.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 40.0
+			rect_particle_float_dist_max = 60.0
+			
 			
 		MainMidPanelColorTemplateType.MAGNUM_OPUS:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__MAGNUM_OPUS
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.5
+			rect_particle_frequency_max = 1.0
+			rect_particle_count_per_pulse_min = 1
+			rect_particle_count_per_pulse_min = 4
+			
+			rect_particle_xy_starting = 1.25
+			rect_particle_xy_middle = 3.0
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 3.0
+			rect_particle_lifetime_max = 5.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 20.0
+			rect_particle_float_dist_max = 120.0
+			
 			
 		MainMidPanelColorTemplateType.LVL_01_05:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__LVL_01_05
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.5
+			rect_particle_frequency_max = 1.0
+			rect_particle_count_per_pulse_min = 0
+			rect_particle_count_per_pulse_min = 2
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.0
+			rect_particle_lifetime_max = 4.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 30.0
+			rect_particle_float_dist_max = 50.0
+			
 			
 		MainMidPanelColorTemplateType.STAGE_05:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__STAGE_05
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.3
+			rect_particle_mod_a_middle = 0.7
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.5
+			rect_particle_frequency_max = 1.0
+			rect_particle_count_per_pulse_min = 0
+			rect_particle_count_per_pulse_min = 2
+			
+			rect_particle_xy_starting = 1.0
+			rect_particle_xy_middle = 2.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.0
+			rect_particle_lifetime_max = 4.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 30.0
+			rect_particle_float_dist_max = 50.0
+			
 			
 		MainMidPanelColorTemplateType.CONSTELLATION:
 			modulates_for_rect_particle = MODULATES_FOR_RECT_PARTICLE__CONSTELLATION
+			rect_particle_modulate_rand_variation_magnitude = 0.2
+			
+			rect_particle_mod_a_starting = 0.4
+			rect_particle_mod_a_middle = 0.8
+			rect_particle_mod_a_ending = 0.0
+			rect_particle_mod_a_rand_variration_magnitude = 0.1
+			
+			rect_particle_frequency_min = 0.33
+			rect_particle_frequency_max = 1.0
+			rect_particle_count_per_pulse_min = 1
+			rect_particle_count_per_pulse_min = 3
+			
+			rect_particle_xy_starting = 2.0
+			rect_particle_xy_middle = 3.5
+			rect_particle_xy_ending = 0.0
+			rect_particle_xy_rand_variation_magnitude = 0.2
+			
+			rect_particle_lifetime_min = 2.5
+			rect_particle_lifetime_max = 5.0
+			rect_particle_lifetime_ratio_trigger = 0.5
+			
+			rect_particle_float_dist_min = 20.0
+			rect_particle_float_dist_max = 120.0
 			
 		
 		
 	
+	
+	set_process(is_rect_particle_show_enabled)
 
 ####
+
+func _process(delta: float) -> void:
+	_delta_before_next_rect_particle -= delta
+	if _delta_before_next_rect_particle <= 0:
+		var rand_frequency = non_essential_rng.randf_range(rect_particle_frequency_min, rect_particle_frequency_max)
+		_delta_before_next_rect_particle += rand_frequency
+		
+		play_rect_float_particles_based_on_states()
+
 
 func play_rect_float_particles_based_on_states():
 	var rand_count = non_essential_rng.randi_range(rect_particle_count_per_pulse_min, rect_particle_count_per_pulse_max)
@@ -164,25 +372,35 @@ func play_rect_float_particles_based_on_states():
 		var rand_modulate = StoreOfRNG.randomly_select_one_element(modulates_for_rect_particle, non_essential_rng)
 		var rand_mod_intensity = non_essential_rng.randf_range(1 - rect_particle_modulate_rand_variation_magnitude, 1 + rect_particle_modulate_rand_variation_magnitude)
 		rand_modulate *= rand_mod_intensity
-		var rand_mod_a = non_essential_rng.randf_range(1 + rect_particle_mod_a_rand_variration_magnitude, 1 - rect_particle_mod_a_rand_variration_magnitude)
-		rand_modulate.a = rand_mod_a
+		
+		var rand_mod_a_mag = non_essential_rng.randf_range(1 + rect_particle_mod_a_rand_variration_magnitude, 1 - rect_particle_mod_a_rand_variration_magnitude)
+		var rand_mod_a_start = rect_particle_mod_a_starting * rand_mod_a_mag
+		rand_modulate.a = rand_mod_a_start
+		
+		var rand_mod_a_mid = rect_particle_mod_a_middle * rand_mod_a_mag
+		var rand_mod_a_end = rect_particle_mod_a_ending * rand_mod_a_mag
 		
 		var rand_xy_magnitude = non_essential_rng.randf_range(1 + rect_particle_xy_rand_variation_magnitude, 1 - rect_particle_xy_rand_variation_magnitude)
-		var rand_xy_starging = rect_particle_xy_starting * rand_xy_magnitude
+		var rand_xy_start = rect_particle_xy_starting * rand_xy_magnitude
 		var rand_xy_mid = rect_particle_xy_middle * rand_xy_magnitude
 		var rand_xy_end = rect_particle_xy_ending * rand_xy_magnitude
 		
 		var rand_lifetime = non_essential_rng.randf_range(rect_particle_lifetime_min, rect_particle_lifetime_max)
 		
-		var rand_float_dist = non_essential_rng.randf_range(rect_particle_float_dist_min, rect_particle_float_dist_max)
 		var rand_starting_x = _generate_rand_x_for_rect_float_particle()
-		
 		var starting_y = _get_starting_y_level_for_rect_float_particle()
 		var starting_pos = Vector2(rand_starting_x, starting_y)
 		
-		#todoimp continue this
-		_construct_rect_draw_param_and_tweener_for_float_particle()
-
+		var rand_float_dist = non_essential_rng.randf_range(rect_particle_float_dist_min, rect_particle_float_dist_max)
+		var ending_pos = starting_pos + Vector2(0, rand_float_dist)
+		
+		
+		_construct_rect_draw_param_and_tweener_for_float_particle(rand_modulate,
+		rand_mod_a_start, rand_mod_a_mid, rand_mod_a_end,
+		rand_xy_start, rand_xy_mid, rand_xy_end,
+		rand_lifetime, rect_particle_lifetime_ratio_trigger,
+		starting_pos, ending_pos)
+		
 
 func _generate_rand_x_for_rect_float_particle() -> float:
 	var starting_x = background_panel.rect_position.x
@@ -241,3 +459,7 @@ func _construct_rect_draw_param_and_tweener_for_float_particle(arg_modulate : Co
 	
 
 
+###
+
+func _on_StatsForLevelButton_pressed() -> void:
+	emit_signal("stats_button_pressed")

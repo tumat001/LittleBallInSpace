@@ -118,6 +118,7 @@ func _ready():
 	
 	non_essential_rng = SingletonsAndConsts.non_essential_rng
 	
+	dialog_panel.connect("stats_button_pressed", self, "_on_level_layout_main_mid_panel_stats_button_pressed")
 
 
 func _on_visibility_changed():
@@ -638,7 +639,7 @@ func get_current_active_level_layout() -> GUI_AbstractLevelLayout:
 
 #
 
-func _on_StatsForLevelButton_pressed():
+func _on_level_layout_main_mid_panel_stats_button_pressed():
 	SingletonsAndConsts.current_master.gs_gui_control_tree.show_gsm_level_panel(_current_active_level_layout.get_currently_hovered_tile().level_details.level_id)
 	
 
