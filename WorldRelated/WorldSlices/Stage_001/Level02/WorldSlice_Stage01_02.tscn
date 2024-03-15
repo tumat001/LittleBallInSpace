@@ -321,18 +321,7 @@ margin_bottom = 224.0
 texture = ExtResource( 19 )
 stretch_mode = 2
 
-[node name="Label" type="Label" parent="MessegesContainer" index="1"]
-visible = false
-margin_left = 638.0
-margin_top = 13.0
-margin_right = 886.0
-margin_bottom = 44.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "We'll tell you if you happen to find yourself
-drifting into empty space."
-align = 1
-
-[node name="StuckLabelContainer" type="VBoxContainer" parent="MessegesContainer" index="2"]
+[node name="StuckLabelContainer" type="VBoxContainer" parent="MessegesContainer" index="1"]
 margin_left = 203.0
 margin_top = -4077.0
 margin_right = 403.0
@@ -355,23 +344,22 @@ margin_right = 123.0
 margin_bottom = 80.0
 size_flags_horizontal = 6
 
-[node name="VisIns_Rewind" parent="MessegesContainer" index="3" instance=ExtResource( 17 )]
+[node name="VisIns_Rewind" parent="MessegesContainer" index="2" instance=ExtResource( 17 )]
 position = Vector2( 406, 155 )
 use_tweener_to_start = false
 start_at_ready = true
 snap_rotation_per_sec__deg = -90.0
 snap_rotation_threshold__deg = -45.0
 node_path_for_tex_rect_background = NodePath("../VisInsBackground")
-node_path__node_with_modulate_to_match__01 = NodePath("../VBoxContainer")
 
 [node name="Sprite" type="Sprite" parent="MessegesContainer/VisIns_Rewind" index="0"]
 texture = ExtResource( 18 )
 
-[node name="ClockBorder01" type="Sprite" parent="MessegesContainer" index="4"]
+[node name="ClockBorder01" type="Sprite" parent="MessegesContainer" index="3"]
 position = Vector2( 330, 155 )
 texture = ExtResource( 23 )
 
-[node name="VisIns_Normal" parent="MessegesContainer" index="5" instance=ExtResource( 17 )]
+[node name="VisIns_Normal" parent="MessegesContainer" index="4" instance=ExtResource( 17 )]
 position = Vector2( 330, 155 )
 use_tweener_to_start = false
 start_at_ready = true
@@ -381,30 +369,16 @@ snap_rotation_threshold__deg = 45.0
 [node name="Sprite" type="Sprite" parent="MessegesContainer/VisIns_Normal" index="0"]
 texture = ExtResource( 18 )
 
-[node name="ClockBorder02" type="Sprite" parent="MessegesContainer" index="6"]
+[node name="ClockBorder02" type="Sprite" parent="MessegesContainer" index="5"]
 position = Vector2( 406, 155 )
 texture = ExtResource( 23 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MessegesContainer" index="7"]
-margin_left = 306.0
-margin_top = 182.0
-margin_right = 506.0
-margin_bottom = 243.0
-custom_constants/separation = 10
-
-[node name="Label3Rewind" type="Label" parent="MessegesContainer/VBoxContainer" index="0"]
-visible = false
-margin_right = 270.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "You can rewind time by holding"
-align = 1
-valign = 1
-
-[node name="VKP_Rewind" parent="MessegesContainer/VBoxContainer" index="1" instance=ExtResource( 7 )]
+[node name="VKP_Rewind" parent="MessegesContainer" index="6" instance=ExtResource( 7 )]
 modulate = Color( 1, 1, 1, 1 )
-margin_left = 77.0
-margin_right = 123.0
+margin_left = 383.0
+margin_top = 182.0
+margin_right = 429.0
+margin_bottom = 219.0
 size_flags_horizontal = 6
 modulate_normal = Color( 1, 1, 1, 1 )
 label_modulate = Color( 1, 1, 1, 1 )

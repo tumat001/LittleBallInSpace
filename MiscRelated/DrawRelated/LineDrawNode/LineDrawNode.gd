@@ -8,6 +8,8 @@ class DrawParams:
 	var color : Color
 	var width : float
 	
+	var remove_self_if_length_is_or_below_zero : bool = true
+	
 
 var _all_draw_params : Array
 
@@ -50,4 +52,7 @@ func _draw():
 		if param.length > 0:
 			var dest_pos = param.center_pos + Vector2(param.length, 0).rotated(param.angle)
 			draw_line(param.center_pos, dest_pos, param.color, param.width)
-
+			
+		else:
+			if param.remove_self_if_length_is_or_below_zero:
+				remove_draw_param(param)

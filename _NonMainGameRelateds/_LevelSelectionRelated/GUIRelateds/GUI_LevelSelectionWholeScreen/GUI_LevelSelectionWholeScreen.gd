@@ -117,6 +117,8 @@ func _ready():
 	trophy_panel.can_show_healths_related_trophies = false
 	
 	non_essential_rng = SingletonsAndConsts.non_essential_rng
+	
+
 
 func _on_visibility_changed():
 	game_background.visible = visible
@@ -526,7 +528,6 @@ func _tween_rect_particles_on_level_hover_rect_draw_param__using_params(arg_rect
 
 
 ## circ layout
-
 
 func play_circ_draw_node__circ_particles_on_layout_hover(arg_gui_level_tile : GUI_LevelLayoutEle_Tile):
 	var layout_details = arg_gui_level_tile.level_layout_details

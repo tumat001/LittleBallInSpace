@@ -10,6 +10,7 @@ class DrawParams:
 	var texture : Texture
 	var texture_modulate : Color = Color(1, 1, 1, 1)
 	
+	#note make use of lifetime when needed. So far only one is using this and it queue frees so no need
 
 
 var _all_draw_params : Array

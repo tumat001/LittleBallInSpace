@@ -49,9 +49,9 @@ var _node_to_match_modulate_a__01
 func _ready() -> void:
 	set_node_path_for_tex_rect_background(node_path_for_tex_rect_background)
 	
-	_update_can_do_process_based_on_vals()
 	
 	if Engine.editor_hint:
+		_update_can_do_process_based_on_vals()
 		return
 	
 	modulate = MODULATE_INACTIVE
@@ -59,6 +59,8 @@ func _ready() -> void:
 	
 	if start_at_ready:
 		start_display()
+	
+	_update_can_do_process_based_on_vals()
 	
 	rotation = 0.0
 

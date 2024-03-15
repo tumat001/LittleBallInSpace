@@ -37,7 +37,7 @@ var _audio_player__electrical_shock
 
 #
 
-onready var vkp_rewind = $MessegesContainer/VBoxContainer/VKP_Rewind
+onready var vkp_rewind = $MessegesContainer/VKP_Rewind
 onready var vkp_rewind_02 = $MessegesContainer/StuckLabelContainer/VKP_Rewind
 
 onready var stuck_label_container = $MessegesContainer/StuckLabelContainer

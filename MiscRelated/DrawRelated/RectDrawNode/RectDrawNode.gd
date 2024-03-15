@@ -1,5 +1,6 @@
 extends Node2D
 
+signal all_draw_params_finished()
 
 class DrawParams:
 	
@@ -17,7 +18,7 @@ class DrawParams:
 	var lifetime_to_start_transparency : float
 	var has_lifetime : bool
 	
-	var remove_self_at_max_lifetime : bool = false
+	var remove_self_at_max_lifetime : bool = true
 	
 	var _current_rect_pos_per_sec : Vector2
 	var _current_rect_end_per_sec : Vector2
@@ -83,12 +84,14 @@ func remove_draw_param(arg_draw_param : DrawParams):
 	_all_draw_params.erase(arg_draw_param)
 	
 	if _all_draw_params.size() == 0:
+		emit_signal("all_draw_params_finished")
 		set_process(false)
 
 func remove_all_draw_params():
 	_all_draw_params.clear()
 	
 	set_process(false)
+	emit_signal("all_draw_params_finished")
 	update()
 
 #####
@@ -109,6 +112,8 @@ func _process(delta):
 			param.outline_color.a -= param._outline_transparency_per_sec * delta
 		
 		if param.lifetime_of_draw <= param._current_lifetime and param.remove_self_at_max_lifetime:
+			#temptodo
+			print("removed due to lifetime")
 			remove_draw_param(param)
 		
 		

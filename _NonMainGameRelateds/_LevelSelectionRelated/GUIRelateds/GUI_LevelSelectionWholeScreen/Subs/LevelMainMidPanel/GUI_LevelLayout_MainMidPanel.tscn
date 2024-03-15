@@ -7,7 +7,7 @@
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelPanel_StarConstellCornerPiece/LevelPanel_StarConstellLine.tscn" type="PackedScene" id=5]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelMainMidPanel/GUI_LevelLayout_MainMidPanel.gd" type="Script" id=6]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/Commons/GUI_LevelSelection_Commons_WhiteBackground.png" type="Texture" id=7]
-[ext_resource path="res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd" type="Script" id=8]
+[ext_resource path="res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd" type="Script" id=8]
 
 [node name="GUI_LevelLayout_MainMidPanel" type="MarginContainer"]
 anchor_left = 0.5
@@ -144,5 +144,5 @@ custom_constants/margin_left = 30
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 default_font_size = 16
 
-[node name="CircleFloatDrawNode" type="Node2D" parent="."]
+[node name="RectFloatDrawNode" type="Node2D" parent="."]
 script = ExtResource( 8 )
