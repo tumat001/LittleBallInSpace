@@ -3,20 +3,36 @@
 [resource]
 code = "shader_type canvas_item;
 
-uniform vec2 global_position;
-uniform vec2 screen_size;
-uniform float force;
-uniform float size;
-uniform float thickness;
+uniform float progression : hint_range(0.0, 1.0) = 0.5;
 
-void fragment(){
-	vec2 center = global_position;
-	float ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
-	center.x = center.x / screen_size.x;
-	center.x = (center.x - 0.5) / ratio + 0.5;
-	center.y = (screen_size.y - center.y) / screen_size.y;
-	vec2 scaledUV = (SCREEN_UV - vec2(0.5, 0.0) ) / vec2(ratio, 1.0) + vec2(0.5, 0.0);
-	float mask = (1.0 - smoothstep(size-0.1, size, length(scaledUV - center))) * smoothstep(size-thickness-0.1, size-thickness, length(scaledUV - center));
-	vec2 disp = normalize(SCREEN_UV - center) * force * mask;
-	COLOR = texture(SCREEN_TEXTURE, SCREEN_UV - disp);
+uniform float fade : hint_range(0.0, 1.0) = 0.9;
+
+uniform float thickness : hint_range(0.01, 1.0) = 0.1;
+
+uniform float wavelet_factor : hint_range(.1, 4.) = 4.;
+
+// In pixels.
+uniform float deformation_length = 16;
+
+uniform vec2 screen_pos;
+
+uniform vec2 screen_size;
+
+uniform vec4 tint : hint_color = vec4(.5, .5, .9, 1.);
+
+const float PI = 3.1415926535897932384626433832795;
+
+void fragment() {
+	vec2 norm = normalize(UV - vec2(.5));
+	float dist = distance(UV, vec2(.5)) * 2.;
+	float prog = progression * (1. - thickness - 0.01);
+	float distortion = clamp((dist - prog) / thickness, -1., 1.);
+	distortion = mix(cos(distortion * (PI / wavelet_factor)), 0., step(0.99, abs(distortion)));
+	vec2 def = distortion * deformation_length * SCREEN_PIXEL_SIZE;
+	vec2 offset_vector = norm * def;
+	vec2 target_id = screen_pos + ((UV + offset_vector) * screen_size);
+	target_id.y = 1.0 - target_id.y;
+	COLOR = mix(vec4(0.),
+				vec4(texture(SCREEN_TEXTURE, target_id).rgb, mix(1.0, smoothstep(1., 0., (progression - fade) / (1. - fade)),
+				step( fade, progression ))), step(0.01, distortion));
 }"

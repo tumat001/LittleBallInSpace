@@ -337,6 +337,9 @@ func _on_layout_currently_hovered_layout_ele_changed(arg_id, arg_currently_hover
 	_update_level_desc_tooltip_body(arg_currently_hovered_tile)
 	_update_level_details_panel(arg_currently_hovered_tile.level_details)
 	_update_stats_button_visibility(arg_currently_hovered_tile.level_details)
+	
+	_update_level_main_mid_panel_based_on_lvl_det(arg_currently_hovered_tile.level_details)
+
 
 func _update_level_details_panel(arg_level_details):
 	if arg_level_details != null:
@@ -358,6 +361,10 @@ func _attempt_set_visibility_of_stats_for_level_button(arg_val):
 		stats_for_level_button.visible = arg_val
 	else:
 		stats_for_level_button.visible = false
+
+func _update_level_main_mid_panel_based_on_lvl_det(arg_lvl_det):
+	dialog_panel.set_level_details(arg_lvl_det)
+
 
 #
 

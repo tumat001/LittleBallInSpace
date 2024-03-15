@@ -107,6 +107,9 @@ var background_type = GameBackground.BackgroundTypeIds.STANDARD
 
 var modulates_for_level_hover_list : Array
 
+#
+
+var circ_particle_type_id_for_level_layout_main_mid_panel
 
 #
 

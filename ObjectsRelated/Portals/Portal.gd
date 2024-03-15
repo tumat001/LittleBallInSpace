@@ -74,13 +74,6 @@ var is_class_type_portal : bool = true
 
 #
 
-var _ripple_sprite : Sprite
-var _ripple_sprite_shader_material : ShaderMaterial
-
-const _ripple_duration_to_final_size = 0.75
-
-#
-
 enum DisableCollisionClauseId {
 	IN_REWIND = 0,
 	IS_DISABLED = 1,
@@ -92,12 +85,18 @@ var last_calculated_is_collision_disabled : bool
 
 var enable_player_move_change_on_area_exit : bool
 
+#
+
+var ripple_show_tweener : SceneTreeTween
+
 ######
 
 onready var portal_sprite = $PortalSprite
 onready var portal_frame = $PortalFrame
 
 onready var coll_shape_2d = $Area2D/CollisionShape2D
+
+#onready var ripple_color_rect = $RippleColorRect
 
 #
 
@@ -148,6 +147,10 @@ func _ready():
 	set_is_silent_and_invisible(is_silent_and_invisible)
 	
 	_initialize_is_scene_transition_type_portal()
+	
+	#note; ripple wont work!!??
+	#_initialize_ripple_color_rect()
+	
 	#
 	_is_in_ready = false
 
@@ -258,47 +261,10 @@ func _initialize_is_scene_transition_type_portal():
 	if is_scene_transition_type_portal:
 		connect("player_entered__as_scene_transition", self, "_on_player_entered__for_scene_transition", [], CONNECT_ONESHOT)
 		
-		_ripple_sprite = Sprite.new()
-		_ripple_sprite.texture = preload("res://ObjectsRelated/Portals/Assets/Portal_RippleEffectForTransition.png")
-		_ripple_sprite_shader_material = ShaderMaterial.new()
-		_ripple_sprite_shader_material.shader = preload("res://MiscRelated/ShadersRelated/Shader_PortalRippleEffect_Transition.tres")
-		_ripple_sprite.material = _ripple_sprite_shader_material
-		
-		_ripple_sprite_shader_material.set_shader_param("screen_size", Vector2(960, 540))
-		_ripple_sprite_shader_material.set_shader_param("thickness", 0.5)
-		
-		add_child(_ripple_sprite)
-		
-		_ripple_sprite.visible = false
-
 
 func _on_player_entered__for_scene_transition(arg_player):
 	arg_player.visible = false
 	
-	#todo ripple effect not working
-	#_start_show_ripple_effect()
-	
-
-func _start_show_ripple_effect():
-	_ripple_sprite.visible = true
-	_ripple_sprite_shader_material.set_shader_param("size", 0)
-	set_process(true)
-
-
-func _process(delta):
-	if !Engine.editor_hint:
-		var curr_size = _ripple_sprite_shader_material.get_shader_param("size")
-		var final_size = (curr_size) + delta / _ripple_duration_to_final_size
-		_ripple_sprite_shader_material.set_shader_param("size", final_size)
-		_ripple_sprite_shader_material.set_shader_param("global_position", global_position - CameraManager.get_camera__global_position())
-		
-		if final_size >= 1.0:
-			_end_show_ripple_effect()
-
-
-func _end_show_ripple_effect():
-	_ripple_sprite.visible = false
-	set_process(false)
 
 
 ########
@@ -468,6 +434,9 @@ func _on_Area2D_body_entered(body):
 			if body.get("is_player"):
 				AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_Teleporter_EnteredTeleporter_TransitionLong, 1.0, null)
 				emit_signal("player_entered__as_scene_transition", body)
+				
+				show_and_start_ripple()
+				
 				return
 		
 		
@@ -522,6 +491,8 @@ func _teleport_node_to_other_linked_portal(body):
 			
 		#CameraManager.call_deferred("enable_camera_smoothing")
 		
+		_portal_to_link_with.show_and_start_ripple()
+		
 		emit_signal("player_entered", body)
 		
 	elif body.get("is_class_type_base_object"):
@@ -563,6 +534,35 @@ func _set_player__is_prevent_effects_of_move_breaking__by_portal__false(arg_play
 
 func _set__portal_to_link_with__to_prevent_move_breaking_of_player_until_exit():
 	_portal_to_link_with.enable_player_move_change_on_area_exit = true
+
+
+######
+
+func _initialize_ripple_color_rect():
+	pass
+#	var shader = preload("res://MiscRelated/ShadersRelated/Shader_PortalRippleEffect_Transition.tres")
+#	var shader_mat = ShaderMaterial.new()
+#	shader_mat.shader = shader
+#
+#	ripple_color_rect.material = shader_mat
+#
+#	if is_scene_transition_type_portal:
+#		pass
+#	else:
+#		pass
+#
+#
+#	_set_ripple_shader_prog(0.0)
+#
+#	ripple_color_rect.visible = false
+
+
+func _set_ripple_shader_prog(arg_delta):
+	pass
+
+func show_and_start_ripple():
+	pass
+
 
 ###################### 
 # REWIND RELATED

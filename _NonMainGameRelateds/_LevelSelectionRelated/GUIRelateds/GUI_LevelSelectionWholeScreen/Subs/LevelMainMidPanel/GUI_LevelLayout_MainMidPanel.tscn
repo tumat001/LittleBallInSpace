@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Normal.png" type="Texture" id=1]
 [ext_resource path="res://GameSaveRelated/GUIs/GameStatsRelated/CommonAssets/StatsButton_Highlighted.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelPanel_StarConstellCornerPiece/LevelPanel_StarConstellLine.tscn" type="PackedScene" id=5]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelMainMidPanel/GUI_LevelLayout_MainMidPanel.gd" type="Script" id=6]
 [ext_resource path="res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Assets/Commons/GUI_LevelSelection_Commons_WhiteBackground.png" type="Texture" id=7]
+[ext_resource path="res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd" type="Script" id=8]
 
 [node name="GUI_LevelLayout_MainMidPanel" type="MarginContainer"]
 anchor_left = 0.5
@@ -32,10 +33,12 @@ margin_bottom = 150.0
 mouse_filter = 2
 
 [node name="TL_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 4 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_right = 500.0
 margin_bottom = 150.0
 
 [node name="TR_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 4 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_left = 392.0
 margin_right = 500.0
 margin_bottom = 150.0
@@ -44,6 +47,7 @@ flip_h = true
 corner_type_id = 1
 
 [node name="BL_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 4 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_top = 90.0
 margin_right = 500.0
 margin_bottom = 150.0
@@ -52,6 +56,7 @@ flip_v = true
 corner_type_id = 2
 
 [node name="BR_StarConstellCornerPiece" parent="BackgroundPanel" instance=ExtResource( 4 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_left = 392.0
 margin_top = 90.0
 margin_right = 500.0
@@ -63,10 +68,12 @@ flip_v = true
 corner_type_id = 3
 
 [node name="Top_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 5 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_right = 500.0
 margin_bottom = 6.0
 
 [node name="Bot_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 5 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_top = 144.0
 margin_right = 500.0
 margin_bottom = 150.0
@@ -76,6 +83,7 @@ custom_constants/margin_bottom = 4
 position_type_id = 1
 
 [node name="Left_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 5 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_right = 6.0
 margin_bottom = 150.0
 size_flags_horizontal = 2
@@ -85,6 +93,7 @@ custom_constants/margin_left = 4
 position_type_id = 2
 
 [node name="Right_StarConstellLine" parent="BackgroundPanel" instance=ExtResource( 5 )]
+modulate = Color( 0.92549, 0.835294, 0.552941, 1 )
 margin_left = 494.0
 margin_right = 500.0
 margin_bottom = 150.0
@@ -134,3 +143,6 @@ custom_constants/margin_right = 30
 custom_constants/margin_left = 30
 default_font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 default_font_size = 16
+
+[node name="CircleFloatDrawNode" type="Node2D" parent="."]
+script = ExtResource( 8 )

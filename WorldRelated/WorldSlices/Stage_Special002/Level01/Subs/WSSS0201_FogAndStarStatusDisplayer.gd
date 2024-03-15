@@ -115,7 +115,7 @@ func _connect_signals_with_star_wheel_counter():
 	star_wheel_count_displayer.connect("last_phase_star_removal__after_windup_main_removal_phase_started", self, "_on_star_wheel_last_phase_star_removal__after_windup_main_removal_phase_started")
 
 func _on_star_wheel_disp__star_filled_in__lvl_and_index(arg_lvl_id, arg_i, arg_total_star_collected_count, arg_is_accelerating_uptick):
-	star_counter_big_panel.set_curr_count(arg_i + 1, arg_total_star_collected_count == arg_i)
+	star_counter_big_panel.set_curr_count(arg_i + 1, (arg_total_star_collected_count - 1 == arg_i))
 	_curr_val = arg_i + 1
 
 
@@ -145,7 +145,7 @@ func _lift_fog():
 	tweener.tween_callback(_transition_sprite, "queue_free")
 
 func _attempt_but_fail_to_lift_fog():
-	var final_max_ratio_before_fail = convert_ratio_using_num_range(_curr_val / _threshold_val, FOG_INITIAL_RATIO, FOG_FAIL__MAX_ATTEMPT_RATIO)
+	var final_max_ratio_before_fail = convert_ratio_using_num_range(_curr_val / float(_threshold_val), FOG_INITIAL_RATIO, FOG_FAIL__MAX_ATTEMPT_RATIO)
 	
 	var tweener = create_tween()
 	tweener.tween_method(_transition_sprite, "set_circle_ratio", _transition_sprite.initial_ratio, final_max_ratio_before_fail, FOG_FAIL__ATTEMPT_LIFT_BOUNCE_DURATION).set_trans(Tween.TRANS_BOUNCE)

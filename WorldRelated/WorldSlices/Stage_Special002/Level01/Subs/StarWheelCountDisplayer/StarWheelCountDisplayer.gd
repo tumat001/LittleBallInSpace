@@ -1,5 +1,28 @@
 extends Node2D
 
+const CircleDrawNode = preload("res://MiscRelated/DrawRelated/CircleDrawNode/CircleDrawNode.gd")
+
+
+const STAR_FILL_CIRC_PARTICLE__RADIUS_INITIAL : float = 1.0
+const STAR_FILL_CIRC_PARTICLE__RADIUS_MID : float = 2.0
+const STAR_FILL_CIRC_PARTICLE__RADIUS_FINAL : float = 0.0
+
+const STAR_FILL_CIRC_PARTICLE__MOD_A_INITIAL : float = 0.2
+const STAR_FILL_CIRC_PARTICLE__MOD_A_MID : float = 0.4
+const STAR_FILL_CIRC_PARTICLE__MOD_A_FINAL : float = 0.0
+
+const STAR_FILL_CIRC_PARTICLE__DURATION_TO_MID : float = 0.2
+const STAR_FILL_CIRC_PARTICLE__DURATION_TO_FINAL : float = 0.5
+const STAR_FILL_CIRC_PARTICLE__DURATION_TOTAL : float = STAR_FILL_CIRC_PARTICLE__DURATION_TO_MID + STAR_FILL_CIRC_PARTICLE__DURATION_TO_FINAL
+
+const STAR_FILL_CIRC_PARTICLE__SPEED : float = 40.0
+
+const STAR_FILL_CIRC_PARTICLE__PARTICLE_COUNT_MIN : int = 3
+const STAR_FILL_CIRC_PARTICLE__PARTICLE_COUNT_MAX : int = 5
+
+const STAR_FILL_CIRC_MODULATE := Color("#FDC621")
+
+#
 
 const DELAY_FOR_NEXT_STAR_CREATION : float = 0.05
 
@@ -65,6 +88,7 @@ var star_fill_audio_stream_player_2d : AudioStreamPlayer2D
 ##
 
 onready var star_draw_node = $StarDrawNode
+onready var circle_draw_node__for_star_fill = $CircleDrawNode_ForStarFill
 
 #######
 
@@ -208,10 +232,13 @@ func _tween_callback_method__star_filled_in(arg_lvl_id, i, arg_total_star_collec
 	
 	audio_pitch_shift_effect.pitch_scale = pitch_shift
 	if star_fill_audio_stream_player_2d == null:
-		star_fill_audio_stream_player_2d = AudioManager.helper__play_sound_effect__2d__pitch_01(StoreOfAudio.AudioIds.SFX_LevelSpecific_Spec0201_StarFilled, arg_draw_param.center_pos, 1.3, audio_adv_param_for_pitch_shift)
+		star_fill_audio_stream_player_2d = AudioManager.helper__play_sound_effect__2d__pitch_01(StoreOfAudio.AudioIds.SFX_LevelSpecific_Spec0201_StarFilled, arg_draw_param.center_pos, 1.1, audio_adv_param_for_pitch_shift)
 	else:
 		star_fill_audio_stream_player_2d.stop()
 		AudioManager.play_sound__with_provided_stream_player(StoreOfAudio.AudioIds.SFX_LevelSpecific_Spec0201_StarFilled, star_fill_audio_stream_player_2d, AudioManager.MaskLevel.Major_SoundFX, audio_adv_param_for_pitch_shift)
+	
+	
+	play_vfx_for_star_fill(arg_draw_param.center_pos + global_position, STAR_FILL_CIRC_MODULATE)
 	
 	#
 	emit_signal("star_filled_in__lvl_and_index", arg_lvl_id, i, arg_total_star_collected_count, arg_is_accelerating_uptick)
@@ -304,3 +331,83 @@ func _on_last_phase_star_tweener_finished():
 	emit_signal("display_of_last_phase_finished")
 	
 
+
+###############
+
+func play_vfx_for_star_fill(arg_center_pos : Vector2, arg_modulate : Color):
+	var rand_i = non_essential_rng.randi_range(STAR_FILL_CIRC_PARTICLE__PARTICLE_COUNT_MIN, STAR_FILL_CIRC_PARTICLE__PARTICLE_COUNT_MAX)
+	
+	for i in rand_i:
+		var lifetime_modif : float = non_essential_rng.randf_range(-0.15, 0.15)
+		var lifetime__final_val = STAR_FILL_CIRC_PARTICLE__DURATION_TOTAL + lifetime_modif
+		
+		var lifetime_to_mid__final_val = STAR_FILL_CIRC_PARTICLE__DURATION_TO_MID + lifetime_modif/2
+		var lifetime_to_final__final_val = STAR_FILL_CIRC_PARTICLE__DURATION_TO_FINAL + lifetime_modif/2
+		
+		var speed_ratio_modif = non_essential_rng.randf_range(-0.2, 0.2)
+		var speed__final_val = STAR_FILL_CIRC_PARTICLE__SPEED + (STAR_FILL_CIRC_PARTICLE__SPEED * speed_ratio_modif)
+		
+		var arg_final_val_angle = non_essential_rng.randf_range(0, 2*PI)
+		
+		var final_center_pos__final_calced_pos = Vector2(speed__final_val, 0).rotated(arg_final_val_angle) + arg_center_pos
+		
+		var mod_a_modif : float = non_essential_rng.randf_range(-0.1, 0.1)
+		var mod_a_initial__final_val = STAR_FILL_CIRC_PARTICLE__MOD_A_INITIAL + mod_a_modif
+		var mod_a_mid__final_val = STAR_FILL_CIRC_PARTICLE__MOD_A_MID + mod_a_modif
+		arg_modulate.a = mod_a_initial__final_val
+		
+		var rad_modif : float = non_essential_rng.randf_range(-0.2, 0.2)
+		var rad_initial__final_val = STAR_FILL_CIRC_PARTICLE__RADIUS_INITIAL + rad_modif
+		var rad_mid__final_val = STAR_FILL_CIRC_PARTICLE__RADIUS_MID + rad_modif
+		
+		
+		var draw_param : CircleDrawNode.DrawParams = _construct_circ_draw_param__circ_particles_on_layout_hover(arg_center_pos, arg_modulate, lifetime__final_val, rad_initial__final_val)
+		_tween_circ_particles_on_layout_hover_circ_draw_param__using_params(draw_param, lifetime_to_mid__final_val, lifetime_to_final__final_val, final_center_pos__final_calced_pos, mod_a_mid__final_val, STAR_FILL_CIRC_PARTICLE__MOD_A_FINAL, rad_mid__final_val, 0.0)
+
+
+
+func _construct_circ_draw_param__circ_particles_on_layout_hover(arg_center_pos : Vector2, 
+		arg_base_modulate : Color, arg_total_lifetime : float, arg_radius : float):
+	
+	var draw_param = circle_draw_node__for_star_fill.DrawParams.new()
+	
+	var rand_modulate = arg_base_modulate * non_essential_rng.randf_range(0.6, 1.0)
+	rand_modulate.a = 0.75
+	draw_param.fill_color = rand_modulate
+	draw_param.outline_color = rand_modulate
+	draw_param.outline_width = 0
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.lifetime_of_draw = arg_total_lifetime + 0.3
+	draw_param.has_lifetime = true
+	
+	draw_param.current_radius = arg_radius
+	draw_param.center_pos = arg_center_pos
+	
+	circle_draw_node__for_star_fill.add_draw_param(draw_param)
+	
+	
+	return draw_param
+
+func _tween_circ_particles_on_layout_hover_circ_draw_param__using_params(arg_draw_param : CircleDrawNode.DrawParams, 
+		arg_lifetime_to_mid : float, arg_lifetime_from_mid_to_end : float,
+		arg_final_center_pos : Vector2, 
+		arg_mid_color_mod_a : float, arg_final_color_mod_a : float,
+		arg_mid_rad : float, arg_final_rad : float):
+	
+	
+	var full_lifetime = arg_lifetime_to_mid + arg_lifetime_from_mid_to_end
+	
+	var tweener = create_tween()
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_draw_param, "center_pos", arg_final_center_pos, full_lifetime).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	tweener.tween_property(arg_draw_param, "current_radius", arg_mid_rad, arg_lifetime_to_mid)
+	tweener.tween_property(arg_draw_param, "fill_color:a", arg_mid_color_mod_a, arg_lifetime_to_mid)
+	tweener.set_parallel(false)
+	
+	tweener.tween_interval(arg_lifetime_to_mid)
+	tweener.set_parallel(true)
+	tweener.tween_property(arg_draw_param, "current_radius", arg_final_rad, arg_lifetime_from_mid_to_end)
+	tweener.tween_property(arg_draw_param, "fill_color:a", arg_final_color_mod_a, arg_lifetime_from_mid_to_end)
+	

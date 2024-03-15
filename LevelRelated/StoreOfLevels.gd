@@ -5,6 +5,8 @@ const StoreOfTransitionSprites = preload("res://_NonMainGameRelateds/_Master/Tra
 
 const GameBackground = preload("res://GameBackgroundRelated/GameBackground.gd")
 
+const GUI_LevelLayout_MainMidPanel = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelSelectionWholeScreen/Subs/LevelMainMidPanel/GUI_LevelLayout_MainMidPanel.gd")
+
 #
 
 signal hidden_levels_state_changed()
@@ -384,8 +386,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			_set_details__transitions_to_usual_circle_types(level_details)
 			
-		
-		
+			
+			
 		LevelIds.LEVEL_01__STAGE_1:
 			level_details.level_name = [
 				["Beginnings", []]
@@ -412,6 +414,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 		LevelIds.LEVEL_02__STAGE_1:
 			level_details.level_name = [
@@ -437,6 +440,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 		LevelIds.LEVEL_03__STAGE_1:
 			level_details.level_name = [
@@ -461,6 +465,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_04__STAGE_1:
@@ -487,6 +493,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__YELLOW
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_05__STAGE_1:
 			level_details.level_name = [
@@ -512,6 +520,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.LVL_01_05
 			
 			
 		LevelIds.LEVEL_01__STAGE_2:
@@ -541,6 +550,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_02__STAGE_2:
 			level_details.level_full_name = [
@@ -568,6 +579,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_02__STAGE_2__HARD:
@@ -599,6 +612,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 			_attach_custom_behavior_to_lvl_details__show_4_point_star_based_on_conditions(level_details)
 			
@@ -629,6 +644,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_04__STAGE_2:
 			level_details.level_full_name = [
@@ -657,6 +674,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_05__STAGE_2:
 			level_details.level_full_name = [
@@ -684,6 +703,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_06__STAGE_2:
@@ -714,6 +735,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_NORMAL
 			
 			
 		LevelIds.LEVEL_06__STAGE_2__HARD:
@@ -748,6 +771,9 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_CHALLENGE
+			
+			
 		LevelIds.LEVEL_01__STAGE_3:
 			level_details.level_full_name = [
 				["3-1 Gates", []]
@@ -774,6 +800,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_02__STAGE_3:
@@ -803,6 +831,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_03__STAGE_3:
@@ -831,6 +860,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_03__STAGE_3__HARD:
@@ -862,6 +893,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_04__STAGE_3:
 			level_details.level_full_name = [
@@ -889,6 +922,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_04__STAGE_3__HARD:
@@ -920,6 +955,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_05__STAGE_3:
 			level_details.level_full_name = [
@@ -949,6 +986,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_NORMAL
 			
 			
 		LevelIds.LEVEL_05__STAGE_3__HARD:
@@ -983,6 +1022,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_CHALLENGE
+			
 			
 		LevelIds.LEVEL_01__STAGE_4:
 			level_details.level_full_name = [
@@ -1011,6 +1052,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_02__STAGE_4:
@@ -1040,6 +1082,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_03__STAGE_4:
 			level_details.level_full_name = [
@@ -1067,6 +1111,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_03__STAGE_4__HARD:
@@ -1098,6 +1144,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_04__STAGE_4:
 			level_details.level_full_name = [
@@ -1125,6 +1173,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_04__STAGE_4__HARD:
@@ -1156,6 +1206,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_05__STAGE_4:
 			level_details.level_full_name = [
@@ -1185,6 +1237,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_NORMAL
 			
 			
 		LevelIds.LEVEL_05__STAGE_4__HARD:
@@ -1219,6 +1273,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_CHALLENGE
+			
 			
 		LevelIds.LEVEL_01__STAGE_5:
 			level_details.level_full_name = [
@@ -1246,6 +1302,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.STAGE_05
 			
 			
 		LevelIds.LEVEL_02__STAGE_5:
@@ -1277,6 +1335,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__BLUE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.STAGE_05
 			
 			
 		LevelIds.LEVEL_01__STAGE_6:
@@ -1306,6 +1365,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_02__STAGE_6:
 			level_details.level_full_name = [
@@ -1333,6 +1394,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_03__STAGE_6:
@@ -1362,6 +1425,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_04__STAGE_6:
@@ -1390,6 +1454,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_04__STAGE_6__HARD:
@@ -1421,6 +1487,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_04__STAGE_6__HARD_V02:
 			level_details.level_full_name = [
@@ -1451,6 +1519,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_05__STAGE_6:
 			level_details.level_full_name = [
@@ -1479,6 +1549,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
+			
 			
 		LevelIds.LEVEL_06__STAGE_6:
 			level_details.level_full_name = [
@@ -1506,6 +1578,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_06__STAGE_6__HARD:
@@ -1537,6 +1611,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
+			
 			
 		LevelIds.LEVEL_06__STAGE_6__HARD_V02:
 			level_details.level_full_name = [
@@ -1566,6 +1642,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.level_type = level_details.LevelTypeId.CHALLENGE
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CHALLENGE
 			
 			
 			
@@ -1597,6 +1675,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.RISING_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__VIO
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_NORMAL
 			
 			
 			
@@ -1632,6 +1712,7 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE_WITH_VIO
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.BRANCHING_CHALLENGE
 			
 			
 		LevelIds.LEVEL_01__STAGE_7:
@@ -1659,6 +1740,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.has_outline_color = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__NORMAL
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.NORMAL
 			
 			
 		LevelIds.LEVEL_01__STAGE_SPECIAL_1:
@@ -1696,6 +1779,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.SPEC_CHALLENGE
+			
 			
 		LevelIds.LEVEL_02__STAGE_SPECIAL_1:
 			level_details.level_full_name = [
@@ -1731,6 +1816,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.SPEC_CHALLENGE
 			
 			
 		LevelIds.LEVEL_03__STAGE_SPECIAL_1:
@@ -1770,6 +1857,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
 			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.SPEC_CHALLENGE
+			
 			
 		LevelIds.LEVEL_04__STAGE_SPECIAL_1:
 			level_details.level_full_name = [
@@ -1806,6 +1895,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CHALLENGE
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.SPEC_CHALLENGE
 			
 			
 		LevelIds.LEVEL_01__STAGE_SPECIAL_2:
@@ -1844,6 +1935,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.BGM_playlist_id_to_use__on_level_start = StoreOfAudio.BGMPlaylistId.SUSPENSE_01
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__MAGNUM_OPUS
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.MAGNUM_OPUS
 			
 			
 		LevelIds.LEVEL_02__STAGE_SPECIAL_2:
@@ -1886,6 +1979,8 @@ func generate_or_get_level_details_of_id(arg_id) -> LevelDetails:
 			level_details.immediately_start_stats_record_on_GE_ready = false
 			
 			level_details.modulates_for_level_hover_list = MODULATE_LEVEL_HOVER_LIST__CONSTELLATION
+			
+			level_details.circ_particle_type_id_for_level_layout_main_mid_panel = GUI_LevelLayout_MainMidPanel.CircParticleType.CONSTELLATION
 			
 	
 	##
