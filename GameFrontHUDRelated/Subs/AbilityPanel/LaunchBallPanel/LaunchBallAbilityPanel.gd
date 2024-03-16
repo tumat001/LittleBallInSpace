@@ -141,7 +141,6 @@ func _tween_method__rainbow_set_modulates_of_controls(arg_modulate : Color):
 
 func _end_rainbow_white_frame_tweener():
 	if _rainbow_white_frame_tweener != null:
-		
 		_rainbow_white_frame_tweener.stop()
 		_rainbow_white_frame_tweener = null
 	

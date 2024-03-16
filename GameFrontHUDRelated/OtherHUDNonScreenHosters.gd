@@ -20,6 +20,17 @@ onready var wrench_circle_draw_node = $WrenchCircleDraw
 
 #
 
+const PITCH_FOR_BALL_AESTH_REACH_DEST__NORMAL = 1.0
+const PITCH_FOR_BALL_AESTH_REACH_DEST__INC_PER = 0.4
+const PITCH_FOR_BALL_AESTH_REACH_DEST__DURATION_RESET = 0.75
+
+
+var _curr_pitch_for_ball_aesth_reach_dest : float = PITCH_FOR_BALL_AESTH_REACH_DEST__NORMAL
+var _curr_duration_for_pitch_retain_for_ball_aesth_reach_dest : float
+
+
+#
+
 var ball_pickup_particles_pool_component : AnimSpriteComponentPool
 #var battery_pickup_particles_pool_component : AnimSpriteComponentPool
 
@@ -39,7 +50,19 @@ func _ready():
 	_init_all_launch_ball_pickup_relateds()
 	#_init_all_battery_pickup_relateds()
 	
+	
 	set_process(false)
+
+#
+
+#note if something breaks then this is the prob since the set process(false) at ready was there at the start
+func _process(delta: float) -> void:
+	_curr_duration_for_pitch_retain_for_ball_aesth_reach_dest -= delta
+	if _curr_duration_for_pitch_retain_for_ball_aesth_reach_dest <= 0:
+		_curr_duration_for_pitch_retain_for_ball_aesth_reach_dest = 0
+		set_process(false)
+		_curr_pitch_for_ball_aesth_reach_dest = PITCH_FOR_BALL_AESTH_REACH_DEST__NORMAL
+
 
 ##
 
@@ -54,8 +77,19 @@ func _init_all_launch_ball_pickup_relateds():
 func _create_ball_pickup_particle__for_pool():
 	var particle = LaunchBallPickupableParticle_Scene.instance()
 	
+	particle.connect("destination_reached", self, "_on_ball_particle_reached_dest", [particle])
 	
 	return particle
+
+func _on_ball_particle_reached_dest(arg_particle : LaunchBallPickupableParticle):
+	var pos = SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel.get_pos_of_center_ball_hud_image()
+	var player : AudioStreamPlayer2D = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Pickupable_LaunchBallAmmo_AesthBallReached, pos, 1.0)
+	
+	player.pitch_scale = _get_pitch_to_use_for_ball_aesth_reach_dest()
+	
+	_curr_duration_for_pitch_retain_for_ball_aesth_reach_dest = PITCH_FOR_BALL_AESTH_REACH_DEST__DURATION_RESET
+	_curr_pitch_for_ball_aesth_reach_dest += PITCH_FOR_BALL_AESTH_REACH_DEST__INC_PER
+	set_process(true)
 
 #
 
@@ -108,6 +142,12 @@ func play_orange_ring__pickup_of_launch_ball(arg_origin, arg_initial_radius : fl
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius, arg_duration_to_full_radius).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tweener.tween_property(draw_param, "current_radius", arg_final_radius + (arg_final_radius / 3.0), arg_additional_lifetime)
 
+
+#
+
+func _get_pitch_to_use_for_ball_aesth_reach_dest() -> float:
+	return _curr_pitch_for_ball_aesth_reach_dest
+	
 
 #################
 
