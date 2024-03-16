@@ -1,5 +1,6 @@
 extends Control
 
+const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
 
 const EnergyPanel_BatteryFillForeground_Normal = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground.png")
 const EnergyPanel_BatteryFillForeground_Normal_Forecasted = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground_Forecasted.png")
@@ -25,6 +26,10 @@ var can_show_rewind_label : bool = true
 #
 
 var _template__broken_batt_foreground_texture_rect : TextureRect
+
+#
+
+var _battery_break_rect_draw_node : Node2D
 
 #
 
@@ -197,12 +202,206 @@ func set_texture_progresses_modulate__tween(arg_modulate : Color, arg_duration :
 
 #
 
-func template__set_cosmetically_broken():
-	var texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed.png")
-	_template__broken_batt_foreground_texture_rect = create_bar_foreground_sprite(texture)
+#func template__set_cosmetically_broken():
+#	var texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed.png")
+#	_template__broken_batt_foreground_texture_rect = create_bar_foreground_sprite(texture)
+#	set_texture_progresses_modulate__tween(Color(0.3, 0.3, 0.3, 1.0), 0)
+#
+#	return _template__broken_batt_foreground_texture_rect
+
+func template__setup_battery_break():
+	_template__broken_batt_foreground_texture_rect = create_bar_foreground_sprite(null)
 	set_texture_progresses_modulate__tween(Color(0.3, 0.3, 0.3, 1.0), 0)
 	
+	SingletonsAndConsts.current_game_front_hud.init_control_container_above_most_except_pause()
+	
+	_init_battery_break_rect_draw_node()
+	
 	return _template__broken_batt_foreground_texture_rect
+
+func _init_battery_break_rect_draw_node():
+	_battery_break_rect_draw_node = Node2D.new()
+	_battery_break_rect_draw_node.set_script(RectDrawNode)
+	
+	SingletonsAndConsts.current_game_front_hud.add_node_to_control_container_above_most_except_pause(_battery_break_rect_draw_node)
+
+#
+
+func template__play_tween_breaking__set_cosmetically_broken():
+	_template__broken_batt_foreground_texture_rect.visible = true
+	
+	var tweener = create_tween()
+	tweener.tween_interval(1.0)
+	tweener.tween_callback(self, "_do_effects_of_stage_01_crack")
+	tweener.tween_interval(0.4)
+	tweener.tween_callback(self, "_do_effects_of_stage_02_crack")
+	tweener.tween_interval(0.8)
+	tweener.tween_callback(self, "_do_effects_of_stage_03_crack")
+	
+
+func _do_effects_of_stage_01_crack():
+	var crack_texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed_New01.png")
+	_template__broken_batt_foreground_texture_rect.texture = crack_texture
+	
+	CameraManager.camera.add_stress(1.2)
+	_play_battery_crack_particles(2, 1)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelSpecific_BatteryBreak01, 1.0)
+
+func _do_effects_of_stage_02_crack():
+	var crack_texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed_New02.png")
+	_template__broken_batt_foreground_texture_rect.texture = crack_texture
+	
+	CameraManager.camera.add_stress(1.2)
+	_play_battery_crack_particles(2, 1)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelSpecific_BatteryBreak02, 1.0)
+
+func _do_effects_of_stage_03_crack():
+	var crack_texture = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/FrameForeground/EnegyPanel_BatteryFrameForeground_Destroyed_New03.png")
+	_template__broken_batt_foreground_texture_rect.texture = crack_texture
+	
+	CameraManager.camera.add_stress(1.4)
+	_play_battery_crack_particles(10, 4)
+	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_LevelSpecific_BatteryBreak03, 1.0)
+
+#
+
+func _play_battery_crack_particles(arg_count_of_bottom : int, arg_count_of_sides : int):
+	var rng = SingletonsAndConsts.non_essential_rng
+	for i in arg_count_of_bottom:
+		var details = _get_rand_battery_particles_details__from_below(rng)
+		_play_single_battery_crack_particle__from_details(rng, details)
+		var details2 = _get_rand_battery_particles_details__from_top(rng)
+		_play_single_battery_crack_particle__from_details(rng, details2)
+	
+	for i in arg_count_of_sides:
+		var details = _get_rand_battery_particles_details__from_left(rng)
+		_play_single_battery_crack_particle__from_details(rng, details)
+		var details2 = _get_rand_battery_particles_details__from_right(rng)
+		_play_single_battery_crack_particle__from_details(rng, details2)
+
+func _play_single_battery_crack_particle__from_details(arg_rng : RandomNumberGenerator, details : Array):
+	_construct_rect_draw_param_and_tweener_for_battery_break_particle(Color("#654C01"),
+		0.9, 0.9, 0.0,
+		3, 5, 0,
+		details[2], 0.5,
+		details[0], details[1])
+
+func _get_rand_battery_particles_details__from_below(arg_rng : RandomNumberGenerator):
+	var rand_x_pos = arg_rng.randf_range(texture_progress_current.rect_global_position.x, (texture_progress_current.rect_global_position.x + texture_progress_current.rect_size.x))
+	var y_pos = texture_progress_current.rect_global_position.y + texture_progress_current.rect_size.y
+	var initial_pos = Vector2(rand_x_pos, y_pos)
+	
+	#var rand_angle = arg_rng.randf_range(PI/8, 7*PI/8)
+	var center_pos = (texture_progress_current.rect_global_position + texture_progress_current.rect_size/2)
+	var rand_angle = initial_pos.angle_to_point(center_pos)
+	var rand_dist = arg_rng.randf_range(30, 50)
+	
+	
+	var final_pos = initial_pos + Vector2(rand_dist, 0).rotated(rand_angle)
+	
+	var rand_lifetime : float = arg_rng.randf_range(1.0, 1.75)
+	
+	return [initial_pos, final_pos, rand_lifetime]
+
+
+func _get_rand_battery_particles_details__from_top(arg_rng : RandomNumberGenerator):
+	var rand_x_pos = arg_rng.randf_range(texture_progress_current.rect_global_position.x, (texture_progress_current.rect_global_position.x + texture_progress_current.rect_size.x))
+	var y_pos = texture_progress_current.rect_global_position.y
+	var initial_pos = Vector2(rand_x_pos, y_pos)
+	
+	#var rand_angle = arg_rng.randf_range(PI/8, 7*PI/8)
+	var center_pos = (texture_progress_current.rect_global_position + texture_progress_current.rect_size/2)
+	var rand_angle = initial_pos.angle_to_point(center_pos)
+	var rand_dist = arg_rng.randf_range(30, 50)
+	
+	
+	var final_pos = initial_pos + Vector2(rand_dist, 0).rotated(rand_angle)
+	
+	var rand_lifetime : float = arg_rng.randf_range(1.0, 1.75)
+	
+	return [initial_pos, final_pos, rand_lifetime]
+
+
+func _get_rand_battery_particles_details__from_left(arg_rng : RandomNumberGenerator):
+	var rand_y_pos = arg_rng.randf_range(texture_progress_current.rect_global_position.y, (texture_progress_current.rect_global_position.y + texture_progress_current.rect_size.y))
+	var x_pos = texture_progress_current.rect_global_position.x #+ texture_progress_current.rect_size.x
+	var initial_pos = Vector2(x_pos, rand_y_pos)
+	
+	#var rand_angle = arg_rng.randf_range(PI/8, 7*PI/8)
+	var center_pos = (texture_progress_current.rect_global_position + texture_progress_current.rect_size/2)
+	var rand_angle = initial_pos.angle_to_point(center_pos)
+	var rand_dist = arg_rng.randf_range(30, 50)
+	
+	
+	var final_pos = initial_pos + Vector2(rand_dist, 0).rotated(rand_angle)
+	
+	var rand_lifetime : float = arg_rng.randf_range(1.0, 1.75)
+	
+	return [initial_pos, final_pos, rand_lifetime]
+
+func _get_rand_battery_particles_details__from_right(arg_rng : RandomNumberGenerator):
+	var rand_y_pos = arg_rng.randf_range(texture_progress_current.rect_global_position.y, (texture_progress_current.rect_global_position.y + texture_progress_current.rect_size.y))
+	var x_pos = texture_progress_current.rect_global_position.x + texture_progress_current.rect_size.x
+	var initial_pos = Vector2(x_pos, rand_y_pos)
+	
+	#var rand_angle = arg_rng.randf_range(PI/8, 7*PI/8)
+	var center_pos = (texture_progress_current.rect_global_position + texture_progress_current.rect_size/2)
+	var rand_angle = initial_pos.angle_to_point(center_pos)
+	var rand_dist = arg_rng.randf_range(30, 50)
+	
+	
+	var final_pos = initial_pos + Vector2(rand_dist, 0).rotated(rand_angle)
+	
+	var rand_lifetime : float = arg_rng.randf_range(1.0, 1.75)
+	
+	return [initial_pos, final_pos, rand_lifetime]
+
+
+func _construct_rect_draw_param_and_tweener_for_battery_break_particle(arg_modulate : Color,
+		arg_mod_a_start : float, arg_mod_a_mid : float, arg_mod_a_end : float,
+		arg_xy_start : float, arg_xy_mid : float, arg_xy_end : float,
+		arg_lifetime : float, arg_lifetime_ratio_of_mid_to_end : float,
+		arg_center_pos_initial : Vector2, arg_center_pos_final : Vector2):
+	
+	arg_modulate.a = arg_mod_a_start
+	
+	var draw_param = _battery_break_rect_draw_node.DrawParams.new()
+	draw_param.fill_color = arg_modulate
+	draw_param.outline_color = arg_modulate
+	draw_param.outline_width = 0
+	
+	draw_param.lifetime_to_start_transparency = -1
+	draw_param.angle_rad = 0
+	draw_param.lifetime_of_draw = arg_lifetime + 0.3
+	draw_param.has_lifetime = true
+	draw_param.pivot_point = Vector2(0, 0)
+	
+	var size = Vector2(arg_xy_start, arg_xy_start)
+	var initial_rect = Rect2(arg_center_pos_initial - (size/2), size)
+	draw_param.initial_rect = initial_rect
+	
+	_battery_break_rect_draw_node.add_draw_param(draw_param)
+	
+	########
+	
+	var lifetime_to_mid = arg_lifetime * arg_lifetime_ratio_of_mid_to_end
+	var lifetime_to_end = arg_lifetime - lifetime_to_mid
+	
+	var tweener = create_tween()
+	tweener.set_parallel(true)
+	tweener.tween_property(draw_param, "current_rect:position", arg_center_pos_final, arg_lifetime).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	tweener.tween_property(draw_param, "current_rect:size", Vector2(arg_xy_mid, arg_xy_mid), lifetime_to_mid)
+	tweener.tween_property(draw_param, "fill_color:a", arg_mod_a_mid, lifetime_to_mid)
+	tweener.set_parallel(false)
+	
+	tweener.tween_interval(lifetime_to_mid)
+	tweener.set_parallel(true)
+	tweener.tween_property(draw_param, "current_rect:size", Vector2(arg_xy_end, arg_xy_end), lifetime_to_end)
+	tweener.tween_property(draw_param, "fill_color:a", arg_mod_a_end, lifetime_to_end)
+	
+
+##
 
 func template__set_to_normal__from_cosmetically_broken():
 	if is_instance_valid(_template__broken_batt_foreground_texture_rect):

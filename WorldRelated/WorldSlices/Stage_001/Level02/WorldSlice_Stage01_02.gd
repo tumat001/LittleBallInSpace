@@ -24,7 +24,7 @@ const ELECTRIC_SHOCK_SCREEN_SPRITE_SIZE = Vector2(400, 540)
 const ELECTRIC_SHOCK_SCREEN_SPRITE_NEG_SIZE = Vector2(-400, 540)
 
 
-var _broken_energy_panel_frame_texture_rect : TextureRect
+#var _broken_energy_panel_frame_texture_rect : TextureRect
 
 #
 
@@ -152,8 +152,10 @@ func _deferred_init_electrical_shock_screen():
 	
 	##
 	
-	#SingletonsAndConsts.current_game_front_hud.energy_panel.can_show_rewind_label = false
-	_broken_energy_panel_frame_texture_rect = SingletonsAndConsts.current_game_front_hud.energy_panel.template__set_cosmetically_broken()
+	#_broken_energy_panel_frame_texture_rect = SingletonsAndConsts.current_game_front_hud.energy_panel.template__set_cosmetically_broken()
+	#_broken_energy_panel_frame_texture_rect = SingletonsAndConsts.current_game_front_hud.energy_panel.template__setup_battery_break()
+	SingletonsAndConsts.current_game_front_hud.energy_panel.can_show_rewind_label = false
+	SingletonsAndConsts.current_game_front_hud.energy_panel.template__setup_battery_break()
 
 func _deferred_init_all_electrical_equi_particles_related():
 	trail_compo_for_elec_equi_break_particle = MultipleTrailsForNodeComponent.new()
@@ -311,8 +313,8 @@ func _modify_player_electric_modi__after_explosion():
 	_player_modi_energy.is_energy_not_deductable_cond_clauses.remove_clause(_player_modi_energy.IsEnergyNotDeductableClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	_player_modi_energy.allow_display_of_energy_hud = true
 	
-	_broken_energy_panel_frame_texture_rect.visible = true
-
+	#_broken_energy_panel_frame_texture_rect.visible = true
+	SingletonsAndConsts.current_game_front_hud.energy_panel.template__play_tween_breaking__set_cosmetically_broken()
 
 func _hide_electrical_arcs():
 	for arc in _all_electrical_arc_sprites:

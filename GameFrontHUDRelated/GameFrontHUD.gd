@@ -17,6 +17,7 @@ var _adjusted_node_to_in_GE_node_map : Dictionary
 var _half_screen_size = SingletonsAndConsts.current_master.screen_size / 2
 
 var _control_container_above_control_container : Control
+var _control_container_above_most_except_pause : Control
 
 onready var other_hosters = $OtherHosters
 onready var above_other_hosters = $AboveOtherHosters
@@ -350,14 +351,29 @@ func _process(delta):
 # control above other controls
 
 func init_control_container_above_control_container():
-	_control_container_above_control_container = Control.new()
-	add_child(_control_container_above_control_container)
-	move_child(_control_container_above_control_container, control_container.get_index())
-	
-	_control_container_above_control_container.rect_size = SingletonsAndConsts.current_master.screen_size
-	_control_container_above_control_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if !is_instance_valid(_control_container_above_control_container):
+		_control_container_above_control_container = Control.new()
+		add_child(_control_container_above_control_container)
+		move_child(_control_container_above_control_container, control_container.get_index())
+		
+		_control_container_above_control_container.rect_size = SingletonsAndConsts.current_master.screen_size
+		_control_container_above_control_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func add_node_to_control_container_above_control_container(arg_node):
 	_control_container_above_control_container.add_child(arg_node)
+
+
+
+func init_control_container_above_most_except_pause():
+	if !is_instance_valid(_control_container_above_most_except_pause):
+		_control_container_above_most_except_pause = Control.new()
+		add_child(_control_container_above_most_except_pause)
+		move_child(_control_container_above_most_except_pause, in_game_pause_panel_tree.get_index() - 1)
+		
+		_control_container_above_most_except_pause.rect_size = SingletonsAndConsts.current_master.screen_size
+		_control_container_above_most_except_pause.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func add_node_to_control_container_above_most_except_pause(arg_node):
+	_control_container_above_most_except_pause.add_child(arg_node)
 
 

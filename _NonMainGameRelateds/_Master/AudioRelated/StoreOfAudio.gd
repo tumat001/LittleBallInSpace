@@ -177,9 +177,12 @@ enum AudioIds {
 	
 	# LVL Specific
 	SFX_LevelSpecific_Spec0201_StarFilled = 6700
+	SFX_LevelSpecific_BatteryBreak01 = 6701
+	SFX_LevelSpecific_BatteryBreak02 = 6702
+	SFX_LevelSpecific_BatteryBreak03 = 6703
+	
 	
 	#######
-	
 	
 	### COLLISION -- TILE FRAGMENTS
 	SFX_TileFragments_Metal_01 = 7000
