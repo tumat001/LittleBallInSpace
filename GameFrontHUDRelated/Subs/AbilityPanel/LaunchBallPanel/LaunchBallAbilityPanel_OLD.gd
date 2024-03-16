@@ -11,11 +11,9 @@ const COLOR_GREEN := Color(101/255.0, 253/255.0, 78/255.0)
 const COLOR_BLUE := Color(78/255.0, 123/255.0, 253/255.0)
 const COLOR_VIOLET := Color(165/255.0, 78/255.0, 253/255.0)
 
-const COLOR__NORMAL := Color(1, 1, 1, 1)
-const COLOR__NORMAL_BAR_BACKGROUND_EDGE := Color("#FF8000")
-const COLOR__NORMAL_BAR_FILL := Color("#191919")
+const color_transition_duration : float = 0.65
 
-const color_transition_duration : float = 1.0#0.65
+const COLOR__NORMAL := Color(1, 1, 1, 1)
 
 #
 
@@ -35,16 +33,12 @@ var _aim_mode_swap_button_highlight_tweener : SceneTreeTween
 
 onready var ball_count_label = $FreeFormControl/BallCountLabel
 
-#onready var ball_pic_03 = $FreeFormControl/Ball03
-#onready var ball_pic_02 = $FreeFormControl/Ball02
-#onready var ball_pic_01 = $FreeFormControl/Ball01
-#onready var plus_sign = $FreeFormControl/PlusSign
+onready var ball_pic_03 = $FreeFormControl/Ball03
+onready var ball_pic_02 = $FreeFormControl/Ball02
+onready var ball_pic_01 = $FreeFormControl/Ball01
+onready var plus_sign = $FreeFormControl/PlusSign
 
-onready var bar_background_edge = $FreeFormControl/BarBackgroundEdge
-onready var bar_fill = $FreeFormControl/BarFill
 onready var background__white_circles = $FreeFormControl/BackgroundWithCircles
-onready var aim_mode_name_bar_edge = $FreeFormControl/ModeContainer/FreeFormControl/AimModeNameBarEdge
-onready var aim_mode_name_bar_fill = $FreeFormControl/ModeContainer/FreeFormControl/AimModeNameBarFill
 
 onready var aim_mode_icon = $FreeFormControl/ModeContainer/FreeFormControl/AimModeIcon
 onready var aim_mode_label = $FreeFormControl/ModeContainer/FreeFormControl/AimModeLabel
@@ -68,7 +62,7 @@ func set_player_modi_launch_ball(arg_modi):
 	
 	player_modi_launch_ball.player_modi_launch_ball_node.connect("aim_mode_changed", self, "_on_aim_mode_changed", [], CONNECT_PERSIST)
 	
-	#_update_display_based_on_ball_count(player_modi_launch_ball.get_current_ball_count())
+	_update_display_based_on_ball_count(player_modi_launch_ball.get_current_ball_count())
 	_update_display_based_on_infinite_ball_count_status()
 	_update_label_based_on_all_properties()
 	
@@ -78,7 +72,6 @@ func set_player_modi_launch_ball(arg_modi):
 	
 	_update_display_based_on_aim_mode(player_modi_launch_ball.player_modi_launch_ball_node.current_aim_mode)
 	_update_display_based_on_can_change_aim_mode()
-	
 
 func _on_updated_is_ready_for_activation(arg_val):
 	if arg_val:
@@ -90,7 +83,42 @@ func _on_updated_is_ready_for_activation(arg_val):
 ####
 
 func _on_modi_current_ball_count_changed(arg_count):
+	_update_display_based_on_ball_count(arg_count)
 	_update_label_based_on_all_properties()
+
+func _update_display_based_on_ball_count(arg_count):
+	if arg_count > 3:
+		ball_pic_03.visible = true
+		ball_pic_02.visible = true
+		ball_pic_01.visible = true
+		plus_sign.visible = true
+		
+	elif arg_count == 3:
+		ball_pic_03.visible = true
+		ball_pic_02.visible = true
+		ball_pic_01.visible = true
+		plus_sign.visible = false
+		
+	elif arg_count == 2:
+		ball_pic_03.visible = false
+		ball_pic_02.visible = true
+		ball_pic_01.visible = true
+		plus_sign.visible = false
+		
+	elif arg_count == 1:
+		ball_pic_03.visible = false
+		ball_pic_02.visible = false
+		ball_pic_01.visible = true
+		plus_sign.visible = false
+		
+	elif arg_count == 0:
+		ball_pic_03.visible = false
+		ball_pic_02.visible = false
+		ball_pic_01.visible = false
+		plus_sign.visible = false
+		
+	
+	
 
 func _update_label_based_on_all_properties():
 	var is_infinite = player_modi_launch_ball.is_infinite_ball_count
@@ -112,47 +140,31 @@ func _update_display_based_on_infinite_ball_count_status():
 	
 	if is_infinite:
 		_start_rainbow_white_frame_tweener()
+		
 	else:
 		_end_rainbow_white_frame_tweener()
-	
+		
 
 func _start_rainbow_white_frame_tweener():
 	if _rainbow_white_frame_tweener == null:
 		_rainbow_white_frame_tweener = create_tween()
 		
 		_rainbow_white_frame_tweener.set_loops(0)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_RED, COLOR_ORANGE, color_transition_duration)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_ORANGE, COLOR_YELLOW, color_transition_duration)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_YELLOW, COLOR_GREEN, color_transition_duration)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_GREEN, COLOR_BLUE, color_transition_duration)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_BLUE, COLOR_VIOLET, color_transition_duration)
-		_rainbow_white_frame_tweener.tween_method(self, "_tween_method__rainbow_set_modulates_of_controls", COLOR_VIOLET, COLOR_RED, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_RED, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_ORANGE, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_YELLOW, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_GREEN, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_BLUE, color_transition_duration)
+		_rainbow_white_frame_tweener.tween_property(background__white_circles, "modulate", COLOR_VIOLET, color_transition_duration)
 		
-
-func _tween_method__rainbow_set_modulates_of_controls(arg_modulate : Color):
-	var dark_fill_modulate = arg_modulate * COLOR__NORMAL_BAR_FILL
-	
-	background__white_circles.modulate = arg_modulate
-	bar_background_edge.modulate = arg_modulate
-	bar_fill.modulate = dark_fill_modulate
-	
-	aim_mode_name_bar_edge.modulate = arg_modulate
-	aim_mode_name_bar_fill.color = dark_fill_modulate
 
 func _end_rainbow_white_frame_tweener():
 	if _rainbow_white_frame_tweener != null:
 		
 		_rainbow_white_frame_tweener.stop()
+		background__white_circles.modulate = COLOR__NORMAL
+		
 		_rainbow_white_frame_tweener = null
-	
-	_reset_rainbow_modulates_of_controls()
-
-func _reset_rainbow_modulates_of_controls():
-	background__white_circles.modulate = COLOR__NORMAL
-	bar_background_edge.modulate = COLOR__NORMAL_BAR_BACKGROUND_EDGE
-	bar_fill.modulate = COLOR__NORMAL_BAR_FILL
-	aim_mode_name_bar_edge.modulate = COLOR__NORMAL_BAR_BACKGROUND_EDGE
-	aim_mode_name_bar_fill.color = COLOR__NORMAL_BAR_FILL
 
 #
 
