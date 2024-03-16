@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_32.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_DisplayHud_Arrow.png" type="Texture" id=2]
@@ -11,6 +11,11 @@
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_AimMode_NamePanel_BarEdge.png" type="Texture" id=9]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_DisplayHud_Bar.png" type="Texture" id=10]
 [ext_resource path="res://GameFrontHUDRelated/Subs/AbilityPanel/LaunchBallPanel/Assets/LaunchBall_DisplayHud_BarFill.png" type="Texture" id=11]
+[ext_resource path="res://MiscRelated/ShadersRelated/Shader_TextureProgressModReplace.tres" type="Shader" id=12]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 12 )
+shader_param/progress = 1.0
 
 [node name="LaunchBallAbilityPanel" type="MarginContainer"]
 margin_right = 155.0
@@ -36,6 +41,7 @@ mouse_filter = 2
 texture = ExtResource( 2 )
 
 [node name="BarBackgroundEdge" type="TextureRect" parent="FreeFormControl"]
+material = SubResource( 1 )
 margin_left = 45.0
 margin_top = 40.0
 margin_right = 154.0

@@ -33,6 +33,12 @@ var _aim_mode_swap_button_highlight_tweener : SceneTreeTween
 
 #
 
+var _TPMR_control_to_orig_pos_map : Dictionary
+var _arrow_tex_rect : TextureRect
+var _ball_icon : TextureRect
+
+#
+
 onready var ball_count_label = $FreeFormControl/BallCountLabel
 
 #onready var ball_pic_03 = $FreeFormControl/Ball03
@@ -51,7 +57,6 @@ onready var aim_mode_label = $FreeFormControl/ModeContainer/FreeFormControl/AimM
 
 onready var aim_mode_container = $FreeFormControl/ModeContainer
 onready var aim_mode_swap_button = $FreeFormControl/ModeContainer/FreeFormControl/SwapButton
-
 
 onready var free_form_control = $FreeFormControl
 
@@ -221,4 +226,102 @@ func template__do_brief_glowup(arg_delay_for_func_call, arg_func_source, arg_fun
 
 func get_pos_of_center_ball_hud_image() -> Vector2:
 	return pos_of_center_ball.global_position
+
+#########################
+
+func template__setup_starting_animations():
+	_template__setup_starting_animations__bg_circs()
+	_template__setup_starting_animation__bar_edge()
+	_template__setup_starting_animation__miscs()
+
+func _template__setup_starting_animations__bg_circs():
+	var background_circ_shader = preload("res://MiscRelated/ShadersRelated/Shader_TextureProgressModReplaceRadial.tres")
+	var shader_mat = ShaderMaterial.new()
+	shader_mat.shader = background_circ_shader
+	background__white_circles.material = shader_mat
+	
+	shader_mat.set_shader_param("fill_ratio", 1.0)
+	shader_mat.set_shader_param("starting_angle", 180.0)
+	shader_mat.set_shader_param("max_angle", 360.0)
+	shader_mat.set_shader_param("reflect_x", true)
+
+
+func _template__setup_starting_animation__bar_edge():
+	var background_shader = preload("res://MiscRelated/ShadersRelated/Shader_TextureProgressModReplace.tres")
+	var shader_mat = ShaderMaterial.new()
+	shader_mat.shader = background_shader
+	
+	bar_background_edge.material = shader_mat
+	bar_fill.material = shader_mat
+	
+	#Texture Progress Mod Replace
+	_TPMR_control_to_orig_pos_map[bar_background_edge] = bar_background_edge.rect_position
+	_TPMR_control_to_orig_pos_map[bar_fill] = bar_fill.rect_position
+	
+	_set_TPMR_shader_progress__and_set_rect_poses(0.0)
+
+
+func _set_TPMR_shader_progress__and_set_rect_poses(arg_progress):
+	var shader_mat : ShaderMaterial = bar_background_edge.material  #shared with bar_fill
+	
+	shader_mat.set_shader_param("progress", arg_progress)
+	
+	_set_control_pos_x_based_on_progress(bar_background_edge, arg_progress)
+	_set_control_pos_x_based_on_progress(bar_fill, arg_progress)
+
+func _set_control_pos_x_based_on_progress(arg_control : Control, arg_progress : float):
+	var orig_pos = _TPMR_control_to_orig_pos_map[arg_control]
+	arg_control.rect_position.x = orig_pos - (arg_control.rect_size.x * arg_progress)
+
+
+func _template__setup_starting_animation__miscs():
+	_arrow_tex_rect = $FreeFormControl/Arrow
+	_arrow_tex_rect.visible = false
+	_ball_icon = $FreeFormControl/BallIcon
+	_ball_icon.visible = false
+	
+	ball_count_label.visible = false
+
+
+#todoimp continue this
+func template__play_tween_start_startup_animation():
+	var tweener = create_tween()
+	tweener.tween_interval(0.2)
+	tweener.tween_method(self, "_template__tween_method_set_fill_ratio_background_circ", 0.0, 1.0, 0.5)
+	tweener.tween_interval(0.1)
+	tweener.tween_method(self, "_template__tween_method_set_progress_bars", 0.0, 1.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tweener.tween_interval(0.1)
+	tweener.tween_callback(self, "_template__tween_callback__make_miscs_vis_but_0_mod_a")
+	tweener.tween_method(self, "_template__tween_method_set_modulate_a_of_miscs", 0.0, 1.0)
+	tweener.tween_callback(self, "_template__tween_callback_starting_display_finished")
+
+func _template__tween_method_set_fill_ratio_background_circ(arg_prog):
+	var shader_mat = background__white_circles.material
+	shader_mat.set_shader_param("fill_ratio", arg_prog)
+
+func _template__tween_method_set_progress_bars(arg_progress : float):
+	_set_TPMR_shader_progress__and_set_rect_poses(arg_progress)
+
+func _template__tween_callback__make_miscs_vis_but_0_mod_a():
+	_arrow_tex_rect.modulate.a = 0
+	_arrow_tex_rect.visible = true
+	
+	ball_count_label.modulate.a = 0
+	ball_count_label.visible = true
+	
+	_ball_icon.modulate.a = 0
+	_ball_icon.visible = true
+	
+
+func _template__tween_method_set_modulate_a_of_miscs(arg_progress : float):
+	_arrow_tex_rect.modulate.a = arg_progress
+	ball_count_label.modulate.a = arg_progress
+	_ball_icon.modulate.a = arg_progress
+	
+
+func _template__tween_callback_starting_display_finished():
+	background__white_circles.material = null
+	bar_background_edge.material = null
+	bar_fill.material = null
+	
 

@@ -2,6 +2,7 @@ extends Control
 
 const RectDrawNode = preload("res://MiscRelated/DrawRelated/RectDrawNode/RectDrawNode.gd")
 
+const PlayerModi_Energy = preload("res://PlayerRelated/PlayerModi/Imps/EnergyRelated/PlayerModi_Energy.gd")
 const EnergyPanel_BatteryFillForeground_Normal = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground.png")
 const EnergyPanel_BatteryFillForeground_Normal_Forecasted = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground_Forecasted.png")
 const EnergyPanel_BatteryFillForeground_Mega = preload("res://GameFrontHUDRelated/Subs/EnergyPanel/Assets/EnegyPanel_BatteryFillForeground__MegaBattery.png")
@@ -9,7 +10,8 @@ const EnergyPanel_BatteryFillForeground_Mega_Forecasted = preload("res://GameFro
 
 #
 
-const ENERGY_LABEL_STRING_FORMAT = "%s / %s"
+const ENERGY_LABEL_STRING_FORMAT = "%s"
+const ENERGY_LABEL_STRING_FORMAT__MILISEC = "%.2f"
 
 #
 
@@ -94,11 +96,15 @@ func _update_display__for_max():
 #
 
 func _update_label():
-	var curr_energy = ceil(player_modi__energy.get_current_energy())
-	var max_energy = ceil(player_modi__energy.get_max_energy())
+	var curr_energy = player_modi__energy.get_current_energy()
+	var max_energy = player_modi__energy.get_max_energy() #ceil(player_modi__energy.get_max_energy())
 	
-	energy_label.text = ENERGY_LABEL_STRING_FORMAT % [curr_energy, max_energy]
-
+	#energy_label.text = ENERGY_LABEL_STRING_FORMAT % [curr_energy, max_energy]
+	if curr_energy > PlayerModi_Energy.ENERGY_RATIO_FOR_WARNING_TRIGGER * max_energy:
+		curr_energy = ceil(curr_energy)
+		energy_label.text = ENERGY_LABEL_STRING_FORMAT % [curr_energy]
+	else:
+		energy_label.text = ENERGY_LABEL_STRING_FORMAT__MILISEC % [curr_energy]
 
 #
 

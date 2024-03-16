@@ -425,6 +425,8 @@ func stop_stream_player_and_mark_as_inactive(arg_stream_player):
 	
 	arg_stream_player.stop()
 	
+	arg_stream_player.pitch_scale = 1.0
+	
 	sound_path_name_to__stream_player_node_to_is_active_map[arg_path_name][arg_stream_player] = false
 	
 	if stream_player_node_to_mask_level_map.has(arg_stream_player):
