@@ -467,9 +467,9 @@ frames = ExtResource( 27 )
 
 [node name="VKP_LaunchBall" parent="MiscContainer/VisIns_BallShoot" index="1" instance=ExtResource( 19 )]
 modulate = Color( 1, 1, 1, 1 )
-margin_left = 34.9999
+margin_left = 27.9999
 margin_top = 11.0
-margin_right = 80.9999
+margin_right = 73.9999
 margin_bottom = 48.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -544,7 +544,6 @@ offset = Vector2( 0, -50 )
 
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_LaunchBallControlUnhide" to="." method="_on_PDAR_LaunchBallControlUnhide_player_entered_in_area"]
 [connection signal="player_entered_in_area" from="AreaRegionContainer/PDAR_ActivateVisIns_ToggleAim" to="." method="_on_PDAR_ActivateVisIns_ToggleAim_player_entered_in_area"]
-[connection signal="screen_entered" from="MiscContainer/GhostSprite01/GhostSpriteVisibilityNotifier2D" to="." method="_on_GhostSpriteVisibilityNotifier2D_screen_entered"]
 
 [editable path="TileContainer/BaseTileSet_Normal"]
 [editable path="TileContainer/BaseTileSet_Energized"]

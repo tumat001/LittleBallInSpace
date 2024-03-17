@@ -240,8 +240,8 @@ func _template__setup_starting_animations__bg_circs():
 	shader_mat.shader = background_circ_shader
 	background__white_circles.material = shader_mat
 	
-	shader_mat.set_shader_param("fill_ratio", 1.0)
-	shader_mat.set_shader_param("starting_angle", 180.0)
+	shader_mat.set_shader_param("fill_ratio", 0.0)
+	shader_mat.set_shader_param("start_angle", 180.0)
 	shader_mat.set_shader_param("max_angle", 360.0)
 	shader_mat.set_shader_param("reflect_x", true)
 
@@ -255,23 +255,25 @@ func _template__setup_starting_animation__bar_edge():
 	bar_fill.material = shader_mat
 	
 	#Texture Progress Mod Replace
-	_TPMR_control_to_orig_pos_map[bar_background_edge] = bar_background_edge.rect_position
-	_TPMR_control_to_orig_pos_map[bar_fill] = bar_fill.rect_position
+	_TPMR_control_to_orig_pos_map[bar_background_edge] = bar_background_edge.rect_position #- Vector2(bar_background_edge.rect_position.x, 0)
+	_TPMR_control_to_orig_pos_map[bar_fill] = bar_fill.rect_position #- Vector2(bar_fill.rect_position.x, 0)
 	
 	_set_TPMR_shader_progress__and_set_rect_poses(0.0)
-
+	_set_rect_poses__as_progress(0.0)
 
 func _set_TPMR_shader_progress__and_set_rect_poses(arg_progress):
 	var shader_mat : ShaderMaterial = bar_background_edge.material  #shared with bar_fill
-	
 	shader_mat.set_shader_param("progress", arg_progress)
-	
+
+func _set_rect_poses__as_progress(arg_progress : float):
 	_set_control_pos_x_based_on_progress(bar_background_edge, arg_progress)
 	_set_control_pos_x_based_on_progress(bar_fill, arg_progress)
 
+
+
 func _set_control_pos_x_based_on_progress(arg_control : Control, arg_progress : float):
 	var orig_pos = _TPMR_control_to_orig_pos_map[arg_control]
-	arg_control.rect_position.x = orig_pos - (arg_control.rect_size.x * arg_progress)
+	arg_control.rect_position.x = orig_pos.x - (arg_control.rect_size.x * (1 - arg_progress))
 
 
 func _template__setup_starting_animation__miscs():
@@ -283,24 +285,34 @@ func _template__setup_starting_animation__miscs():
 	ball_count_label.visible = false
 
 
-#todoimp continue this
 func template__play_tween_start_startup_animation():
 	var tweener = create_tween()
 	tweener.tween_interval(0.2)
 	tweener.tween_method(self, "_template__tween_method_set_fill_ratio_background_circ", 0.0, 1.0, 0.5)
 	tweener.tween_interval(0.1)
-	tweener.tween_method(self, "_template__tween_method_set_progress_bars", 0.0, 1.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tweener.set_parallel(true)
+	tweener.tween_callback(self, "_tween_callback__play_sound__bar_slide").set_delay(0.35)
+	tweener.tween_method(self, "_template__tween_method_set_progress_bar_shader", 0.0, 1.0, 1.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT).set_delay(0.35)
+	tweener.tween_method(self, "_template__tween_method_set_rect_bar", 0.0, 1.0, 1.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tweener.set_parallel(false)
 	tweener.tween_interval(0.1)
 	tweener.tween_callback(self, "_template__tween_callback__make_miscs_vis_but_0_mod_a")
-	tweener.tween_method(self, "_template__tween_method_set_modulate_a_of_miscs", 0.0, 1.0)
+	tweener.tween_method(self, "_template__tween_method_set_modulate_a_of_miscs", 0.0, 1.0, 0.5)
 	tweener.tween_callback(self, "_template__tween_callback_starting_display_finished")
 
 func _template__tween_method_set_fill_ratio_background_circ(arg_prog):
 	var shader_mat = background__white_circles.material
 	shader_mat.set_shader_param("fill_ratio", arg_prog)
 
-func _template__tween_method_set_progress_bars(arg_progress : float):
+
+func _tween_callback__play_sound__bar_slide():
+	AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_LevelSpecific_LaunchBallPanelBarSlide, rect_global_position, 1.3)
+
+func _template__tween_method_set_progress_bar_shader(arg_progress : float):
 	_set_TPMR_shader_progress__and_set_rect_poses(arg_progress)
+
+func _template__tween_method_set_rect_bar(arg_progress : float):
+	_set_rect_poses__as_progress(arg_progress) 
 
 func _template__tween_callback__make_miscs_vis_but_0_mod_a():
 	_arrow_tex_rect.modulate.a = 0
@@ -312,6 +324,7 @@ func _template__tween_callback__make_miscs_vis_but_0_mod_a():
 	_ball_icon.modulate.a = 0
 	_ball_icon.visible = true
 	
+	AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_LevelSpecific_LaunchBallPanelBarSlide_End, rect_global_position, 1.3)
 
 func _template__tween_method_set_modulate_a_of_miscs(arg_progress : float):
 	_arrow_tex_rect.modulate.a = arg_progress

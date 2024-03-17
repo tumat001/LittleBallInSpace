@@ -14,6 +14,8 @@ font_data = ExtResource( 2 )
 modulate = Color( 0.811765, 0.811765, 0.811765, 1 )
 margin_right = 38.0
 margin_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource( 1 )
 

@@ -182,6 +182,8 @@ enum AudioIds {
 	SFX_LevelSpecific_BatteryBreak02 = 6702
 	SFX_LevelSpecific_BatteryBreak03 = 6703
 	
+	SFX_LevelSpecific_LaunchBallPanelBarSlide = 6705
+	SFX_LevelSpecific_LaunchBallPanelBarSlide_End = 6706
 	
 	#######
 	

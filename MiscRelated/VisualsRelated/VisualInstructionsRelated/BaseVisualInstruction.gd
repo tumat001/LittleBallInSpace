@@ -62,7 +62,7 @@ func _ready() -> void:
 	
 	_update_can_do_process_based_on_vals()
 	
-	rotation = 0.0
+	#rotation = 0.0
 
 ##
 

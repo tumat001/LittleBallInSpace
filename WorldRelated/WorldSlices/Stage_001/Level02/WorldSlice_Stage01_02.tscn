@@ -375,9 +375,9 @@ texture = ExtResource( 23 )
 
 [node name="VKP_Rewind" parent="MessegesContainer" index="6" instance=ExtResource( 7 )]
 modulate = Color( 1, 1, 1, 1 )
-margin_left = 383.0
+margin_left = 387.0
 margin_top = 182.0
-margin_right = 429.0
+margin_right = 433.0
 margin_bottom = 219.0
 size_flags_horizontal = 6
 modulate_normal = Color( 1, 1, 1, 1 )

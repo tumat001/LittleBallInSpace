@@ -23,6 +23,8 @@ var _ghost_vis_tweener : SceneTreeTween
 
 var _toggle_aim_mode_arrow_rotation_tweener : SceneTreeTween
 
+var _launch_ball_panel
+
 #
 
 onready var vkp_launch_ball = $MiscContainer/VisIns_BallShoot/VKP_LaunchBall
@@ -48,6 +50,7 @@ onready var PDAR_near_fakeout = $AreaRegionContainer/PDAreaRegion_NearFakeout
 onready var vis_ins_anim__ball_shoot = $MiscContainer/VisIns_BallShoot
 
 onready var ghost_sprite = $MiscContainer/GhostSprite01
+onready var ghost_sprite_vis_notif_2d = $MiscContainer/GhostSprite01/GhostSpriteVisibilityNotifier2D
 
 onready var vis_ins_anim__toggle_aim_mode = $MiscContainer/VisIns_ToggleAimMode
 onready var vis_ins_anim__toggle_aim_mode__anim_sprite = vis_ins_anim__toggle_aim_mode.anim_sprite_of_vis_ins
@@ -94,6 +97,17 @@ func _on_after_game_start_init():
 	PDAR_near_fakeout.connect("player_entered_in_area", self, "_on_player_entered_in_area__PDAR_near_fakeout", [], CONNECT_ONESHOT)
 	
 	_init_ghost_sprite()
+	
+	if game_elements.is_game_front_hud_initialized:
+		_on_GFH_initialized(game_elements.game_front_hud)
+	else:
+		game_elements.connect("game_front_hud_initialized", self, "_on_GFH_initialized", [], CONNECT_ONESHOT)
+
+
+func _on_GFH_initialized(arg_GFH):
+	_launch_ball_panel = SingletonsAndConsts.current_game_front_hud.ability_panel.launch_ball_ability_panel
+	_launch_ball_panel.template__setup_starting_animations()
+
 
 func _configure_labels():
 	#var orig_text__launch_ball = launch_ball_ins_label.text
@@ -140,7 +154,7 @@ func _on_item_cutscene_end(arg_param):
 	_add_launch_ball_modi()
 	
 	SingletonsAndConsts.current_game_front_hud.template__start_focus_on_launch_ball_panel__with_glow_up(0.4, self, "_on_highlight_launchball_panel_ended", null)
-	
+	_launch_ball_panel.template__play_tween_start_startup_animation()
 	
 	var BGM_playlist_id_to_play = StoreOfAudio.BGMPlaylistId.RISING_01
 	if !StoreOfAudio.is_BGM_playlist_id_playing(BGM_playlist_id_to_play):
@@ -178,6 +192,15 @@ func _make_god_rays_sprite_invisible():
 
 
 #######
+
+
+func _on_PDAR_LaunchBallControlUnhide_player_entered_in_area():
+	GameSettingsManager.set_game_control_name_string__is_hidden("game_launch_ball", false)
+	
+	vis_ins_anim__ball_shoot.start_display()
+	
+
+#
 
 func _on_player_entered_in_area__PDAR_near_fakeout():
 	StoreOfAudio.BGM_playlist_catalog.start_play_audio_play_list(StoreOfAudio.BGMPlaylistId.SPECIALS_01, StoreOfAudio.AudioIds.BGM_Special01_FakeoutSuspense)
@@ -251,9 +274,9 @@ func _do_game_state_modifying_actions__setup_for_layout_02():
 
 func _init_ghost_sprite():
 	ghost_sprite.modulate.a = 0.5
-	
+	ghost_sprite_vis_notif_2d.connect("screen_entered", self, "_on_ghost_vis_notifier_screen_entered", [], CONNECT_ONESHOT)
 
-func _on_GhostSpriteVisibilityNotifier2D_screen_entered() -> void:
+func _on_ghost_vis_notifier_screen_entered() -> void:
 	var tweener = create_tween()
 	tweener.tween_interval(2.75)
 	tweener.tween_callback(self, "_tween_hide_ghost_then_queue_free", [0.75])
@@ -262,7 +285,8 @@ func _on_GhostSpriteVisibilityNotifier2D_screen_entered() -> void:
 	
 	##
 	
-	CameraManager.connect("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen")
+	if !CameraManager.is_connected("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen"):
+		CameraManager.connect("camera_zoom_changed", self, "_on_camera_zoom_changed_on_ghost_in_screen")
 
 
 func _on_camera_zoom_changed_on_ghost_in_screen(arg_is_default_zoom):
