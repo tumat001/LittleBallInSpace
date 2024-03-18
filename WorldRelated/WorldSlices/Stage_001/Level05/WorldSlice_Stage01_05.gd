@@ -165,9 +165,8 @@ func _on_item_cutscene_end(arg_param):
 func _on_highlight_launchball_panel_ended(arg_param):
 	_start_hide_god_rays()
 	
-	game_elements.configure_game_state_for_end_of_cutscene_occurance(false)
+	game_elements.configure_game_state_for_end_of_cutscene_occurance(true)
 	#game_elements.allow_rewind_manager_to_store_and_cast_rewind()
-	
 	#_start_remote_dialog__01()
 
 

@@ -37,9 +37,16 @@ func _ready():
 	
 	###########
 	
+	vkp_ui_up.use_image_display_instead_of_text = true
+	vkp_ui_down.use_image_display_instead_of_text = true
+	vkp_ui_left.use_image_display_instead_of_text = true
+	vkp_ui_right.use_image_display_instead_of_text = true
+	
 	vkp_ui_up.any_control_action_name = "ui_up"
 	vkp_ui_down.any_control_action_name = "ui_down"
 	vkp_ui_left.any_control_action_name = "ui_left"
 	vkp_ui_right.any_control_action_name = "ui_right"
 	vkp_ui_enter.any_control_action_name = "ui_accept"
+	
+
 

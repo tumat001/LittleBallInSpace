@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://ObjectsRelated/Objects/BaseObject.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Blue.png" type="Texture" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_On_Gray.png" type="Texture" id=11]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Gray.png" type="Texture" id=12]
 [ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Yellow.png" type="Texture" id=13]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_Off_Violet.png" type="Texture" id=14]
+[ext_resource path="res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_Base_On_Violet.png" type="Texture" id=15]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 12, 3 )
@@ -57,6 +59,16 @@ animations = [ {
 "frames": [ ExtResource( 8 ) ],
 "loop": true,
 "name": "red_on",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "violet_off",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ) ],
+"loop": true,
+"name": "violet_on",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 13 ) ],
@@ -110,7 +122,7 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" parent="." index="1"]
 frames = SubResource( 1 )
-animation = "gray_on"
+animation = "violet_on"
 playing = true
 
 [node name="CollisionShape2D" parent="." index="2"]

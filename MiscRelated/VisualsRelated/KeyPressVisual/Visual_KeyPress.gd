@@ -26,12 +26,19 @@ var _curr_idx__any_control_action_name
 
 #
 
+var use_image_display_instead_of_text : bool = false setget set_use_image_display_instead_of_text
+
+#
+
 export(Color) var modulate_normal = MODULATE_NORMAL setget set_modulate_normal
 export(Color) var label_modulate = Color("#dddddd") setget set_label_modulate
 
 #
 
+var key_press_sprite : Sprite
+
 onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer/KeyPressLabel
+onready var main_margin_container = $HBoxContainer/MiddleFillContainer/MarginContainer
 
 #
 
@@ -45,6 +52,15 @@ onready var key_press_label = $HBoxContainer/MiddleFillContainer/MarginContainer
 #func get_text_for_keypress():
 #	return text_for_keypress
 
+
+func set_use_image_display_instead_of_text(arg_val):
+	use_image_display_instead_of_text = arg_val
+	
+	if arg_val and !is_instance_valid(key_press_sprite):
+		key_press_sprite = Sprite.new()
+		main_margin_container.add_child(key_press_sprite)
+
+#
 
 func set_modulate_normal(arg_mod : Color):
 	modulate_normal = arg_mod
@@ -66,6 +82,7 @@ func set_label_modulate(arg_mod : Color):
 
 func _ready():
 	if !Engine.editor_hint:
+		set_use_image_display_instead_of_text(use_image_display_instead_of_text)
 		set_change_state_if_game_control_is_conflicting(change_state_if_game_control_is_conflicting)
 	
 	set_label_modulate(label_modulate)
@@ -181,10 +198,60 @@ func _update_key_press_label__as_any_control():
 
 
 func _show_next_control_char__any_control():
-	key_press_label.text = _all_key_char__of_any_control_name[_curr_idx__any_control_action_name]
+	#key_press_label.text = _all_key_char__of_any_control_name[_curr_idx__any_control_action_name]
+	var used_img : bool = false
+	if use_image_display_instead_of_text:
+		used_img = _set_keypress_label_img__any_supported_game_control_as_ui_directions(_all_key_char__of_any_control_name[_curr_idx__any_control_action_name])
+	
+	if !used_img:
+		_set_keypress_label_text(_all_key_char__of_any_control_name[_curr_idx__any_control_action_name])
 	
 	_curr_idx__any_control_action_name += 1
 	if _all_key_char__of_any_control_name.size() <= _curr_idx__any_control_action_name:
 		_curr_idx__any_control_action_name = 0
+
+
+#
+
+func _set_keypress_label_text(arg_text : String):
+	key_press_label.text = arg_text
+	key_press_label.visible = true
+	if is_instance_valid(key_press_sprite):
+		key_press_sprite.visible = false
+
+
+func _set_keypress_label_img__any_supported_game_control_as_ui_directions(arg_text : String):
+	var is_used_img : bool = false
+	match arg_text:
+		"Up":
+			_set_keypress_label_img(load("res://MiscRelated/VisualsRelated/MiscAssets/MiscVisuals_ArrowUp.png"))
+			key_press_sprite.rotation = 0.0
+			is_used_img = true
+		"Down":
+			_set_keypress_label_img(load("res://MiscRelated/VisualsRelated/MiscAssets/MiscVisuals_ArrowUp.png"))
+			key_press_sprite.rotation = PI
+			is_used_img = true
+		"Left":
+			_set_keypress_label_img(load("res://MiscRelated/VisualsRelated/MiscAssets/MiscVisuals_ArrowUp.png"))
+			key_press_sprite.rotation = 3*PI/2
+			is_used_img = true
+		"Right":
+			_set_keypress_label_img(load("res://MiscRelated/VisualsRelated/MiscAssets/MiscVisuals_ArrowUp.png"))
+			key_press_sprite.rotation = PI/2
+			is_used_img = true
+	
+	call_deferred("_update_sprite_pos")
+	return is_used_img
+
+func _update_sprite_pos():
+	key_press_sprite.position = main_margin_container.rect_position + main_margin_container.rect_size/2
+	
+
+func _set_keypress_label_img(arg_img : Texture):
+	key_press_label.visible = false
+	if is_instance_valid(key_press_sprite):
+		key_press_sprite.texture = arg_img
+		key_press_sprite.visible = true
+	
 
 

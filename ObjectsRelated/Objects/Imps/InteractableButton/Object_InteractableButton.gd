@@ -13,7 +13,7 @@ const TILESET_COLOR__RED = Color("#ff2424") #Color(253/255.0, 17/255.0, 19/255.0
 const TILESET_COLOR__GREEN = Color("#1cff09") #Color(17/255.0, 253/255.0, 19/255.0)
 const TILESET_COLOR__YELLOW = Color("#FFDC70")
 const TILESET_COLOR__GRAY = Color("#B8B8B8")
-
+const TILESET_COLOR__VIOLET = Color("#9500DB")
 
 const BUTTON_CONTAINER_Y_CHANGE_DURATION : float = 0.5
 const BUTTON_CONTAINER_Y_POS__NOT_PRESSED = -16.0
@@ -82,6 +82,7 @@ enum ButtonColor {
 	GRAY = 3,
 	
 	YELLOW = 4,
+	VIOLET = 5,
 }
 export(ButtonColor) var button_color : int = ButtonColor.BLUE setget set_button_color
 
@@ -270,6 +271,8 @@ func _get_tileset_color_associated_with_button_color_id(arg_button_color):
 			color = TILESET_COLOR__YELLOW
 		ButtonColor.GRAY:
 			color = TILESET_COLOR__GRAY
+		ButtonColor.VIOLET:
+			color = TILESET_COLOR__VIOLET
 	
 	return color
 
@@ -315,6 +318,13 @@ func _update_button_display():
 					base_sprite.play("gray_on")
 				else:
 					base_sprite.play("gray_off")
+				
+			ButtonColor.VIOLET:
+				button_sprite.texture = preload("res://ObjectsRelated/Objects/Imps/InteractableButton/Assets/InteractableButton_MultiUse_Violet.png")
+				if is_pressed:
+					base_sprite.play("violet_on")
+				else:
+					base_sprite.play("violet_off")
 				
 
 #
