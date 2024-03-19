@@ -45,7 +45,7 @@ func _on_wait_after_portal_enter_done():
 	
 
 
-##
+####
 
 func _on_PDAR_ForLeft_player_entered_in_area() -> void:
 	_begin_actions__summon_enemies_in_sector(enemy_type_pos_marker_left)
