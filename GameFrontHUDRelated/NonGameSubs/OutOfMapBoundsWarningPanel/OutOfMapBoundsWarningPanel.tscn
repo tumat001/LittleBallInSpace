@@ -89,8 +89,8 @@ margin_top = 15.0
 margin_right = 332.0
 margin_bottom = 48.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-text = "Warning, you are outside of the map.
-You can hold [%s] to rewind."
+text = "Hpld [%s] to rewind.
+You are outside of the map."
 align = 1
 
 [node name="Border_Right" parent="WarningPanel/DialogTemplate_Body_CBM/GridContainer" index="5"]

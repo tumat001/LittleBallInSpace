@@ -6,6 +6,27 @@ const TextureRectComponentPool = preload("res://MiscRelated/PoolRelated/Imps/Tex
 
 #
 
+const GRADIENT_FILL__TWEEN_DURATION : float = 0.4
+
+const GRADIENT_FILL__TOP_LEFT__STAR := Color("#5500a9")
+const GRADIENT_FILL__TOP_RIGHT__STAR := Color("#000000")
+const GRADIENT_FILL__BOT_LEFT__STAR := Color("#000000")
+const GRADIENT_FILL__BOT_RIGHT__STAR := Color("#131e95")
+
+const GRADIENT_FILL__TOP_LEFT__NORMAL := Color("#322601")
+const GRADIENT_FILL__TOP_RIGHT__NORMAL := Color("#000000")
+const GRADIENT_FILL__BOT_LEFT__NORMAL := Color("#000000")
+const GRADIENT_FILL__BOT_RIGHT__NORMAL := Color("#0f0b00")
+
+
+const GRADIENT_FILL__TOP_LEFT__PARAM_NAME = "topleft"
+const GRADIENT_FILL__TOP_RIGHT__PARAM_NAME = "topright"
+const GRADIENT_FILL__BOT_LEFT__PARAM_NAME = "bottomleft"
+const GRADIENT_FILL__BOT_RIGHT__PARAM_NAME = "bottomright"
+
+
+#
+
 const POINTER_Y_POS = 23.0
 const POINTER_X_STARTING_POS = 311
 const POINTER_X_ENDING_POS = 11
@@ -34,12 +55,20 @@ var _datas_size : float
 
 #
 
+var _curr_gradient_fill_shader_tweener : SceneTreeTween
+
+#
+
 onready var marker_container = $VBoxContainer/MarginContainer/Control/MarkerContainer
 onready var strip_container = $VBoxContainer/MarginContainer/Control/StripContainer
 
 onready var marker_pointer = $VBoxContainer/MarginContainer/Control/MarkerPointer
 
 onready var time_label = $VBoxContainer/MarginContainer2/MarginContainer/TimeLabel
+
+
+onready var gradient_fill = $VBoxContainer/MarginContainer/GradientFill
+onready var gradient_fill_shader_mat : ShaderMaterial = gradient_fill.material
 
 #######
 
@@ -64,6 +93,15 @@ func _ready():
 	_rewind_manager.connect("rewindable_datas_pop_back", self, "_on_rewindable_datas_pop_back", [], CONNECT_PERSIST)
 	
 	visible = false
+	
+	#
+	
+	call_deferred("_deferred_ready")
+
+func _deferred_ready():
+	_connect_to_source__is_star_collected()
+	_update_panel_display_based_on_is_all_stars_collected()
+
 
 ##
 
@@ -146,4 +184,97 @@ func _on_rewindable_datas_pop_back(arg_count):
 	marker_pointer.rect_position.x = pos_x
 	
 	time_label.text = TIME_LABEL_TEXT_FORMAT % _rewind_manager.get_current_rewindable_duration_length()
+
+
+###########
+
+
+func _connect_to_source__is_star_collected():
+	GameSaveManager.connect("tentative_coin_ids_collected_changed__for_curr_level", self, "_on_GSM_tentative_coin_ids_collected_changed__for_curr_level")
+
+func _on_GSM_tentative_coin_ids_collected_changed__for_curr_level(arg_tentative_coin_ids_collected_in_curr_level_id, arg_is_collected, arg_is_all_collected):
+	_update_panel_display_based_on_is_all_stars_collected()
+
+func _update_panel_display_based_on_is_all_stars_collected():
+	if GameSaveManager.is_all_coins_collected_in_curr_level__tentative():
+		# star
+		if is_visible_in_tree():
+			_tween_set__gradient_fill_color__to_star()
+		else:
+			_instant_set__gradient_fill_colors__star()
+		
+	else:
+		# normal
+		if is_visible_in_tree():
+			_tween_set__gradient_fill_color__to_normal()
+		else:
+			_instant_set__gradient_fill_colors__normal()
+	
+	
+	#print("%s. %s" % [GameSaveManager.is_all_coins_collected_in_curr_level__tentative(), is_visible_in_tree()])
+
+
+
+func _instant_set__gradient_fill_colors__normal():
+	_set_gradient_fill_shader_mat_params(
+		GRADIENT_FILL__TOP_LEFT__NORMAL,
+		GRADIENT_FILL__TOP_RIGHT__NORMAL,
+		GRADIENT_FILL__BOT_LEFT__NORMAL,
+		GRADIENT_FILL__BOT_RIGHT__NORMAL
+	)
+
+func _instant_set__gradient_fill_colors__star():
+	_set_gradient_fill_shader_mat_params(
+		GRADIENT_FILL__TOP_LEFT__STAR,
+		GRADIENT_FILL__TOP_RIGHT__STAR,
+		GRADIENT_FILL__BOT_LEFT__STAR,
+		GRADIENT_FILL__BOT_RIGHT__STAR
+	)
+	
+
+func _set_gradient_fill_shader_mat_params(arg_top_left : Color, arg_top_right, arg_bot_left, arg_bot_right):
+	gradient_fill_shader_mat.set_shader_param(GRADIENT_FILL__TOP_LEFT__PARAM_NAME, arg_top_left)
+	gradient_fill_shader_mat.set_shader_param(GRADIENT_FILL__TOP_RIGHT__PARAM_NAME, arg_top_right)
+	gradient_fill_shader_mat.set_shader_param(GRADIENT_FILL__BOT_LEFT__PARAM_NAME, arg_bot_left)
+	gradient_fill_shader_mat.set_shader_param(GRADIENT_FILL__BOT_RIGHT__PARAM_NAME, arg_bot_right)
+
+
+
+func _tween_set__gradient_fill_color__to_normal():
+	_attempt_kill_curr_gradient_fill_shader_tweener()
+	
+	var top_left = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__TOP_LEFT__PARAM_NAME)
+	var top_right = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__TOP_RIGHT__PARAM_NAME)
+	var bot_left = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__BOT_LEFT__PARAM_NAME)
+	var bot_right = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__BOT_RIGHT__PARAM_NAME)
+	
+	_curr_gradient_fill_shader_tweener = create_tween()
+	_curr_gradient_fill_shader_tweener.set_parallel(true)
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", top_left, GRADIENT_FILL__TOP_LEFT__NORMAL, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__TOP_LEFT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", top_right, GRADIENT_FILL__TOP_RIGHT__NORMAL, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__TOP_RIGHT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", bot_left, GRADIENT_FILL__BOT_LEFT__NORMAL, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__BOT_LEFT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", bot_right, GRADIENT_FILL__BOT_RIGHT__NORMAL, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__BOT_RIGHT__PARAM_NAME])
+
+func _tween_set__gradient_fill_color__to_star():
+	_attempt_kill_curr_gradient_fill_shader_tweener()
+	
+	var top_left = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__TOP_LEFT__PARAM_NAME)
+	var top_right = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__TOP_RIGHT__PARAM_NAME)
+	var bot_left = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__BOT_LEFT__PARAM_NAME)
+	var bot_right = gradient_fill_shader_mat.get_shader_param(GRADIENT_FILL__BOT_RIGHT__PARAM_NAME)
+	
+	_curr_gradient_fill_shader_tweener = create_tween()
+	_curr_gradient_fill_shader_tweener.set_parallel(true)
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", top_left, GRADIENT_FILL__TOP_LEFT__STAR, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__TOP_LEFT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", top_right, GRADIENT_FILL__TOP_RIGHT__STAR, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__TOP_RIGHT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", bot_left, GRADIENT_FILL__BOT_LEFT__STAR, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__BOT_LEFT__PARAM_NAME])
+	_curr_gradient_fill_shader_tweener.tween_method(self, "_tween_set__gradient_fill_color_val_and_param_name", bot_right, GRADIENT_FILL__BOT_RIGHT__STAR, GRADIENT_FILL__TWEEN_DURATION, [GRADIENT_FILL__BOT_RIGHT__PARAM_NAME])
+
+
+func _attempt_kill_curr_gradient_fill_shader_tweener():
+	if _curr_gradient_fill_shader_tweener != null and _curr_gradient_fill_shader_tweener.is_valid():
+		_curr_gradient_fill_shader_tweener.kill()
+
+func _tween_set__gradient_fill_color_val_and_param_name(arg_val, arg_shader_param_name : String):
+	gradient_fill_shader_mat.set_shader_param(arg_shader_param_name, arg_val)
 
