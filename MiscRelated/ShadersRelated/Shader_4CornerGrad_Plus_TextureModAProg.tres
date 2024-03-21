@@ -3,6 +3,11 @@
 [resource]
 code = "shader_type canvas_item;
 
+uniform vec4 topleft: hint_color;
+uniform vec4 topright: hint_color;
+uniform vec4 bottomleft: hint_color;
+uniform vec4 bottomright: hint_color;
+
 uniform float progress : hint_range(0.0,1.0) = 0.0;
 uniform bool from_right_to_left = true;
 
@@ -12,6 +17,9 @@ void fragment() {
 	} else if (!from_right_to_left && UV.x >= progress) {
 		COLOR = vec4(0.0, 0.0, 0.0, 0.0);
 	} else {
-	  COLOR = texture(TEXTURE, UV);
+		vec4 top = mix(topleft, topright, UV.x);
+		vec4 bottom = mix(bottomleft, bottomright, UV.x);
+		COLOR = mix(top, bottom, UV.y);
 	}
+	
 }"

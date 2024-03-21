@@ -185,6 +185,8 @@ enum AudioIds {
 	SFX_LevelSpecific_LaunchBallPanelBarSlide = 6705
 	SFX_LevelSpecific_LaunchBallPanelBarSlide_End = 6706
 	
+	SFX_LevelSpecific_AlertWarning01 = 6707
+	
 	#######
 	
 	### COLLISION -- TILE FRAGMENTS

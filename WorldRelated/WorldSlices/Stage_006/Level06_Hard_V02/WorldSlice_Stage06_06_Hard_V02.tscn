@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://ObjectsRelated/TilesRelated/BaseTileSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://WorldRelated/AbstractWorldSlice.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://MiscRelated/VisionTransitionSpriteCamFogRelated/Imps/VisionTransitionSpriteCamFogNode2D_Circular.gd" type="Script" id=13]
 [ext_resource path="res://ObjectsRelated/Pickupables/Subs/LaunchBalls/Pickupable_LaunchBall.tscn" type="PackedScene" id=14]
 [ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_20.tres" type="DynamicFont" id=15]
+[ext_resource path="res://WorldRelated/WorldSlices/Stage_006/CommonSubs/AlertCircleDrawer.tscn" type="PackedScene" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 58.5, 13 )
@@ -63,14 +64,13 @@ tile_data = PoolIntArray( -327684, 45, 131075, -393212, 45, 131074, -262136, 45,
 
 [node name="TileMap" parent="TileContainer/BTS_Uncolls02" index="0"]
 tile_set = ExtResource( 3 )
-tile_data = PoolIntArray( -1, 38, 1, 65535, 38, 65538, 0, 35, 262146, 1, 38, 262144, 131068, 38, 65539, 131069, 38, 0, 131070, 1073741862, 2, 131071, 38, 0, 65536, 38, 65537, 65539, 59, 0, 65540, 59, 1, 65541, 59, 1, 65542, 59, 1, 65543, 59, 1, 65544, 59, 1, 65545, 59, 1, 65546, 59, 1, 65547, 59, 1, 65548, 59, 1, 65549, 59, 1, 65550, 59, 1, 196604, 38, 1, 131075, 59, 65536, 131076, 59, 65537, 131077, 59, 65537, 131078, 59, 65537, 131079, 59, 65537, 131080, 59, 65537, 131081, 59, 65537, 131082, 59, 65537, 131083, 59, 65537, 131084, 59, 65537, 131085, 59, 65537, 131086, 59, 65537, 131087, 59, 65538, 262137, 38, 65539, 262138, 38, 0, 262139, 38, 0, 262140, 35, 196608, 196611, 59, 65536, 196612, 59, 65537, 196613, 59, 65537, 196614, 59, 65537, 196615, 59, 65537, 196616, 59, 65537, 196617, 59, 65537, 196618, 59, 65537, 196619, 59, 65537, 196620, 59, 65537, 196621, 59, 65537, 196622, 59, 65537, 196623, 59, 65538, 327673, 38, 262145, 327676, 38, 262145, 262147, 59, 131072, 262148, 59, 131073, 262149, 59, 131073, 262150, 59, 131073, 262151, 59, 131073, 262152, 59, 131073, 262153, 59, 131073, 262154, 59, 131073, 262155, 59, 131073, 262156, 59, 131073, 262157, 59, 131073, 262158, 59, 131073, 262159, 59, 131074, 851984, 35, 131072, 851985, 35, 131073, 851986, 35, 131072, 851987, 35, 131073, 851988, 35, 131072, 983056, 35, 131072, 983057, 35, 131073, 983058, 35, 131072, 983059, 35, 131073, 983060, 35, 131072 )
+tile_data = PoolIntArray( -1, 38, 1, 65535, 38, 65538, 0, 35, 262146, 1, 38, 262144, 131068, 38, 65539, 131069, 38, 0, 131070, 1073741862, 2, 131071, 38, 0, 65536, 38, 65537, 196604, 38, 1, 262137, 38, 65539, 262138, 38, 0, 262139, 38, 0, 262140, 35, 196608, 327673, 38, 262145, 327676, 38, 262145, 262147, 59, 131072, 851984, 35, 131072, 851985, 35, 131073, 851986, 35, 131072, 851987, 35, 131073, 851988, 35, 131072, 983056, 35, 131072, 983057, 35, 131073, 983058, 35, 131072, 983059, 35, 131073, 983060, 35, 131072 )
 
 [node name="BTS_Glowing" parent="TileContainer" index="6" instance=ExtResource( 1 )]
 has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
 tile_set = ExtResource( 3 )
-tile_data = PoolIntArray( 131088, 43, 3, 393232, 43, 3 )
 
 [node name="BTS_Red" parent="TileContainer" index="7" instance=ExtResource( 1 )]
 
@@ -83,6 +83,7 @@ position = Vector2( 621, 347 )
 force_action_natural_movement = true
 make_player_energy_undeductable = true
 force_action_natural_movement__right = false
+is_disabled = false
 
 [node name="CollisionShape2D" parent="AreaRegionContainer/PDAR_Cinematic_Start" index="0"]
 position = Vector2( -48.5, 3 )
@@ -199,7 +200,7 @@ __meta__ = {
 "_gizmo_extents_": 16.0
 }
 
-[node name="PCAPosContainer" type="Node" parent="." index="6"]
+[node name="PCAPosContainer" type="Node" parent="." index="5"]
 
 [node name="PosLink_01_PSpawn" parent="PCAPosContainer" index="0" instance=ExtResource( 10 )]
 position = Vector2( 3904, 320 )
@@ -249,7 +250,7 @@ position = Vector2( 3552, 1024 )
 [node name="PosLink_16" parent="PCAPosContainer" index="15" instance=ExtResource( 10 )]
 position = Vector2( 3552, 672 )
 
-[node name="MiscContainer" type="Node" parent="." index="7"]
+[node name="MiscContainer" type="Node" parent="." index="6"]
 
 [node name="VisTransitionFog_01" type="Node2D" parent="MiscContainer" index="0"]
 position = Vector2( 560, 603 )
@@ -264,6 +265,7 @@ circle_ratio__inside_of_inner_ring = 0.2
 [node name="AdditionalEnemiesInHard" type="Node" parent="MiscContainer" index="1"]
 
 [node name="ModifLabel" type="Label" parent="MiscContainer" index="2"]
+visible = false
 margin_left = 132.0
 margin_top = 66.0
 margin_right = 480.0
@@ -274,6 +276,9 @@ text = "Rule Modifications:
 1) Capture points do not slowly reset progress when you leave it
 2) Rewinds DO NOT work"
 autowrap = true
+
+[node name="AlertCircleDrawer" parent="MiscContainer" index="3" instance=ExtResource( 16 )]
+position = Vector2( -216, 144 )
 
 [connection signal="region_area_captured" from="AreaRegionContainer/PCA_Moving" to="." method="_on_PCA_Moving_region_area_captured"]
 [connection signal="pressed" from="ObjectContainer/Object_InteractableButton" to="." method="_on_Object_InteractableButton_pressed"]

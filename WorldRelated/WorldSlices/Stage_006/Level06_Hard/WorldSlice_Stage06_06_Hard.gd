@@ -48,6 +48,8 @@ onready var pdar_cinematic_end = $AreaRegionContainer/PDAR_Cinematic_End
 
 onready var portal_02__exit = $ObjectContainer/Portal_Blue02
 
+onready var alert_circle_Draw = $MiscContainer/AlertCircleDrawer
+
 ###
 
 func _init():
@@ -125,6 +127,10 @@ func _do_modifs_for_increased_difficulty():
 	
 	SingletonsAndConsts.current_rewind_manager.can_cast_rewind_cond_clause.attempt_insert_clause(SingletonsAndConsts.current_rewind_manager.CanCastRewindClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	_frames_before_allow_rewind_again = 10
+	
+	##
+	
+	alert_circle_Draw.do_alert()
 
 func _allow_rewind_after_frame_count_is_accomplished__for_diff_inc():
 	if !_after_frame_count_is_accomplished__for_diff_inc:

@@ -45,6 +45,8 @@ onready var pdar_cinematic_end = $AreaRegionContainer/PDAR_Cinematic_End
 
 onready var portal_02__exit = $ObjectContainer/Portal_Blue02
 
+onready var alert_circle_drawer = $MiscContainer/AlertCircleDrawer
+
 ###
 
 func _init():
@@ -128,6 +130,7 @@ func _do_modifs_for_increased_difficulty():
 	
 	pca_moving.duration_for_capture = CAPTURE_DURATION__HARD
 	
+	alert_circle_drawer.do_alert()
 
 
 func _process(delta):

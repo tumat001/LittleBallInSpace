@@ -8,6 +8,8 @@ uniform vec4 topright: hint_color;
 uniform vec4 bottomleft: hint_color;
 uniform vec4 bottomright: hint_color;
 
+uniform float progress : hint_range(0.0,1.0) = 0.0;
+
 void fragment() {
 	vec4 top = mix(topleft, topright, UV.x);
 	vec4 bottom = mix(bottomleft, bottomright, UV.x);

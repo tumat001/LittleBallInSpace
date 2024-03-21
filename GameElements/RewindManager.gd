@@ -48,7 +48,7 @@ var remove_non_existing_objs_in_traversal : bool = true
 #
 
 #technically double since we skip every other
-const REWIND_DURATION : float = 32.0
+const REWIND_DURATION : float = 25.0#32.0
 var max_rewind_duration : float = REWIND_DURATION
 
 const CUSTOM_REWIND_DURATION__S06_03 : float = 8.0
