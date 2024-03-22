@@ -813,6 +813,11 @@ func helper__play_sound_effect__2d__lower_volume_based_on_dist(arg_id, arg_pos :
 	play_sound__with_provided_stream_player(arg_id, sound_player, arg_mask_level, arg_adv_param)
 	return sound_player
 
+
+func helper__randomize_pitch_scale_of_player(arg_player, arg_min_scale = 0.8, arg_max_scale = 1.2):
+	arg_player.pitch_scale = SingletonsAndConsts.non_essential_rng.randf_range(arg_min_scale, arg_max_scale)
+
+
 #used by SoAudio and AudioPlaylist
 func convert_ratio_using_num_range__from_standard_db_audibles(arg_volume_ratio):
 	var deci = convert_ratio_using_num_range(arg_volume_ratio, DECIBEL_VAL__INAUDIABLE, DECIBEL_VAL__STANDARD)

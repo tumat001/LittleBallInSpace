@@ -78,11 +78,19 @@ func _ready():
 	
 	
 	_disable_rewind_capability()
+	
+	call_deferred("_relocate_glitch_color_rect_to_new_parent")
 
 
 func _disable_rewind_capability():
 	SingletonsAndConsts.current_rewind_manager.can_store_rewind_data_cond_clause.attempt_insert_clause(SingletonsAndConsts.current_rewind_manager.CanStoreRewindDataClauseIds.CUSTOM_FROM_WORLD_SLICE)
 	SingletonsAndConsts.current_rewind_manager.can_cast_rewind_cond_clause.attempt_insert_clause(SingletonsAndConsts.current_rewind_manager.CanCastRewindClauseIds.CUSTOM_FROM_WORLD_SLICE)
+
+func _relocate_glitch_color_rect_to_new_parent():
+	var glitch_rect = $MiscContainer/GlitchColorRect
+	$MiscContainer.remove_child(glitch_rect)
+	
+	SingletonsAndConsts.add_child_to_game_elements__other_node_hoster(glitch_rect)
 
 #
 

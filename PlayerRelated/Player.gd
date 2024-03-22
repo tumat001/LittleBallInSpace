@@ -734,7 +734,8 @@ func _on_body_entered__tilemap(body_rid, body, body_shape_index, local_shape_ind
 				_pos_change_caused_by_tile = true
 				
 				
-				AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
+				var audio_player = AudioManager.helper__play_sound_effect__2d(StoreOfAudio.AudioIds.SFX_Rotate_Standard_01, global_position, 0.65, null)
+				AudioManager.helper__randomize_pitch_scale_of_player(audio_player)
 				
 			
 		else:
