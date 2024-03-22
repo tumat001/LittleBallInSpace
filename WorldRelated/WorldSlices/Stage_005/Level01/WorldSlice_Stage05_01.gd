@@ -44,6 +44,10 @@ func _on_after_game_start_init():
 	
 	_set_modulate_a_for_memory_containers(0.0)
 	_init_tilemap_memories()
+	
+	
+	shader_memory_container_01.visible = true
+	memory_flashback_container_01_for_TMM.visible = true
 
 #########
 
