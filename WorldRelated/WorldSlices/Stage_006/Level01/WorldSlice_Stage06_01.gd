@@ -31,8 +31,8 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 	#arg_player.global_position = fast_respawn_position_2d.global_position
 	#return
 	
-	if SingletonsAndConsts.if_level_id_has_single_game_session_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
-		var is_fast_respawn = SingletonsAndConsts.get_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
+	if SingletonsAndConsts.if_level_id_has_restart_only_persisting_data(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6):
+		var is_fast_respawn = SingletonsAndConsts.get_restart_only_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6)
 		
 		if is_fast_respawn:
 			arg_player.global_position = fast_respawn_position_2d.global_position
@@ -51,7 +51,7 @@ func _on_after_game_start_init():
 	
 	
 	if _is_first_time__do_cutscenes:
-		SingletonsAndConsts.set_single_game_session_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6, true)
+		SingletonsAndConsts.set_restart_only_persisting_data_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_6, true)
 		
 		
 		var transition = SingletonsAndConsts.current_master.construct_transition__using_id(StoreOfTransitionSprites.TransitionSpriteIds.OUT__STANDARD_CIRCLE__BLACK)

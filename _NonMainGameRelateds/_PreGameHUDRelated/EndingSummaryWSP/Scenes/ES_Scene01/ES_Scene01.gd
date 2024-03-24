@@ -170,7 +170,11 @@ func _init_status_line_02__as_false_win():
 		var level_details = StoreOfLevels.generate_or_get_level_details_of_id(GameSaveManager.level_id_died_in)
 		
 		if level_details != null:
-			var line = ["Died at [color=%s]%s[/color]" % [level_details.get_title_color_based_on_level_type() % level_details.level_full_name], []]
+			var full_name = level_details.level_full_name
+			if full_name.size() >= 1:
+				full_name = full_name[0][0]
+			
+			var line = ["Died at [color=%s]%s[/color]" % [level_details.get_title_color_based_on_level_type(), full_name], []]
 			status_line_02__as_false_win.append(line)
 		else:
 			var line = ["Died due to carbon dioxide poisoning", []]

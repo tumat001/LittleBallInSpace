@@ -2007,7 +2007,7 @@ func _create_player_hit_tile_particle__for_pool():
 
 #
 
-func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
+func set_current_health(arg_val, arg_is_setted_from_non_GSM : bool = true):
 	#if SingletonsAndConsts.current_game_result_manager.is_game_result_decided:
 	#	return
 	
@@ -2031,15 +2031,16 @@ func set_current_health(arg_val, emit_health_breakpoint_signals : bool = true):
 			_is_dead = true
 			emit_signal("all_health_lost")
 			
-			if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
-				do_effects__all_health_lost()
+			if arg_is_setted_from_non_GSM:
+				if !SingletonsAndConsts.current_rewind_manager.is_rewinding:
+					do_effects__all_health_lost()
 		
 	else:
 		if _is_dead:
 			_is_dead = false
 			emit_signal("health_restored_from_zero")
 		
-		if emit_health_breakpoint_signals:
+		if arg_is_setted_from_non_GSM:
 			var percent = _current_health * 100 / _max_health
 			for hp_breakpoint in health_breakpoints:
 				if old_val > _current_health:
