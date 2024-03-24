@@ -823,6 +823,8 @@ func _initialize_all_tile_to_sound_id_map():
 	}
 	
 	_breakable_tile_id_to_auto_coord_to_sound_id_map = {
+		2 : _standard_tile_glass_break,
+		3 : _standard_tile_glass_break,
 		4 : _standard_tile_glass_break,
 		5 : _standard_tile_glass_break,
 		

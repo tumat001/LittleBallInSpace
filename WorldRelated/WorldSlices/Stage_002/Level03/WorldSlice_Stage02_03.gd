@@ -130,12 +130,17 @@ func _on_PDAR_EnteringSpecialArea_player_entered_in_area():
 #
 
 func _on_PCA_SemiLast_region_area_captured():
-	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+	pca_last.can_line_be_drawn_to_self_by_pca_line_dir_drawer = true
 	
+#	game_elements.ban_rewind_manager_to_store_and_cast_rewind()
+#
 	var wait_tween = create_tween()
-	wait_tween.tween_interval(0.5)
+	wait_tween.tween_interval(2.5)
 	wait_tween.tween_callback(self, "_on_pca_semilast_captured_after_wait")
 
+func _on_pca_semilast_captured_after_wait():
+	if CameraManager.is_at_default_zoom():
+		CameraManager.start_camera_zoom_change__with_default_player_initialized_vals()
 
 #####
 
@@ -144,7 +149,6 @@ func _on_PickupCDSU_Module_Stats_player_entered_self__custom_defined():
 	_is_cdsu_module_stats_picked_up = true
 	
 	create_and_show_module_x_particle_pickup_particles__and_do_relateds(pickup_cdsu_module_stats.global_position)
-
 
 func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
 	_is_cdsu_module_stats_picked_up = false

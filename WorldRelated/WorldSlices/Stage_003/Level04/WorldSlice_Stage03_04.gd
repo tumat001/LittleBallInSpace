@@ -31,13 +31,10 @@ func _on_after_game_start_init():
 
 
 
-func _on_PickupCDSU_Module_Stats_player_entered_self__custom_defined():
-	_is_cdsu_module_tile_colors_picked_up = true
-	
-	create_and_show_module_x_particle_pickup_particles__and_do_relateds(pickup_cdsu_module_tile_colors.global_position)
-
-func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
-	_is_cdsu_module_tile_colors_picked_up = false
+#func _on_PickupCDSU_Module_Stats_player_entered_self__custom_defined():
+#
+#func _on_PickupCDSU_Module_Stats_restored_from_destroyed_from_rewind():
+#	_is_cdsu_module_tile_colors_picked_up = false
 
 
 func _on_game_result_decided__win__base():
@@ -48,4 +45,15 @@ func _on_game_result_decided__win__base():
 		if old_val != true:
 			show_cutscene_id_at_GE_end(StoreOfCutscenes.CutsceneId.MOD_X_INFO__TILE_COLORS)
 
+
+
+
+func _on_PickupCDSU_Module_TileColors_player_entered_self__custom_defined() -> void:
+	_is_cdsu_module_tile_colors_picked_up = true
+	
+	create_and_show_module_x_particle_pickup_particles__and_do_relateds(pickup_cdsu_module_tile_colors.global_position)
+
+func _on_PickupCDSU_Module_TileColors_restored_from_destroyed_from_rewind() -> void:
+	_is_cdsu_module_tile_colors_picked_up = false
+	
 
