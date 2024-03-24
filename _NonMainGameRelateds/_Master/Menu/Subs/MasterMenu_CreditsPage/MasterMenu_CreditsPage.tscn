@@ -38,9 +38,9 @@ mouse_filter = 2
 script = ExtResource( 4 )
 
 [node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 2 )]
-margin_left = 35.0
+margin_left = 10.0
 margin_top = 60.0
-margin_right = 925.0
+margin_right = 950.0
 margin_bottom = 480.0
 rect_min_size = Vector2( 890, 420 )
 size_flags_horizontal = 6
@@ -51,7 +51,7 @@ border_piece_texture__left = ExtResource( 6 )
 mid_fill_texture = ExtResource( 8 )
 
 [node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
-margin_right = 890.0
+margin_right = 940.0
 margin_bottom = 420.0
 
 [node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
@@ -61,13 +61,13 @@ texture = ExtResource( 7 )
 
 [node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
 margin_left = 10.0
-margin_right = 880.0
+margin_right = 930.0
 margin_bottom = 10.0
 texture = ExtResource( 9 )
 
 [node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
-margin_left = 880.0
-margin_right = 890.0
+margin_left = 930.0
+margin_right = 940.0
 margin_bottom = 10.0
 texture = ExtResource( 7 )
 
@@ -80,112 +80,108 @@ texture = ExtResource( 6 )
 [node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 880.0
+margin_right = 930.0
 margin_bottom = 410.0
 
 [node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
-margin_right = 870.0
+margin_right = 920.0
 margin_bottom = 400.0
 texture = ExtResource( 8 )
 
 [node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
-margin_right = 870.0
+margin_right = 920.0
 margin_bottom = 400.0
+custom_constants/margin_top = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
-margin_right = 870.0
+[node name="ScrollContainer" type="ScrollContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
+margin_top = 20.0
+margin_right = 920.0
 margin_bottom = 400.0
+scroll_horizontal_enabled = false
 
-[node name="Control" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
-margin_right = 287.0
-margin_bottom = 400.0
+[node name="HBoxContainer" type="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer"]
+margin_right = 908.0
+margin_bottom = 1710.0
+mouse_filter = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -71.5
-margin_top = -174.5
-margin_right = 71.5
-margin_bottom = -155.5
+[node name="Control" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 1710.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 7
+
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control"]
+margin_right = 300.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Music"
 align = 1
 
-[node name="Label_MusicDesc" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -149.0
-margin_top = -148.0
-margin_right = 148.0
-margin_bottom = -113.0
+[node name="Label_MusicDesc" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control"]
+margin_top = 26.0
+margin_right = 300.0
+margin_bottom = 40.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 4 )
 text = "Sourced from Pixabay:"
 align = 1
 
-[node name="Music_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -129.0
-margin_right = 150.0
-margin_bottom = -48.0
+[node name="Music_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control"]
+margin_top = 47.0
+margin_right = 300.0
+margin_bottom = 200.0
 rect_min_size = Vector2( 300, 0 )
 
-[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control/Music_VBox"]
 margin_right = 300.0
-margin_bottom = 81.0
+margin_bottom = 153.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "reflected-light-147979 by SergePavkinMusic
+
 Space Trip by Playsound
+
 light-and-darkness-110414 by AmarantaMusic
+
 Piano Moment by Daddy_s_Music
+
 Space by Music_Unlimited
+
 Space Chillout by penguinmusic
+
 One Last Time by ADMfreenocopyrightmusic"
 align = 1
 
-[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -149.0
-margin_top = -30.0
-margin_right = 148.0
-margin_bottom = 5.0
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control"]
+margin_top = 207.0
+margin_right = 300.0
+margin_bottom = 238.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 4 )
-text = "Sourced from Chosic:"
+text = "
+Sourced from Chosic:"
 align = 1
 
-[node name="Music_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -12.0
-margin_right = 150.0
-margin_bottom = 105.0
+[node name="Music_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control"]
+margin_top = 245.0
+margin_right = 300.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 300, 0 )
 
-[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox2"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control/Music_VBox2"]
 margin_right = 300.0
-margin_bottom = 117.0
+margin_bottom = 141.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Moonlight by Scott Buckley
+
 Phase Shift by Scott Buckley
+
 Adrift Among Infinite Stars by Scott Buckley
 (www.scottbuckley.com.au)
 (Creative Commons CC BY 4.0)
@@ -196,38 +192,30 @@ were from him hahahahhaha)
 "
 align = 1
 
-[node name="Control2" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
-margin_left = 291.0
-margin_right = 578.0
-margin_bottom = 400.0
+[node name="Control2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
+margin_left = 304.0
+margin_right = 604.0
+margin_bottom = 1710.0
+mouse_filter = 2
 size_flags_horizontal = 3
+custom_constants/separation = 7
 
-[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -71.5
-margin_top = -175.5
-margin_right = 71.5
-margin_bottom = -156.5
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2"]
+margin_right = 300.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Arts"
 align = 1
 
-[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -147.0
-margin_right = 150.0
-margin_bottom = -66.0
+[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2"]
+margin_top = 26.0
+margin_right = 300.0
+margin_bottom = 83.0
 rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
 
-[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Arts_VBox"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2/Arts_VBox"]
 margin_right = 300.0
 margin_bottom = 57.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
@@ -239,195 +227,98 @@ license: https://craftpix.net/file-licenses/
 "
 align = 1
 
-[node name="Label_ShadersHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -148.5
-margin_top = -99.5
-margin_right = 148.5
-margin_bottom = -45.5
+[node name="Label_ShadersHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2"]
+margin_top = 90.0
+margin_right = 300.0
+margin_bottom = 109.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Shaders"
 align = 1
 
-[node name="S02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
-margin_left = -7.0
-margin_top = 122.0
-margin_right = 293.0
-margin_bottom = 131.0
+[node name="S02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2"]
+margin_top = 116.0
+margin_right = 300.0
+margin_bottom = 125.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Most sourced from https://godotshaders.com/"
 align = 1
 
-[node name="Shaders_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -56.0
-margin_right = 150.0
-margin_bottom = 193.0
+[node name="Shaders_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2"]
+margin_top = 132.0
+margin_right = 300.0
+margin_bottom = 549.0
 rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
 custom_constants/separation = 6
 
-[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control2/Shaders_VBox"]
 margin_right = 300.0
-margin_bottom = 21.0
+margin_bottom = 417.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Rainbow Outline by Farfalk and
- @ThePadDev (https://twitter.com/ThePadDev)."
+text = "Rainbow Outline by Farfalk and 
+@ThePadDev (https://twitter.com/ThePadDev).
+
+God Rays by pend00
+
+Smooth outline 2D by Tanders
+
+Procedural Electric Background Shader
+by Yui Kinomoto @arlez80
+
+2D Lightning, Electric Arc, plasma by lumenfruit
+
+Desaturation Shader by ombarus
+
+Animated Screen Outline (flaming rainbow)
+by RavenSwordProductions
+
+Simple circle transition by agurkas
+
+Animated Diamond Pattern by Hadyn
+at https://www.shadertoy.com/view/XsBfRW
+
+Glitch Effect by Yui Kinomoto @arlez80
+
+Ring of Power by CasualGarageCoder
+
+Ripple Gradient Shader by Miisannn
+
+2D outline/inline by Juulpower
+
+Sprite progress bar by swagboard
+
+Radial Progress Shader by wdylanbibb
+
+4 Corner Gradient by opyate"
 align = 1
 
-[node name="S02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 27.0
-margin_right = 300.0
-margin_bottom = 36.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "God Rays by pend00"
-align = 1
-
-[node name="S03" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 42.0
-margin_right = 300.0
-margin_bottom = 51.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Smooth outline 2D by Tanders"
-align = 1
-
-[node name="S04" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 57.0
-margin_right = 300.0
-margin_bottom = 78.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Procedural Electric Background Shader
-by Yui Kinomoto @arlez80"
-align = 1
-
-[node name="S05" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 84.0
-margin_right = 300.0
-margin_bottom = 105.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "2D Lightning, Electric Arc, plasma
-by lumenfruit"
-align = 1
-
-[node name="S06" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 111.0
-margin_right = 300.0
-margin_bottom = 120.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Desaturation Shader by ombarus"
-align = 1
-
-[node name="S07" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 126.0
-margin_right = 300.0
-margin_bottom = 147.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Animated Screen Outline (flaming rainbow)
-by RavenSwordProductions"
-align = 1
-
-[node name="S08" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 153.0
-margin_right = 300.0
-margin_bottom = 162.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Simple circle transition by agurkas"
-align = 1
-
-[node name="S09" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 168.0
-margin_right = 300.0
-margin_bottom = 189.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Animated Diamond Pattern by Hadyn
-at https://www.shadertoy.com/view/XsBfRW"
-align = 1
-
-[node name="S10" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 195.0
-margin_right = 300.0
-margin_bottom = 204.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Glitch Effect by Yui Kinomoto @arlez80"
-align = 1
-
-[node name="S11" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 210.0
-margin_right = 300.0
-margin_bottom = 219.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Ring of Power by CasualGarageCoder"
-align = 1
-
-[node name="S12" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 225.0
-margin_right = 300.0
-margin_bottom = 234.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Ripple Gradient Shader by Miisannn"
-align = 1
-
-[node name="S13" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
-margin_top = 240.0
-margin_right = 300.0
-margin_bottom = 249.0
-custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "2D outline/inline by Juulpower"
-align = 1
-
-[node name="Control3" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
-margin_left = 582.0
-margin_right = 870.0
-margin_bottom = 400.0
+[node name="Control3" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
+margin_left = 608.0
+margin_right = 908.0
+margin_bottom = 1710.0
+mouse_filter = 2
 size_flags_horizontal = 3
+custom_constants/separation = 7
 
-[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -71.5
-margin_top = -175.5
-margin_right = 71.5
-margin_bottom = -156.5
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_right = 300.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Fonts"
 align = 1
 
-[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -147.0
-margin_right = 150.0
-margin_bottom = -66.0
+[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_top = 26.0
+margin_right = 300.0
+margin_bottom = 73.0
 rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
 
-[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Arts_VBox"]
 margin_right = 300.0
 margin_bottom = 9.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
@@ -435,7 +326,7 @@ custom_fonts/font = ExtResource( 1 )
 text = "Pixel Emulator by Pixel Sagas"
 align = 1
 
-[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Arts_VBox"]
 margin_top = 13.0
 margin_right = 300.0
 margin_bottom = 22.0
@@ -444,7 +335,7 @@ custom_fonts/font = ExtResource( 1 )
 text = "Atari Classic Smooth font by dontremovemyfonts"
 align = 1
 
-[node name="M03" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+[node name="M03" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Arts_VBox"]
 margin_top = 26.0
 margin_right = 300.0
 margin_bottom = 47.0
@@ -454,31 +345,23 @@ text = "Monogram by datagoblin
 (Dev note: fun fact, this font is monogram)"
 align = 1
 
-[node name="Label_MusicHeader2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -71.5
-margin_top = -76.5
-margin_right = 71.5
-margin_bottom = -57.5
+[node name="Label_MusicHeader2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_top = 80.0
+margin_right = 300.0
+margin_bottom = 121.0
 custom_fonts/font = SubResource( 1 )
-text = "Technologies"
+text = "
+Technologies"
 align = 1
 
-[node name="Arts_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -51.0
-margin_right = 150.0
-margin_bottom = 30.0
+[node name="Arts_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_top = 128.0
+margin_right = 300.0
+margin_bottom = 186.0
 rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
 
-[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox2"]
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Arts_VBox2"]
 margin_right = 300.0
 margin_bottom = 9.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
@@ -486,7 +369,7 @@ custom_fonts/font = ExtResource( 1 )
 text = "Made with Godot Engine"
 align = 1
 
-[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox2"]
+[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Arts_VBox2"]
 margin_top = 13.0
 margin_right = 300.0
 margin_bottom = 58.0
@@ -498,48 +381,156 @@ are copyright © <2024> The FreeType Project
 (Godot uses this to render fonts)"
 align = 1
 
-[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -148.5
-margin_top = 54.5
-margin_right = 148.5
-margin_bottom = 108.5
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_top = 193.0
+margin_right = 300.0
+margin_bottom = 266.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "All audios and sfx
+text = "
+Most audios and sfx
 are sourced
 from Pixabay and Freesound.org"
 align = 1
 
-[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -149.0
-margin_top = 122.0
-margin_right = 151.0
-margin_bottom = 167.0
-rect_min_size = Vector2( 300, 0 )
-
-[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Sfx_VBox"]
+[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
+margin_top = 273.0
 margin_right = 300.0
-margin_bottom = 45.0
+margin_bottom = 1710.0
+rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
+
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Sfx_VBox"]
+margin_right = 300.0
+margin_bottom = 1437.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Small Laser, by Sustainededed
+text = "A couple of sounds generated from:
+https://sfbgames.itch.io/chiptone
+
+Small Laser, by Sustainededed
+
 Charge Up Shot, by spoonsandlessspoons
 
+Power Buzz SFX loop by Pixabay
+
+Strange sci-fi-like noise by Pixabay
+
+System Break from Mixkit
+
+Short Explosion from Mixkit
+
+Warning sound by satchdev
+
+Megatone by Tissman
+
+METAL BANG by trexlasso
+
+Bang/Explosion Metallic by Werra
+
+FX Tin Plate 22 by Department64
+
+Metal Ping1 by timgormly
+
+bike gear mechanism by krypaw
+
+Glass and metal by luongthenguyen1
+
+Glass bottle breaking by JanevdMerwe1995
+
+smashing glass by mgamabile
+
+Launching air rocket by CGEffex
+
+Power Down by peepholecircus
+
+Normal Light Switch On and Off by ChazzRavenelle
+
+D64 Samplepack - FX POWERUP 39 by Department64
+
+FX_Electronic_Warning by PeteBarry
+
+Polite Warning Tone by nlux
+
+Rewind by kasa90
+
+Ticking Timer 15 Sec by MATRIXXX_
+
+Positive response by Tuudurt
+
+Select, Granted 06 by MATRIXXX_
+
+buttonchime02up by JustinBW
+
+Melancholy UI Chime by plasterbrain
+
+SciFi Inspect Sound, UI, 
+or In-Game Notification 01 by MATRIXXX_
+
+explosion_small by ReadeOnly
+
+Motor by Juandamb
+
+Powerup 10by MATRIXXX_
+
+Ammo pickup #2 by zivs
+
+energy by Leszek_Szary
+
+Game Pickup by IENBA
+
+Laser Gun Recharge by Dpoggioli
+
+S_Teleport_01 by Andromadax24
+
+Teleport by noirenex
+
+Teleport by notyermom
+
+Ping_Minimal UI Sounds by cabled_mess
+
+Warning sound by satchdev
+
+Breaking A Wall Down (With A Hammer) by scampsie
+
+Rock Smash by NeoSpica
+
+Generator Running by DrinkingWindGames
+
+Electricity by deleted_user_7146007
+
+explosion_high_fuse_1 by eardeer
+
+Breaker-1 by Deathscyp
+
+ITEM FOUND 4 by Kagateni
+
+click by florianreichelt
+
+UI Click Menu Hover by EminYILDIRIM
+
+Button hover by Fachii
+
+Foley_Impact_Metal_Movement_Mono by Nox_Sound
+
+Spark by elliott.klein
+
+EXPLODE_FIRECRACKER by keng-wai-chane-chick-te
+
+Sharp Explosion 1 (of 5) by Rudmer_Rotteveel
+
+Rocket Launch by Jarusca
+
+Bottle Shattering by spookymodem
+
+------------------
 non exhaustive. I LOST THE LIST :'((("
 align = 1
 
 [node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
-margin_left = 880.0
+margin_left = 930.0
 margin_top = 10.0
-margin_right = 890.0
+margin_right = 940.0
 margin_bottom = 410.0
 texture = ExtResource( 6 )
 
@@ -552,14 +543,14 @@ texture = ExtResource( 7 )
 [node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
 margin_left = 10.0
 margin_top = 410.0
-margin_right = 880.0
+margin_right = 930.0
 margin_bottom = 420.0
 texture = ExtResource( 9 )
 
 [node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
-margin_left = 880.0
+margin_left = 930.0
 margin_top = 410.0
-margin_right = 890.0
+margin_right = 940.0
 margin_bottom = 420.0
 texture = ExtResource( 7 )
 

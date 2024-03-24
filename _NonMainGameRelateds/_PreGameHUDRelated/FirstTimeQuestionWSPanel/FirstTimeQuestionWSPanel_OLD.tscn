@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/FirstTimeQuestionWSPanel.gd" type="Script" id=1]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Assets/BlackBackground_1x1.png" type="Texture" id=2]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene03/FTQ_Scene03.tscn" type="PackedScene" id=3]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene02/FTQ_Scene02.tscn" type="PackedScene" id=4]
+[ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene01/FTQ_Scene01.tscn" type="PackedScene" id=5]
 [ext_resource path="res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_Scene04/FTQ_Scene04.tscn" type="PackedScene" id=6]
 
 [node name="FirstTimeQuestionWSPanel" type="MarginContainer"]
@@ -22,6 +23,8 @@ stretch_mode = 2
 margin_right = 960.0
 margin_bottom = 540.0
 mouse_filter = 2
+
+[node name="FTQ_Scene01" parent="FreeFormControl" instance=ExtResource( 5 )]
 
 [node name="FTQ_Scene02" parent="FreeFormControl" instance=ExtResource( 4 )]
 mouse_filter = 2

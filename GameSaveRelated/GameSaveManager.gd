@@ -4,6 +4,9 @@ extends Node
 const PlainTextFragment = preload("res://MiscRelated/TextInterpreterRelated/TextFragments/PlainTextFragment.gd")
 const GUI_AbstractLevelLayout = preload("res://_NonMainGameRelateds/_LevelSelectionRelated/GUIRelateds/GUI_LevelLayout/GUI_AbstractLevelLayout.gd")
 
+const Singleton_GameInfo = preload("res://GameSaveRelated/Singleton_GameInfo.gd")
+
+
 #
 
 signal level_layout_id_completion_status_changed(arg_id, arg_status)
@@ -49,8 +52,15 @@ const CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER = "CAN_EDIT_PLAYER_AESTH__DIC_IDENTI
 const CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER = "CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER"
 const TROPHY_COLLECTED__DIC_IDENTIFIER = "TROPHY_COLLECTED"
 
+const VERSION_NUM__DIC_IDENTIFIER = "VersionNumber"
+const LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER = "LastPlaythruIsFromDemo"
+
+#
+
 const PLAYER_MAX_HEALTH = 100
 const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
+
+#
 
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
@@ -99,6 +109,11 @@ class TrophyDetails:
 	var desc : Array
 
 ###
+
+var version_num_as_str : String
+var is_last_playthru_from_demo : bool
+
+#
 
 const level_data_file_path = "user://level_layout_data.save"
 
@@ -333,7 +348,20 @@ func _load_player_related_data(arg_file : File):
 		set_collected_trophies_and_metadata_from_save(data[TROPHY_COLLECTED__DIC_IDENTIFIER])
 	else:
 		set_collected_trophies_and_metadata_from_save({})
-
+	
+	##
+	
+	if data.has(VERSION_NUM__DIC_IDENTIFIER):
+		set_version_num_as_str(data[VERSION_NUM__DIC_IDENTIFIER])
+	else:
+		set_version_num_as_str(Singleton_GameInfo.get_game_version_as_text())
+	
+	##
+	
+	if data.has(LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER):
+		set_is_last_playthru_from_demo(data[LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER])
+	else:
+		set_is_last_playthru_from_demo(Singleton_GameInfo.IS_GAME_DEMO)
 
 #
 
@@ -586,6 +614,8 @@ func _save_player_data():
 		CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER : can_edit_player_aesth,
 		CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER : can_config_custom_audio,
 		TROPHY_COLLECTED__DIC_IDENTIFIER : collected_trophy_id_to_metadata_map,
+		VERSION_NUM__DIC_IDENTIFIER : version_num_as_str,
+		LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER = Singleton_GameInfo.IS_GAME_DEMO,
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
@@ -1076,6 +1106,21 @@ func get_absolute_path_of__user_dir__img_save_filepath():
 	var abs_dir_to_user_path = OS.get_user_data_dir()
 	return "%s/%s" % [abs_dir_to_user_path, USER_DIR__IMG_SAVE_FilePath]
 
+
+##
+
+func set_version_num_as_str(arg_str : String):
+	version_num_as_str = arg_str
+	
+	if arg_str != Singleton_GameInfo.get_game_version_as_text():
+		pass
+		#note: this is where u do changes, eventually
+
+func set_is_last_playthru_from_demo(arg_is_demo : bool):
+	is_last_playthru_from_demo = arg_is_demo
+
+func is_last_playthru_from_demo__and_curr_is_non_demo():
+	return is_last_playthru_from_demo and !Singleton_GameInfo.IS_GAME_DEMO
 
 #############################################
 ##

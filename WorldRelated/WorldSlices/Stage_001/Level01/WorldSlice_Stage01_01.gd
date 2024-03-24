@@ -84,8 +84,7 @@ func _before_player_spawned_signal_emitted__chance_for_changes(arg_player):
 		
 		transition.set_is_transition_paused(true)
 		_current_long_transition = transition
-	
-	
+		
 
 #
 
@@ -100,6 +99,10 @@ func _on_after_game_start_init():
 	if _is_first_time__do_cutscenes:
 		game_elements.configure_game_state_for_cutscene_occurance(false, false)
 		CameraManager.start_camera_zoom_change(CameraManager.ZOOM_OUT__DEFAULT__ZOOM_LEVEL, 0.0)
+		
+	else:
+		visual_instruction.start_display()
+	
 	
 	call_deferred("_deferred_init__for_first_time_and_not")
 
@@ -169,7 +172,7 @@ func _on_player_on_ground_state_changed(arg_val):
 		_player_modi_energy.set_current_energy(15)
 		
 		CameraManager.camera.add_stress(2.0)
-		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 0.6, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 0.55, null)
 
 func _on_player_wakeup_sequence_finish():
 	CameraManager.reset_camera_zoom_level()

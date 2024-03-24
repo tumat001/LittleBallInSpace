@@ -1,5 +1,6 @@
 extends MarginContainer
 
+const Singleton_GameInfo = preload("res://GameSaveRelated/Singleton_GameInfo.gd")
 
 
 var _credits_page
@@ -39,5 +40,8 @@ func _init_credits_page():
 		control_tree.add_control__but_dont_show(_credits_page)
 		
 
+#
 
-
+func _ready() -> void:
+	var version_label = $DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ContentControlContainer/VersionLabel
+	version_label.text = version_label.text % Singleton_GameInfo.get_game_version_as_text()

@@ -16,7 +16,30 @@ func as_test__override__do_insta_win():
 func _on_after_game_start_init():
 	._on_after_game_start_init()
 	
+	if GameSaveManager.is_last_playthru_from_demo__and_curr_is_non_demo():
+		if game_elements.is_game_front_hud_initialized:
+			_show_thanks_for_purchasing_full_version()
+		else:
+			game_elements.connect("game_front_hud_initialized", self, "_on_game_front_hud_initialized__for_showing_thanks", [], CONNECT_ONESHOT)
+
+func _on_game_front_hud_initialized__for_showing_thanks(arg_GFH):
+	_show_thanks_for_purchasing_full_version()
+
+
+func _show_thanks_for_purchasing_full_version():
+	var dialog_desc = [
+		["(Thank you for purchasing the full version!!! - bambii)", []],
+	]
 	
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__01", [], CONNECT_ONESHOT)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.start_display_of_descs(dialog_desc, 4.0, 0, null)
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
+
+func _on_display_of_desc_finished__01(arg):
+	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.hide_self()
+
+#
+
 
 #
 

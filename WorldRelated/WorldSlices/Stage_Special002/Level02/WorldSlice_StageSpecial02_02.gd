@@ -370,7 +370,7 @@ func _on_player_on_ground_state_changed(arg_val):
 		_player_modi_energy.set_current_energy(15)
 		
 		CameraManager.camera.add_stress(2.0)
-		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 0.6, null)
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_TileHit_MetalBang_LoudFullBangExplosion, 0.55, null)
 
 func _on_player_wakeup_sequence_finish():
 	CameraManager.reset_camera_zoom_level()

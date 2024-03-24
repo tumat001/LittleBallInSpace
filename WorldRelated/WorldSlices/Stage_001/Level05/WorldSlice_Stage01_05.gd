@@ -316,6 +316,8 @@ func _on_PDAR_ActivateVisIns_ToggleAim_player_entered_in_area() -> void:
 	vis_ins_anim__toggle_aim_mode.start_display()
 	vis_ins_anim__toggle_aim_mode.connect("start_display_finished", self, "_on_vis_ins_anim__toggle_aim_mode__start_display_finished", [], CONNECT_ONESHOT)
 	#_start_show_toggle_aim__as_omni()
+	
+	_launch_ball_modi.set_can_change_aim_mode(true)
 
 #func _config_toggle_aim_arrow_durations_related_based_on_res():
 #	var sprite_frames : SpriteFrames = vis_ins_anim__toggle_aim_mode__anim_sprite.frames

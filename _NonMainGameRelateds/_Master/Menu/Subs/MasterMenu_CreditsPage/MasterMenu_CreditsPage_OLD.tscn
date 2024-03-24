@@ -1,0 +1,611 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://MiscRelated/FontRelated/FontRes/monogram_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://MiscRelated/GUIControlsRelated/DialogTemplates/DialogTemplate_Body_CBM.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MiscRelated/FontRelated/Fonts/LcdSolid/LcdSolid-VPzB.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_CreditsPage/MasterMenu_CreditsPage.gd" type="Script" id=4]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_HeaderBackground.png" type="Texture" id=5]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_Border_Left.png" type="Texture" id=6]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_CornerPiece_TopLeft.png" type="Texture" id=7]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_BackgroundFill.png" type="Texture" id=8]
+[ext_resource path="res://_NonMainGameRelateds/_Master/Menu/Subs/MasterMenu_About/MasterMenu_About_Border_Top.png" type="Texture" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 18
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 13
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 15
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 22
+outline_size = 2
+outline_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+font_data = ExtResource( 3 )
+
+[node name="MasterMenu_CreditsPage" type="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="DialogTemplate_Body_CBM" parent="." instance=ExtResource( 2 )]
+margin_left = 35.0
+margin_top = 60.0
+margin_right = 925.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 890, 420 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
+corner_piece_texture__top_left = ExtResource( 7 )
+border_piece_texture__top = ExtResource( 9 )
+border_piece_texture__left = ExtResource( 6 )
+mid_fill_texture = ExtResource( 8 )
+
+[node name="GridContainer" parent="DialogTemplate_Body_CBM" index="0"]
+margin_right = 890.0
+margin_bottom = 420.0
+
+[node name="CornerP_TopLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="0"]
+margin_right = 10.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Top" parent="DialogTemplate_Body_CBM/GridContainer" index="1"]
+margin_left = 10.0
+margin_right = 880.0
+margin_bottom = 10.0
+texture = ExtResource( 9 )
+
+[node name="CornerP_TopRight" parent="DialogTemplate_Body_CBM/GridContainer" index="2"]
+margin_left = 880.0
+margin_right = 890.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+
+[node name="Border_Left" parent="DialogTemplate_Body_CBM/GridContainer" index="3"]
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = 410.0
+texture = ExtResource( 6 )
+
+[node name="MidContainer" parent="DialogTemplate_Body_CBM/GridContainer" index="4"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 880.0
+margin_bottom = 410.0
+
+[node name="MidFill" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="0"]
+margin_right = 870.0
+margin_bottom = 400.0
+texture = ExtResource( 8 )
+
+[node name="ContentContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer" index="1"]
+margin_right = 870.0
+margin_bottom = 400.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer" index="0"]
+margin_right = 870.0
+margin_bottom = 400.0
+
+[node name="Control" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
+margin_right = 287.0
+margin_bottom = 400.0
+size_flags_horizontal = 3
+
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.5
+margin_top = -174.5
+margin_right = 71.5
+margin_bottom = -155.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Music"
+align = 1
+
+[node name="Label_MusicDesc" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = -148.0
+margin_right = 148.0
+margin_bottom = -113.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Sourced from Pixabay:"
+align = 1
+
+[node name="Music_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -129.0
+margin_right = 150.0
+margin_bottom = -48.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox"]
+margin_right = 300.0
+margin_bottom = 81.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "reflected-light-147979 by SergePavkinMusic
+Space Trip by Playsound
+light-and-darkness-110414 by AmarantaMusic
+Piano Moment by Daddy_s_Music
+Space by Music_Unlimited
+Space Chillout by penguinmusic
+One Last Time by ADMfreenocopyrightmusic"
+align = 1
+
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = -30.0
+margin_right = 148.0
+margin_bottom = 5.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Sourced from Chosic:"
+align = 1
+
+[node name="Music_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -12.0
+margin_right = 150.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control/Music_VBox2"]
+margin_right = 300.0
+margin_bottom = 117.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Moonlight by Scott Buckley
+Phase Shift by Scott Buckley
+Adrift Among Infinite Stars by Scott Buckley
+(www.scottbuckley.com.au)
+(Creative Commons CC BY 4.0)
+(https://creativecommons.org/licenses/by/4.0/)
+(Dev note: This Buckley guy is the gigachad of
+suspense music I didn't even notice that all
+were from him hahahahhaha)
+"
+align = 1
+
+[node name="Control2" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
+margin_left = 291.0
+margin_right = 578.0
+margin_bottom = 400.0
+size_flags_horizontal = 3
+
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.5
+margin_top = -175.5
+margin_right = 71.5
+margin_bottom = -156.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Arts"
+align = 1
+
+[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -147.0
+margin_right = 150.0
+margin_bottom = -66.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Arts_VBox"]
+margin_right = 300.0
+margin_bottom = 57.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Free Street Animal Pixel Art
+by Free Game Assets
+license: https://craftpix.net/file-licenses/
+
+"
+align = 1
+
+[node name="Label_ShadersHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.5
+margin_top = -99.5
+margin_right = 148.5
+margin_bottom = -45.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Shaders"
+align = 1
+
+[node name="S02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
+margin_left = -7.0
+margin_top = 122.0
+margin_right = 293.0
+margin_bottom = 131.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Most sourced from https://godotshaders.com/"
+align = 1
+
+[node name="Shaders_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -56.0
+margin_right = 150.0
+margin_bottom = 193.0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 6
+
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_right = 300.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Rainbow Outline by Farfalk and
+ @ThePadDev (https://twitter.com/ThePadDev)."
+align = 1
+
+[node name="S02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 27.0
+margin_right = 300.0
+margin_bottom = 36.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "God Rays by pend00"
+align = 1
+
+[node name="S03" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 42.0
+margin_right = 300.0
+margin_bottom = 51.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Smooth outline 2D by Tanders"
+align = 1
+
+[node name="S04" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 57.0
+margin_right = 300.0
+margin_bottom = 78.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Procedural Electric Background Shader
+by Yui Kinomoto @arlez80"
+align = 1
+
+[node name="S05" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 84.0
+margin_right = 300.0
+margin_bottom = 105.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "2D Lightning, Electric Arc, plasma
+by lumenfruit"
+align = 1
+
+[node name="S06" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 111.0
+margin_right = 300.0
+margin_bottom = 120.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Desaturation Shader by ombarus"
+align = 1
+
+[node name="S07" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 126.0
+margin_right = 300.0
+margin_bottom = 147.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Animated Screen Outline (flaming rainbow)
+by RavenSwordProductions"
+align = 1
+
+[node name="S08" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 153.0
+margin_right = 300.0
+margin_bottom = 162.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Simple circle transition by agurkas"
+align = 1
+
+[node name="S09" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 168.0
+margin_right = 300.0
+margin_bottom = 189.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Animated Diamond Pattern by Hadyn
+at https://www.shadertoy.com/view/XsBfRW"
+align = 1
+
+[node name="S10" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 195.0
+margin_right = 300.0
+margin_bottom = 204.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Glitch Effect by Yui Kinomoto @arlez80"
+align = 1
+
+[node name="S11" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 210.0
+margin_right = 300.0
+margin_bottom = 219.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Ring of Power by CasualGarageCoder"
+align = 1
+
+[node name="S12" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 225.0
+margin_right = 300.0
+margin_bottom = 234.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Ripple Gradient Shader by Miisannn"
+align = 1
+
+[node name="S13" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control2/Shaders_VBox"]
+margin_top = 240.0
+margin_right = 300.0
+margin_bottom = 249.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "2D outline/inline by Juulpower"
+align = 1
+
+[node name="Control3" type="Control" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer"]
+margin_left = 582.0
+margin_right = 870.0
+margin_bottom = 400.0
+size_flags_horizontal = 3
+
+[node name="Label_MusicHeader" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.5
+margin_top = -175.5
+margin_right = 71.5
+margin_bottom = -156.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Fonts"
+align = 1
+
+[node name="Arts_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -147.0
+margin_right = 150.0
+margin_bottom = -66.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+margin_right = 300.0
+margin_bottom = 9.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Pixel Emulator by Pixel Sagas"
+align = 1
+
+[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+margin_top = 13.0
+margin_right = 300.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Atari Classic Smooth font by dontremovemyfonts"
+align = 1
+
+[node name="M03" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox"]
+margin_top = 26.0
+margin_right = 300.0
+margin_bottom = 47.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Monogram by datagoblin
+(Dev note: fun fact, this font is monogram)"
+align = 1
+
+[node name="Label_MusicHeader2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.5
+margin_top = -76.5
+margin_right = 71.5
+margin_bottom = -57.5
+custom_fonts/font = SubResource( 1 )
+text = "Technologies"
+align = 1
+
+[node name="Arts_VBox2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -51.0
+margin_right = 150.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="M01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox2"]
+margin_right = 300.0
+margin_bottom = 9.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Made with Godot Engine"
+align = 1
+
+[node name="M02" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Arts_VBox2"]
+margin_top = 13.0
+margin_right = 300.0
+margin_bottom = 58.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Portions of this software 
+are copyright © <2024> The FreeType Project
+ (www.freetype.org). All rights reserved.
+(Godot uses this to render fonts)"
+align = 1
+
+[node name="Label_MusicDesc2" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.5
+margin_top = 54.5
+margin_right = 148.5
+margin_bottom = 108.5
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "All audios and sfx
+are sourced
+from Pixabay and Freesound.org"
+align = 1
+
+[node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = 122.0
+margin_right = 151.0
+margin_bottom = 167.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/HBoxContainer/Control3/Sfx_VBox"]
+margin_right = 300.0
+margin_bottom = 45.0
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Small Laser, by Sustainededed
+Charge Up Shot, by spoonsandlessspoons
+
+non exhaustive. I LOST THE LIST :'((("
+align = 1
+
+[node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]
+margin_left = 880.0
+margin_top = 10.0
+margin_right = 890.0
+margin_bottom = 410.0
+texture = ExtResource( 6 )
+
+[node name="CornerP_BotLeft" parent="DialogTemplate_Body_CBM/GridContainer" index="6"]
+margin_top = 410.0
+margin_right = 10.0
+margin_bottom = 420.0
+texture = ExtResource( 7 )
+
+[node name="Border_Bot" parent="DialogTemplate_Body_CBM/GridContainer" index="7"]
+margin_left = 10.0
+margin_top = 410.0
+margin_right = 880.0
+margin_bottom = 420.0
+texture = ExtResource( 9 )
+
+[node name="CornerP_BotRight" parent="DialogTemplate_Body_CBM/GridContainer" index="8"]
+margin_left = 880.0
+margin_top = 410.0
+margin_right = 890.0
+margin_bottom = 420.0
+texture = ExtResource( 7 )
+
+[node name="AboutHeader" type="Control" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AboutHeader"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -66.0
+margin_top = 38.0
+margin_right = 66.0
+margin_bottom = 86.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="AboutHeader/MarginContainer"]
+margin_right = 132.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="AboutHeader/MarginContainer"]
+margin_top = 12.0
+margin_right = 132.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 3 )
+text = "Credits"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_top = 526.0
+margin_right = 960.0
+margin_bottom = 540.0
+size_flags_vertical = 10
+custom_constants/margin_bottom = 5
+
+[node name="copyright" type="Label" parent="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 9.0
+size_flags_vertical = 12
+custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "© Copyright 2024 Matthieu Tan Castro, All rights reserved"
+align = 1
+
+[editable path="DialogTemplate_Body_CBM"]

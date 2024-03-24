@@ -502,6 +502,9 @@ func load_into_rewind_save_state(arg_state):
 	# order matters
 	set_pressable_count(arg_state["pressable_count"])
 	set_is_pressed(arg_state["is_pressed"])
+	
+	if body_mode_to_use == BodyMode.RIGID:
+		rotation = _rewinded__transform.get_rotation()
 
 
 func started_rewind():

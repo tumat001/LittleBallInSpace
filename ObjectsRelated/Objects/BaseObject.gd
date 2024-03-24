@@ -244,7 +244,7 @@ func load_into_rewind_save_state(arg_state):
 	
 	#
 	global_position = _rewinded__transform.origin
-	rotation = _rewinded__transform.get_rotation()
+	#rotation = _rewinded__transform.get_rotation()
 
 func destroy_from_rewind_save_state():
 	.queue_free()

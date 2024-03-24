@@ -1,7 +1,7 @@
 extends "res://_NonMainGameRelateds/_PreGameHUDRelated/FirstTimeQuestionWSPanel/Scenes/FTQ_BaseScene.gd"
 
 var first_line = [
-	["First", []]
+	[".....", []]
 ]
 
 var second_line = [
@@ -51,7 +51,7 @@ func _ready():
 	
 	####
 	
-	ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
+	#ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
 	vbox_container.set_anchors_preset(Control.PRESET_CENTER)
 
 
@@ -59,9 +59,10 @@ func start_display():
 	.start_display()
 	
 	_current_custom_steppable_control = ftq_custom_label_01
-	ftq_custom_label_01.start_display_of_descs__all_chars(0.5, 1.0, null)
+	ftq_custom_label_01.start_display_of_descs__all_chars(0.75, 1.25, null)
 	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_01")
-	ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
+	#ftq_custom_label_01.set_anchors_preset(Control.PRESET_CENTER)
+	#ftq_custom_label_01.visible = true
 
 func _on_display_of_desc_finished__line_01(custom_char_count_to_show_upto, arg_metadata):
 	var pos_moving_tweener = create_tween()

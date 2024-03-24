@@ -4,7 +4,7 @@ const FTQ_ChoicesPanel = preload("res://_NonMainGameRelateds/_PreGameHUDRelated/
 
 
 var first_line = [
-	["Last", []]
+	[".....", []]
 ]
 
 var second_line = [
