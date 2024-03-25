@@ -101,14 +101,14 @@ scroll_horizontal_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer"]
 margin_right = 908.0
-margin_bottom = 1710.0
+margin_bottom = 1674.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
 margin_right = 300.0
-margin_bottom = 1710.0
+margin_bottom = 1674.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -195,7 +195,7 @@ align = 1
 [node name="Control2" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
 margin_left = 304.0
 margin_right = 604.0
-margin_bottom = 1710.0
+margin_bottom = 1674.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 7
@@ -298,7 +298,7 @@ align = 1
 [node name="Control3" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer"]
 margin_left = 608.0
 margin_right = 908.0
-margin_bottom = 1710.0
+margin_bottom = 1674.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 7
@@ -396,13 +396,13 @@ align = 1
 [node name="Sfx_VBox" type="VBoxContainer" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3"]
 margin_top = 273.0
 margin_right = 300.0
-margin_bottom = 1710.0
+margin_bottom = 1674.0
 rect_min_size = Vector2( 300, 0 )
 mouse_filter = 2
 
 [node name="S01" type="Label" parent="DialogTemplate_Body_CBM/GridContainer/MidContainer/ContentContainer/ScrollContainer/HBoxContainer/Control3/Sfx_VBox"]
 margin_right = 300.0
-margin_bottom = 1437.0
+margin_bottom = 1401.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "A couple of sounds generated from:
@@ -521,10 +521,7 @@ Sharp Explosion 1 (of 5) by Rudmer_Rotteveel
 
 Rocket Launch by Jarusca
 
-Bottle Shattering by spookymodem
-
-------------------
-non exhaustive. I LOST THE LIST :'((("
+Bottle Shattering by spookymodem"
 align = 1
 
 [node name="Border_Right" parent="DialogTemplate_Body_CBM/GridContainer" index="5"]

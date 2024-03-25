@@ -2090,6 +2090,8 @@ func _load_custom_audio_config_using_dic(data : Dictionary):
 	
 
 func _initialize_custom_audio_config_ids_unlocked__from_save_dict(arg_dict : Dictionary):
+	_attempt_create_dir__at_dir(CUSTOM_AUDIO_CONFIG__DIR_NAME__MAIN_DIR, GameSaveManager.USER_DIR)
+	
 	for audio_id in arg_dict.keys():
 		set_custom_audio_id__unlocked_status(int(audio_id), arg_dict[audio_id])
 	
