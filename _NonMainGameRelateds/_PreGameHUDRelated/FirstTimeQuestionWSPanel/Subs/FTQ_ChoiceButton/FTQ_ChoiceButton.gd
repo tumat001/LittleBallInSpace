@@ -15,6 +15,10 @@ var _has_focus : bool
 
 #
 
+var _is_already_pressed : bool = false
+
+#
+
 export(String) var choice_text : String setget set_choice_text
 
 #
@@ -73,9 +77,12 @@ func _on_lose_focus__attempt_do_anims():
 ##
 
 func _on_TextureButton_pressed():
-	emit_signal("button_pressed")
-	
-	AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Click_Confirmed, 1.0, null)
+	if !_is_already_pressed:
+		_is_already_pressed = true
+		
+		emit_signal("button_pressed")
+		
+		AudioManager.helper__play_sound_effect__plain(StoreOfAudio.AudioIds.SFX_GUI_Button_Click_Confirmed, 1.0, null)
 
 
 #

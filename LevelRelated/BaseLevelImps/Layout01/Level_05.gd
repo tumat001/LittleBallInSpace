@@ -27,6 +27,7 @@ func after_game_init():
 	
 	_add_energy_modi()
 	
+	
 #	_add_launch_ball_modi()
 #
 #func _add_launch_ball_modi():

@@ -104,7 +104,7 @@ has_glowables = true
 
 [node name="TileMap" parent="TileContainer/BTS_Glowing" index="0"]
 tile_set = ExtResource( 3 )
-tile_data = PoolIntArray( 393270, 43, 0, 655414, 43, 0, 917558, 43, 0, 1048665, 43, 2, 1507417, 43, 2, 1507444, 43, 1, 1704052, 43, 1, 1900660, 43, 1, 2097268, 43, 1, 2293876, 43, 1, 2490484, 43, 1 )
+tile_data = PoolIntArray( 393270, 43, 0, 655414, 43, 0, 917558, 43, 0, 1048665, 43, 2, 1507417, 43, 2, 1507444, 43, 1, 2490484, 43, 1 )
 
 [node name="BTS_Blue" parent="TileContainer" index="9" instance=ExtResource( 1 )]
 

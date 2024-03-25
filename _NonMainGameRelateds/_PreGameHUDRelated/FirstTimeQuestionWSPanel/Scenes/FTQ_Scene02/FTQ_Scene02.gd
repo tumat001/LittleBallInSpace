@@ -39,6 +39,10 @@ onready var ftq_custom_label_05 = $VBoxContainer/FTQ_CustomLabel_05
 
 onready var ftq_custom_line = $VBoxContainer/MarginContainer/FTQ_CustomLine
 
+#
+
+var _is_input_made : bool = false
+
 ##
 
 func _ready():
@@ -115,21 +119,24 @@ func _on_display_of_desc_finished__line_04(custom_char_count_to_show_upto, arg_m
 ####################
 
 func _on_text_entered(arg_text):
-	if _current_tweener != null:
-		_current_tweener.kill()
-	
-	name_of_pet = arg_text
-	ftq_custom_line.set_editable(false)
-	
-	
-	GameSaveManager.player_name = name_of_pet
-	
-	#
-	
-	var tweener = create_tween()
-	tweener.set_parallel(false)
-	tweener.tween_property(self, "modulate:a", 0.0, 1.0)
-	tweener.tween_callback(self, "_on_done_with_mod_a_transition")
+	if !_is_input_made:
+		_is_input_made = true
+		
+		if _current_tweener != null:
+			_current_tweener.kill()
+		
+		name_of_pet = arg_text
+		ftq_custom_line.set_editable(false)
+		ftq_custom_line.is_disabled = true
+		
+		GameSaveManager.player_name = name_of_pet
+		
+		#
+		
+		var tweener = create_tween()
+		tweener.set_parallel(false)
+		tweener.tween_property(self, "modulate:a", 0.0, 1.0)
+		tweener.tween_callback(self, "_on_done_with_mod_a_transition")
 
 func _on_done_with_mod_a_transition():
 	emit_sequence_finished()

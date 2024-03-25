@@ -66,8 +66,10 @@ func _on_PCA_Last_region_area_captured():
 func _deferred_last_region_captured():
 	SingletonsAndConsts.current_master.show_ending_summary_wsp()
 	
-	game_elements.game_result_manager.end_game__as_win()
-	
+	#the exception. do not do this for others:
+	game_elements.game_result_manager.special_case__end_game__as_win()
+	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
+	#game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 
 
 #

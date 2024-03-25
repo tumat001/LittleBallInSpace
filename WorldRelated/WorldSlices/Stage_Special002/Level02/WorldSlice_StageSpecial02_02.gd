@@ -875,7 +875,7 @@ func _on_constellation_show__next_button_pressed():
 
 #func _end_level():
 #	_play_inner_transition_to_level_selection()
-#	game_elements.game_result_manager.end_game__as_win()
+#	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 #
 #
 #func _play_inner_transition_to_level_selection():
@@ -914,7 +914,7 @@ func _attempt_unlock_trophy__super_star_collected_while_blinded__if_conditions_m
 
 func _is_magnum_opus_level_completed_blind():
 	var magnum_opus_lvl_id = StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2
-	return GameSaveManager.has_metadata_in_level_id(magnum_opus_lvl_id)
+	return !GameSaveManager.has_metadata_in_level_id(magnum_opus_lvl_id)
 
 
 ##

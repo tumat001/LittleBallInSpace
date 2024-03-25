@@ -18,7 +18,7 @@ func _init():
 
 func as_test__override__do_insta_win():
 	_is_cdsu_module_custom_audio_picked_up = true
-	StoreOfLevels.unlock_stage_04__and_unhide_eles_to_layout_04()
+	#StoreOfLevels.unlock_stage_04__and_unhide_eles_to_layout_04()
 	
 	as_test__override__do_insta_win__template_capture_all_points()
 	

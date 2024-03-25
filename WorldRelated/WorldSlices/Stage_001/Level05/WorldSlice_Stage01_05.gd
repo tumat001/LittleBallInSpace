@@ -74,7 +74,7 @@ func as_test__override__do_insta_win():
 	call_deferred("_deferred_do_insta_win")
 
 func _deferred_do_insta_win():
-	game_elements.game_result_manager.end_game__as_win()
+	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 
 
 func _ready():
@@ -253,8 +253,8 @@ func _start_show_game_logo():
 
 
 func _on_delay_for_game_end_complete():
-	game_elements.game_result_manager.end_game__as_win()
-	
+	#game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
+	game_elements.game_result_manager.special_case__end_game__as_win()
 
 
 

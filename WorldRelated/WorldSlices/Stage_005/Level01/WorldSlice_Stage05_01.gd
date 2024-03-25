@@ -35,7 +35,7 @@ func as_test__override__do_insta_win():
 	#as_test__override__do_insta_win__template_capture_all_points()
 	
 	StoreOfLevels.unlock_and_goto_stage_05_level_02_on_win()
-	game_elements.game_result_manager.end_game__as_win()
+	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 
 
 func _on_after_game_start_init():
@@ -120,7 +120,7 @@ func _on_Portal_player_entered__as_scene_transition(arg_player):
 	tweener.tween_callback(self, "_on_wait_after_portal_enter_done").set_delay(2.0)
 
 func _on_wait_after_portal_enter_done():
-	game_elements.game_result_manager.end_game__as_win()
+	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 	
 	
 

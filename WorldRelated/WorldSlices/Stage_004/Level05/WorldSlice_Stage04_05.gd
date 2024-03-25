@@ -6,7 +6,7 @@ func _init():
 	
 
 func as_test__override__do_insta_win():
-	StoreOfLevels.unlock_stage_05__and_unhide_eles_to_layout_05()
+	#StoreOfLevels.unlock_stage_05__and_unhide_eles_to_layout_05()
 	as_test__override__do_insta_win__template_capture_all_points()
 	
 

@@ -67,7 +67,7 @@ func set_level_selection_whole_screen__and_init(arg_whole_screen):
 func _on_current_level_layout_changed(arg_layout, arg_layout_id):
 	_update_shortcut_panel__button_status()
 
-func _on_level_layout_id_completion_status_changed():
+func _on_level_layout_id_completion_status_changed(arg_id, arg_status):
 	_update_shortcut_panel__visible_buttons()
 
 

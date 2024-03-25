@@ -82,7 +82,7 @@ func _on_display_of_desc_finished__01(arg):
 	#SingletonsAndConsts.switch_to_level_selection_scene__from_game_elements__as_win()
 	
 	if GameSaveManager.is_level_layout_id_playable(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_SPECIAL_01):
-		game_elements.game_result_manager.end_game__as_win()
+		game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 	else:
 		#SingletonsAndConsts.current_game_front_hud.game_dialog_panel.disconnect("display_of_desc_finished", self, "_on_display_of_desc_finished__01")
 		_start_dialog__02()
@@ -99,6 +99,6 @@ func _start_dialog__02():
 	SingletonsAndConsts.current_game_front_hud.game_dialog_panel.show_self()
 
 func _on_display_of_desc_finished__02(arg):
-	game_elements.game_result_manager.end_game__as_win()
+	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 
 #

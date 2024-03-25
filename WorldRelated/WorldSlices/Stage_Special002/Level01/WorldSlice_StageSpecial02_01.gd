@@ -8,7 +8,7 @@ const WSSS0201_FogAndStarStatusDisplayer_Scene = preload("res://WorldRelated/Wor
 
 #
 
-const STAR_COUNT_BUFFER = 6
+const STAR_COUNT_BUFFER = 8
 var STARS_NEEDED : int
 
 #
@@ -64,10 +64,12 @@ func _do_star_and_fog_actions_based_on_states():
 			_do_star_and_fog_actions__fail_lift_fog()
 			CameraManager.set_current_default_zoom_out_vec(Vector2.ONE)
 			
+			GameSaveManager.remove_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2)
+			
 		else:
 			_do_star_and_fog_actions__success_lift_fog()
-			
 			GameSaveManager.set_metadata_of_level_id(StoreOfLevels.LevelIds.LEVEL_01__STAGE_SPECIAL_2, [true])
+			
 		
 	else:
 		pass

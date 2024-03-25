@@ -13,7 +13,7 @@ var second_line = [
 
 #
 
-
+var _choice_made : bool = false
 
 #
 
@@ -104,12 +104,18 @@ func _on_ftq_choices_panel__fully_visible():
 ######
 
 func _on_choice_selected__dog_person(arg_params):
-	GameSaveManager.animal_choice_id = GameSaveManager.AnimalChoiceId.DOG
-	_start_invis_tween__for_end_of_scene()
+	if !_choice_made:
+		GameSaveManager.animal_choice_id = GameSaveManager.AnimalChoiceId.DOG
+		_start_invis_tween__for_end_of_scene()
+		
+		_choice_made = true
 
 func _on_choice_selected__cat_person(arg_params):
-	GameSaveManager.animal_choice_id = GameSaveManager.AnimalChoiceId.CAT
-	_start_invis_tween__for_end_of_scene()
+	if !_choice_made:
+		GameSaveManager.animal_choice_id = GameSaveManager.AnimalChoiceId.CAT
+		_start_invis_tween__for_end_of_scene()
+		
+		_choice_made = true
 
 func _start_invis_tween__for_end_of_scene():
 	var tweener = create_tween()
