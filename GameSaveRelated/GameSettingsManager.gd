@@ -704,7 +704,8 @@ func _save_using_dict(arg_dict, arg_file_path, arg_print_err_msg):
 	var save_dict = arg_dict
 	var save_file = File.new()
 	
-	var err_stat = save_file.open(arg_file_path, File.WRITE)
+	#var err_stat = save_file.open(arg_file_path, File.WRITE)
+	var err_stat = GameSaveManager.helper__open_file__write_to_file__encrypted(save_file, arg_file_path)
 	
 	if err_stat != OK:
 		print(arg_print_err_msg)
@@ -718,7 +719,8 @@ func _save_using_arr(arg_arr, arg_file_path, arg_print_err_msg):
 	var save_arr = arg_arr
 	var save_file = File.new()
 	
-	var err_stat = save_file.open(arg_file_path, File.WRITE)
+	#var err_stat = save_file.open(arg_file_path, File.WRITE)
+	var err_stat = GameSaveManager.helper__open_file__write_to_file__encrypted(save_file, arg_file_path)
 	
 	if err_stat != OK:
 		print(arg_print_err_msg)
@@ -771,7 +773,8 @@ func _attempt_load_game_controls_related_data():
 	var load_file = File.new()
 	
 	if load_file.file_exists(game_control_settings_file_path) and !GameSaveManager.ignore_appdata:
-		var err_stat = load_file.open(game_control_settings_file_path, File.READ)
+		#var err_stat = load_file.open(game_control_settings_file_path, File.READ)
+		var err_stat = GameSaveManager.helper__open_file__read_file__encrypted(load_file, game_control_settings_file_path)
 		
 		if err_stat != OK:
 			print("Loading error! -- Game control settings data")
@@ -911,7 +914,8 @@ func _attempt_load_general_game_settings():
 	var load_file = File.new()
 	
 	if load_file.file_exists(general_game_settings_file_path) and !GameSaveManager.ignore_appdata:
-		var err_stat = load_file.open(general_game_settings_file_path, File.READ)
+		#var err_stat = load_file.open(general_game_settings_file_path, File.READ)
+		var err_stat = GameSaveManager.helper__open_file__read_file__encrypted(load_file, general_game_settings_file_path)
 		
 		if err_stat != OK:
 			print("Loading error! -- General game settings")

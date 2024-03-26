@@ -37,6 +37,10 @@ var _is_manager_initialized : bool = false
 
 #
 
+const ENCRYPT_PASS = "randBambPassword"
+
+#
+
 const player_data_file_path = "user://player_data.save"
 
 
@@ -187,11 +191,19 @@ const USER_DIR__IMG_SAVE_FilePath = "ScrnShots/"
 #### base methods
 #############################
 
+func helper__open_file__write_to_file__encrypted(arg_file_instance : File, arg_file_path):
+	return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.WRITE, ENCRYPT_PASS)
+
+func helper__open_file__read_file__encrypted(arg_file_instance : File, arg_file_path):
+	return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.READ, ENCRYPT_PASS)
+
+
 func _save_using_dict(arg_dict, arg_file_path, arg_print_err_msg):
 	var save_dict = arg_dict
 	var save_file = File.new()
 	
-	var err_stat = save_file.open(arg_file_path, File.WRITE)
+	#var err_stat = save_file.open(arg_file_path, File.WRITE)
+	var err_stat = helper__open_file__write_to_file__encrypted(save_file, arg_file_path)
 	
 	if err_stat != OK:
 		print(arg_print_err_msg)
@@ -205,7 +217,8 @@ func _save_using_arr(arg_arr, arg_file_path, arg_print_err_msg):
 	var save_arr = arg_arr
 	var save_file = File.new()
 	
-	var err_stat = save_file.open(arg_file_path, File.WRITE)
+	#var err_stat = save_file.open(arg_file_path, File.WRITE)
+	var err_stat = helper__open_file__write_to_file__encrypted(save_file, arg_file_path)
 	
 	if err_stat != OK:
 		print(arg_print_err_msg)
@@ -251,10 +264,12 @@ func _attempt_load_existing_player_related_data():
 	var load_file = File.new()
 	
 	if load_file.file_exists(player_data_file_path):
-		var err_stat = load_file.open(player_data_file_path, File.READ)
+		var err_stat = helper__open_file__read_file__encrypted(load_file, player_data_file_path) #load_file.open(player_data_file_path, File.READ)
 		
 		if err_stat != OK:
 			print("Loading error! -- Player data")
+			
+			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 			return false
 		
 		_load_player_related_data(load_file)
@@ -822,7 +837,8 @@ func _attempt_load_existing_level_related_data():
 	var load_file = File.new()
 	
 	if load_file.file_exists(level_data_file_path) and !ignore_appdata:
-		var err_stat = load_file.open(level_data_file_path, File.READ)
+		#var err_stat = load_file.open(level_data_file_path, File.READ)
+		var err_stat = helper__open_file__read_file__encrypted(load_file, level_data_file_path)
 		
 		if err_stat != OK:
 			print("Loading error! -- Level data")
@@ -1014,7 +1030,8 @@ func _load_stats__of_audio_manager():
 	var load_file = File.new()
 	
 	if load_file.file_exists(audio_settings_file_path) and !ignore_appdata:
-		var err_stat = load_file.open(audio_settings_file_path, File.READ)
+		#var err_stat = load_file.open(audio_settings_file_path, File.READ)
+		var err_stat = helper__open_file__read_file__encrypted(load_file, audio_settings_file_path)
 		
 		if err_stat != OK:
 			print("Loading error! -- AudioManager")
