@@ -45,8 +45,11 @@ func set_desc__and_hide_tooltip(arg_desc):
 	tooltip_body.descriptions = arg_desc
 	tooltip_body.update_display()
 	
-	tooltip_body.visible = false
-	visible = false
+	tooltip_body.modulate.a = 0.0
+#	tooltip_body.visible = false
+#	visible = false
+	
+
 
 func get_total_char_count_of_desc():
 	return tooltip_body.get_total_character_count()
@@ -56,8 +59,14 @@ func get_curr_vis_char_count_of_desc():
 
 
 
-func start_display_of_descs__all_chars(arg_duration, arg_additional_delay_for_finish, arg_metadata):
+func start_display_of_descs__all_chars(arg_duration, arg_additional_delay_for_finish, arg_metadata, arg_loop_count : int = 0):
 	start_display_of_descs(arg_duration, arg_additional_delay_for_finish, arg_metadata, 0, tooltip_body.get_total_character_count())
+#	var count = tooltip_body.get_total_character_count()
+#
+#	if count != 0 or arg_loop_count > 10:
+#		start_display_of_descs(arg_duration, arg_additional_delay_for_finish, arg_metadata, 0, tooltip_body.get_total_character_count())
+#	else:
+#		call_deferred("start_display_of_descs__all_chars", arg_duration, arg_additional_delay_for_finish, arg_metadata, arg_loop_count + 1)
 
 func start_display_of_descs(arg_duration, arg_additional_delay_for_finish,
 		arg_metadata, initial_vis_char_count, custom_char_count_to_show_upto):
@@ -65,6 +74,11 @@ func start_display_of_descs(arg_duration, arg_additional_delay_for_finish,
 	tooltip_body.start_tween_display_of_text__custom_char_count(arg_duration, initial_vis_char_count, custom_char_count_to_show_upto, self, "_on_tooltip_body_started_displaying_text__tween", [arg_duration, arg_additional_delay_for_finish, custom_char_count_to_show_upto, arg_metadata])
 	tooltip_body.visible = true
 	visible = true
+	
+	tooltip_body.modulate.a = 1.0
+	
+#	if custom_char_count_to_show_upto == 0:
+#		print("err")
 
 
 func _on_tooltip_body_started_displaying_text__tween(details, arg_params):

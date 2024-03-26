@@ -18,7 +18,6 @@ var font_id_to_use : int = StoreOfFonts.FontTypes.MONOGRAM setget set_font_id_to
 
 onready var label = $Label
 
-
 #
 
 var _can_update_label_font : bool = false
@@ -76,7 +75,6 @@ func _ready():
 		
 		label.bbcode_text = _get_bbc_modified_description(description)
 	
-	
 
 func get_info_from_self_class(self_class):
 	description = self_class.description
@@ -122,7 +120,7 @@ func set_visible_character_count(arg_count):
 func get_percent_visible_character_count():
 	return label.percent_visible
 
+
 func get_total_char_count():
 	return label.get_total_character_count()
-
 

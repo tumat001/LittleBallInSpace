@@ -27,7 +27,7 @@ func _start_scene_sequence__02():
 	_current_ftq_scene = ftq_scene02
 	ftq_scene02.visible = true
 	ftq_scene02.start_display()
-	ftq_scene02.connect("sequence_finished", self, "_on_sequence_finished__scene_02")
+	ftq_scene02.connect("sequence_finished", self, "_on_sequence_finished__scene_02", [], CONNECT_DEFERRED)
 
 func _on_sequence_finished__scene_02():
 	ftq_scene02.visible = false
@@ -38,7 +38,8 @@ func _on_sequence_finished__scene_02():
 	_current_ftq_scene = ftq_scene03
 	ftq_scene03.visible = true
 	ftq_scene03.start_display()
-	ftq_scene03.connect("sequence_finished", self, "_on_sequence_finished__scene_03")
+	#ftq_scene03.call_deferred("start_display")
+	ftq_scene03.connect("sequence_finished", self, "_on_sequence_finished__scene_03", [], CONNECT_DEFERRED)
 
 
 func _on_sequence_finished__scene_03():

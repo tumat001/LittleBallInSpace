@@ -58,6 +58,7 @@ func start_display():
 	
 	_current_custom_steppable_control = ftq_custom_label_01
 	ftq_custom_label_01.start_display_of_descs__all_chars(0.75, 1.25, null)
+	#ftq_custom_label_01.call_deferred("start_display_of_descs__all_chars", 0.75, 1.25, null)
 	ftq_custom_label_01.connect("display_of_desc_finished", self, "_on_display_of_desc_finished__line_01", [], CONNECT_ONESHOT)
 	
 

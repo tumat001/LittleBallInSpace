@@ -8,7 +8,6 @@ const TooltipPlainTextDescriptionScene = preload("res://MiscRelated/TooltipRelat
 #const TooltipWithImageIndicatorDescriptionScene = preload("res://MiscRelated/TooltipRelated/TooltipBodyConstructors/TooltipWithImageIndicatorDescription.tscn")
 
 #
-
 var descriptions : Array = []
 
 var specific_font_colors : Array = []
@@ -155,6 +154,7 @@ func update_display():
 		desc_instance.mouse_filter = MOUSE_FILTER_IGNORE
 		
 		row_container.add_child(desc_instance)
+		
 		index += 1
 	
 
@@ -213,6 +213,8 @@ func set_visible_character_count__with_text_blip(arg_count):
 	else:
 		_count__from_text_blip = 0
 	
+	#print("vis_count: %s, text: %s" % [arg_count, descriptions])
+	
 	set_visible_character_count(arg_count)
 
 
@@ -230,6 +232,10 @@ func get_total_character_count():
 	
 	for ch in row_container.get_children():
 		count += ch.get_total_char_count()
+	
+	
+#	if count == 0:
+#		print("NOTE:: is_in_tree: %s, ch_count: %s" % [is_inside_tree(), row_container.get_children().size()])
 	
 	return count
 
