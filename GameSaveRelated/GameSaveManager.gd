@@ -62,6 +62,10 @@ const INITIAL_PLAYER_HEALTH_AT_START = PLAYER_MAX_HEALTH
 
 #
 
+var ignore_appdata : bool
+
+#
+
 var player_health_on_start : float = INITIAL_PLAYER_HEALTH_AT_START
 var tentative_player_health_on_start
 var level_id_died_in
@@ -217,6 +221,8 @@ func _save_using_arr(arg_arr, arg_file_path, arg_print_err_msg):
 
 func _ready():
 	_attempt_load_existing_player_related_data()
+	
+	##
 	_attempt_load_existing_level_related_data()
 	
 	_load_stats__of_audio_manager()
@@ -272,14 +278,22 @@ func _load_player_related_data(arg_file : File):
 	
 	##
 	
-	if data.has(PLAYER_HEALTH__DIC_IDENTIFIER):
+	if data.has(VERSION_NUM__DIC_IDENTIFIER):
+		set_version_num_as_str(data[VERSION_NUM__DIC_IDENTIFIER])
+	else:
+		set_version_num_as_str(Singleton_GameInfo.get_game_version_as_text())
+		ignore_appdata = true
+	
+	##
+	
+	if !ignore_appdata and data.has(PLAYER_HEALTH__DIC_IDENTIFIER):
 		player_health_on_start = float(data[PLAYER_HEALTH__DIC_IDENTIFIER])
 	else:
 		player_health_on_start = INITIAL_PLAYER_HEALTH_AT_START
 	
 	##
 	
-	if data.has(IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER):
+	if !ignore_appdata and  data.has(IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER):
 		is_player_health_invulnerable__state = int(data[IS_PLAYER_HEALTH_INVUL_STATE__DIC_IDENTIFIER])
 	else:
 		is_player_health_invulnerable__state = IS_PLAYER_HEALTH_INVULNERABLE__INITIAL_VAL
@@ -288,80 +302,74 @@ func _load_player_related_data(arg_file : File):
 	
 	##
 	
-	if data.has(PLAYER_NAME__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(PLAYER_NAME__DIC_IDENTIFIER):
 		player_name = data[PLAYER_NAME__DIC_IDENTIFIER]
 	else:
 		player_name = ""
 	
 	##
 	
-	if data.has(FIRST_TIME_OPENING__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(FIRST_TIME_OPENING__DIC_IDENTIFIER):
 		first_time_opening_game = data[FIRST_TIME_OPENING__DIC_IDENTIFIER]
 	else:
 		first_time_opening_game = true
 	
 	##
 	
-	if data.has(ANIMAL_CHOICE__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(ANIMAL_CHOICE__DIC_IDENTIFIER):
 		animal_choice_id = data[ANIMAL_CHOICE__DIC_IDENTIFIER]
 	else:
 		animal_choice_id = AnimalChoiceId.DOG
 	
 	##
 	
-	if data.has(LEVEL_ID_DIED_IN__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LEVEL_ID_DIED_IN__DIC_IDENTIFIER):
 		level_id_died_in = data[LEVEL_ID_DIED_IN__DIC_IDENTIFIER]
 	else:
 		level_id_died_in = -1
 	
 	##
 	
-	if data.has(CAN_VIEW_GAME_STATS__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(CAN_VIEW_GAME_STATS__DIC_IDENTIFIER):
 		set_can_view_game_stats(data[CAN_VIEW_GAME_STATS__DIC_IDENTIFIER])
 	else:
 		set_can_view_game_stats(false)
 	
 	##
 	
-	if data.has(CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER):
 		set_can_edit_tile_colors(data[CAN_EDIT_TILE_COLORS__DIC_IDENTIFIER])
 	else:
 		set_can_edit_tile_colors(false)
 	
 	##
 	
-	if data.has(CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER):
 		set_can_edit_player_aesth(data[CAN_EDIT_PLAYER_AESTH__DIC_IDENTIFIER])
 	else:
 		set_can_edit_player_aesth(false)
 	
 	##
 	
-	if data.has(CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER):
 		set_can_config_custom_audio(data[CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER])
 	else:
 		set_can_config_custom_audio(false)
 	
 	##
 	
-	if data.has(TROPHY_COLLECTED__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(TROPHY_COLLECTED__DIC_IDENTIFIER):
 		set_collected_trophies_and_metadata_from_save(data[TROPHY_COLLECTED__DIC_IDENTIFIER])
 	else:
 		set_collected_trophies_and_metadata_from_save({})
 	
 	##
 	
-	if data.has(VERSION_NUM__DIC_IDENTIFIER):
-		set_version_num_as_str(data[VERSION_NUM__DIC_IDENTIFIER])
-	else:
-		set_version_num_as_str(Singleton_GameInfo.get_game_version_as_text())
-	
-	##
-	
-	if data.has(LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER):
 		set_is_last_playthru_from_demo(data[LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER])
 	else:
 		set_is_last_playthru_from_demo(Singleton_GameInfo.IS_GAME_DEMO)
+	
 
 #
 
@@ -626,7 +634,7 @@ func _init_is_player_health_invulnerable__state__based_on_curr_game_state__on_lo
 	connect("before_save_manager_initialized", self, "_on_before_save_manager_initialized__init_is_player_health_invulnerable", [], CONNECT_ONESHOT)
 
 func _on_before_save_manager_initialized__init_is_player_health_invulnerable():
-	if is_level_layout_id_finished(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05):
+	if is_level_layout_id_finished(StoreOfLevelLayouts.LevelLayoutIds.LAYOUT_05) and !GameSaveManager.ignore_appdata:
 		is_player_health_invulnerable__state = IsPlayerHealthInvulTypeId.IS_INVUL
 	else:
 		is_player_health_invulnerable__state = IsPlayerHealthInvulTypeId.IS_NOT_INVUL
@@ -813,7 +821,7 @@ func get_or_generate_trophy_details(arg_trophy_id):
 func _attempt_load_existing_level_related_data():
 	var load_file = File.new()
 	
-	if load_file.file_exists(level_data_file_path):
+	if load_file.file_exists(level_data_file_path) and !ignore_appdata:
 		var err_stat = load_file.open(level_data_file_path, File.READ)
 		
 		if err_stat != OK:
@@ -842,20 +850,20 @@ func _load_level_related_data(arg_file : File):
 	
 	##
 	
-	if data.has(LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER):
 		last_opened_level_layout_id = int(data[LAST_OPENED_LEVEL_LAYOUT_ID__DIC_IDENTIFIER])
 	else:
 		last_opened_level_layout_id = StoreOfLevelLayouts.FIRST_LEVEl_LAYOUT
 	
 	
-	if data.has(LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER):
 		last_hovered_over_level_layout_element_id = int(data[LAST_HOVERED_OVER_LEVEL_LAYOUT_ELEMENT_ID__DIC_IDENTIFIER])
 	else:
 		last_hovered_over_level_layout_element_id = GUI_AbstractLevelLayout.UNINITIALIZED_CURSOR
 	
 	
 	
-	if data.has(LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER):
 		_level_id_as_str_to_coin_ids_collected_map = data[LEVEL_ID_TO_COINS_COLLECTED__DIC_IDENTIFIER]
 		_correct_and_fill_level_id_to_coins_collected_map()
 	else:
@@ -865,28 +873,28 @@ func _load_level_related_data(arg_file : File):
 	
 	##
 	
-	if data.has(LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER):
 		_correct_level_id_to_completion_status_map(data[LEVEL_ID_TO_COMPLETION_STATUS__DIC_IDENTIFIER])
 	else:
 		_initialize_level_id_to_completion_status_map()
 	
 	#
 	
-	if data.has(LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER):
 		_correct_level_layout_id_to_completion_status_map(data[LEVEL_LAYOUT_ID_COMPLETION_STATUS__DIC_IDENTIFIER])
 	else:
 		_initialize_level_layout_id_to_completion_status_map()
 	
 	#
 	
-	if data.has(LEVEL_ID_TO_METADATA__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(LEVEL_ID_TO_METADATA__DIC_IDENTIFIER):
 		_correct_level_id_to_metadata_map(data[LEVEL_ID_TO_METADATA__DIC_IDENTIFIER])
 	else:
 		pass
 	
 	#
 	
-	if data.has(ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER):
 		#_correct_level_id_to_is_hidden_map__do_unhide_based_on_data(data[LEVEL_ID_TO_IS_HIDDEN__DIC_IDENTIFIER])
 		_configure_level_hidden_states_based_on_save_state(data[ALL_LEVELS_HIDDEN_STATE__DIC_IDENTIFIER])
 	else:
@@ -894,7 +902,7 @@ func _load_level_related_data(arg_file : File):
 	
 	#
 	
-	if data.has(REGISTERED_LAYOUT_ID_TO_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER):
+	if !ignore_appdata and data.has(REGISTERED_LAYOUT_ID_TO_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER):
 		_configure_registered_layout_element_ids_to_invis_map(data[REGISTERED_LAYOUT_ID_TO_LAYOUT_ELEMENT_IDS_TO_IS_INVISIBLE_MAP__DIC_IDENTIFIER])
 	else:
 		pass
@@ -1005,7 +1013,7 @@ func save_settings__of_audio_manager():
 func _load_stats__of_audio_manager():
 	var load_file = File.new()
 	
-	if load_file.file_exists(audio_settings_file_path):
+	if load_file.file_exists(audio_settings_file_path) and !ignore_appdata:
 		var err_stat = load_file.open(audio_settings_file_path, File.READ)
 		
 		if err_stat != OK:
@@ -1121,6 +1129,23 @@ func set_is_last_playthru_from_demo(arg_is_demo : bool):
 
 func is_last_playthru_from_demo__and_curr_is_non_demo():
 	return is_last_playthru_from_demo and !Singleton_GameInfo.IS_GAME_DEMO
+
+
+
+#func clear_all_files_in_appdata():
+#	pass
+	#OS.move_to_trash(USER_DIR)
+#	var dir = Directory.new()
+#	if dir.open(USER_DIR) == OK:
+#		dir.list_dir_begin()
+#		var file_name = dir.get_next()
+#		while file_name != "":
+#			OS.move_to_trash("%s%s" % [USER_DIR, file_name])
+#			file_name = dir.get_next()
+#
+#	else:
+#		pass
+#
 
 #############################################
 ##

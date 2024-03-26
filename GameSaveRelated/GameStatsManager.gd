@@ -246,7 +246,7 @@ func _generate_save_dict__for_per_level():
 func _attempt_load_all__from_game_stats_file():
 	var load_file = File.new()
 	
-	if load_file.file_exists(game_stats_file_path):
+	if load_file.file_exists(game_stats_file_path) and !GameSaveManager.ignore_appdata:
 		var err_stat = load_file.open(game_stats_file_path, File.READ)
 		
 		if err_stat != OK:

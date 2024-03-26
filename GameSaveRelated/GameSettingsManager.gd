@@ -770,7 +770,7 @@ func _save_game_control_related_data():
 func _attempt_load_game_controls_related_data():
 	var load_file = File.new()
 	
-	if load_file.file_exists(game_control_settings_file_path):
+	if load_file.file_exists(game_control_settings_file_path) and !GameSaveManager.ignore_appdata:
 		var err_stat = load_file.open(game_control_settings_file_path, File.READ)
 		
 		if err_stat != OK:
@@ -910,7 +910,7 @@ func _save_general_game_settings_related_data():
 func _attempt_load_general_game_settings():
 	var load_file = File.new()
 	
-	if load_file.file_exists(general_game_settings_file_path):
+	if load_file.file_exists(general_game_settings_file_path) and !GameSaveManager.ignore_appdata:
 		var err_stat = load_file.open(general_game_settings_file_path, File.READ)
 		
 		if err_stat != OK:
