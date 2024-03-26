@@ -22,8 +22,10 @@ func _init():
 	
 
 func as_test__override__do_insta_win():
-	as_test__override__do_insta_win__template_capture_all_points()
-	
+	#as_test__override__do_insta_win__template_capture_all_points()
+	#game_elements.get_current_player().global_position = Vector2(64, -236)
+	var portal_for_transition = $ObjectContainer/Portal_Win
+	portal_for_transition._on_Area2D_body_entered(game_elements.get_current_player())
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()

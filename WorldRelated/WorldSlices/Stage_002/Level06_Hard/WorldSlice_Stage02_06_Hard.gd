@@ -37,10 +37,12 @@ func _init():
 
 func as_test__override__do_insta_win():
 	#as_test__override__do_insta_win__template_capture_all_points()
-	StoreOfLevels.unlock_stage_03__and_start_at_stage_03_01_on_level_finish__if_appropriate()
-	game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
+	#StoreOfLevels.unlock_stage_03__and_start_at_stage_03_01_on_level_finish__if_appropriate()
+	#game_elements.game_result_manager.set_current_game_result_as_win__and_instant_end()
 	
-
+	#game_elements.get_current_player().global_position
+	#game_elements.get_current_player().global_position = Vector2(-656, -368)
+	portal_for_transition._on_Area2D_body_entered(game_elements.get_current_player())
 
 func _on_after_game_start_init():
 	._on_after_game_start_init()
