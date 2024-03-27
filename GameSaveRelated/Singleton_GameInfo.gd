@@ -1,8 +1,8 @@
 extends Reference
 
 
-const GAME_VERSION__MAJOR : int = 1
-const GAME_VERSION__MINOR : int = 0
+const GAME_VERSION__MAJOR : int = 5
+const GAME_VERSION__MINOR : int = 1
 const GAME_VERSION__PATCH : int = 0
 const GAME_VERSION__REVISION : int = 0
 

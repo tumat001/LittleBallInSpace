@@ -192,11 +192,12 @@ const USER_DIR__IMG_SAVE_FilePath = "ScrnShots/"
 #############################
 
 func helper__open_file__write_to_file__encrypted(arg_file_instance : File, arg_file_path):
-	return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.WRITE, ENCRYPT_PASS)
+	#return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.WRITE, ENCRYPT_PASS)
+	return arg_file_instance.open(arg_file_path, File.WRITE)
 
 func helper__open_file__read_file__encrypted(arg_file_instance : File, arg_file_path):
-	return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.READ, ENCRYPT_PASS)
-
+	#return arg_file_instance.open_encrypted_with_pass(arg_file_path, File.READ, ENCRYPT_PASS)
+	return arg_file_instance.open(arg_file_path, File.READ)
 
 func _save_using_dict(arg_dict, arg_file_path, arg_print_err_msg):
 	var save_dict = arg_dict
