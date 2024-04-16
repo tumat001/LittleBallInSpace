@@ -230,7 +230,6 @@ pressable_count = 2
 
 [node name="PickupCDSU_Module_CustomAudio" parent="ObjectContainer" index="7" instance=ExtResource( 14 )]
 position = Vector2( 257, -1007 )
-is_rewindable = false
 
 [node name="Sprite" parent="ObjectContainer/PickupCDSU_Module_CustomAudio" index="0"]
 material = SubResource( 11 )
