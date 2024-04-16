@@ -77,7 +77,6 @@ tile_set = ExtResource( 7 )
 tile_data = PoolIntArray( -327698, 14, 0, -327685, 14, 0, -393212, 14, 0, -65553, 14, 0 )
 
 [node name="BTS_Blue" parent="TileContainer" index="8" instance=ExtResource( 3 )]
-visible = false
 
 [node name="TileMap" parent="TileContainer/BTS_Blue" index="0"]
 modulate = Color( 0.0705882, 0.454902, 1, 1 )

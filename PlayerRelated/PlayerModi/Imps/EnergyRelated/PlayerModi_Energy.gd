@@ -367,10 +367,10 @@ func make_assist_mode_modification__energy_reduction_mode():
 	var reduc_id = GameSettingsManager.assist_mode__energy_reduction_mode_id
 	if reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.REDUCABLE__NORMAL:
 		#set_is_energy_deductable(true)
-		is_energy_not_deductable_cond_clauses.attempt_insert_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
+		is_energy_not_deductable_cond_clauses.remove_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
 	elif reduc_id == GameSettingsManager.AssistMode_EnergyReductionModeId.INFINITE:
 		#set_is_energy_deductable(false)
-		is_energy_not_deductable_cond_clauses.remove_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
+		is_energy_not_deductable_cond_clauses.attempt_insert_clause(IsEnergyNotDeductableClauseIds.ASSIST_MODE)
 
 
 #

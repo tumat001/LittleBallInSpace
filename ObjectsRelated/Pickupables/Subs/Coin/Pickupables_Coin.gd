@@ -63,6 +63,11 @@ func configure_self_as_assist_mode_is_active():
 	if ignore_is_disabled_by_assist_mode:
 		return
 	
+	if SingletonsAndConsts.current_level_details.ignore_assist_mode_modifications:
+		return
+	
+	#
+	
 	is_disabled_by_assist_mode = true
 	
 	modulate.a = 0.3

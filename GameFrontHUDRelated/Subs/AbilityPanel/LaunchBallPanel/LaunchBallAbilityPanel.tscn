@@ -16,6 +16,7 @@
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 12 )
 shader_param/progress = 1.0
+shader_param/from_right_to_left = true
 
 [node name="LaunchBallAbilityPanel" type="MarginContainer"]
 margin_right = 155.0
@@ -57,9 +58,9 @@ texture = ExtResource( 11 )
 
 [node name="BallCountLabel" type="Label" parent="FreeFormControl"]
 margin_left = 103.0
-margin_top = 42.0
+margin_top = 43.0
 margin_right = 151.0
-margin_bottom = 76.0
+margin_bottom = 77.0
 custom_colors/font_color = Color( 0.866667, 0.866667, 0.866667, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Inf"

@@ -15,7 +15,8 @@ func _on_after_game_start_init():
 	
 
 
-
-func _on_PlayerCaptureAreaRegion_region_area_captured():
+func _on_game_result_decided__win__base():
+	._on_game_result_decided__win__base()
+	
 	StoreOfLevels.unlock_stage_05__and_unhide_eles_to_layout_05()
 
