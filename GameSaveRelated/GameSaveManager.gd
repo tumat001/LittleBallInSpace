@@ -639,7 +639,7 @@ func _save_player_data():
 		CAN_CONFIG_CUSTOM_AUDIO__DIC_IDENTIFIER : can_config_custom_audio,
 		TROPHY_COLLECTED__DIC_IDENTIFIER : collected_trophy_id_to_metadata_map,
 		VERSION_NUM__DIC_IDENTIFIER : version_num_as_str,
-		LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER = Singleton_GameInfo.IS_GAME_DEMO,
+		LAST_PLAYTHRU_IS_FROM_DEMO__DIC_IDENTIFIER : Singleton_GameInfo.IS_GAME_DEMO,
 	}
 	
 	_save_using_dict(save_dict, player_data_file_path, "SAVE ERROR: PlayerData")
